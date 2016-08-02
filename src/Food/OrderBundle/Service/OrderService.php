@@ -1217,10 +1217,7 @@ class OrderService extends ContainerAware
     public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null)
     {
         $this->createOrder($place, $placePoint, false, $orderDate);
-        $this->getOrder()->setDeliveryType(
-            ($selfDelivery ? 'pickup' : 'deliver')
-        )
-        ;
+        $this->getOrder()->setDeliveryType(($selfDelivery ? 'pickup' : 'deliver'));
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
 
@@ -1228,8 +1225,7 @@ class OrderService extends ContainerAware
 
         if (!empty($orderDate)) {
             $this->getOrder()->setOrderStatus(self::$status_preorder)
-                ->setPreorder(true)
-            ;
+                ->setPreorder(true);
         } else if (empty($orderDate) && $selfDelivery) {
             // Lets fix pickup situation
             $miscService = $this->container->get('food.app.utils.misc');
@@ -1256,14 +1252,12 @@ class OrderService extends ContainerAware
             $orderExtra->setFirstname($userData['firstname'])
                 ->setLastname($userData['lastname'])
                 ->setPhone($userData['phone'])
-                ->setEmail($userData['email'])
-            ;
+                ->setEmail($userData['email']);
         } else {
             $orderExtra->setFirstname($user->getFirstname())
                 ->setLastname($user->getLastname())
                 ->setPhone($user->getPhone())
-                ->setEmail($user->getEmail())
-            ;
+                ->setEmail($user->getEmail());
         }
 
         $this->getOrder()->setOrderExtra($orderExtra);
@@ -1276,8 +1270,7 @@ class OrderService extends ContainerAware
             $this->getOrder()->getPlace(),
             $this->container->get('food.location')->getLocationFromSession(),
             $this->getOrder()->getPlacePoint()
-        )
-        ;
+        );
 
         // Pritaikom nuolaida
         $discountPercent = 0;
@@ -1285,161 +1278,184 @@ class OrderService extends ContainerAware
         $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
 
         if (!empty($coupon) && $coupon instanceof Coupon) {
-            $order = $this->getOrder();
-            $order->setCoupon($coupon)
-                ->setCouponCode($coupon->getCode())
-            ;
+            $IncludeDelivery = false;
+            if (!$coupon->getIncludeDelivery()) {
+                $IncludeDelivery = true;
+            }
 
-            if (!$coupon->getFreeDelivery()) {
+            if ($user->getIsBussinesClient()) {
+                // Jeigu musu logistika, tada taikom fiksuota nuolaida
+                if ($self_delivery == 0) {
+                    $discountSize = $this->container->get('food.user')->getDiscount($user);
+                    $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+                    $discountPercent = $discountSize;
+                    $this->getOrder()
+                        ->setDiscountSize($discountSize)
+                        ->setDiscountSum($discountSum);
+                }
+            } elseif (!empty($coupon) && $coupon instanceof Coupon) {
+                $order = $this->getOrder();
+                $order->setCoupon($coupon)
+                    ->setCouponCode($coupon->getCode());
+
                 $discountSize = $coupon->getDiscount();
+
                 if (!empty($discountSize)) {
                     $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
                     $discountPercent = $discountSize;
                 } else {
                     $discountSum = $coupon->getDiscountSum();
                 }
+
                 $order->setDiscountSize($discountSize)
-                    ->setDiscountSum($discountSum)
-                ;
-            } else {
-                $deliveryPrice = 0;
+                    ->setDiscountSum($discountSum);
 
-                if ($order->getDiscountSum() == '') {
-                    $order->setDiscountSum(0);
-                }
-            }
-        } elseif ($user->getIsBussinesClient()) {
-            // Jeigu musu logistika, tada taikom fiksuota nuolaida
-            if ($self_delivery == 0) {
-                $discountSize = $this->container->get('food.user')->getDiscount($user);
-                $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
-                $discountPercent = $discountSize;
-                $this->getOrder()
-                    ->setDiscountSize($discountSize)
-                    ->setDiscountSum($discountSum)
-                ;
-            }
-        }
-        /**
-         * Na daugiau kintamuju jau nebesugalvojau :/
-         */
-        $discountOverTotal = 0;
-        if ($discountSum > $preSum) {
-            $discountOverTotal = $discountSum - $preSum;
-            $discountSum = $preSum;
-        }
-        $discountSumLeft = $discountSum;
-        $discountSumTotal = $discountSum;
-        $discountUsed = 0;
-        $relationPart = $discountSum / $preSum;
-        foreach ($this->getCartService()->getCartDishes($placeObject) as $cartDish) {
-            $options = $this->getCartService()->getCartDishOptions($cartDish);
-            $price = $cartDish->getDishSizeId()->getCurrentPrice();
-            $origPrice = $cartDish->getDishSizeId()->getPrice();
-            $discountPercentForInsert = 0;
-            if ($cartDish->getIsFree()) {
-                $price = 0;
-                $origPrice = $cartDish->getDishSizeId()->getCurrentPrice();
-            } else {
-                if ($origPrice == $price && $discountPercent > 0) {
-                    $price = round($origPrice * ((100 - $discountPercent) / 100), 2);
-                    $discountPercentForInsert = $discountPercent;
-                } elseif ($discountSumLeft > 0) {
-                    /**
-                     * Uz toki graba ash degsiu pragare.... :/
-                     */
-                    $priceForInsert = $price;
-                    $discountPart = (float)round($price * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
-                    if ($discountPart < $discountSumLeft) {
-                        $discountSum = $discountPart;
-                    } else {
-                        if ($discountUsed + $discountPart > $discountSumTotal) {
-                            $discountSum = $discountSumTotal - $discountUsed;
-                        } else {
-                            $discountSum = $discountSumLeft;
-                        }
-                    }
-                    $discountSum = (float)round($discountSum / $cartDish->getQuantity() * 100, 2) / 100;
-                    $priceForInsert = $price - $discountSum;
-                    $discountSumLeft = $discountSumLeft - $discountSum;
-                    $discountUsed = $discountUsed + $discountSum;
-                    $price = $priceForInsert;
-                }
-            }
-
-            $dish = new OrderDetails();
-
-            $dish->setDishId($cartDish->getDishId())
-                ->setOrderId($this->getOrder())
-                ->setQuantity($cartDish->getQuantity())
-                ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
-                ->setPrice($price)
-                ->setOrigPrice($origPrice)
-                ->setPercentDiscount($discountPercentForInsert)
-                ->setDishName($cartDish->getDishId()->getName())
-                ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
-                ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
-                ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
-                ->setIsFree($cartDish->getIsFree())
-            ;
-            $this->getEm()->persist($dish);
-            $this->getEm()->flush();
-
-            $sumTotal += $cartDish->getQuantity() * $price;
-
-            foreach ($options as $opt) {
-                $orderOpt = new OrderDetailsOptions();
-                $orderOpt->setDishOptionId($opt->getDishOptionId())
-                    ->setDishOptionCode($opt->getDishOptionId()->getCode())
-                    ->setDishOptionName($opt->getDishOptionId()->getName())
-                    ->setPrice($opt->getDishOptionId()->getPrice())
-                    ->setDishId($cartDish->getDishId())
-                    ->setOrderId($this->getOrder())
-                    ->setQuantity($cartDish->getQuantity())// @todo Kolkas paveldimas. Veliau taps valdomas kiekvienam topingui atskirai
-                    ->setOrderDetail($dish)
-                ;
-                $this->getEm()->persist($orderOpt);
-                $this->getEm()->flush();
-
-                $sumTotal += $cartDish->getQuantity() * $opt->getDishOptionId()->getPrice();
-            }
-        }
-
-        // Nemokamas pristatymas dideliam krepseliui
-        $miscService = $this->container->get('food.app.utils.misc');
-        $enable_free_delivery_for_big_basket = $miscService->getParam('enable_free_delivery_for_big_basket');
-        $free_delivery_price = $miscService->getParam('free_delivery_price');
-        $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
-        $left_sum = 0;
-        if ($enable_free_delivery_for_big_basket) {
-            // Jeigu musu logistika, tada taikom nemokamo pristatymo logika
-            if ($self_delivery == 0 || $this->getOrder()->getPlace()->getId() == 32 && ($free_delivery_price = 50) && in_array(date('w'), [0, 6])) {
-                // Kiek liko iki nemokamo pristatymo
-                if ($free_delivery_price > $sumTotal) {
-                    $left_sum = sprintf('%.2f', $free_delivery_price - $sumTotal);
-                }
-                // Krepselio suma pasieke nemokamo pristatymo suma
-                if ($left_sum == 0) {
+                if ($coupon->getFreeDelivery()) {
                     $deliveryPrice = 0;
                 }
-            }
-        }
 
-        if ($discountOverTotal > 0) {
-            $deliveryPrice = $deliveryPrice - $discountOverTotal;
-            if ($deliveryPrice < 0) {
+
+                if ($coupon->getIgnoreCartPrice() && !$coupon->getFreeDelivery()) {
+                    $IncludeDelivery = true;
+                }
+
+                if ($coupon->getIncludeDelivery()) {
+                    $IncludeDelivery = false;
+                }
+
+            } elseif ($user->getIsBussinesClient()) {
+                // Jeigu musu logistika, tada taikom fiksuota nuolaida
+                if ($self_delivery == 0) {
+                    $discountSize = $this->container->get('food.user')->getDiscount($user);
+                    $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+                    $discountPercent = $discountSize;
+                    $this->getOrder()
+                        ->setDiscountSize($discountSize)
+                        ->setDiscountSum($discountSum);
+                }
+            }
+            /**
+             * Na daugiau kintamuju jau nebesugalvojau :/
+             */
+            $discountOverTotal = 0;
+            if ($discountSum > $preSum) {
+                $discountOverTotal = $discountSum - $preSum;
+                $discountSum = $preSum;
+            }
+            $discountSumLeft = $discountSum;
+            $discountSumTotal = $discountSum;
+            $discountUsed = 0;
+            $relationPart = $discountSum / $preSum;
+            foreach ($this->getCartService()->getCartDishes($placeObject) as $cartDish) {
+                $options = $this->getCartService()->getCartDishOptions($cartDish);
+                $price = $cartDish->getDishSizeId()->getCurrentPrice();
+                $origPrice = $cartDish->getDishSizeId()->getPrice();
+                $discountPercentForInsert = 0;
+                if ($cartDish->getIsFree()) {
+                    $price = 0;
+                    $origPrice = $cartDish->getDishSizeId()->getCurrentPrice();
+                } else {
+                    if ($origPrice == $price && $discountPercent > 0) {
+                        $price = round($origPrice * ((100 - $discountPercent) / 100), 2);
+                        $discountPercentForInsert = $discountPercent;
+                    } elseif ($discountSumLeft > 0) {
+                        /**
+                         * Uz toki graba ash degsiu pragare.... :/
+                         */
+                        $priceForInsert = $price;
+                        $discountPart = (float)round($price * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
+                        if ($discountPart < $discountSumLeft) {
+                            $discountSum = $discountPart;
+                        } else {
+                            if ($discountUsed + $discountPart > $discountSumTotal) {
+                                $discountSum = $discountSumTotal - $discountUsed;
+                            } else {
+                                $discountSum = $discountSumLeft;
+                            }
+                        }
+                        $discountSum = (float)round($discountSum / $cartDish->getQuantity() * 100, 2) / 100;
+                        $priceForInsert = $price - $discountSum;
+                        $discountSumLeft = $discountSumLeft - $discountSum;
+                        $discountUsed = $discountUsed + $discountSum;
+                        $price = $priceForInsert;
+                    }
+                }
+
+                $dish = new OrderDetails();
+
+                $dish->setDishId($cartDish->getDishId())
+                    ->setOrderId($this->getOrder())
+                    ->setQuantity($cartDish->getQuantity())
+                    ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
+                    ->setPrice($price)
+                    ->setOrigPrice($origPrice)
+                    ->setPercentDiscount($discountPercentForInsert)
+                    ->setDishName($cartDish->getDishId()->getName())
+                    ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
+                    ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
+                    ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
+                    ->setIsFree($cartDish->getIsFree());
+                $this->getEm()->persist($dish);
+                $this->getEm()->flush();
+
+                $sumTotal += $cartDish->getQuantity() * $price;
+
+                foreach ($options as $opt) {
+                    $orderOpt = new OrderDetailsOptions();
+                    $orderOpt->setDishOptionId($opt->getDishOptionId())
+                        ->setDishOptionCode($opt->getDishOptionId()->getCode())
+                        ->setDishOptionName($opt->getDishOptionId()->getName())
+                        ->setPrice($opt->getDishOptionId()->getPrice())
+                        ->setDishId($cartDish->getDishId())
+                        ->setOrderId($this->getOrder())
+                        ->setQuantity($cartDish->getQuantity())// @todo Kolkas paveldimas. Veliau taps valdomas kiekvienam topingui atskirai
+                        ->setOrderDetail($dish);
+                    $this->getEm()->persist($orderOpt);
+                    $this->getEm()->flush();
+
+                    $sumTotal += $cartDish->getQuantity() * $opt->getDishOptionId()->getPrice();
+                }
+            }
+
+            // Nemokamas pristatymas dideliam krepseliui
+            $miscService = $this->container->get('food.app.utils.misc');
+            $enable_free_delivery_for_big_basket = $miscService->getParam('enable_free_delivery_for_big_basket');
+            $free_delivery_price = $miscService->getParam('free_delivery_price');
+            $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
+            $left_sum = 0;
+            if ($enable_free_delivery_for_big_basket) {
+                // Jeigu musu logistika, tada taikom nemokamo pristatymo logika
+                if ($self_delivery == 0 || $this->getOrder()->getPlace()->getId() == 32 && ($free_delivery_price = 50) && in_array(date('w'), [0, 6])) {
+                    // Kiek liko iki nemokamo pristatymo
+                    if ($free_delivery_price > $sumTotal) {
+                        $left_sum = sprintf('%.2f', $free_delivery_price - $sumTotal);
+                    }
+                    // Krepselio suma pasieke nemokamo pristatymo suma
+                    if ($left_sum == 0) {
+                        $deliveryPrice = 0;
+                    }
+                }
+            }
+
+            // jei ignoruoti pristatymo min krepseli bet yra pristatymas mokamas
+            if (!$IncludeDelivery) {
+                if ($discountOverTotal > 0) {
+                    $deliveryPrice = $deliveryPrice - $discountOverTotal;
+                    if ($deliveryPrice < 0) {
+                        $deliveryPrice = 0;
+                    }
+                }
+            }
+
+            if (!$selfDelivery) {
+                $sumTotal += $deliveryPrice;
+            } else {
                 $deliveryPrice = 0;
             }
+            $this->getOrder()->setDeliveryPrice($deliveryPrice);
+            $this->getOrder()->setTotal($sumTotal);
+            $this->saveOrder();
         }
-
-        if (!$selfDelivery) {
-            $sumTotal += $deliveryPrice;
-        } else {
-            $deliveryPrice = 0;
-        }
-        $this->getOrder()->setDeliveryPrice($deliveryPrice);
-        $this->getOrder()->setTotal($sumTotal);
-        $this->saveOrder();
     }
 
     public function markOrderForNav(Order $order = null)
@@ -3165,6 +3181,10 @@ class OrderService extends ContainerAware
             }
         }
 
+        if ($coupon && $coupon->getIgnoreCartPrice()) {
+            $noMinimumCart = true;
+        }
+
 
         if (!$takeAway) {
             foreach ($list as $itm) {
@@ -3212,10 +3232,6 @@ class OrderService extends ContainerAware
                 )
                 ;
 
-                if ($coupon && $coupon->getIgnoreCartPrice()) {
-                    $noMinimumCart = true;
-                }
-
                 if ($total_cart < $cartMinimum && $noMinimumCart == false) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
@@ -3233,9 +3249,6 @@ class OrderService extends ContainerAware
                         'text'    => $itm->getDishId()->getName()
                     ];
                 }
-            }
-            if ($coupon && $coupon->getIgnoreCartPrice()) {
-                $noMinimumCart = true;
             }
 
             if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false) {
