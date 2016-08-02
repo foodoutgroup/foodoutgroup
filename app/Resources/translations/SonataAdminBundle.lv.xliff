@@ -1993,6 +1993,10 @@
                 <source>admin.reports.place</source>
                 <target>Restaurant</target>
             </trans-unit>
+            <trans-unit id="admin.reports.place_code">
+                <source>admin.reports.place_code</source>
+                <target>Uzņēmuma kods</target>
+            </trans-unit>
             <trans-unit id="admin.restaurant">
                 <source>admin.restaurant</source>
                 <target>Restaurant</target>
