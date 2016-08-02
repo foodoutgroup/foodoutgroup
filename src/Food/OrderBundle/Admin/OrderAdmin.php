@@ -1,6 +1,7 @@
 <?php
 namespace Food\OrderBundle\Admin;
 
+use Doctrine\ORM\QueryBuilder;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
 use Food\AppBundle\Admin\Admin as FoodAdmin;
@@ -107,6 +108,15 @@ class OrderAdmin extends FoodAdmin
             ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
             ->add('sfNumber', null, array('label' => 'admin.order.sf_line'))
             ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
+            ->add('user.isBussinesClient', 'doctrine_orm_choice', ['label' => ' ', 'callback'   => array($this, 'clientTypeFilter')], 'choice',
+                [
+                    'expanded' => true,
+                    'multiple' => true,
+                    'choices' => [
+                        1 => $this->trans('admin.order.client.b2b')
+                    ]
+                ]
+            )
         ;
 
         // Remove Fields For Restaurant User (Moderator)
@@ -129,6 +139,22 @@ class OrderAdmin extends FoodAdmin
         return true;
     }
 
+    public function clientTypeFilter( $queryBuilder, $alias, $field, $value)
+    {
+        $value = (int) $value;
+        if(!$value) {
+            return;
+        }
+        /**
+         * @var QueryBuilder $queryBuilder;
+         */
+//        var_dump($queryBuilder->getQuery()->getDQL());
+        $queryBuilder->leftJoin(sprintf('%s.user_id', $alias), 'ue');
+        $queryBuilder->andWhere("ue.is_business_client = 1 AND o.user_id IS NOT NULL");
+        var_dump($queryBuilder->getQuery()->getDQL());
+
+        return;
+    }
 
     public function userAddressFilter($queryBuilder, $alias, $field, $value)
     {

@@ -1007,6 +1007,10 @@
                 <source>admin.order.delivery_type</source>
                 <target>Pristatymo tipas</target>
             </trans-unit>
+            <trans-unit id="admin.order.client.b2b">
+                <source>admin.order.client.b2b</source>
+                <target>Verslo klientai</target>
+            </trans-unit>
             <trans-unit id="admin.order.order_status_short">
                 <source>admin.order.order_status_short</source>
                 <target>Užsak. būklė</target>
