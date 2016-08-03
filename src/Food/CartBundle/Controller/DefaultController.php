@@ -349,7 +349,8 @@ class DefaultController extends Controller
                         $user = $tmpUser;
                     }
                 } catch (\Exception $e) {
-                    // do nothing for now. Todo logging
+                    $this->get('logger')->error($e->getTraceAsString());
+                    $this->get('logger')->error($e->getMessage());
                 }
 
                 if (empty($user) || !$user->getId()) {
