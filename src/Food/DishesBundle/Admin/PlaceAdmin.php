@@ -88,7 +88,6 @@ class PlaceAdmin extends FoodAdmin
             ->add('deliveryTimeInfo', null, array('label' => 'admin.place.delivery_time_info', 'required' => false))
             ->add('deliveryPrice', null, array('label' => 'admin.place.delivery_price'))
             ->add('cartMinimum', null, array('label' => 'admin.place.cart_minimum'))
-            ->add('vat', 'text', array('label' => 'admin.place.vat', 'required' => false))
             ->add('basketLimitFood', null, array('label' => 'admin.place.cart_food_limit'))
             ->add('basketLimitDrinks', null, array('label' => 'admin.place.cart_drink_limit'))
             ->add('selfDelivery', 'checkbox', array('label' => 'admin.place.self_delivery', 'required' => false))
