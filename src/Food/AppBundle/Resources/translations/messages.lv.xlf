@@ -392,7 +392,7 @@
             </trans-unit>
             <trans-unit id="e44e8ff9e4e47e49c926d67bf0112966" resname="general.sms.new_order">
                 <source>general.sms.new_order</source>
-                <target>Jauns pasutijums:</target>
+                <target>Jauns pasutijums: #order_id</target>
             </trans-unit>
             <trans-unit id="general.sms.dispatcher_order" resname="general.sms.dispatcher_order">
                 <source>general.sms.dispatcher_order</source>
@@ -420,7 +420,7 @@
             </trans-unit>
             <trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
                 <source>general.sms.user_order_delayed</source>
-                <target>Atvainojamies! Tacu lielas pasutijumu plusmas del Jusu pasutijums tiek atlikts uz delay_time min. un tiks piegadats pec delivery_min min. Ja nepiekritat gaidit – sazinieties pa talr. +37167363663</target>
+                <target>Atvaino! Restorans ir noslogots, tapec pasutijuma piegade kavesies un bus 30 min velak ka planots. Ja negaidisi - zvani +371 67363663</target>
             </trans-unit>
             <trans-unit id="e7bd53e2c7fa9e93ede0c7b307426c5a" resname="general.sms.user_order_delayed_pickup">
                 <source>general.sms.user_order_delayed_pickup</source>

@@ -151,6 +151,9 @@ class OrderAdminController extends Controller
         $params = $request->get('filter');
         if($filters != 'reset' && !empty($params)) {
             $prepare_val = function($val) {
+                if(is_array($val)) {
+                    return $val[0];
+                }
                 if (ctype_digit($val)) {
                     $val = (int) $val;
                 } else {
@@ -158,7 +161,6 @@ class OrderAdminController extends Controller
                 }
                 return $val;
             };
-
             foreach ($params as $key => $value) {
                 if (substr($key, 0, 1) !== '_') {
                     switch ($key) {
@@ -251,6 +253,15 @@ class OrderAdminController extends Controller
                                 $where .= " AND o.total = " . $prepare_val(str_replace(",", ".", $value['value']));
                             }
                             break;
+                        case 'user__isBussinesClient':
+
+                            if(isset($value['value'])) {
+                                $value = (int)$value['value'];
+                                if ($value) {
+                                    $where .= " AND cc.is_bussines_client = 1";
+                                }
+                            }
+                            break;
                         default:
                             if (is_array($value)) {
                                 if (!empty($value['value'])) {
@@ -266,22 +277,23 @@ class OrderAdminController extends Controller
                 }
             }
         }
-
         $qry = "SELECT o.id AS order_id, u.firstname AS dispatcher_name, o.*, oe.*, ua.city, ua.address, ua.lat, ua.lon, d.extId as driver_id
                 FROM orders o
                 LEFT JOIN user_address ua ON o.address_id = ua.id
                 LEFT JOIN order_extra oe ON o.id = oe.order_id
-                LEFT JOIN fos_user u ON u.id = o.dispatcher_id
+                LEFT JOIN fos_user u ON u.id = o.dispatcher_id AND o.dispatcher_id IS NOT NULL
+                LEFT JOIN fos_user cc ON cc.id = o.user_id
                 LEFT JOIN drivers d ON o.driver_id = d.id
                 WHERE 1 = 1 $where ORDER BY o.id DESC";
         ;
 
-        $data = $this->get('database_connection')->fetchAll($qry);
+//        var_dump($qry);
+//        die;
 
+        $data = $this->get('database_connection')->fetchAll($qry);
         foreach ($data as &$row) {
             unset($row['id']);
             unset($row['dispatcher_id']);
-
             $row['diff_delivery_completed'] = null;
             if ($row['delivery_time'] && $row['completed_time']) {
                 $deliveryTime = new \DateTime($row['delivery_time']);
@@ -289,7 +301,6 @@ class OrderAdminController extends Controller
                 $diff = $deliveryTime->diff($completedTime);
                 $row['diff_delivery_completed'] = $diff->format('%R').sprintf('%02d:%02d', $diff->d*24+$diff->h, $diff->i);
             }
-
             $row['approved_completed'] = null;
             if ($row['accept_time'] && $row['completed_time']) {
                 $acceptTime = new \DateTime($row['accept_time']);
@@ -297,7 +308,6 @@ class OrderAdminController extends Controller
                 $diff = $acceptTime->diff($completedTime);
                 $row['approved_completed'] = sprintf('%02d:%02d', $diff->d*24+$diff->h, $diff->i);
             }
-
             $row['started_completed'] = null;
             if ($row['order_date'] && $row['completed_time']) {
                 $orderDate = new \DateTime($row['order_date']);

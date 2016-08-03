@@ -167,6 +167,22 @@ class OrderService extends ContainerAware
         $list = $cartService->getCartDishes($basket->getPlaceId());
         $total_cart = $cartService->getCartTotalApi($list/*, $place*/);
 
+        // search for alco inside the basket
+        $require_lastname = $cartService->isAlcoholInCart($list);
+        if ($require_lastname) {
+            $lastname = $user->getLastname();
+            if (empty($lastname)) {
+                throw new ApiException(
+                    'Unauthorized',
+                    401,
+                    array(
+                        'error' => 'Missing lastname',
+                        'description' => $this->container->get('translator')->trans('api.orders.user_lastname_empty')
+                    )
+                );
+            }
+        }
+
         // Discount code validation
         $coupon = null;
         $discountVar = $request->get('discount');
@@ -292,13 +308,24 @@ class OrderService extends ContainerAware
                 $total_cart -= $coupon->getDiscountSum();
             }
 
-            if ($user->getIsBussinesClient()) {
+            if ($user->getIsBussinesClient() && $coupon->getB2b() == Coupon::B2B_NO) {
                 throw new ApiException(
                     'Not for business',
                     404,
                     array(
                         'error' => 'Not for business',
                         'description' => $this->container->get('translator')->trans('general.coupon.not_for_business')
+                    )
+                );
+            }
+
+            if (!$user->getIsBussinesClient() && $coupon->getB2b() == Coupon::B2B_YES) {
+                throw new ApiException(
+                    'Only for business',
+                    404,
+                    array(
+                        'error' => 'Only for business',
+                        'description' => $this->container->get('translator')->trans('general.coupon.only_for_business')
                     )
                 );
             }

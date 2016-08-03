@@ -39,6 +39,7 @@ class DeliveryController extends Controller
         if (empty($this->provider)) {
             $this->provider = new InfobipProvider();
         }
+
         return $this->provider;
     }
 
@@ -58,40 +59,54 @@ class DeliveryController extends Controller
         if (empty($this->messagingService)) {
             $this->messagingService = $this->container->get('food.messages');
         }
+
         return $this->messagingService;
     }
 
     public function indexAction($provider, Request $request)
     {
-        $messagingService = $this->getMessagingService();
+        $response = new Response("OK");
+        try {
+            $messagingService = $this->getMessagingService();
 
-        if ($provider == 'silverstreet') {
-            $this->setProvider($this->get('food.silverstreet'));
+            if ($provider == 'silverstreet') {
+                $this->setProvider($this->get('food.silverstreet'));
+            }
+
+            // TODO iskelti i services.yml, kad uzkrautu per ten :) gal :)
+            $providerInstance = $this->getProvider();
+            // For debuging only!! TODO turn off this damn thing
+            $providerInstance->setLogger($this->get('logger'));
+            $providerInstance->setDebugEnabled(true);
+
+            $messagingService->setMessagingProvider($providerInstance);
+
+            if ($provider == 'silverstreet') {
+                $messagingService->updateMessagesDelivery(
+                    [
+                        'reference'   => $request->get('REFERENCE'),
+                        'status'      => $request->get('STATUS'),
+                        'reason'      => $request->get('REASON'),
+                        'destination' => $request->get('DESTINATION'),
+                        'timestamp'   => $request->get('TIMESTAMP'),
+                        'operator'    => $request->get('OPERATOR')
+                    ]
+                );
+            } else {
+                $messagingService->updateMessagesDelivery($request->getContent());
+            }
+        } catch (\InvalidArgumentException $e) {
+            $this->get('logger')->error($e->getMessage());
+            $this->get('logger')->error($e->getTraceAsString());
+
+            $response = new Response($e->getMessage());
+        } catch (\Exception $e) {
+            $this->get('logger')->error($e->getMessage());
+            $this->get('logger')->error($e->getTraceAsString());
+
+            $response = new Response('Fatal error');
         }
 
-        // TODO iskelti i services.yml, kad uzkrautu per ten :) gal :)
-        $providerInstance = $this->getProvider();
-        // For debuging only!! TODO turn off this damn thing
-        $providerInstance->setLogger($this->container->get('logger'));
-        $providerInstance->setDebugEnabled(true);
-
-        $messagingService->setMessagingProvider($providerInstance);
-
-        if ($provider == 'silverstreet') {
-            $messagingService->updateMessagesDelivery(
-                array(
-                    'reference' => $request->get('REFERENCE'),
-                    'status' => $request->get('STATUS'),
-                    'reason' => $request->get('REASON'),
-                    'destination' => $request->get('DESTINATION'),
-                    'timestamp' => $request->get('TIMESTAMP'),
-                    'operator' => $request->get('OPERATOR')
-                )
-            );
-        } else {
-            $messagingService->updateMessagesDelivery($request->getContent());
-        }
-
-        return new Response("OK");
+        return $response;
     }
 }

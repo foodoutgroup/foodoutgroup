@@ -276,6 +276,10 @@ Tallinn]]></target>
                 <source>order.form.errors.customerfirstname</source>
                 <target>Enter your firstname</target>
             </trans-unit>
+            <trans-unit id="order.form.errors.customerlastname" resname="order.form.errors.customerlastname">
+                <source>order.form.errors.customerlastname</source>
+                <target>Enter your lastname</target>
+            </trans-unit>
             <trans-unit id="order.form.errors.customerphone" resname="order.form.errors.customerphone">
                 <source>order.form.errors.customerphone</source>
                 <target>Enter your mobile phone number</target>
@@ -442,7 +446,11 @@ Tallinn]]></target>
             </trans-unit>
             <trans-unit id="general.coupon.not_for_business" resname="general.coupon.not_for_business">
                 <source>general.coupon.not_for_business</source>
-                <target>Sorry, business customers discount coupons can not be used</target>
+                <target>Sorry, this discount is not for business customers</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.only_for_business" resname="general.coupon.only_for_business">
+                <source>general.coupon.only_for_business</source>
+                <target>Sorry, this discount is valid only for business customers</target>
             </trans-unit>
             <trans-unit id="general.coupon.only_pickup" resname="general.coupon.only_pickup">
                 <source>general.coupon.only_pickup</source>

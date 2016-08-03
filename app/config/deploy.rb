@@ -66,8 +66,10 @@ logger.level = 0
 
 # copy parameters.yml to specific env
 set :parameters_dir, "app/config/parameters"
+set :web_dir, "web"
 set :parameters_file, false
 set :kpi_file, false
+set :robots_file, false
 
 task :upload_parameters do
   origin_file = parameters_dir + "/" + parameters_file if parameters_dir && parameters_file
@@ -111,4 +113,26 @@ task :upload_kpi do
     end
 end
 
+task :upload_robots do
+    origin_file_robots = web_dir + "/" + robots_file if web_dir && robots_file
+    if origin_file_robots && File.exists?(origin_file_robots)
+      #ext = File.extname(kpi_file)
+      ext = '.txt'
+      relative_path = web_dir + "/robots" + ext
+      print "  *** relative path: "
+      print relative_path
+      print "\n"
+
+      if shared_files && shared_files.include?(relative_path)
+        destination_file_robots = shared_path + "/" + relative_path
+      else
+        destination_file_robots = latest_release + "/" + relative_path
+      end
+      try_sudo "mkdir -p #{File.dirname(destination_file_robots)}"
+
+      top.upload(origin_file_robots, destination_file_robots)
+    end
+end
+
 after 'deploy:setup', 'upload_parameters', 'upload_kpi'
+after 'deploy:finalize_update', 'upload_robots'

@@ -22,6 +22,10 @@ class Coupon
     const METHOD_DELIVERY = 'delivery';
     const METHOD_PICKUP = 'pickup';
 
+    const B2B_BOTH = 'both';
+    const B2B_YES = 'yes';
+    const B2B_NO = 'no';
+
     /**
      * @var integer
      *
@@ -184,6 +188,13 @@ class Coupon
     private $validHourlyTo;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="b2b", type="string", length=4, options={"default" = "both"})
+     */
+    private $b2b = self::B2B_BOTH;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -235,11 +246,22 @@ class Coupon
      */
     private $ignoreCartPrice = false;
 
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="include_delivery", type="boolean", nullable=true)
+     */
+    private $includeDelivery = false;
+
+
+
+
     public function __toString()
     {
         if ($this->getId()) {
             $places = $this->getPlaces();
-            $placeNames = array();
+            $placeNames = [];
             if (count($places)) {
                 foreach ($places as $place) {
                     $placeNames[] = $place->getName();
@@ -247,7 +269,8 @@ class Coupon
             } else {
                 $placeNames[] = 'global';
             }
-            return $this->getId().'-'.$this->getName().'-'.implode('-', $placeNames);
+
+            return $this->getId() . '-' . $this->getName() . '-' . implode('-', $placeNames);
         }
 
         return '';
@@ -259,7 +282,7 @@ class Coupon
     public function __toArray()
     {
         if ($this->getId()) {
-            $placeIds = array();
+            $placeIds = [];
             $places = $this->getPlaces();
             if (count($places)) {
                 foreach ($places as $place) {
@@ -267,24 +290,24 @@ class Coupon
                 }
             }
 
-            return array(
-                'id' => $this->getId(),
-                'code' => $this->getCode(),
-                'place_ids' => $placeIds,
-                'discount' => $this->getDiscount(),
+            return [
+                'id'           => $this->getId(),
+                'code'         => $this->getCode(),
+                'place_ids'    => $placeIds,
+                'discount'     => $this->getDiscount(),
                 'discount_sum' => $this->getDiscountSum(),
-                'active' => $this->getActive(),
-                'single_use' => $this->getSingleUse(),
-            );
+                'active'       => $this->getActive(),
+                'single_use'   => $this->getSingleUse(),
+            ];
         }
 
-        return array();
+        return [];
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -295,19 +318,20 @@ class Coupon
      * Set name
      *
      * @param string $name
+     *
      * @return Coupon
      */
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -318,19 +342,20 @@ class Coupon
      * Set active
      *
      * @param boolean $active
+     *
      * @return Coupon
      */
     public function setActive($active)
     {
         $this->active = $active;
-    
+
         return $this;
     }
 
     /**
      * Get active
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActive()
     {
@@ -341,19 +366,20 @@ class Coupon
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return Coupon
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -364,12 +390,13 @@ class Coupon
      * Set editedAt
      *
      * @param \DateTime|null $editedAt
+     *
      * @return Coupon
      */
     public function setEditedAt($editedAt)
     {
         $this->editedAt = $editedAt;
-    
+
         return $this;
     }
 
@@ -387,12 +414,13 @@ class Coupon
      * Set deletedAt
      *
      * @param \DateTime|null $deletedAt
+     *
      * @return Coupon
      */
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
-    
+
         return $this;
     }
 
@@ -410,19 +438,20 @@ class Coupon
      * Set createdBy
      *
      * @param \Food\UserBundle\Entity\User $createdBy
+     *
      * @return Coupon
      */
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
     /**
      * Get createdBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -433,19 +462,20 @@ class Coupon
      * Set editedBy
      *
      * @param \Food\UserBundle\Entity\User $editedBy
+     *
      * @return Coupon
      */
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
         $this->editedBy = $editedBy;
-    
+
         return $this;
     }
 
     /**
      * Get editedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getEditedBy()
     {
@@ -456,19 +486,20 @@ class Coupon
      * Set deletedBy
      *
      * @param \Food\UserBundle\Entity\User $deletedBy
+     *
      * @return Coupon
      */
     public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
     {
         $this->deletedBy = $deletedBy;
-    
+
         return $this;
     }
 
     /**
      * Get deletedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getDeletedBy()
     {
@@ -479,19 +510,20 @@ class Coupon
      * Set code
      *
      * @param string $code
+     *
      * @return Coupon
      */
     public function setCode($code)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -502,19 +534,20 @@ class Coupon
      * Set singleUse
      *
      * @param boolean $singleUse
+     *
      * @return Coupon
      */
     public function setSingleUse($singleUse)
     {
         $this->singleUse = $singleUse;
-    
+
         return $this;
     }
 
     /**
      * Get singleUse
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSingleUse()
     {
@@ -525,19 +558,20 @@ class Coupon
      * Set discount
      *
      * @param integer $discount
+     *
      * @return Coupon
      */
     public function setDiscount($discount)
     {
         $this->discount = $discount;
-    
+
         return $this;
     }
 
     /**
      * Get discount
      *
-     * @return integer 
+     * @return integer
      */
     public function getDiscount()
     {
@@ -548,19 +582,20 @@ class Coupon
      * Set onlyNav
      *
      * @param boolean $onlyNav
+     *
      * @return Coupon
      */
     public function setOnlyNav($onlyNav)
     {
         $this->onlyNav = $onlyNav;
-    
+
         return $this;
     }
 
     /**
      * Get onlyNav
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getOnlyNav()
     {
@@ -571,24 +606,26 @@ class Coupon
      * Set freeDelivery
      *
      * @param boolean $freeDelivery
+     *
      * @return Coupon
      */
     public function setFreeDelivery($freeDelivery)
     {
         $this->freeDelivery = $freeDelivery;
-    
+
         return $this;
     }
 
     /**
      * Get freeDelivery
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getFreeDelivery()
     {
         return $this->freeDelivery;
     }
+
     /**
      * Constructor
      */
@@ -596,24 +633,25 @@ class Coupon
     {
         $this->places = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Set discountSum
      *
      * @param integer $discountSum
+     *
      * @return Coupon
      */
     public function setDiscountSum($discountSum)
     {
         $this->discountSum = $discountSum;
-    
+
         return $this;
     }
 
     /**
      * Get discountSum
      *
-     * @return integer 
+     * @return integer
      */
     public function getDiscountSum()
     {
@@ -624,19 +662,20 @@ class Coupon
      * Set noSelfDelivery
      *
      * @param boolean $noSelfDelivery
+     *
      * @return Coupon
      */
     public function setNoSelfDelivery($noSelfDelivery)
     {
         $this->noSelfDelivery = $noSelfDelivery;
-    
+
         return $this;
     }
 
     /**
      * Get noSelfDelivery
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getNoSelfDelivery()
     {
@@ -647,19 +686,20 @@ class Coupon
      * Set enableValidateDate
      *
      * @param boolean $enableValidateDate
+     *
      * @return Coupon
      */
     public function setEnableValidateDate($enableValidateDate)
     {
         $this->enableValidateDate = $enableValidateDate;
-    
+
         return $this;
     }
 
     /**
      * Get enableValidateDate
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEnableValidateDate()
     {
@@ -670,19 +710,20 @@ class Coupon
      * Set validFrom
      *
      * @param \DateTime $validFrom
+     *
      * @return Coupon
      */
     public function setValidFrom($validFrom)
     {
         $this->validFrom = $validFrom;
-    
+
         return $this;
     }
 
     /**
      * Get validFrom
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getValidFrom()
     {
@@ -693,19 +734,20 @@ class Coupon
      * Set validTo
      *
      * @param \DateTime $validTo
+     *
      * @return Coupon
      */
     public function setValidTo($validTo)
     {
         $this->validTo = $validTo;
-    
+
         return $this;
     }
 
     /**
      * Get validTo
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getValidTo()
     {
@@ -716,6 +758,7 @@ class Coupon
      * Add places
      *
      * @param \Food\DishesBundle\Entity\Place $places
+     *
      * @return Coupon
      */
     public function addPlace(\Food\DishesBundle\Entity\Place $places)
@@ -738,7 +781,7 @@ class Coupon
     /**
      * Get places
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPlaces()
     {
@@ -749,19 +792,20 @@ class Coupon
      * Set fullOrderCovers
      *
      * @param boolean $fullOrderCovers
+     *
      * @return Coupon
      */
     public function setFullOrderCovers($fullOrderCovers)
     {
         $this->fullOrderCovers = $fullOrderCovers;
-    
+
         return $this;
     }
 
     /**
      * Get fullOrderCovers
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getFullOrderCovers()
     {
@@ -772,11 +816,12 @@ class Coupon
      * Set type
      *
      * @param string $type
+     *
      * @return Coupon
      */
     public function setType($type)
     {
-        if (!in_array($type, array(self::TYPE_BOTH, self::TYPE_API, self::TYPE_WEB))) {
+        if (!in_array($type, [self::TYPE_BOTH, self::TYPE_API, self::TYPE_WEB])) {
             throw new \InvalidArgumentException('Wrong type defined');
         }
 
@@ -788,7 +833,7 @@ class Coupon
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -802,7 +847,7 @@ class Coupon
      */
     public function isAllowedForApi()
     {
-        return in_array($this->getType(), array(self::TYPE_BOTH, self::TYPE_API));
+        return in_array($this->getType(), [self::TYPE_BOTH, self::TYPE_API]);
     }
 
     /**
@@ -812,18 +857,19 @@ class Coupon
      */
     public function isAllowedForWeb()
     {
-        return in_array($this->getType(), array(self::TYPE_BOTH, self::TYPE_WEB));
+        return in_array($this->getType(), [self::TYPE_BOTH, self::TYPE_WEB]);
     }
 
     /**
      * Set method
      *
      * @param string $method
+     *
      * @return Coupon
      */
     public function setMethod($method)
     {
-        if (!in_array($method, array(self::METHOD_BOTH, self::METHOD_DELIVERY, self::METHOD_PICKUP))) {
+        if (!in_array($method, [self::METHOD_BOTH, self::METHOD_DELIVERY, self::METHOD_PICKUP])) {
             throw new \InvalidArgumentException('Wrong method defined');
         }
 
@@ -849,7 +895,7 @@ class Coupon
      */
     public function isAllowedForDelivery()
     {
-        return in_array($this->getMethod(), array(self::METHOD_BOTH, self::METHOD_DELIVERY));
+        return in_array($this->getMethod(), [self::METHOD_BOTH, self::METHOD_DELIVERY]);
     }
 
     /**
@@ -859,7 +905,7 @@ class Coupon
      */
     public function isAllowedForPickup()
     {
-        return in_array($this->getMethod(), array(self::METHOD_BOTH, self::METHOD_PICKUP));
+        return in_array($this->getMethod(), [self::METHOD_BOTH, self::METHOD_PICKUP]);
     }
 
 
@@ -867,11 +913,13 @@ class Coupon
      * Set couponRange
      *
      * @param \Food\OrderBundle\Entity\CouponRange $couponRange
+     *
      * @return Coupon
      */
     public function setCouponRange(\Food\OrderBundle\Entity\CouponRange $couponRange = null)
     {
         $this->couponRange = $couponRange;
+
         return $this;
     }
 
@@ -889,19 +937,20 @@ class Coupon
      * Set singleUsePerPerson
      *
      * @param boolean $singleUsePerPerson
+     *
      * @return Coupon
      */
     public function setSingleUsePerPerson($singleUsePerPerson)
     {
         $this->singleUsePerPerson = $singleUsePerPerson;
-    
+
         return $this;
     }
 
     /**
      * Get singleUsePerPerson
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSingleUsePerPerson()
     {
@@ -912,19 +961,20 @@ class Coupon
      * Set onlinePaymentsOnly
      *
      * @param boolean $onlinePaymentsOnly
+     *
      * @return Coupon
      */
     public function setOnlinePaymentsOnly($onlinePaymentsOnly)
     {
         $this->onlinePaymentsOnly = $onlinePaymentsOnly;
-    
+
         return $this;
     }
 
     /**
      * Get onlinePaymentsOnly
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getOnlinePaymentsOnly()
     {
@@ -935,19 +985,20 @@ class Coupon
      * Set validHourlyFrom
      *
      * @param \DateTime $validHourlyFrom
+     *
      * @return Coupon
      */
     public function setValidHourlyFrom($validHourlyFrom)
     {
         $this->validHourlyFrom = $validHourlyFrom;
-    
+
         return $this;
     }
 
     /**
      * Get validHourlyFrom
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getValidHourlyFrom()
     {
@@ -958,19 +1009,20 @@ class Coupon
      * Set validHourlyTo
      *
      * @param \DateTime $validHourlyTo
+     *
      * @return Coupon
      */
     public function setValidHourlyTo($validHourlyTo)
     {
         $this->validHourlyTo = $validHourlyTo;
-    
+
         return $this;
     }
 
     /**
      * Get validHourlyTo
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getValidHourlyTo()
     {
@@ -981,12 +1033,13 @@ class Coupon
      * Add couponUsers
      *
      * @param \Food\OrderBundle\Entity\CouponUser $couponUsers
+     *
      * @return Coupon
      */
     public function addCouponUser(\Food\OrderBundle\Entity\CouponUser $couponUsers)
     {
         $this->couponUsers[] = $couponUsers;
-    
+
         return $this;
     }
 
@@ -1003,7 +1056,7 @@ class Coupon
     /**
      * Get couponUsers
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCouponUsers()
     {
@@ -1014,22 +1067,74 @@ class Coupon
      * Set ignoreCartPrice
      *
      * @param boolean $ignoreCartPrice
+     *
      * @return Coupon
      */
     public function setIgnoreCartPrice($ignoreCartPrice)
     {
         $this->ignoreCartPrice = $ignoreCartPrice;
-    
+
         return $this;
     }
 
     /**
      * Get ignoreCartPrice
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIgnoreCartPrice()
     {
         return $this->ignoreCartPrice;
+    }
+
+
+    /**
+     * Set b2b
+     *
+     * @param string $b2b
+     *
+     * @return Coupon
+     */
+    public function setB2b($b2b)
+    {
+        if (!in_array($b2b, [self::B2B_BOTH, self::B2B_YES, self::B2B_NO])) {
+            throw new \InvalidArgumentException('Wrong method defined');
+        }
+        $this->b2b = $b2b;
+
+        return $this;
+    }
+
+    /**
+     * Get b2b
+     *
+     * @return string
+     */
+    public function getB2b()
+    {
+        return $this->b2b;
+    }
+
+    /**
+     * Set includeDelivery
+     *
+     * @param boolean $includeDelivery
+     * @return Coupon
+     */
+    public function setIncludeDelivery($includeDelivery)
+    {
+        $this->includeDelivery = $includeDelivery;
+    
+        return $this;
+    }
+
+    /**
+     * Get includeDelivery
+     *
+     * @return boolean 
+     */
+    public function getIncludeDelivery()
+    {
+        return $this->includeDelivery;
     }
 }

@@ -14,7 +14,8 @@ use Curl;
  * $silverStreetProvider->authenticate('login', 'password');
  * $silverStreetProvider->setApiUrl('http://api.silverstreet.com/send.php');
  */
-class SilverStreetProvider implements SmsProviderInterface {
+class SilverStreetProvider implements SmsProviderInterface
+{
 
     /**
      * @var string
@@ -50,24 +51,24 @@ class SilverStreetProvider implements SmsProviderInterface {
      * Silverstreet sending error statuses. Add here as they update
      * @var array
      */
-    private $errorStatuses = array(
+    private $errorStatuses = [
         '100' => 'PARAMETERS_MISSING',
         '110' => 'BAD_PARAMETERS_COMBINATION',
         '120' => 'INVALID_PARAMETERS',
         '130' => 'INSUFFICIENT_CREDITS',
-    );
+    ];
 
     /**
      * Silverstreet error reason codes to text
      * @var array
      */
-    private $reasonStatuses = array(
-        '1' => 'Absent subscriber (network cannot contact recipient)',
-        '2' => 'Handset memory exceeded',
-        '3' => 'Equipment protocol error',
-        '5' => 'Unknown service centre (unknown Destination Operator)',
-        '6' => 'Service centre congestion (congestion at Destination Operator)',
-        '9' => 'Unknown subscriber (Recipient number is unknown in the HLR)',
+    private $reasonStatuses = [
+        '1'  => 'Absent subscriber (network cannot contact recipient)',
+        '2'  => 'Handset memory exceeded',
+        '3'  => 'Equipment protocol error',
+        '5'  => 'Unknown service centre (unknown Destination Operator)',
+        '6'  => 'Service centre congestion (congestion at Destination Operator)',
+        '9'  => 'Unknown subscriber (Recipient number is unknown in the HLR)',
         '10' => 'Illegal subscriber (The mobile station failed authentication)',
         '12' => 'Illegal equipment (Recipient number check failed, blacklisted or not whitelisted)',
         '13' => 'Call barred (Operator barred the recipient number)',
@@ -95,15 +96,15 @@ class SilverStreetProvider implements SmsProviderInterface {
         '68' => 'Intermediate state notification that the message has not yet been delivered due to a phone related problem but is being retried.',
         '69' => 'Cannot determine whether this message has been delivered or has failed due to lack of final delivery state information from the operator.',
         '87' => 'Short Term Denial',
-    );
+    ];
 
     /**
      * Message states, assigned by Silverstreet when message is delivered
      * @var array
      */
-    private $deliveredStates = array(
+    private $deliveredStates = [
         'Delivered',
-    );
+    ];
 
     /**
      * Undelivered message state, assigned by Silverstreet
@@ -111,10 +112,10 @@ class SilverStreetProvider implements SmsProviderInterface {
      *
      * https://portal.silverstreet.com/support/documents/download_file/6
      */
-    private $undeliveredStates = array(
+    private $undeliveredStates = [
         'Not Delivered',
         'Buffered',
-    );
+    ];
 
     /**
      * @var Curl
@@ -128,7 +129,7 @@ class SilverStreetProvider implements SmsProviderInterface {
      * @param string $password
      * @param Logger $logger
      */
-    public function __construct($url=null, $accoutApiUrl=null, $username=null, $password=null, $logger=null)
+    public function __construct($url = null, $accoutApiUrl = null, $username = null, $password = null, $logger = null)
     {
         $this->apiUrl = $url;
         $this->accountApiUrl = $accoutApiUrl;
@@ -187,6 +188,7 @@ class SilverStreetProvider implements SmsProviderInterface {
             $this->_cli->options['CURLOPT_SSL_VERIFYPEER'] = false;
             $this->_cli->options['CURLOPT_SSL_VERIFYHOST'] = false;
         }
+
         return $this->_cli;
     }
 
@@ -200,6 +202,7 @@ class SilverStreetProvider implements SmsProviderInterface {
     /**
      * @param string $username
      * @param string $password
+     *
      * @throws \InvalidArgumentException
      */
     public function authenticate($username, $password)
@@ -213,25 +216,27 @@ class SilverStreetProvider implements SmsProviderInterface {
 
     /**
      * @param array $data
+     *
      * @return mixed
      */
     protected function call($data)
     {
         $this->log('++ Silverstreet call ++');
-        $requestData = array(
+        $requestData = [
             'username' => $this->username,
             'password' => $this->password,
-            'dlr' => 1,
-        );
+            'dlr'      => 1,
+        ];
 
         $requestData = array_merge($requestData, $data);
 
-        $this->log('-- sending request withg data: '.var_export($requestData, true));
+        $this->log('-- sending request withg data: ' . var_export($requestData, true));
 
         $resp = $this->getCli()->get(
             $this->apiUrl,
             $requestData
-        );
+        )
+        ;
 
         return $resp->body;
     }
@@ -240,6 +245,7 @@ class SilverStreetProvider implements SmsProviderInterface {
      * Parse Silverstreet response for message sending
      *
      * @param $response
+     *
      * @return array
      */
     public function parseResponse($response)
@@ -248,14 +254,14 @@ class SilverStreetProvider implements SmsProviderInterface {
 
         $response = (int)$response;
 
-        $parsedResponse = array();
+        $parsedResponse = [];
 
         if ($response != 1) {
             $parsedResponse['sent'] = false;
             if (isset($this->errorStatuses[$response])) {
                 $parsedResponse['error'] = $this->errorStatuses[$response];
             } else {
-                $parsedResponse['error'] = 'Unknown error returned from Silverstreet. Error status: '.$response;
+                $parsedResponse['error'] = 'Unknown error returned from Silverstreet. Error status: ' . $response;
             }
         } else {
             $parsedResponse['sent'] = true;
@@ -269,6 +275,7 @@ class SilverStreetProvider implements SmsProviderInterface {
      * @param $sender
      * @param $recipient
      * @param $message
+     *
      * @throws \InvalidArgumentException
      * @throws \Exception
      * @return mixed
@@ -292,30 +299,31 @@ class SilverStreetProvider implements SmsProviderInterface {
         }
 
         $reference = 'sil'
-            .md5(
-            'r='.$recipient.'t='.$message.date("YmdHis")
-        );
+            . md5(
+                'r=' . $recipient . 't=' . $message . date("YmdHis")
+            );
 
         try {
             $response = $this->call(
-                array(
-                    'sender' => $sender,
-                    'body' => $message,
+                [
+                    'sender'      => $sender,
+                    'body'        => $message,
                     'destination' => $recipient,
-                    'reference' => $reference
-                )
+                    'reference'   => $reference
+                ]
             );
 
-            $this->log("-- Got response: ".var_export($response, true));
+            $this->log("-- Got response: " . var_export($response, true));
             $parsedResponse = $this->parseResponse($response);
             $messageStatus = $parsedResponse;
             $messageStatus['messageid'] = $reference;
 
-        // TODO Noramlus exception handlingas cia ir servise (https://basecamp.com/2470154/projects/4420182-skanu-lt-gamyba/todos/73047842-pilnas-exception)
+            // TODO Noramlus exception handlingas cia ir servise (https://basecamp.com/2470154/projects/4420182-skanu-lt-gamyba/todos/73047842-pilnas-exception)
         } catch (\Exception $e) {
-            $this->log('Exception occured: '.$e->getMessage());
+            $this->log('Exception occured: ' . $e->getMessage());
             throw $e;
         }
+
         return $messageStatus;
     }
 
@@ -323,6 +331,7 @@ class SilverStreetProvider implements SmsProviderInterface {
      * @param $sender
      * @param $recipients
      * @param $message
+     *
      * @throws \Exception
      */
     public function sendMultipleMessages($sender, $recipients, $message)
@@ -338,14 +347,14 @@ class SilverStreetProvider implements SmsProviderInterface {
      */
     public function parseDeliveryReport($dlrData)
     {
-        $message = array();
+        $message = [];
 
         if (!empty($dlrData) && isset($dlrData['reference'])) {
-            $message = array(
-                'extId' => $dlrData['reference'],
-                'sendDate' => null,
+            $message = [
+                'extId'        => $dlrData['reference'],
+                'sendDate'     => null,
                 'completeDate' => $dlrData['timestamp'],
-            );
+            ];
 
             $message['completeDate'] = date("Y-m-d H:i:s", strtotime('+4 hour', strtotime($message['completeDate'])));
 
@@ -360,19 +369,19 @@ class SilverStreetProvider implements SmsProviderInterface {
                 if (!empty($dlrData['reason'])) {
                     $reason = $this->getReasonFromCode($dlrData['reason']);
                     if (empty($reason)) {
-                        $reason = "unknown reason code: ".$dlrData['reason'];
+                        $reason = "unknown reason code: " . $dlrData['reason'];
                     }
                 } else {
                     $reason = 'no reason';
                 }
-                $message['error'] = 'Silverstreet undelivered due to: '.$reason;
+                $message['error'] = 'Silverstreet undelivered due to: ' . $reason;
             } else {
                 $message['delivered'] = false;
-                $message['error'] = 'Silverstreet returned unknown status: '.$silverstreetStatus;
+                $message['error'] = 'Silverstreet returned unknown status: ' . $silverstreetStatus;
             }
         }
 
-        return array($message);
+        return [$message];
     }
 
     /**
@@ -400,6 +409,7 @@ class SilverStreetProvider implements SmsProviderInterface {
         $dom = new \DOMDocument();
         $dom->loadXML($resp->body);
         $balanceElement = $dom->getElementsByTagName('balance');
+
         return (float)$balanceElement->item(0)->nodeValue;
     }
 
@@ -448,6 +458,7 @@ class SilverStreetProvider implements SmsProviderInterface {
      * Determines by Silverstreet status if message is delivered or not
      *
      * @param string $status
+     *
      * @return bool
      */
     public function isDeliveredStatus($status)
@@ -455,6 +466,7 @@ class SilverStreetProvider implements SmsProviderInterface {
         if (in_array($status, $this->deliveredStates)) {
             return true;
         }
+
         return false;
     }
 
@@ -462,6 +474,7 @@ class SilverStreetProvider implements SmsProviderInterface {
      * Determines by Silverstreet status if message is delivered or not
      *
      * @param string $status
+     *
      * @return bool
      */
     public function isUndeliveredStatus($status)
@@ -469,6 +482,7 @@ class SilverStreetProvider implements SmsProviderInterface {
         if (in_array($status, $this->undeliveredStates)) {
             return true;
         }
+
         return false;
     }
 

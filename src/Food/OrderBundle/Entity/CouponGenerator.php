@@ -170,6 +170,13 @@ class CouponGenerator
     private $validHourlyTo;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="b2b", type="string", length=4, options={"default" = "both"})
+     */
+    private $b2b = Coupon::B2B_BOTH;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="generate_from", type="datetime", nullable=true)
@@ -243,11 +250,11 @@ class CouponGenerator
     {
         $this->places = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -258,19 +265,20 @@ class CouponGenerator
      * Set name
      *
      * @param string $name
+     *
      * @return CouponGenerator
      */
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -281,19 +289,20 @@ class CouponGenerator
      * Set discount
      *
      * @param integer $discount
+     *
      * @return CouponGenerator
      */
     public function setDiscount($discount)
     {
         $this->discount = $discount;
-    
+
         return $this;
     }
 
     /**
      * Get discount
      *
-     * @return integer 
+     * @return integer
      */
     public function getDiscount()
     {
@@ -304,19 +313,20 @@ class CouponGenerator
      * Set discountSum
      *
      * @param integer $discountSum
+     *
      * @return CouponGenerator
      */
     public function setDiscountSum($discountSum)
     {
         $this->discountSum = $discountSum;
-    
+
         return $this;
     }
 
     /**
      * Get discountSum
      *
-     * @return integer 
+     * @return integer
      */
     public function getDiscountSum()
     {
@@ -327,19 +337,20 @@ class CouponGenerator
      * Set freeDelivery
      *
      * @param boolean $freeDelivery
+     *
      * @return CouponGenerator
      */
     public function setFreeDelivery($freeDelivery)
     {
         $this->freeDelivery = $freeDelivery;
-    
+
         return $this;
     }
 
     /**
      * Get freeDelivery
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getFreeDelivery()
     {
@@ -350,19 +361,20 @@ class CouponGenerator
      * Set code
      *
      * @param string $code
+     *
      * @return CouponGenerator
      */
     public function setCode($code)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -373,19 +385,20 @@ class CouponGenerator
      * Set active
      *
      * @param boolean $active
+     *
      * @return CouponGenerator
      */
     public function setActive($active)
     {
         $this->active = $active;
-    
+
         return $this;
     }
 
     /**
      * Get active
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActive()
     {
@@ -396,19 +409,20 @@ class CouponGenerator
      * Set validFrom
      *
      * @param \DateTime $validFrom
+     *
      * @return CouponGenerator
      */
     public function setValidFrom($validFrom)
     {
         $this->validFrom = $validFrom;
-    
+
         return $this;
     }
 
     /**
      * Get validFrom
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getValidFrom()
     {
@@ -419,19 +433,20 @@ class CouponGenerator
      * Set validTo
      *
      * @param \DateTime $validTo
+     *
      * @return CouponGenerator
      */
     public function setValidTo($validTo)
     {
         $this->validTo = $validTo;
-    
+
         return $this;
     }
 
     /**
      * Get validTo
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getValidTo()
     {
@@ -442,19 +457,20 @@ class CouponGenerator
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return CouponGenerator
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -465,19 +481,20 @@ class CouponGenerator
      * Set editedAt
      *
      * @param \DateTime $editedAt
+     *
      * @return CouponGenerator
      */
     public function setEditedAt($editedAt)
     {
         $this->editedAt = $editedAt;
-    
+
         return $this;
     }
 
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEditedAt()
     {
@@ -488,19 +505,20 @@ class CouponGenerator
      * Set deletedAt
      *
      * @param \DateTime $deletedAt
+     *
      * @return CouponGenerator
      */
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
-    
+
         return $this;
     }
 
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeletedAt()
     {
@@ -511,12 +529,13 @@ class CouponGenerator
      * Add places
      *
      * @param \Food\DishesBundle\Entity\Place $places
+     *
      * @return CouponGenerator
      */
     public function addPlace(\Food\DishesBundle\Entity\Place $places)
     {
         $this->places[] = $places;
-    
+
         return $this;
     }
 
@@ -544,19 +563,20 @@ class CouponGenerator
      * Set createdBy
      *
      * @param \Food\UserBundle\Entity\User $createdBy
+     *
      * @return CouponGenerator
      */
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
     /**
      * Get createdBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -567,19 +587,20 @@ class CouponGenerator
      * Set editedBy
      *
      * @param \Food\UserBundle\Entity\User $editedBy
+     *
      * @return CouponGenerator
      */
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
         $this->editedBy = $editedBy;
-    
+
         return $this;
     }
 
     /**
      * Get editedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getEditedBy()
     {
@@ -590,19 +611,20 @@ class CouponGenerator
      * Set deletedBy
      *
      * @param \Food\UserBundle\Entity\User $deletedBy
+     *
      * @return CouponGenerator
      */
     public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
     {
         $this->deletedBy = $deletedBy;
-    
+
         return $this;
     }
 
     /**
      * Get deletedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getDeletedBy()
     {
@@ -613,19 +635,20 @@ class CouponGenerator
      * Set cartAmount
      *
      * @param integer $cartAmount
+     *
      * @return CouponGenerator
      */
     public function setCartAmount($cartAmount)
     {
         $this->cartAmount = $cartAmount;
-    
+
         return $this;
     }
 
     /**
      * Get cartAmount
      *
-     * @return integer 
+     * @return integer
      */
     public function getCartAmount()
     {
@@ -636,19 +659,20 @@ class CouponGenerator
      * Set onlyNav
      *
      * @param boolean $onlyNav
+     *
      * @return CouponGenerator
      */
     public function setOnlyNav($onlyNav)
     {
         $this->onlyNav = $onlyNav;
-    
+
         return $this;
     }
 
     /**
      * Get onlyNav
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getOnlyNav()
     {
@@ -659,19 +683,20 @@ class CouponGenerator
      * Set noSelfDelivery
      *
      * @param boolean $noSelfDelivery
+     *
      * @return CouponGenerator
      */
     public function setNoSelfDelivery($noSelfDelivery)
     {
         $this->noSelfDelivery = $noSelfDelivery;
-    
+
         return $this;
     }
 
     /**
      * Get noSelfDelivery
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getNoSelfDelivery()
     {
@@ -682,19 +707,20 @@ class CouponGenerator
      * Set singleUse
      *
      * @param boolean $singleUse
+     *
      * @return CouponGenerator
      */
     public function setSingleUse($singleUse)
     {
         $this->singleUse = $singleUse;
-    
+
         return $this;
     }
 
     /**
      * Get singleUse
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSingleUse()
     {
@@ -705,19 +731,20 @@ class CouponGenerator
      * Set randomize
      *
      * @param boolean $randomize
+     *
      * @return CouponGenerator
      */
     public function setRandomize($randomize)
     {
         $this->randomize = $randomize;
-    
+
         return $this;
     }
 
     /**
      * Get randomize
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getRandomize()
     {
@@ -728,19 +755,20 @@ class CouponGenerator
      * Set generateFrom
      *
      * @param \DateTime $generateFrom
+     *
      * @return CouponGenerator
      */
     public function setGenerateFrom($generateFrom)
     {
         $this->generateFrom = $generateFrom;
-    
+
         return $this;
     }
 
     /**
      * Get generateFrom
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getGenerateFrom()
     {
@@ -751,19 +779,20 @@ class CouponGenerator
      * Set generateTo
      *
      * @param \DateTime $generateTo
+     *
      * @return CouponGenerator
      */
     public function setGenerateTo($generateTo)
     {
         $this->generateTo = $generateTo;
-    
+
         return $this;
     }
 
     /**
      * Get generateTo
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getGenerateTo()
     {
@@ -774,19 +803,20 @@ class CouponGenerator
      * Set templateCode
      *
      * @param string $templateCode
+     *
      * @return CouponGenerator
      */
     public function setTemplateCode($templateCode)
     {
         $this->templateCode = $templateCode;
-    
+
         return $this;
     }
 
     /**
      * Get templateCode
      *
-     * @return string 
+     * @return string
      */
     public function getTemplateCode()
     {
@@ -797,23 +827,24 @@ class CouponGenerator
      * Set type
      *
      * @param string $type
+     *
      * @return CouponGenerator
      */
     public function setType($type)
     {
-        if (!in_array($type, array(Coupon::TYPE_BOTH, Coupon::TYPE_API, Coupon::TYPE_WEB))) {
+        if (!in_array($type, [Coupon::TYPE_BOTH, Coupon::TYPE_API, Coupon::TYPE_WEB])) {
             throw new \InvalidArgumentException('Wrong type defined');
         }
 
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -824,14 +855,15 @@ class CouponGenerator
      * Set method
      *
      * @param string $method
+     *
      * @return CouponGenerator
      */
     public function setMethod($method)
     {
-        if (!in_array($method, array(Coupon::METHOD_BOTH, Coupon::METHOD_DELIVERY, Coupon::METHOD_PICKUP))) {
+        if (!in_array($method, [Coupon::METHOD_BOTH, Coupon::METHOD_DELIVERY, Coupon::METHOD_PICKUP])) {
             throw new \InvalidArgumentException('Wrong method defined');
         }
-        
+
         $this->method = $method;
 
         return $this;
@@ -840,7 +872,7 @@ class CouponGenerator
     /**
      * Get method
      *
-     * @return string 
+     * @return string
      */
     public function getMethod()
     {
@@ -851,19 +883,20 @@ class CouponGenerator
      * Set singleUsePerPerson
      *
      * @param boolean $singleUsePerPerson
+     *
      * @return CouponGenerator
      */
     public function setSingleUsePerPerson($singleUsePerPerson)
     {
         $this->singleUsePerPerson = $singleUsePerPerson;
-    
+
         return $this;
     }
 
     /**
      * Get singleUsePerPerson
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSingleUsePerPerson()
     {
@@ -874,19 +907,20 @@ class CouponGenerator
      * Set onlinePaymentsOnly
      *
      * @param boolean $onlinePaymentsOnly
+     *
      * @return CouponGenerator
      */
     public function setOnlinePaymentsOnly($onlinePaymentsOnly)
     {
         $this->onlinePaymentsOnly = $onlinePaymentsOnly;
-    
+
         return $this;
     }
 
     /**
      * Get onlinePaymentsOnly
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getOnlinePaymentsOnly()
     {
@@ -897,19 +931,20 @@ class CouponGenerator
      * Set validHourlyFrom
      *
      * @param \DateTime $validHourlyFrom
+     *
      * @return CouponGenerator
      */
     public function setValidHourlyFrom($validHourlyFrom)
     {
         $this->validHourlyFrom = $validHourlyFrom;
-    
+
         return $this;
     }
 
     /**
      * Get validHourlyFrom
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getValidHourlyFrom()
     {
@@ -920,19 +955,20 @@ class CouponGenerator
      * Set validHourlyTo
      *
      * @param \DateTime $validHourlyTo
+     *
      * @return CouponGenerator
      */
     public function setValidHourlyTo($validHourlyTo)
     {
         $this->validHourlyTo = $validHourlyTo;
-    
+
         return $this;
     }
 
     /**
      * Get validHourlyTo
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getValidHourlyTo()
     {
@@ -943,6 +979,7 @@ class CouponGenerator
      * Set ignoreCartPrice
      *
      * @param boolean $ignoreCartPrice
+     *
      * @return CouponGenerator
      */
     public function setIgnoreCartPrice($ignoreCartPrice)
@@ -960,5 +997,33 @@ class CouponGenerator
     public function getIgnoreCartPrice()
     {
         return $this->ignoreCartPrice;
+    }
+
+
+    /**
+     * Set b2b
+     *
+     * @param string $b2b
+     *
+     * @return CouponGenerator
+     */
+    public function setB2b($b2b)
+    {
+        if (!in_array($b2b, [Coupon::B2B_BOTH, Coupon::B2B_YES, Coupon::B2B_NO])) {
+            throw new \InvalidArgumentException('Wrong method defined');
+        }
+        $this->b2b = $b2b;
+
+        return $this;
+    }
+
+    /**
+     * Get b2b
+     *
+     * @return string
+     */
+    public function getB2b()
+    {
+        return $this->b2b;
     }
 }

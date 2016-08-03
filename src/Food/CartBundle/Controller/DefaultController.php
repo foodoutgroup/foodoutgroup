@@ -37,23 +37,25 @@ class DefaultController extends Controller
         if (empty($this->cartService)) {
             $this->setCartService($this->get('food.cart'));
         }
+
         return $this->cartService;
     }
 
     /**
      * Daz proxy for ajax requests :)
      *
-     * @param string $action
+     * @param string  $action
      * @param Request $request
+     *
      * @return Response
      */
     public function actionAction($action, Request $request)
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
-        $jsonResponseData = array();
+        $jsonResponseData = [];
 
-        switch($action) {
+        switch ($action) {
             case 'add':
                 $this->_actonAddItem($jsonResponseData, $request);
                 break;
@@ -81,7 +83,8 @@ class DefaultController extends Controller
 
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
             $request->get('place', 0)
-        );
+        )
+        ;
 
         // Somehow we've lost the place.. dont crash.. better show nothing
         if (!$place) {
@@ -97,11 +100,12 @@ class DefaultController extends Controller
         );
 
         $response->setContent(json_encode($jsonResponseData));
+
         return $response;
     }
 
     /**
-     * @param $responseData
+     * @param         $responseData
      * @param Request $request
      */
     private function _actonAddItem(&$responseData, $request)
@@ -112,7 +116,8 @@ class DefaultController extends Controller
                 intval($request->get('counter')),
                 $request->get('options'),
                 $request->get('option')
-            );
+            )
+            ;
         }
         $this->_recountBundles($request);
     }
@@ -128,18 +133,20 @@ class DefaultController extends Controller
         if (empty($place)) {
             $dishSize = $this->container->get('doctrine')
                 ->getRepository('FoodDishesBundle:DishSize')
-                ->findBy((int) $request->get('dish-size'));
+                ->findBy((int)$request->get('dish-size'))
+            ;
             $place = $dishSize->getDish()->getPlace()->getId();
         }
         if (empty($place)) {
             return;
         }
         $this->getCartService()->recalculateBundles($place);
+
         return;
     }
 
     /**
-     * @param $responseData
+     * @param         $responseData
      * @param Request $request
      */
     private function _actonRemoveItem(&$responseData, $request)
@@ -148,7 +155,8 @@ class DefaultController extends Controller
             $request->get('dish_id'),
             $request->get('cart_id'),
             $request->get('place')
-        );
+        )
+        ;
         $this->_recountBundles($request);
     }
 
@@ -161,16 +169,17 @@ class DefaultController extends Controller
             ->get('session')
             ->set('delivery_type', $request->get('take_away', false) ?
                 OrderService::$deliveryPickup :
-                OrderService::$deliveryDeliver);
+                OrderService::$deliveryDeliver)
+        ;
     }
 
     /**
-     * @param $dishId
-     * @param $dishSize
-     * @param int $dishQuantity
+     * @param       $dishId
+     * @param       $dishSize
+     * @param int   $dishQuantity
      * @param int[] $options
      */
-    public function addDishToCartAction($dishId, $dishSize, $dishQuantity=0, $options=array())
+    public function addDishToCartAction($dishId, $dishSize, $dishQuantity = 0, $options = [])
     {
         $this->getCartService()->addDishByIds($dishId, $dishSize, $dishQuantity, $options);
     }
@@ -199,6 +208,7 @@ class DefaultController extends Controller
 
         $orderHash = $request->get('hash');
         $order = null;
+        $require_lastname = false;
 
         if (!empty($orderHash)) {
             $order = $orderService->getOrderByHash($orderHash);
@@ -210,36 +220,37 @@ class DefaultController extends Controller
 
         // Form submitted
         $formHasErrors = false;
-        $formErrors = array();
-        $dataToLoad = array();
+        $formErrors = [];
+        $dataToLoad = [];
 
         // Data preparation for form
         $placePointMap = $this->container->get('session')->get('point_data');
         if (!empty($placePointMap) && isset($placePointMap[$placeId]) && !empty($placePointMap[$placeId])) {
             $pointRecord = $this->container->get('doctrine')
                 ->getRepository('FoodDishesBundle:PlacePoint')
-                ->find($placePointMap[$placeId]);
+                ->find($placePointMap[$placeId])
+            ;
         } else {
             $pointRecord = null;
         }
 
-        $workingHoursForInterval = array();
+        $workingHoursForInterval = [];
         $workingDaysCount = 4;
-        for($i = 0; $i <= $workingDaysCount; $i++) {
-            $workingHoursForInterval[date("Y-m-d", strtotime("+".$i." day"))] = $placeService->getFullRangeWorkTimes($place, $pointRecord, "+".$i." day");
+        for ($i = 0; $i <= $workingDaysCount; $i++) {
+            $workingHoursForInterval[date("Y-m-d", strtotime("+" . $i . " day"))] = $placeService->getFullRangeWorkTimes($place, $pointRecord, "+" . $i . " day");
         }
 
         /**
-        $workingHoursToday = $placeService->getFullRangeWorkTimes($place, $pointRecord);
-        $workingHoursTommorow = $placeService->getFullRangeWorkTimes($place, $pointRecord, '+1 day');
+         * $workingHoursToday = $placeService->getFullRangeWorkTimes($place, $pointRecord);
+         * $workingHoursTommorow = $placeService->getFullRangeWorkTimes($place, $pointRecord, '+1 day');
          **/
 
         // TODO refactor this nonsense... if is if is if is bullshit...
         // Validate only if post happened
         if ($request->getMethod() == 'POST') {
             $couponEnt = null;
-            if ($request->get('coupon_code',false)) {
-                $couponEnt = $this->get('doctrine')->getRepository('FoodOrderBundle:Coupon')->findOneBy(array('code'=>$request->get('coupon_code','')));
+            if ($request->get('coupon_code', false)) {
+                $couponEnt = $this->get('doctrine')->getRepository('FoodOrderBundle:Coupon')->findOneBy(['code' => $request->get('coupon_code', '')]);
             }
             $this->get('food.order')->validateDaGiantForm(
                 $place,
@@ -247,10 +258,11 @@ class DefaultController extends Controller
                 $formHasErrors,
                 $formErrors,
                 ($takeAway ? true : false),
-                ($takeAway ? $request->get('place_point'): null),
+                ($takeAway ? $request->get('place_point') : null),
                 $couponEnt,
                 $isCallcenter
-            );
+            )
+            ;
         }
 
         // Empty dish protection
@@ -262,6 +274,9 @@ class DefaultController extends Controller
         if (count($dishes) < 1) {
             $formErrors[] = 'order.form.errors.emptycart';
             $formHasErrors = true;
+        } else {
+            // search for alco inside the basket
+            $require_lastname = $this->getCartService()->isAlcoholInCart($dishes);
         }
 
         if ($formHasErrors) {
@@ -317,12 +332,12 @@ class DefaultController extends Controller
                         $userPhone = $formatedPhone;
                     }
                 }
-                $userData = array(
-                    'email' => $userEmail,
-                    'phone' => $userPhone,
+                $userData = [
+                    'email'     => $userEmail,
+                    'phone'     => $userPhone,
                     'firstname' => $userFirstName,
-                    'lastname' => $userLastName,
-                );
+                    'lastname'  => $userLastName,
+                ];
 
                 $user = $fosUserManager->findUserByEmail($userEmail);
 
@@ -334,7 +349,8 @@ class DefaultController extends Controller
                         $user = $tmpUser;
                     }
                 } catch (\Exception $e) {
-                    // do nothing for now. Todo logging
+                    $this->get('logger')->error($e->getTraceAsString());
+                    $this->get('logger')->error($e->getMessage());
                 }
 
                 if (empty($user) || !$user->getId()) {
@@ -365,7 +381,7 @@ class DefaultController extends Controller
                 $orderDate = null;
                 $preOrder = $request->get('pre-order');
                 if ($preOrder == 'it-is') {
-                    $orderDate = $request->get('pre_order_date').' '.$request->get('pre_order_time');
+                    $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
                 }
 
                 $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate);
@@ -415,7 +431,8 @@ class DefaultController extends Controller
                     ->setCompanyName($request->get('company_name'))
                     ->setCompanyCode($request->get('company_code'))
                     ->setVatCode($request->get('vat_code'))
-                    ->setCompanyAddress($request->get('company_address'));
+                    ->setCompanyAddress($request->get('company_address'))
+                ;
             }
 
             if ($user->getIsBussinesClient()) {
@@ -426,7 +443,8 @@ class DefaultController extends Controller
                     ->setCompanyName($user->getCompanyName())
                     ->setCompanyCode($user->getCompanyCode())
                     ->setVatCode($user->getVatCode())
-                    ->setCompanyAddress($user->getCompanyAddress());
+                    ->setCompanyAddress($user->getCompanyAddress())
+                ;
             }
 
             // Update order with recent address information. but only if we need to deliver
@@ -460,22 +478,23 @@ class DefaultController extends Controller
             // TODO Crap happened?
         }
 
-        $data = array(
-            'order' => $order,
-            'formHasErrors' => $formHasErrors,
-            'formErrors' => $formErrors,
-            'place' => $place,
-            'takeAway' => ($takeAway ? true : false),
-            'location' => $this->get('food.googlegis')->getLocationFromSession(),
-            'dataToLoad' => $dataToLoad,
-            'userAddress' => $address,
-            'userAllAddress' => $placeService->getCurrentUserAddresses(),
-            'submitted' => $request->isMethod('POST'),
-            'testNordea' => $request->query->get('test_nordea'),
+        $data = [
+            'order'                   => $order,
+            'formHasErrors'           => $formHasErrors,
+            'formErrors'              => $formErrors,
+            'place'                   => $place,
+            'takeAway'                => ($takeAway ? true : false),
+            'location'                => $this->get('food.googlegis')->getLocationFromSession(),
+            'dataToLoad'              => $dataToLoad,
+            'userAddress'             => $address,
+            'userAllAddress'          => $placeService->getCurrentUserAddresses(),
+            'submitted'               => $request->isMethod('POST'),
+            'testNordea'              => $request->query->get('test_nordea'),
             'workingHoursForInterval' => $workingHoursForInterval,
-            'workingDaysCount' => $workingDaysCount,
-            'isCallcenter' => false,
-        );
+            'workingDaysCount'        => $workingDaysCount,
+            'isCallcenter'            => false,
+            'require_lastname'        => $require_lastname,
+        ];
 
 
         // callcenter functionality
@@ -494,10 +513,10 @@ class DefaultController extends Controller
     /**
      * Side cart block
      *
-     * @param Place $place
-     * @param bool $renderView
-     * @param bool $inCart
-     * @param null|Order $order
+     * @param Place       $place
+     * @param bool        $renderView
+     * @param bool        $inCart
+     * @param null|Order  $order
      * @param null|string $couponCode
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -514,10 +533,10 @@ class DefaultController extends Controller
         $free_delivery_price = $miscService->getParam('free_delivery_price');
         $displayCartInterval = true;
         $deliveryTotal = 0;
-        $basketErrors = array(
-            'foodQuantityError' => false,
+        $basketErrors = [
+            'foodQuantityError'  => false,
             'drinkQuantityError' => false,
-        );
+        ];
 
         $takeAway = ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup);
 
@@ -540,20 +559,21 @@ class DefaultController extends Controller
                     $place,
                     $gis,
                     $pointRecord
-                );
+                )
+                ;
                 $displayCartInterval = false;
                 $cartFromMin = $this->getCartService()->getMinimumCart(
                     $place,
                     $gis,
                     $pointRecord
-                );
+                )
+                ;
             }
 
             // Check cart limits
             $basketDrinkLimit = $place->getBasketLimitDrinks();
             $basketFoodLimit = $place->getBasketLimitFood();
-            if (!empty($basketFoodLimit) && $basketFoodLimit > 0)
-            {
+            if (!empty($basketFoodLimit) && $basketFoodLimit > 0) {
                 $foodDishCount = 0;
 
                 foreach ($list as $dish) {
@@ -569,8 +589,7 @@ class DefaultController extends Controller
                 }
             }
 
-            if (!empty($basketDrinkLimit) && $basketDrinkLimit > 0)
-            {
+            if (!empty($basketDrinkLimit) && $basketDrinkLimit > 0) {
                 $foodDishCount = 0;
 
                 foreach ($list as $dish) {
@@ -599,8 +618,51 @@ class DefaultController extends Controller
         $discountSize = null;
         $discountSum = null;
 
-        // Business client discount
-        if (!empty($current_user) && is_object($current_user) && $current_user->getIsBussinesClient()) {
+
+        // If coupon in use
+        if (!empty($couponCode)) {
+            $coupon = $this->get('food.order')->getCouponByCode($couponCode);
+
+            if ($coupon->getIgnoreCartPrice()) {
+                $noMinimumCart = true;
+            }
+
+            if ($coupon) {
+                $applyDiscount = true;
+
+                if ($coupon->getIgnoreCartPrice()) {
+                    $noMinimumCart = true;
+                }
+
+                $freeDelivery = $coupon->getFreeDelivery();
+
+                $discountSize = $coupon->getDiscount();
+                if (!empty($discountSize)) {
+                    $discountSum = $this->getCartService()->getTotalDiscount($list,$coupon->getDiscount());
+                } else {
+                    $discountSize = null;
+                    $discountInSum = true;
+                    $discountSum = $coupon->getDiscountSum();
+                }
+                $total_cart = $total_cart - $discountSum;
+
+                if ($total_cart < 0) {
+                    if ($coupon->getFullOrderCovers()|| $coupon->getIncludeDelivery()) {
+                        $deliveryTotal = $deliveryTotal + $total_cart;
+                        if ($deliveryTotal < 0) {
+                            $deliveryTotal = 0;
+                            $freeDelivery = true;
+                        }
+                    }
+                    $total_cart = 0;
+                }
+
+                if ($total_cart < 0) {
+                    $total_cart = 0;
+                }
+            }
+        } // Business client discount
+        elseif (!empty($current_user) && is_object($current_user) && $current_user->getIsBussinesClient()) {
             if (!$takeAway && !$place->getSelfDelivery()) {
                 $applyDiscount = true;
                 $discountSize = $this->get('food.user')->getDiscount($current_user);
@@ -609,62 +671,36 @@ class DefaultController extends Controller
                 $total_cart -= $discountSum;
             }
         }
-        // If coupon in use
-        elseif (!empty($couponCode)) {
-            $coupon = $this->get('food.order')->getCouponByCode($couponCode);
-
-            if ($coupon->getIgnoreCartPrice())
-            {
-                $noMinimumCart = true;
-            }
-
-            if ($coupon) {
-                $applyDiscount = true;
-                $freeDelivery = $coupon->getFreeDelivery();
-
-                if (!$freeDelivery) {
-                    $discountSize = $coupon->getDiscount();
-                    if (!empty($discountSize)) {
-                        $discountSum = $this->getCartService()->getTotalDiscount($list,$coupon->getDiscount());
-                    } else {
-                        $discountSize = null;
-                        $discountInSum = true;
-                        $discountSum = $coupon->getDiscountSum();
-                    }
-
-                    $total_cart = $total_cart - $discountSum;
-                    if ($total_cart < 0) {
-                        if ($coupon->getFullOrderCovers()) {
-                            $deliveryTotal = $deliveryTotal + $total_cart;
-                            if ($deliveryTotal < 0) {
-                                $deliveryTotal = 0;
-                            }
-                        }
-                        $total_cart = 0;
-                    }
-                }
-            }
-        }
-
-
+        $cartSumTotal = $total_cart;
         // Jei restorane galima tik atsiimti arba, jei zmogus rinkosi, kad jis atsiimas, arba jei yra uzsakymas ir fiksuotas atsiemimas vietoje - neskaiciuojam pristatymo
         if ($place->getDeliveryOptions() == Place::OPT_ONLY_PICKUP ||
-            ($order!=null && $order->getDeliveryType() == 'pickup')
-            || $takeAway == true) {
+            ($order != null && $order->getDeliveryType() == 'pickup')
+            || $takeAway == true
+        ) {
             $hideDelivery = true;
         } else {
             $hideDelivery = false;
         }
 
+        if(!isset($coupon)) {
+            $coupon = false;
+        }
+
         // Nemokamas pristatymas dideliam krepseliui
         $self_delivery = $place->getSelfDelivery();
         $left_sum = 0;
-        if ($enable_free_delivery_for_big_basket) {
+        if ($enable_free_delivery_for_big_basket || ($coupon && $coupon->getIgnoreCartPrice())) {
+            $minusDiscount = 0;
+            if($coupon && $coupon->getIgnoreCartPrice()) {
+                $minusDiscount = $cartSumTotal;
+            }
+
             // Jeigu musu logistika, tada taikom nemokamo pristatymo logika
-            if ($self_delivery == 0) {
+            if ($self_delivery == 0 || $place->getId() == 32 && ($free_delivery_price = 50) && in_array(date('w'), [0, 6])) {
+
                 // Kiek liko iki nemokamo pristatymo
                 if ($free_delivery_price > $total_cart) {
-                    $left_sum = sprintf('%.2f', $free_delivery_price - $total_cart);
+                    $left_sum = sprintf('%.2f', $free_delivery_price - $total_cart - $minusDiscount);
                 }
                 // Krepselio suma pasieke nemokamo pristatymo suma
                 if ($left_sum == 0) {
@@ -673,13 +709,13 @@ class DefaultController extends Controller
             }
         }
 
+        $totalWIthDelivery = $freeDelivery ? $total_cart : ($total_cart + $deliveryTotal);
 
-
-        $params = array(
+        $params = [
             'list'  => $list,
             'place' => $place,
             'total_cart' => sprintf('%.2f',$total_cart),
-            'total_with_delivery' => ($freeDelivery ? $total_cart : ($total_cart + $deliveryTotal)),
+            'total_with_delivery' => $totalWIthDelivery,
             'total_delivery' => $deliveryTotal,
             'inCart' => (int)$inCart,
             'hide_delivery' => $hideDelivery,
@@ -698,12 +734,13 @@ class DefaultController extends Controller
             'left_sum' => $left_sum,
             'self_delivery' => $self_delivery,
             'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
-            'basket_errors' => $basketErrors
-        );
+            'basket_errors'                       => $basketErrors
+        ];
 
         if ($renderView) {
             return $this->renderView('FoodCartBundle:Default:side_block.html.twig', $params);
         }
+
         return $this->render('FoodCartBundle:Default:side_block.html.twig', $params);
     }
 
@@ -716,7 +753,7 @@ class DefaultController extends Controller
 
         return $this->render(
             'FoodCartBundle:Default:payment_success.html.twig',
-            array('order' => $order)
+            ['order' => $order]
         );
     }
 
@@ -728,21 +765,21 @@ class DefaultController extends Controller
         $order = $this->get('food.order')->getOrderByHash($orderHash);
 
         return $this->render(
-            'lFoodCartBundle:Default:payment_wait.html.twig',
-            array('order' => $order)
+            'FoodCartBundle:Default:payment_wait.html.twig',
+            ['order' => $order]
         );
     }
 
     public function debugAction()
     {
-        $pimPirim[1] = array("key"=>1, "data" => "2");
-        $pimPirim[2] = array("key"=>2, "data" =>"3");
-        $pimPirim[3] = array("key"=>3, "data" =>"1");
-        $pimPirim[4] = array("key"=>4, "data" =>"6");
-        $pimPirim[5] = array("key"=>5, "data" =>"4");
-        $keys = array();
-        $values = array();
-        foreach($pimPirim as $key=>$value) {
+        $pimPirim[1] = ["key" => 1, "data" => "2"];
+        $pimPirim[2] = ["key" => 2, "data" => "3"];
+        $pimPirim[3] = ["key" => 3, "data" => "1"];
+        $pimPirim[4] = ["key" => 4, "data" => "6"];
+        $pimPirim[5] = ["key" => 5, "data" => "4"];
+        $keys = [];
+        $values = [];
+        foreach ($pimPirim as $key => $value) {
             $keys[] = $value['key'];
             $values[] = $value['data'];
 
@@ -751,6 +788,7 @@ class DefaultController extends Controller
         var_dump($pimPirim);
         array_multisort($values, SORT_ASC, $pimPirim);
         var_dump($pimPirim);
+
         return new Response('Smooth end');
     }
 }

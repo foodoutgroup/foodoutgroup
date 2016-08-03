@@ -653,6 +653,9 @@ class CartService {
         $cartItems = $this->getCartDishes($place);
         $dishUnits = array();
         $amounts = array();
+        /**
+         * @var ComboDiscount[] $activeBundles
+         */
         $activeBundles = $this->_getActiveBundles($place);
 
         foreach ($cartItems as $item) {
@@ -689,7 +692,7 @@ class CartService {
                 }
             }
             if ($bund->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_CATEGORY) {
-                @mail("paulius@foodout.lt",  "OPT_COMBO_APPLY_CATEGORY not implemented", "OPT_COMBO_APPLY_CATEGORY not implemented", "FROM: info@foodout.lt");
+                $this->getContainer()->get('logger')->debug('OPT_COMBO_APPLY_CATEGORY not implemented');
             }
         }
     }
@@ -757,5 +760,25 @@ class CartService {
                     'active' => 1
                 )
             );
+    }
+
+    /**
+     * @param \Food\CartBundle\Entity\Cart[] $dishes
+     * @return bool
+     */
+    public function isAlcoholInCart($dishes)
+    {
+        if (count($dishes)) {
+            foreach ($dishes as $dish) {
+                $dishCategories = $dish->getDishId()->getCategories();
+                foreach ($dishCategories as $dishCategory) {
+                    $isAlcohol = $dishCategory->getAlcohol();
+                    if ($isAlcohol) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
