@@ -1,3 +1,25 @@
+# Password resetting
+resetting:
+    password_already_requested: Paroli lietotāju maiņa jau ir uzrakstīts pēdējo 24 stundu laikā.
+    check_email: E.pasta paziņojumu tika nosūtīts %email%. Tā ir saite, uzklikšķinot uz kuras jūs varēsiet nomainīt paroli.
+    request:
+        invalid_username: Lietotājvārds vai e-pasts. Nosūtīt "%username%" neeksistē.
+        username: "Lietotājvārds vai E-pasts:"
+        submit: Turpināt
+        email: E-pasts
+    reset:
+        submit: Atiestatīt paroli
+    flash:
+        success: Parole mainīta
+    email:
+        subject: Mainīt paroli
+        message: |
+            Laipni lūdzam %username%!
+
+            Lai mainītu savu paroli, apmeklējiet %confirmationUrl%
+
+            Foodout.lv
+
 # Form field labels
 form:
     firstname: "Vārds"
@@ -5,3 +27,7 @@ form:
     phone: "Telefons"
     city: "Pilsēta"
     address: Adrese
+
+general:
+    reset_password: Atiestatīt paroli
+    back_to_login: Atgriezties uz pieslēgšanās forma
