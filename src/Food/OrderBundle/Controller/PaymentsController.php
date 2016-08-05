@@ -147,6 +147,7 @@ class PaymentsController extends Controller
         $logger->alert("==========================\ncallback payment action for paysera came\n====================================\n");
 
         $orderService = $this->container->get('food.order');
+        $placeService = $this->container->get('food.places');
 
         try {
             $callbackValidator = $this->get('evp_web_to_pay.callback_validator');
@@ -170,7 +171,10 @@ class PaymentsController extends Controller
 
                     // If pre order - do not inform
                     if ($order->getOrderStatus() != OrderService::$status_preorder || $order->getPlace()->getNavision()) {
-                        $orderService->informPlace();
+                        $isZavalOn = $placeService->getZavalTime($order->getPlace());
+                        if (!$isZavalOn) {
+                            $orderService->informPlace();
+                        }
                     }
 
                     // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
