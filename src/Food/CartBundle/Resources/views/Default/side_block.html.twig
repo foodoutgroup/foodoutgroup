@@ -178,7 +178,11 @@
         {% endif %}
         {% if hide_delivery == false %}
         <div class="delivery-time tac">
-            {% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}
+            {% if places_service.getZavalTime(place) %}
+                {% trans %}cart.block.delivery_time{% endtrans %} {{ places_service.getZavalTime(place) }} val.
+            {% else %}
+                {% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}
+            {% endif %}
             {% if place.deliveryTimeInfo is not empty %}
                 <span class="delivery-time-info-cart ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
             {% endif %}

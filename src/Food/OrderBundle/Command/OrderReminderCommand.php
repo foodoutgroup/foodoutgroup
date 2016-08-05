@@ -20,15 +20,19 @@ class OrderReminderCommand extends ContainerAwareCommand
     {
         try {
             $orderService = $this->getContainer()->get('food.order');
+            $placeService = $this->getContainer()->get('food.places');
 
             foreach($orderService->getForgottenOrders() as $order) {
-                $orderService->setOrder($order);
-                $order->setReminded(new \DateTime());
-                $orderService->saveOrder();
+                $isZavalOn = $placeService->getZavalTime($order->getPlace());
+                if (!$isZavalOn) {
+                    $orderService->setOrder($order);
+                    $order->setReminded(new \DateTime());
+                    $orderService->saveOrder();
 
-                $orderService->informPlace(true);
+                    $orderService->informPlace(true);
 
-                $output->writeln('Reminder message sent to: ' . $order->getPlaceName() . ' for order #' . $order->getId());
+                    $output->writeln('Reminder message sent to: ' . $order->getPlaceName() . ' for order #' . $order->getId());
+                }
             }
 
             // Close DB connection. Dont leave crap
