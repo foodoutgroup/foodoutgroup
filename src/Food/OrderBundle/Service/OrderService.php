@@ -53,6 +53,7 @@ class OrderService extends ContainerAware
     public static $status_completed = "completed";
     public static $status_finished = "finished";
     public static $status_canceled = "canceled";
+    public static $status_canceled_produced = "canceled_produced";
 
     /**
      * Nemaisyti su pre.. cia orderis laikui
@@ -917,6 +918,22 @@ class OrderService extends ContainerAware
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * @param null|string $source
+     * @param null|string $statusMessage
+     *
+     * @return $this
+     */
+    public function statusCanceled_produced($source = null, $statusMessage = null)
+    {
+        $order = $this->getOrder();
+        $this->logDeliveryEvent($this->getOrder(), 'order_canceled_produced');
+        $this->chageOrderStatus(self::$status_canceled_produced, $source, $statusMessage);
+        $this->getOrder()->setCompletedTime(new \DateTime());
+        $this->createDiscountCode($order);
         return $this;
     }
 
@@ -1880,6 +1897,7 @@ class OrderService extends ContainerAware
             self::$status_partialy_completed => 6,
             self::$status_completed          => 6,
             self::$status_canceled           => 6,
+            self::$status_canceled_produced  => 6,
         ];
 
         if (empty($from) && !empty($to)) {
@@ -2803,6 +2821,16 @@ class OrderService extends ContainerAware
                         $sinceLast = $order->getOrderDate()->getTimestamp();
                     }
                     break;
+
+                case 'order_canceled_produced':
+                    $logData = $this->getDeliveryLogActionEntry($order, 'order_accepted');
+
+                    if ($logData instanceof OrderDeliveryLog) {
+                        $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    } else {
+                        $sinceLast = $order->getOrderDate()->getTimestamp();
+                    }
+                    break;
             }
 
             $log = new OrderDeliveryLog();
@@ -2880,6 +2908,7 @@ class OrderService extends ContainerAware
             self::$status_completed,
             self::$status_partialy_completed,
             self::$status_canceled,
+            self::$status_canceled_produced,
         ];
     }
 
