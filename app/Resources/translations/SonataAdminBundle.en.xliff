@@ -1592,6 +1592,34 @@
                 <source>admin.order.delivery_log.order_accepted</source>
                 <target>Order Accepted</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_assigned">
+                <source>admin.order.delivery_log.order_assigned</source>
+                <target>Order Assigned</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_delayed">
+                <source>admin.order.delivery_log.order_delayed</source>
+                <target>Order Delayed</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_finished">
+                <source>admin.order.delivery_log.order_finished</source>
+                <target>Order Finished</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_pickedup">
+                <source>admin.order.delivery_log.order_pickedup</source>
+                <target>Order Pickedup</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_completed">
+                <source>admin.order.delivery_log.order_completed</source>
+                <target>Order Completed</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_canceled">
+                <source>admin.order.delivery_log.order_canceled</source>
+                <target>Order Canceled</target>
+            </trans-unit>
+            <trans-unit id="admin.order.delivery_log.order_canceled_produced">
+                <source>admin.order.delivery_log.order_canceled_produced</source>
+                <target>Order Canceled Produced</target>
+            </trans-unit>
             <trans-unit id="admin.order.delivery_log.event">
                 <source>admin.order.delivery_log.event</source>
                 <target>Event</target>
@@ -2431,6 +2459,9 @@
             <trans-unit id="admin.reports.place">
                 <source>admin.reports.place</source>
                 <target>Restaurant</target>
+            <trans-unit id="admin.reports.place_code">
+                <source>admin.reports.place_code</source>
+                <target>Restaurant code</target>
             </trans-unit>
             <trans-unit id="admin.restaurant">
                 <source>admin.restaurant</source>
@@ -2508,6 +2539,10 @@
             <trans-unit id="admin.reports.delivery_type">
                 <source>admin.reports.delivery_type</source>
                 <target>Delivery Type</target>
+            </trans-unit>
+            <trans-unit id="admin.order.client.b2b">
+                <source>admin.order.client.b2b</source>
+                <target>B2B clients</target>
             </trans-unit>
             <trans-unit id="admin.reports.accept_time">
                 <source>admin.reports.accept_time</source>
@@ -3098,6 +3133,29 @@
                 <source>admin.param.value</source>
                 <target>Value</target>
             </trans-unit>
+
+            <!-- Params Log listas -->
+            <trans-unit id="admin.paramslog">
+                <source>admin.paramslog</source>
+                <target>Parameters Log</target>
+            </trans-unit>
+            <trans-unit id="admin.paramlog.user">
+                <source>admin.paramlog.user</source>
+                <target>User</target>
+            </trans-unit>
+            <trans-unit id="admin.paramlog.event_date">
+                <source>admin.paramlog.event_date</source>
+                <target>Event Date</target>
+            </trans-unit>
+            <trans-unit id="admin.paramlog.old_value">
+                <source>admin.paramlog.old_value</source>
+                <target>Old Value</target>
+            </trans-unit>
+            <trans-unit id="admin.paramlog.new_value">
+                <source>admin.paramlog.new_value</source>
+                <target>New Value</target>
+            </trans-unit>
+
             <!-- SEO -->
             <trans-unit id="admin.seorecord">
                 <source>admin.seorecord</source>

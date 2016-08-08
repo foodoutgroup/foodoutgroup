@@ -13,11 +13,20 @@
                     <th>{{ 'admin.order.delivery_log.time_elapsed'|trans({}, 'SonataAdminBundle') }}</th>
                 </tr>
             {% for deliveryInfo in object.orderDeliveryLog %}
-                {% set lastDate = deliveryInfo.eventDate %}
                 <tr>
                     <td style="white-space: nowrap">{{ deliveryInfo.eventDate|date("Y-m-d H:i:s") }}</td>
                     <td>{{ ( 'admin.order.delivery_log.' ~ deliveryInfo.event)|trans({}, 'SonataAdminBundle') }}</td>
-                    <td>{% if loop.index == 1 %}{{ deliveryInfo.getDiff(object.orderDate, deliveryInfo.eventDate) }}{% else %}{{ deliveryInfo.getDiff(lastDate, deliveryInfo.eventDate) }} min{% endif %}</td>
+                    <td>
+                        {% if loop.index == 1 %}
+                            {% set lastDate = deliveryInfo.eventDate %}
+                            {{ deliveryInfo.getDiff(object.orderDate, deliveryInfo.eventDate) }} min
+                        {% else %}
+                            {{ deliveryInfo.getDiff(lastDate, deliveryInfo.eventDate) }} min
+                        {% endif %}
+                        {% if not loop.last %}
+                            {% set lastDate = deliveryInfo.eventDate %}
+                        {% endif %}
+                    </td>
                 </tr>
             {% endfor %}
             </table>

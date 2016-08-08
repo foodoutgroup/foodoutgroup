@@ -377,6 +377,7 @@ sonata_admin:
                       - sonata.admin.banned_ips
                       - sonata.admin.street
                       - sonata.admin.params
+                      - sonata.admin.paramslog
                   roles: [ ROLE_EDITOR, ROLE_ADMIN ]
               admin.marketing:
                   label: admin.group.marketing
@@ -414,6 +415,7 @@ sonata_admin:
                       - sonata.admin.dispatcher
                       - sonata.admin.drivers
                       - sonata.admin.params
+                      - sonata.admin.paramslog
                   roles: [ ROLE_DISPATCHER ]
               acme.admin.group.misc: ~
 

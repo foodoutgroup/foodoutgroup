@@ -167,6 +167,22 @@ class OrderService extends ContainerAware
         $list = $cartService->getCartDishes($basket->getPlaceId());
         $total_cart = $cartService->getCartTotalApi($list/*, $place*/);
 
+        // search for alco inside the basket
+        $require_lastname = $cartService->isAlcoholInCart($list);
+        if ($require_lastname) {
+            $lastname = $user->getLastname();
+            if (empty($lastname)) {
+                throw new ApiException(
+                    'Unauthorized',
+                    401,
+                    array(
+                        'error' => 'Missing lastname',
+                        'description' => $this->container->get('translator')->trans('api.orders.user_lastname_empty')
+                    )
+                );
+            }
+        }
+
         // Discount code validation
         $coupon = null;
         $discountVar = $request->get('discount');

@@ -2,11 +2,13 @@
 
 namespace Food\SmsBundle\Service;
 
-interface SmsProviderInterface {
+interface SmsProviderInterface
+{
 
     /**
      * @param string $username
      * @param string $password
+     *
      * @return void
      */
     public function authenticate($username, $password);
@@ -25,12 +27,14 @@ interface SmsProviderInterface {
 
     /**
      * @param string $dlrData
+     *
      * @return mixed
      */
     public function parseDeliveryReport($dlrData);
 
     /**
      * @param string $url
+     *
      * @return void
      */
     public function setApiUrl($url);

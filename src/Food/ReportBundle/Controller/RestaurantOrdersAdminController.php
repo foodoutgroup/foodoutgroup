@@ -17,14 +17,16 @@ class RestaurantOrdersAdminController extends Controller
         $dateTo = new \DateTime($request->get('date_to', 'now'));
         $places = $request->get('place', array());
         $groupMonth = $request->get('group_month', false);
+        $companyCode = $request->get('company_code', '');
 
-        $stats = $orderRepo->getPlacesOrderCountForRange($dateFrom, $dateTo, $places, $groupMonth);
+        $stats = $orderRepo->getPlacesOrderCountForRange($dateFrom, $dateTo, $places, $companyCode, $groupMonth);
 
         return $this->render(
             'FoodReportBundle:Report:restaurant_order.html.twig',
             array(
                 'stats' => $stats,
                 'dateFrom' => $dateFrom,
+                'companyCode' => $companyCode,
                 'dateTo' => $dateTo,
                 'placesSelected' => $places,
                 'places' => $placeRepo->findBy(

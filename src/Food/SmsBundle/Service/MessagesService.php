@@ -12,7 +12,8 @@ use Symfony\Component\DependencyInjection\Container;
  *
  * @package Food\SmsBundle\Service
  */
-class MessagesService {
+class MessagesService
+{
     /**
      * @var SmsProviderInterface
      */
@@ -29,7 +30,7 @@ class MessagesService {
     private $manager = null;
 
     /**
-     * @param $container
+     * @param                      $container
      * @param SmsProviderInterface $messagingProvider
      */
     public function __construct($container, $messagingProvider = null)
@@ -54,6 +55,7 @@ class MessagesService {
         if (empty($this->manager)) {
             $this->manager = $this->getContainer()->get('doctrine')->getManager();
         }
+
         return $this->manager;
     }
 
@@ -98,6 +100,7 @@ class MessagesService {
      * Get message by ID
      *
      * @param int $id
+     *
      * @return bool|Message
      */
     public function getMessage($id)
@@ -122,7 +125,7 @@ class MessagesService {
      *
      * @return Message
      */
-    public function createMessage($sender=null, $recipient=null, $text=null, $order=null)
+    public function createMessage($sender = null, $recipient = null, $text = null, $order = null)
     {
         $message = new Message();
         $message->setCreatedAt(new \DateTime("now"));
@@ -147,6 +150,7 @@ class MessagesService {
 
     /**
      * @param Message $message
+     *
      * @throws \Exception
      */
     public function saveMessage($message)
@@ -163,10 +167,11 @@ class MessagesService {
      * @param string|null $sender
      * @param string|null $recipient
      * @param string|null $text
-     * @param Order|null $order
+     * @param Order|null  $order
+     *
      * @return Message
      */
-    public function addMessageToSend($sender=null, $recipient=null, $text=null, $order=null)
+    public function addMessageToSend($sender = null, $recipient = null, $text = null, $order = null)
     {
         $message = $this->createMessage($sender, $recipient, $text, $order);
         $this->saveMessage($message);
@@ -176,6 +181,7 @@ class MessagesService {
 
     /**
      * @param array $messages
+     *
      * @return Message[]
      * @throws \InvalidArgumentException
      */
@@ -185,10 +191,10 @@ class MessagesService {
             throw new \InvalidArgumentException('Messages must be in array');
         }
 
-        $addedMessages = array();
+        $addedMessages = [];
 
         if (!empty($messages)) {
-            foreach($messages as $message) {
+            foreach ($messages as $message) {
                 $addedMessages[] = $this->addMessageToSend($message['sender'], $message['recipient'], $message['text'], $message['order']);
             }
         }
@@ -200,16 +206,17 @@ class MessagesService {
      * Get message by ext id
      *
      * @param int|string $extId
+     *
      * @throws \Exception
      * @return bool|Message
      */
     public function getMessageByExtId($extId)
     {
         $repo = $this->getManager()->getRepository('Food\SmsBundle\Entity\Message');
-        $message = $repo->findBy(array('extId' => $extId), null, 1);
+        $message = $repo->findBy(['extId' => $extId], null, 1);
 
         if (!$message) {
-            $message = $repo->findBy(array('secondaryExtId' => $extId), null, 1);
+            $message = $repo->findBy(['secondaryExtId' => $extId], null, 1);
         }
 
         if (!$message) {
@@ -217,7 +224,7 @@ class MessagesService {
         }
 
         if (count($message) > 1) {
-            throw new \Exception('More then one message found. How the hell? Ext id: '.$extId);
+            throw new \Exception('More then one message found. How the hell? Ext id: ' . $extId);
         }
 
         // TODO negrazu, bet laikina :(
@@ -228,6 +235,7 @@ class MessagesService {
 
     /**
      * @param \Food\SmsBundle\Entity\Message $message
+     *
      * @throws \InvalidArgumentException
      * @throws \Exception
      * @return mixed
@@ -243,10 +251,12 @@ class MessagesService {
                 $message->getSender(),
                 $message->getRecipient(),
                 $message->getMessage()
-            );
+            )
+            ;
 
             $message->setSent($status['sent'])
-                ->setSubmittedAt(new \DateTime("now"));
+                ->setSubmittedAt(new \DateTime("now"))
+            ;
 
             $currentExtId = $message->getExtId();
             if (empty($currentExtId)) {
@@ -257,9 +267,10 @@ class MessagesService {
 
             $message->setLastSendingError($status['error'])
                 ->setSmsc($this->getMessagingProvider()->getProviderName())
-                ->setTimesSent($message->getTimesSent()+1);
+                ->setTimesSent($message->getTimesSent() + 1)
+            ;
 
-        // TODO Noramlus exception handlingas cia ir servise (https://basecamp.com/2470154/projects/4420182-skanu-lt-gamyba/todos/73047842-pilnas-exception)
+            // TODO Noramlus exception handlingas cia ir servise (https://basecamp.com/2470154/projects/4420182-skanu-lt-gamyba/todos/73047842-pilnas-exception)
         } catch (\Exception $e) {
             throw $e;
         }
@@ -267,14 +278,15 @@ class MessagesService {
 
     /**
      * @param string|array|resource $dlrData
+     *
      * @throws \InvalidArgumentException
      * @throws \Exception
      */
     public function updateMessagesDelivery($dlrData)
     {
         $logger = $this->container->get("logger");
-        $logger->info('-- updateMessageDelivery:  --');
-        $logger->info(print_r($dlrData, true));
+        $logger->debug('-- updateMessageDelivery:  --');
+        $logger->debug(var_export($dlrData, true));
         if (empty($dlrData)) {
             throw new \InvalidArgumentException('No DLR data received');
         }
@@ -297,11 +309,13 @@ class MessagesService {
                         if ($messageData['delivered'] == true) {
                             $message->setReceivedAt(new \DateTime($messageData['completeDate']))
                                 ->setLastSendingError($messageData['error'])
-                                ->setLastErrorDate(null);
+                                ->setLastErrorDate(null)
+                            ;
                         } else {
                             $message->setDelivered(false)
                                 ->setLastSendingError($messageData['error'])
-                                ->setLastErrorDate(new \DateTime($messageData['completeDate']));
+                                ->setLastErrorDate(new \DateTime($messageData['completeDate']))
+                            ;
                         }
 
                         $this->saveMessage($message);
@@ -324,9 +338,10 @@ class MessagesService {
 
         $queryBuilder = $repository->createQueryBuilder('m')
             ->where('m.sent = 0')
-            ->orderBy('m.createdAt', 'ASC');
+            ->orderBy('m.createdAt', 'ASC')
+        ;
 
-        return  $queryBuilder;
+        return $queryBuilder;
     }
 
     /**
@@ -338,12 +353,13 @@ class MessagesService {
             ->andWhere('m.createdAt >= :yesterday')
             ->andWhere('m.timesSent < 5')
             ->setParameter('yesterday', new \DateTime('-1 days'))
-            ->getQuery();
+            ->getQuery()
+        ;
 
 
         $messages = $query->getResult();
         if (!$messages) {
-            return array();
+            return [];
         }
 
         return $messages;
@@ -352,6 +368,7 @@ class MessagesService {
     /**
      * @param \DateTime $from
      * @param \DateTime $to
+     *
      * @return array
      */
     public function getUnsentMessagesForRange(\DateTime $from, \DateTime $to)
@@ -361,12 +378,13 @@ class MessagesService {
             ->andWhere('m.createdAt <= :to_date')
             ->setParameter('from_date', $from)
             ->setParameter('to_date', $to)
-            ->getQuery();
+            ->getQuery()
+        ;
 
 
         $messages = $query->getResult();
         if (!$messages) {
-            return array();
+            return [];
         }
 
         return $messages;
@@ -382,9 +400,10 @@ class MessagesService {
         $queryBuilder = $repository->createQueryBuilder('m')
             ->where('m.sent = 1')
             ->andWhere('m.delivered = 0')
-            ->orderBy('m.createdAt', 'ASC');
+            ->orderBy('m.createdAt', 'ASC')
+        ;
 
-        return  $queryBuilder;
+        return $queryBuilder;
     }
 
     /**
@@ -398,11 +417,12 @@ class MessagesService {
             ->andWhere('m.timesSent = 1')
             ->setParameter('yesterday', new \DateTime('-1 days'))
             ->setParameter('sentJustNow', new \DateTime('-6 minutes'))
-            ->getQuery();
+            ->getQuery()
+        ;
 
         $messages = $query->getResult();
         if (!$messages) {
-            return array();
+            return [];
         }
 
         return $messages;
@@ -411,6 +431,7 @@ class MessagesService {
     /**
      * @param \DateTime $from
      * @param \DateTime $to
+     *
      * @return array
      */
     public function getUndeliveredMessagesForRange(\DateTime $from, \DateTime $to)
@@ -420,12 +441,13 @@ class MessagesService {
             ->andWhere('m.submittedAt <= :to_date')
             ->setParameter('from_date', $from)
             ->setParameter('to_date', $to)
-            ->getQuery();
+            ->getQuery()
+        ;
 
 
         $messages = $query->getResult();
         if (!$messages) {
-            return array();
+            return [];
         }
 
         return $messages;
@@ -433,15 +455,15 @@ class MessagesService {
 
     /**
      * @param Order $order
-     * @param null $toBeDelivered
+     * @param null  $toBeDelivered
      */
-    public function informLateOrder($order, $toBeDelivered=null)
+    public function informLateOrder($order, $toBeDelivered = null)
     {
         $translator = $this->getContainer()->get('translator');
-        $text = $translator->trans('general.sms.order_to_be_late', array(
-            'order_id' => $order->getId(),
+        $text = $translator->trans('general.sms.order_to_be_late', [
+            'order_id'    => $order->getId(),
             'delivery_in' => $toBeDelivered
-        ));
+        ]);
 
         $message = $this->createMessage(
             $this->getContainer()->getParameter('sms.sender'),

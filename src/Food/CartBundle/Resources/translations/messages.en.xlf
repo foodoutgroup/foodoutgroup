@@ -276,6 +276,10 @@ Tallinn]]></target>
                 <source>order.form.errors.customerfirstname</source>
                 <target>Enter your firstname</target>
             </trans-unit>
+            <trans-unit id="order.form.errors.customerlastname" resname="order.form.errors.customerlastname">
+                <source>order.form.errors.customerlastname</source>
+                <target>Enter your lastname</target>
+            </trans-unit>
             <trans-unit id="order.form.errors.customerphone" resname="order.form.errors.customerphone">
                 <source>order.form.errors.customerphone</source>
                 <target>Enter your mobile phone number</target>

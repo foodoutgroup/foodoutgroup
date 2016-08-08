@@ -208,6 +208,7 @@ class DefaultController extends Controller
 
         $orderHash = $request->get('hash');
         $order = null;
+        $require_lastname = false;
 
         if (!empty($orderHash)) {
             $order = $orderService->getOrderByHash($orderHash);
@@ -273,6 +274,9 @@ class DefaultController extends Controller
         if (count($dishes) < 1) {
             $formErrors[] = 'order.form.errors.emptycart';
             $formHasErrors = true;
+        } else {
+            // search for alco inside the basket
+            $require_lastname = $this->getCartService()->isAlcoholInCart($dishes);
         }
 
         if ($formHasErrors) {
@@ -345,7 +349,8 @@ class DefaultController extends Controller
                         $user = $tmpUser;
                     }
                 } catch (\Exception $e) {
-                    // do nothing for now. Todo logging
+                    $this->get('logger')->error($e->getTraceAsString());
+                    $this->get('logger')->error($e->getMessage());
                 }
 
                 if (empty($user) || !$user->getId()) {
@@ -488,6 +493,7 @@ class DefaultController extends Controller
             'workingHoursForInterval' => $workingHoursForInterval,
             'workingDaysCount'        => $workingDaysCount,
             'isCallcenter'            => false,
+            'require_lastname'        => $require_lastname,
         ];
 
 
@@ -623,28 +629,36 @@ class DefaultController extends Controller
 
             if ($coupon) {
                 $applyDiscount = true;
+
+                if ($coupon->getIgnoreCartPrice()) {
+                    $noMinimumCart = true;
+                }
+
                 $freeDelivery = $coupon->getFreeDelivery();
 
-                if (!$freeDelivery) {
-                    $discountSize = $coupon->getDiscount();
-                    if (!empty($discountSize)) {
-                        $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
-                    } else {
-                        $discountSize = null;
-                        $discountInSum = true;
-                        $discountSum = $coupon->getDiscountSum();
-                    }
+                $discountSize = $coupon->getDiscount();
+                if (!empty($discountSize)) {
+                    $discountSum = $this->getCartService()->getTotalDiscount($list,$coupon->getDiscount());
+                } else {
+                    $discountSize = null;
+                    $discountInSum = true;
+                    $discountSum = $coupon->getDiscountSum();
+                }
+                $total_cart = $total_cart - $discountSum;
 
-                    $total_cart = $total_cart - $discountSum;
-                    if ($total_cart < 0) {
-                        if ($coupon->getFullOrderCovers()) {
-                            $deliveryTotal = $deliveryTotal + $total_cart;
-                            if ($deliveryTotal < 0) {
-                                $deliveryTotal = 0;
-                            }
+                if ($total_cart < 0) {
+                    if ($coupon->getFullOrderCovers()|| $coupon->getIncludeDelivery()) {
+                        $deliveryTotal = $deliveryTotal + $total_cart;
+                        if ($deliveryTotal < 0) {
+                            $deliveryTotal = 0;
+                            $freeDelivery = true;
                         }
-                        $total_cart = 0;
                     }
+                    $total_cart = 0;
+                }
+
+                if ($total_cart < 0) {
+                    $total_cart = 0;
                 }
             }
         } // Business client discount
@@ -657,7 +671,7 @@ class DefaultController extends Controller
                 $total_cart -= $discountSum;
             }
         }
-
+        $cartSumTotal = $total_cart;
         // Jei restorane galima tik atsiimti arba, jei zmogus rinkosi, kad jis atsiimas, arba jei yra uzsakymas ir fiksuotas atsiemimas vietoje - neskaiciuojam pristatymo
         if ($place->getDeliveryOptions() == Place::OPT_ONLY_PICKUP ||
             ($order != null && $order->getDeliveryType() == 'pickup')
@@ -668,15 +682,25 @@ class DefaultController extends Controller
             $hideDelivery = false;
         }
 
+        if(!isset($coupon)) {
+            $coupon = false;
+        }
+
         // Nemokamas pristatymas dideliam krepseliui
         $self_delivery = $place->getSelfDelivery();
         $left_sum = 0;
-        if ($enable_free_delivery_for_big_basket) {
+        if ($enable_free_delivery_for_big_basket || ($coupon && $coupon->getIgnoreCartPrice())) {
+            $minusDiscount = 0;
+            if($coupon && $coupon->getIgnoreCartPrice()) {
+                $minusDiscount = $cartSumTotal;
+            }
+
             // Jeigu musu logistika, tada taikom nemokamo pristatymo logika
             if ($self_delivery == 0 || $place->getId() == 32 && ($free_delivery_price = 50) && in_array(date('w'), [0, 6])) {
+
                 // Kiek liko iki nemokamo pristatymo
                 if ($free_delivery_price > $total_cart) {
-                    $left_sum = sprintf('%.2f', $free_delivery_price - $total_cart);
+                    $left_sum = sprintf('%.2f', $free_delivery_price - $total_cart - $minusDiscount);
                 }
                 // Krepselio suma pasieke nemokamo pristatymo suma
                 if ($left_sum == 0) {
@@ -685,29 +709,30 @@ class DefaultController extends Controller
             }
         }
 
+        $totalWIthDelivery = $freeDelivery ? $total_cart : ($total_cart + $deliveryTotal);
 
         $params = [
-            'list'                                => $list,
-            'place'                               => $place,
-            'total_cart'                          => sprintf('%.2f', $total_cart),
-            'total_with_delivery'                 => ($freeDelivery ? $total_cart : ($total_cart + $deliveryTotal)),
-            'total_delivery'                      => $deliveryTotal,
-            'inCart'                              => (int)$inCart,
-            'hide_delivery'                       => $hideDelivery,
-            'applyDiscount'                       => $applyDiscount,
-            'freeDelivery'                        => $freeDelivery,
-            'discountSize'                        => $discountSize,
-            'discountInSum'                       => $discountInSum,
-            'discountSum'                         => $discountSum,
-            'noMinimumCart'                       => $noMinimumCart,
-            'cart_from_min'                       => sprintf('%.2f', $cartFromMin),
-            'cart_from_max'                       => $cartFromMax,
-            'display_cart_interval'               => $displayCartInterval,
-            'takeAway'                            => $takeAway,
-            'isTodayNoOneWantsToWork'             => $isTodayNoOneWantsToWork,
-            'free_delivery_price'                 => $free_delivery_price,
-            'left_sum'                            => $left_sum,
-            'self_delivery'                       => $self_delivery,
+            'list'  => $list,
+            'place' => $place,
+            'total_cart' => sprintf('%.2f',$total_cart),
+            'total_with_delivery' => $totalWIthDelivery,
+            'total_delivery' => $deliveryTotal,
+            'inCart' => (int)$inCart,
+            'hide_delivery' => $hideDelivery,
+            'applyDiscount' => $applyDiscount,
+            'freeDelivery' => $freeDelivery,
+            'discountSize' => $discountSize,
+            'discountInSum' => $discountInSum,
+            'discountSum' => $discountSum,
+            'noMinimumCart' => $noMinimumCart,
+            'cart_from_min' => sprintf('%.2f',$cartFromMin),
+            'cart_from_max' => $cartFromMax,
+            'display_cart_interval' => $displayCartInterval,
+            'takeAway' => $takeAway,
+            'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
+            'free_delivery_price' => $free_delivery_price,
+            'left_sum' => $left_sum,
+            'self_delivery' => $self_delivery,
             'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
             'basket_errors'                       => $basketErrors
         ];
@@ -740,7 +765,7 @@ class DefaultController extends Controller
         $order = $this->get('food.order')->getOrderByHash($orderHash);
 
         return $this->render(
-            'lFoodCartBundle:Default:payment_wait.html.twig',
+            'FoodCartBundle:Default:payment_wait.html.twig',
             ['order' => $order]
         );
     }

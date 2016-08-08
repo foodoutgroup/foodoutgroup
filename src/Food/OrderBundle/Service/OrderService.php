@@ -502,6 +502,7 @@ class OrderService extends ContainerAware
             if ($this->getOrder()->getOrderFromNav() == false) {
                 if (!empty($recipient)) {
                     $smsService = $this->container->get('food.messages');
+                    $placeService = $this->container->get('food.places');
 
                     $sender = $this->container->getParameter('sms.sender');
 
@@ -530,6 +531,7 @@ class OrderService extends ContainerAware
                     }
 
                     $place = $this->getOrder()->getPlace();
+                    $zaval_time = $placeService->getZavalTime($place);
 
                     $text = $this->container->get('translator')
                         ->trans(
@@ -537,7 +539,7 @@ class OrderService extends ContainerAware
                             [
                                 'order_id'          => $this->getOrder()->getId(),
                                 'restourant_name'   => $placeName,
-                                'delivery_time'     => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $place->getDeliveryTime() : $place->getPickupTime()),
+                                'delivery_time'     => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($zaval_time ? $zaval_time . 'val.' : $place->getDeliveryTime()) : $place->getPickupTime()),
                                 'pre_delivery_time' => ($this->getOrder()->getDeliveryTime()->format('m-d H:i')),
 //                                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
                             ],
@@ -600,6 +602,7 @@ class OrderService extends ContainerAware
     private function _notifyOnAccepted()
     {
         $ml = $this->container->get('food.mailer');
+        $placeService = $this->container->get('food.places');
 
         // TODO pansu, kad naujame sablone sitie nebereikalingi
         /*$userName = "";
@@ -674,13 +677,15 @@ class OrderService extends ContainerAware
             }
         }
 
+        $zaval_time = $placeService->getZavalTime($this->getOrder()->getPlace());
+
         $variables = [
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'maisto_ruosejas'   => $this->getOrder()->getPlacePoint()->getAddress(),
             'uzsakymas'         => $this->getOrder()->getId(),
             'order_hash'        => $this->getOrder()->getOrderHash(),
             'adresas'           => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress() . ", " . $this->getOrder()->getAddressId()->getCity() : "--"),
-            'pristatymo_data'   => $this->getOrder()->getPlace()->getDeliveryTime(),
+            'pristatymo_data'   => ($zaval_time ? $zaval_time . ' val.' : $this->getOrder()->getPlace()->getDeliveryTime()),
             'total_sum'         => $this->getOrder()->getTotal(),
             'total_delivery'    => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
             'total_card'        => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
@@ -1234,10 +1239,7 @@ class OrderService extends ContainerAware
     public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null)
     {
         $this->createOrder($place, $placePoint, false, $orderDate);
-        $this->getOrder()->setDeliveryType(
-            ($selfDelivery ? 'pickup' : 'deliver')
-        )
-        ;
+        $this->getOrder()->setDeliveryType(($selfDelivery ? 'pickup' : 'deliver'));
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
 
@@ -1301,30 +1303,37 @@ class OrderService extends ContainerAware
         $discountSum = 0;
         $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
 
+        $includeDelivery = true;
         if (!empty($coupon) && $coupon instanceof Coupon) {
             $order = $this->getOrder();
             $order->setCoupon($coupon)
                 ->setCouponCode($coupon->getCode())
             ;
 
-            if (!$coupon->getFreeDelivery()) {
-                $discountSize = $coupon->getDiscount();
-                if (!empty($discountSize)) {
-                    $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
-                    $discountPercent = $discountSize;
-                } else {
-                    $discountSum = $coupon->getDiscountSum();
-                }
-                $order->setDiscountSize($discountSize)
-                    ->setDiscountSum($discountSum)
-                ;
-            } else {
-                $deliveryPrice = 0;
+            $discountSize = $coupon->getDiscount();
 
-                if ($order->getDiscountSum() == '') {
-                    $order->setDiscountSum(0);
-                }
+            if (!empty($discountSize)) {
+                $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+                $discountPercent = $discountSize;
+            } else {
+                $discountSum = $coupon->getDiscountSum();
             }
+
+            $order->setDiscountSize($discountSize)
+                ->setDiscountSum($discountSum)
+            ;
+
+            if ($coupon->getFreeDelivery()) {
+                $deliveryPrice = 0;
+            }
+
+
+            if ($coupon->getIgnoreCartPrice() && !$coupon->getFreeDelivery()
+                || !$coupon->getIncludeDelivery()
+            ) {
+                $includeDelivery = false;
+            }
+
         } elseif ($user->getIsBussinesClient()) {
             // Jeigu musu logistika, tada taikom fiksuota nuolaida
             if ($self_delivery == 0) {
@@ -1337,6 +1346,7 @@ class OrderService extends ContainerAware
                 ;
             }
         }
+
         /**
          * Na daugiau kintamuju jau nebesugalvojau :/
          */
@@ -1442,10 +1452,13 @@ class OrderService extends ContainerAware
             }
         }
 
-        if ($discountOverTotal > 0) {
-            $deliveryPrice = $deliveryPrice - $discountOverTotal;
-            if ($deliveryPrice < 0) {
-                $deliveryPrice = 0;
+        // jei ignoruoti pristatymo min krepseli bet yra pristatymas mokamas
+        if ($includeDelivery) {
+            if ($discountOverTotal > 0) {
+                $deliveryPrice = $deliveryPrice - $discountOverTotal;
+                if ($deliveryPrice < 0) {
+                    $deliveryPrice = 0;
+                }
             }
         }
 
@@ -3156,7 +3169,7 @@ class OrderService extends ContainerAware
                 $formErrors[] = 'general.coupon.only_pickup';
             } elseif ($takeAway && !$coupon->isAllowedForPickup()) {
                 $formErrors[] = 'general.coupon.only_delivery';
-            } elseif (!empty($user) && $user instanceof User && $user->getIsBussinesClient() && !$coupon->getB2b() == Coupon::B2B_NO) {
+            } elseif (!empty($user) && $user instanceof User && $user->getIsBussinesClient() && $coupon->getB2b() == Coupon::B2B_NO) {
                 $formErrors[] = 'general.coupon.not_for_business';
             } elseif ($coupon->getB2b() == Coupon::B2B_YES
                 && (empty($user) || !empty($user) && $user instanceof User && !$user->getIsBussinesClient())
@@ -3192,6 +3205,10 @@ class OrderService extends ContainerAware
             if ($coupon->getValidHourlyTo() && $coupon->getValidHourlyTo() < new \DateTime()) {
                 $formErrors[] = 'general.coupon.coupon_expired';
             }
+        }
+
+        if ($coupon && $coupon->getIgnoreCartPrice()) {
+            $noMinimumCart = true;
         }
 
 
@@ -3241,10 +3258,6 @@ class OrderService extends ContainerAware
                 )
                 ;
 
-                if ($coupon && $coupon->getIgnoreCartPrice()) {
-                    $noMinimumCart = true;
-                }
-
                 if ($total_cart < $cartMinimum && $noMinimumCart == false) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
@@ -3262,9 +3275,6 @@ class OrderService extends ContainerAware
                         'text'    => $itm->getDishId()->getName()
                     ];
                 }
-            }
-            if ($coupon && $coupon->getIgnoreCartPrice()) {
-                $noMinimumCart = true;
             }
 
             if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false) {
@@ -3370,6 +3380,14 @@ class OrderService extends ContainerAware
             $formErrors[] = 'order.form.errors.customerfirstname';
         }
 
+        // search for alco inside the basket
+        $foods = $this->getCartService()->getCartDishes($place);
+        $require_lastname = $this->getCartService()->isAlcoholInCart($foods);
+        if ($require_lastname) {
+            if (0 === strlen($request->get('customer-lastname'))) {
+                $formErrors[] = 'order.form.errors.customerlastname';
+            }
+        }
 
         if (0 === strlen($phone)) {
             $formErrors[] = 'order.form.errors.customerphone';

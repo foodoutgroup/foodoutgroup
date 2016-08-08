@@ -51,8 +51,8 @@
                             {% if currency_alternative %}
                                 <span class="euro">
                                 /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.discountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
+                                </span>
                             {% endif %}
-                        </span>
                         </div>
                     {% endif %}
 
@@ -116,7 +116,7 @@
             {% endif %}
         </div>
         {# Cart minimum sum #}
-        {% if hide_delivery == false and ((discountInSum and total_cart + discountSum < cart_from_min) or (total_cart < cart_from_min)) and noMinimumCart == false %}
+        {% if hide_delivery == false and ((discountInSum and total_cart + discountSum < cart_from_min) or (total_cart < cart_from_min)) and not noMinimumCart %}
             <div class="alert alert-warning text-center min-cart-message">
                 <span>{{ 'cart.didnt_reach_min_cart'|trans }}</span>
                 <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>
@@ -136,8 +136,9 @@
         {% endif %}
 
         {# Nemokamas pristatymas nuo 25 eur #}
-        {% if takeAway == false and enable_free_delivery_for_big_basket %}
-            {% if left_sum > 0 %}
+
+        {% if takeAway == false and enable_free_delivery_for_big_basket and not freeDelivery %}
+            {% if left_sum > 0 and self_delivery == 0 %}
                 <div class="alert alert-warning text-left left-to-free-message">
                     <span>{% trans with {'%left_sum%': left_sum} %}cart.left_to_free_delivery{% endtrans %}</span>
                 </div>
@@ -177,13 +178,17 @@
         {% endif %}
         {% if hide_delivery == false %}
         <div class="delivery-time tac">
-            {% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}
+            {% if places_service.getZavalTime(place) %}
+                {% trans %}cart.block.delivery_time{% endtrans %} {{ places_service.getZavalTime(place) }} val.
+            {% else %}
+                {% trans %}cart.block.delivery_time{% endtrans %} {{ place.deliveryTime }}
+            {% endif %}
             {% if place.deliveryTimeInfo is not empty %}
                 <span class="delivery-time-info-cart ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
             {% endif %}
         </div>
         {% endif %}
-        {% if hide_delivery == false or place.minimalOnSelfDel %}
+        {% if not hide_delivery or place.minimalOnSelfDel %}
         <div class="delivery-time tac">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br />
             {% if display_cart_interval %}
                 {% if cart_from_min == cart_from_max %}

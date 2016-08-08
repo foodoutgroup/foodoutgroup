@@ -40,6 +40,12 @@ class Param
     private $version;
 
     /**
+     * @var \Food\AppBundle\Entity\ParamLog $paramLog
+     * @ORM\OneToMany(targetEntity="\Food\AppBundle\Entity\ParamLog", mappedBy="param")
+     **/
+    private $paramLog;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -129,5 +135,45 @@ class Param
     public function getVersion()
     {
         return $this->version;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->paramLog = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add paramLog
+     *
+     * @param \Food\AppBundle\Entity\ParamLog $paramLog
+     * @return Param
+     */
+    public function addParamLog(\Food\AppBundle\Entity\ParamLog $paramLog)
+    {
+        $this->paramLog[] = $paramLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove paramLog
+     *
+     * @param \Food\AppBundle\Entity\ParamLog $paramLog
+     */
+    public function removeParamLog(\Food\AppBundle\Entity\ParamLog $paramLog)
+    {
+        $this->paramLog->removeElement($paramLog);
+    }
+
+    /**
+     * Get paramLog
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getParamLog()
+    {
+        return $this->paramLog;
     }
 }
