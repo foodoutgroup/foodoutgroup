@@ -597,28 +597,72 @@ class PlacesService extends ContainerAware
 
     /**
      * @param Place $place
-     *
      * @return bool|string
-     * @throws \Exception
      */
     public function getZavalTime(Place $place)
     {
-        if ($place->getSelfDelivery()) {
-            return false;
-        }
+        if (!$place->getSelfDelivery() && !$place->getNavision() && $place->getDeliveryOptions() != 'pickup') {
+            $miscService = $this->container->get('food.app.utils.misc');
+            $zaval_on = $miscService->getParam('zaval_on');
+            $zaval_time = $miscService->getParam('zaval_time');
 
-        if ($place->getDeliveryOptions() == 'pickup') {
-            return false;
-        }
-
-        $miscService = $this->container->get('food.app.utils.misc');
-        $zaval_on = $miscService->getParam('zaval_on');
-        $zaval_time = $miscService->getParam('zaval_time');
-
-        if ($zaval_on > 0 && $zaval_time > 0) {
-            return date('G,i', mktime(0, $zaval_time));
+            if ($zaval_on > 0 && $zaval_time > 0) {
+                $zaval_city_exists = $this->findZavalCity($place->getPoints(), $this->getZavalCities());
+                if ($zaval_city_exists) {
+                    return round($zaval_time / 60, 2);
+                }
+            }
         }
 
         return false;
+    }
+
+    /**
+     * @param PlacePoint[] $placePoints
+     * @param $zaval_cities
+     * @return bool
+     */
+    private function findZavalCity($placePoints, $zaval_cities)
+    {
+        $sessionLocation = $this->container->get('food.googlegis')->getLocationFromSession();
+        if (!empty($sessionLocation) && !empty($sessionLocation['city'])) {
+            $city = $sessionLocation['city'];
+            if (in_array($city, $zaval_cities)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        foreach ($placePoints as $placePoint) {
+            if (!in_array($placePoint->getCity(), $zaval_cities)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param null $current_city
+     * @return array|bool
+     */
+    public function getZavalCities($current_city = null)
+    {
+        $cities = [];
+        $miscService = $this->container->get('food.app.utils.misc');
+        $zaval_cities = $miscService->getParam('zaval_cities');
+        $cities_data = explode(',', $zaval_cities);
+        if (count($cities_data)) {
+            foreach ($cities_data as $city) {
+                $city = mb_strtolower($city, 'utf-8');
+                $city = mb_eregi_replace('[^a-ž]', ' ', $city);
+                $city = mb_eregi_replace('\s+', '', $city);
+                $cities[] = mb_convert_case(trim($city), MB_CASE_TITLE, 'utf-8') ;
+            }
+            if (!empty($current_city)) {
+                return in_array($current_city, $cities);
+            }
+        }
+        return $cities;
     }
 }

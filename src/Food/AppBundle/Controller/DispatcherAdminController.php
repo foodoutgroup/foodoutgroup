@@ -4,6 +4,7 @@ namespace Food\AppBundle\Controller;
 
 use Doctrine\ORM\OptimisticLockException;
 use Food\OrderBundle\Service\OrderService;
+use Food\PlacesBundle\Service\PlacesService;
 use libphonenumber\PhoneNumberUtil;
 use Sonata\AdminBundle\Controller\CRUDController as Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -226,6 +227,7 @@ class DispatcherAdminController extends Controller
     {
         try {
             $orderService = $this->get('food.order');
+            $placeService = $this->get('food.places');
             $orderService->getOrderById($orderId);
 
             if (!$orderService->getOrder()->getPreorder()) {
@@ -237,7 +239,10 @@ class DispatcherAdminController extends Controller
             $orderService->saveOrder();
 
             if (!$orderService->getOrder()->getPreorder() || $orderService->getOrder()->getPlace()->getNavision()) {
-                $orderService->informPlace(false);
+                $isZavalOn = $placeService->getZavalTime($orderService->getOrder()->getPlace());
+                if (!$isZavalOn) {
+                    $orderService->informPlace(false);
+                }
             }
 
             return new Response('OK');

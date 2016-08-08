@@ -64,6 +64,7 @@ class LocalBiller extends ContainerAware implements BillingInterface {
         }
 
         $orderService = $this->container->get('food.order');
+        $placeService = $this->container->get('food.places');
         $orderService->setOrder($order);
 
         $logger->alert('++ Parinktas atsiskaitymas atsiimamt - skipinam bilinga. Uzsakymo ID: '.$order->getId());
@@ -91,7 +92,10 @@ class LocalBiller extends ContainerAware implements BillingInterface {
         } else {
             // If pre order - do not inform (only if it is a NAV order - the NAV is responsible for pre)
             if ($order->getOrderStatus() != OrderService::$status_preorder || $order->getPlace()->getNavision()) {
-                $orderService->informPlace();
+                $isZavalOn = $placeService->getZavalTime($order->getPlace());
+                if (!$isZavalOn) {
+                    $orderService->informPlace();
+                }
             }
         }
 
