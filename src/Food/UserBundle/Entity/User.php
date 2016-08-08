@@ -203,6 +203,12 @@ class User extends BaseUser
      **/
     private $order;
 
+    /**
+     * @ORM\OneToMany(targetEntity="\Food\AppBundle\Entity\ParamLog", mappedBy="user")
+     * @ORM\JoinColumn(name="id", referencedColumnName="user_id")
+     **/
+    private $paramLog;
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
@@ -1079,5 +1085,38 @@ class User extends BaseUser
     public function getOrder()
     {
         return $this->order;
+    }
+
+    /**
+     * Add paramLog
+     *
+     * @param \Food\AppBundle\Entity\ParamLog $paramLog
+     * @return User
+     */
+    public function addParamLog(\Food\AppBundle\Entity\ParamLog $paramLog)
+    {
+        $this->paramLog[] = $paramLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove paramLog
+     *
+     * @param \Food\AppBundle\Entity\ParamLog $paramLog
+     */
+    public function removeParamLog(\Food\AppBundle\Entity\ParamLog $paramLog)
+    {
+        $this->paramLog->removeElement($paramLog);
+    }
+
+    /**
+     * Get paramLog
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getParamLog()
+    {
+        return $this->paramLog;
     }
 }

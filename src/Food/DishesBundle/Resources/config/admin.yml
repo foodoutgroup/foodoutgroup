@@ -419,6 +419,17 @@ services:
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.paramslog:
+                class: Food\AppBundle\Admin\ParamLogAdmin
+                tags:
+                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.paramslog" }
+                arguments:
+                    - ~
+                    - Food\AppBundle\Entity\ParamLog
+                    - ~
+                calls:
+                    - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.seorecords:
                 class: Food\AppBundle\Admin\SeoRecordAdmin
                 tags:

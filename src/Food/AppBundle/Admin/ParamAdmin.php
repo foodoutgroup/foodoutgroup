@@ -47,4 +47,44 @@ class ParamAdmin extends FoodAdmin
     {
         $collection->clearExcept(array('list'));
     }
+
+    /**
+     * Log create before inserting to database
+     *
+     * @inheritdoc
+     *
+     * @param \Food\AppBundle\Entity\Param $object
+     * @return mixed|void
+     */
+    public function prePersist($object)
+    {
+        $this->logParam($object);
+        parent::prePersist($object);
+    }
+
+    /**
+     * Log editing before inserting to database
+     * @inheritdoc
+     *
+     * @param \Food\AppBundle\Entity\Param $object
+     * @return mixed|void
+     */
+    public function preUpdate($object)
+    {
+        $this->logParam($object);
+        parent::preUpdate($object);
+    }
+
+    /**
+     * @param \Food\AppBundle\Entity\Param $object
+     * @return void
+     */
+    private function logParam($object)
+    {
+        $miscUtils = $this->getContainer()->get('food.app.utils.misc');
+        $dm = $this->getConfigurationPool()->getContainer()->get('doctrine')->getManager();
+        $uow = $dm->getUnitOfWork();
+        $original = $uow->getOriginalEntityData($object);
+        $miscUtils->logParamChange($object, $original['value']);
+    }
 }

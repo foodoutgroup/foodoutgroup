@@ -12,7 +12,8 @@ trait PaymentLogDecorator
                                         $cartService,
                                         $em,
                                         $navService,
-                                        $logger)
+                                        $logger,
+                                        $placeService)
     {
         // if order is already complete - cancel
         if ($order->getPaymentStatus() ==
@@ -35,7 +36,10 @@ trait PaymentLogDecorator
             $em->flush();
 
             // inform stuff
-            $orderService->informPlace();
+            $isZavalOn = $placeService->getZavalTime($order->getPlace());
+            if (!$isZavalOn) {
+                $orderService->informPlace();
+            }
             $orderService->deactivateCoupon();
 
             // log order data (if we have listeners)

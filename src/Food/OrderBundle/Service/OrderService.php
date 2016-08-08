@@ -501,6 +501,7 @@ class OrderService extends ContainerAware
             if ($this->getOrder()->getOrderFromNav() == false) {
                 if (!empty($recipient)) {
                     $smsService = $this->container->get('food.messages');
+                    $placeService = $this->container->get('food.places');
 
                     $sender = $this->container->getParameter('sms.sender');
 
@@ -529,6 +530,7 @@ class OrderService extends ContainerAware
                     }
 
                     $place = $this->getOrder()->getPlace();
+                    $zaval_time = $placeService->getZavalTime($place);
 
                     $text = $this->container->get('translator')
                         ->trans(
@@ -536,7 +538,7 @@ class OrderService extends ContainerAware
                             [
                                 'order_id'          => $this->getOrder()->getId(),
                                 'restourant_name'   => $placeName,
-                                'delivery_time'     => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $place->getDeliveryTime() : $place->getPickupTime()),
+                                'delivery_time'     => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($zaval_time ? $zaval_time . 'val.' : $place->getDeliveryTime()) : $place->getPickupTime()),
                                 'pre_delivery_time' => ($this->getOrder()->getDeliveryTime()->format('m-d H:i')),
 //                                'restourant_phone' => $this->getOrder()->getPlacePoint()->getPhone()
                             ],
@@ -599,6 +601,7 @@ class OrderService extends ContainerAware
     private function _notifyOnAccepted()
     {
         $ml = $this->container->get('food.mailer');
+        $placeService = $this->container->get('food.places');
 
         // TODO pansu, kad naujame sablone sitie nebereikalingi
         /*$userName = "";
@@ -673,13 +676,15 @@ class OrderService extends ContainerAware
             }
         }
 
+        $zaval_time = $placeService->getZavalTime($this->getOrder()->getPlace());
+
         $variables = [
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'maisto_ruosejas'   => $this->getOrder()->getPlacePoint()->getAddress(),
             'uzsakymas'         => $this->getOrder()->getId(),
             'order_hash'        => $this->getOrder()->getOrderHash(),
             'adresas'           => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress() . ", " . $this->getOrder()->getAddressId()->getCity() : "--"),
-            'pristatymo_data'   => $this->getOrder()->getPlace()->getDeliveryTime(),
+            'pristatymo_data'   => ($zaval_time ? $zaval_time . ' val.' : $this->getOrder()->getPlace()->getDeliveryTime()),
             'total_sum'         => $this->getOrder()->getTotal(),
             'total_delivery'    => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
             'total_card'        => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
@@ -950,7 +955,7 @@ class OrderService extends ContainerAware
 
         $message->addTo($financeEmail);
         // Issiimti
-        $message->addCc('mantas@foodout.lt');
+        //$message->addCc('mantas@foodout.lt');
 
         $driver = $order->getDriver();
         if (!empty($driver)) {

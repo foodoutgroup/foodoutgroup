@@ -12,6 +12,7 @@ trait ReturnDecorator
         // services
         $orderService = $this->get('food.order');
         $cartService = $this->get('food.cart');
+        $placeService = $this->get('food.places');
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
         $logger = $this->get('logger');
@@ -43,7 +44,8 @@ trait ReturnDecorator
                                     $cartService,
                                     $em,
                                     $navService,
-                                    $logger);
+                                    $logger,
+                                    $placeService);
         } else {
             // fail
             $this->logFailureAndFinish('Nordea banklink failed payment',
