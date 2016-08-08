@@ -139,7 +139,14 @@ trait OrderDataForNavDecorator
         if (empty($conn)) return false;
 
         $query = $this->constructInsertOrderQuery($data);
+        $logger = $this->container->get('logger');
+        $logger->debug('--- NAV INSERT DATA ---');
+        $logger->debug(var_export($data, true));
+        $logger->debug('--- NAV INSERT QUERY ---');
+        $logger->debug($query);
         $success = $conn->query($query);
+        $logger->debug('--- NAV INSERT RESULT ---');
+        $logger->debug(var_export($success, true));
 
         return false === $success ? false : true;
     }
@@ -151,7 +158,14 @@ trait OrderDataForNavDecorator
         if (empty($conn)) return false;
 
         $query = $this->constructUpdateOrderQuery($data);
+        $logger = $this->container->get('logger');
+        $logger->debug('--- NAV UPDATE DATA ---');
+        $logger->debug(var_export($data, true));
+        $logger->debug('--- NAV UPDATE QUERY ---');
+        $logger->debug($query);
         $success = $conn->query($query);
+        $logger->debug('--- NAV UPDATE RESULT ---');
+        $logger->debug(var_export($success, true));
 
         return false === $success ? false : true;
     }
