@@ -18,6 +18,7 @@ trait ReturnDecorator
         $seb = $this->container->get('food.seb_banklink');
         $dispatcher = $this->container->get('event_dispatcher');
         $cartService = $this->get('food.cart');
+        $placeService = $this->get('food.places');
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
         $logger = $this->get('logger');
@@ -34,7 +35,8 @@ trait ReturnDecorator
         // order
         try {
             $order = $em->getRepository('FoodOrderBundle:Order')
-                        ->find($orderId, LockMode::OPTIMISTIC);
+                ->find($orderId, LockMode::OPTIMISTIC)
+            ;
             $orderService->setOrder($order);
         } catch (\Exception $e) {
             return [$view, []];
@@ -59,34 +61,37 @@ trait ReturnDecorator
             if (SebService::WAITING_SERVICE == $service) {
                 // template
                 $view = 'FoodOrderBundle:Payments:' .
-                        'seb_banklink/waiting.html.twig';
+                    'seb_banklink/waiting.html.twig';
 
                 // processing
                 $this->logProcessingAndFinish('SEB banklink payment started',
-                                              $orderService,
-                                              $order,
-                                              $cartService);
+                    $orderService,
+                    $order,
+                    $cartService);
             } elseif (SebService::FAILURE_SERVICE == $service) {
                 // failure
                 $this->logFailureAndFinish('SEB banklink canceled payment',
-                                           $orderService,
-                                           $order);
+                    $orderService,
+                    $order);
             } elseif (SebService::SUCCESS_SERVICE == $service) {
                 // template
                 $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
                 // success
                 $this->logPaidAndFinish('SEB banklink billed payment',
-                                        $orderService,
-                                        $order,
-                                        $cartService,
-                                        $em,
-                                        $navService,
-                                        $logger);
+                    $orderService,
+                    $order,
+                    $cartService,
+                    $em,
+                    $navService,
+                    $logger,
+                    $placeService
+                );
             }
         }
 
         $data = ['order' => $order];
+
         return [$view, $data];
     }
 }

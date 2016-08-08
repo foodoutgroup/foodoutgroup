@@ -12,6 +12,7 @@ trait ReturnDecorator
         // services
         $orderService = $this->get('food.order');
         $cartService = $this->get('food.cart');
+        $placeService = $this->get('food.places');
         $gateway = $this->get('pirminis_credit_card_gateway');
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
@@ -19,7 +20,7 @@ trait ReturnDecorator
 
         // template
         $view = 'FoodOrderBundle:Payments:' .
-                'swedbank_gateway/order_not_found.html.twig';
+            'swedbank_gateway/order_not_found.html.twig';
 
         // get order
         $transactionId = $gateway->order_id('swedbank', $request);
@@ -32,7 +33,8 @@ trait ReturnDecorator
 
         try {
             $order = $em->getRepository('FoodOrderBundle:Order')
-                        ->find($orderId, LockMode::OPTIMISTIC);
+                ->find($orderId, LockMode::OPTIMISTIC)
+            ;
             $orderService->setOrder($order);
         } catch (\Exception $e) {
             return $this->render($view);
@@ -49,13 +51,15 @@ trait ReturnDecorator
                 $cartService,
                 $em,
                 $navService,
-                $logger);
+                $logger,
+                $placeService
+            );
 
             return $this->render($view, ['order' => $order]);
         }
 
         $url = $this->generateUrl('food_cart',
-                                  ['placeId' => $order->getPlace()->getId()]);
+            ['placeId' => $order->getPlace()->getId()]);
         $url .= '?hash=' . $order->getOrderHash();
 
         return $this->redirect($url);
