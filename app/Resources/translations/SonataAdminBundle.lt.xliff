@@ -2729,6 +2729,29 @@
                 <source>admin.param.value</source>
                 <target>Reikšmė</target>
             </trans-unit>
+
+            <!-- Params Log listas -->
+            <trans-unit id="admin.paramslog">
+                <source>admin.paramslog</source>
+                <target>Parametrų istorija</target>
+            </trans-unit>
+            <trans-unit id="admin.paramlog.user">
+                <source>admin.paramlog.user</source>
+                <target>Vartotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.paramlog.event_date">
+                <source>admin.paramlog.event_date</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="admin.paramlog.old_value">
+                <source>admin.paramlog.old_value</source>
+                <target>Sena reikšmė</target>
+            </trans-unit>
+            <trans-unit id="admin.paramlog.new_value">
+                <source>admin.paramlog.new_value</source>
+                <target>Nauja reikšmė</target>
+            </trans-unit>
+
             <!-- SEO -->
             <trans-unit id="admin.seorecord">
                 <source>admin.seorecord</source>
