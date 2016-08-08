@@ -14,13 +14,14 @@ trait ReturnDecorator
         $orderService = $this->get('food.order');
         $gateway = $this->get('pirminis_banklink_gateway');
         $cartService = $this->get('food.cart');
+        $placeService = $this->get('food.places');
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
         $logger = $this->get('logger');
 
         // default template
         $view = 'FoodOrderBundle:Payments:' .
-                'swedbank_gateway/order_not_found.html.twig';
+            'swedbank_gateway/order_not_found.html.twig';
 
         // get order
         $transactionId = $gateway->order_id('swedbank', $request);
@@ -33,7 +34,8 @@ trait ReturnDecorator
 
         try {
             $order = $em->getRepository('FoodOrderBundle:Order')
-                        ->find($orderId, LockMode::OPTIMISTIC);
+                ->find($orderId, LockMode::OPTIMISTIC)
+            ;
             $orderService->setOrder($order);
         } catch (\Exception $e) {
             return $this->render($view);
@@ -44,33 +46,36 @@ trait ReturnDecorator
 
         // is order paid? let's find out!
         if ((!$isEvent &&
-             $gateway->is_authorized('swedbank', $request)) ||
+                $gateway->is_authorized('swedbank', $request)) ||
             ($isEvent &&
-             $gateway->is_event_authorized('swedbank', $request))
+                $gateway->is_event_authorized('swedbank', $request))
         ) {
             $this->logPaidAndFinish('Swedbank Banklink Gateway billed payment',
-                                    $orderService,
-                                    $order,
-                                    $cartService,
-                                    $em,
-                                    $navService,
-                                    $logger);
+                $orderService,
+                $order,
+                $cartService,
+                $em,
+                $navService,
+                $logger,
+                $placeService
+            );
 
             if ($isEvent) {
                 return new Response('<Response>OK</Response>');
             } else {
                 $view = 'FoodCartBundle:Default:payment_success.html.twig';
+
                 return $this->render($view, ['order' => $order]);
             }
-        // is order payment accepted and is currently processing?
+            // is order payment accepted and is currently processing?
         } elseif ((!$isEvent &&
-                   $gateway->requires_investigation('swedbank', $request)) ||
-                  ($isEvent &&
-                   $gateway->event_requires_investigation('swedbank', $request))
+                $gateway->requires_investigation('swedbank', $request)) ||
+            ($isEvent &&
+                $gateway->event_requires_investigation('swedbank', $request))
         ) {
             // log
             $logger->alert("==========================\nprocessing payment action for Swedbank Gateway Banklink came\n====================================\n");
-            $logger->alert("Request data: ".var_export($request->query->all(), true));
+            $logger->alert("Request data: " . var_export($request->query->all(), true));
             $logger->alert('-----------------------------------------------------------');
 
             // log
@@ -86,18 +91,19 @@ trait ReturnDecorator
                 return new Response('<Response>OK</Response>');
             } else {
                 $view = 'FoodOrderBundle:Payments:' .
-                        'swedbank_gateway/processing.html.twig';
+                    'swedbank_gateway/processing.html.twig';
+
                 return $this->render($view, ['order' => $order]);
             }
-        // is payment cancelled due to reasons?
+            // is payment cancelled due to reasons?
         } elseif ((!$isEvent &&
-                   $gateway->is_cancelled('swedbank', $request)) ||
-                  ($isEvent &&
-                   $gateway->is_event_cancelled('swedbank', $request))
+                $gateway->is_cancelled('swedbank', $request)) ||
+            ($isEvent &&
+                $gateway->is_event_cancelled('swedbank', $request))
         ) {
             // log
             $logger->alert("==========================\ncancel payment action for Swedbank Gateway Banklink came\n====================================\n");
-            $logger->alert("Request data: ".var_export($request->query->all(), true));
+            $logger->alert("Request data: " . var_export($request->query->all(), true));
             $logger->alert('-----------------------------------------------------------');
 
             // log
@@ -119,27 +125,32 @@ trait ReturnDecorator
 
                 return $this->redirect($url);
             }
-        // did we get error from the bank? :(
+            // did we get error from the bank? :(
         } elseif ($gateway->is_error('swedbank', $request)) {
             $view = 'FoodOrderBundle:Payments:' .
-                    'swedbank_gateway/error.html.twig';
+                'swedbank_gateway/error.html.twig';
+
             return $this->render($view, ['order' => $order]);
-        // was there a communication error with/in bank?
+            // was there a communication error with/in bank?
         } elseif ($gateway->communication_error('swedbank', $request)) {
             $view = 'FoodOrderBundle:Payments:' .
-                    'swedbank_gateway/communication_error.html.twig';
+                'swedbank_gateway/communication_error.html.twig';
+
             return $this->render($view, ['order' => $order]);
         } else {
             $view = 'FoodOrderBundle:Payments:' .
-                    'swedbank_gateway/something_wrong.html.twig';
+                'swedbank_gateway/something_wrong.html.twig';
         }
 
         return $this->render($view, ['order' => $order]);
     }
 
     /**
-     * TODO Laikinai viskas cia - po to iskelinesime is Jonelio personal repos ir viska nafig refaktorinsim nes cia ne darbas...
+     * TODO Laikinai viskas cia - po to iskelinesime is Jonelio personal repos ir viska nafig refaktorinsim nes cia ne
+     * darbas...
+     *
      * @param Request $request
+     *
      * @return mixed
      * @throws \Exception
      */
@@ -148,6 +159,7 @@ trait ReturnDecorator
         // services
         $orderService = $this->get('food.order');
         $cartService = $this->get('food.cart');
+        $placeService = $this->get('food.places');
         $navService = $this->get('food.nav');
         $em = $this->get('doctrine')->getManager();
         $logger = $this->get('logger');
@@ -155,7 +167,7 @@ trait ReturnDecorator
         $dom = simplexml_load_string($request->getContent());
 
         if (!$dom instanceof \SimpleXMLElement) {
-            $logger->error('Not an XML is given in Swedbank callback handler. What we got is: '.$request->getContent());
+            $logger->error('Not an XML is given in Swedbank callback handler. What we got is: ' . $request->getContent());
         }
 
         // get order
@@ -187,10 +199,11 @@ trait ReturnDecorator
 
         try {
             $order = $em->getRepository('FoodOrderBundle:Order')
-                        ->find($orderId, LockMode::OPTIMISTIC);
+                ->find($orderId, LockMode::OPTIMISTIC)
+            ;
             $orderService->setOrder($order);
         } catch (\Exception $e) {
-            $logger->error("Error during swedbank callback: ".$e->getMessage());
+            $logger->error("Error during swedbank callback: " . $e->getMessage());
             throw $e;
         }
 
@@ -200,19 +213,21 @@ trait ReturnDecorator
         // is order paid? let's find out!
         if ($authorizeStatus == 'AUTHORISED') {
             $this->logPaidAndFinish('Swedbank Banklink Gateway billed payment',
-                                    $orderService,
-                                    $order,
-                                    $cartService,
-                                    $em,
-                                    $navService,
-                                    $logger);
+                $orderService,
+                $order,
+                $cartService,
+                $em,
+                $navService,
+                $logger,
+                $placeService
+            );
 
             return new Response('<Response>OK</Response>');
-        // is order payment accepted and is currently processing?
+            // is order payment accepted and is currently processing?
         } elseif ($authorizeStatus == 'REQUIRES_INVESTIGATION') {
             // log
             $logger->alert("==========================\nprocessing payment action for Swedbank Gateway Banklink came\n====================================\n");
-            $logger->alert("Request data: ".var_export($request->query->all(), true));
+            $logger->alert("Request data: " . var_export($request->query->all(), true));
             $logger->alert('-----------------------------------------------------------');
 
             // log
@@ -225,11 +240,11 @@ trait ReturnDecorator
                 $cartService);
 
             return new Response('<Response>OK</Response>');
-        // is payment cancelled due to reasons?
+            // is payment cancelled due to reasons?
         } elseif ($authorizeStatus == 'CANCELLED') {
             // log
             $logger->alert("==========================\ncancel payment action for Swedbank Gateway Banklink came\n====================================\n");
-            $logger->alert("Request data: ".var_export($request->query->all(), true));
+            $logger->alert("Request data: " . var_export($request->query->all(), true));
             $logger->alert('-----------------------------------------------------------');
 
             // log
@@ -242,13 +257,13 @@ trait ReturnDecorator
                 $logger);
 
             return new Response('<Response>OK</Response>');
-        // did we get error from the bank? :(
+            // did we get error from the bank? :(
 //        } elseif ($gateway->is_error('swedbank', $request)) {
             // TODO handling
 //            $view = 'FoodOrderBundle:Payments:' .
 //                    'swedbank_gateway/error.html.twig';
 //            return $this->render($view, ['order' => $order]);
-        // was there a communication error with/in bank?
+            // was there a communication error with/in bank?
 //        } elseif ($gateway->communication_error('swedbank', $request)) {
             // TODO handling
 //            $view = 'FoodOrderBundle:Payments:' .
