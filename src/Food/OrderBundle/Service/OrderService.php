@@ -3374,6 +3374,10 @@ class OrderService extends ContainerAware
                         // Double check the place point for corrup detections
                         $pointForPlace = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData);
                         if (!$pointForPlace) {
+                            $this->container->get('logger')->warning('--- Not found near place point ---');
+                            $this->container->get('logger')->warning('Place id: '.$place->getId());
+                            $this->container->get('logger')->warning('Location data: '.var_export($locationData, true));
+
                             // no working placepoint for this restourant
                             $formErrors[] = 'order.form.errors.wrong_point_for_address';
                         } else {
