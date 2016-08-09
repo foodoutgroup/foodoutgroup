@@ -242,6 +242,12 @@ class CouponGenerator
      */
     private $ignoreCartPrice = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="include_delivery", type="boolean", nullable=true)
+     */
+    private $includeDelivery = false;
 
     /**
      * Constructor
@@ -1026,4 +1032,28 @@ class CouponGenerator
     {
         return $this->b2b;
     }
+
+    /**
+     * Set includeDelivery
+     *
+     * @param boolean $includeDelivery
+     * @return Coupon
+     */
+    public function setIncludeDelivery($includeDelivery)
+    {
+        $this->includeDelivery = $includeDelivery;
+
+        return $this;
+    }
+
+    /**
+     * Get includeDelivery
+     *
+     * @return boolean
+     */
+    public function getIncludeDelivery()
+    {
+        return $this->includeDelivery;
+    }
+
 }
