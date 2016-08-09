@@ -524,6 +524,10 @@ class PlacesService extends ContainerAware
                 $endMin = 0;
             }
 
+            if (!is_numeric($startHour) || !is_numeric($endHour)) {
+                continue;
+            }
+
             if ($endHour < $startHour || $endHour == $startHour && $endMin < $startMin) {
                 $endHour = 24;
                 $endMin = 0;
