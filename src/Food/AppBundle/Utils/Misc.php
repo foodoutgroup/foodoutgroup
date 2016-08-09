@@ -6,6 +6,7 @@ use Food\AppBundle\Entity\Param;
 use Food\AppBundle\Traits;
 use Food\OrderBundle\Entity\Order;
 use Food\UserBundle\Entity\User;
+use Food\AppBundle\Entity\ParamLog;
 
 class Misc
 {
@@ -244,9 +245,30 @@ class Misc
         }
 
         $parameter->setValue($value);
+        $this->logParamChange($parameter, $value);
 
         $em->persist($parameter);
         $em->flush();
+    }
+
+    /**
+     * @param Param $param
+     * @param $oldValue
+     */
+    public function logParamChange($param = null, $oldValue)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        $user = $this->getContainer()->get('security.context')->getToken()->getUser();
+
+        $log = new ParamLog();
+        $log->setParam($param)
+            ->setEventDate(new \DateTime('now'))
+            ->setOldValue($oldValue)
+            ->setNewValue($param->getValue())
+            ->setUser($user)
+        ;
+
+        $em->persist($log);
     }
 
     /**

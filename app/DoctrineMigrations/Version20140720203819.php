@@ -14,7 +14,9 @@ class Version20140720203819 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
-        
+        $schemaManager = $this->connection->getSchemaManager();
+        $this->skipIf($schemaManager->tablesExist(array('city_streets')));
+
         $this->addSql("CREATE TABLE city_streets (id INT AUTO_INCREMENT NOT NULL, street VARCHAR(164) NOT NULL, city VARCHAR(128) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB");
         // Import the data
         $this->addSql("INSERT INTO city_streets (id, street, city) VALUES
@@ -4020,7 +4022,7 @@ class Version20140720203819 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
-        
+
         $this->addSql("DROP TABLE city_streets");
     }
 }

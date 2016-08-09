@@ -43,7 +43,7 @@ trait OrderDataForNavDecorator
                                     $this->cleanChars($user->getFirstname()->val('')),
                                     $this->cleanChars($user->getLastname()->val('')));
         $data->isDelivered = $order->getOrderStatus()->val('') ==
-                             $orderService::$status_completed ? 'yes' : 'no';
+                             $orderService::$status_completed || $orderService::$status_canceled_produced ? 'yes' : 'no';
         $data->deliveryAddress = $this->cleanChars($address->getAddress()->val(''));
         $data->city = $address->getCity()->val('');
         $data->country = '';

@@ -3,6 +3,8 @@ namespace Food\DishesBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Food\DishesBundle\Entity\Place;
+use Food\DishesBundle\Entity\PlacePoint;
+use Food\DishesBundle\Entity\PlacePointWorkTime;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -33,11 +35,18 @@ class PlaceAdmin extends FoodAdmin
             $options['help'] = '<img src="/' . $pl->getWebPathThumb() . '" />';
         }
 
+        $trans = $this->getContainer()->get('translator');
+
         $deliveryOptionChoices = array(
-            Place::OPT_DELIVERY_AND_PICKUP => 'admin.place.delivery_option.delivery_and_pickup',
-            Place::OPT_ONLY_DELIVERY => 'admin.place.delivery_option.delivery',
-            Place::OPT_ONLY_PICKUP => 'admin.place.delivery_option.pickup',
+            Place::OPT_DELIVERY_AND_PICKUP => $trans->trans('admin.place.delivery_option.delivery_and_pickup'),
+            Place::OPT_ONLY_DELIVERY => $trans->trans('admin.place.delivery_option.delivery'),
+            Place::OPT_ONLY_PICKUP => $trans->trans('admin.place.delivery_option.pickup'),
         );
+
+        $alcoholRules = array('label' => 'admin.place.alcohol_rules', 'required' => false);
+        if (!$this->getContainer()->getParameter('alcohol_allowed')) {
+            $alcoholRules['display'] = false;
+        }
 
         $formMapper
             ->add('name', 'text', array('label' => 'admin.place.name'))
@@ -49,10 +58,15 @@ class PlaceAdmin extends FoodAdmin
                     'fields' => array(
                         'slogan' => array('label' => 'admin.place.slogan', 'required' => false,),
                         'description' => array('label' => 'admin.place.description', 'required' => true,),
-                        'alcoholRules' => array('label' => 'admin.place.alcohol_rules', 'required' => false,),
+                        'alcoholRules' => $alcoholRules,
                 )
-            ))
-            ->add('chain', null, array('label' => 'admin.place.chain', 'required' => false,))
+            ));
+
+        if ($this->getContainer()->getParameter('place_slug_manual')) {
+            $formMapper->add('slug', null, array('required' => true));
+        }
+
+        $formMapper->add('chain', null, array('label' => 'admin.place.chain', 'required' => false,))
             ->add('navision', 'checkbox', array('label' => 'admin.place.navision', 'required' => false,))
             ->add('kitchens', null, array(
                 'query_builder' => $kitchenQuery,
@@ -60,8 +74,8 @@ class PlaceAdmin extends FoodAdmin
                 'label' => 'admin.place.kitchens')
             )
             ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
-            ->add('showNotification', 'checkbox', array('label' => 'Show notification', 'required' => false,))
-            ->add('notificationContent', null, array('label' => 'Notification content', 'attr' => array('class' => 'ckeditor_custom')))
+            ->add('showNotification', 'checkbox', array('label' => 'admin.place.show_notification', 'required' => false,))
+            ->add('notificationContent', null, array('label' => 'admin.place.notification_content', 'attr' => array('class' => 'ckeditor_custom')))
             ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
             ->add('recommended', 'checkbox', array('label' => 'admin.place.recommended', 'required' => false,))
             ->add('top', 'checkbox', array('label' => 'TOP', 'required' => false,))
@@ -101,7 +115,8 @@ class PlaceAdmin extends FoodAdmin
                 array(
                     //'by_reference' => false,
                     'max_length' => 2,
-                    'label' => 'admin.place_points'
+                    'label' => 'admin.place_points',
+                    'btn_add' => $this->getContainer()->get('translator')->trans('link_action_create_override', array(), 'SonataAdminBundle')
                 ),
                 array(
                     'edit' => 'inline',
@@ -192,6 +207,7 @@ class PlaceAdmin extends FoodAdmin
 
     /**
      * @param \Food\DishesBundle\Entity\Place $object
+     * @return void
      */
     public function preUpdate($object)
     {
@@ -212,7 +228,7 @@ class PlaceAdmin extends FoodAdmin
     {
         foreach ($object->getPoints() as $point) {
             $point->setPlace($object);
-            $this->_fixExtendedWorkTime($point);
+            $this->_fixWorkTime($point);
             $cAt = $point->getCreatedAt();
             if (empty($cAt)) {
                 $point->setCreatedAt(new \DateTime('now'));
@@ -227,23 +243,76 @@ class PlaceAdmin extends FoodAdmin
     /**
      * @param \Food\DishesBundle\Entity\PlacePoint $object
      */
-    private function _fixExtendedWorkTime($object)
-    {
-        for($i = 1; $i<=7; $i++) {
-            $wt = explode(":", $object->{'getWd'.$i.'End'}());
-            $val = $object->{'getWd'.$i.'End'}();
-            if (sizeof($wt) == 2) {
-                if ($wt[0] <= 6) {
-                    $wt[0] = $wt[0] + 24;
-                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
-                } else {
-                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
+    private function _fixWorkTime(PlacePoint $object) {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        foreach ($object->getWorkTimes() as $workTime) {
+            $em->remove($workTime);
+        }
+        $em->flush();
+
+        for ($i = 1; $i <= 7; $i++) {
+            $workTime = $object->{'getWd'.$i}();
+            $intervals = explode(' ', $workTime);
+            foreach ($intervals as $interval) {
+                if (strpos($interval, '-') === false) {
+                    continue;
                 }
-            } else {
-                $object->{'setWd'.$i.'EndLong'}($val);
+                list($start, $end) = explode('-', $interval);
+                if (strpos($start, ':') !== false) {
+                    list($startHour, $startMin) = explode(':', $start);
+                } else {
+                    $startHour = $start;
+                    $startMin = 0;
+                }
+
+                if (strpos($end, ':') !== false) {
+                    list($endHour, $endMin) = explode(':', $end);
+                } else {
+                    $endHour = $end;
+                    $endMin = 0;
+                }
+
+                // if start time is later thant end time, then we should split it
+                if ($endHour < $startHour || $endHour == $startHour && $endMin < $startMin) {
+                    $ppwt = new PlacePointWorkTime();
+                    $ppwt->setPlacePoint($object)
+                        ->setWeekDay($i)
+                        ->setStartHour($startHour)
+                        ->setStartMin($startMin)
+                        ->setEndHour(0)
+                        ->setEndMin(0);
+
+                    $em->persist($ppwt);
+
+                    // 00:00 - 00:00 must be excluded
+                    if ($endHour != 0 || $endMin != 0) {
+                        $ppwt = new PlacePointWorkTime();
+                        $ppwt->setPlacePoint($object)
+                            ->setWeekDay($i < 7 ? $i + 1 : 1)
+                            ->setStartHour(0)
+                            ->setStartMin(0)
+                            ->setEndHour($endHour)
+                            ->setEndMin($endMin);
+
+                        $em->persist($ppwt);
+                    }
+                } else {
+                    $ppwt = new PlacePointWorkTime();
+                    $ppwt->setPlacePoint($object)
+                        ->setWeekDay($i)
+                        ->setStartHour($startHour)
+                        ->setStartMin($startMin)
+                        ->setEndHour($endHour)
+                        ->setEndMin($endMin);
+
+                    $em->persist($ppwt);
+                }
             }
         }
+
+        $em->flush();
     }
+
     /**
      * @param \Food\DishesBundle\Entity\Place $object
      */
@@ -337,6 +406,7 @@ class PlaceAdmin extends FoodAdmin
 
     /**
      * @param \Food\DishesBundle\Entity\Place $object
+     * @return void
      */
     public function postPersist($object)
     {
@@ -345,11 +415,68 @@ class PlaceAdmin extends FoodAdmin
 
     /**
      * @param \Food\DishesBundle\Entity\Place $object
+     * @return void
      */
     public function postUpdate($object)
     {
-        $this->fixSlugs($object);
-        $this->synchDaPlacePoints($object);
+        if ($object->getDeletedAt() == null) {
+            $this->fixSlugs($object);
+            $this->synchDaPlacePoints($object);
+        } else {
+            // find and soft-delete other stuff
+            $em = $this->getContainer()->get('doctrine')->getManager();
+            $dishes = $object->getDishes();
+            if (count($dishes) > 0) {
+                foreach ($dishes as $dish) {
+                    $dish->setDeletedAt(new \DateTime('NOW'));
+                    $em->persist($dish);
+
+                    $dish_options = $dish->getOptions();
+                    if (count($dishes) > 0) {
+                        foreach ($dish_options as $option) {
+                            $option->setDeletedAt(new \DateTime('NOW'));
+                            $em->persist($option);
+                        }
+                    }
+                }
+                $em->flush();
+            }
+
+            $categories = $object->getCategories();
+            if (count($categories) > 0) {
+                foreach ($categories as $category) {
+                    $category->setDeletedAt(new \DateTime('NOW'));
+                    $em->persist($category);
+                }
+                $em->flush();
+            }
+
+            $reviews = $object->getReviews();
+            if (count($reviews) > 0) {
+                foreach ($reviews as $review) {
+                    $review->setDeletedAt(new \DateTime('NOW'));
+                    $em->persist($review);
+                }
+                $em->flush();
+            }
+
+            $place_points = $object->getPoints();
+            if (count($place_points) > 0) {
+                foreach ($place_points as $point) {
+                    $point->setDeletedAt(new \DateTime('NOW'));
+                    $em->persist($point);
+
+                    $point_zones = $point->getZones();
+                    if (count($point_zones) > 0) {
+                        foreach ($point_zones as $zone) {
+                            $zone->setDeletedAt(new \DateTime('NOW'));
+                            $em->persist($zone);
+                        }
+                    }
+                }
+                $em->flush();
+            }
+        }
     }
 
     /**

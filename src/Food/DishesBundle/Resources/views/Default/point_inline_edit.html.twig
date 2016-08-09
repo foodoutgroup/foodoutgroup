@@ -47,7 +47,7 @@ file that was distributed with this source code.
                                         {% if (field_name|slice(0,2)!="wd") and field_name=="address" %}
                                             <th></th>
                                         {% else %}
-                                            {% if (field_name == "wd1_start") %}
+                                            {% if (field_name == "wd1") %}
                                                 <th>{{ 'admin.place.point.weekdays_worktime'|trans }}</th>
                                             {% endif %}
                                         {% endif %}
@@ -136,34 +136,30 @@ file that was distributed with this source code.
                                         </table>
                                     </td>
                                     <td>
-                                        <table class="table table-striped table-bordered table-condensed" style="width: auto;">
-                                        {% for field_name, nested_field in nested_group_field.children %}
-                                            {% if field_name|slice(0,2)=="wd" %}
-                                                {% if field_name|slice(4) == "start" %}
+                                        <table class="table table-striped table-bordered table-condensed">
+                                            {% for field_name, nested_field in nested_group_field.children %}
+                                                {% if field_name|slice(0,2)=="wd" %}
                                                     <tr>
                                                         <td>
                                                             {{ ('admin.place.point.weekday_trans' ~  field_name|slice(2,1))|trans }}
                                                         </td>
-                                                {% endif %}
-                                                <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group{% if nested_field.vars.errors|length > 0 %} error{% endif %}">
-                                                    {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
-                                                        {{ form_widget(nested_field) }}
+                                                        <td class="sonata-ba-td-{{ id }}-{{ field_name  }} control-group{% if nested_field.vars.errors|length > 0 %} error{% endif %}">
+                                                            {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                                                                {{ form_widget(nested_field, {'attr': {'style': 'width: 100%'} }) }}
 
-                                                        {% set dummy = nested_group_field.setrendered %}
-                                                    {% else %}
-                                                        {{ form_widget(nested_field) }}
-                                                    {% endif %}
-                                                    {% if nested_field.vars.errors|length > 0 %}
-                                                        <div class="help-inline sonata-ba-field-error-messages">
-                                                            {{ form_errors(nested_field) }}
-                                                        </div>
-                                                    {% endif %}
-                                                </td>
-                                                {% if field_name|slice(4) == "end" %}
+                                                                {% set dummy = nested_group_field.setrendered %}
+                                                            {% else %}
+                                                                {{ form_widget(nested_field, {'attr': {'style': 'width: 100%'} }) }}
+                                                            {% endif %}
+                                                            {% if nested_field.vars.errors|length > 0 %}
+                                                                <div class="help-inline sonata-ba-field-error-messages">
+                                                                    {{ form_errors(nested_field) }}
+                                                                </div>
+                                                            {% endif %}
+                                                        </td>
                                                     </tr>
                                                 {% endif %}
-                                            {% endif %}
-                                        {% endfor %}
+                                            {% endfor %}
                                         </table>
                                     </td>
                                 </tr>

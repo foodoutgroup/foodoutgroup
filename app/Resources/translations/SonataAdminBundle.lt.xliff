@@ -1569,6 +1569,10 @@
                 <source>admin.dispatcher.client_contacted</source>
                 <target>Susisiekta su klientu</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.restaurant_contacted">
+                <source>admin.dispatcher.restaurant_contacted</source>
+                <target>Susisiekta su restoranu</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.problem_solved">
                 <source>admin.dispatcher.problem_solved</source>
                 <target>Išspręsta</target>
@@ -1668,6 +1672,10 @@
             <trans-unit id="admin.dispatcher.order_status.nav_problems">
                 <source>admin.dispatcher.order_status.nav_problems</source>
                 <target>Navision problemos</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.order_status.canceled_produced">
+                <source>admin.dispatcher.order_status.canceled_produced</source>
+                <target>Atšauktas pagamintas</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.order_status_title">
                 <source>admin.dispatcher.order_status_title</source>
@@ -2729,6 +2737,29 @@
                 <source>admin.param.value</source>
                 <target>Reikšmė</target>
             </trans-unit>
+
+            <!-- Params Log listas -->
+            <trans-unit id="admin.paramslog">
+                <source>admin.paramslog</source>
+                <target>Parametrų istorija</target>
+            </trans-unit>
+            <trans-unit id="admin.paramlog.user">
+                <source>admin.paramlog.user</source>
+                <target>Vartotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.paramlog.event_date">
+                <source>admin.paramlog.event_date</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="admin.paramlog.old_value">
+                <source>admin.paramlog.old_value</source>
+                <target>Sena reikšmė</target>
+            </trans-unit>
+            <trans-unit id="admin.paramlog.new_value">
+                <source>admin.paramlog.new_value</source>
+                <target>Nauja reikšmė</target>
+            </trans-unit>
+
             <!-- SEO -->
             <trans-unit id="admin.seorecord">
                 <source>admin.seorecord</source>

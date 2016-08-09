@@ -39,20 +39,13 @@ class PlacePointFullAdmin extends FoodAdmin
             ->add('allowCard', null, array('label' => 'admin.point.allow_card', 'required' => false))
             ->add('useExternalLogistics', null, array('label' => 'admin.point.use_external_logistics', 'required' => false))
             ->with('admin.point.work_time')
-            ->add('wd1_start', 'text', array('label' => 'admin.point.wd1_start'))
-            ->add('wd1_end', 'text', array('label' => 'admin.point.wd_end'))
-            ->add('wd2_start', 'text', array('label' => 'admin.point.wd2_start'))
-            ->add('wd2_end', 'text', array('label' => 'admin.point.wd_end'))
-            ->add('wd3_start', 'text', array('label' => 'admin.point.wd3_start'))
-            ->add('wd3_end', 'text', array('label' => 'admin.point.wd_end'))
-            ->add('wd4_start', 'text', array('label' => 'admin.point.wd4_start'))
-            ->add('wd4_end', 'text', array('label' => 'admin.point.wd_end'))
-            ->add('wd5_start', 'text', array('label' => 'admin.point.wd5_start'))
-            ->add('wd5_end', 'text', array('label' => 'admin.point.wd_end'))
-            ->add('wd6_start', 'text', array('label' => 'admin.point.wd6_start'))
-            ->add('wd6_end', 'text', array('label' => 'admin.point.wd_end'))
-            ->add('wd7_start', 'text', array('label' => 'admin.point.wd7_start'))
-            ->add('wd7_end', 'text', array('label' => 'admin.point.wd_end'))
+            ->add('wd1', 'text', array('label' => 'admin.point.wd1'))
+            ->add('wd2', 'text', array('label' => 'admin.point.wd2'))
+            ->add('wd3', 'text', array('label' => 'admin.point.wd3'))
+            ->add('wd4', 'text', array('label' => 'admin.point.wd4'))
+            ->add('wd5', 'text', array('label' => 'admin.point.wd5'))
+            ->add('wd6', 'text', array('label' => 'admin.point.wd6'))
+            ->add('wd7', 'text', array('label' => 'admin.point.wd7'))
 
             ->end()
         ;
@@ -83,43 +76,5 @@ class PlacePointFullAdmin extends FoodAdmin
                 'label' => 'admin.actions'
             ))
         ;
-    }
-
-    /**
-     * @param \Food\DishesBundle\Entity\PlacePoint $object
-     * @return mixed|void
-     */
-    public function prePersist($object)
-    {
-        $this->_fixExtendedWorkTime($object);
-    }
-
-    /**
-     * @param \Food\DishesBundle\Entity\PlacePoint $object
-     */
-    public function preUpdate($object)
-    {
-        $this->_fixExtendedWorkTime($object);
-    }
-
-    /**
-     * @param \Food\DishesBundle\Entity\PlacePoint $object
-     */
-    private function _fixExtendedWorkTime($object)
-    {
-        for($i = 1; $i<=7; $i++) {
-            $wt = explode(":", $object->{'getWd'.$i.'End'}());
-            $val = $object->{'getWd'.$i.'End'}();
-            if (sizeof($wt) == 2) {
-                if ($wt[0] <= 6) {
-                    $wt[0] = $wt[0] + 24;
-                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
-                } else {
-                    $object->{'setWd'.$i.'EndLong'}(implode("", $wt));
-                }
-            } else {
-                $object->{'setWd'.$i.'EndLong'}($val);
-            }
-        }
     }
 }
