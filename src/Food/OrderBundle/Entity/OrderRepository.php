@@ -644,12 +644,12 @@ class OrderRepository extends EntityRepository
             {$groupByMonthDate}
           FROM orders o
           LEFT JOIN place p ON p.id = o.place_id
-          LEFT JOIN place_point pp ON o.place_id = pp.place
+          LEFT JOIN place_point pp ON o.point_id = pp.id
           WHERE
             o.order_status = '{$orderStatus}'
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
             {$placesFilter}{$companyCodeFilter}
-          GROUP BY COALESCE(o.place_id, o.place_name){$groupByMonth}
+          GROUP BY COALESCE(o.place_id, o.place_name, pp.company_code){$groupByMonth}
           ORDER BY {$groupByMonthOrder}order_count DESC
         ";
 
