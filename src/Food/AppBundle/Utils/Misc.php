@@ -265,8 +265,11 @@ class Misc
             ->setEventDate(new \DateTime('now'))
             ->setOldValue($oldValue)
             ->setNewValue($param->getValue())
-            ->setUser($user)
         ;
+
+        if ($user instanceof User) {
+            $log->setUser($user);
+        }
 
         $em->persist($log);
     }
