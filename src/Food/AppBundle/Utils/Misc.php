@@ -258,17 +258,23 @@ class Misc
     public function logParamChange($param = null, $oldValue)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
-        $user = $this->getContainer()->get('security.context')->getToken()->getUser();
 
-        $log = new ParamLog();
-        $log->setParam($param)
-            ->setEventDate(new \DateTime('now'))
-            ->setOldValue($oldValue)
-            ->setNewValue($param->getValue())
-            ->setUser($user)
-        ;
+        if ($this->getContainer()->get('security.context')->getToken()) {
+            $user = $this->getContainer()->get('security.context')->getToken()->getUser();
 
-        $em->persist($log);
+            $log = new ParamLog();
+            $log->setParam($param)
+                ->setEventDate(new \DateTime('now'))
+                ->setOldValue($oldValue)
+                ->setNewValue($param->getValue())
+            ;
+
+            if ($user instanceof User) {
+                $log->setUser($user);
+            }
+
+            $em->persist($log);
+        }
     }
 
     /**
