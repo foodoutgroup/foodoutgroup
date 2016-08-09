@@ -188,8 +188,12 @@ class PlaceRepository extends EntityRepository
                         AND pps.city='" . $city . "'
                         AND pps.place = " . $place['place']->getId() . "
                         AND ppwt.week_day = " . $wd . "
-                        AND '" . $dh . "' BETWEEN ppwt.start_hour AND ppwt.end_hour
-                        AND '" . $dm . "' BETWEEN ppwt.start_min AND ppwt.end_min
+                        AND (
+                        (start_hour = 0 OR start_hour < ' . $dh . ' OR
+                            (start_hour <= ' . $dh . ' AND start_min <= ' . $dm . ')
+                        ) AND (
+                        (end_hour >= ' . $dh . ' AND end_min >= ' . $dm . ') OR
+                            end_hour > ' . $dh . ' OR end_hour = 0))
                         AND pps.delivery=1
                         AND (
             (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <= 7
@@ -383,11 +387,11 @@ class PlaceRepository extends EntityRepository
             $subQuery .= " AND ppwt.week_day = " . $wd;
             $subQuery .= " 
                       AND (
-                        (ppwt.start_hour < '.$dh.' OR
+                        (ppwt.start_hour = 0 OR ppwt.start_hour < '.$dh.' OR
                           (ppwt.start_hour <= '.$dh.' AND ppwt.start_min <= '.$dm.')
                         ) AND 
                         ((ppwt.end_hour >= '.$dh.' AND ppwt.end_min >= '.$dm.') OR
-                            ppwt.end_hour > '.$dh.')
+                            ppwt.end_hour > '.$dh.' OR ppwt.end_hour = 0)
                       )";
         }
 
@@ -444,11 +448,11 @@ class PlaceRepository extends EntityRepository
             $subQuery .= " AND ppwt.week_day = " . $wd;
             $subQuery .= " 
                       AND (
-                        (ppwt.start_hour < '.$dh.' OR
+                        (ppwt.start_hour = 0 OR ppwt.start_hour < '.$dh.' OR
                           (ppwt.start_hour <= '.$dh.' AND ppwt.start_min <= '.$dm.')
                         ) AND 
                         ((ppwt.end_hour >= '.$dh.' AND ppwt.end_min >= '.$dm.') OR
-                            ppwt.nd_hour > '.$dh.')
+                            ppwt.end_hour > '.$dh.' OR ppwt.end_hour = 0)
                       )";
         }
 
@@ -511,11 +515,11 @@ class PlaceRepository extends EntityRepository
                     )
                       AND ppwt.week_day = " . $wd . "
                       AND (
-                        (ppwt.start_hour < " . $dh . " OR
+                        (ppwt.start_hour = 0 OR ppwt.start_hour < " . $dh . " OR
                           (ppwt.start_hour <= " . $dh . " AND ppwt.start_min <= " . $dm . ")
                         ) AND 
                         ((ppwt.end_hour >= " . $dh . " AND ppwt.end_min >= " . $dm . ") OR
-                            ppwt.end_hour > " . $dh . ")
+                            ppwt.end_hour > " . $dh . " OR ppwt.end_hour = 0)
                       )
                       AND delivery=1
                     ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
@@ -613,14 +617,14 @@ class PlaceRepository extends EntityRepository
                   FROM `place_point_work_time`
                   WHERE week_day = ' . $wd . '
                     AND (
-                        (start_hour < ' . $totalH . ' OR
+                        (start_hour = 0 OR start_hour < ' . $totalH . ' OR
                             (start_hour <= ' . $totalH . ' AND start_min <= ' . $totalM . ')
                         ) AND (
                         (end_hour >= ' . $totalH . ' AND end_min >= ' . $totalM . ') OR
-                            end_hour > ' . $totalH . '))
+                            end_hour > ' . $totalH . ' OR end_hour = 0))
                     AND `place_point` = ' . $placePoint->getId() . '
                     LIMIT 1';
-
+        
         $stmt = $this->getEntityManager()->getConnection()->prepare($count);
         $stmt->execute();
 
