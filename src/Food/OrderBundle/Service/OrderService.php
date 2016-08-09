@@ -3003,6 +3003,7 @@ class OrderService extends ContainerAware
             if ($point->getActive()) {
                 if ($this->isTodayWork($point)) {
                     $returner = false;
+                    break;
                 }
             }
         }
