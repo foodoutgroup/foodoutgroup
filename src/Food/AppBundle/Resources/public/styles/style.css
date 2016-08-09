@@ -1,6 +1,4 @@
-﻿﻿/*Imported fonts------------------------------------------------------------------------------*/
-
-@font-face {
+﻿@font-face {
     font-family: 'avenirbook';
     src: url('/bundles/foodapp/styles/avenir-webfont.eot');
     src: url('/bundles/foodapp/styles/avenir-webfont.eot?#iefix') format('embedded-opentype'),
