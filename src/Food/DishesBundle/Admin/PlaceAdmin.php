@@ -13,6 +13,7 @@ class PlaceAdmin extends FoodAdmin
 {
     /**
      * @param FormMapper $formMapper
+     *
      * @codeCoverageIgnore
      */
     protected function configureFormFields(FormMapper $formMapper)
@@ -30,100 +31,101 @@ class PlaceAdmin extends FoodAdmin
             ->where('k.visible = 1')
         ;
 
-        $options = array('required' => false, 'label' => 'admin.place.logo');
+        $options = ['required' => false, 'label' => 'admin.place.logo'];
         if (($pl = $this->getSubject()) && $pl->getLogo()) {
             $options['help'] = '<img src="/' . $pl->getWebPathThumb() . '" />';
         }
 
         $trans = $this->getContainer()->get('translator');
 
-        $deliveryOptionChoices = array(
+        $deliveryOptionChoices = [
             Place::OPT_DELIVERY_AND_PICKUP => $trans->trans('admin.place.delivery_option.delivery_and_pickup'),
-            Place::OPT_ONLY_DELIVERY => $trans->trans('admin.place.delivery_option.delivery'),
-            Place::OPT_ONLY_PICKUP => $trans->trans('admin.place.delivery_option.pickup'),
-        );
+            Place::OPT_ONLY_DELIVERY       => $trans->trans('admin.place.delivery_option.delivery'),
+            Place::OPT_ONLY_PICKUP         => $trans->trans('admin.place.delivery_option.pickup'),
+        ];
 
-        $alcoholRules = array('label' => 'admin.place.alcohol_rules', 'required' => false);
+        $alcoholRules = ['label' => 'admin.place.alcohol_rules', 'required' => false];
         if (!$this->getContainer()->getParameter('alcohol_allowed')) {
             $alcoholRules['display'] = false;
         }
 
         $formMapper
-            ->add('name', 'text', array('label' => 'admin.place.name'))
+            ->add('name', 'text', ['label' => 'admin.place.name'])
             ->add(
                 'translations',
                 'a2lix_translations_gedmo',
-                array(
+                [
                     'translatable_class' => 'Food\DishesBundle\Entity\Place',
-                    'fields' => array(
-                        'slogan' => array('label' => 'admin.place.slogan', 'required' => false,),
-                        'description' => array('label' => 'admin.place.description', 'required' => true,),
+                    'fields'             => [
+                        'slogan'       => ['label' => 'admin.place.slogan', 'required' => false,],
+                        'description'  => ['label' => 'admin.place.description', 'required' => true,],
                         'alcoholRules' => $alcoholRules,
-                )
-            ));
+                    ]
+                ])
+        ;
 
         if ($this->getContainer()->getParameter('place_slug_manual')) {
-            $formMapper->add('slug', null, array('required' => true));
+            $formMapper->add('slug', null, ['required' => true]);
         }
 
-        $formMapper->add('chain', null, array('label' => 'admin.place.chain', 'required' => false,))
-            ->add('navision', 'checkbox', array('label' => 'admin.place.navision', 'required' => false,))
-            ->add('kitchens', null, array(
-                'query_builder' => $kitchenQuery,
-                'multiple' => true,
-                'label' => 'admin.place.kitchens')
+        $formMapper->add('chain', null, ['label' => 'admin.place.chain', 'required' => false,])
+            ->add('navision', 'checkbox', ['label' => 'admin.place.navision', 'required' => false,])
+            ->add('kitchens', null, [
+                    'query_builder' => $kitchenQuery,
+                    'multiple'      => true,
+                    'label'         => 'admin.place.kitchens']
             )
-            ->add('active', 'checkbox', array('label' => 'admin.active', 'required' => false,))
-            ->add('showNotification', 'checkbox', array('label' => 'admin.place.show_notification', 'required' => false,))
-            ->add('notificationContent', null, array('label' => 'admin.place.notification_content', 'attr' => array('class' => 'ckeditor_custom')))
-            ->add('new', 'checkbox', array('label' => 'admin.is_new', 'required' => false,))
-            ->add('recommended', 'checkbox', array('label' => 'admin.place.recommended', 'required' => false,))
-            ->add('top', 'checkbox', array('label' => 'TOP', 'required' => false,))
-            ->add('discountPricesEnabled', 'checkbox', array('label' => 'admin.place.discount_prices_enabled', 'required' => false,))
-            ->add('onlyAlcohol', 'checkbox', array('label' => 'admin.place.only_alcohol', 'required' => false,))
-            ->add('sendInvoice', 'checkbox', array('label' => 'admin.place.send_invoice', 'required' => false))
-            ->add('deliveryOptions', 'choice', array('label' => 'admin.place.delivery_options', 'required' => true, 'choices' => $deliveryOptionChoices))
-            ->add('deliveryTime', null, array('label' => 'admin.place.delivery_time'))
-            ->add('pickupTime', null, array('label' => 'admin.place.pickup_time'))
-            ->add('deliveryTimeInfo', null, array('label' => 'admin.place.delivery_time_info', 'required' => false))
-            ->add('deliveryPrice', null, array('label' => 'admin.place.delivery_price'))
-            ->add('cartMinimum', null, array('label' => 'admin.place.cart_minimum'))
-            ->add('basketLimitFood', null, array('label' => 'admin.place.cart_food_limit'))
-            ->add('basketLimitDrinks', null, array('label' => 'admin.place.cart_drink_limit'))
-            ->add('selfDelivery', 'checkbox', array('label' => 'admin.place.self_delivery', 'required' => false))
-            ->add('minimalOnSelfDel', 'checkbox', array('label' => 'admin.place.minimal_on_self_delivery', 'required' => false))
-            ->add('cardOnDelivery', 'checkbox', array('label' => 'admin.place.card_on_delivery', 'required' => false))
-            ->add('disabledOnlinePayment', 'checkbox', array('label' => 'admin.place.disabled_online_payment', 'required' => false))
-            ->add('disabledPaymentOnDelivery', 'checkbox', array('label' => 'admin.place.disabled_payment_on_delivery', 'required' => false))
-            ->add('priority', null, array('label' => 'admin.place.priority', 'required' => true))
-
+            ->add('active', 'checkbox', ['label' => 'admin.active', 'required' => false,])
+            ->add('showNotification', 'checkbox', ['label' => 'admin.place.show_notification', 'required' => false,])
+            ->add('notificationContent', null, ['label' => 'admin.place.notification_content', 'attr' => ['class' => 'ckeditor_custom']])
+            ->add('new', 'checkbox', ['label' => 'admin.is_new', 'required' => false,])
+            ->add('recommended', 'checkbox', ['label' => 'admin.place.recommended', 'required' => false,])
+            ->add('top', 'checkbox', ['label' => 'TOP', 'required' => false,])
+            ->add('discountPricesEnabled', 'checkbox', ['label' => 'admin.place.discount_prices_enabled', 'required' => false,])
+            ->add('onlyAlcohol', 'checkbox', ['label' => 'admin.place.only_alcohol', 'required' => false,])
+            ->add('sendInvoice', 'checkbox', ['label' => 'admin.place.send_invoice', 'required' => false])
+            ->add('deliveryOptions', 'choice', ['label' => 'admin.place.delivery_options', 'required' => true, 'choices' => $deliveryOptionChoices])
+            ->add('deliveryTime', null, ['label' => 'admin.place.delivery_time'])
+            ->add('pickupTime', null, ['label' => 'admin.place.pickup_time'])
+            ->add('deliveryTimeInfo', null, ['label' => 'admin.place.delivery_time_info', 'required' => false])
+            ->add('deliveryPrice', null, ['label' => 'admin.place.delivery_price'])
+            ->add('cartMinimum', null, ['label' => 'admin.place.cart_minimum'])
+            ->add('basketLimitFood', null, ['label' => 'admin.place.cart_food_limit'])
+            ->add('basketLimitDrinks', null, ['label' => 'admin.place.cart_drink_limit'])
+            ->add('selfDelivery', 'checkbox', ['label' => 'admin.place.self_delivery', 'required' => false])
+            ->add('minimalOnSelfDel', 'checkbox', ['label' => 'admin.place.minimal_on_self_delivery', 'required' => false])
+            ->add('cardOnDelivery', 'checkbox', ['label' => 'admin.place.card_on_delivery', 'required' => false])
+            ->add('disabledOnlinePayment', 'checkbox', ['label' => 'admin.place.disabled_online_payment', 'required' => false])
+            ->add('disabledPaymentOnDelivery', 'checkbox', ['label' => 'admin.place.disabled_payment_on_delivery', 'required' => false])
+            ->add('priority', null, ['label' => 'admin.place.priority', 'required' => true])
             ->add('file', 'file', $options)
-        /*
-            ->add('photos', 'sonata_type_collection',
-                array(
-                    //'by_reference' => true,
-                    'max_length' => 2,
-                    'label' => 'admin.place_cover_photos',
-                ),
-                array(
-                    'edit' => 'inline',
-                    'inline' => 'table',
+            /*
+                ->add('photos', 'sonata_type_collection',
+                    array(
+                        //'by_reference' => true,
+                        'max_length' => 2,
+                        'label' => 'admin.place_cover_photos',
+                    ),
+                    array(
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                    )
                 )
-            )
-        */
+            */
             ->add('points', 'sonata_type_collection',
-                array(
+                [
                     //'by_reference' => false,
                     'max_length' => 2,
-                    'label' => 'admin.place_points',
-                    'btn_add' => $this->getContainer()->get('translator')->trans('link_action_create_override', array(), 'SonataAdminBundle')
-                ),
-                array(
-                    'edit' => 'inline',
-                    'inline' => 'table',
+                    'label'      => 'admin.place_points',
+                    'btn_add'    => $this->getContainer()->get('translator')->trans('link_action_create_override', [], 'SonataAdminBundle')
+                ],
+                [
+                    'edit'     => 'inline',
+                    'inline'   => 'table',
                     'template' => 'FoodDishesBundle:Default:point_inline_edit.html.twig'
-                )
-            );
+                ]
+            )
+        ;
     }
 
 
@@ -136,7 +138,7 @@ class PlaceAdmin extends FoodAdmin
     {
         return array_merge(
             parent::getFormTheme(),
-            array('FoodDishesBundle:Default:place_form_theme.html.twig')
+            ['FoodDishesBundle:Default:place_form_theme.html.twig']
         );
     }
 
@@ -148,11 +150,11 @@ class PlaceAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('name', null, array('label' => 'admin.place.name'))
-            ->add('discountPricesEnabled', null, array('label' => 'admin.place.discount_prices_enabled'))
-            ->add('active', null, array('label' => 'admin.active'))
-            ->add('selfDelivery', null, array('label' => 'admin.place.self_delivery'))
-            ->add('recommended', null, array('label' => 'admin.place.recommended'))
+            ->add('name', null, ['label' => 'admin.place.name'])
+            ->add('discountPricesEnabled', null, ['label' => 'admin.place.discount_prices_enabled'])
+            ->add('active', null, ['label' => 'admin.active'])
+            ->add('selfDelivery', null, ['label' => 'admin.place.self_delivery'])
+            ->add('recommended', null, ['label' => 'admin.place.recommended'])
         ;
     }
 
@@ -164,24 +166,24 @@ class PlaceAdmin extends FoodAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name', 'string', array('label' => 'admin.place.name'))
-            ->add('image', 'string', array(
+            ->addIdentifier('name', 'string', ['label' => 'admin.place.name'])
+            ->add('image', 'string', [
                 'template' => 'FoodDishesBundle:Default:list_image.html.twig',
-                'label' => 'admin.place.logo'
-            ))
-            ->add('selfDelivery', null, array('label' => 'admin.place.self_delivery'))
-            ->add('active', null, array('label' => 'admin.active', 'editable' => true))
-            ->add('new', null, array('label' => 'admin.is_new', 'editable' => true))
-            ->add('recommended', null, array('label' => 'admin.place.recommended', 'editable' => true))
-            ->add('top', null, array('label' => 'TOP', 'editable' => true))
-            ->add('discountPricesEnabled', null, array('label' => 'admin.place.discount_prices_enabled', 'editable' => true,))
-            ->add('_action', 'actions', array(
-                'actions' => array(
-                    'edit' => array(),
-                    'delete' => array(),
-                ),
-                'label' => 'admin.actions'
-            ))
+                'label'    => 'admin.place.logo'
+            ])
+            ->add('selfDelivery', null, ['label' => 'admin.place.self_delivery'])
+            ->add('active', null, ['label' => 'admin.active', 'editable' => true])
+            ->add('new', null, ['label' => 'admin.is_new', 'editable' => true])
+            ->add('recommended', null, ['label' => 'admin.place.recommended', 'editable' => true])
+            ->add('top', null, ['label' => 'TOP', 'editable' => true])
+            ->add('discountPricesEnabled', null, ['label' => 'admin.place.discount_prices_enabled', 'editable' => true,])
+            ->add('_action', 'actions', [
+                'actions' => [
+                    'edit'   => [],
+                    'delete' => [],
+                ],
+                'label'   => 'admin.actions'
+            ])
         ;
     }
 
@@ -192,14 +194,12 @@ class PlaceAdmin extends FoodAdmin
      * @inheritdoc
      *
      * @param \Food\DishesBundle\Entity\Place
+     *
      * @return mixed|void
      */
     public function prePersist($object)
     {
-        // The magic container is here
-        $securityContext = $this->getContainer()->get('security.context');
-        $user = $securityContext->getToken()->getUser();
-        $this->_fixPoints($object, $user);
+        $object->setCreatedAt(new \DateTime());
         $this->_fixPhotos($object);
         $this->saveFile($object);
         parent::prePersist($object);
@@ -207,14 +207,12 @@ class PlaceAdmin extends FoodAdmin
 
     /**
      * @param \Food\DishesBundle\Entity\Place $object
+     *
      * @return void
      */
     public function preUpdate($object)
     {
         $object->setEditedAt(new \DateTime());
-        $container = $this->getConfigurationPool()->getContainer();
-        $securityContext = $container->get('security.context');
-        $this->_fixPoints($object, $securityContext->getToken()->getUser());
         $this->_fixPhotos($object);
         $this->saveFile($object);
         parent::preUpdate($object);
@@ -222,7 +220,7 @@ class PlaceAdmin extends FoodAdmin
 
     /**
      * @param \Food\DishesBundle\Entity\Place $object
-     * @param \Food\UserBundle\Entity\User $user
+     * @param \Food\UserBundle\Entity\User    $user
      */
     private function _fixPoints($object, $user)
     {
@@ -243,7 +241,8 @@ class PlaceAdmin extends FoodAdmin
     /**
      * @param \Food\DishesBundle\Entity\PlacePoint $object
      */
-    private function _fixWorkTime(PlacePoint $object) {
+    private function _fixWorkTime(PlacePoint $object)
+    {
         $em = $this->getContainer()->get('doctrine')->getManager();
         foreach ($object->getWorkTimes() as $workTime) {
             $em->remove($workTime);
@@ -251,7 +250,7 @@ class PlaceAdmin extends FoodAdmin
         $em->flush();
 
         for ($i = 1; $i <= 7; $i++) {
-            $workTime = $object->{'getWd'.$i}();
+            $workTime = $object->{'getWd' . $i}();
             $intervals = explode(' ', $workTime);
             foreach ($intervals as $interval) {
                 if (strpos($interval, '-') === false) {
@@ -280,7 +279,8 @@ class PlaceAdmin extends FoodAdmin
                         ->setStartHour($startHour)
                         ->setStartMin($startMin)
                         ->setEndHour(0)
-                        ->setEndMin(0);
+                        ->setEndMin(0)
+                    ;
 
                     $em->persist($ppwt);
 
@@ -292,7 +292,8 @@ class PlaceAdmin extends FoodAdmin
                             ->setStartHour(0)
                             ->setStartMin(0)
                             ->setEndHour($endHour)
-                            ->setEndMin($endMin);
+                            ->setEndMin($endMin)
+                        ;
 
                         $em->persist($ppwt);
                     }
@@ -303,7 +304,8 @@ class PlaceAdmin extends FoodAdmin
                         ->setStartHour($startHour)
                         ->setStartMin($startMin)
                         ->setEndHour($endHour)
-                        ->setEndMin($endMin);
+                        ->setEndMin($endMin)
+                    ;
 
                     $em->persist($ppwt);
                 }
@@ -318,9 +320,9 @@ class PlaceAdmin extends FoodAdmin
      */
     private function _fixPhotos($object)
     {
-       // foreach($object->getPhotos() as $photo) {
-       //     $photo->setPlace($object);
-       // }
+        // foreach($object->getPhotos() as $photo) {
+        //     $photo->setPlace($object);
+        // }
     }
 
     /**
@@ -335,24 +337,24 @@ class PlaceAdmin extends FoodAdmin
             $dc = $this->getContainer()->get('doctrine');
             $clone = $dc->getRepository('FoodDishesBundle:Place')->find(142);
 
-            $query = "SELECT * FROM place_point WHERE place = ".$object->getId();
+            $query = "SELECT * FROM place_point WHERE place = " . $object->getId();
             $stmt = $dc->getConnection()->prepare($query);
             $stmt->execute();
             $pointsOrig = $stmt->fetchAll();
 
-            $query = "SELECT * FROM place_point WHERE place = ".$clone->getId();
+            $query = "SELECT * FROM place_point WHERE place = " . $clone->getId();
             $stmt = $dc->getConnection()->prepare($query);
             $stmt->execute();
             $pointsClone = $stmt->fetchAll();
 
-            $pointsCloneRelation = array();
+            $pointsCloneRelation = [];
             foreach ($pointsClone as $point) {
                 $pointsCloneRelation[$point['parent_id']] = $point['id'];
             }
             foreach ($pointsOrig as $point) {
                 if (!empty($pointsCloneRelation[$point['id']])) {
-                    $fieldsForUpdate = array();
-                    foreach ($point as $field=>$val) {
+                    $fieldsForUpdate = [];
+                    foreach ($point as $field => $val) {
                         $fieldsForUpdate[$field] = $val;
                     }
                     unset($fieldsForUpdate['id']);
@@ -361,26 +363,26 @@ class PlaceAdmin extends FoodAdmin
                     unset($fieldsForUpdate['no_replication']);
                     unset($fieldsForUpdate['edited_by']);
                     unset($fieldsForUpdate['deleted_by']);
-                    $queryParts = array();
-                    foreach ($fieldsForUpdate as $field=>$val) {
+                    $queryParts = [];
+                    foreach ($fieldsForUpdate as $field => $val) {
                         if ($field == "deleted_at") {
                             if ($val == "") {
-                                $queryParts[]= "`".$field."` = NULL";
+                                $queryParts[] = "`" . $field . "` = NULL";
                             } else {
-                                $queryParts[]= "`".$field."` = '".$val."'";
+                                $queryParts[] = "`" . $field . "` = '" . $val . "'";
                             }
                         } else {
-                            $queryParts[]= "`".$field."` = '".$val."'";
+                            $queryParts[] = "`" . $field . "` = '" . $val . "'";
                         }
                     }
                     $query = "UPDATE place_point SET ";
-                    $query.= implode(",", $queryParts);
-                    $query.= " WHERE id=".$pointsCloneRelation[$point['id']];
+                    $query .= implode(",", $queryParts);
+                    $query .= " WHERE id=" . $pointsCloneRelation[$point['id']];
                     $stmt = $dc->getConnection()->prepare($query);
                     $stmt->execute();
                 } else {
-                    $fieldsForInsert = array();
-                    foreach ($point as $field=>$val) {
+                    $fieldsForInsert = [];
+                    foreach ($point as $field => $val) {
                         $fieldsForInsert[$field] = $val;
                     }
                     unset($fieldsForInsert['id']);
@@ -389,12 +391,12 @@ class PlaceAdmin extends FoodAdmin
                     $fieldsForInsert['no_replication'] = 1;
                     $fieldsForInsert['edited_by'] = 1;
                     $fieldsForInsert['deleted_by'] = 1;
-                    if ($fieldsForInsert['deleted_at'] == ""){
+                    if ($fieldsForInsert['deleted_at'] == "") {
                         $fieldsForInsert['deleted_at'] = "NULL";
                     }
 
-                    $query = "INSERT INTO place_point (`".implode("`,`",array_keys($fieldsForInsert))."`)";
-                    $query.= " VALUES('".implode("','", $fieldsForInsert)."')";
+                    $query = "INSERT INTO place_point (`" . implode("`,`", array_keys($fieldsForInsert)) . "`)";
+                    $query .= " VALUES('" . implode("','", $fieldsForInsert) . "')";
                     $query = str_replace("'NULL'", "NULL", $query);
 
                     $stmt = $dc->getConnection()->prepare($query);
@@ -406,15 +408,21 @@ class PlaceAdmin extends FoodAdmin
 
     /**
      * @param \Food\DishesBundle\Entity\Place $object
+     *
      * @return void
      */
     public function postPersist($object)
     {
+        $securityContext = $this->getContainer()->get('security.context');
+        $user = $securityContext->getToken()->getUser();
+        $this->_fixPoints($object, $user);
         $this->fixSlugs($object);
+        parent::postPersist($object);
     }
 
     /**
      * @param \Food\DishesBundle\Entity\Place $object
+     *
      * @return void
      */
     public function postUpdate($object)
@@ -477,6 +485,11 @@ class PlaceAdmin extends FoodAdmin
                 $em->flush();
             }
         }
+
+        $securityContext = $this->getContainer()->get('security.context');
+        $user = $securityContext->getToken()->getUser();
+        $this->_fixPoints($object, $user);
+        parent::postUpdate($object);
     }
 
     /**
@@ -488,7 +501,7 @@ class PlaceAdmin extends FoodAdmin
     {
         $origName = $object->getOrigName($this->modelManager->getEntityManager('FoodDishesBundle:Place'));
         $locales = $this->getContainer()->getParameter('available_locales');
-        $textsForSlugs = array();
+        $textsForSlugs = [];
         foreach ($locales as $loc) {
             if (!isset($textsForSlugs[$loc])) {
                 $textsForSlugs[$loc] = $origName;
