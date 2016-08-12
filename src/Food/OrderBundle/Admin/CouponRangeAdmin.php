@@ -248,8 +248,12 @@ class CouponRangeAdmin extends FoodAdmin
                     }
                 }
                 $em->persist($coupon);
+                if ($i % 200 == 0) {
+                    $em->flush();
+                }
+            }
+            if ($i % 200 != 0) {
                 $em->flush();
-                $em->clear($coupon);
             }
         }
         return $obj;
