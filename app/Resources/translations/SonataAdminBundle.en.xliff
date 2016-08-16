@@ -2459,6 +2459,7 @@
             <trans-unit id="admin.reports.place">
                 <source>admin.reports.place</source>
                 <target>Restaurant</target>
+            </trans-unit>
             <trans-unit id="admin.reports.place_code">
                 <source>admin.reports.place_code</source>
                 <target>Restaurant code</target>
