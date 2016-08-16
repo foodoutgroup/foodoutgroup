@@ -102,6 +102,12 @@ tr.delivery_coming_noti.odd {
 tr.delivery_coming_noti.even {
     background-color: #ffe565 !important;
 }
+tr.hesburger_distinct_color.odd {
+    background-color: #C0DFEE !important;
+}
+tr.hesburger_distinct_color.even {
+    background-color: #C0DFEE !important;
+}
 
 
 

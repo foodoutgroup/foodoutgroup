@@ -397,6 +397,20 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @param Order $order
+     * here we go again.. please close your eyes.
+     * @return bool
+     */
+    public function isHesburger(Order $order)
+    {
+        $place_title = mb_strtolower($order->getPlace()->getName(), 'UTF-8');
+        if (strstr($place_title, 'hesbur', true)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * this method is checking that
      *
      * @param Order $order
