@@ -204,6 +204,21 @@ class CouponRange
     private $deletedBy;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="ignore_cart_price", type="boolean", nullable=true)
+     */
+    private $ignoreCartPrice = false;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="include_delivery", type="boolean", nullable=true)
+     */
+    private $includeDelivery = false;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -950,4 +965,53 @@ class CouponRange
     {
         return $this->b2b;
     }
+
+
+    /**
+     * Set includeDelivery
+     *
+     * @param boolean $includeDelivery
+     * @return CouponRange
+     */
+    public function setIncludeDelivery($includeDelivery)
+    {
+        $this->includeDelivery = $includeDelivery;
+
+        return $this;
+    }
+
+    /**
+     * Get includeDelivery
+     *
+     * @return boolean
+     */
+    public function getIncludeDelivery()
+    {
+        return $this->includeDelivery;
+    }
+
+    /**
+     * Set ignoreCartPrice
+     *
+     * @param boolean $ignoreCartPrice
+     *
+     * @return CouponRange
+     */
+    public function setIgnoreCartPrice($ignoreCartPrice)
+    {
+        $this->ignoreCartPrice = $ignoreCartPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get ignoreCartPrice
+     *
+     * @return boolean
+     */
+    public function getIgnoreCartPrice()
+    {
+        return $this->ignoreCartPrice;
+    }
+
 }
