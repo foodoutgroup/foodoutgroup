@@ -292,6 +292,21 @@ class DispatcherAdminController extends Controller
 
                     $orderService->informAdminAboutCancelation();
                 }
+
+                if ($method == 'statusCanceled_produced') {
+                    if (OrderService::$status_canceled_produced != $oldStatus) {
+                        $orderService->informPlaceCancelAction();
+                    }
+                    $orderExtra = $orderService->getOrder()
+                        ->getOrderExtra()
+                    ;
+                    $orderExtra->setCancelReason($cancelReason)
+                        ->setCancelReasonComment($cancelReasonComment)
+                    ;
+                    $orderService->getEm()->persist($orderExtra);
+
+                    $orderService->informAdminAboutCancelation();
+                }
             }
             $orderService->saveOrder();
         };
