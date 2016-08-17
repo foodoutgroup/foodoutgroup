@@ -6,6 +6,7 @@
         <table class="table table-hover table-condensed nicer-font">
             <thead>
                 <tr>
+                    <th>Nuotrauka</th>
                     <th>Patiekalas</th>
                     <th>Kaina ({{ currency_display|raw }})</th>
                     <th>Veiksmai</th>
@@ -25,7 +26,21 @@
                         {% endif %}
 
                         <tr class="searchable">
-                            <td>{{ item.name }}</td>
+                            <td>
+                                {% if item.getWebPathThumb('type2') is not empty %}
+                                    <img alt="{{ item.name }}" src="http://{{ cloudfront_url }}/{{ item.getWebPathThumb('type2') }}" class="dish-image" />
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ item.name }}
+                                <ul class="list-group callcentre_dish_options">
+                                    {% for option in item.options %}
+                                        {% if option.singleSelect == true %}
+                                            <li class="list-group-item">{{ option.name }}</li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </td>
                             <td>
                                 {% if smallestPrice == largestPrice %}
                                     {{ currency_display|raw }}{{ smallestPrice|replace({'.': ','}) }}

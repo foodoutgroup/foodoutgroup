@@ -24,6 +24,16 @@
                 </select>
                 <input type="text" name="cancel_reason_comment" id="cancel_reason_comment" class="form-control" required="required" placeholder="{{ 'admin.dispatcher.cancel_reason_comment_placeholder'|trans({}, 'SonataAdminBundle') }}" />
             </div>
+        {% elseif status == 'canceled_produced' %}
+            <div class="canceled_produced_reason_holder">
+                <label for="cancel_produced_reason" class="control-label required">{{ 'admin.dispatcher.cancel_reason'|trans({}, 'SonataAdminBundle') }}.</label>
+                <select name="cancel_produced_reason" id="cancel_produced_reason" class="form-control">
+                    {% for cancelReason in cancelReasons %}
+                        <option value="{{ cancelReason }}">{{ cancelReason }}</option>
+                    {% endfor %}
+                </select>
+                <input type="text" name="cancel_produced_reason_comment" id="cancel_produced_reason_comment" class="form-control" required="required" placeholder="{{ 'admin.dispatcher.cancel_reason_comment_placeholder'|trans({}, 'SonataAdminBundle') }}" />
+            </div>
         {% endif %}
     </div>
     {% endfor %}

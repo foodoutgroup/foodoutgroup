@@ -195,10 +195,11 @@ class MessagesService
 
         if (!empty($messages)) {
             foreach ($messages as $message) {
-                $addedMessages[] = $this->addMessageToSend($message['sender'], $message['recipient'], $message['text'], $message['order']);
+                if (!empty($message['recipient'])) {
+                    $addedMessages[] = $this->addMessageToSend($message['sender'], $message['recipient'], $message['text'], $message['order']);
+                }
             }
         }
-
         return $addedMessages;
     }
 
