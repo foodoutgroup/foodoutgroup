@@ -251,12 +251,17 @@ class PlaceAdmin extends FoodAdmin
 
         for ($i = 1; $i <= 7; $i++) {
             $workTime = $object->{'getWd' . $i}();
+            $workTime = preg_replace('~\s*-\s*~', '-', $workTime);
             $intervals = explode(' ', $workTime);
             foreach ($intervals as $interval) {
                 if (strpos($interval, '-') === false) {
                     continue;
                 }
                 list($start, $end) = explode('-', $interval);
+                if (strlen($start) < 1 || strlen($end) < 1) {
+                    continue;
+                }
+
                 if (strpos($start, ':') !== false) {
                     list($startHour, $startMin) = explode(':', $start);
                 } else {
