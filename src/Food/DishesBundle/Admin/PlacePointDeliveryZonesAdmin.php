@@ -28,7 +28,6 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
             ->from('Food\DishesBundle\Entity\PlacePoint', 'p')
         ;
 
-
         $formMapper
             ->add('place',  'entity', array('class' => 'Food\DishesBundle\Entity\Place'))
             ->add('placePoint',  'entity', array('class' => 'Food\DishesBundle\Entity\PlacePoint'))
@@ -70,6 +69,17 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
                 'label' => 'admin.actions'
             ))
         ;
+
+    }
+
+
+    public function getExportFields() {
+        $collection = [];
+        $collection[] = 'id';
+        $collection[] = 'placePoint';
+        $collection[] = 'place';
+
+        return array_merge($collection, parent::getExportFields());
     }
 
     /**
