@@ -48,3 +48,10 @@ button, input, select, textarea, body, .ui-widget-content, .ui-selectmenu-menu l
     background-color: #CEE0F2;
     font-weight: bold;
 }
+.callcentre_dish_options {
+    margin-top: 20px;
+}
+.callcentre_dish_options .list-group-item {
+    font-size: 12px !important;
+    padding: 6px 8px;
+}
