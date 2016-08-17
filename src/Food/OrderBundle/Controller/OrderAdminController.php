@@ -308,29 +308,25 @@ class OrderAdminController extends Controller
             unset($row['id']);
             unset($row['dispatcher_id']);
 
-            $log = $this->get('database_connection')->fetchAll('SELECT * FROM order_log WHERE order_id = '.$row['order_id']);
+            $log = $this->get('database_connection')->fetchAll('SELECT * FROM order_delivery_log WHERE order_id = '.$row['order_id']);
 
             $row['driver_assign_time'] = null;
             $row['driver_pickup_time'] = null;
             $row['driver_finished_order'] = 'No';
             foreach ($log as $k=> $v) {
 
-                if ($v['order_status'] == "completed") {
-                    $row['driver_finished_order'] = "Yes";
-                    continue;
+                switch($v['event']) {
+                    case "order_assigned":
+                        $row['driver_assign_time'] = $v['event_date'];
+
+                        break;
+                    case "order_pickedup":
+                        $row['driver_pickup_time'] = $v['event_date'];
+                        break;
+                    case "order_completed":
+                        $row['driver_finished_order'] = "Yes";
+                        break;
                 }
-
-                if ($v['order_status'] == "finished") {
-                    $row['driver_pickup_time'] = $v['event_date'];
-                    continue;
-                }
-
-                if($v['event'] == "dispatcher_driver_assign") {
-
-                    $row['driver_assign_time'] = $v['event_date'];
-                    continue;
-                }
-
 
             }
             $row['diff_delivery_completed'] = null;
