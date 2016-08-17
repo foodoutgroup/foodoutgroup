@@ -277,10 +277,23 @@ class OrderAdminController extends Controller
                 }
             }
         }
-        $qry = "SELECT o.id AS order_id, u.firstname AS dispatcher_name, o.*, oe.*, ua.city, ua.address, ua.lat, ua.lon, d.extId as driver_id
+        $qry = "SELECT 
+                  o.id AS order_id, 
+                  u.firstname AS dispatcher_name, 
+                  o.*, 
+                  oe.*, 
+                  ua.city, 
+                  ua.address, 
+                  ua.lat, 
+                  ua.lon, 
+                  d.extId as 
+                  driver_id,  
+                  pp.lat as production_peaks_lat,
+                  pp.lon as production_peaks_lon
                 FROM orders o
                 LEFT JOIN user_address ua ON o.address_id = ua.id
                 LEFT JOIN order_extra oe ON o.id = oe.order_id
+                LEFT JOIN place_point pp ON o.point_id = pp.id /* pakeitimas */
                 LEFT JOIN fos_user u ON u.id = o.dispatcher_id AND o.dispatcher_id IS NOT NULL
                 LEFT JOIN fos_user cc ON cc.id = o.user_id
                 LEFT JOIN drivers d ON o.driver_id = d.id
@@ -294,6 +307,32 @@ class OrderAdminController extends Controller
         foreach ($data as &$row) {
             unset($row['id']);
             unset($row['dispatcher_id']);
+
+            $log = $this->get('database_connection')->fetchAll('SELECT * FROM order_log WHERE order_id = '.$row['order_id']);
+
+            $row['driver_assign_time'] = null;
+            $row['driver_pickup_time'] = null;
+            $row['driver_finished_order'] = 'No';
+            foreach ($log as $k=> $v) {
+
+                if ($v['order_status'] == "completed") {
+                    $row['driver_finished_order'] = "Yes";
+                    continue;
+                }
+
+                if ($v['order_status'] == "finished") {
+                    $row['driver_pickup_time'] = $v['event_date'];
+                    continue;
+                }
+
+                if($v['event'] == "dispatcher_driver_assign") {
+
+                    $row['driver_assign_time'] = $v['event_date'];
+                    continue;
+                }
+
+
+            }
             $row['diff_delivery_completed'] = null;
             if ($row['delivery_time'] && $row['completed_time']) {
                 $deliveryTime = new \DateTime($row['delivery_time']);
