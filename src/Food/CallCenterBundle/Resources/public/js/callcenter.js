@@ -145,7 +145,7 @@ bind_table_filtering = function() {
 
         filter_callback = function() {
             return fuzzy_search(val, $(this).text());
-        }
+        };
 
         $(table_row).hide();
         $(table_row).filter(filter_callback).show();
@@ -155,25 +155,31 @@ bind_table_filtering = function() {
     $('body').on('keyup', subject, callback);
 };
 
-translit_letters = function(value) {
-    var result, replacements;
+var do_filter_string = function(string) {
+    var alphabet = {
+        'Ą': 'A', 'ą': 'a',
+        'Č': 'C', 'č': 'c',
+        'Ę': 'E', 'ę': 'e',
+        'Ė': 'E', 'ė': 'e',
+        'Į': 'I', 'į': 'i',
+        'Š': 'S', 'š': 's',
+        'Ų': 'U', 'ų': 'u',
+        'Ū': 'U', 'ū': 'u',
+        'Ž': 'Z', 'ž': 'z',
+        'Ā': 'A', 'ā': 'a',
+        'Ē': 'E', 'ē': 'e',
+        'Ģ': 'G', 'ģ': 'g',
+        'Ī': 'I', 'ī': 'i',
+        'Ķ': 'K', 'ķ': 'k',
+        'Ļ': 'L', 'ļ': 'l',
+        'Ņ': 'N', 'ņ': 'n'
 
-    result = value.toLowerCase();
-    replacements = {'ą': 'a',
-                    'č': 'c',
-                    'ę': 'e',
-                    'ė': 'e',
-                    'į': 'i',
-                    'š': 's',
-                    'ų': 'u',
-                    'ū': 'u',
-                    'ž': 'z'};
-
-    $.each(replacements, function(key, value) {
-        result = result.replace(key, value);
+    };
+    return string.replace(new RegExp("(" + Object.keys(alphabet).map(function(i){
+            return i.replace(/[.?*+^$[\]\\(){}|-]/g, "\\$&")
+        }).join("|") + ")", "g"), function(s){
+        return alphabet[s]
     });
-
-    return result;
 };
 
 manually_select_place = function(placeId) {
@@ -462,7 +468,9 @@ update_place_select = function() {
             options = {
                 allowClear: true,
                 width: 200,
-                matcher: function(term, text) { return fuzzy_search(term, text); },
+                matcher: function(term, text) {
+                    return fuzzy_search(term, text);
+                },
                 data: {results: response.places}
             };
 
@@ -489,17 +497,11 @@ update_place_select = function() {
 };
 
 fuzzy_search = function(needle, haystack) {
-    fuzzy_list = [];
-
-    $.each(needle.split(''), function(key, value) {
-        fuzzy_list.push('.*');
-        fuzzy_list.push(value);
-    });
-
-    regex = new RegExp(fuzzy_list.join(''), 'img');
-
-    return regex.test(translit_letters(haystack));
-}
+    var haystack = do_filter_string(haystack);
+    var needle = do_filter_string(needle);
+    var regex = new RegExp(needle, "img");
+    return regex.test(haystack);
+};
 
 MainPanel = {
     selector: '#main_panel',
