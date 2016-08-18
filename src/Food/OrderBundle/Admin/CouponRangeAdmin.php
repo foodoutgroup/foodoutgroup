@@ -244,6 +244,8 @@ class CouponRangeAdmin extends FoodAdmin
                 $coupon->setNoSelfDelivery($obj->getNoSelfDelivery());
                 $coupon->setFullOrderCovers($obj->getFullOrderCovers());
                 $coupon->setEnableValidateDate($obj->getEnableValidateDate());
+                $coupon->setIgnoreCartPrice($obj->getIgnoreCartPrice());
+                $coupon->setIncludeDelivery($obj->getIncludeDelivery());
                 $coupon->setCode($obj->getPrefix() . $part . $i . $part2 . $someR . $obj->getSuffix());
                 $coupon->setName($obj->getName(). ' - ' . date('Y-m-d'));
                 if ($this->getContainer()->getParameter('country') == "LT"
