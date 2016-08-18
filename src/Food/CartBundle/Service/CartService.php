@@ -708,7 +708,8 @@ class CartService {
         foreach ($items as $item) {
             $totalDishes+= $item->getQuantity();
         }
-        $splits = floor($totalDishes /  ($amount+1)); // splitas kad gauti kiek paketu gaunasi taikant Bundla ze free (kiek reikia surinkti + tas kuris bus free)
+        // splitas kad gauti kiek paketu gaunasi taikant Bundla ze free (kiek reikia surinkti + tas kuris bus free)
+        $splits = floor($totalDishes / ($amount+1));
         /**
          * kacialinam pigiausius dabar, nes butent juos discountinsim
          */
@@ -717,7 +718,11 @@ class CartService {
         $theIdMap = [];
         foreach($items as $dish) {
             for($i = 0; $i < $dish->getQuantity(); $i++) {
-                $thePricesIdMap[] = array('dish' => $dish, 'price' => $dish->getDishSizeId()->getCurrentPrice());
+                $thePricesIdMap[] = array(
+                    'cartOption' => $dish,
+                    'dish' => $dish->getDishId(),
+                    'price' => $dish->getDishSizeId()->getCurrentPrice()
+                );
                 $thePriceMapper[] = $dish->getDishSizeId()->getCurrentPrice();
             }
             $theIdMap[$dish->getCartId()] = $dish;
@@ -725,9 +730,26 @@ class CartService {
         }
         array_multisort($thePriceMapper, SORT_ASC, $thePricesIdMap);
         for ($i = 0; $i < $splits; $i++) {
-            $item = $thePricesIdMap[$i]['dish'];
+            $dish = $thePricesIdMap[$i]['dish'];
+            $item = $thePricesIdMap[$i]['cartOption'];
             $quan = $item->getQuantity();
             $item->setEm($this->getEm());
+
+            $options = [];
+            $dishOptions = $dish->getOptions();
+            $cartOptions = $item->getOptions();
+
+            $cartOptionsIds = [];
+            foreach ($cartOptions as $cartOption) {
+                $cartOptionsIds[] = $cartOption->getDishOptionId()->getId();
+            }
+
+            foreach ($dishOptions as $dishOption) {
+                if (in_array($dishOption->getId(), $cartOptionsIds)) {
+                    $options[] = $dishOption;
+                }
+            }
+
             if ($quan == 1) {
                 $item->setIsFree(true);
                 $this->getEm()->persist($item);
@@ -736,15 +758,7 @@ class CartService {
                 $item->setQuantity($quan-1);
                 $this->getEm()->persist($item);
                 $this->getEm()->flush();
-                $this->addDish(
-                    $item->getDishId(),
-                    $item->getDishSizeId(),
-                    1,
-                    $item->getOptions(),
-                    "",
-                    null,
-                    true
-                );
+                $this->addDish($item->getDishId(), $item->getDishSizeId(), 1, $options, "", null, true);
             }
         }
 
