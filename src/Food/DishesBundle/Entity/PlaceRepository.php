@@ -448,11 +448,11 @@ class PlaceRepository extends EntityRepository
             $subQuery .= " AND ppwt.week_day = " . $wd;
             $subQuery .= " 
                       AND (
-                        (ppwt.start_hour = 0 OR ppwt.start_hour < '.$dh.' OR
-                          (ppwt.start_hour <= '.$dh.' AND ppwt.start_min <= '.$dm.')
+                        (ppwt.start_hour = 0 OR ppwt.start_hour < $dh OR
+                          (ppwt.start_hour <= $dh AND ppwt.start_min <= $dm)
                         ) AND 
-                        ((ppwt.end_hour >= '.$dh.' AND ppwt.end_min >= '.$dm.') OR
-                            ppwt.end_hour > '.$dh.' OR ppwt.end_hour = 0)
+                        ((ppwt.end_hour >= $dh AND ppwt.end_min >= $dm) OR
+                            ppwt.end_hour > $dh OR ppwt.end_hour = 0)
                       )";
         }
 
