@@ -71,6 +71,8 @@ class PlaceRepository extends EntityRepository
         $city = null;
         $lat = null;
         $lon = null;
+        $miscService = $container->get('food.app.utils.misc');
+        $zaval = $miscService->getParam('zaval_on');
 
         if (!empty($locationData) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
             $city = (!empty($locationData['city']) ? $locationData['city'] : null);
@@ -85,8 +87,8 @@ class PlaceRepository extends EntityRepository
          *  This stuff needs to be deprecated. And parameter removed.
          */
 
-        $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
-        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pps.id";
+        $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL" . ($zaval ? ' AND ppdzd.active_on_zaval = 1' : '');
+        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pps.id" . ($zaval ? ' AND ppdz.active_on_zaval = 1' : '');
 
         $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id
             AND (

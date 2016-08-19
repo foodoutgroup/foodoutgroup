@@ -340,9 +340,9 @@ class PlacesService extends ContainerAware
             $kitchens,
             $filters,
             $recommended,
-            $this->container->get('food.googlegis')->getLocationFromSession()
-        )
-        ;
+            $this->container->get('food.googlegis')->getLocationFromSession(),
+            $this->container
+        );
 
         $this->container->get('food.places')->saveRelationPlaceToPoint($places);
         $places = $this->container->get('food.places')->placesPlacePointsWorkInformation($places);

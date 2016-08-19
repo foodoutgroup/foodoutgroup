@@ -289,8 +289,14 @@ class OrderService extends ContainerAware
 
         if (empty($orderDate)) {
             $miscService = $this->container->get('food.app.utils.misc');
+            $placeService = $this->container->get('food.places');
 
-            $timeShift = $miscService->parseTimeToMinutes($pointRecord->getDeliveryTime());
+            $zaval_time = $placeService->getZavalTime($placeRecord);
+            if ($zaval_time) {
+                $timeShift = $miscService->parseTimeToMinutes($zaval_time . 'val.');
+            } else {
+                $timeShift = $miscService->parseTimeToMinutes($pointRecord->getDeliveryTime());
+            }
 
             if (empty($timeShift) || $timeShift <= 0) {
                 $timeShift = 60;
@@ -512,12 +518,12 @@ class OrderService extends ContainerAware
         // Inform poor user, that his order was accepted
         if (in_array($this->getOrder()->getOrderStatus(), [self::$status_new, self::$status_preorder])) {
             $recipient = $this->getOrder()->getOrderExtra()->getPhone();
+            $placeService = $this->container->get('food.places');
 
             // SMS siunciam tik tuo atveju jei orderis ne is callcentro
             if ($this->getOrder()->getOrderFromNav() == false) {
                 if (!empty($recipient)) {
                     $smsService = $this->container->get('food.messages');
-                    $placeService = $this->container->get('food.places');
 
                     $sender = $this->container->getParameter('sms.sender');
 
@@ -578,7 +584,13 @@ class OrderService extends ContainerAware
                     if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
                         $timeShift = $miscService->parseTimeToMinutes($this->getOrder()->getPlace()->getPickupTime());
                     } else {
-                        $timeShift = $miscService->parseTimeToMinutes($this->getOrder()->getPlacePoint()->getDeliveryTime());
+                        $place = $this->getOrder()->getPlace();
+                        $zaval_time = $placeService->getZavalTime($place);
+                        if ($zaval_time) {
+                            $timeShift = $miscService->parseTimeToMinutes($zaval_time . 'val.');
+                        } else {
+                            $timeShift = $miscService->parseTimeToMinutes($this->getOrder()->getPlacePoint()->getDeliveryTime());
+                        }
                     }
 
                     $this->logOrder($this->getOrder(), 'calculating_delivery_time', 'Setting delivery time with a parsed value of ' . $timeShift . ' minutes');
@@ -4367,6 +4379,40 @@ class OrderService extends ContainerAware
                     ->trans(
                         'general.sms.client.driver_picked_up',
                         [],
+                        null,
+                        $this->getOrder()->getLocale()
+                    )
+                ;
+
+                $message = $smsService->createMessage($sender, $recipient, $text, $this->getOrder());
+                $smsService->saveMessage($message);
+            }
+        }
+    }
+
+    /**
+     * Send Message To User About Successfully Created Order
+     */
+    public function sendOrderCreatedMessage()
+    {
+        if (!$this->getOrder() instanceof Order) {
+            throw new \InvalidArgumentException('No order is set');
+        }
+
+        $recipient = $this->getOrder()->getOrderExtra()->getPhone();
+
+        // SMS siunciam tik tuo atveju jei orderis ne is callcentro
+        if ($this->getOrder()->getOrderFromNav() == false) {
+            if (!empty($recipient)) {
+                $smsService = $this->container->get('food.messages');
+                $sender = $this->container->getParameter('sms.sender');
+
+                $text = $this->container->get('translator')
+                    ->trans(
+                        'general.sms.client.order_created',
+                        [
+                            'order_id' => $this->getOrder()->getId(),
+                        ],
                         null,
                         $this->getOrder()->getLocale()
                     )
