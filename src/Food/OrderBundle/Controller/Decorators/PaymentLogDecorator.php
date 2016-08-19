@@ -37,7 +37,7 @@ trait PaymentLogDecorator
 
             // inform stuff
             $isZavalOn = $placeService->getZavalTime($order->getPlace());
-            if (!$isZavalOn) {
+            if ($order->getPlace()->getAutoInform() && !$isZavalOn) {
                 $orderService->informPlace();
             }
 
