@@ -13,7 +13,10 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 /**
  * Client
  *
- * @ORM\Table(name="place", indexes={@ORM\Index(name="active_idx", columns={"active"}),@ORM\Index(name="recommended_idx", columns={"recommended"}),@ORM\Index(name="new_idx", columns={"new"}),@ORM\Index(name="deleted_at_idx", columns={"deleted_at"}),@ORM\Index(name="showable_idx", columns={"active", "deleted_at"})})
+ * @ORM\Table(name="place", indexes={@ORM\Index(name="active_idx",
+ *     columns={"active"}),@ORM\Index(name="recommended_idx", columns={"recommended"}),@ORM\Index(name="new_idx",
+ *     columns={"new"}),@ORM\Index(name="deleted_at_idx", columns={"deleted_at"}),@ORM\Index(name="showable_idx",
+ *     columns={"active", "deleted_at"})})
  * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\PlaceRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\PlaceLocalized")
@@ -175,10 +178,11 @@ class Place extends Uploadable implements Translatable
     /**
      * @ORM\ManyToMany(targetEntity="Food\AppBundle\Entity\SeoRecord", mappedBy="places")
      */
-    private $seorecords = array();
+    private $seorecords = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="PlaceCoverPhoto", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="PlaceCoverPhoto", mappedBy="place", cascade={"persist", "remove"},
+     *     orphanRemoval=true)
      *
      * @var ArrayCollection
      */
@@ -262,7 +266,7 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="disabled_online_payment", type="boolean")
      */
     private $disabledOnlinePayment = false;
-    
+
     /**
      * This place does not accet online payments
      * @var bool
@@ -333,6 +337,12 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="send_invoice", type="boolean")
      */
     private $sendInvoice = false;
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="auto_inform", type="boolean", nullable=true, options={"default": true})
+     */
+    private $autoInform = true;
 
     /**
      * @ORM\OneToMany(targetEntity="\Food\UserBundle\Entity\User", mappedBy="place")
@@ -385,7 +395,7 @@ class Place extends Uploadable implements Translatable
     private $deletedBy;
 
     protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
-    protected $boxSize = array('w' => 130, 'h' => 86);
+    protected $boxSize = ['w' => 130, 'h' => 86];
 
     /**
      * @Gedmo\Locale
@@ -409,6 +419,7 @@ class Place extends Uploadable implements Translatable
         if (!$this->getId()) {
             return '';
         }
+
         return $this->getName();
     }
 
@@ -452,6 +463,7 @@ class Place extends Uploadable implements Translatable
         if (empty($this->uploadDir)) {
             $this->uploadDir = 'uploads/places';
         }
+
         return $this->uploadDir;
     }
 
@@ -464,25 +476,29 @@ class Place extends Uploadable implements Translatable
         if (empty($this->uploadableField)) {
             $this->uploadableField = 'logo';
         }
+
         return $this->uploadableField;
     }
 
     /**
      * @param \Doctrine\ORM\EntityManager $em
+     *
      * @return string
      */
     public function getOrigName(\Doctrine\ORM\EntityManager $em)
     {
         $query = $em->createQuery("SELECT o.name FROM FoodDishesBundle:Place as o WHERE o.id=:id")
-            ->setParameter('id', $this->getId());
+            ->setParameter('id', $this->getId())
+        ;
         $res = ($query->getSingleResult());
+
         return $res['name'];
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -493,19 +509,20 @@ class Place extends Uploadable implements Translatable
      * Set name
      *
      * @param string $name
+     *
      * @return Place
      */
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -516,19 +533,20 @@ class Place extends Uploadable implements Translatable
      * Set logo
      *
      * @param string $logo
+     *
      * @return Place
      */
     public function setLogo($logo)
     {
         $this->logo = $logo;
-    
+
         return $this;
     }
 
     /**
      * Get logo
      *
-     * @return string 
+     * @return string
      */
     public function getLogo()
     {
@@ -539,19 +557,20 @@ class Place extends Uploadable implements Translatable
      * Set active
      *
      * @param boolean $active
+     *
      * @return Place
      */
     public function setActive($active)
     {
         $this->active = $active;
-    
+
         return $this;
     }
 
     /**
      * Get active
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActive()
     {
@@ -562,19 +581,20 @@ class Place extends Uploadable implements Translatable
      * Set createdAt
      *
      * @param \DateTime $createdAt
+     *
      * @return Place
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -585,19 +605,20 @@ class Place extends Uploadable implements Translatable
      * Set editedAt
      *
      * @param \DateTime $editedAt
+     *
      * @return Place
      */
     public function setEditedAt($editedAt)
     {
         $this->editedAt = $editedAt;
-    
+
         return $this;
     }
 
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEditedAt()
     {
@@ -608,19 +629,20 @@ class Place extends Uploadable implements Translatable
      * Set deletedAt
      *
      * @param \DateTime $deletedAt
+     *
      * @return Place
      */
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
-    
+
         return $this;
     }
 
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeletedAt()
     {
@@ -631,12 +653,13 @@ class Place extends Uploadable implements Translatable
      * Add kitchens
      *
      * @param \Food\DishesBundle\Entity\Kitchen $kitchens
+     *
      * @return Place
      */
     public function addKitchen(\Food\DishesBundle\Entity\Kitchen $kitchens)
     {
         $this->kitchens[] = $kitchens;
-    
+
         return $this;
     }
 
@@ -653,7 +676,7 @@ class Place extends Uploadable implements Translatable
     /**
      * Get kitchens
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getKitchens()
     {
@@ -664,12 +687,13 @@ class Place extends Uploadable implements Translatable
      * Add points
      *
      * @param \Food\DishesBundle\Entity\PlacePoint $points
+     *
      * @return Place
      */
     public function addPoint(\Food\DishesBundle\Entity\PlacePoint $points)
     {
         $this->points[] = $points;
-    
+
         return $this;
     }
 
@@ -697,12 +721,13 @@ class Place extends Uploadable implements Translatable
      * Add users
      *
      * @param \Food\UserBundle\Entity\User $users
+     *
      * @return Place
      */
     public function addUser(\Food\UserBundle\Entity\User $users)
     {
         $this->users[] = $users;
-    
+
         return $this;
     }
 
@@ -719,7 +744,7 @@ class Place extends Uploadable implements Translatable
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getUsers()
     {
@@ -730,19 +755,20 @@ class Place extends Uploadable implements Translatable
      * Set path
      *
      * @param string $path
+     *
      * @return Place
      */
     public function setPath($path)
     {
         $this->path = $path;
-    
+
         return $this;
     }
 
     /**
      * Get path
      *
-     * @return string 
+     * @return string
      */
     public function getPath()
     {
@@ -753,19 +779,20 @@ class Place extends Uploadable implements Translatable
      * Set file
      *
      * @param string $file
+     *
      * @return Place
      */
     public function setFile($file)
     {
         $this->file = $file;
-    
+
         return $this;
     }
 
     /**
      * Get file
      *
-     * @return string 
+     * @return string
      */
     public function getFile()
     {
@@ -776,19 +803,20 @@ class Place extends Uploadable implements Translatable
      * Set createdBy
      *
      * @param \Food\UserBundle\Entity\User $createdBy
+     *
      * @return Place
      */
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
     /**
      * Get createdBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -799,19 +827,20 @@ class Place extends Uploadable implements Translatable
      * Set editedBy
      *
      * @param \Food\UserBundle\Entity\User $editedBy
+     *
      * @return Place
      */
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
         $this->editedBy = $editedBy;
-    
+
         return $this;
     }
 
     /**
      * Get editedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getEditedBy()
     {
@@ -822,19 +851,20 @@ class Place extends Uploadable implements Translatable
      * Set deletedBy
      *
      * @param \Food\UserBundle\Entity\User $deletedBy
+     *
      * @return Place
      */
     public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
     {
         $this->deletedBy = $deletedBy;
-    
+
         return $this;
     }
 
     /**
      * Get deletedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getDeletedBy()
     {
@@ -845,12 +875,13 @@ class Place extends Uploadable implements Translatable
      * Add categories
      *
      * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     *
      * @return Place
      */
     public function addCategorie(\Food\DishesBundle\Entity\FoodCategory $categories)
     {
         $this->categories[] = $categories;
-    
+
         return $this;
     }
 
@@ -867,7 +898,7 @@ class Place extends Uploadable implements Translatable
     /**
      * Get categories
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCategories()
     {
@@ -878,12 +909,13 @@ class Place extends Uploadable implements Translatable
      * Add dishes
      *
      * @param \Food\DishesBundle\Entity\Dish $dishes
+     *
      * @return Place
      */
     public function addDishe(\Food\DishesBundle\Entity\Dish $dishes)
     {
         $this->dishes[] = $dishes;
-    
+
         return $this;
     }
 
@@ -911,12 +943,13 @@ class Place extends Uploadable implements Translatable
      * Add dishes
      *
      * @param \Food\DishesBundle\Entity\Dish $dishes
+     *
      * @return Place
      */
     public function addDish(\Food\DishesBundle\Entity\Dish $dishes)
     {
         $this->dishes[] = $dishes;
-    
+
         return $this;
     }
 
@@ -934,12 +967,13 @@ class Place extends Uploadable implements Translatable
      * Add categories
      *
      * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     *
      * @return Place
      */
     public function addCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
     {
         $this->categories[] = $categories;
-    
+
         return $this;
     }
 
@@ -957,12 +991,13 @@ class Place extends Uploadable implements Translatable
      * Add reviews
      *
      * @param \Food\DishesBundle\Entity\PlaceReviews $reviews
+     *
      * @return Place
      */
     public function addReview(\Food\DishesBundle\Entity\PlaceReviews $reviews)
     {
         $this->reviews[] = $reviews;
-    
+
         return $this;
     }
 
@@ -1003,6 +1038,7 @@ class Place extends Uploadable implements Translatable
         if ($sums == 0) {
             return 0;
         }
+
         return floor(($sums / $counts) * 10) / 10;
     }
 
@@ -1010,19 +1046,20 @@ class Place extends Uploadable implements Translatable
      * Set slogan
      *
      * @param string $slogan
+     *
      * @return Place
      */
     public function setSlogan($slogan)
     {
         $this->slogan = $slogan;
-    
+
         return $this;
     }
 
     /**
      * Get slogan
      *
-     * @return string 
+     * @return string
      */
     public function getSlogan()
     {
@@ -1033,19 +1070,20 @@ class Place extends Uploadable implements Translatable
      * Set new
      *
      * @param boolean $new
+     *
      * @return Place
      */
     public function setNew($new)
     {
         $this->new = $new;
-    
+
         return $this;
     }
 
     /**
      * Get new
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getNew()
     {
@@ -1056,19 +1094,20 @@ class Place extends Uploadable implements Translatable
      * Set deliveryPrice
      *
      * @param integer $deliveryPrice
+     *
      * @return Place
      */
     public function setDeliveryPrice($deliveryPrice)
     {
         $this->deliveryPrice = $deliveryPrice;
-    
+
         return $this;
     }
 
     /**
      * Get deliveryPrice
      *
-     * @return integer 
+     * @return integer
      */
     public function getDeliveryPrice()
     {
@@ -1079,19 +1118,20 @@ class Place extends Uploadable implements Translatable
      * Set deliveryTime
      *
      * @param string $deliveryTime
+     *
      * @return Place
      */
     public function setDeliveryTime($deliveryTime)
     {
         $this->deliveryTime = $deliveryTime;
-    
+
         return $this;
     }
 
     /**
      * Get deliveryTime
      *
-     * @return string 
+     * @return string
      */
     public function getDeliveryTime()
     {
@@ -1102,12 +1142,13 @@ class Place extends Uploadable implements Translatable
      * Set cartMinimum
      *
      * @param integer $cartMinimum
+     *
      * @return Place
      */
     public function setCartMinimum($cartMinimum)
     {
         $this->cartMinimum = $cartMinimum;
-    
+
         return $this;
     }
 
@@ -1125,19 +1166,20 @@ class Place extends Uploadable implements Translatable
      * Set description
      *
      * @param string $description
+     *
      * @return Place
      */
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -1148,6 +1190,7 @@ class Place extends Uploadable implements Translatable
      * Add translations
      *
      * @param \Food\DishesBundle\Entity\PlaceLocalized $translations
+     *
      * @return Place
      */
     public function addTranslation(\Food\DishesBundle\Entity\PlaceLocalized $translations)
@@ -1175,7 +1218,7 @@ class Place extends Uploadable implements Translatable
     /**
      * Get translations
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTranslations()
     {
@@ -1202,12 +1245,13 @@ class Place extends Uploadable implements Translatable
      * Set averageRating
      *
      * @param float $averageRating
+     *
      * @return Place
      */
     public function setAverageRating($averageRating)
     {
         $this->averageRating = $averageRating;
-    
+
         return $this;
     }
 
@@ -1225,19 +1269,20 @@ class Place extends Uploadable implements Translatable
      * Set recommended
      *
      * @param boolean $recommended
+     *
      * @return Place
      */
     public function setRecommended($recommended)
     {
         $this->recommended = $recommended;
-    
+
         return $this;
     }
 
     /**
      * Get recommended
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getRecommended()
     {
@@ -1248,19 +1293,20 @@ class Place extends Uploadable implements Translatable
      * Set selfDelivery
      *
      * @param boolean $selfDelivery
+     *
      * @return Place
      */
     public function setSelfDelivery($selfDelivery)
     {
         $this->selfDelivery = $selfDelivery;
-    
+
         return $this;
     }
 
     /**
      * Get selfDelivery
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSelfDelivery()
     {
@@ -1271,19 +1317,20 @@ class Place extends Uploadable implements Translatable
      * Set deliveryTimeInfo
      *
      * @param string $deliveryTimeInfo
+     *
      * @return Place
      */
     public function setDeliveryTimeInfo($deliveryTimeInfo)
     {
         $this->deliveryTimeInfo = $deliveryTimeInfo;
-    
+
         return $this;
     }
 
     /**
      * Get deliveryTimeInfo
      *
-     * @return string 
+     * @return string
      */
     public function getDeliveryTimeInfo()
     {
@@ -1294,19 +1341,20 @@ class Place extends Uploadable implements Translatable
      * Set minimalOnSelfDel
      *
      * @param boolean $minimalOnSelfDel
+     *
      * @return Place
      */
     public function setMinimalOnSelfDel($minimalOnSelfDel)
     {
         $this->minimalOnSelfDel = $minimalOnSelfDel;
-    
+
         return $this;
     }
 
     /**
      * Get minimalOnSelfDel
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getMinimalOnSelfDel()
     {
@@ -1317,19 +1365,20 @@ class Place extends Uploadable implements Translatable
      * Set cardOnDelivery
      *
      * @param boolean $cardOnDelivery
+     *
      * @return Place
      */
     public function setCardOnDelivery($cardOnDelivery)
     {
         $this->cardOnDelivery = $cardOnDelivery;
-    
+
         return $this;
     }
 
     /**
      * Get cardOnDelivery
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getCardOnDelivery()
     {
@@ -1340,19 +1389,20 @@ class Place extends Uploadable implements Translatable
      * Set alcoholRules
      *
      * @param string $alcoholRules
+     *
      * @return Place
      */
     public function setAlcoholRules($alcoholRules)
     {
         $this->alcoholRules = $alcoholRules;
-    
+
         return $this;
     }
 
     /**
      * Get alcoholRules
      *
-     * @return string 
+     * @return string
      */
     public function getAlcoholRules()
     {
@@ -1363,12 +1413,13 @@ class Place extends Uploadable implements Translatable
      * Add photos
      *
      * @param \Food\DishesBundle\Entity\PlaceCoverPhoto $photos
+     *
      * @return Place
      */
     public function addPhoto(\Food\DishesBundle\Entity\PlaceCoverPhoto $photos)
     {
         $this->photos[] = $photos;
-    
+
         return $this;
     }
 
@@ -1396,19 +1447,20 @@ class Place extends Uploadable implements Translatable
      * Set disabledOnlinePayment
      *
      * @param boolean $disabledOnlinePayment
+     *
      * @return Place
      */
     public function setDisabledOnlinePayment($disabledOnlinePayment)
     {
         $this->disabledOnlinePayment = $disabledOnlinePayment;
-    
+
         return $this;
     }
 
     /**
      * Get disabledOnlinePayment
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDisabledOnlinePayment()
     {
@@ -1425,18 +1477,18 @@ class Place extends Uploadable implements Translatable
      */
     public function setDeliveryOptions($deliveryOptions)
     {
-        if (!in_array($deliveryOptions, array(self::OPT_DELIVERY_AND_PICKUP, self::OPT_ONLY_DELIVERY, self::OPT_ONLY_PICKUP))) {
-            throw new \InvalidArgumentException('Unknown delivery opion: '.$deliveryOptions);
+        if (!in_array($deliveryOptions, [self::OPT_DELIVERY_AND_PICKUP, self::OPT_ONLY_DELIVERY, self::OPT_ONLY_PICKUP])) {
+            throw new \InvalidArgumentException('Unknown delivery opion: ' . $deliveryOptions);
         }
         $this->deliveryOptions = $deliveryOptions;
-    
+
         return $this;
     }
 
     /**
      * Get deliveryOptions
      *
-     * @return string 
+     * @return string
      */
     public function getDeliveryOptions()
     {
@@ -1447,19 +1499,20 @@ class Place extends Uploadable implements Translatable
      * Set chain
      *
      * @param string $chain
+     *
      * @return Place
      */
     public function setChain($chain)
     {
         $this->chain = $chain;
-    
+
         return $this;
     }
 
     /**
      * Get chain
      *
-     * @return string 
+     * @return string
      */
     public function getChain()
     {
@@ -1470,19 +1523,20 @@ class Place extends Uploadable implements Translatable
      * Set navision
      *
      * @param boolean $navision
+     *
      * @return Place
      */
     public function setNavision($navision)
     {
         $this->navision = $navision;
-    
+
         return $this;
     }
 
     /**
      * Get navision
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getNavision()
     {
@@ -1493,19 +1547,20 @@ class Place extends Uploadable implements Translatable
      * Set priority
      *
      * @param integer $priority
+     *
      * @return Place
      */
     public function setPriority($priority)
     {
         $this->priority = $priority;
-    
+
         return $this;
     }
 
     /**
      * Get priority
      *
-     * @return integer 
+     * @return integer
      */
     public function getPriority()
     {
@@ -1516,19 +1571,20 @@ class Place extends Uploadable implements Translatable
      * Set onlyAlcohol
      *
      * @param boolean $onlyAlcohol
+     *
      * @return Place
      */
     public function setOnlyAlcohol($onlyAlcohol)
     {
         $this->onlyAlcohol = $onlyAlcohol;
-    
+
         return $this;
     }
 
     /**
      * Get onlyAlcohol
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getOnlyAlcohol()
     {
@@ -1539,19 +1595,20 @@ class Place extends Uploadable implements Translatable
      * Set sendInvoice
      *
      * @param boolean $sendInvoice
+     *
      * @return Place
      */
     public function setSendInvoice($sendInvoice)
     {
         $this->sendInvoice = $sendInvoice;
-    
+
         return $this;
     }
 
     /**
      * Get sendInvoice
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSendInvoice()
     {
@@ -1562,19 +1619,20 @@ class Place extends Uploadable implements Translatable
      * Set discountPricesEnabled
      *
      * @param boolean $discountPricesEnabled
+     *
      * @return Place
      */
     public function setDiscountPricesEnabled($discountPricesEnabled)
     {
         $this->discountPricesEnabled = $discountPricesEnabled;
-    
+
         return $this;
     }
 
     /**
      * Get discountPricesEnabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDiscountPricesEnabled()
     {
@@ -1592,19 +1650,20 @@ class Place extends Uploadable implements Translatable
      * Set reviewCount
      *
      * @param integer $reviewCount
+     *
      * @return Place
      */
     public function setReviewCount($reviewCount)
     {
         $this->reviewCount = $reviewCount;
-    
+
         return $this;
     }
 
     /**
      * Get reviewCount
      *
-     * @return integer 
+     * @return integer
      */
     public function getReviewCount()
     {
@@ -1615,19 +1674,20 @@ class Place extends Uploadable implements Translatable
      * Set top
      *
      * @param boolean $top
+     *
      * @return Place
      */
     public function setTop($top)
     {
         $this->top = $top;
-    
+
         return $this;
     }
 
     /**
      * Get top
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getTop()
     {
@@ -1638,19 +1698,20 @@ class Place extends Uploadable implements Translatable
      * Set deliveryPriceOld
      *
      * @param integer $deliveryPriceOld
+     *
      * @return Place
      */
     public function setDeliveryPriceOld($deliveryPriceOld)
     {
         $this->deliveryPriceOld = $deliveryPriceOld;
-    
+
         return $this;
     }
 
     /**
      * Get deliveryPriceOld
      *
-     * @return integer 
+     * @return integer
      */
     public function getDeliveryPriceOld()
     {
@@ -1661,19 +1722,20 @@ class Place extends Uploadable implements Translatable
      * Set cartMinimumOld
      *
      * @param integer $cartMinimumOld
+     *
      * @return Place
      */
     public function setCartMinimumOld($cartMinimumOld)
     {
         $this->cartMinimumOld = $cartMinimumOld;
-    
+
         return $this;
     }
 
     /**
      * Get cartMinimumOld
      *
-     * @return integer 
+     * @return integer
      */
     public function getCartMinimumOld()
     {
@@ -1684,19 +1746,20 @@ class Place extends Uploadable implements Translatable
      * Set showNotification
      *
      * @param boolean $showNotification
+     *
      * @return Place
      */
     public function setShowNotification($showNotification)
     {
         $this->showNotification = $showNotification;
-    
+
         return $this;
     }
 
     /**
      * Get showNotification
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getShowNotification()
     {
@@ -1707,19 +1770,20 @@ class Place extends Uploadable implements Translatable
      * Set notificationContent
      *
      * @param string $notificationContent
+     *
      * @return Place
      */
     public function setNotificationContent($notificationContent)
     {
         $this->notificationContent = $notificationContent;
-    
+
         return $this;
     }
 
     /**
      * Get notificationContent
      *
-     * @return string 
+     * @return string
      */
     public function getNotificationContent()
     {
@@ -1730,12 +1794,13 @@ class Place extends Uploadable implements Translatable
      * Add seorecords
      *
      * @param \Food\AppBundle\Entity\SeoRecord $seorecords
+     *
      * @return Place
      */
     public function addSeorecord(\Food\AppBundle\Entity\SeoRecord $seorecords)
     {
         $this->seorecords[] = $seorecords;
-    
+
         return $this;
     }
 
@@ -1752,7 +1817,7 @@ class Place extends Uploadable implements Translatable
     /**
      * Get seorecords
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getSeorecords()
     {
@@ -1767,8 +1832,10 @@ class Place extends Uploadable implements Translatable
             foreach ($seo_records as $seo_record) {
                 $seo_line .= $seo_record->{'get' . $field}() . " ";
             }
+
             return rtrim($seo_line, " ");
         }
+
         return false;
     }
 
@@ -1776,12 +1843,13 @@ class Place extends Uploadable implements Translatable
      * Add bestOffers
      *
      * @param \Food\PlacesBundle\Entity\BestOffer $bestOffers
+     *
      * @return Place
      */
     public function addBestOffer(\Food\PlacesBundle\Entity\BestOffer $bestOffers)
     {
         $this->bestOffers[] = $bestOffers;
-    
+
         return $this;
     }
 
@@ -1798,7 +1866,7 @@ class Place extends Uploadable implements Translatable
     /**
      * Get bestOffers
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getBestOffers()
     {
@@ -1809,19 +1877,20 @@ class Place extends Uploadable implements Translatable
      * Set pickupTime
      *
      * @param string $pickupTime
+     *
      * @return Place
      */
     public function setPickupTime($pickupTime)
     {
         $this->pickupTime = $pickupTime;
-    
+
         return $this;
     }
 
     /**
      * Get pickupTime
      *
-     * @return string 
+     * @return string
      */
     public function getPickupTime()
     {
@@ -1832,19 +1901,20 @@ class Place extends Uploadable implements Translatable
      * Set basketLimitFood
      *
      * @param integer $basketLimitFood
+     *
      * @return Place
      */
     public function setBasketLimitFood($basketLimitFood)
     {
         $this->basketLimitFood = $basketLimitFood;
-    
+
         return $this;
     }
 
     /**
      * Get basketLimitFood
      *
-     * @return integer 
+     * @return integer
      */
     public function getBasketLimitFood()
     {
@@ -1855,19 +1925,20 @@ class Place extends Uploadable implements Translatable
      * Set basketLimitDrinks
      *
      * @param integer $basketLimitDrinks
+     *
      * @return Place
      */
     public function setBasketLimitDrinks($basketLimitDrinks)
     {
         $this->basketLimitDrinks = $basketLimitDrinks;
-    
+
         return $this;
     }
 
     /**
      * Get basketLimitDrinks
      *
-     * @return integer 
+     * @return integer
      */
     public function getBasketLimitDrinks()
     {
@@ -1878,6 +1949,7 @@ class Place extends Uploadable implements Translatable
      * Set disabledPaymentOnDelivery
      *
      * @param boolean $disabledPaymentOnDelivery
+     *
      * @return Place
      */
     public function setDisabledPaymentOnDelivery($disabledPaymentOnDelivery)
@@ -1890,10 +1962,33 @@ class Place extends Uploadable implements Translatable
     /**
      * Get disabledPaymentOnDelivery
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDisabledPaymentOnDelivery()
     {
         return $this->disabledPaymentOnDelivery;
+    }
+
+    /**
+     * Set autoInform
+     *
+     * @param boolean $autoInform
+     * @return Place
+     */
+    public function setAutoInform($autoInform)
+    {
+        $this->autoInform = $autoInform;
+    
+        return $this;
+    }
+
+    /**
+     * Get autoInform
+     *
+     * @return boolean 
+     */
+    public function getAutoInform()
+    {
+        return $this->autoInform;
     }
 }

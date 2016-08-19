@@ -240,7 +240,7 @@ class DispatcherAdminController extends Controller
 
             if (!$orderService->getOrder()->getPreorder() || $orderService->getOrder()->getPlace()->getNavision()) {
                 $isZavalOn = $placeService->getZavalTime($orderService->getOrder()->getPlace());
-                if (!$isZavalOn) {
+                if (!$isZavalOn && $orderService->getOrder()->getPlace()->getAutoInform()) {
                     $orderService->informPlace(false);
                 }
             }
@@ -592,7 +592,7 @@ class DispatcherAdminController extends Controller
 
         try {
             if (!$orderService->getOrder()->getPlaceInformed()) {
-                $orderService->informPlace(false);
+                $orderService->informPlace();
             }
         } catch (\Exception $e) {
             $this->get('logger')->error('Error happened assigning a place informed: '.$e->getMessage());

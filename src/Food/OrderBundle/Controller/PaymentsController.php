@@ -18,7 +18,7 @@ class PaymentsController extends Controller
     {
         $logger = $this->container->get("logger");
         $logger->alert("==========================\naccept payment action for paysera came\n====================================\n");
-        $logger->alert("Request data: ".var_export($request->query->all(), true));
+        $logger->alert("Request data: " . var_export($request->query->all(), true));
         $logger->alert('-----------------------------------------------------------');
 
         $orderService = $this->container->get('food.order');
@@ -27,13 +27,13 @@ class PaymentsController extends Controller
             $callbackValidator = $this->get('evp_web_to_pay.callback_validator');
             $data = $callbackValidator->validateAndParseData($request->query->all());
 
-            $logger->alert("Parsed accept data: ".var_export($data, true));
+            $logger->alert("Parsed accept data: " . var_export($data, true));
             $logger->alert('-----------------------------------------------------------');
 
             $order = $orderService->getOrderById($data['orderid']);
 
             if (!$order) {
-                throw new \Exception('Order not found. Order id from Paysera: '.$data['orderid']);
+                throw new \Exception('Order not found. Order id from Paysera: ' . $data['orderid']);
             }
 
             if ($data['status'] == 1) {
@@ -63,14 +63,14 @@ class PaymentsController extends Controller
 
                     $this->get('food.cart')->clearCart($order->getPlace());
 
-                    return new RedirectResponse($this->generateUrl('food_cart_wait', array('orderHash' => $order->getOrderHash())));
+                    return new RedirectResponse($this->generateUrl('food_cart_wait', ['orderHash' => $order->getOrderHash()]));
                 }
             }
 
         } catch (\Exception $e) {
             //handle the callback validation error here
-            $logger->alert("payment data validation failed!. Error: ".$e->getMessage());
-            $logger->alert("trace: ".$e->getTraceAsString());
+            $logger->alert("payment data validation failed!. Error: " . $e->getMessage());
+            $logger->alert("trace: " . $e->getTraceAsString());
 
             if (isset($order) && $order) {
                 $orderService->statusFailed('paysera_payment');
@@ -84,14 +84,14 @@ class PaymentsController extends Controller
 
         $this->get('food.cart')->clearCart($order->getPlace());
 
-        return new RedirectResponse($this->generateUrl('food_cart_success', array('orderHash' => $order->getOrderHash())));
+        return new RedirectResponse($this->generateUrl('food_cart_success', ['orderHash' => $order->getOrderHash()]));
     }
 
     public function payseraCancelAction($hash, Request $request)
     {
         $logger = $this->container->get("logger");
         $logger->alert("==========================\ncancel payment action for paysera came\n====================================\n");
-        $logger->alert("Request data: ".var_export($request->query->all(), true));
+        $logger->alert("Request data: " . var_export($request->query->all(), true));
         $logger->alert('-----------------------------------------------------------');
 
         try {
@@ -109,8 +109,8 @@ class PaymentsController extends Controller
             $orderService->setPaymentStatus($orderService::$paymentStatusCanceled, 'User canceled payment');
         } catch (\Exception $e) {
             //handle the callback validation error here
-            $logger->alert("payment cancelation fails!. Error: ".$e->getMessage());
-            $logger->alert("trace: ".$e->getTraceAsString());
+            $logger->alert("payment cancelation fails!. Error: " . $e->getMessage());
+            $logger->alert("trace: " . $e->getTraceAsString());
 
             if (isset($order) && $order) {
                 if ($order->getPaymentStatus() != $orderService::$paymentStatusComplete) {
@@ -128,16 +128,16 @@ class PaymentsController extends Controller
                 throw $e;
             } else {
                 // Redirect to success, callback already approved him for our fod
-                return new RedirectResponse($this->generateUrl('food_cart_success', array('orderHash' => $order->getOrderHash())));
+                return new RedirectResponse($this->generateUrl('food_cart_success', ['orderHash' => $order->getOrderHash()]));
             }
         }
 
         return new RedirectResponse(
             $this->generateUrl(
                 'food_cart',
-                array('placeId' => $order->getPlace()->getId())
+                ['placeId' => $order->getPlace()->getId()]
             )
-            .'?hash='.$order->getOrderHash()
+            . '?hash=' . $order->getOrderHash()
         );
     }
 
@@ -153,12 +153,12 @@ class PaymentsController extends Controller
             $callbackValidator = $this->get('evp_web_to_pay.callback_validator');
             $data = $callbackValidator->validateAndParseData($request->query->all());
             $logger->alert('-- parsing data');
-            $logger->alert('Parsed data: '.var_export($data, true));
+            $logger->alert('Parsed data: ' . var_export($data, true));
 
             $order = $orderService->getOrderById($data['orderid']);
 
             if (!$order) {
-                throw new \Exception('Order not found. Order id: '.$data['orderid']);
+                throw new \Exception('Order not found. Order id: ' . $data['orderid']);
             }
 
             if ($data['status'] == 1) {
@@ -169,12 +169,12 @@ class PaymentsController extends Controller
                     $orderService->setPaymentStatus($orderService::$paymentStatusComplete, 'Paysera billed payment');
                     $orderService->saveOrder();
 
-                    // If pre order - do not inform
-                    if ($order->getOrderStatus() != OrderService::$status_preorder || $order->getPlace()->getNavision()) {
-                        $isZavalOn = $placeService->getZavalTime($order->getPlace());
-                        if (!$isZavalOn) {
-                            $orderService->informPlace();
-                        }
+                    // Inform if:
+                    // autoinform = true in place
+                    // turned off zaval
+                    // is not preorder OR navision
+                    if ($orderService->getOrder()->getPlace()->getAutoInform() && !$placeService->getZavalTime($order->getPlace()) && ($order->getOrderStatus() != OrderService::$status_preorder || $order->getPlace()->getNavision())) {
+                        $orderService->informPlace();
                     }
 
                     // Send Message To User About Successfully Created Order
@@ -188,8 +188,8 @@ class PaymentsController extends Controller
             }
         } catch (\Exception $e) {
             //handle the callback validation error here
-            $logger->alert("payment callback validation failed!. Error: ".$e->getMessage());
-            $logger->alert("trace: ".$e->getTraceAsString());
+            $logger->alert("payment callback validation failed!. Error: " . $e->getMessage());
+            $logger->alert("trace: " . $e->getTraceAsString());
 
             if (isset($order) && $order) {
                 $orderService->setPaymentStatus($orderService::$paymentStatusError, $e->getMessage());

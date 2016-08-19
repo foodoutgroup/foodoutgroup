@@ -551,6 +551,10 @@
                 <source>admin.place.commission_rate</source>
                 <target>Commission Rate</target>
             </trans-unit>
+            <trans-unit id="admin.place.auto_inform">
+                <source>admin.place.auto_inform</source>
+                <target>Auto inform</target>
+            </trans-unit>
             <trans-unit id="admin.place.self_delivery">
                 <source>admin.place.self_delivery</source>
                 <target>Own logistics</target>

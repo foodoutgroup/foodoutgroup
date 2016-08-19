@@ -406,6 +406,7 @@ class OrderService extends ContainerAware
     /**
      * @param Order $order
      * here we go again.. please close your eyes.
+     *
      * @return bool
      */
     public function isHesburger(Order $order)
@@ -414,6 +415,7 @@ class OrderService extends ContainerAware
         if (strstr($place_title, 'hesbur', true)) {
             return true;
         }
+
         return false;
     }
 
@@ -961,6 +963,7 @@ class OrderService extends ContainerAware
         $this->chageOrderStatus(self::$status_canceled_produced, $source, $statusMessage);
         $this->getOrder()->setCompletedTime(new \DateTime());
         $this->createDiscountCode($order);
+
         return $this;
     }
 
@@ -1216,18 +1219,18 @@ class OrderService extends ContainerAware
 
     /**
      * @param \Food\UserBundle\Entity\User $user
-     * @param array $location
-     * @param UserAddress $userAddress
+     * @param array                        $location
+     * @param UserAddress                  $userAddress
      *
      * @return UserAddress
      */
     public function createAddressFromLocation($user, $location, $comment = null)
     {
-        $params = array(
-                'user' => $user,
-                'cities' => $location['city_id'],
-                'address' => $location['address'],
-        );
+        $params = [
+            'user'    => $user,
+            'cities'  => $location['city_id'],
+            'address' => $location['address'],
+        ];
         if ($this->container->getParameter('neighbourhoods')) {
             if (empty($location['neighbourhood_id'])) {
                 throw new \InvalidArgumentException("An empty variable is not allowed on our company!");
@@ -1237,7 +1240,8 @@ class OrderService extends ContainerAware
 
         $userAddress = $this->getEm()
             ->getRepository('Food\UserBundle\Entity\UserAddress')
-            ->findOneBy($params);
+            ->findOneBy($params)
+        ;
 
         if (!$userAddress) {
             $userAddress = new UserAddress();
@@ -1246,7 +1250,8 @@ class OrderService extends ContainerAware
         $userAddress->setUser($user)
             ->setCities($this->getEm()->getRepository('FoodAppBundle:Cities')->find($location['city_id']))
             ->setAddress($location['address'])
-            ->setComment($comment);
+            ->setComment($comment)
+        ;
         if ($this->container->getParameter('neighbourhoods')) {
             $userAddress->setNeighbourhood($this->getEm()->getRepository('FoodAppBundle:Neighbourhood')->find($location['neighbourhood_id']));
         }
@@ -2166,12 +2171,10 @@ class OrderService extends ContainerAware
     {
         $order = $this->getOrder();
 
-        if (
-        in_array(
+        if (in_array(
             $order->getOrderStatus(),
             [OrderService::$status_pre, OrderService::$status_unapproved]
-        )
-        ) {
+        )) {
             return;
         }
 
@@ -3108,20 +3111,20 @@ class OrderService extends ContainerAware
     public function getTodayWork(PlacePoint $placePoint, $showDayNumber = true)
     {
         $locale = $this->container->get('food.dishes.utils.slug')->getLocale();
-        $wdays = array(
-            '1' =>'I',
-            '2' =>'II',
-            '3' =>'III',
-            '4' =>'IV',
-            '5' =>'V',
-            '6' =>'VI',
-            '7' =>'VII',
-        );
+        $wdays = [
+            '1' => 'I',
+            '2' => 'II',
+            '3' => 'III',
+            '4' => 'IV',
+            '5' => 'V',
+            '6' => 'VI',
+            '7' => 'VII',
+        ];
         $wd = date('w');
         if ($wd == 0) $wd = 7;
-        $workTime = $placePoint->{'getWd'.$wd}();
+        $workTime = $placePoint->{'getWd' . $wd}();
         $intervals = explode(' ', $workTime);
-        $times = array();
+        $times = [];
         foreach ($intervals as $interval) {
             if (strpos($interval, '-') !== false) {
                 list($start, $end) = explode('-', $interval);
@@ -3143,7 +3146,7 @@ class OrderService extends ContainerAware
                 } else {
                     $times[] = sprintf("%02d:%02d-%02d:%02d", $startHour, $startMin, $endHour, $endMin);
                 }
-            } elseif ('fa' == $locale)  {
+            } elseif ('fa' == $locale) {
                 array_unshift($times, $interval);
             } else {
                 $times[] = $interval;
@@ -3153,7 +3156,8 @@ class OrderService extends ContainerAware
         if ($locale == 'fa') {
             return $time . ($showDayNumber ? " " . $wdays[$wd] : "");
         }
-        return ($showDayNumber ? $wdays[$wd]." " : ""). $time;
+
+        return ($showDayNumber ? $wdays[$wd] . " " : "") . $time;
     }
 
     /**
@@ -3403,8 +3407,8 @@ class OrderService extends ContainerAware
                         $pointForPlace = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData);
                         if (!$pointForPlace) {
                             $this->container->get('logger')->warning('--- Not found near place point ---');
-                            $this->container->get('logger')->warning('Place id: '.$place->getId());
-                            $this->container->get('logger')->warning('Location data: '.var_export($locationData, true));
+                            $this->container->get('logger')->warning('Place id: ' . $place->getId());
+                            $this->container->get('logger')->warning('Location data: ' . var_export($locationData, true));
 
                             // no working placepoint for this restourant
                             $formErrors[] = 'order.form.errors.wrong_point_for_address';
