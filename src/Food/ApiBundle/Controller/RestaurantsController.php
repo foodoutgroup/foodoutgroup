@@ -50,9 +50,7 @@ class RestaurantsController extends Controller
             } else {
                 // TODO HACK pabaiga :)
 
-                $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
-
-                $this->get('food.googlegis')->groupData($location, $address, $city);
+                $this->get('food.googlegis')->groupData($address, $city);
 
                 $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                     $kitchens,
@@ -126,8 +124,7 @@ class RestaurantsController extends Controller
 
         if (!empty($address)) {
 
-            $location = $this->get('food.googlegis')->getPlaceData($address.', '.$city);
-            $locationInfo = $this->get('food.googlegis')->groupData($location, $address, $city);
+            $this->get('food.googlegis')->groupData($address, $city);
 
             $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                 array(),
@@ -196,8 +193,7 @@ class RestaurantsController extends Controller
             'lng' => null
         );
         if (!empty($city) && !empty($address)) {
-            $placeData = $this->get('food.googlegis')->getPlaceData($address.",". $city);
-            $locationInfo = $this->get('food.googlegis')->groupData($placeData, $address, $city);
+            $locationInfo = $this->get('food.googlegis')->groupData($address, $city);
             if (isset($locationInfo['city'])) {
                 $searchCrit['city'] = $locationInfo['city'];
             }
