@@ -94,11 +94,8 @@ class LocalBiller extends ContainerAware implements BillingInterface {
             $orderService->informUnapproved();
         } else {
             // If pre order - do not inform (only if it is a NAV order - the NAV is responsible for pre)
-            if ($order->getOrderStatus() != OrderService::$status_preorder || $order->getPlace()->getNavision()) {
-                $isZavalOn = $placeService->getZavalTime($order->getPlace());
-                if (!$isZavalOn) {
-                    $orderService->informPlace();
-                }
+            if ($orderService->getOrder()->getPlace()->getAutoInform() && !$placeService->getZavalTime($order->getPlace()) && ($order->getOrderStatus() != OrderService::$status_preorder || $order->getPlace()->getNavision())) {
+                $orderService->informPlace();
             }
         }
 

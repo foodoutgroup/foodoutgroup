@@ -57,7 +57,7 @@ class PreorderStartCommand extends ContainerAwareCommand
                     $em->persist($order);
 
                     if (!$order->getPlace()->getNavision()) {
-                        $orderService->informPlace(false);
+                        $orderService->informPlace();
                     }
                 }
                 $processedOrders++;

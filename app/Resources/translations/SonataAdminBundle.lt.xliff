@@ -443,6 +443,10 @@
                 <source>admin.place.cart_minimum</source>
                 <target>Min. užsakymas</target>
             </trans-unit>
+            <trans-unit id="admin.place.auto_inform">
+                <source>admin.place.auto_inform</source>
+                <target>Automatinis informavimas</target>
+            </trans-unit>
             <trans-unit id="admin.place.self_delivery">
                 <source>admin.place.self_delivery</source>
                 <target>Sava logistika</target>
