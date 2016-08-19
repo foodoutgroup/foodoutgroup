@@ -86,6 +86,7 @@ class OrderService extends ContainerAware
         'pickup'  => 'ATSIEMIMAS'
     ];
 
+    public static $deliveryBoth = "delivery_and_pickup";
     public static $deliveryDeliver = "deliver";
     public static $deliveryPickup = "pickup";
 
