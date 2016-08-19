@@ -40,6 +40,11 @@ trait PaymentLogDecorator
             if (!$isZavalOn) {
                 $orderService->informPlace();
             }
+
+            // Send Message To User About Successfully Created Order
+            $orderService->sendOrderCreatedMessage();
+
+            // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
             $orderService->deactivateCoupon();
 
             // log order data (if we have listeners)

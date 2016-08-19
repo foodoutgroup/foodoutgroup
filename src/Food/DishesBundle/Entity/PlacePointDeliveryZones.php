@@ -128,6 +128,12 @@ class PlacePointDeliveryZones
     private $active = true;
 
     /**
+     * @var bool
+     * @ORM\Column(name="active_on_zaval", type="boolean", options={"default"=true})
+     */
+    private $activeOnZaval = true;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -463,5 +469,28 @@ class PlacePointDeliveryZones
     public function getCartSize()
     {
         return $this->cartSize;
+    }
+
+    /**
+     * Set activeOnZaval
+     *
+     * @param boolean $activeOnZaval
+     * @return PlacePointDeliveryZones
+     */
+    public function setActiveOnZaval($activeOnZaval)
+    {
+        $this->activeOnZaval = $activeOnZaval;
+    
+        return $this;
+    }
+
+    /**
+     * Get activeOnZaval
+     *
+     * @return boolean 
+     */
+    public function getActiveOnZaval()
+    {
+        return $this->activeOnZaval;
     }
 }

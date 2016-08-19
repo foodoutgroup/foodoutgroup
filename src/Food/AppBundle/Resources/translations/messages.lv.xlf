@@ -210,6 +210,10 @@
                 <source>general.sms.client.driver_picked_up</source>
                 <target>Hei! Informejam, ka Tavs Foodout.lv pasutijums ir jau cela un driz bus klat! Lai labi garso! :)</target>
             </trans-unit>
+            <trans-unit id="general.sms.client.order_created" resname="general.sms.client.order_created">
+                <source>general.sms.client.order_created</source>
+                <target>Sveiki! Jūsu pasūtījuma numurs. order_id pieņemts. Sākam jūsu bada apspiešanas misiju!</target>
+            </trans-unit>
             <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
                 <source>general.sms.client.restourant_cancel</source>
                 <target>Atvainojamies! Restorans ir atcelis Jusu pasutijumu.</target>
