@@ -241,7 +241,7 @@ class DispatcherAdminController extends Controller
             if (!$orderService->getOrder()->getPreorder() || $orderService->getOrder()->getPlace()->getNavision()) {
                 $isZavalOn = $placeService->getZavalTime($orderService->getOrder()->getPlace());
                 if (!$isZavalOn && $orderService->getOrder()->getPlace()->getAutoInform()) {
-                    $orderService->informPlace(false);
+                    $orderService->informPlace();
                 }
             }
 
