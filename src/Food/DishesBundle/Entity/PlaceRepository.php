@@ -4,6 +4,7 @@ namespace Food\DishesBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Food\OrderBundle\Service\OrderService;
 
 class PlaceRepository extends EntityRepository
 {
@@ -102,7 +103,7 @@ class PlaceRepository extends EntityRepository
 
         // Place filters
         $placeFilter = '';
-        if (is_array($filters) && !empty($filters)) {
+        if (!empty($filters) && is_array($filters)) {
             foreach ($filters as $filterName => $filterValue) {
                 switch ($filterName) {
                     case 'keyword':
@@ -114,13 +115,13 @@ class PlaceRepository extends EntityRepository
                     case 'delivery_type':
                         if (!empty($filterValue)) {
                             switch ($filterValue) {
-                                case 'delivery_and_pickup':
+                                case OrderService::$deliveryBoth:
                                     $placeFilter .= ' AND p.delivery_options = "delivery_and_pickup"';
                                     break;
-                                case 'delivery':
+                                case OrderService::$deliveryDeliver:
                                     $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "delivery")';
                                     break;
-                                case 'pickup':
+                                case OrderService::$deliveryPickup:
                                     $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "pickup")';
                                     break;
                                 default:
