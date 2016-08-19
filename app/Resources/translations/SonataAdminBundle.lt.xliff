@@ -399,6 +399,22 @@
                 <source>admin.place.name</source>
                 <target>Vietos pavadinimas</target>
             </trans-unit>
+            <trans-unit id="admin.place.show_notification">
+                <source>admin.place.show_notification</source>
+                <target>Show notification</target>
+            </trans-unit>
+            <trans-unit id="admin.place.keep_notification">
+                <source>admin.place.keep_notification</source>
+                <target>Keep notification</target>
+            </trans-unit>
+            <trans-unit id="admin.place.registered">
+                <source>admin.place.registered</source>
+                <target>Registered</target>
+            </trans-unit>
+            <trans-unit id="admin.place.notification_content">
+                <source>admin.place.notification_content</source>
+                <target>Notification content</target>
+            </trans-unit>
             <trans-unit id="admin.place.delivery_time">
                 <source>admin.place.delivery_time</source>
                 <target>Prist. trukmė</target>

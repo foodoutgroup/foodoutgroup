@@ -38,6 +38,7 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
             ->add('timeFrom', 'text', array('label' => 'Time from', 'required' => false))
             ->add('timeTo', 'text', array('label' => 'Time to', 'required' => false))
             ->add('active', null, array('required' => false))
+            ->add('activeOnZaval', null, array('required' => false))
             ->end()
         ;
     }
@@ -61,6 +62,7 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
             ->add('timeFrom', 'string', array('label' => 'Time From', 'editable' => true))
             ->add('timeTo', 'string', array('label' => 'Time To', 'editable' => true))
             ->add('active', 'boolean', array('label' => 'Active', 'editable' => true))
+            ->add('activeOnZaval', 'boolean', array('label' => 'Active On Zaval', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
