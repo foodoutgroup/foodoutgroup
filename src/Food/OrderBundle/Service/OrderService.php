@@ -4177,6 +4177,8 @@ class OrderService extends ContainerAware
                             ->setValidTo($generator->getValidTo())
                             ->setValidHourlyFrom($generator->getValidHourlyFrom())
                             ->setValidHourlyTo($generator->getValidHourlyTo())
+                            ->setIgnoreCartPrice($generator->getIgnoreCartPrice())
+                            ->setIncludeDelivery($generator->getIncludeDelivery())
                             ->setB2b($generator->getB2b())
                             ->setCreatedAt(new \DateTime('NOW'))
                         ;
