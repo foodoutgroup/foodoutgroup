@@ -6,6 +6,7 @@ use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\AppBundle\Traits;
+use Symfony\Component\HttpFoundation\Request;
 
 class PlacesService extends ContainerAware
 {
@@ -286,14 +287,14 @@ class PlacesService extends ContainerAware
     }
 
     /**
-     * @param $recommended
-     * @param $request
-     * @param $slug_filter
-     * @param $zaval
+     * @param         $recommended
+     * @param Request $request
+     * @param bool    $slug_filter
+     * @param bool    $zaval
      *
-     * @return mixed
+     * @return array|mixed
      */
-    public function getPlacesForList($recommended, $request, $slug_filter = false, $zaval = false)
+    public function getPlacesForList($recommended, Request $request, $slug_filter = false, $zaval = false)
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
@@ -314,11 +315,16 @@ class PlacesService extends ContainerAware
         }
 
         // TODO lets debug this strange scenario :(
-        if (is_array($filters)) {
-            $this->getContainer()->get('logger')->error('getPlacesForList filters param got array -cant be. Array contents: ' . var_export($filters, true));
+        if (empty($filters)) {
+            $filters = [];
         }
+//        if (is_array($filters)) {
+//            $this->getContainer()->get('logger')->error('getPlacesForList filters param got array -cant be. Array contents: ' . var_export($filters, true));
+//        }
 
-        $filters = explode(",", $filters);
+        if (is_string($filters)) {
+            $filters = explode(",", $filters);
+        }
         if (!empty($deliveryType)) {
             $filters['delivery_type'] = $deliveryType;
         }
@@ -326,7 +332,7 @@ class PlacesService extends ContainerAware
         foreach ($kitchens as $kkey => &$kitchen) {
             $kitchen = intval($kitchen);
         }
-        foreach ($filters as $fkey => &$filter) {
+        foreach ($filters as &$filter) {
             $filter = trim($filter);
         }
 

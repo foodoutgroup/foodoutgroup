@@ -117,12 +117,8 @@ class DefaultController extends Controller
             }
         }
 
-        if ($zaval) {
-            $places = $this->get('food.places')->getPlacesForList($recommended, $request, $slug_filter, $zaval);
-        } else {
-            $places = $this->get('food.places')->getPlacesForList($recommended, $request, $slug_filter);
-        }
-        
+        $places = $this->get('food.places')->getPlacesForList($recommended, $request, $slug_filter, $zaval);
+
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
 
         return $this->render(
