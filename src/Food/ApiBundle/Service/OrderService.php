@@ -373,11 +373,7 @@ class OrderService extends ContainerAware
                     )
                 );
             } else {
-                $placeData = $googleGisService->getPlaceData(
-                    $serviceVar['address']['street']." ".$serviceVar['address']['house_number'].",".$serviceVar['address']['city']
-                );
                 $locationInfo = $googleGisService->groupData(
-                    $placeData,
                     $serviceVar['address']['street']." ".$serviceVar['address']['house_number'],
                     $serviceVar['address']['city']
                 );

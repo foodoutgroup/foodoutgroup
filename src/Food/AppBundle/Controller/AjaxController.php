@@ -57,8 +57,7 @@ class AjaxController extends Controller
      */
     private function _ajaxActFindAddress(Response $response, $city, $address, Request $request)
     {
-        $location = $this->get('food.googlegis')->getPlaceData($address . ', ' . $city);
-        $locationInfo = $this->get('food.googlegis')->groupData($location, $address, $city);
+        $locationInfo = $this->get('food.googlegis')->groupData($address, $city);
 
         $respData = [
             'success' => 0,
@@ -125,9 +124,7 @@ class AjaxController extends Controller
 
         foreach ($streets as $key => &$streetRow) {
             if (empty($street['name'])) {
-                $data = $gs->getPlaceData($streetRow['street_name'] . "," . $city);
-                //var_dump($data);
-                $gdata = $gs->groupData($data, $streetRow['street_name'], $city);
+                $gdata = $gs->groupData($streetRow['street_name'], $city);
                 if (isset($gdata['street_short']) && !empty($gdata['street_short'])) {
                     $streetRow['name'] = $gdata['street_short'];
                 } else {
