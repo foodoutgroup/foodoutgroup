@@ -417,7 +417,7 @@ class OrderService extends ContainerAware
                 return true;
             }
         } else {
-            $this->logOrder($this->getOrder(), 'isHesburger', 'Cannot get Place, Order ID: ' . $order->getId() . '');
+            $this->logOrder($order, 'isHesburger', 'Cannot get Place, Order ID: ' . $order->getId() . '');
         }
 
         return false;
