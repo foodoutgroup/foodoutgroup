@@ -411,9 +411,13 @@ class OrderService extends ContainerAware
      */
     public function isHesburger(Order $order)
     {
-        $place_title = mb_strtolower($order->getPlace()->getName(), 'UTF-8');
-        if (strstr($place_title, 'hesbur', true)) {
-            return true;
+        if ($order->getPlace() instanceof Place) {
+            $place_title = mb_strtolower($order->getPlace()->getName(), 'UTF-8');
+            if (strstr($place_title, 'hesbur', true)) {
+                return true;
+            }
+        } else {
+            $this->logOrder($this->getOrder(), 'isHesburger', 'Cannot get Place, Order ID: ' . $order->getId() . '');
         }
 
         return false;
