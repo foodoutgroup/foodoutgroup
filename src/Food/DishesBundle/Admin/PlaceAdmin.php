@@ -92,6 +92,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('cartMinimum', null, ['label' => 'admin.place.cart_minimum'])
             ->add('basketLimitFood', null, ['label' => 'admin.place.cart_food_limit'])
             ->add('basketLimitDrinks', null, ['label' => 'admin.place.cart_drink_limit'])
+            ->add('dishesNumeration', 'checkbox', ['label' => 'admin.place.dishes_numeration', 'required' => false])
             ->add('autoInform', 'checkbox', ['label' => 'admin.place.auto_inform', 'required' => false])
             ->add('selfDelivery', 'checkbox', ['label' => 'admin.place.self_delivery', 'required' => false])
             ->add('minimalOnSelfDel', 'checkbox', ['label' => 'admin.place.minimal_on_self_delivery', 'required' => false])
