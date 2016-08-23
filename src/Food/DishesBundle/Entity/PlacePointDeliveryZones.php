@@ -4,6 +4,7 @@ namespace Food\DishesBundle\Entity;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Debug\ExceptionHandler;
 
 /**
  * PlacePoint
@@ -327,6 +328,37 @@ class PlacePointDeliveryZones
         return $this->placePoint;
     }
 
+
+    public function getPlacePointData()
+    {
+        try {
+            if(is_object($this->getPlacePoint())
+            && method_exists($this->getPlacePoint(), 'getCity')
+            && method_exists($this->getPlacePoint(), 'getAddress')) {
+                $text = $this->getPlacePoint()->getToString();
+                return iconv(mb_detect_encoding($text, mb_detect_order(), true), "UTF-8", $text);
+            } else {
+                return '';
+            }
+        } catch (\Exception $e) {
+            return '';
+        }
+    }
+
+    public function getPlaceData()
+    {
+        try {
+            if(is_object($this->getPlace())
+            && method_exists($this->getPlace(), 'getName')) {
+                $text = $this->getPlace()->getName();
+                return iconv(mb_detect_encoding($text, mb_detect_order(), true), "UTF-8", $text);
+            } else {
+                return '';
+            }
+        } catch (\Exception $e) {
+            return '';
+        }
+    }
     /**
      * Set createdBy
      *
