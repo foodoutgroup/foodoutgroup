@@ -225,7 +225,7 @@ class Dish extends Uploadable implements Translatable
      */
     private $useDateInterval = false;
 
-    protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
+    protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
     protected $multipleThumbs = true;
     protected $boxSize = array(
         'type1' => array('w' => 260, 'h' => 179),
