@@ -78,8 +78,8 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
     public function getExportFields() {
         $collection = [];
         $collection[] = 'id';
-        $collection[] = 'placePoint';
-        $collection[] = 'place';
+        $collection[] = 'placePointData';
+        $collection[] = 'placeData';
 
         return array_merge($collection, parent::getExportFields());
     }
