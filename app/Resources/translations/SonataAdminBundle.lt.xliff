@@ -443,6 +443,10 @@
                 <source>admin.place.cart_minimum</source>
                 <target>Min. užsakymas</target>
             </trans-unit>
+            <trans-unit id="admin.place.dishes_numeration">
+                <source>admin.place.dishes_numeration</source>
+                <target>Patiekalų automatinė numeracija</target>
+            </trans-unit>
             <trans-unit id="admin.place.auto_inform">
                 <source>admin.place.auto_inform</source>
                 <target>Automatinis informavimas</target>

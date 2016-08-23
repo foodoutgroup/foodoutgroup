@@ -36,7 +36,7 @@
                     </span>
                 {% endif %}
             {% endif %}
-            <h3 class="name">{{ loop.index }}. {{ dish.name }}</h3>
+            <h3 class="name">{% if dish.place.dishesNumeration %}{{ loop.index }}. {% endif %}{{ dish.name }}</h3>
             <p class="desc">{{ dish.description|nl2br }}</p>
             <div class="menu-item-bottom clearfix">
                 {% if smallestPrice and largestPrice %}
