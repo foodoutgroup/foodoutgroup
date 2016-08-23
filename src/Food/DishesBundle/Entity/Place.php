@@ -337,12 +337,20 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="send_invoice", type="boolean")
      */
     private $sendInvoice = false;
+
     /**
      * @var bool
      *
      * @ORM\Column(name="auto_inform", type="boolean", nullable=true, options={"default": true})
      */
     private $autoInform = true;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="dishes_numeration", type="boolean", nullable=true, options={"default": true})
+     */
+    private $dishesNumeration = true;
 
     /**
      * @ORM\OneToMany(targetEntity="\Food\UserBundle\Entity\User", mappedBy="place")
@@ -1990,5 +1998,28 @@ class Place extends Uploadable implements Translatable
     public function getAutoInform()
     {
         return $this->autoInform;
+    }
+
+    /**
+     * Set dishesNumeration
+     *
+     * @param boolean $dishesNumeration
+     * @return Place
+     */
+    public function setDishesNumeration($dishesNumeration)
+    {
+        $this->dishesNumeration = $dishesNumeration;
+    
+        return $this;
+    }
+
+    /**
+     * Get dishesNumeration
+     *
+     * @return boolean 
+     */
+    public function getDishesNumeration()
+    {
+        return $this->dishesNumeration;
     }
 }

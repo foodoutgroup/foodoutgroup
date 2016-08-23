@@ -551,6 +551,10 @@
                 <source>admin.place.commission_rate</source>
                 <target>Commission Rate</target>
             </trans-unit>
+            <trans-unit id="admin.place.dishes_numeration">
+                <source>admin.place.dishes_numeration</source>
+                <target>Dishes auto numeration</target>
+            </trans-unit>
             <trans-unit id="admin.place.auto_inform">
                 <source>admin.place.auto_inform</source>
                 <target>Auto inform</target>
