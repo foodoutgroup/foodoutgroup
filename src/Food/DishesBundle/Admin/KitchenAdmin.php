@@ -92,7 +92,7 @@ class KitchenAdmin extends FoodAdmin
             //    'label' => 'admin.kitchen.logo')
             //)
             ->add('visible', null, array('label' => 'admin.visible', 'editable' => true))
-            ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
+            ->add('createdByUsername', null, array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
             ->add('_action', 'actions', array(
