@@ -347,27 +347,27 @@ sonata_admin:
 #                  item_adds:
 #                      - sonata.admin.support
 #                  roles: [ ROLE_SUPPORT ]
-              acme.admin.group.first:
-                  label: admin.group.first
-                  label_catalogue: SonataAdminBundle
-                  items:
-                      - sonata.admin.kitchen
-                      - sonata.admin.place
-                      - sonata.admin.food.category
-                      - sonata.admin.dish
-                      - sonata.admin.dish.option
-                      - sonata.admin.dish.unit.category
-                      - sonata.admin.dish.unit
-                      - sonata.admin.best_offer
-                      - sonata.admin.place.pointdeliveryzones
-                      - sonata.admin.place.reviews
-                      - sonata.admin.place.coverphoto
-                      - sonata.admin.order
-                      - sonata.admin.static
-                      - sonata.admin.newsletter_subscribers
-                      - sonata.admin.unused_sf_numbers
-                      - sonata.admin.seorecords
-                  roles: [ ROLE_EDITOR, ROLE_MARKETING, ROLE_ADMIN ]
+#              acme.admin.group.first:
+#                  label: admin.group.first
+#                  label_catalogue: SonataAdminBundle
+#                  items:
+#                      - sonata.admin.kitchen
+#                      - sonata.admin.place
+#                      - sonata.admin.food.category
+#                      - sonata.admin.dish
+#                      - sonata.admin.dish.option
+#                      - sonata.admin.dish.unit.category
+#                      - sonata.admin.dish.unit
+#                      - sonata.admin.best_offer
+#                      - sonata.admin.place.pointdeliveryzones
+#                      - sonata.admin.place.reviews
+#                      - sonata.admin.place.coverphoto
+#                      - sonata.admin.order
+#                      - sonata.admin.static
+#                      - sonata.admin.newsletter_subscribers
+#                      - sonata.admin.unused_sf_numbers
+#                      - sonata.admin.seorecords
+#                  roles: [ ROLE_EDITOR, ROLE_MARKETING, ROLE_ADMIN ]
               admin.editor:
                   label: admin.group.editor
                   label_catalogue: SonataAdminBundle
