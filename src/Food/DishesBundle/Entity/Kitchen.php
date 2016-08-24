@@ -465,7 +465,24 @@ class Kitchen extends Uploadable implements Translatable
      */
     public function getCreatedBy()
     {
-        return $this->createdBy;
+        if ($this->createdBy) {
+            return $this->createdBy;
+        }
+    }
+
+    /**
+     * Get createdBy username
+     *
+     * @return string
+     */
+    public function getCreatedByUsername()
+    {
+        $string = '';
+        if ($this->getCreatedBy()) {
+            $string = $this->getCreatedBy()->getUsername();
+        }
+
+        return $string;
     }
 
     /**
