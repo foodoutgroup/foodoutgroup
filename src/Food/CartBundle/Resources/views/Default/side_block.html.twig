@@ -1,3 +1,7 @@
+{% set isCallcenter = app.session.get('isCallcenter') %}
+{% if isCallcenter == 1 %}
+    {% set inCart = 0 %}
+{% endif %}
 <div class="check-block" id="cartmnu">
     <div class="restaurant-logo tac">
         <a class="restaurant_link" href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"><img class="restaurant_image" alt="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}" src="http://{{ cloudfront_url }}/{{place.getWebPathThumb}}"></a>
@@ -119,7 +123,11 @@
         {% if hide_delivery == false and ((discountInSum and total_cart + discountSum < cart_from_min) or (total_cart < cart_from_min)) and not noMinimumCart %}
             <div class="alert alert-warning text-center min-cart-message">
                 <span>{{ 'cart.didnt_reach_min_cart'|trans }}</span>
-                <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>
+                {% if isCallcenter == true %}
+                    <a href="#" class="button back_to_dishes show">{{ 'cart.go_back_to_place'|trans }}</a>
+                {% else %}
+                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>
+                {% endif %}
             </div>
         {% endif %}
 
@@ -146,7 +154,7 @@
         {% endif %}
 
         {# Delivery type choice #}
-        {% if inCart == false %}
+        {% if inCart == false and isCallcenter == false %}
             <div class="cart_delivery_type">
                 {% trans %}cart.block.delivery_type{% endtrans %} <span class="delivery-type-tooltip" title="{% trans %}cart.block.delivery_type.tooltip{% endtrans %}">&nbsp;</span><br />
                 <br />
@@ -161,16 +169,6 @@
                 <br />
             </div>
         {% endif %}
-
-        {# Cili Express blokelis su informacija, kad nuolaida taikoma tik su kortele #}
-        {#{% if place.id == 142 and site_country == 'LT' %}
-            <div class="mylimiausia_pickup_block">
-                <img src="{{ asset('bundles/foodapp/images/draugeliu_korteles.png') }}"/>
-                <div style="margin-bottom: 10px; margin-top: 5px;">
-                    Pasiūlymas galioja nuo 15 val. tik su DRAUGŲ ar MYLIMIAUSIA lojalumo kortele ATSIIMANT patiekalus restorane<br />
-                </div>
-            </div>
-        {% endif %}#}
 
         {# Order  button #}
         {% if inCart == false %}

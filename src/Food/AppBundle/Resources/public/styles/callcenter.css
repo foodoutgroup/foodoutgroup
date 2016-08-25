@@ -1,6 +1,6 @@
 #checkout,
 #success_panel,
-#back_to_dishes,
+.back_to_dishes,
 #main_panel,
 #cart_panel,
 #place_select_panel,
@@ -9,7 +9,9 @@
 #delivery_impossible {
     display: none;
 }
-
+.back_to_dishes:hover {
+    text-decoration: none;
+}
 .pull-right {
     float: right;
 }
@@ -40,6 +42,7 @@ button, input, select, textarea, body, .ui-widget-content, .ui-selectmenu-menu l
 }
 #cart_panel .check-block .order-button {
     text-align: center;
+    text-decoration: none;
 }
 
 .table-hover > tbody > tr.highlightedRow:hover > td,
@@ -54,4 +57,22 @@ button, input, select, textarea, body, .ui-widget-content, .ui-selectmenu-menu l
 .callcentre_dish_options .list-group-item {
     font-size: 12px !important;
     padding: 6px 8px;
+}
+.restaurant-info-panel {
+    padding: 15px 15px 0;
+}
+.restaurant-info-panel .restaurant-info-lefter {
+    display: block;
+    width: auto;
+    padding-top: 0;
+}
+    .restaurant-info-panel .restaurant-info-lefter li {
+        margin-bottom: 5px;
+    }
+
+.coupon_form {
+    padding: 10px 5px;
+}
+.coupon_form_popup input[type="text"] {
+    height: 40px;
 }

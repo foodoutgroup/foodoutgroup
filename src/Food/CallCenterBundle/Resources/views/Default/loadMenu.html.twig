@@ -13,60 +13,66 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in items %}
-                    {% if item.active == 1 %}
-                        {% set smallestPrice = dish_service.smallestDishPrice(item.id) %}
-                        {% set largestPrice = dish_service.largestDishPrice(item.id) %}
+                {% for dishCategory in categoryList %}
+                    <tr class="category" data-category="{{ dishCategory.id }}">
+                        <td colspan="4" align="center"><h2>{{ dishCategory.name }}</h2></td>
+                    </tr>
+                    {% if dishCategory.dishes %}
+                        {% for item in dishCategory.dishes %}
+                            {% if item.active == 1 %}
+                                {% set smallestPrice = dish_service.smallestDishPrice(item.id) %}
+                                {% set largestPrice = dish_service.largestDishPrice(item.id) %}
 
-                        {% set hasDiscount = false %}
-                        {% if item.discountPricesEnabled and item.place.discountPricesEnabled %}
-                            {% if dish_service.hasDiscountPrice(item.id) %}
-                                {% set hasDiscount = true %}
-                            {% endif %}
-                        {% endif %}
-
-                        <tr class="searchable">
-                            <td>
-                                {% if item.getWebPathThumb('type2') is not empty %}
-                                    <img alt="{{ item.name }}" src="http://{{ cloudfront_url }}/{{ item.getWebPathThumb('type2') }}" class="dish-image" />
-                                {% endif %}
-                            </td>
-                            <td>
-                                {{ item.name }}
-                                <ul class="list-group callcentre_dish_options">
-                                    {% for option in item.options %}
-                                        {% if option.singleSelect == true %}
-                                            <li class="list-group-item">{{ option.name }}</li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                            <td>
-                                {% if smallestPrice == largestPrice %}
-                                    {{ currency_display|raw }}{{ smallestPrice|replace({'.': ','}) }}
-                                {% else %}
-                                    {{ currency_display|raw }}{{ smallestPrice|replace({'.': ','}) }} - {{ largestPrice|replace({'.': ','}) }}
-                                {% endif %}
-
-                                {% if hasDiscount %}
-                                    {% set smallestDiscountPrice = dish_service.smallestDishDiscountPrice(item.id) %}
-                                    {% set largestDiscountPrice = dish_service.largestDishDiscountPrice(item.id) %}
-
-                                    {% if smallestDiscountPrice == largestDiscountPrice %}
-                                        (<strong>{{ currency_display|raw }}{{ smallestDiscountPrice|replace({'.': ','}) }}</strong>)
-                                    {% else %}
-                                        (<strong>{{ currency_display|raw }}{{ smallestDiscountPrice|replace({'.': ','}) }} - {{ largestDiscountPrice|replace({'.': ','}) }}</strong>)
+                                {% set hasDiscount = false %}
+                                {% if item.discountPricesEnabled and item.place.discountPricesEnabled %}
+                                    {% if dish_service.hasDiscountPrice(item.id) %}
+                                        {% set hasDiscount = true %}
                                     {% endif %}
                                 {% endif %}
-                            </td>
-                            <td>
-                                <a href="{{ path('food_ajax_dish', {'dish': item.id }) }}"
-                                   href2="#detailed-dish-popup"
-                                   class="focus_button fancybox.ajax add-to-cart fancy-box btn btn-success">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                            </td>
-                        </tr>
+                                <tr class="searchable" data-category="{{ dishCategory.id }}">
+                                    <td>
+                                        {% if item.getWebPathThumb('type2') is not empty %}
+                                            <img alt="{{ item.name }}" src="http://{{ cloudfront_url }}/{{ item.getWebPathThumb('type2') }}" class="dish-image" />
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {{ item.name }}
+                                        <ul class="list-group callcentre_dish_options">
+                                            {% for option in item.options %}
+                                                {% if option.singleSelect == true %}
+                                                    <li class="list-group-item">{{ option.name }}</li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        {% if smallestPrice == largestPrice %}
+                                            {{ currency_display|raw }}{{ smallestPrice|replace({'.': ','}) }}
+                                        {% else %}
+                                            {{ currency_display|raw }}{{ smallestPrice|replace({'.': ','}) }} - {{ largestPrice|replace({'.': ','}) }}
+                                        {% endif %}
+
+                                        {% if hasDiscount %}
+                                            {% set smallestDiscountPrice = dish_service.smallestDishDiscountPrice(item.id) %}
+                                            {% set largestDiscountPrice = dish_service.largestDishDiscountPrice(item.id) %}
+
+                                            {% if smallestDiscountPrice == largestDiscountPrice %}
+                                                (<strong>{{ currency_display|raw }}{{ smallestDiscountPrice|replace({'.': ','}) }}</strong>)
+                                            {% else %}
+                                                (<strong>{{ currency_display|raw }}{{ smallestDiscountPrice|replace({'.': ','}) }} - {{ largestDiscountPrice|replace({'.': ','}) }}</strong>)
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('food_ajax_dish', {'dish': item.id }) }}"
+                                           href2="#detailed-dish-popup"
+                                           class="focus_button fancybox.ajax add-to-cart fancy-box btn btn-success">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
                 {% endfor %}
             <tbody>
@@ -74,5 +80,8 @@
         <span id="restaurant_link" data="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"></span>
         <span id="restaurant_image" data="http://{{ cloudfront_url }}/{{place.getWebPathThumb}}"></span>
         <span id="restaurant_image_alt" data="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}"></span>
+        {% if place %}
+            {% include 'CallCenterBundle:Default:placeInfo.html.twig' with {place: place, showInfo: false} %}
+        {% endif %}
     </div>
 </div>
