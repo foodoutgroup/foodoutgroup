@@ -117,6 +117,7 @@ bind_coupon_submit_button = function(place_id,
 
     subject = '.coupon_form_popup .button-submit';
     popupInner = $('.coupon_inner');
+    var couponField = $('input#coupon_code_popup');
 
     success_callback = function(resp){
         if (resp.status == 1) {

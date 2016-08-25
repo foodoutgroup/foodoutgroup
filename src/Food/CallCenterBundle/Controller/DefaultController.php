@@ -5,6 +5,7 @@ namespace Food\CallCenterBundle\Controller;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -36,7 +37,7 @@ class DefaultController extends Controller
      * @Route("/", name="food_callcenter")
      * @Template
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $placeService = $this->get('food.places');
         $userPlace = $this->getUserPlace();
@@ -126,7 +127,8 @@ class DefaultController extends Controller
         }
 
         $noMinimumCart = false;
-        $current_user = $this->container->get('security.context')->getToken()->getUser();
+        $current_user = $this->getUserFromSession(true);
+        //$current_user = $this->container->get('security.context')->getToken()->getUser();
         if (!empty($current_user) && is_object($current_user)) {
             $noMinimumCart = $current_user->getNoMinimumCart();
             $this->get('food.user')->getDiscount($current_user);
@@ -135,8 +137,6 @@ class DefaultController extends Controller
         $applyDiscount = $freeDelivery = $discountInSum = false;
         $discountSize = null;
         $discountSum = null;
-
-        $current_user = $this->getUserFromSession(true);
 
         // Business client discount
         if (!empty($current_user) && is_object($current_user) && $current_user->getIsBussinesClient()) {
@@ -211,6 +211,9 @@ class DefaultController extends Controller
             $locationForm->get('house')->setData($locData['street_nr']);
         }
 
+        $session = $this->get('session');
+        $session->set('isCallcenter', true);
+
         return [
             'location_form' => $locationForm->createView(),
             'places' => $places->toArray(),
@@ -236,10 +239,12 @@ class DefaultController extends Controller
             'cart_from_min' => sprintf('%.2f',$cartFromMin),
             'cart_from_max' => $cartFromMax,
             'basket_errors' => $basketErrors,
-            'takeAway' => $takeAway,
+            'takeAway' => ($takeAway ? true : false),
             'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
             'left_sum' => $left_sum,
-            'display_cart_interval' => $displayCartInterval
+            'display_cart_interval' => $displayCartInterval,
+            'order' => null,
+            'dataToLoad' => $request->request->all(),
         ];
     }
 
@@ -250,14 +255,16 @@ class DefaultController extends Controller
     public function loadMenuAction($placeId)
     {
         $place = $this->getPlaceById($placeId);
-        $dishes = $this->getDishesByPlace($place);
+        //$dishes = $this->getDishesByPlace($place);
+        $categoryList = $this->get('food.places')->getActiveCategories($place);
 
         // save selected place into session
         $this->putPlaceIntoSession($placeId);
 
         return [
             'place' => $place,
-            'items' => $dishes,
+            //'items' => $dishes,
+            'categoryList' => $categoryList,
             'isCallcenter' => true
         ];
     }
@@ -277,25 +284,74 @@ class DefaultController extends Controller
      * @Route("/checkout", name="food_callcenter_checkout", options={"expose"=true})
      * @Template("FoodCartBundle:Default:form.html.twig")
      */
-    public function checkoutAction()
+    public function checkoutAction(Request $request)
     {
         $user = $this->getUserFromSession(true);
         $address = $this->getAddressFromSession(true);
         $placeId = $this->getPlaceFromSession();
+        $placeService = $this->get('food.places');
 
         if (!$placeId) return new Response('');
 
+        $place = $placeService->getPlace($placeId);
+
+        // Data preparation for form
+        $placePointMap = $this->container->get('session')->get('point_data');
+        if (!empty($placePointMap) && isset($placePointMap[$placeId]) && !empty($placePointMap[$placeId])) {
+            $pointRecord = $this->container->get('doctrine')->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$placeId]);
+        } else {
+            $pointRecord = null;
+        }
+
+        $workingHoursForInterval = [];
+        $workingDaysCount = 4;
+        for ($i = 0; $i <= $workingDaysCount; $i++) {
+            $workingHoursForInterval[date("Y-m-d", strtotime("+" . $i . " day"))] = $placeService->getFullRangeWorkTimes($place, $pointRecord, "+" . $i . " day");
+        }
+
+        // PreLoad UserAddress Begin
+        $address = null;
+        $session = $request->getSession();
+        $locationData = $session->get('locationData');
+        $current_user = $user;//$this->container->get('security.context')->getToken()->getUser();
+
+        if (!empty($locationData) && !empty($current_user) && is_object($current_user)) {
+            $address = $placeService->getCurrentUserAddress($locationData['city'], $locationData['address']);
+        }
+
+        if (empty($address) && !empty($current_user) && is_object($current_user)) {
+            $defaultUserAddress = $current_user->getCurrentDefaultAddress();
+            if (!empty($defaultUserAddress)) {
+                $loc_city = $defaultUserAddress->getCity();
+                $loc_address = $defaultUserAddress->getAddress();
+                $address = $placeService->getCurrentUserAddress($loc_city, $loc_address);
+            }
+        }
+        // PreLoad UserAddress End
+
+        $takeAway = ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup);
+
+         if(!isset($coupon)) {
+            $coupon = false;
+        }
+
         return [
-            'place' => $this->getPlaceById($placeId),
+            'place' => $place,
             'formHasErrors' => false,
+            'inCart' => false,
             'order' => null,
-            'takeAway' => false,
+            'takeAway' => ($takeAway ? true : false),
             'location' => $this->get('food.googlegis')->getLocationFromSession(),
-            'dataToLoad' => [],
+            'dataToLoad' => $request->request->all(),
             'isCallcenter' => true,
             'submitted' => false,
             'user' => $user,
-            'address' => $address
+            'address' => $address,
+            'userAllAddress' => $placeService->getCurrentUserAddresses(),
+            'userAddress' => $address,
+            'require_lastname' => false,
+            'workingHoursForInterval' => $workingHoursForInterval,
+            'workingDaysCount' => $workingDaysCount,
         ];
     }
 
@@ -356,10 +412,19 @@ class DefaultController extends Controller
      * @Route("/get-location", name="food_callcenter_get_location", options={"expose"=true})
      * @Template
      */
-    public function getLocationAction()
+    public function getLocationAction(Request $request)
     {
-        $locData = $this->get('food.googlegis')->getLocationFromSession();
+        $city = $request->get('city');
+        $street = $request->get('street');
+        $houseNumber = $request->get('house_number');
 
+        if (!empty($city) && empty($street) && empty($houseNumber)) {
+            $this->get('food.googlegis')->setCityOnlyToSession($city);
+            $locData = $this->get('food.googlegis')->getLocationFromSession();
+            return new JsonResponse($locData);
+        }
+
+        $locData = $this->get('food.googlegis')->getLocationFromSession();
         return new JsonResponse($locData);
     }
 

@@ -415,7 +415,7 @@
                 </div>
                 <div class="content-righter-small">
                     {% if dataToLoad is not empty and dataToLoad['coupon_code'] is not empty %}{% set couponCode = dataToLoad['coupon_code'] %}{% else %}{% set couponCode = null %}{% endif %}
-                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true, 'order': order, 'takeAway': takeAway, 'couponCode': couponCode })) }}
+                    {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': true, 'order': order, 'takeAway': takeAway, 'couponCode': couponCode, isCallcenter: false })) }}
                 </div>
             </div>
         </div>

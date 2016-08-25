@@ -19,12 +19,12 @@
                         </div>
                         <div class="col-xs-4">
                             <div class="form-group">
-                                {{ form_widget(location_form.street, {attr: {placeholder: 'callcenter.location_form.street'|trans}}) }}
+                                {{ form_widget(location_form.street, {required: false, attr: {placeholder: 'callcenter.location_form.street'|trans}}) }}
                             </div>
                         </div>
                         <div class="col-xs-3">
                             <div class="form-group">
-                                {{ form_widget(location_form.house, {attr: {placeholder: 'callcenter.location_form.house'|trans}}) }}
+                                {{ form_widget(location_form.house, {required: false, attr: {placeholder: 'callcenter.location_form.house'|trans}}) }}
                             </div>
                         </div>
                         <div class="col-xs-2">
@@ -58,7 +58,7 @@
 </div>
 
 <div class="row" id="place_select_panel">
-    <div class="col-xs-9">
+    <div class="col-xs-6">
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <div class="panel-title">{{ 'callcenter.places_form.place'|trans }}</div>
@@ -66,11 +66,11 @@
             <div class="panel-body">
                 <form id="place_select_form">
                     <div class="row">
-                        <div class="col-xs-4">{{ form_widget(place_form.place) }}</div>
-                        <div class="col-xs-8">
+                        <div class="col-xs-5">{{ form_widget(place_form.place) }}</div>
+                        <div class="col-xs-7">
                             <div class="pull-right">
                                 <a href="#"
-                                   class="btn btn-warning"
+                                   class="btn btn-warning back_to_dishes"
                                    id="back_to_dishes">
                                     <i class="fa fa-long-arrow-left"></i>
                                     <strong>{{ 'callcenter.places_form.back_to_menu'|trans }}</strong>
@@ -87,6 +87,18 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">{{ 'places.about_place'|trans }}</div>
+            </div>
+            <div class="panel-body restaurant-info-panel">
+                {% if place %}
+                    {% include 'CallCenterBundle:Default:placeInfo.html.twig' with {place: place, showInfo: true} %}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -122,7 +134,9 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-12">
-                        {% include 'FoodCartBundle:Default:side_block.html.twig' %}
+                        {% if dataToLoad is not empty and dataToLoad['coupon_code'] is not empty %}{% set couponCode = dataToLoad['coupon_code'] %}{% else %}{% set couponCode = null %}{% endif %}
+                        {% include 'FoodCartBundle:Default:side_block.html.twig' with {'place': place, 'inCart': true, 'order': null, 'takeAway': takeAway, 'couponCode': couponCode, 'isCallcenter': true} %}
+                        {# {{ render(controller('FoodCartBundle:Default:sideBlock', {'place': place, 'inCart': false, 'order': order, 'takeAway': takeAway, 'couponCode': couponCode, 'isCallcenter': true })) }} #}
                     </div>
                 </div>
             </div>
@@ -146,6 +160,7 @@
     <div id="rules" class="cart_rules_content">
         <div class="cart_rules_inner">{{ static_service.getPage(slug_util.oneByName('ordering_rules', locale).itemId).content|raw }}</div>
     </div>
+
     <div id="coupon" class="coupon_form_popup">
         <div class="coupon_inner">
             <form id="coupon_form">
@@ -174,12 +189,59 @@
 <span id="places_url" data="{{ url('food_places_lt_main') }}"></span>
 
 <script type="text/javascript">
-// <![CDATA[
-$(window).load(function() {
-    {% if location_data is not empty and not location_data.not_found %}
-        $('#location_form').submit();
-    {% endif %}
+    // <![CDATA[
+    $(window).load(function() {
+        {% if location_data is not empty and not location_data.not_found %}
+            $('#location_form').submit();
+        {% endif %}
+    });
+    // ]]>
+
+    $(document).ready(function(){
+        $('#coupon_form').bind('submit', function() {
+            $('.coupon_form_popup .button-submit').trigger('click');
+            return false;
+        });
+
+        $('.coupon_form_popup .button-submit').bind('click', function() {
+            var couponField = $('input#coupon_code_popup');
+            var popupInner = $(this).closest('.coupon_inner');
+            popupInner.mask();
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ path('food_ajax', {'action': 'check-coupon'}) }}',
+                data:  { place_id: '{{ place.id }}', coupon_code: couponField.val()},
+                success:  function(resp){
+                    if (resp.status == 1) {
+                        var takeAway = 0;
+                        if ($('input[name="delivery-type"]:checked').val() == 'pickup') {
+                            takeAway = 1;
+                        }
+                        $.post('{{ path('food_cart_action', {'action' : 'refresh'}) }}', { place: {{ place.id }}, in_cart: 1, coupon_code: couponField.val(), take_away: takeAway }, function(response) {
+                            if (typeof(response.block) != "undefined") {
+                                $('.check-block').replaceWith(response.block);
+                            }
+                            popupInner.unmask();
+                            // move data to main form
+                            $('#coupon_code').val(couponField.val());
+                            couponField.val('');
+                            popupInner.find('.alert.alert-danger').remove();
+                            $.fancybox.close();
+                        }, 'json');
+                    } else {
+                        var dangerAlert = popupInner.find('.alert.alert-danger');
+                        $('#coupon_code').val('');
+                        if (dangerAlert.length > 0) {
+                            dangerAlert.html(resp.data.error);
+                        } else {
+                            popupInner.prepend('<div class="alert alert-danger">'+resp.data.error+'</div>');
+                        }
+                        popupInner.unmask();
+                    }
+                }
+            });
+        });
 });
-// ]]>
 </script>
 {% endblock %}

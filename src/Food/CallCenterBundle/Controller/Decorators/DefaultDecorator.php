@@ -29,10 +29,10 @@ trait DefaultDecorator
 
     protected function getPlaces($location, $filters)
     {
-        $places = $this->getDoctrine()
-                       ->getManager()
-                       ->getRepository('FoodDishesBundle:Place')
-                       ->magicFindByKitchensIds([], $filters, true, $location);
+        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')
+            ->magicFindByKitchensIds([], $filters, false, $location, $this)
+        ;
+
         $this->get('food.places')->saveRelationPlaceToPoint($places);
         $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);
 

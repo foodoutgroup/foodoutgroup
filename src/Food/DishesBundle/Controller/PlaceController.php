@@ -16,6 +16,13 @@ class PlaceController extends Controller
 {
     public function indexAction($id, $slug, $categoryId, Request $request)
     {
+
+        $session = $this->get('session');
+        $isCallcenter = $session->get('isCallcenter');
+        if ($isCallcenter) {
+            $session->set('isCallcenter', false);
+        }
+
         // If no id - kill yourself
         if (empty($id)) {
             return $this->redirect(

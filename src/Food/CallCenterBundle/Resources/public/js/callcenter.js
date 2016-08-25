@@ -102,6 +102,10 @@ bind_callcenter_place_select = function() {
 
                 var data = $($.parseHTML(response));
 
+                var restaurant_info_block = $('#place_select_panel .restaurant-info-lefter');
+                restaurant_info_block.replaceWith(data.find('.restaurant-info-lefter'));
+                $('#place_select_panel .restaurant-info-lefter').show();
+
                 $('.restaurant_link').attr('href', data.find('#restaurant_link').attr('data'))
                     .attr('title', data.find('#restaurant_image_alt').attr('data'));
                 $('.restaurant_image').attr('src', data.find('#restaurant_image').attr('data'))
@@ -131,6 +135,7 @@ bind_table_filtering = function() {
 
     subject = '#dishes_filter';
     table_row = '.searchable';
+    var table_category_row = '.category';
 
     callback = function(e) {
         var val, filter_callback;
@@ -144,10 +149,17 @@ bind_table_filtering = function() {
         }
 
         filter_callback = function() {
-            return fuzzy_search(val, $(this).text());
+            var found = fuzzy_search(val, $(this).text());
+            if (found) {
+                var category_id = $(this).data('category');
+                $(table_category_row).filter('[data-category="' + category_id + '"]').show();
+                return found;
+            }
+            return false;
         };
 
         $(table_row).hide();
+        $(table_category_row).hide();
         $(table_row).filter(filter_callback).show();
 
     };
@@ -274,7 +286,11 @@ bind_location_submit_form = function() {
                 url: Routing.generate('food_callcenter_get_location'),
                 dataType: 'json',
                 success: function(response) {
-                    $('#location_content').html(response.address);
+                    if (response.address != '') {
+                        $('#location_content').html(response.address);
+                    } else if (response.city != '' && response.address == '') {
+                        $('#location_content').html(response.city);
+                    }
                     LocationPanel.show();
                 }
             })
@@ -290,7 +306,7 @@ bind_location_submit_form = function() {
     };
 
     callback = function() {
-        var options, loader_options;
+        var options, loader_options, input_address = '', city_only = false;
 
         LocationError.hide();
 
@@ -298,12 +314,20 @@ bind_location_submit_form = function() {
         loader_options = {class: 'fa fa-cog fa-spin', text: '  '};
         $(submit_button).isLoading(loader_options);
 
+        if ($(LocationInputs.street).val() != '' && $(LocationInputs.house).val() != '') {
+            input_address = $(LocationInputs.street).val() + ' ' + $(LocationInputs.house).val();
+        } else {
+            city_only = true;
+        }
+
         options = {
-            url: Routing.generate('food_ajax', {action: 'find-address',
-                                                _locale: 'lt'}),
+            url: Routing.generate('food_ajax', {action: 'find-address', _locale: 'lt'}),
             type: 'GET',
-            data: {city: $(LocationInputs.city).val(),
-                   address: $(LocationInputs.street).val() + ' ' + $(LocationInputs.house).val()},
+            data: {
+                city: $(LocationInputs.city).val(),
+                address: input_address,
+                city_only: city_only
+            },
             success: success_callback
         };
 
@@ -528,7 +552,7 @@ CartPanel = {
 };
 
 BackToDishesButton = {
-    selector: '#back_to_dishes',
+    selector: '.back_to_dishes',
 
     show: function() {
         $(this.selector).show().css('display', 'inline-block');

@@ -492,7 +492,7 @@ class DefaultController extends Controller
             'testNordea'              => $request->query->get('test_nordea'),
             'workingHoursForInterval' => $workingHoursForInterval,
             'workingDaysCount'        => $workingDaysCount,
-            'isCallcenter'            => false,
+            'isCallcenter'            => ($isCallcenter ? true : false),
             'require_lastname'        => $require_lastname,
         ];
 
@@ -523,6 +523,9 @@ class DefaultController extends Controller
      */
     public function sideBlockAction(Place $place, $renderView = false, $inCart = false, $order = null, $couponCode = null)
     {
+        $session = $this->get('session');
+        $isCallcenter = $session->get('isCallcenter');
+
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
         $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
@@ -734,7 +737,8 @@ class DefaultController extends Controller
             'left_sum' => $left_sum,
             'self_delivery' => $self_delivery,
             'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
-            'basket_errors'                       => $basketErrors
+            'basket_errors' => $basketErrors,
+            'isCallcenter' => $isCallcenter,
         ];
 
         if ($renderView) {

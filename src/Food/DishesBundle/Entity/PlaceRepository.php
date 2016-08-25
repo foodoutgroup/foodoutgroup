@@ -71,8 +71,11 @@ class PlaceRepository extends EntityRepository
         $city = null;
         $lat = null;
         $lon = null;
-        $miscService = $container->get('food.app.utils.misc');
-        $zaval = $miscService->getParam('zaval_on');
+        $zaval = 0;
+        if ($container) {
+            $miscService = $container->get('food.app.utils.misc');
+            $zaval = $miscService->getParam('zaval_on');
+        }
 
         if (!empty($locationData) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
             $city = (!empty($locationData['city']) ? $locationData['city'] : null);
