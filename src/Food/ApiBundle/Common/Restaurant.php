@@ -9,45 +9,47 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 
 class Restaurant extends ContainerAware
 {
-    private $block = array(
-        'restaurant_id' => null,
-        'title' => '',
-        'description' => '',
-        'top' => false,
-        'cuisine' => array(),
-        'tags' => array(),
-        'thumbnail_url' => '',
-        'photo_urls' => array(),
+    private $block = [
+        'restaurant_id'       => null,
+        'title'               => '',
+        'description'         => '',
+        'top'                 => false,
+        'cuisine'             => [],
+        'tags'                => [],
+        'thumbnail_url'       => '',
+        'photo_urls'          => [],
         'menu_photos_enabled' => true,
-        'payment_options' => array(
+        'payment_options'     => [
             // 'cash' => true,
             // 'credit_card' => true
-        ),
-        'services' => array(
+        ],
+        'services'            => [
             // 'delivery'=>true,
             // 'pickup' => true
-        ),
-        'delivery_options' => array(
+        ],
+        'delivery_options'    => [
             'estimated_time' => 0,
-            'price' => array(
-                'amount' => 0,
+            'price'          => [
+                'amount'   => 0,
                 'currency' => 'EUR'
-            ),
-            'minimal_order' => array(
-                'amount' => 0,
+            ],
+            'minimal_order'  => [
+                'amount'   => 0,
                 'currency' => 'EUR'
-            ),
-        ),
-        'is_working' => false,
-        'is_taking_orders' => false,
-        'locations' => array(),
-    );
+            ],
+        ],
+        'is_working'          => false,
+        'is_taking_orders'    => false,
+        'order_hours'         => [],
+        'work_hours'          => [],
+        'locations'           => [],
+    ];
 
-    public  $data;
-    private $availableFields = array();
+    public $data;
+    private $availableFields = [];
 
     /**
-     * @param Place|null $place
+     * @param Place|null                                                $place
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
     public function __construct(Place $place = null, $container = null)
@@ -62,59 +64,66 @@ class Restaurant extends ContainerAware
 
     /**
      * @param string $param
+     *
      * @return mixed
      */
-    public function get($param) {
+    public function get($param)
+    {
         $this->checkParam($param);
+
         return $this->data[$param];
     }
 
     /**
      * @param string $param
-     * @param mixed $data
+     * @param mixed  $data
+     *
      * @return Restaurant $this
      */
     public function set($param, $data)
     {
         $this->checkParam($param);
         $this->data[$param] = $data;
+
         return $this;
     }
 
     /**
      * @param $param
+     *
      * @throws \Exception
      */
     private function checkParam($param)
     {
         if (!in_array($param, $this->availableFields)) {
-            throw new \Exception("Param: ".$param.", was not found in fields list :)");
+            throw new \Exception("Param: " . $param . ", was not found in fields list :)");
         }
     }
 
     /**
-     * @param Place $place
-     * @param PlacePoint $placePoint
-     * @param bool $pickUpOnly
-     * @param array|null $locationData
+     * @param Place       $place
+     * @param PlacePoint  $placePoint
+     * @param bool        $pickUpOnly
+     * @param array|null  $locationData
      * @param string|null $deliveryType
+     *
      * @return $this
      */
     public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false, $locationData = null, $deliveryType = null)
     {
         $kitchens = $place->getKitchens();
-        $kitchensForResp = array();
+        $kitchensForResp = [];
         foreach ($kitchens as $kit) {
-            $kitchensForResp[] = array(
-                'id' => $kit->getId(),
+            $kitchensForResp[] = [
+                'id'   => $kit->getId(),
                 'name' => $kit->getName()
-            );
+            ];
         }
 
-        $photos = array();
+        $photos = [];
         foreach ($place->getPhotos() as $photo) {
             if ($photo->getActive()) {
-                $photos[] = '/uploads/covers/'.$photo->getPhoto();
+                $photos[] = '/uploads/covers/' . $photo->getPhoto();
             }
         }
 
@@ -139,8 +148,8 @@ class Restaurant extends ContainerAware
                 }
             }
         } else {
-            $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true: false);
-            $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true: false);
+            $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true : false);
+            $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true : false);
         }
 
         $devPrice = 0;
@@ -153,7 +162,8 @@ class Restaurant extends ContainerAware
                     $locationData,
                     false,
                     true
-                );
+                )
+                ;
 
                 // TODO Trying to catch fatal when searching for PlacePoint
                 if (empty($ppId)) {
@@ -163,7 +173,8 @@ class Restaurant extends ContainerAware
                         $place->getId(),
                         $locationData,
                         true
-                    );
+                    )
+                    ;
                 }
 
                 $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($ppId);
@@ -179,89 +190,116 @@ class Restaurant extends ContainerAware
                 $place,
                 $locationData,
                 $pointRecord
-            );
+            )
+            ;
             $devCart = $this->container->get('food.cart')->getMinimumCart(
                 $place,
                 $locationData,
                 $pointRecord
-            );
+            )
+            ;
         }
 
         $currency = $this->container->getParameter('currency_iso');
         $restaurantTitle = $place->getName();
-        $restaurantTitle = str_replace(array('„', '“'), '"', $restaurantTitle);
+        $restaurantTitle = str_replace(['„', '“'], '"', $restaurantTitle);
 
         $restaurantDesc = $place->getDescription();
-        $restaurantDesc = str_replace(array('„', '“'), '"', $restaurantDesc);
+        $restaurantDesc = str_replace(['„', '“'], '"', $restaurantDesc);
 
         $this
             ->set('restaurant_id', $place->getId())
             ->set('title', $restaurantTitle)
             ->set('description', $restaurantDesc)
-            ->set('top', ($place->getTop() ? true: false))
+            ->set('top', ($place->getTop() ? true : false))
             ->set('cuisine', $kitchensForResp)
-            ->set('tags', array()) // @todo FILL IT !!
+            ->set('tags', [])// @todo FILL IT !!
             ->set('photo_urls', $photos)
             ->set('thumbnail_url', $place->getWebPath())
             ->set(
                 'payment_options',
-                array(
-                    'cash' => ($place->getDisabledPaymentOnDelivery() ? false : true),
+                [
+                    'cash'        => ($place->getDisabledPaymentOnDelivery() ? false : true),
                     'credit_card' => ($place->getCardOnDelivery() && !$place->getDisabledPaymentOnDelivery() ? true : false)
-                )
+                ]
             )
             ->set(
                 'services',
-                array(
-                    'pickup' => $pickUp,
+                [
+                    'pickup'   => $pickUp,
                     'delivery' => $delivery,
-                )
+                ]
             )
             ->set(
                 'delivery_options',
-                array(
-                    'estimated_time' => ((!empty($deliveryType) && $deliveryType == 'pickup') ? $place->getPickupTime() : $place->getDeliveryTime()),
-                    'price' => array(
-                        'amount' => (!empty($devPrice) ? ($devPrice * 100) : ($place->getDeliveryPrice() * 100)),
+                [
+                    'estimated_time'       => ((!empty($deliveryType) && $deliveryType == 'pickup') ? $place->getPickupTime() : $place->getDeliveryTime()),
+                    'price'                => [
+                        'amount'   => (!empty($devPrice) ? ($devPrice * 100) : ($place->getDeliveryPrice() * 100)),
                         'currency' => $currency
-                    ),
-                    'minimal_order' => array(
-                        'amount' => (!empty($devCart) ? ($devCart * 100) : ($this->container->get('food.places')->getMinCartPrice($place->getId()) * 100)),
+                    ],
+                    'minimal_order'        => [
+                        'amount'   => (!empty($devCart) ? ($devCart * 100) : ($this->container->get('food.places')->getMinCartPrice($place->getId()) * 100)),
                         'currency' => $currency
-                    ),
-                    'minimal_order_pickup' => array(
-                        'amount' => ($place->getMinimalOnSelfDel() ?  $this->container->get('food.places')->getMinCartPrice($place->getId()) * 100 : 0),
+                    ],
+                    'minimal_order_pickup' => [
+                        'amount'   => ($place->getMinimalOnSelfDel() ? $this->container->get('food.places')->getMinCartPrice($place->getId()) * 100 : 0),
                         'currency' => $currency
-                    )
-                )
+                    ]
+                ]
             )
             ->set('is_working', !$this->container->get('food.order')->isTodayNoOneWantsToWork($place))
             ->set('is_taking_orders', !$this->container->get('food.order')->isTodayNoOneWantsToWork($place))
-            ->set('locations', $this->_getLocationsForResponse($place, $placePoint));
+            ->set('order_hours', (isset($placePoint) ? $this->_getWorkHoursOfPlacePoint($placePoint) : null))
+            ->set('work_hours', (isset($placePoint) ? $this->_getWorkHoursOfPlacePoint($placePoint) : null))
+            ->set('locations', $this->_getLocationsForResponse($place, $placePoint))
+        ;
+
         return $this;
     }
 
     /**
-     * @param Place $place
+     * @param PlacePoint $point
+     *
+     * @return array
+     */
+    private function _getWorkHoursOfPlacePoint(PlacePoint $point)
+    {
+        // @TODO: make it possible for splitted time interval
+        return [
+            explode('-', $point->getWd1()),
+            explode('-', $point->getWd2()),
+            explode('-', $point->getWd3()),
+            explode('-', $point->getWd4()),
+            explode('-', $point->getWd5()),
+            explode('-', $point->getWd6()),
+            explode('-', $point->getWd7())
+        ];
+    }
+
+    /**
+     * @param Place      $place
      * @param PlacePoint $placePoint
+     *
      * @return array
      */
     private function _getLocationsForResponse(Place $place, PlacePoint $placePoint = null)
     {
         $points = $place->getPoints();
-        $retData = array();
+        $retData = [];
         foreach ($points as $point) {
             if ($point->getActive()) {
-                $retData[] = array(
-                    'location_id' => $point->getId(),
-                    'address' => $point->getAddress(),
-                    'city' => $point->getCity(),
-                    'selected' => (!empty($placePoint) && $point->getId() == $placePoint->getId() ? true: false),
-                    'coords' => array(
-                        'latitude' => $point->getLat(),
+                $retData[] = [
+                    'location_id'  => $point->getId(),
+                    'address'      => $point->getAddress(),
+                    'city'         => $point->getCity(),
+                    'selected'     => (!empty($placePoint) && $point->getId() == $placePoint->getId() ? true : false),
+                    'coords'       => [
+                        'latitude'  => $point->getLat(),
                         'longitude' => $point->getLon()
-                    ),
-                    'is_working' => $this->container->get('food.order')->isTodayWork($point),
+                    ],
+                    'is_working'   => $this->container->get('food.order')->isTodayWork($point),
+                    'work_hours'   => $this->_getWorkHoursOfPlacePoint($point),
                     'phone_number' => $point->getPhone(),
                     /*
                     'services' => array(
@@ -269,9 +307,10 @@ class Restaurant extends ContainerAware
                         'delivery' => $point->getDelivery()
                     )
                     */
-                );
+                ];
             }
         }
+
         return $retData;
     }
 }
