@@ -9,9 +9,6 @@
 #delivery_impossible {
     display: none;
 }
-.back_to_dishes:hover {
-    text-decoration: none;
-}
 .pull-right {
     float: right;
 }
@@ -75,4 +72,12 @@ button, input, select, textarea, body, .ui-widget-content, .ui-selectmenu-menu l
 }
 .coupon_form_popup input[type="text"] {
     height: 40px;
+}
+.back_to_dishes:hover {
+    text-decoration: none;
+}
+.delivery-info-form .custom-radio,
+.back_to_dishes,
+.btn#reset_cart {
+    font-size: 13px;
 }
