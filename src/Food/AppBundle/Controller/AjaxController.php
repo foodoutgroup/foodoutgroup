@@ -79,9 +79,23 @@ class AjaxController extends Controller
             $session = $request->getSession();
             $session->set('locationData', ['address' => $address, 'city' => $city]);
         }
-        $response->setContent(json_encode([
-            'data' => $respData
-        ]));
+
+        // Only City Selected
+        $city_only = $request->get('city_only');
+        if (!empty($city) && empty($address) && !empty($city_only)) {
+            $this->get('food.googlegis')->setCityOnlyToSession($city);
+            $response->setContent(json_encode([
+                'data' => [
+                    'success' => 1,
+                    'adr'     => 1,
+                    'str'     => 0
+                ]
+            ]));
+        } else {
+            $response->setContent(json_encode([
+                'data' => $respData
+            ]));
+        }
     }
 
 
