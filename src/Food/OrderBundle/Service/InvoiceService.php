@@ -451,7 +451,7 @@ class InvoiceService extends ContainerAware
                 ->setFrom('info@foodout.lt')
             ;
             $message->addTo('buhalterija@foodout.lt');
-//            $message->addTo('mantas@foodout.lt');
+//            $message->addTo('karolis.m@foodout.lt');
             $message->setBody('Siunciame kliento '.$order->getUser()->getCompanyName().' jungtine faktura. Prasome isitraukti i NAV');
             $message->attach(\Swift_Attachment::fromPath($file));
             $mailer->send($message);

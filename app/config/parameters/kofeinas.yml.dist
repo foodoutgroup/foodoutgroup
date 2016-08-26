@@ -18,14 +18,14 @@ parameters:
 
     locale: lt
     locales: ["lt", "en", "ru"]
-    available_cities: ["Vilnius", "Kaunas", "Klaipėda"]
-    available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda"]
+    available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Utena", "Plungė"]
+    available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda", "Siauliai", "Panevezys", "Alytus", "Utena", "Plunge"]
     available_locales: ["lt", "en", "ru"]
     available_locales_routing: lt | en | ru
     cloudfront_url: images.foodout.lt
     time_zone: "Europe/Vilnius"
     sms.sender: "Foodout.lt"
-    admin.emails: [mantas@foodout.lt]
+    admin.emails: [karolis.m@foodout.lt]
     admin.phones: [37061514333]
     order.notify_emails: []
     order.city_coordinators:
@@ -35,7 +35,7 @@ parameters:
         ryga: []
     order.accept_notify_emails: []
     order.cancel_notify_emails: []
-    accounting_email: "mantas@foodout.lt"
+    accounting_email: "karolis.m@foodout.lt"
     payment.methods:
         - local
         - local.card

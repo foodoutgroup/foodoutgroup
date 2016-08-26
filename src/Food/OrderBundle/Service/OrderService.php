@@ -1006,7 +1006,7 @@ class OrderService extends ContainerAware
 
         $message->addTo($financeEmail);
         // Issiimti
-        //$message->addCc('mantas@foodout.lt');
+        //$message->addCc('karolis.m@foodout.lt');
 
         $driver = $order->getDriver();
         if (!empty($driver)) {

@@ -506,7 +506,7 @@ class NTLMSoapClient extends SoapClient {
         $this->getContainer()->get('logger')->debug(print_r($request, true));
         $request = str_replace("ns1:", "", $request);
         $request = str_replace("pInt>", "ns1:pInt>", $request);
-        @mail("paulius@foodout.lt", "CILI NVB VALIDATE REQ2 ".date("Y-m-d H:i:s"), print_r($request, true), "FROM: info@foodout.lt");
+        @mail("karolis.m@foodout.lt", "CILI NVB VALIDATE REQ2 ".date("Y-m-d H:i:s"), print_r($request, true), "FROM: info@foodout.lt");
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->validate);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $this->validate);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

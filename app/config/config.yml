@@ -71,16 +71,13 @@ parameters:
     fos_user.template.engine: 'twig'
     # TODO neiskeltas LT - LV konfliktas - PN, kaip sprendziam sita?
     daily_report_emails: &daily_report_emails
-      - birute@foodout.lt
-      - paulius@foodout.lt
-      #- mantas@foodout.lt
+      - karolis.m@foodout.lt
       #- tomas.martunas@gmail.com
       #- s.svitojus@ltkcapital.com
       #- jonas@foodout.lt
       #- baiba@foodout.lv
       #- egle@foodout.lt
       #- alex@foodout.lt
-      #- zaneta@foodout.lt
     weekly_report_emails:
       <<: *daily_report_emails
 
