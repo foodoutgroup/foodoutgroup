@@ -33,7 +33,7 @@ class TestController extends Controller
             'pristatymo_data' => 'Vakar',
         );
 
-        $ml->setVariables( $variables )->setRecipient( 'paulius@foodout.lt', 'Sample Client')->setId( 30009269 )->send();
+        $ml->setVariables( $variables )->setRecipient( 'karolis.m@foodout.lt', 'Sample Client')->setId( 30009269 )->send();
         */
 
         $ord = $this->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(1006);

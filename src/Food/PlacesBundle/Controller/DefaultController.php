@@ -14,6 +14,14 @@ class DefaultController extends Controller
         'Kaunas' => 'places.in_kaunas',
         'Klaipėda' => 'places.in_klaipeda',
         'Klaipeda' => 'places.in_klaipeda',
+        'Šiauliai' => 'places.in_siauliai',
+        'Siauliai' => 'places.in_siauliai',
+        'Panevėžys' => 'places.in_panevezys',
+        'Panevezys' => 'places.in_panevezys',
+        'Alytus' => 'places.in_alytus',
+        'Utena' => 'places.in_utena',
+        'Plungė' => 'places.in_plunge',
+        'Plunge' => 'places.in_plunge',
         'Riga' => 'places.in_riga',
         'Rīga' => 'places.in_riga'
     ];

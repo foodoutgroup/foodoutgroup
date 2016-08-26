@@ -9,99 +9,99 @@ food_order_status_check:
         expose: true
 
 food_lang_homepage:
-    pattern: /
+    path: /
     defaults: { _controller: FoodAppBundle:Default:index }
 
 food_test_payment:
-    pattern:  /test/payment
+    path:  /test/payment
     defaults: { _controller: FoodAppBundle:Test:payment }
 
 food_test_report:
-    pattern:  /test/report
+    path:  /test/report
     defaults: { _controller: FoodAppBundle:Test:report }
 
 food_test_zones:
-    pattern: /test/zones/{id}
+    path: /test/zones/{id}
     defaults: { _controller: FoodAppBundle:Test:zones, id: ~ }
 
 food_test_devzones:
-    pattern: /test/devzones/{id}
+    path: /test/devzones/{id}
     defaults: { _controller: FoodAppBundle:Test:devzones, id: ~ }
 
 food_test_betacode:
-    pattern: /test/beta_code/
+    path: /test/beta_code/
     defaults: { _controller: FoodAppBundle:Test:betaCode }
 
 food_test_index:
-    pattern:  /test/
+    path:  /test/
     defaults: { _controller: FoodAppBundle:Test:index }
 
 food_test:
-    pattern:  /test/mssql
+    path:  /test/mssql
     defaults: { _controller: FoodAppBundle:Test:mssql }
 
 food_migrator:
-    pattern: /test/migrate-cili
+    path: /test/migrate-cili
     defaults: { _controller: FoodAppBundle:Test:migrateCili }
 
 food_putorder:
-    pattern:  /test/put-order/{id}
+    path:  /test/put-order/{id}
     defaults: { _controller: FoodAppBundle:Test:putOrder, id: ~ }
 
 food_test_pdf:
-    pattern:  /test/pdf
+    path:  /test/pdf
     defaults: { _controller: FoodAppBundle:Test:pdf }
 
 food_test_invoice:
-    pattern:  /test/invoice
+    path:  /test/invoice
     defaults: { _controller: FoodAppBundle:Test:invoice }
 
 food_test_time_format:
-    pattern:  /test/time-format
+    path:  /test/time-format
     defaults: { _controller: FoodAppBundle:Test:timeParse }
 
 food_nav_test1:
-    pattern: /test/nav/test1
+    path: /test/nav/test1
     defaults: { _controller: FoodAppBundle:Test:nav1 }
 
 food_nav_list:
-    pattern: /test/nav/list
+    path: /test/nav/list
     defaults: { _controller: FoodAppBundle:Test:listOrders }
 
 food_nav_migrator:
-    pattern: /test/migrator/{date}
+    path: /test/migrator/{date}
     defaults: { _controller: FoodAppBundle:Test:migrator, date: ~ }
 
 food_game:
-    pattern: /test/game/
+    path: /test/game/
     defaults: { _controller: FoodAppBundle:Game:index }
 
 food_game_prod_nokey:
-    pattern: /registracija_zaidimui
+    path: /registracija_zaidimui
     defaults: { _controller: FoodAppBundle:Game:index, key: bot}
 
 food_game_prod_lv_nokey:
-    pattern: /registracija_speli
+    path: /registracija_speli
     defaults: { _controller: FoodAppBundle:Game:index, key: bot}
 
 food_game_prod_nokey_slash:
-    pattern: /registracija_zaidimui/
+    path: /registracija_zaidimui/
     defaults: { _controller: FoodAppBundle:Game:index, key: bot}
 
 food_game_prod_lv_nokey_slash:
-    pattern: /registracija_speli/
+    path: /registracija_speli/
     defaults: { _controller: FoodAppBundle:Game:index, key: bot}
 
 food_game_prod:
-    pattern: /registracija_zaidimui/{key}
+    path: /registracija_zaidimui/{key}
     defaults: { _controller: FoodAppBundle:Game:index, key: ~ }
 
 food_game_prod_lv:
-    pattern: /registracija_speli/{key}
+    path: /registracija_speli/{key}
     defaults: { _controller: FoodAppBundle:Game:index, key: ~ }
 
 food_review_create:
-    pattern: /place/review/{id}
+    path: /place/review/{id}
     defaults: { _controller: FoodDishesBundle:Place:reviewCreate }
     requirements:
         _method: POST
@@ -110,25 +110,25 @@ fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
 food_slug_locale:
-    pattern:  /{redirLocale}/
+    path:  /{redirLocale}/
     defaults: { _controller: FoodAppBundle:Redirector:index, redirLocale: ~ }
     requirements:
         redirLocale:  "[a-z]{2}"
 
 food_slug_locale2:
-    pattern:  /{redirLocale}
+    path:  /{redirLocale}
     defaults: { _controller: FoodAppBundle:Redirector:index, redirLocale: ~ }
     requirements:
         redirLocale:  "[a-z]{2}"
 
 food_slug_locale_slug:
-    pattern:  /{redirLocale}/{slug}/
+    path:  /{redirLocale}/{slug}/
     defaults: { _controller: FoodAppBundle:Redirector:slug, redirLocale: ~ , slug: ~}
     requirements:
         redirLocale:  "[a-z]{2}"
 
 food_slug_locale_slug2:
-    pattern:  /{redirLocale}/{slug}
+    path:  /{redirLocale}/{slug}
     defaults: { _controller: FoodAppBundle:Redirector:slug, redirLocale: ~ , slug: ~}
     requirements:
         redirLocale:  "[a-z]{2}"
@@ -148,25 +148,25 @@ food_landing_b2b_client_lv_slash:
     defaults: { _controller: FoodAppBundle:Landing:b2bClient }
 
 food_slug:
-    pattern:  /{slug}/
+    path:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Riga|aplikacijos|susipazinkime|ciligreita)[a-z0-9-\__\"„“\.\+]{4,}"
+        slug : "^(?!admin|cart|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Utena|Plunge|Riga|aplikacijos|susipazinkime|ciligreita)[a-z0-9-\__\"„“\.\+]{4,}"
 
 food_order_nav_test1:
-    pattern: /order/nav_test1
+    path: /order/nav_test1
     defaults: { _controller: FoodOrderBundle:Default:testNav1 }
 
 food_order_nav_test2:
-    pattern: /order/nav_test2
+    path: /order/nav_test2
     defaults: { _controller: FoodOrderBundle:Default:testNav2 }
 
 food_order_nav_post:
-    pattern: /order/post/{id}
+    path: /order/post/{id}
     defaults: { _controller: FoodOrderBundle:Default:postToNav }
 
 food_order_nav_update_prices:
-    pattern: /order/update_prices/{id}
+    path: /order/update_prices/{id}
     defaults: { _controller: FoodOrderBundle:Default:updatePricesNav }
 
 food_order_cnt:
@@ -174,43 +174,43 @@ food_order_cnt:
     prefix:   /order
 
 food_admin_get_place_units:
-    pattern: /admin/place/get-units/{placeId}
+    path: /admin/place/get-units/{placeId}
     defaults: {_controller: FoodDishesBundle:DishAdmin:getDishUnitsFromPlace}
     options:
         expose: true
 
 food_admin_get_place_categories:
-    pattern: /admin/place/get-categories/{placeId}
+    path: /admin/place/get-categories/{placeId}
     defaults: {_controller: FoodDishesBundle:DishAdmin:getCategoryOptionsFromPlace}
     options:
         expose: true
 
 food_admin_get_place_points:
-    pattern: /admin/place/get-points/{placeId}
+    path: /admin/place/get-points/{placeId}
     defaults: {_controller: FoodDishesBundle:DishAdmin:getPointsFromPlace}
     options:
         expose: true
 
 food_admin_get_place_dish_options:
-    pattern: /admin/place/get-dish-options/{placeId}/{uniqueId}
+    path: /admin/place/get-dish-options/{placeId}/{uniqueId}
     defaults: {_controller: FoodDishesBundle:DishAdmin:getDishOptionsFromPlace}
     options:
         expose: true
 
 food_admin_get_order_status_popup:
-    pattern: /admin/dispatcher/get_order_status_popup/{orderId}
+    path: /admin/dispatcher/get_order_status_popup/{orderId}
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:statusPopup}
     options:
         expose: true
 
 food_admin_approve_order:
-    pattern: /admin/dispatcher/approve_order/{orderId}
+    path: /admin/dispatcher/approve_order/{orderId}
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:approveOrder}
     options:
         expose: true
 
 food_admin_set_order_status:
-    pattern: /admin/dispatcher/set-order-status/{orderId}/{status}/{delayDuration}
+    path: /admin/dispatcher/set-order-status/{orderId}/{status}/{delayDuration}
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:setOrderStatus, delayDuration: null }
     requirements:
         delayDuration:  "\d+"
@@ -218,19 +218,19 @@ food_admin_set_order_status:
         expose: true
 
 food_admin_get_driver_list:
-    pattern: /admin/dispatcher/get-driver-list/{orders}
+    path: /admin/dispatcher/get-driver-list/{orders}
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:getDriverList}
     options:
         expose: true
 
 food_admin_send_message:
-    pattern: /admin/dispatcher/send-message/{orderId}/{message}
+    path: /admin/dispatcher/send-message/{orderId}/{message}
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:sendOrderMessage}
     options:
         expose: true
 
 food_admin_assign_driver:
-    pattern: /admin/dispatcher/assign-driver/
+    path: /admin/dispatcher/assign-driver/
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignDriver}
     options:
         expose: true
@@ -254,7 +254,7 @@ food_admin_assign_placeinformed:
           _method:  POST
 
 food_admin_check_new_orders:
-    pattern: /admin/dispatcher/check-new-orders/
+    path: /admin/dispatcher/check-new-orders/
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:checkNewOrders}
     options:
         expose: true
@@ -262,7 +262,7 @@ food_admin_check_new_orders:
           _method:  GET
 
 food_admin_mark_order_contacted:
-    pattern: /admin/dispatcher/mark-contacted/
+    path: /admin/dispatcher/mark-contacted/
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:markOrderContacted}
     options:
         expose: true
@@ -270,7 +270,7 @@ food_admin_mark_order_contacted:
           _method:  POST
 
 food_admin_mark_order_problem_solved:
-    pattern: /admin/dispatcher/mark-solved/
+    path: /admin/dispatcher/mark-solved/
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:markOrderSolved}
     options:
         expose: true
@@ -278,13 +278,13 @@ food_admin_mark_order_problem_solved:
           _method:  POST
 
 food_admin_get_user_info_by_phone:
-    pattern: /admin/dispatcher/user-info/
+    path: /admin/dispatcher/user-info/
     defaults: {_controller: FoodAppBundle:DispatcherAdmin:getUserInfoByPhone}
     options:
         expose: true
 
 food_admin_get_place_unit_categories:
-    pattern: /admin/place/get-unit-categories/{placeId}
+    path: /admin/place/get-unit-categories/{placeId}
     defaults: {_controller: FoodDishesBundle:DishUnitAdmin:getUnitCategoryOptionsFromPlace}
     options:
         expose: true
@@ -298,13 +298,13 @@ food_cart:
     prefix:   /cart
 
 food_cart_locale:
-    pattern: /{redirLocale}/cart/{placeId}
+    path: /{redirLocale}/cart/{placeId}
     defaults: { _controller: FoodCartBundle:Default:index, redirLocale: ~, placeId: ~}
     requirements:
         redirLocale:  "[a-z]{2}"
 
 food_cart_action_locale:
-    pattern:  /{redirLocale}/cart/action/{action}/
+    path:  /{redirLocale}/cart/action/{action}/
     defaults: { _controller: FoodCartBundle:Default:action, redirLocale: ~, action: empty }
     options:
         expose: true
@@ -312,31 +312,31 @@ food_cart_action_locale:
         redirLocale:  "[a-z]{2}"
 
 food_ajax_dish:
-    pattern: /ajax/dish/{dish}
+    path: /ajax/dish/{dish}
     defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~}
 
 food_ajax_dish_locale:
-    pattern: /{redirLocale}/ajax/dish/{dish}
+    path: /{redirLocale}/ajax/dish/{dish}
     defaults: { _controller: FoodDishesBundle:Dish:getDish, redirLocale: ~, dish: ~}
     requirements:
         redirLocale:  "[a-z]{2}"
 
 food_ajax_edit_dish:
-    pattern: /ajax/edit-dish-in-cart/{dish}/{cartId}
+    path: /ajax/edit-dish-in-cart/{dish}/{cartId}
     defaults: { _controller: FoodDishesBundle:Dish:editDishInCart, dish: ~, cartId: ~}
 
 food_ajax_remove_dish:
-    pattern: /ajax/remove-dish-in-cart/{dish}/{cartId}/{inCart}
+    path: /ajax/remove-dish-in-cart/{dish}/{cartId}/{inCart}
     defaults: { _controller: FoodDishesBundle:Dish:removeDishInCart, dish: ~, cartId: ~, inCart: 0}
 
 food_ajax:
-    pattern: /ajax/{action}/
+    path: /ajax/{action}/
     defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
     options:
         expose: true
 
 food_ajax_locale:
-    pattern: /{redirLocale}/ajax/{action}/
+    path: /{redirLocale}/ajax/{action}/
     defaults: { _controller: FoodAppBundle:Ajax:ajax, redirLocale: ~, action: ~}
     options:
         expose: true
@@ -368,23 +368,23 @@ food_restaurants_lv:
     prefix:   /restorani
 
 food_places_filter:
-    pattern: /places/filter/
+    path: /places/filter/
     defaults: { _controller: FoodPlacesBundle:Default:list }
 
 food_kitchens_filter:
-    pattern: /kitchens/filter/
+    path: /kitchens/filter/
     defaults: { _controller: FoodDishesBundle:Kitchen:kitchenlist }
     options:
         expose: true
 
 food_places_filter_locale:
-    pattern: /{redirLocale}/places/filter/
+    path: /{redirLocale}/places/filter/
     defaults: { _controller: FoodPlacesBundle:Default:list, redirLocale: ~}
     requirements:
         redirLocale:  "[a-z]{2}"
 
 food_kitchens_filter_locale:
-    pattern: /{redirLocale}/kitchens/filter/
+    path: /{redirLocale}/kitchens/filter/
     defaults: { _controller: FoodDishesBundle:Kitchen:kitchenlist, redirLocale: ~}
     options:
         expose: true
@@ -397,81 +397,150 @@ static:
     methods:  [GET]
 
 food_place_point_data:
-    pattern: /ajax/place-point/{point_id}
+    path: /ajax/place-point/{point_id}
     defaults: { _controller: FoodDishesBundle:Place:placePoint, point_id: ~}
 
 food_place_menu_layout:
-    pattern: /ajax/save-menu-layout/{layout}
+    path: /ajax/save-menu-layout/{layout}
     defaults: { _controller: FoodDishesBundle:FoodCategory:restaurantMenuLayout, layout: ~}
 
 food_newsletter_subscribe:
-    pattern: /newsletter/subscribe/
+    path: /newsletter/subscribe/
     defaults: { _controller: FoodAppBundle:Default:newsletterSubscribe}
     requirements:
       _method:  POST
 
 food_newsletter_thank:
-    pattern: /newsletter/thank/
+    path: /newsletter/thank/
     defaults: { _controller: FoodAppBundle:Default:newsletterThank}
 
 # Miestai
 food_city_vilnius:
-    pattern: /Vilnius
+    path: /Vilnius
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius}
 
 food_city_kaunas:
-    pattern: /Kaunas
+    path: /Kaunas
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kaunas}
 
 food_city_klaipeda:
-    pattern: /Klaipeda
+    path: /Klaipeda
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda}
 
+food_city_siauliai:
+    path: /Siauliai
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Siauliai}
+
+food_city_panevezys:
+    path: /Panevezys
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Panevezys}
+
+food_city_alytus:
+    path: /Alytus
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Alytus}
+
+food_city_utena:
+    path: /Utena
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Utena}
+
+food_city_plunge:
+    path: /Plunge
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Plunge}
+
 food_city_riga:
-    pattern: /Riga
+    path: /Riga
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
 
 food_city_vilnius_slash:
-    pattern: /Vilnius/
+    path: /Vilnius/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius}
 
 food_city_kaunas_slash:
-    pattern: /Kaunas/
+    path: /Kaunas/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kaunas}
 
 food_city_klaipeda_slash:
-    pattern: /Klaipeda/
+    path: /Klaipeda/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda}
 
+food_city_siauliai_slash:
+    path: /Siauliai/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Siauliai}
+
+food_city_panevezys_slash:
+    path: /Panevezys/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Panevezys}
+
+food_city_alytus_slash:
+    path: /Alytus/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Alytus}
+
+food_city_utena_slash:
+    path: /Utena/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Utena}
+
+food_city_plunge_slash:
+    path: /Plunge/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Plunge}
+
 food_city_riga_slash:
-    pattern: /Riga/
+    path: /Riga/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
 
 food_city_vilnius_slash_filter:
-    pattern: /Vilnius/{slug_filter}
+    path: /Vilnius/{slug_filter}
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
 
 food_city_kaunas_slash_filter:
-    pattern: /Kaunas/{slug_filter}
+    path: /Kaunas/{slug_filter}
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kaunas, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
 
 food_city_klaipeda_slash_filter:
-    pattern: /Klaipeda/{slug_filter}
+    path: /Klaipeda/{slug_filter}
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
 
+food_city_siauliai_slash_filter:
+    path: /Siauliai/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Siauliai, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_panevezys_slash_filter:
+    path: /Panevezys/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Panevezys, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_alytus_slash_filter:
+    path: /Alytus/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Alytus, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_utena_slash_filter:
+    path: /Utena/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Utena, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_plunge_slash_filter:
+    path: /Plunge/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Plunge, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
 food_city_riga_slash_filter:
-    pattern: /Riga/{slug_filter}
+    path: /Riga/{slug_filter}
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
 
-
-food_test_report:
-    pattern: /test/where/the/magic/happens/but/we/dont/know/anything
+food_test_daugis_report:
+    path: /test/where/the/magic/happens/but/we/dont/know/anything
     defaults: { _controller: FoodAppBundle:Test:magicReportForDaugis }
