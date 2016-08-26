@@ -1289,6 +1289,26 @@
                 <source>places.in_klaipeda</source>
                 <target>Klaipėdoje</target>
             </trans-unit>
+            <trans-unit id="places.in_siauliai" resname="places.in_siauliai">
+                <source>places.in_siauliai</source>
+                <target>Šiauliuose</target>
+            </trans-unit>
+            <trans-unit id="places.in_panevezys" resname="places.in_panevezys">
+                <source>places.in_panevezys</source>
+                <target>Panevėžyje</target>
+            </trans-unit>
+            <trans-unit id="places.in_alytus" resname="places.in_alytus">
+                <source>places.in_alytus</source>
+                <target>Alytuje</target>
+            </trans-unit>
+            <trans-unit id="places.in_utena" resname="places.in_utena">
+                <source>places.in_utena</source>
+                <target>Utenoje</target>
+            </trans-unit>
+            <trans-unit id="places.in_plunge" resname="places.in_plunge">
+                <source>places.in_plunge</source>
+                <target>Plungėje</target>
+            </trans-unit>
             <trans-unit id="food.game.firstname" resname="food.game.firstname">
                 <source>food.game.firstname</source>
                 <target>Vardas</target>

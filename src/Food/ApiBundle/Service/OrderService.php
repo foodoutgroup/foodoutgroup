@@ -444,7 +444,7 @@ class OrderService extends ContainerAware
 
         $os->setPaymentMethod(($paymentMethod == 'cash' ? 'local':'local.card'));
 
-        @mail("paulius@foodout.lt", "MOBILE REQUEST JSONobject", print_r($request, true), "FROM: info@foodout.lt");
+        @mail("karolis.m@foodout.lt", "MOBILE REQUEST JSONobject", print_r($request, true), "FROM: info@foodout.lt");
 
         if ($serviceVar['type'] == "pickup") {
             $os->setDeliveryType($os::$deliveryPickup);

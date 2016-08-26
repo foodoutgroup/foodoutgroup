@@ -25,16 +25,16 @@ parameters:
     cloudfront_url: images.foodout.lv
     time_zone: "Europe/Riga"
     sms.sender: "Foodout.lv"
-    admin.emails: [mantas@foodout.lt]
+    admin.emails: [karolis.m@foodout.lt]
     admin.phones: [37061514333]
     order.notify_emails: []
     order.city_coordinators:
         vilnius: []
-        kaunas: [zaneta@foodout.lt]
-        klaipėda: [jurgita@foodout.lt]
-        ryga: [paulius@foodout.lt]
-        riga: [paulius@foodout.lt]
-        rīga: [paulius@foodout.lt]
+        kaunas: [karolis.m@foodout.lt]
+        klaipėda: [karolis.m@foodout.lt]
+        ryga: [karolis.m@foodout.lt]
+        riga: [karolis.m@foodout.lt]
+        rīga: [karolis.m@foodout.lt]
     order.accept_notify_emails: []
     order.cancel_notify_emails: []
     accounting_email: "jolanta@foodout.lv"
