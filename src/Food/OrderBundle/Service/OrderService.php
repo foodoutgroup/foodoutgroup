@@ -3114,6 +3114,7 @@ class OrderService extends ContainerAware
      */
     public function getTodayWork(PlacePoint $placePoint, $showDayNumber = true)
     {
+        $placeService = $this->container->get('food.places');
         $locale = $this->container->get('food.dishes.utils.slug')->getLocale();
         $wdays = [
             '1' => 'I',
@@ -3127,24 +3128,12 @@ class OrderService extends ContainerAware
         $wd = date('w');
         if ($wd == 0) $wd = 7;
         $workTime = $placePoint->{'getWd' . $wd}();
+        $workTime = preg_replace('~\s*-\s*~', '-', $workTime);
         $intervals = explode(' ', $workTime);
         $times = [];
         foreach ($intervals as $interval) {
-            if (strpos($interval, '-') !== false) {
-                list($start, $end) = explode('-', $interval);
-                if (strpos($start, ':') !== false) {
-                    list($startHour, $startMin) = explode(':', $start);
-                } else {
-                    $startHour = $start;
-                    $startMin = 0;
-                }
-
-                if (strpos($end, ':') !== false) {
-                    list($endHour, $endMin) = explode(':', $end);
-                } else {
-                    $endHour = $end;
-                    $endMin = 0;
-                }
+            if ($workTimes = $placeService->parseIntervalToTimes($interval)) {
+                list($startHour, $startMin, $endHour, $endMin) = $workTimes;
                 if ('fa' == $locale) {
                     array_unshift($times, sprintf("%02d:%02d-%02d:%02d", $endHour, $endMin, $startHour, $startMin));
                 } else {
