@@ -300,35 +300,34 @@ class OrderAdminController extends Controller
 
         for ($i = 0; $i < $total; $i += 1000) {
             $qry = "SELECT 
-                      o.id AS order_id, 
+                      o.id AS order_id, o.order_date, o.order_status, o.comment, o.place_comment, o.order_hash, 
+                      o.payment_method, o.payment_status, o.submitted_for_payment, o.last_updated, o.last_payment_error,
+                      o.preorder,
+                      o.mobile, o.nav_delivery_order, o.order_from_nav, o.nav_driver_code, 
+                      o.place_id, o.point_id, o.place_name, o.place_point_address, o.place_point_city, o.place_point_self_delivery, 
+                      o.driver_id, d.extId as driver_ext_id,
+                      o.total, o.vat, o.coupon_code, o.discount_size, o.discount_sum, o.delivery_price, o.sf_series, o.sf_number,
                       u.firstname AS dispatcher_name, 
-                      o.*, 
-                      oe.*, 
-                      ua.city, 
-                      ua.address, 
-                      ua.lat, 
-                      ua.lon, 
-                      d.extId as 
-                      driver_id,  
+                      oe.firstname, oe.lastname, oe.phone, oe.email, oe.cancel_reason, oe.cancel_reason_comment, oe.change_reason,
+                      o.user_ip, o.is_corporate_client, o.company, o.company_name, o.company_code, o.vat_code, o.company_address,
+                      o.newsletter_subscribe,
+                      ua.city, ua.address, 
+                      ua.lat, ua.lon, 
                       pp.lat as production_peaks_lat,
-                      pp.lon as production_peaks_lon
+                      pp.lon as production_peaks_lon,
+                      o.order_date as order_date_copy, o.delivery_time, o.accept_time, o.delivery_time, o.completed_time, 
+                      o.is_delay, o.delay_duration, o.delay_reason, o.assign_late 
                     FROM orders o
                     LEFT JOIN user_address ua ON o.address_id = ua.id
                     LEFT JOIN order_extra oe ON o.id = oe.order_id
-                    LEFT JOIN place_point pp ON o.point_id = pp.id /* pakeitimas */
-                    LEFT JOIN fos_user u ON u.id = o.dispatcher_id AND o.dispatcher_id IS NOT NULL
+                    LEFT JOIN place_point pp ON o.point_id = pp.id
+                    LEFT JOIN fos_user u ON u.id = o.dispatcher_id
                     LEFT JOIN fos_user cc ON cc.id = o.user_id
                     LEFT JOIN drivers d ON o.driver_id = d.id
-                    WHERE 1 = 1 $where ORDER BY o.id DESC LIMIT $i,1000";
-
-            //        var_dump($qry);
-            //        die;
+                    WHERE 1 = 1 $where ORDER BY o.id DESC LIMIT $i, 1000";
 
             $result = $this->get('database_connection')->fetchAll($qry);
             foreach ($result as $key => $row) {
-                unset($row['id']);
-                unset($row['dispatcher_id']);
-
                 $log = $this->get('database_connection')->fetchAll('SELECT * FROM order_delivery_log WHERE order_id = ' . $row['order_id']);
 
                 $row['driver_assign_time'] = null;
@@ -372,7 +371,6 @@ class OrderAdminController extends Controller
                     $row['started_completed'] = sprintf('%02d:%02d', $diff->d * 24 + $diff->h, $diff->i);
                 }
 
-                unset($key);
 
                 $data[] = $row;
                 if (memory_get_usage() > 0.8 * ini_get('memory_limit')) {
