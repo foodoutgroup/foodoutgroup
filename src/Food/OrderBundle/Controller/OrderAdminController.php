@@ -302,7 +302,7 @@ class OrderAdminController extends Controller
             $qry = "SELECT 
                       o.id AS order_id, o.order_date, o.order_status, o.comment, o.place_comment, o.order_hash, 
                       o.payment_method, o.payment_status, o.submitted_for_payment, o.last_updated, o.last_payment_error,
-                      o.preorder,
+                      o.delivery_type, o.preorder,
                       o.mobile, o.nav_delivery_order, o.order_from_nav, o.nav_driver_code, 
                       o.place_id, o.point_id, o.place_name, o.place_point_address, o.place_point_city, o.place_point_self_delivery, 
                       o.driver_id, d.extId as driver_ext_id,
@@ -315,7 +315,7 @@ class OrderAdminController extends Controller
                       ua.lat, ua.lon, 
                       pp.lat as production_peaks_lat,
                       pp.lon as production_peaks_lon,
-                      o.order_date as order_date_copy, o.delivery_time, o.accept_time, o.delivery_time, o.completed_time, 
+                      o.order_date as order_date_copy, o.accept_time, o.delivery_time, o.completed_time, 
                       o.is_delay, o.delay_duration, o.delay_reason, o.assign_late 
                     FROM orders o
                     LEFT JOIN user_address ua ON o.address_id = ua.id
