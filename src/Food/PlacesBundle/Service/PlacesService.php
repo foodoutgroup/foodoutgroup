@@ -342,7 +342,8 @@ class PlacesService extends ContainerAware
             $recommended,
             $this->container->get('food.googlegis')->getLocationFromSession(),
             $this->container
-        );
+        )
+        ;
 
         $this->container->get('food.places')->saveRelationPlaceToPoint($places);
         $places = $this->container->get('food.places')->placesPlacePointsWorkInformation($places);
@@ -372,21 +373,15 @@ class PlacesService extends ContainerAware
             if ($deliveryOption == 'pickup' && !$selfDelivery) {
                 $place['show_top'] = 4;
                 $place['priority'] = 8000;
-            }
-
-            # Kiti veza P&D & 1
+            } # Kiti veza P&D & 1
             elseif ($deliveryOption == 'delivery_and_pickup' && $selfDelivery) {
                 $place['show_top'] = 3;
                 $place['priority'] = 5000;
-            }
-
-            # Kiti veza D & 1
+            } # Kiti veza D & 1
             elseif ($deliveryOption == 'delivery' && $selfDelivery) {
                 $place['show_top'] = 2;
                 $place['priority'] = 3000;
-            }
-
-            # Kiti veza P & 1
+            } # Kiti veza P & 1
             elseif ($deliveryOption == 'pickup' && $selfDelivery) {
                 $place['show_top'] = 1;
                 $place['priority'] = 2000;
@@ -507,30 +502,15 @@ class PlacesService extends ContainerAware
             $placePoint = $placePoints[0];
         }
 
-        $workTime = $placePoint->{'getWd'.$day}();
+        $workTime = $placePoint->{'getWd' . $day}();
+        $workTime = preg_replace('~\s*-\s*~', '-', $workTime);
         $intervals = explode(' ', $workTime);
         $firstOnDay = true;
-        $graph = array();
+        $graph = [];
         foreach ($intervals as $interval) {
-            if (strpos($interval, '-') === false) {
-                continue;
-            }
-            list($start, $end) = explode('-', $interval);
-            if (strpos($start, ':') !== false) {
-                list($startHour, $startMin) = explode(':', $start);
+            if ($times = $this->parseIntervalToTimes($interval)) {
+                list($startHour, $startMin, $endHour, $endMin) = $times;
             } else {
-                $startHour = $start;
-                $startMin = 0;
-            }
-
-            if (strpos($end, ':') !== false) {
-                list($endHour, $endMin) = explode(':', $end);
-            } else {
-                $endHour = $end;
-                $endMin = 0;
-            }
-
-            if (!is_numeric($startHour) || !is_numeric($endHour)) {
                 continue;
             }
 
@@ -565,7 +545,7 @@ class PlacesService extends ContainerAware
                 if ($firstOnDay) {
                     $startHour++;
 
-                // else +30min
+                    // else +30min
                 } elseif ($startMin) {
                     $startHour++;
                     $startMin = 0;
@@ -695,6 +675,7 @@ class PlacesService extends ContainerAware
 
     /**
      * @param Place $place
+     *
      * @return bool|string
      */
     public function getZavalTime(Place $place)
@@ -717,7 +698,8 @@ class PlacesService extends ContainerAware
 
     /**
      * @param PlacePoint[] $placePoints
-     * @param $zaval_cities
+     * @param              $zaval_cities
+     *
      * @return bool
      */
     private function findZavalCity($placePoints, $zaval_cities)
@@ -737,11 +719,13 @@ class PlacesService extends ContainerAware
                 return false;
             }
         }
+
         return true;
     }
 
     /**
      * @param null $current_city
+     *
      * @return array|bool
      */
     public function getZavalCities($current_city = null)
@@ -755,12 +739,51 @@ class PlacesService extends ContainerAware
                 $city = mb_strtolower($city, 'utf-8');
                 $city = mb_eregi_replace('[^a-ž]', ' ', $city);
                 $city = mb_eregi_replace('\s+', '', $city);
-                $cities[] = mb_convert_case(trim($city), MB_CASE_TITLE, 'utf-8') ;
+                $cities[] = mb_convert_case(trim($city), MB_CASE_TITLE, 'utf-8');
             }
             if (!empty($current_city)) {
                 return in_array($current_city, $cities);
             }
         }
+
         return $cities;
+    }
+
+    /**
+     * @todo refactor to have 1 exit point
+     * @param string $interval
+     *
+     * @return array|bool
+     */
+    public function parseIntervalToTimes($interval = '')
+    {
+        if (strpos($interval, '-') === false) {
+            return false;
+        }
+
+        list($start, $end) = explode('-', $interval);
+        if (strlen($start) < 1 || strlen($end) < 1) {
+            return false;
+        }
+
+        if (strpos($start, ':') !== false) {
+            list($startHour, $startMin) = explode(':', $start);
+        } else {
+            $startHour = $start;
+            $startMin = 0;
+        }
+
+        if (strpos($end, ':') !== false) {
+            list($endHour, $endMin) = explode(':', $end);
+        } else {
+            $endHour = $end;
+            $endMin = 0;
+        }
+
+        if (!is_numeric($startHour) || !is_numeric($endHour)) {
+            return false;
+        }
+
+        return [$startHour, $startMin, $endHour, $endMin];
     }
 }

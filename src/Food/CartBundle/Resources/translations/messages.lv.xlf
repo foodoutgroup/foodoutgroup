@@ -264,6 +264,10 @@ LV-1046</target>
                 <source>order.form.errors.no_restaurant_to_deliver</source>
                 <target>Šobrīd restorāns vairs nevar apkalpot Jūsu pasūtījumu.</target>
             </trans-unit>
+            <trans-unit id="order.form.errors.wrong_point_for_address" resname="order.form.errors.wrong_point_for_address">
+                <source>order.form.errors.wrong_point_for_address</source>
+                <target>Sorry, restaurant can not handle your order.</target>
+            </trans-unit>
             <trans-unit id="041ccc82a63a553b94ac896157a39255" resname="order.form.errors.customerfirstname">
                 <source>order.form.errors.customerfirstname</source>
                 <target>Ievadiet savu vārdu</target>
