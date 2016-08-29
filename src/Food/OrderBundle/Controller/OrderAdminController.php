@@ -49,8 +49,9 @@ class OrderAdminController extends Controller
 
         $this->get('session')->getFlashBag()->add(
             'success',
-            $this->get('translator')->trans('admin.order.invoice_added_for_send', array(), 'SonataAdminBundle')
-        );
+            $this->get('translator')->trans('admin.order.invoice_added_for_send', [], 'SonataAdminBundle')
+        )
+        ;
 
         return $this->redirect(
             $this->generateUrl('admin_food_order_order_list')
@@ -69,14 +70,14 @@ class OrderAdminController extends Controller
         $order = $orderService->getOrderById($id);
 
         $fileName = $invoiceService->getInvoiceFilename($order);
-        $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
+        $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/' . $fileName;
 
         $content = file_get_contents($file);
 
         $response = new Response();
 
         $response->headers->set('Content-Type', 'application/pdf');
-        $response->headers->set('Content-Disposition', 'attachment;filename="'.$fileName);
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . $fileName);
 
         $response->setContent($content);
 
@@ -86,6 +87,7 @@ class OrderAdminController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return StreamedResponse
      */
     public function exportAction(Request $request)
@@ -97,9 +99,9 @@ class OrderAdminController extends Controller
         $source = $this->getDataSourceIterator($request);
         $format = $request->get('format');
 
-        $allowedExportFormats = (array) $this->admin->getExportFormats();
+        $allowedExportFormats = (array)$this->admin->getExportFormats();
 
-        if (!in_array($format, $allowedExportFormats) ) {
+        if (!in_array($format, $allowedExportFormats)) {
             throw new \RuntimeException(sprintf('Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`', $format, $this->admin->getClass(), implode(', ', $allowedExportFormats)));
         }
 
@@ -111,54 +113,57 @@ class OrderAdminController extends Controller
 
         switch ($format) {
             case 'xls':
-                $writer      = new XlsWriter('php://output');
+                $writer = new XlsWriter('php://output');
                 $contentType = 'application/vnd.ms-excel';
                 break;
             case 'xml':
-                $writer      = new XmlWriter('php://output');
+                $writer = new XmlWriter('php://output');
                 $contentType = 'text/xml';
                 break;
             case 'json':
-                $writer      = new JsonWriter('php://output');
+                $writer = new JsonWriter('php://output');
                 $contentType = 'application/json';
                 break;
             case 'csv':
-                $writer      = new CsvWriter('php://output', ',', '"', "", true, true);
+                $writer = new CsvWriter('php://output', ',', '"', "", true, true);
                 $contentType = 'text/csv';
                 break;
             default:
                 throw new \RuntimeException('Invalid format');
         }
 
-        $callback = function() use ($source, $writer) {
+        $callback = function () use ($source, $writer) {
             Handler::create($source, $writer)->export();
         };
 
-        return new StreamedResponse($callback, 200, array(
+        return new StreamedResponse($callback, 200, [
             'Content-Type'        => $contentType,
             'Content-Disposition' => sprintf('attachment; filename=%s', $filename)
-        ));
+        ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return DoctrineDBALConnectionSourceIterator
      */
     public function getDataSourceIterator(Request $request)
     {
+        @ini_set('memory_limit', 1024 * 1024 * 1024);
         $where = "";
         $filters = $request->get('filters');
         $params = $request->get('filter');
-        if($filters != 'reset' && !empty($params)) {
-            $prepare_val = function($val) {
-                if(is_array($val)) {
+        if ($filters != 'reset' && !empty($params)) {
+            $prepare_val = function ($val) {
+                if (is_array($val)) {
                     return $val[0];
                 }
                 if (ctype_digit($val)) {
-                    $val = (int) $val;
+                    $val = (int)$val;
                 } else {
                     $val = "'" . str_replace("'", "", $val) . "'";
                 }
+
                 return $val;
             };
             foreach ($params as $key => $value) {
@@ -169,8 +174,8 @@ class OrderAdminController extends Controller
                                 $range = "";
                                 $b = 0;
                                 foreach ($value['value'] as $k => $v) {
-                                    if (!empty($v)){
-                                        $range .= ($b==0 ? '' : ' AND ') . "'" . str_replace("'", "", $v) . "'";
+                                    if (!empty($v)) {
+                                        $range .= ($b == 0 ? '' : ' AND ') . "'" . str_replace("'", "", $v) . "'";
                                         $b++;
                                     }
                                 }
@@ -255,7 +260,7 @@ class OrderAdminController extends Controller
                             break;
                         case 'user__isBussinesClient':
 
-                            if(isset($value['value'])) {
+                            if (isset($value['value'])) {
                                 $value = (int)$value['value'];
                                 if ($value) {
                                     $where .= " AND cc.is_bussines_client = 1";
@@ -277,19 +282,10 @@ class OrderAdminController extends Controller
                 }
             }
         }
+
+
         $qry = "SELECT 
-                  o.id AS order_id, 
-                  u.firstname AS dispatcher_name, 
-                  o.*, 
-                  oe.*, 
-                  ua.city, 
-                  ua.address, 
-                  ua.lat, 
-                  ua.lon, 
-                  d.extId as 
-                  driver_id,  
-                  pp.lat as production_peaks_lat,
-                  pp.lon as production_peaks_lon
+                  count(o.id)
                 FROM orders o
                 LEFT JOIN user_address ua ON o.address_id = ua.id
                 LEFT JOIN order_extra oe ON o.id = oe.order_id
@@ -297,58 +293,91 @@ class OrderAdminController extends Controller
                 LEFT JOIN fos_user u ON u.id = o.dispatcher_id AND o.dispatcher_id IS NOT NULL
                 LEFT JOIN fos_user cc ON cc.id = o.user_id
                 LEFT JOIN drivers d ON o.driver_id = d.id
-                WHERE 1 = 1 $where ORDER BY o.id DESC";
-        ;
+                WHERE 1 = 1 $where";;
+        $total = $this->get('database_connection')->fetchColumn($qry);
 
-//        var_dump($qry);
-//        die;
+        $data = [];
 
-        $data = $this->get('database_connection')->fetchAll($qry);
-        foreach ($data as &$row) {
-            unset($row['id']);
-            unset($row['dispatcher_id']);
+        for ($i = 0; $i < $total; $i += 1000) {
+            $qry = "SELECT 
+                      o.id AS order_id, 
+                      u.firstname AS dispatcher_name, 
+                      o.*, 
+                      oe.*, 
+                      ua.city, 
+                      ua.address, 
+                      ua.lat, 
+                      ua.lon, 
+                      d.extId as 
+                      driver_id,  
+                      pp.lat as production_peaks_lat,
+                      pp.lon as production_peaks_lon
+                    FROM orders o
+                    LEFT JOIN user_address ua ON o.address_id = ua.id
+                    LEFT JOIN order_extra oe ON o.id = oe.order_id
+                    LEFT JOIN place_point pp ON o.point_id = pp.id /* pakeitimas */
+                    LEFT JOIN fos_user u ON u.id = o.dispatcher_id AND o.dispatcher_id IS NOT NULL
+                    LEFT JOIN fos_user cc ON cc.id = o.user_id
+                    LEFT JOIN drivers d ON o.driver_id = d.id
+                    WHERE 1 = 1 $where ORDER BY o.id DESC LIMIT $i,1000";
 
-            $log = $this->get('database_connection')->fetchAll('SELECT * FROM order_delivery_log WHERE order_id = '.$row['order_id']);
+            //        var_dump($qry);
+            //        die;
 
-            $row['driver_assign_time'] = null;
-            $row['driver_pickup_time'] = null;
-            $row['driver_finished_order'] = 'No';
-            foreach ($log as $k=> $v) {
+            $result = $this->get('database_connection')->fetchAll($qry);
+            foreach ($result as $key => $row) {
+                unset($row['id']);
+                unset($row['dispatcher_id']);
 
-                switch($v['event']) {
-                    case "order_assigned":
-                        $row['driver_assign_time'] = $v['event_date'];
+                $log = $this->get('database_connection')->fetchAll('SELECT * FROM order_delivery_log WHERE order_id = ' . $row['order_id']);
 
-                        break;
-                    case "order_pickedup":
-                        $row['driver_pickup_time'] = $v['event_date'];
-                        break;
-                    case "order_completed":
-                        $row['driver_finished_order'] = "Yes";
-                        break;
+                $row['driver_assign_time'] = null;
+                $row['driver_pickup_time'] = null;
+                $row['driver_finished_order'] = 'No';
+                foreach ($log as $k => $v) {
+
+                    switch ($v['event']) {
+                        case "order_assigned":
+                            $row['driver_assign_time'] = $v['event_date'];
+
+                            break;
+                        case "order_pickedup":
+                            $row['driver_pickup_time'] = $v['event_date'];
+                            break;
+                        case "order_completed":
+                            $row['driver_finished_order'] = "Yes";
+                            break;
+                    }
+
+                }
+                $row['diff_delivery_completed'] = null;
+                if ($row['delivery_time'] && $row['completed_time']) {
+                    $deliveryTime = new \DateTime($row['delivery_time']);
+                    $completedTime = new \DateTime($row['completed_time']);
+                    $diff = $deliveryTime->diff($completedTime);
+                    $row['diff_delivery_completed'] = $diff->format('%R') . sprintf('%02d:%02d', $diff->d * 24 + $diff->h, $diff->i);
+                }
+                $row['approved_completed'] = null;
+                if ($row['accept_time'] && $row['completed_time']) {
+                    $acceptTime = new \DateTime($row['accept_time']);
+                    $completedTime = new \DateTime($row['completed_time']);
+                    $diff = $acceptTime->diff($completedTime);
+                    $row['approved_completed'] = sprintf('%02d:%02d', $diff->d * 24 + $diff->h, $diff->i);
+                }
+                $row['started_completed'] = null;
+                if ($row['order_date'] && $row['completed_time']) {
+                    $orderDate = new \DateTime($row['order_date']);
+                    $completedTime = new \DateTime($row['completed_time']);
+                    $diff = $orderDate->diff($completedTime);
+                    $row['started_completed'] = sprintf('%02d:%02d', $diff->d * 24 + $diff->h, $diff->i);
                 }
 
-            }
-            $row['diff_delivery_completed'] = null;
-            if ($row['delivery_time'] && $row['completed_time']) {
-                $deliveryTime = new \DateTime($row['delivery_time']);
-                $completedTime = new \DateTime($row['completed_time']);
-                $diff = $deliveryTime->diff($completedTime);
-                $row['diff_delivery_completed'] = $diff->format('%R').sprintf('%02d:%02d', $diff->d*24+$diff->h, $diff->i);
-            }
-            $row['approved_completed'] = null;
-            if ($row['accept_time'] && $row['completed_time']) {
-                $acceptTime = new \DateTime($row['accept_time']);
-                $completedTime = new \DateTime($row['completed_time']);
-                $diff = $acceptTime->diff($completedTime);
-                $row['approved_completed'] = sprintf('%02d:%02d', $diff->d*24+$diff->h, $diff->i);
-            }
-            $row['started_completed'] = null;
-            if ($row['order_date'] && $row['completed_time']) {
-                $orderDate = new \DateTime($row['order_date']);
-                $completedTime = new \DateTime($row['completed_time']);
-                $diff = $orderDate->diff($completedTime);
-                $row['started_completed'] = sprintf('%02d:%02d', $diff->d*24+$diff->h, $diff->i);
+                unset($key);
+
+                $data[] = $row;
+                if (memory_get_usage() > 0.8 * ini_get('memory_limit')) {
+                    break;
+                }
             }
         }
 
