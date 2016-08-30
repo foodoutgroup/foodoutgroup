@@ -247,6 +247,7 @@ class PlaceAdmin extends FoodAdmin
     private function _fixWorkTime(PlacePoint $object)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
+        $placeService = $this->getContainer()->get('food.places');
         foreach ($object->getWorkTimes() as $workTime) {
             $em->remove($workTime);
         }
@@ -257,26 +258,10 @@ class PlaceAdmin extends FoodAdmin
             $workTime = preg_replace('~\s*-\s*~', '-', $workTime);
             $intervals = explode(' ', $workTime);
             foreach ($intervals as $interval) {
-                if (strpos($interval, '-') === false) {
-                    continue;
-                }
-                list($start, $end) = explode('-', $interval);
-                if (strlen($start) < 1 || strlen($end) < 1) {
-                    continue;
-                }
-
-                if (strpos($start, ':') !== false) {
-                    list($startHour, $startMin) = explode(':', $start);
+                if ($times = $placeService->parseIntervalToTimes($interval)) {
+                    list($startHour, $startMin, $endHour, $endMin) = $times;
                 } else {
-                    $startHour = $start;
-                    $startMin = 0;
-                }
-
-                if (strpos($end, ':') !== false) {
-                    list($endHour, $endMin) = explode(':', $end);
-                } else {
-                    $endHour = $end;
-                    $endMin = 0;
+                    continue;
                 }
 
                 // if start time is later thant end time, then we should split it

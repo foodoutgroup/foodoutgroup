@@ -111,6 +111,14 @@ class Restaurant extends ContainerAware
      */
     public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false, $locationData = null, $deliveryType = null)
     {
+        if (empty($placePoint)) {
+            foreach ($place->getPoints() as $pp) {
+                if ($pp->getActive()) {
+                    $placePoint = $pp;
+                    break;
+                }
+            }
+        }
         $kitchens = $place->getKitchens();
         $kitchensForResp = [];
         foreach ($kitchens as $kit) {
