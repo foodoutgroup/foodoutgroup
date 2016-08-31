@@ -647,7 +647,26 @@ class DefaultController extends Controller
                     $discountInSum = true;
                     $discountSum = $coupon->getDiscountSum();
                 }
-                $total_cart = $total_cart - $discountSum;
+
+                $otherPriceTotal = 0;
+                foreach ($list as $dish) {
+                    $foodCat = $dish->getDishId()->getCategories();
+                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
+                    if (!$foodCat[0]->getAlcohol()) {
+                        $otherPriceTotal += $sum;
+                    }
+                }
+
+                // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
+                $otherMinusDiscount = $otherPriceTotal - $discountSum;
+                if($otherMinusDiscount < 0){
+
+
+
+                    $discountSum = $otherPriceTotal;
+                }
+
+                $total_cart -= $discountSum;
 
                 if ($total_cart < 0) {
                     if ($coupon->getFullOrderCovers()|| $coupon->getIncludeDelivery()) {
