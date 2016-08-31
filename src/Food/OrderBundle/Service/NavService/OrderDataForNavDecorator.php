@@ -28,7 +28,7 @@ trait OrderDataForNavDecorator
 
         // ok so now we fill this handy data structure, nothing special
         $data = new OrderDataForNav();
-        $data->id = (int) $order->getId()->val(0);
+        $data->id = (int)$order->getId()->val(0);
         $data->date = $order->getOrderDate()->format('Y-m-d')->val('1754-01-01');
         $data->time = '1754-01-01 ' . $order->getOrderDate()->format('H:i:s')->val('00:00:00');
         $data->deliveryDate = $order->getDeliveryTime()->format('Y-m-d')->val('1754-01-01');
@@ -40,36 +40,36 @@ trait OrderDataForNavDecorator
         $data->driver = $this->cleanChars($driver->getName()->val(''));
         $data->deliveryType = $order->getDeliveryType()->val('');
         $data->clientName = sprintf("%s %s",
-                                    $this->cleanChars($user->getFirstname()->val('')),
-                                    $this->cleanChars($user->getLastname()->val('')));
+            $this->cleanChars($user->getFirstname()->val('')),
+            $this->cleanChars($user->getLastname()->val('')));
         $data->isDelivered = in_array($order->getOrderStatus()->val(''), [$orderService::$status_completed, $orderService::$status_canceled_produced]) ? 'yes' : 'no';
         $data->deliveryAddress = $this->cleanChars($address->getAddress()->val(''));
         $data->city = $address->getCity()->val('');
         $data->country = '';
         $data->paymentType = $order->getPaymentMethod()->val('');
-        $data->foodAmount = (double) $foodTotal;
-        $data->foodAmountEUR = (double) $foodTotal;
-        $data->foodVAT = (double) $vat;
+        $data->foodAmount = (double)$foodTotal;
+        $data->foodAmountEUR = (double)$foodTotal;
+        $data->foodVAT = (double)$vat;
         $data->drinksAmount = 0.0;
         $data->drinksAmountEUR = 0.0;
         $data->drinksVAT = 0.0;
         $data->alcoholAmount = 0.0;
         $data->alcoholAmountEUR = 0.0;
         $data->alcoholVAT = 0.0;
-        $data->deliveryAmount = (double) ($order->getDeliveryType()
-                                                ->val('') == 'pickup' ?
-                                                    0.0 :
-                                                    $deliveryTotal);
-        $data->deliveryAmountEUR = (double) $data->deliveryAmount;
-        $data->deliveryVAT = (double) $vat;
+        $data->deliveryAmount = (double)($order->getDeliveryType()
+            ->val('') == 'pickup' ?
+            0.0 :
+            $deliveryTotal);
+        $data->deliveryAmountEUR = (double)$data->deliveryAmount;
+        $data->deliveryVAT = (double)$vat;
         $data->giftCardAmount = 0.0;
         $data->giftCardAmountEUR = 0.0;
         $data->discountType = '';
-        $data->discountAmount = (double) $discountTotal;
-        $data->discountAmountEUR = (double) $discountTotal;
-        $data->discountPercent = (double) ($total > 0.0 ? ($discountTotal / $total) : 0.0);
-        $data->totalAmount = (double) $total;
-        $data->totalAmountEUR = (double) $total;
+        $data->discountAmount = (double)$discountTotal;
+        $data->discountAmountEUR = (double)$discountTotal;
+        $data->discountPercent = (double)($total > 0.0 ? ($discountTotal / $total) : 0.0);
+        $data->totalAmount = (double)$total;
+        $data->totalAmountEUR = (double)$total;
 
         return $data;
     }
@@ -85,13 +85,17 @@ trait OrderDataForNavDecorator
         $data = new OrderDataForNav();
         $data->id = $orderAccData->getOrderId();
         $data->date = \Maybe($orderAccData)->getDate()
-                                           ->val('1754-01-01');
+            ->val('1754-01-01')
+        ;
         $data->time = \Maybe($orderAccData)->getTime()
-                                           ->val('1754-01-01 00:00:00');
+            ->val('1754-01-01 00:00:00')
+        ;
         $data->deliveryDate = \Maybe($orderAccData)->getDeliveryDate()
-                                                   ->val('1754-01-01');
+            ->val('1754-01-01')
+        ;
         $data->deliveryTime = \Maybe($orderAccData)->getDeliveryTime()
-                                                   ->val('1754-01-01 00:00:00');
+            ->val('1754-01-01 00:00:00')
+        ;
         $data->staff = $orderAccData->getStaff();
         $data->chain = $orderAccData->getChain();
         $data->restaurant = $orderAccData->getRestaurant();
@@ -104,29 +108,33 @@ trait OrderDataForNavDecorator
         $data->city = $orderAccData->getCity();
         $data->country = $orderAccData->getCountry();
         $data->paymentType = $orderAccData->getPaymentType();
-        $data->foodAmount = (double) $orderAccData->getFoodAmount();
-        $data->foodAmountEUR = (double) $orderAccData->getFoodAmountEur();
-        $data->foodVAT = (double) $orderAccData->getFoodVat();
-        $data->drinksAmount = (double) $orderAccData->getDrinksAmount();
-        $data->drinksAmountEUR = (double) $orderAccData->getDrinksAmountEur();
-        $data->drinksVAT = (double) $orderAccData->getDrinksVat();
-        $data->alcoholAmount = (double) $orderAccData->getAlcoholAmount();
-        $data->alcoholAmountEUR = (double) $orderAccData->getAlcoholAmountEur();
-        $data->alcoholVAT = (double) $orderAccData->getAlcoholVat();
-        $data->deliveryAmount = (double) $orderAccData->getDeliveryAmount();
-        $data->deliveryAmountEUR = (double) $orderAccData->getDeliveryAmountEur();
-        $data->deliveryVAT = (double) $orderAccData->getDeliveryVat();
-        $data->giftCardAmount = (double) $orderAccData->getGiftCardAmount();
-        $data->giftCardAmountEUR = (double) $orderAccData->getGiftCardAmountEur();
+        $data->foodAmount = (double)$orderAccData->getFoodAmount();
+        $data->foodAmountEUR = (double)$orderAccData->getFoodAmountEur();
+        $data->foodVAT = (double)$orderAccData->getFoodVat();
+        $data->drinksAmount = (double)$orderAccData->getDrinksAmount();
+        $data->drinksAmountEUR = (double)$orderAccData->getDrinksAmountEur();
+        $data->drinksVAT = (double)$orderAccData->getDrinksVat();
+        $data->alcoholAmount = (double)$orderAccData->getAlcoholAmount();
+        $data->alcoholAmountEUR = (double)$orderAccData->getAlcoholAmountEur();
+        $data->alcoholVAT = (double)$orderAccData->getAlcoholVat();
+        $data->deliveryAmount = (double)$orderAccData->getDeliveryAmount();
+        $data->deliveryAmountEUR = (double)$orderAccData->getDeliveryAmountEur();
+        $data->deliveryVAT = (double)$orderAccData->getDeliveryVat();
+        $data->giftCardAmount = (double)$orderAccData->getGiftCardAmount();
+        $data->giftCardAmountEUR = (double)$orderAccData->getGiftCardAmountEur();
         $data->discountType = $orderAccData->getDiscountType();
-        $data->discountAmount = (double) $orderAccData->getDiscountAmount();
-        $data->discountAmountEUR = (double) $orderAccData->getDiscountAmountEur();
-        $data->discountPercent = (double) $orderAccData->getDiscountPercent();
-        $data->totalAmount = (double) $orderAccData->getTotalAmount();
-        $data->totalAmountEUR = (double) $orderAccData->getTotalAmountEur();
-        $data->sFNumber = $order->getSfSeries()."".$order->getSfNumber();
+        $data->discountAmount = (double)$orderAccData->getDiscountAmount();
+        $data->discountAmountEUR = (double)$orderAccData->getDiscountAmountEur();
+        $data->discountPercent = (double)$orderAccData->getDiscountPercent();
+        $data->totalAmount = (double)$orderAccData->getTotalAmount();
+        $data->totalAmountEUR = (double)$orderAccData->getTotalAmountEur();
+        $data->sFNumber = $order->getSfSeries() . "" . $order->getSfNumber();
         $data->productionPointAddress = $orderAccData->getRestaurantAddress();
-        $data->productionPointCode = $order->getPlacePoint()->getCompanyCode();
+        if ($order->getPlacePoint()) {
+            $data->productionPointCode = $order->getPlacePoint()->getCompanyCode();
+        } else {
+            $this->container->get('logger')->error('Order id: ' . $order->getId() . ' has no place point');
+        }
 
         return $data;
     }
@@ -186,19 +194,21 @@ trait OrderDataForNavDecorator
         // check if OrderAccData in question already exists
         $maybeDataExists = \Maybe(
             $em->getRepository('FoodOrderBundle:OrderAccData')
-               ->findBy(['order_id' => $order->getId()])
+                ->findBy(['order_id' => $order->getId()])
         );
 
-        $orderAccData = $maybeDataExists[0]->map(function($row) use ($em) {
+        $orderAccData = $maybeDataExists[0]->map(function ($row) use ($em) {
             if ($row->is_none()) {
                 // if not - return new entity
                 return new OrderAccData();
             } else {
                 // if exists - mark unsynced and return it
                 $row->setIsSynced(false);
+
                 return $row;
             }
-        })->val();
+        })->val()
+        ;
 
         $orderAccData
             ->setOrderId($order->getId())
@@ -239,7 +249,8 @@ trait OrderDataForNavDecorator
             ->setTotalAmount($data->totalAmount)
             ->setTotalAmountEur($data->totalAmountEUR)
             ->setIsSynced(false)
-            ->setSyncTimestamp(null);
+            ->setSyncTimestamp(null)
+        ;
 
         $em->persist($orderAccData);
         $em->flush();
@@ -248,22 +259,24 @@ trait OrderDataForNavDecorator
     public function getUnsyncedOrderData()
     {
         return $this->container
-                    ->get('doctrine.orm.entity_manager')
-                    ->getRepository('FoodOrderBundle:OrderAccData')
-                    ->findBy(['is_synced' => 0]);
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FoodOrderBundle:OrderAccData')
+            ->findBy(['is_synced' => 0])
+            ;
     }
 
     protected function constructInsertOrderQuery(OrderDataForNav $data)
     {
         $query = sprintf('INSERT INTO %s %s SELECT %s FROM %s',
-                         $this->getOrderTableName(),
-                         sprintf(
-                            "([%s], [ReplicationCounter])",
-                            implode('], [', $this->getOrderFieldNames())),
-                         sprintf(
-                            "'%s', ISNULL(MAX(ReplicationCounter),0) + 1",
-                            implode("', '", $this->getOrderValues($data))),
-                         $this->getOrderTableName());
+            $this->getOrderTableName(),
+            sprintf(
+                "([%s], [ReplicationCounter])",
+                implode('], [', $this->getOrderFieldNames())),
+            sprintf(
+                "'%s', ISNULL(MAX(ReplicationCounter),0) + 1",
+                implode("', '", $this->getOrderValues($data))),
+            $this->getOrderTableName());
+
         return $query;
     }
 
@@ -277,13 +290,13 @@ trait OrderDataForNavDecorator
         $idValue = array_shift($values);
 
         // format fields
-        $fieldsCallback = function($val) {
+        $fieldsCallback = function ($val) {
             return sprintf('[%s]', $val);
         };
         $fields = array_map($fieldsCallback, $fields);
 
         // format values
-        $valuesCallback = function($val) {
+        $valuesCallback = function ($val) {
             // return is_numeric($val) ? $val : sprintf("'%s'", $val);
             return sprintf("'%s'", $val);
         };
@@ -300,9 +313,9 @@ trait OrderDataForNavDecorator
 
         // create query
         $query = sprintf('UPDATE %s SET %s WHERE %s',
-                         $this->getOrderTableName(),
-                         implode(', ', $valuesForUpdate) . ', [ReplicationCounter] = ' . $this->getReplicationValueForSql(),
-                         sprintf('[%s] = %s', $idField, $idValue));
+            $this->getOrderTableName(),
+            implode(', ', $valuesForUpdate) . ', [ReplicationCounter] = ' . $this->getReplicationValueForSql(),
+            sprintf('[%s] = %s', $idField, $idValue));
 
         return $query;
     }
@@ -317,108 +330,112 @@ trait OrderDataForNavDecorator
     protected function getOrderFieldNames()
     {
         return ['Order ID',
-                'Order Date',
-                'Order Time',
-                'Delivery Date',
-                'Delivery Time',
-                'Staff Description',
-                'Chain',
-                'Restaurant',
-                'Restaurant Address',
-                'Driver',
-                'Delivery Type',
-                'Client Name',
-                'Delivered',
-                'Delivery Address',
-                'City',
-                'Country',
-                'Payment Type',
-                'Food Amount',
-                'Food Amount EUR',
-                'Food VAT',
-                'Drinks Amount',
-                'Drinks Amount EUR',
-                'Drinks VAT',
-                'Alcohol Amount',
-                'Alcohol Amount EUR',
-                'Alcohol VAT',
-                'Delivery Amount',
-                'Delivery Amount EUR',
-                'Delivery VAT',
-                'Gift Card Amount',
-                'Gift Card Amount EUR',
-                'Discount Type',
-                'Discount Amount',
-                'Discount Amount EUR',
-                'Discount Percent',
-                'Total Amount',
-                'Total Amount EUR',
-                'SF number',
-                'Production Point Address',
-                'Production Point Code'
+            'Order Date',
+            'Order Time',
+            'Delivery Date',
+            'Delivery Time',
+            'Staff Description',
+            'Chain',
+            'Restaurant',
+            'Restaurant Address',
+            'Driver',
+            'Delivery Type',
+            'Client Name',
+            'Delivered',
+            'Delivery Address',
+            'City',
+            'Country',
+            'Payment Type',
+            'Food Amount',
+            'Food Amount EUR',
+            'Food VAT',
+            'Drinks Amount',
+            'Drinks Amount EUR',
+            'Drinks VAT',
+            'Alcohol Amount',
+            'Alcohol Amount EUR',
+            'Alcohol VAT',
+            'Delivery Amount',
+            'Delivery Amount EUR',
+            'Delivery VAT',
+            'Gift Card Amount',
+            'Gift Card Amount EUR',
+            'Discount Type',
+            'Discount Amount',
+            'Discount Amount EUR',
+            'Discount Percent',
+            'Total Amount',
+            'Total Amount EUR',
+            'SF number',
+            'Production Point Address',
+            'Production Point Code'
         ];
     }
 
     protected function getOrderValues(OrderDataForNav $data)
     {
         $result = [$data->id,
-                   $data->date,
-                   $data->time,
-                   $data->deliveryDate,
-                   $data->deliveryTime,
-                   $data->staff,
-                   $data->chain,
-                   $data->restaurant,
-                   $data->restaurantAddress,
-                   $data->driver,
-                   $data->deliveryType,
-                   $data->clientName,
-                   $data->isDelivered,
-                   $data->deliveryAddress,
-                   $data->city,
-                   $data->country,
-                   $data->paymentType,
-                   $data->foodAmount,
-                   $data->foodAmountEUR,
-                   $data->foodVAT,
-                   $data->drinksAmount,
-                   $data->drinksAmountEUR,
-                   $data->drinksVAT,
-                   $data->alcoholAmount,
-                   $data->alcoholAmountEUR,
-                   $data->alcoholVAT,
-                   $data->deliveryAmount,
-                   $data->deliveryAmountEUR,
-                   $data->deliveryVAT,
-                   $data->giftCardAmount,
-                   $data->giftCardAmountEUR,
-                   $data->discountType,
-                   $data->discountAmount,
-                   $data->discountAmountEUR,
-                   $data->discountPercent,
-                   $data->totalAmount,
-                   $data->totalAmountEUR,
-                   $data->sFNumber,
-                   $data->productionPointAddress,
-                   $data->productionPointCode
+            $data->date,
+            $data->time,
+            $data->deliveryDate,
+            $data->deliveryTime,
+            $data->staff,
+            $data->chain,
+            $data->restaurant,
+            $data->restaurantAddress,
+            $data->driver,
+            $data->deliveryType,
+            $data->clientName,
+            $data->isDelivered,
+            $data->deliveryAddress,
+            $data->city,
+            $data->country,
+            $data->paymentType,
+            $data->foodAmount,
+            $data->foodAmountEUR,
+            $data->foodVAT,
+            $data->drinksAmount,
+            $data->drinksAmountEUR,
+            $data->drinksVAT,
+            $data->alcoholAmount,
+            $data->alcoholAmountEUR,
+            $data->alcoholVAT,
+            $data->deliveryAmount,
+            $data->deliveryAmountEUR,
+            $data->deliveryVAT,
+            $data->giftCardAmount,
+            $data->giftCardAmountEUR,
+            $data->discountType,
+            $data->discountAmount,
+            $data->discountAmountEUR,
+            $data->discountPercent,
+            $data->totalAmount,
+            $data->totalAmountEUR,
+            $data->sFNumber,
+            $data->productionPointAddress,
+            $data->productionPointCode
 
         ];
+
         return $this->escapeSingleQuotes($result);
     }
 
     protected function escapeSingleQuotes(array $data)
     {
         return array_map(
-            function($val) { return str_replace("'", "", $val); },
+            function ($val) {
+                return str_replace("'", "", $val);
+            },
             $data);
     }
 
     protected function findOrderAccData($orderId)
     {
-        $rows =  $this->container
-                      ->get('doctrine.orm.entity_manager')
-                      ->getRepository('FoodOrderBundle:OrderAccData')
-                      ->findBy(['order_id' => $orderId]);
+        $rows = $this->container
+            ->get('doctrine.orm.entity_manager')
+            ->getRepository('FoodOrderBundle:OrderAccData')
+            ->findBy(['order_id' => $orderId])
+        ;
 
         $maybeRows = \Maybe($rows);
 
@@ -430,7 +447,7 @@ trait OrderDataForNavDecorator
         $orderService = $this->container->get('food.order');
 
         return $order->getPaymentStatus() ==
-               $orderService::$paymentStatusComplete ? true : false;
+        $orderService::$paymentStatusComplete ? true : false;
 
     }
 
@@ -446,8 +463,8 @@ trait OrderDataForNavDecorator
         if (empty($conn)) return false;
 
         $query = sprintf('SELECT [Order id] FROM %s WHERE [Order id] = %s',
-                         $this->getOrderTableName(),
-                         $id);
+            $this->getOrderTableName(),
+            $id);
         $resource = $conn->query($query);
         $row = mssql_fetch_array($resource);
         mssql_free_result($resource);
@@ -457,7 +474,9 @@ trait OrderDataForNavDecorator
 
     /**
      * Cleans up russian characters from a string.
+     *
      * @param  string $value
+     *
      * @return string
      */
     public function cleanChars($value)
