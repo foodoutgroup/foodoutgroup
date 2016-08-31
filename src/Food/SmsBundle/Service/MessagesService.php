@@ -300,11 +300,9 @@ class MessagesService
                     $message = $this->getMessageByExtId($messageData['extId']);
 
                     if (!$message) {
-                        // TODO normalus exceptionas, kuri kitaip handlinsim
-                        throw new \InvalidArgumentException('Message not found!');
+                        $logger->error('Message not found!');
+                        $logger->debug('Message id: '.$messageData['extId']);
                     } else {
-//                        $logger->info(print_r($message, true));
-
                         $message->setDelivered($messageData['delivered']);
 
                         if ($messageData['delivered'] == true) {
