@@ -10,13 +10,14 @@ use Food\OrderBundle\Service\OrderService;
  */
 class UserRepository extends EntityRepository
 {
-    public function getDiscountByRange(User $user, $firstMonthDiscount, \DateTime $userCreatedPlusMonth)
+    public function getDiscountByRange(User $user)
     {
         $query = 'SELECT dl.discount 
                         FROM (
                           SELECT sum(o.total) total 
                           FROM orders o 
-                          WHERE o.order_date >= :date 
+                          WHERE o.order_date >= :dateFrom 
+                            AND o.order_date <= :dateTo
                             AND o.order_status = :status 
                             AND o.user_id = :userId) as o 
                         LEFT JOIN discount_level dl 
@@ -29,14 +30,10 @@ class UserRepository extends EntityRepository
             ->prepare($query)
         ;
 
-        // jei galioja pirmo mėnesion nuolaida ir dabar yra sekantis mėnuo po registracijos,
-        // tada užsakymus skaičiuojame nuo registracija+mėnuo
-        if ($firstMonthDiscount && $userCreatedPlusMonth->format('m') == date('m')) {
-            $dateFrom = $userCreatedPlusMonth->format('Y-m-d H:i:s');
-        } else {
-            $dateFrom = date('Y-m-01 00:00:00');
-        }
-        $stmt->bindValue("date", $dateFrom);
+        $dateFrom = date('Y-m-01 00:00:00', strtotime('-1 month'));
+        $dateTo = date('Y-m-01 00:00:00');
+        $stmt->bindValue("dateFrom", $dateFrom);
+        $stmt->bindValue("dateTo", $dateTo);
         $stmt->bindValue("status", OrderService::$status_completed);
         $stmt->bindValue("userId", $user->getId());
 
