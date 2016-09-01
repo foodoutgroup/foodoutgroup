@@ -515,11 +515,12 @@ class UsersController extends Controller
             $security->setToken($token);
             $this->get('session')->invalidate();
 
-            $send_data = new Response('', 204);
-            $send_data->headers->set('Access-Control-Allow-Origin', '*');
-            $send_data->headers->set('Access-Control-Allow-Headers', '*');
-            $send_data->headers->set('Access-Control-Request-Headers', '*');
-            return $send_data;
+            $headers = [
+                'Access-Control-Allow-Origin' => '*',
+                'Access-Control-Allow-Headers' => '*',
+                'Access-Control-Request-Headers' => '*',
+            ];
+            return new Response('', 204, $headers);
         } catch (ApiException $e) {
             $send_data = new JsonResponse($e->getErrorData(), $e->getStatusCode());
             $send_data->headers->set('Access-Control-Allow-Origin', '*');
