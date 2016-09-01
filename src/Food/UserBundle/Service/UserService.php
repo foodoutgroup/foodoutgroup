@@ -4,6 +4,7 @@ namespace Food\UserBundle\Service;
 use Food\OrderBundle\Entity\OrderExtra;
 use Food\OrderBundle\Service\OrderService;
 use Food\UserBundle\Entity\User;
+use Food\UserBundle\Entity\UserRepository;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\AppBundle\Traits;
 
@@ -31,6 +32,9 @@ class UserService extends ContainerAware
                 $firstMonthDiscount = false;
             }
 
+            /**
+             * @var UserRepository $userRepo
+             */
             $userRepo = $this->container->get('doctrine')->getRepository('FoodUserBundle:User');
 
             // jei prie customer yra nurodyta nuolaida
@@ -44,7 +48,7 @@ class UserService extends ContainerAware
 
                 // jei menuo praejo, gaunam nuolaida is range, jei range nera, tada 0
             } else {
-                $this->_discount = $userRepo->getDiscountByRange($user, $firstMonthDiscount, $userCreatedPlusMonth) ?: 0;
+                $this->_discount = $userRepo->getDiscountByRange($user) ?: 0;
             }
 
             if ($this->_discount * 10 % 10 == 0) {
