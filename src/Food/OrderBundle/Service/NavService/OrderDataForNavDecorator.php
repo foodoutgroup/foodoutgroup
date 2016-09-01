@@ -74,6 +74,11 @@ trait OrderDataForNavDecorator
         return $data;
     }
 
+    /**
+     * @param $orderId
+     *
+     * @return \Food\OrderBundle\Service\NavService\OrderDataForNav
+     */
     public function getOrderDataForNavLocally($orderId)
     {
         // services
@@ -256,6 +261,9 @@ trait OrderDataForNavDecorator
         $em->flush();
     }
 
+    /**
+     * @return OrderAccData[]
+     */
     public function getUnsyncedOrderData()
     {
         return $this->container
