@@ -3315,21 +3315,25 @@ class OrderService extends ContainerAware
                 $locationData = $locationService->setLocationFromUser($user);
             }
             // TODO Trying to catch fatal when searching for PlacePoint
-            if (empty($placePointMap[$place->getId()])) {
-                $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 1');
-                // Mapping not found, lets try to remap
-                $locationData = $locationService->getLocationFromSession();
-                $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData);
-                $placePointMap[$place->getId()] = $placePointId;
-                $this->container->get('session')->set('point_data', $placePointMap);
-            }
+            if (!empty($locationData['address_orig'])) {
+                if (empty($placePointMap[$place->getId()])) {
+                    $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 1');
+                    // Mapping not found, lets try to remap
+                    $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData);
+                    $placePointMap[$place->getId()] = $placePointId;
+                    $this->container->get('session')->set('point_data', $placePointMap);
+                }
 
-            // TODO - if still no PlacePoint info - pick fasterst or cheapest as in earlier solution
-            if (empty($placePointMap[$place->getId()])) {
-                $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 2');
-                $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCheapestPlacePoint($place->getId(), $locationData);
-                $placePointMap[$place->getId()] = $placePointId;
-                $this->container->get('session')->set('point_data', $placePointMap);
+                // TODO - if still no PlacePoint info - pick fasterst or cheapest as in earlier solution
+                if (empty($placePointMap[$place->getId()])) {
+                    $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 2');
+                    $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCheapestPlacePoint($place->getId(), $locationData);
+                    $placePointMap[$place->getId()] = $placePointId;
+                    $this->container->get('session')->set('point_data', $placePointMap);
+                }
+            } else {
+                @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr1" . date("Y-m-d H:i:s"), var_export($locationData, true) . var_export($user, true) . var_export($placePointMap, true) . var_export($_POST, true) . var_export($_GET, true), "FROM: info@foodout.lt");
+                $formErrors[] = 'order.form.errors.customeraddr';
             }
 
             if (isset($placePointMap[$place->getId()])) {
@@ -3346,11 +3350,6 @@ class OrderService extends ContainerAware
 
                 if ($total_cart < $cartMinimum && $noMinimumCart == false) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
-                }
-
-                if (empty($locationData['address_orig'])) {
-                    @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr1 " . date("Y-m-d H:i:s"), print_r($locationData, true), "FROM: info@foodout.lt");
-                    $formErrors[] = 'order.form.errors.customeraddr';
                 }
             }
         } elseif ($place->getMinimalOnSelfDel()) {
