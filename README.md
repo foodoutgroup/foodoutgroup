@@ -1,9 +1,7 @@
-Foodout maisto platforma
+Documentation
 ========================
+http://docs.foodoutmock.apiary.io/#orders
 
-[![Build Status](https://scrutinizer-ci.com/g/Foodout/skanu.lt/badges/build.png?b=master&s=b42b7ca3eb58caf6763fffb2abf9ceead1f8c670)](https://scrutinizer-ci.com/g/Foodout/skanu.lt/build-status/master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Foodout/skanu.lt/badges/quality-score.png?b=master&s=c387cf96822ef68c61f42ef841b09b472cbe858f)](https://scrutinizer-ci.com/g/Foodout/skanu.lt/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/Foodout/skanu.lt/badges/coverage.png?b=master&s=fcd37e5dda83fbf418d7deea20dc7e114c2d872e)](https://scrutinizer-ci.com/g/Foodout/skanu.lt/?branch=master)
 
 TODO
 ========================
@@ -13,7 +11,6 @@ TODO
 * Scalability
 * R-keeper
 * Printer
-* Atideti uzsakymai
 * Social login
 * Titulinio page cover auto change
 
@@ -25,13 +22,13 @@ Strigai - klausk siu zmoniu:
 * Gis - Paulius
 * SMS - Mantas
 * Monitoring - Mantas
-* Banklink - Jonas
+* Banklink - Karolis
 * Cili NAV - Paulius
 * Logistika - Mantas
-* Call center - Jonas
-* Profile / Registracija / User stuff - Jonas
+* Call center - Ramūnas
+* Profile / Registracija / User stuff - Karolis
 * Fakturos - Mantas
-* Duomenu / fakturu importas i NAV - Jonas
+* Duomenu / fakturu importas i NAV - Karolis
 * 1822 Call center importas - Mantas
 * Akcijos - Paulius
 * Kuponai - Paulius, Mantas
@@ -52,7 +49,7 @@ Why not futurama?? :)
                     J     L
                   .-'.___.'-.
                  /___________\
-            _.-""'           `bmw._
+            _.-""'           `---._
           .'                       `.
         J                            `.
        F                               L
