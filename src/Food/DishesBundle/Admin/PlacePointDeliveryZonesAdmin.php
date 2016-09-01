@@ -55,7 +55,7 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('id')
             ->addIdentifier('place')
-            ->add('placePoint.toString')
+            ->add('placePointData')
             ->add('distance','string', array('label' => 'Distance', 'editable' => true))
             ->add('price', 'string', array('label' => 'Price', 'editable' => true))
             ->add('cartSize', 'string', array('label' => 'Cart size', 'editable' => true))
