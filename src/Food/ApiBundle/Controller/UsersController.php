@@ -465,15 +465,28 @@ class UsersController extends Controller
                 'isRealEmailSet' => $this->get('food_api.api')->isRealEmailSet($user)
             );
 
-            return new JsonResponse($response);
+            $send_data = new JsonResponse($response);
+            $send_data->headers->set('Access-Control-Allow-Origin', '*');
+            $send_data->headers->set('Access-Control-Allow-Headers', '*');
+            $send_data->headers->set('Access-Control-Request-Headers', '*');
+            return $send_data;
+
         }  catch (ApiException $e) {
-            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+            $send_data = new JsonResponse($e->getErrorData(), $e->getStatusCode());
+            $send_data->headers->set('Access-Control-Allow-Origin', '*');
+            $send_data->headers->set('Access-Control-Allow-Headers', '*');
+            $send_data->headers->set('Access-Control-Request-Headers', '*');
+            return $send_data;
         } catch (\Exception $e) {
-            return new JsonResponse(
+            $send_data = new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
+            $send_data->headers->set('Access-Control-Allow-Origin', '*');
+            $send_data->headers->set('Access-Control-Allow-Headers', '*');
+            $send_data->headers->set('Access-Control-Request-Headers', '*');
+            return $send_data;
         }
     }
 
@@ -502,15 +515,27 @@ class UsersController extends Controller
             $security->setToken($token);
             $this->get('session')->invalidate();
 
-            return new Response('', 204);
+            $send_data = new Response('', 204);
+            $send_data->headers->set('Access-Control-Allow-Origin', '*');
+            $send_data->headers->set('Access-Control-Allow-Headers', '*');
+            $send_data->headers->set('Access-Control-Request-Headers', '*');
+            return $send_data;
         } catch (ApiException $e) {
-            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+            $send_data = new JsonResponse($e->getErrorData(), $e->getStatusCode());
+            $send_data->headers->set('Access-Control-Allow-Origin', '*');
+            $send_data->headers->set('Access-Control-Allow-Headers', '*');
+            $send_data->headers->set('Access-Control-Request-Headers', '*');
+            return $send_data;
         } catch (\Exception $e) {
-            return new JsonResponse(
+            $send_data = new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
+            $send_data->headers->set('Access-Control-Allow-Origin', '*');
+            $send_data->headers->set('Access-Control-Allow-Headers', '*');
+            $send_data->headers->set('Access-Control-Request-Headers', '*');
+            return $send_data;
         }
     }
 
