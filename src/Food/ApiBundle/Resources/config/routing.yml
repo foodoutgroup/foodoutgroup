@@ -168,6 +168,7 @@ food_api_logout:
     defaults: { _controller: FoodApiBundle:Users:logout}
     methods: [DELETE]
 
+# for dispatcher only
 food_api_logout_user:
     path: /users/logout
     defaults: { _controller: FoodApiBundle:Users:logoutUser}

@@ -13,6 +13,13 @@ DirectoryIndex app.php
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # Allow Cross Domain for dispatcher only
+    Header set Access-Control-Allow-Origin "http://valentas.foodout.lt"
+    Header set Access-Control-Allow-Methods "GET,POST,OPTIONS,DELETE,PUT"
+    Header set Access-Control-Allow-Headers '*'
+    Header set Access-Control-Request-Headers "content-type, x-api-authorization"
+    Header set Access-Control-Allow-Credentials true
+
     # Determine the RewriteBase automatically and set it as environment variable.
     # If you are using Apache aliases to do mass virtual hosting or installed the
     # project in a subdirectory, the base path will be prepended to allow proper
