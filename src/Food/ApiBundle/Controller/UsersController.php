@@ -478,7 +478,7 @@ class UsersController extends Controller
     }
 
     /**
-     * Logout a user
+     * Logout a user (dispatcher only)
      *
      * @param Request $request
      * @return JsonResponse|Response
@@ -739,6 +739,11 @@ class UsersController extends Controller
 
         if (empty($token)) {
             $token = $request->headers->get('x-api-authorization');
+        }
+
+        // for dispatcher only
+        if (empty($token)) {
+            $token = $request->get('X-API-Authorization');
         }
 
         return $token;
