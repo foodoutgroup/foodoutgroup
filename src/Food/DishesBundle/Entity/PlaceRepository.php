@@ -490,7 +490,7 @@ class PlaceRepository extends EntityRepository
     public function getPlacePointNear($placeId, $locationData, $ignoreSelfDelivery = false)
     {
         $response = null;
-        $cacheKey = $placeId.serialize($locationData).(int)$ignoreSelfDelivery;
+        $cacheKey = $placeId . serialize($locationData) . (int)$ignoreSelfDelivery;
         if (!isset(self::$_getNearCache[$cacheKey])) {
             if (!empty($locationData['city']) && !empty($locationData['lat'])) {
                 $city = $locationData['city'];
@@ -540,7 +540,7 @@ class PlaceRepository extends EntityRepository
                 if (!empty($places) && !empty($places[0])) {
                     $response = (int)$places[0]['id'];
                 } else {
-                    @mail('karolis.m@foodout.lt', 'DEBUG LOG getPlacePointNear', $subQuery . "\n\n\n" . print_r(debug_backtrace(2), true), "FROM: info@foodout.lt");
+                    @mail('karolis.m@foodout.lt', 'DEBUG LOG getPlacePointNear', $lat . ' ' . $lon . ' ' . $placeId . ' ' . $city . "\n\n\n" . $subQuery . "\n\n\n" . print_r(debug_backtrace(2), true), "FROM: info@foodout.lt");
                 }
             }
             self::$_getNearCache[$cacheKey] = $response;
@@ -638,7 +638,7 @@ class PlaceRepository extends EntityRepository
                             end_hour > ' . $totalH . ' OR end_hour = 0))
                     AND `place_point` = ' . $placePoint->getId() . '
                     LIMIT 1';
-        
+
         $stmt = $this->getEntityManager()->getConnection()->prepare($count);
         $stmt->execute();
 
