@@ -490,6 +490,48 @@ class UsersController extends Controller
 
             $um = $this->getUserManager();
             $security = $this->get('security.context');
+            $success = false;
+
+            $user = $security->getToken()->getUser();
+            if ($user instanceof User) {
+                $user->setApiTokenValidity(new \DateTime('-1 week'));
+                $user->setApiToken('');
+                $um->updateUser($user);
+                $success = true;
+            }
+
+            $token = new AnonymousToken(null, new User());
+            $security->setToken($token);
+            $this->get('session')->invalidate();
+
+            $response = array(
+                'success' => $success,
+            );
+            return new JsonResponse($response);
+        } catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+    }
+
+    /**
+     * Logout a user
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
+    public function logoutUserAction(Request $request)
+    {
+        try {
+            $this->get('food_api.api')->loginByHash($this->getApiToken($request));
+
+            $um = $this->getUserManager();
+            $security = $this->get('security.context');
 
             $user = $security->getToken()->getUser();
             if ($user instanceof User) {
