@@ -8,6 +8,8 @@ use Food\OrderBundle\Service\OrderService;
 
 class PlaceRepository extends EntityRepository
 {
+    private static $_getNearCache = [];
+
     /**
      * @param array      $kitchens
      * @param array      $filters
@@ -487,25 +489,26 @@ class PlaceRepository extends EntityRepository
      */
     public function getPlacePointNear($placeId, $locationData, $ignoreSelfDelivery = false)
     {
-        if (empty($locationData['city']) || empty($locationData['lat'])) {
-            return null;
-        }
-        $city = $locationData['city'];
-        $lat = str_replace(",", ".", $locationData['lat']);
-        $lon = str_replace(",", ".", $locationData['lng']);
+        $response = null;
+        $cacheKey = $placeId.serialize($locationData).(int)$ignoreSelfDelivery;
+        if (!isset(self::$_getNearCache[$cacheKey])) {
+            if (!empty($locationData['city']) && !empty($locationData['lat'])) {
+                $city = $locationData['city'];
+                $lat = str_replace(",", ".", $locationData['lat']);
+                $lon = str_replace(",", ".", $locationData['lng']);
 
-        $dh = date("H");
-        $dm = date("i");
-        $wd = date('w');
-        if ($wd == 0) $wd = 7;
-        /**
-         * @todo check the need of self delivery
-         */
+                $dh = date("H");
+                $dm = date("i");
+                $wd = date('w');
+                if ($wd == 0) $wd = 7;
+                /**
+                 * @todo check the need of self delivery
+                 */
 
-        $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
-        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id";
+                $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
+                $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id";
 
-        $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) 
+                $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) 
                     FROM place_point pp, place p, place_point_work_time ppwt
                     WHERE p.id = pp.place 
                       AND pp.id = ppwt.place_point
@@ -530,17 +533,20 @@ class PlaceRepository extends EntityRepository
                       AND delivery=1
                     ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
 
-        $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
+                $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
 
-        $stmt->execute();
-        $places = $stmt->fetchAll();
-        if (!empty($places) && !empty($places[0])) {
-            return (int)$places[0]['id'];
+                $stmt->execute();
+                $places = $stmt->fetchAll();
+                if (!empty($places) && !empty($places[0])) {
+                    $response = (int)$places[0]['id'];
+                } else {
+                    @mail('karolis.m@foodout.lt', 'DEBUG LOG getPlacePointNear', $subQuery . "\n\n\n" . debug_backtrace(2), "FROM: info@foodout.lt");
+                }
+            }
+            self::$_getNearCache[$cacheKey] = $response;
         }
 
-        @mail('karolis.m@foodout.lt', 'DEBUG LOG getPlacePointNear', $subQuery."\n\n\n".debug_backtrace(2), "FROM: info@foodout.lt");
-
-        return null;
+        return self::$_getNearCache[$cacheKey];
     }
 
     /**
