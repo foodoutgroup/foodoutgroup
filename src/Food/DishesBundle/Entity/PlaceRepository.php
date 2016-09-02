@@ -540,7 +540,7 @@ class PlaceRepository extends EntityRepository
                 if (!empty($places) && !empty($places[0])) {
                     $response = (int)$places[0]['id'];
                 } else {
-                    @mail('karolis.m@foodout.lt', 'DEBUG LOG getPlacePointNear', $subQuery . "\n\n\n" . debug_backtrace(2), "FROM: info@foodout.lt");
+                    @mail('karolis.m@foodout.lt', 'DEBUG LOG getPlacePointNear', $subQuery . "\n\n\n" . print_r(debug_backtrace(2), true), "FROM: info@foodout.lt");
                 }
             }
             self::$_getNearCache[$cacheKey] = $response;
