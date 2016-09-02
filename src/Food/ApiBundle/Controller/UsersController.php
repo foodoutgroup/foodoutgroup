@@ -465,28 +465,57 @@ class UsersController extends Controller
                 'isRealEmailSet' => $this->get('food_api.api')->isRealEmailSet($user)
             );
 
-            $send_data = new JsonResponse($response);
-            $send_data->headers->set('Access-Control-Allow-Origin', '*');
-            $send_data->headers->set('Access-Control-Allow-Headers', '*');
-            $send_data->headers->set('Access-Control-Request-Headers', '*');
-            return $send_data;
-
+            return new JsonResponse($response);
         }  catch (ApiException $e) {
-            $send_data = new JsonResponse($e->getErrorData(), $e->getStatusCode());
-            $send_data->headers->set('Access-Control-Allow-Origin', '*');
-            $send_data->headers->set('Access-Control-Allow-Headers', '*');
-            $send_data->headers->set('Access-Control-Request-Headers', '*');
-            return $send_data;
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            $send_data = new JsonResponse(
+            return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
-            $send_data->headers->set('Access-Control-Allow-Origin', '*');
-            $send_data->headers->set('Access-Control-Allow-Headers', '*');
-            $send_data->headers->set('Access-Control-Request-Headers', '*');
-            return $send_data;
+        }
+    }
+
+    /**
+     * Logout a user
+     *
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
+    public function logoutUserAction(Request $request)
+    {
+        try {
+            $this->get('food_api.api')->loginByHash($this->getApiToken($request));
+
+            $um = $this->getUserManager();
+            $security = $this->get('security.context');
+            $success = false;
+
+            $user = $security->getToken()->getUser();
+            if ($user instanceof User) {
+                $user->setApiTokenValidity(new \DateTime('-1 week'));
+                $user->setApiToken('');
+                $um->updateUser($user);
+                $success = true;
+            }
+
+            $token = new AnonymousToken(null, new User());
+            $security->setToken($token);
+            $this->get('session')->invalidate();
+
+            $response = array(
+                'success' => $success,
+            );
+            return new JsonResponse($response);
+        } catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
         }
     }
 
@@ -515,28 +544,15 @@ class UsersController extends Controller
             $security->setToken($token);
             $this->get('session')->invalidate();
 
-            $headers = [
-                'Access-Control-Allow-Origin' => '*',
-                'Access-Control-Allow-Headers' => '*',
-                'Access-Control-Request-Headers' => '*',
-            ];
-            return new Response('', 204, $headers);
+            return new Response('', 204);
         } catch (ApiException $e) {
-            $send_data = new JsonResponse($e->getErrorData(), $e->getStatusCode());
-            $send_data->headers->set('Access-Control-Allow-Origin', '*');
-            $send_data->headers->set('Access-Control-Allow-Headers', '*');
-            $send_data->headers->set('Access-Control-Request-Headers', '*');
-            return $send_data;
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            $send_data = new JsonResponse(
+            return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
-            $send_data->headers->set('Access-Control-Allow-Origin', '*');
-            $send_data->headers->set('Access-Control-Allow-Headers', '*');
-            $send_data->headers->set('Access-Control-Request-Headers', '*');
-            return $send_data;
         }
     }
 
