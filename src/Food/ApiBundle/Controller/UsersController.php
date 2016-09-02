@@ -483,7 +483,7 @@ class UsersController extends Controller
      * @param Request $request
      * @return JsonResponse|Response
      */
-    public function logoutAction(Request $request)
+    public function logoutUserAction(Request $request)
     {
         try {
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
@@ -525,7 +525,7 @@ class UsersController extends Controller
      * @param Request $request
      * @return JsonResponse|Response
      */
-    public function logoutUserAction(Request $request)
+    public function logoutAction(Request $request)
     {
         try {
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
