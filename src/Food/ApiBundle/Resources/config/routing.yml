@@ -164,9 +164,12 @@ food_api_users_information:
     methods: [GET]
 
 food_api_logout:
-    pattern: /users/session
+    path: /users/session
     defaults: { _controller: FoodApiBundle:Users:logout}
-    methods: [DELETE, OPTIONS]
+    methods: [DELETE, OPTIONS, POST]
+    allow_origin: ['*']
+    allow_headers: '*'
+    allow_methods: ['POST', 'PUT', 'GET', 'DELETE','OPTIONS']
 
 # Images and stuff
 food_api_get_image:
