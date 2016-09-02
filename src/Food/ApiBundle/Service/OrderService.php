@@ -14,14 +14,15 @@ use Food\ApiBundle\Exceptions\ApiException;
 class OrderService extends ContainerAware
 {
     /**
-     * @param Request $requestOrig
+     * @param Request     $requestOrig
      * @param JsonRequest $request
+     *
      * @return array
      * @throws ApiException
      */
     public function getPendingOrders(Request $requestOrig, JsonRequest $request)
     {
-        $returner = array();
+        $returner = [];
 
         $token = $requestOrig->headers->get('X-API-Authorization');
         $this->container->get('food_api.api')->loginByHash($token);
@@ -31,14 +32,15 @@ class OrderService extends ContainerAware
         $q = $this->container->get('doctrine')->getManager()->createQuery("SELECT o from Food\OrderBundle\Entity\Order o where o.user=?1 AND o.order_status IN (?2)")
             ->setParameter(1, $user->getId())
             ->setParameter(2,
-                array(
+                [
                     FO::$status_new,
                     FO::$status_accepted,
                     FO::$status_delayed,
                     FO::$status_assiged
                     //,FO::$status_unapproved
-                )
-            );
+                ]
+            )
+        ;
 
         $results = $q->execute();
 
@@ -50,9 +52,10 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param Request $requestOrig
+     * @param Request     $requestOrig
      * @param JsonRequest $request
-     * @param bool $isThisPre
+     * @param bool        $isThisPre
+     *
      * @return array
      * @throws ApiException
      * @throws \Exception
@@ -66,33 +69,33 @@ class OrderService extends ContainerAware
         $os = $this->container->get('food.order');
         /**
          * {
-            "basket_id": 1,
-            "service": {
-                "type": "delivery",
-                "address": {
-                    "street": "Vokieciu g",
-                    "house_number": 3,
-                    "flat_number": 2,
-                   "city": "Vilnius",
-                    "comments": "Duru kodas 1234"
-                },
-                "discount": {
-                    "code": "123456"
-                }
-             }
-        <!-- OR -->
-            "service": {
-                "type":"pickup",
-                "location_id": 1
-            }
-        }
+         * "basket_id": 1,
+         * "service": {
+         * "type": "delivery",
+         * "address": {
+         * "street": "Vokieciu g",
+         * "house_number": 3,
+         * "flat_number": 2,
+         * "city": "Vilnius",
+         * "comments": "Duru kodas 1234"
+         * },
+         * "discount": {
+         * "code": "123456"
+         * }
+         * }
+         * <!-- OR -->
+         * "service": {
+         * "type":"pickup",
+         * "location_id": 1
+         * }
+         * }
          */
-        $searchCrit = array(
-            'city' => null,
-            'lat' => null,
-            'lng' => null,
+        $searchCrit = [
+            'city'    => null,
+            'lat'     => null,
+            'lng'     => null,
             'address' => null
-        );
+        ];
         $googleGisService = $this->container->get('food.googlegis');
 
         $token = $requestOrig->headers->get('X-API-Authorization');
@@ -103,10 +106,10 @@ class OrderService extends ContainerAware
             throw new ApiException(
                 'Unauthorized',
                 401,
-                array(
-                    'error' => 'Request requires a sesion_token',
+                [
+                    'error'       => 'Request requires a sesion_token',
                     'description' => $this->container->get('translator')->trans('api.orders.user_not_authorized')
-                )
+                ]
             );
         }
 
@@ -115,10 +118,10 @@ class OrderService extends ContainerAware
             throw new ApiException(
                 'Unauthorized',
                 401,
-                array(
-                    'error' => 'Missing phone number',
+                [
+                    'error'       => 'Missing phone number',
                     'description' => $this->container->get('translator')->trans('api.orders.user_phone_empty')
-                )
+                ]
             );
         }
 
@@ -128,10 +131,10 @@ class OrderService extends ContainerAware
             throw new ApiException(
                 'Unauthorized',
                 401,
-                array(
-                    'error' => 'Invalid phone number',
+                [
+                    'error'       => 'Invalid phone number',
                     'description' => $this->container->get('translator')->trans('api.orders.user_phone_invalid')
-                )
+                ]
             );
         }
 
@@ -155,10 +158,10 @@ class OrderService extends ContainerAware
             throw new ApiException(
                 'Basket Not found',
                 404,
-                array(
-                    'error' => 'Basket Not found',
+                [
+                    'error'       => 'Basket Not found',
                     'description' => $this->container->get('translator')->trans('api.orders.basket_does_not_exists')
-                )
+                ]
             );
         }
 
@@ -175,10 +178,10 @@ class OrderService extends ContainerAware
                 throw new ApiException(
                     'Unauthorized',
                     401,
-                    array(
-                        'error' => 'Missing lastname',
+                    [
+                        'error'       => 'Missing lastname',
                         'description' => $this->container->get('translator')->trans('api.orders.user_lastname_empty')
-                    )
+                    ]
                 );
             }
         }
@@ -192,10 +195,10 @@ class OrderService extends ContainerAware
                 throw new ApiException(
                     'Coupon Not found',
                     404,
-                    array(
-                        'error' => 'Coupon Not found',
+                    [
+                        'error'       => 'Coupon Not found',
                         'description' => $this->container->get('translator')->trans('api.orders.coupon_does_not_exists')
-                    )
+                    ]
                 );
             }
 
@@ -203,10 +206,10 @@ class OrderService extends ContainerAware
                 throw new ApiException(
                     'Coupon for web',
                     404,
-                    array(
-                        'error' => 'Coupon for web',
+                    [
+                        'error'       => 'Coupon for web',
                         'description' => $this->container->get('translator')->trans('general.coupon.only_web')
-                    )
+                    ]
                 );
             }
 
@@ -214,33 +217,34 @@ class OrderService extends ContainerAware
                 throw new ApiException(
                     'Coupon for delivery',
                     404,
-                    array(
-                        'error' => 'Coupon only for delivery',
+                    [
+                        'error'       => 'Coupon only for delivery',
                         'description' => $this->container->get('translator')->trans('general.coupon.only_delivery')
-                    )
+                    ]
                 );
             }
             if ($serviceVar['type'] != "pickup" && !$coupon->isAllowedForDelivery()) {
                 throw new ApiException(
                     'Coupon for pickup',
                     404,
-                    array(
-                        'error' => 'Coupon only for pickup',
+                    [
+                        'error'       => 'Coupon only for pickup',
                         'description' => $this->container->get('translator')->trans('general.coupon.only_pickup')
-                    )
+                    ]
                 );
             }
 
             if (!$os->validateCouponForPlace($coupon, $place)
                 || $coupon->getOnlyNav() && !$place->getNavision()
-                || $coupon->getNoSelfDelivery() && $place->getSelfDelivery()) {
+                || $coupon->getNoSelfDelivery() && $place->getSelfDelivery()
+            ) {
                 throw new ApiException(
                     'Coupon Wrong Place',
                     404,
-                    array(
-                        'error' => 'Coupon Wrong Place',
+                    [
+                        'error'       => 'Coupon Wrong Place',
                         'description' => $this->container->get('translator')->trans('general.coupon.wrong_place')
-                    )
+                    ]
                 );
             }
             // online payment coupons disallowed in app until online payments will be made
@@ -248,10 +252,10 @@ class OrderService extends ContainerAware
                 throw new ApiException(
                     'Coupon Online Payments Only',
                     404,
-                    array(
-                        'error' => 'Coupon Online Payments Only',
+                    [
+                        'error'       => 'Coupon Online Payments Only',
                         'description' => $this->container->get('translator')->trans('general.coupon.only_web')
-                    )
+                    ]
                 );
             }
             // Coupon is still valid Begin
@@ -261,20 +265,20 @@ class OrderService extends ContainerAware
                     throw new ApiException(
                         'Coupon Not Valid Yet',
                         404,
-                        array(
-                            'error' => 'Coupon Not Valid Yet',
+                        [
+                            'error'       => 'Coupon Not Valid Yet',
                             'description' => $this->container->get('translator')->trans('api.orders.coupon_too_early')
-                        )
+                        ]
                     );
                 }
                 if ($coupon->getValidTo()->format('Y-m-d H:i:s') < $now) {
                     throw new ApiException(
                         'Coupon Expired',
                         404,
-                        array(
-                            'error' => 'Coupon Expired',
+                        [
+                            'error'       => 'Coupon Expired',
                             'description' => $this->container->get('translator')->trans('api.orders.coupon_expired')
-                        )
+                        ]
                     );
                 }
             }
@@ -283,20 +287,20 @@ class OrderService extends ContainerAware
                 throw new ApiException(
                     'Coupon Not Valid Yet',
                     404,
-                    array(
-                        'error' => 'Coupon Not Valid Yet',
+                    [
+                        'error'       => 'Coupon Not Valid Yet',
                         'description' => $this->container->get('translator')->trans('api.orders.coupon_too_early')
-                    )
+                    ]
                 );
             }
             if ($coupon->getValidHourlyTo() && $coupon->getValidHourlyTo() < new \DateTime()) {
                 throw new ApiException(
                     'Coupon Expired',
                     404,
-                    array(
-                        'error' => 'Coupon Expired',
+                    [
+                        'error'       => 'Coupon Expired',
                         'description' => $this->container->get('translator')->trans('api.orders.coupon_expired')
-                    )
+                    ]
                 );
             }
             // Coupon is still valid End
@@ -312,10 +316,10 @@ class OrderService extends ContainerAware
                 throw new ApiException(
                     'Not for business',
                     404,
-                    array(
-                        'error' => 'Not for business',
+                    [
+                        'error'       => 'Not for business',
                         'description' => $this->container->get('translator')->trans('general.coupon.not_for_business')
-                    )
+                    ]
                 );
             }
 
@@ -323,10 +327,10 @@ class OrderService extends ContainerAware
                 throw new ApiException(
                     'Only for business',
                     404,
-                    array(
-                        'error' => 'Only for business',
+                    [
+                        'error'       => 'Only for business',
                         'description' => $this->container->get('translator')->trans('general.coupon.only_for_business')
-                    )
+                    ]
                 );
             }
 
@@ -334,10 +338,10 @@ class OrderService extends ContainerAware
                 throw new ApiException(
                     'Not active',
                     404,
-                    array(
-                        'error' => 'Not active',
+                    [
+                        'error'       => 'Not active',
                         'description' => $this->container->get('translator')->trans('general.coupon.not_active')
-                    )
+                    ]
                 );
             }
         }
@@ -347,54 +351,66 @@ class OrderService extends ContainerAware
                 throw new ApiException(
                     'Order Too Small',
                     400,
-                    array(
-                        'error' => 'Order Too Small',
+                    [
+                        'error'       => 'Order Too Small',
                         'description' => $this->container->get('translator')->trans('api.orders.order_to_small')
-                    )
+                    ]
                 );
             }
 
             //if ($serviceVar)
             /**
              *         "address": {
-            "street": "Vokieciu g",
-            "house_number": 3,
-            "flat_number": 2,
-            "city": "Vilnius",
-            "comments": "Duru kodas 1234"
+             * "street": "Vokieciu g",
+             * "house_number": 3,
+             * "flat_number": 2,
+             * "city": "Vilnius",
+             * "comments": "Duru kodas 1234"
              */
-            if (empty($serviceVar['address']) ||  empty($serviceVar['address']['street'])) {
+            if (empty($serviceVar['address']) || empty($serviceVar['address']['street'])) {
                 throw new ApiException(
                     'Unavailable Address',
                     400,
-                    array(
-                        'error' => 'Unavailable Address',
+                    [
+                        'error'       => 'Unavailable Address',
                         'description' => ''
-                    )
+                    ]
                 );
             } else {
                 $locationInfo = $googleGisService->groupData(
-                    $serviceVar['address']['street']." ".$serviceVar['address']['house_number'],
+                    $serviceVar['address']['street'] . " " . $serviceVar['address']['house_number'],
                     $serviceVar['address']['city']
                 );
-                $searchCrit = array(
-                    'city' => $locationInfo['city'],
-                    'lat' => $locationInfo['lat'],
-                    'lng' => $locationInfo['lng'],
-                    'address_orig' => $serviceVar['address']['street']." ".$serviceVar['address']['house_number']
-                );
+                $searchCrit = [
+                    'city'         => $locationInfo['city'],
+                    'lat'          => $locationInfo['lat'],
+                    'lng'          => $locationInfo['lng'],
+                    'address_orig' => $serviceVar['address']['street'] . " " . $serviceVar['address']['house_number']
+                ];
                 // Append flat if given
                 if (isset($serviceVar['address']['flat_number']) && !empty($serviceVar['address']['flat_number'])) {
-                    $searchCrit['address_orig'] .= ' - '.$serviceVar['address']['flat_number'];
+                    $searchCrit['address_orig'] .= ' - ' . $serviceVar['address']['flat_number'];
                 }
 
-                $pp = $em->getRepository('FoodDishesBundle:PlacePoint')->find(
-                    $em->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
-                        $basket->getPlaceId()->getId(),
-                        $searchCrit,
-                        true
-                    )
-                );
+                $placePointId = $em->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
+                    $basket->getPlaceId()->getId(),
+                    $searchCrit,
+                    true
+                )
+                ;
+
+                if (!$placePointId) {
+                    throw new ApiException(
+                        'Place point not in radius',
+                        400,
+                        [
+                            'error'       => 'Place point not in radius',
+                            'description' => $this->container->get('translator')->trans('cart.checkout.place_point_not_in_radius')
+                        ]
+                    );
+                }
+
+                $pp = $em->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
 
             }
         } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
@@ -403,10 +419,10 @@ class OrderService extends ContainerAware
                 throw new ApiException(
                     'Order Too Small',
                     0,
-                    array(
-                        'error' => 'Order Too Small',
+                    [
+                        'error'       => 'Order Too Small',
                         'description' => $this->container->get('translator')->trans('api.orders.order_to_small')
-                    )
+                    ]
                 );
             }
         }
@@ -420,10 +436,10 @@ class OrderService extends ContainerAware
                 throw new ApiException(
                     'Dish not available',
                     0,
-                    array(
-                        'error' => 'Dish not available',
+                    [
+                        'error'       => 'Dish not available',
                         'description' => $this->container->get('translator')->trans('dishes.no_production')
-                    )
+                    ]
                 );
             }
         }
@@ -442,7 +458,7 @@ class OrderService extends ContainerAware
         $paymentMethod = (isset($serviceVar['payment_option']) ? $serviceVar['payment_option'] : 'cash');
         $customerComment = (!empty($serviceVar['address']) ? $serviceVar['address']['comments'] : "");
 
-        $os->setPaymentMethod(($paymentMethod == 'cash' ? 'local':'local.card'));
+        $os->setPaymentMethod(($paymentMethod == 'cash' ? 'local' : 'local.card'));
 
         @mail("karolis.m@foodout.lt", "MOBILE REQUEST JSONobject", print_r($request, true), "FROM: info@foodout.lt");
 
@@ -458,7 +474,7 @@ class OrderService extends ContainerAware
         $os->setPaymentStatus($os::$paymentStatusWait);
 
         // Update order with recent address information. but only if we need to deliver
-        if ($serviceVar['type']!="pickup") {
+        if ($serviceVar['type'] != "pickup") {
             // $locationData = $googleGisService->getLocationFromSession();
             $address = $os->createAddressMagic(
                 $user,
@@ -472,17 +488,19 @@ class OrderService extends ContainerAware
         if ($isThisPre) {
             $os->getOrder()->setOrderStatus(
                 \Food\OrderBundle\Service\OrderService::$status_pre
-            );
+            )
+            ;
         }
         $os->saveOrder();
         if (!$isThisPre) {
             $billingUrl = $os->billOrder();
         }
         $order = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->findOneBy(
-            array(
+            [
                 'id' => $os->getOrder()->getId()
-            )
-        );
+            ]
+        )
+        ;
 
         $this->container->get('doctrine')->getManager()->refresh($order);
 
@@ -498,7 +516,7 @@ class OrderService extends ContainerAware
      * @todo - FIX TO THE EPIC COMMON LEVEL
      *
      * @param Order $order
-     * @param $list
+     * @param       $list
      *
      * @return array
      */
@@ -540,37 +558,39 @@ class OrderService extends ContainerAware
             $discount['total_sum_with_discount'] = $total_sum_with_discount;
         }
 
-        $returner = array(
-            'order_id' => $order->getId(),
-            'total_price' => array(
+        $returner = [
+            'order_id'    => $order->getId(),
+            'total_price' => [
                 //'amount' => $order->getTotal() * 100,
-                'amount' => $total_sum,
+                'amount'   => $total_sum,
                 'currency' => $this->container->getParameter('currency_iso')
-            ),
-            'discount' => $discount,
-            'state' => array(
-                'title' => $title,
+            ],
+            'discount'    => $discount,
+            'state'       => [
+                'title'       => $title,
                 // TODO Rodome nebe restorano, o dispeceriu nr
-                "info_number" => "+".$this->container->getParameter('dispatcher_contact_phone'),
+                "info_number" => "+" . $this->container->getParameter('dispatcher_contact_phone'),
 //                'info_number' => '+'.$order->getPlacePoint()->getPhone(),
-                'message' => $message
-            ),
-            'details' => array(
-                'restaurant_id' => $order->getPlace()->getId(),
+                'message'     => $message
+            ],
+            'details'     => [
+                'restaurant_id'    => $order->getPlace()->getId(),
                 'restaurant_title' => $order->getPlace()->getName(),
-                'payment_options' => array(
-                    'cash' => ($order->getPaymentMethod() == "local" ? true: false),
-                    'credit_card' => ($order->getPaymentMethod() == "local.card" ? true: false),
-                ),
-                'items' => $this->_getItemsForResponse($order)
-            ),
-            'service' => $this->_getServiceForResponse($order)
-        );
+                'payment_options'  => [
+                    'cash'        => ($order->getPaymentMethod() == "local" ? true : false),
+                    'credit_card' => ($order->getPaymentMethod() == "local.card" ? true : false),
+                ],
+                'items'            => $this->_getItemsForResponse($order)
+            ],
+            'service'     => $this->_getServiceForResponse($order)
+        ];
+
         return $returner;
     }
 
     /**
      * @param Order $order
+     *
      * @return string
      */
     public function getOrderStatusMessage(Order $order)
@@ -580,8 +600,9 @@ class OrderService extends ContainerAware
         if ($order->getDelayed()) {
             $message = $this->container->get('translator')->trans(
                 'mobile.order_status.order_delayed',
-                array('%delayTime%' => $order->getDelayDuration())
-            );
+                ['%delayTime%' => $order->getDelayDuration()]
+            )
+            ;
         }
 
         return $message;
@@ -594,7 +615,7 @@ class OrderService extends ContainerAware
      */
     private function _getItemsForResponse(Order $order)
     {
-        $returner = array();
+        $returner = [];
         $currency = $this->container->getParameter('currency_iso');
 
         foreach ($order->getDetails() as $detail) {
@@ -608,24 +629,25 @@ class OrderService extends ContainerAware
                         $current_price = $size->getCurrentPrice();
                     }
                 }
-                $sum+= $current_price * $detail->getQuantity();
+                $sum += $current_price * $detail->getQuantity();
             } else {
-                $sum+= $detail->getOrigPrice() * $detail->getQuantity(); // egles prasymu rodom orig_price
+                $sum += $detail->getOrigPrice() * $detail->getQuantity(); // egles prasymu rodom orig_price
             }
 
             foreach ($detail->getOptions() as $option) {
-                $sum+= $option->getPrice() * $option->getQuantity();
+                $sum += $option->getPrice() * $option->getQuantity();
             }
             $sum = sprintf("%.0f", ($sum * 100));
-            $returner[] = array(
+            $returner[] = [
                 'title' => $detail->getDishName(), //.', '.$detail->getDishUnitName(), Po pokalbio su shernu - laikinai skipinam papildoma info.
                 'count' => $detail->getQuantity(),
-                'price' => array(
-                    'amount' => $sum,
+                'price' => [
+                    'amount'   => $sum,
                     'currency' => $currency
-                )
-            );
+                ]
+            ];
         }
+
         return $returner;
     }
 
@@ -638,7 +660,7 @@ class OrderService extends ContainerAware
     {
         $miscUtil = $this->container->get('food.app.utils.misc');
 
-        switch($order->getDeliveryType()) {
+        switch ($order->getDeliveryType()) {
             case FO::$deliveryPickup:
                 $deliveryType = 'pickup';
                 $parsedAddress = $miscUtil->parseAddress(
@@ -651,31 +673,31 @@ class OrderService extends ContainerAware
             default:
                 $deliveryType = 'delivery';
                 $parsedAddress = $miscUtil->parseAddress(
-                    // @TODO check if addressId exists
+                // @TODO check if addressId exists
                     $order->getAddressId()->getAddress()
                 );
                 $time = $order->getPlace()->getDeliveryTime();
                 break;
         }
 
-        $returner = array(
-            "type" => $deliveryType,
-            "time" => $time,
-            "address" => array(
-                "street" => $parsedAddress['street'],
+        $returner = [
+            "type"    => $deliveryType,
+            "time"    => $time,
+            "address" => [
+                "street"       => $parsedAddress['street'],
                 "house_number" => $parsedAddress['house'],
-                "flat_number" => $parsedAddress['flat'],
-                "city" => $order->getPlacePointCity(),
-                "comments" => $order->getComment()
-            ),
-        );
+                "flat_number"  => $parsedAddress['flat'],
+                "city"         => $order->getPlacePointCity(),
+                "comments"     => $order->getComment()
+            ],
+        ];
 
         if ($order->getDeliveryType() == FO::$deliveryDeliver) {
-            $returner['price'] = array(
+            $returner['price'] = [
                 //'amount' => $order->getPlace()->getDeliveryPrice()*100,
-                'amount' => $order->getDeliveryPrice() * 100,
+                'amount'   => $order->getDeliveryPrice() * 100,
                 'currency' => $this->container->getParameter('currency_iso'),
-            );
+            ];
         }
 
         return $returner;
@@ -683,29 +705,30 @@ class OrderService extends ContainerAware
 
     /**
      * @param string $status
+     *
      * @return mixed
      * @throws \InvalidArgumentException
      */
     public function convertOrderStatus($status)
     {
-        $statusMap = array(
-            FO::$status_nav_problems => 'accepted',
-            FO::$status_new => 'accepted',
-            FO::$status_unapproved => 'accepted',
-            FO::$status_accepted => 'preparing',
-            FO::$status_assiged => 'preparing',
-            FO::$status_forwarded => 'preparing',
-            FO::$status_delayed => 'delayed',
-            FO::$status_completed => 'completed',
+        $statusMap = [
+            FO::$status_nav_problems       => 'accepted',
+            FO::$status_new                => 'accepted',
+            FO::$status_unapproved         => 'accepted',
+            FO::$status_accepted           => 'preparing',
+            FO::$status_assiged            => 'preparing',
+            FO::$status_forwarded          => 'preparing',
+            FO::$status_delayed            => 'delayed',
+            FO::$status_completed          => 'completed',
             FO::$status_partialy_completed => 'completed',
-            FO::$status_failed => 'failed',
-            FO::$status_finished => 'prepared',
-            FO::$status_canceled => 'canceled',
-            FO::$status_pre => 'pre'
-        );
+            FO::$status_failed             => 'failed',
+            FO::$status_finished           => 'prepared',
+            FO::$status_canceled           => 'canceled',
+            FO::$status_pre                => 'pre'
+        ];
 
         if (!isset($statusMap[$status])) {
-            throw new \InvalidArgumentException('Unknown status: '.$status);
+            throw new \InvalidArgumentException('Unknown status: ' . $status);
         }
 
         return $statusMap[$status];

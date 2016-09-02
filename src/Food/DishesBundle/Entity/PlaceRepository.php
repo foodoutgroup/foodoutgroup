@@ -538,6 +538,8 @@ class PlaceRepository extends EntityRepository
             return (int)$places[0]['id'];
         }
 
+        @mail('karolis.m@foodout.lt', 'DEBUG LOG getPlacePointNear', $subQuery."\n\n\n".debug_backtrace(2), "FROM: info@foodout.lt");
+
         return null;
     }
 
