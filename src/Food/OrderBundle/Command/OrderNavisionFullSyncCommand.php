@@ -35,9 +35,10 @@ class OrderNavisionFullSyncCommand extends ContainerAwareCommand
 
         // output result
         $output->writeln(sprintf('Order synchronization %s.',
-                                 $success ? '<fg=green>succeeded</fg=green>' :
-                                            '<fg=red>failed</fg=red>'));
+            $success ? '<fg=green>succeeded</fg=green>' :
+                '<fg=red>failed</fg=red>'));
     }
+
     protected function sync($notDryRun = false, OutputInterface $output)
     {
         mb_internal_encoding('utf-8');
@@ -57,8 +58,8 @@ class OrderNavisionFullSyncCommand extends ContainerAwareCommand
             sprintf('Got <fg=magenta>%d</fg=magenta> unsynced entities.',
                 $unsyncCount));
 
-        try {
-            foreach ($unsyncedEntities as $entity) {
+        foreach ($unsyncedEntities as $entity) {
+            try {
                 $em->lock($entity, LockMode::OPTIMISTIC);
 
                 $success = false;
@@ -78,19 +79,20 @@ class OrderNavisionFullSyncCommand extends ContainerAwareCommand
 
                 if ($success) {
                     $entity->setIsSynced(true)
-                        ->setSyncTimestamp(new \DateTime());
+                        ->setSyncTimestamp(new \DateTime())
+                    ;
+
+                    if ($notDryRun) {
+                        $output->writeln('Flushing changes in entity to local database, id: ' . $data->id);
+                        $em->flush();
+                    }
                 } else {
                     $failedSyncCount++;
                 }
+            } catch (\Exception $e) {
+                $failedSyncCount++;
+                $output->writeln(sprintf('Got exception: %s', $e->getMessage()));
             }
-
-            if ($notDryRun) {
-                $output->writeln('Flushing changes in entities to local database');
-                $em->flush();
-            }
-        } catch (\Exception $e) {
-            $output->writeln(sprintf('Got exception: %s', $e->getMessage()));
-            return false;
         }
 
         $output->writeln(sprintf('Number of synced entities is <fg=magenta>%d</fg=magenta>.',
@@ -104,6 +106,7 @@ class OrderNavisionFullSyncCommand extends ContainerAwareCommand
         return $this->getContainer()
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FoodOrderBundle:Order')
-            ->find($id);
+            ->find($id)
+            ;
     }
 }
