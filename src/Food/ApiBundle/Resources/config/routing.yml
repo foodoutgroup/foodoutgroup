@@ -166,7 +166,7 @@ food_api_users_information:
 food_api_logout:
     pattern: /users/session
     defaults: { _controller: FoodApiBundle:Users:logout}
-    methods: [DELETE]
+    methods: [DELETE, OPTIONS]
 
 # Images and stuff
 food_api_get_image:
