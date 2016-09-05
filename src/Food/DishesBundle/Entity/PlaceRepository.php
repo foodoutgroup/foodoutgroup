@@ -418,67 +418,6 @@ class PlaceRepository extends EntityRepository
     }
 
     /**
-     * Backup solution for API. Finds place point with lowest cart and delivery price
-     *
-     * @param int        $placeId
-     * @param array|null $locationData
-     * @param boolean    $ignoreWorkTime
-     *
-     * @return float|null
-     */
-    public function getCheapestPlacePoint($placeId, $locationData, $ignoreWorkTime = false)
-    {
-        $city = null;
-        if (isset($locationData['city']) && !empty($locationData['city'])) {
-            $city = $locationData['city'];
-        }
-
-        $dh = date("H");
-        $dm = date("i");
-        $wd = date('w');
-        if ($wd == 0) $wd = 7;
-
-        $subQuery = "SELECT pp.id 
-                    FROM place_point pp, place p " . ((!$ignoreWorkTime) ? ", place_point_work_time ppwt" : "") . " 
-                    WHERE p.id = pp.place 
-                    " . ((!$ignoreWorkTime) ? "AND pp.id = ppwt.place_point" : "") . "
-                      AND pp.active=1 
-                      AND pp.public=1 
-                      AND pp.deleted_at IS NULL 
-                      AND p.active=1 
-                      AND pp.place = $placeId";
-
-        if (!empty($city)) {
-            $subQuery .= " AND pp.city='" . $city . "'";
-        }
-
-        if (!$ignoreWorkTime) {
-            $subQuery .= " AND ppwt.week_day = " . $wd;
-            $subQuery .= " 
-                      AND (
-                        (ppwt.start_hour = 0 OR ppwt.start_hour < $dh OR
-                          (ppwt.start_hour <= $dh AND ppwt.start_min <= $dm)
-                        ) AND 
-                        ((ppwt.end_hour >= $dh AND ppwt.end_min >= $dm) OR
-                            ppwt.end_hour > $dh OR ppwt.end_hour = 0)
-                      )";
-        }
-
-        $subQuery .= " AND delivery=1 ORDER BY pp.delivery_time ASC, fast DESC LIMIT 1";
-
-        $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
-
-        $stmt->execute();
-        $places = $stmt->fetchAll();
-
-        if (!empty($places) && !empty($places[0])) {
-            return $places[0];
-        }
-
-        return null;
-    }
-
-    /**
      * @param int        $placeId
      * @param array|null $locationData
      * @param bool       $ignoreSelfDelivery
