@@ -3297,7 +3297,6 @@ class OrderService extends ContainerAware
             $noMinimumCart = true;
         }
 
-
         if (!$takeAway) {
             foreach ($list as $itm) {
                 if (!$this->isOrderableByTime($itm->getDishId())) {
@@ -3311,8 +3310,10 @@ class OrderService extends ContainerAware
             $placePointMap = $this->container->get('session')->get('point_data');
 
             $locationData = $locationService->getLocationFromSession();
+
             if (empty($locationData) && $user instanceof User) {
                 $locationData = $locationService->setLocationFromUser($user);
+                @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr2" . date("Y-m-d H:i:s"), print_r($locationData, true) . print_r($user, true) . print_r($placePointMap, true) . print_r($_POST, true) . print_r($_GET, true), "FROM: info@foodout.lt");
             }
             // TODO Trying to catch fatal when searching for PlacePoint
             if (!empty($locationData['address_orig'])) {
@@ -3320,14 +3321,6 @@ class OrderService extends ContainerAware
                     $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 1');
                     // Mapping not found, lets try to remap
                     $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData);
-                    $placePointMap[$place->getId()] = $placePointId;
-                    $this->container->get('session')->set('point_data', $placePointMap);
-                }
-
-                // TODO - if still no PlacePoint info - pick fasterst or cheapest as in earlier solution
-                if (empty($placePointMap[$place->getId()])) {
-                    $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 2');
-                    $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCheapestPlacePoint($place->getId(), $locationData);
                     $placePointMap[$place->getId()] = $placePointId;
                     $this->container->get('session')->set('point_data', $placePointMap);
                 }
