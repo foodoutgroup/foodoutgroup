@@ -222,13 +222,9 @@
                                         </li>
                                         {% if place.deliveryOptions != 'pickup' %}
                                             <li class="ico-time">
-                                                {% if places_service.getZavalTime(place) %}
-                                                    <strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ places_service.getZavalTime(place) }} val.
-                                                {% else %}
-                                                    <strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ place.deliveryTime }}
-                                                    {% if place.deliveryTimeInfo is not empty %}
-                                                        <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
-                                                    {% endif %}
+                                                <strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ places_service.getDeliveryTime(place) }}
+                                                {% if place.deliveryTimeInfo is not empty %}
+                                                    <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
                                                 {% endif %}
                                             </li>
                                             <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>
@@ -320,7 +316,7 @@
         });
     </script>
     {# Zavalas Popup Begin #}
-    {% if places_service.getZavalTime(place) %}
+    {% if places_service.isShowZavalDeliveryTime(place) %}
         {% if site_country == 'LT' %}
             <!-- This site is converting visitors into subscribers and customers with OptinMonster - http://optinmonster.com :: Campaign Title: [LT] Zavalas -->
             <div id="om-nkcu3qstsjxkdv12-holder"></div><script>var nkcu3qstsjxkdv12,nkcu3qstsjxkdv12_poll=function(){var r=0;return function(n,l){clearInterval(r),r=setInterval(n,l)}}();!function(e,t,n){if(e.getElementById(n)){nkcu3qstsjxkdv12_poll(function(){if(window['om_loaded']){if(!nkcu3qstsjxkdv12){nkcu3qstsjxkdv12=new OptinMonsterApp();return nkcu3qstsjxkdv12.init({"u":"11462.367922","staging":0,"dev":0,"beta":0});}}},25);return;}var d=false,o=e.createElement(t);o.id=n,o.src="//a.optnmnstr.com/app/js/api.min.js",o.onload=o.onreadystatechange=function(){if(!d){if(!this.readyState||this.readyState==="loaded"||this.readyState==="complete"){try{d=om_loaded=true;nkcu3qstsjxkdv12=new OptinMonsterApp();nkcu3qstsjxkdv12.init({"u":"11462.367922","staging":0,"dev":0,"beta":0});o.onload=o.onreadystatechange=null;}catch(t){}}}};(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(o)}(document,"script","omapi-script");</script>

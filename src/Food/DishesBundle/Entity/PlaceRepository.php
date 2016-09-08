@@ -10,6 +10,8 @@ class PlaceRepository extends EntityRepository
 {
     private static $_getNearCache = [];
 
+    private static $_citiesCache = [];
+
     /**
      * @param array      $kitchens
      * @param array      $filters
@@ -582,5 +584,24 @@ class PlaceRepository extends EntityRepository
         $stmt->execute();
 
         return (boolean)$stmt->fetchColumn(0);
+    }
+
+    /**
+     * @param Place $place
+     *
+     * @return array
+     */
+    public function getCities(Place $place)
+    {
+        if (empty(self::$_citiesCache[$place->getId()])) {
+            self::$_citiesCache[$place->getId()] = [];
+            foreach ($place->getPoints() as $placePoint) {
+                if ($placePoint->getActive() && !in_array($placePoint->getCity(), self::$_citiesCache[$place->getId()])) {
+                    self::$_citiesCache[$place->getId()][] = $placePoint->getCity();
+                }
+            }
+        }
+
+        return self::$_citiesCache[$place->getId()];
     }
 }

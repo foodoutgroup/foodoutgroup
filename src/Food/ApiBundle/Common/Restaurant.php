@@ -111,6 +111,7 @@ class Restaurant extends ContainerAware
      */
     public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false, $locationData = null, $deliveryType = null)
     {
+        $placeService = $this->container->get('food.places');
         if (empty($placePoint)) {
             foreach ($place->getPoints() as $pp) {
                 if ($pp->getActive()) {
@@ -306,7 +307,7 @@ class Restaurant extends ContainerAware
                         'latitude'  => $point->getLat(),
                         'longitude' => $point->getLon()
                     ],
-                    'is_working'   => $this->container->get('food.order')->isTodayWork($point),
+                    'is_working'   => $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->isPlacePointWorks($point),
                     'work_hours'   => $this->_getWorkHoursOfPlacePoint($point),
                     'phone_number' => $point->getPhone(),
                     /*

@@ -173,7 +173,8 @@ class PaymentsController extends Controller
                     // autoinform = true in place
                     // turned off zaval
                     // is not preorder OR navision
-                    if ($orderService->getOrder()->getPlace()->getAutoInform() && !$placeService->getZavalTime($order->getPlace()) && ($order->getOrderStatus() != OrderService::$status_preorder || $order->getPlace()->getNavision())) {
+
+                    if ($orderService->getAllowToInform()) {
                         $orderService->informPlace();
                     }
 

@@ -20,26 +20,24 @@ class OrderReminderCommand extends ContainerAwareCommand
     {
         try {
             $orderService = $this->getContainer()->get('food.order');
-            $placeService = $this->getContainer()->get('food.places');
 
-            foreach($orderService->getForgottenOrders() as $order) {
-                $isZavalOn = $placeService->getZavalTime($order->getPlace());
-                if (!$isZavalOn) {
-                    $orderService->setOrder($order);
+            foreach ($orderService->getForgottenOrders() as $order) {
+                $orderService->setOrder($order);
+                if ($orderService->isAllowToInformOnZaval()) {
                     $order->setReminded(new \DateTime());
                     $orderService->saveOrder();
 
                     $orderService->informPlace(true);
-
-                    $output->writeln('Reminder message sent to: ' . $order->getPlaceName() . ' for order #' . $order->getId());
                 }
+
+                $output->writeln('Reminder message sent to: ' . $order->getPlaceName() . ' for order #' . $order->getId());
             }
 
             // Close DB connection. Dont leave crap
             $this->getContainer()->get('doctrine')->getConnection()->close();
         } catch (\Exception $e) {
             $output->writeln('Error generating report');
-            $output->writeln('Error: '.$e->getMessage());
+            $output->writeln('Error: ' . $e->getMessage());
             throw $e;
         }
     }

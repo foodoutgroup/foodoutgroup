@@ -53,6 +53,7 @@ class LocationService extends ContainerAware
         $locData['street_found'] = false;
         $locData['address_found'] = false;
         $locData['city_only'] = false;
+        $locData['city'] = null;
 
         if (!$this->container->getParameter('maps_enabled')) {
             $locData['not_found'] = false;
@@ -94,6 +95,7 @@ class LocationService extends ContainerAware
         $locationData['street_found'] = false;
         $locationData['address_found'] = false;
         $locationData['city_only'] = false;
+        $locationData['city'] = null;
         $locationData['address_found'] = true;
         if ($userAddress) {
             $locationData['city'] = $userAddress->getCity();

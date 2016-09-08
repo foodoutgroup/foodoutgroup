@@ -1514,6 +1514,10 @@
                 <source>general.b2b_clients</source>
                 <target>Business customers</target>
             </trans-unit>
+            <trans-unit id="general.hour" resname="general.hour">
+                <source>general.hour</source>
+                <target>h.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

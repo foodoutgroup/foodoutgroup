@@ -41,6 +41,7 @@ class Misc
     /**
      * @param string $phone
      * @param string $country
+     *
      * @return null|string
      */
     public function formatPhone($phone, $country)
@@ -53,6 +54,7 @@ class Misc
         }
 
         $phoneFormated = $phoneUtil->format($numberProto, \libphonenumber\PhoneNumberFormat::E164);
+
         return str_replace('+', '', $phoneFormated);
     }
 
@@ -73,7 +75,7 @@ class Misc
 
         $numberType = $phoneUtil->getNumberType($numberProto);
 
-        if (in_array($numberType, array(\libphonenumber\PhoneNumberType::MOBILE, \libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE))) {
+        if (in_array($numberType, [\libphonenumber\PhoneNumberType::MOBILE, \libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE])) {
             return true;
         }
 
@@ -82,13 +84,15 @@ class Misc
 
     /**
      * @param string $ip
+     *
      * @return bool
      */
     public function isIpBanned($ip)
     {
         $repository = $this->container->get('doctrine')
-            ->getRepository('FoodAppBundle:BannedIp');
-        $isBanned = $repository->findOneBy(array('ip' => $ip, 'active' => true));
+            ->getRepository('FoodAppBundle:BannedIp')
+        ;
+        $isBanned = $repository->findOneBy(['ip' => $ip, 'active' => true]);
 
         if ($isBanned) {
             return true;
@@ -101,6 +105,7 @@ class Misc
      * Parses address string to street, house, flat numbers
      *
      * @param string $address
+     *
      * @return array
      */
     public function parseAddress($address)
@@ -123,15 +128,16 @@ class Misc
             $flat = '';
         }
 
-        return array(
+        return [
             'street' => $street,
-            'house' => $house,
-            'flat' => $flat,
-        );
+            'house'  => $house,
+            'flat'   => $flat,
+        ];
     }
 
     /**
      * @param float $price
+     *
      * @return float
      */
     public function getEuro($price)
@@ -143,6 +149,7 @@ class Misc
 
     /**
      * @param float $price
+     *
      * @return float
      */
     public function getLitas($price)
@@ -154,6 +161,7 @@ class Misc
 
     /**
      * @param int|float $sum
+     *
      * @return string
      */
     public function priceToText($sum)
@@ -183,57 +191,59 @@ class Misc
 
     /**
      * @param $float
+     *
      * @return array
      */
     public function floatToInts($float)
     {
-        $parts        = explode('.', (string)$float);
+        $parts = explode('.', (string)$float);
         $mainPart = $parts[0];
         if (isset($parts[1])) {
             if ((int)$parts[1] < 10 && strpos($parts[1], '0') !== 0) {
-                $parts[1] = $parts[1].'0';
+                $parts[1] = $parts[1] . '0';
             }
-            $minorPart    = ltrim($parts[1], '0');
+            $minorPart = ltrim($parts[1], '0');
         } else {
-             $minorPart = 0;
+            $minorPart = 0;
         }
 
-        return array(
-            'mainPart' => $mainPart,
+        return [
+            'mainPart'  => $mainPart,
             'minorPart' => $minorPart,
-        );
+        ];
     }
 
     /**
-     * @param string $name
+     * @param string  $name
      * @param boolean $noException
+     *
      * @return string
      * @throws \Exception
      */
-    public function getParam($name, $noException=false)
+    public function getParam($name, $noException = false)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
-        $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(array('param' => $name));
+        $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(['param' => $name]);
 
         if ($noException && !$parameter instanceof Param) {
             return null;
         }
 
         if (!$parameter instanceof Param) {
-            throw new \Exception('Parameter "'.$name.'" not found');
+            throw new \Exception('Parameter "' . $name . '" not found');
         }
 
         return $parameter->getValue();
     }
 
     /**
-     * @param string $name
+     * @param string           $name
      * @param string|array|int $value
      */
     public function setParam($name, $value)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
-        $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(array('param' => $name));
+        $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(['param' => $name]);
 
         if (!$parameter instanceof Param) {
             $parameter = new Param();
@@ -253,7 +263,7 @@ class Misc
 
     /**
      * @param Param $param
-     * @param $oldValue
+     * @param       $oldValue
      */
     public function logParamChange($param = null, $oldValue)
     {
@@ -282,10 +292,11 @@ class Misc
      */
     public function getDriver(Order $order)
     {
-        $query = "SELECT d.name FROM drivers d, orders o WHERE d.id=o.driver_id AND o.id=".$order->getId();
+        $query = "SELECT d.name FROM drivers d, orders o WHERE d.id=o.driver_id AND o.id=" . $order->getId();
         $stmt = $this->container->get('doctrine')->getManager()->getConnection()->prepare($query);
         $stmt->execute();
         $driver = $stmt->fetchColumn(0);
+
         return $driver;
     }
 
@@ -298,8 +309,7 @@ class Misc
      */
     public function isNewOrSuspectedUser($user)
     {
-        if (empty($user) || !$user instanceof User)
-        {
+        if (empty($user) || !$user instanceof User) {
             throw new \InvalidArgumentException('To check if user fraudulent - please, pass me a user');
         }
 
@@ -323,8 +333,9 @@ class Misc
         }
 
         // Check if possibly a fraudulent phone
-        if (in_array($phone, array('37060000000', '371'))
-            || strpos($phone, '12345')) {
+        if (in_array($phone, ['37060000000', '371'])
+            || strpos($phone, '12345')
+        ) {
             $fraudPossible = true;
         }
 
@@ -346,6 +357,7 @@ class Misc
     /**
      * @param $user
      * @param $code
+     *
      * @return string
      *
      * @throws \InvalidArgumentException
@@ -362,10 +374,10 @@ class Misc
 
         $repo = $this->getContainer()->get('doctrine')->getRepository('FoodUserBundle:UserDivisionCode');
 
-        $division = $repo->findOneBy(array(
+        $division = $repo->findOneBy([
             'user' => $user,
             'code' => $code,
-        ));
+        ]);
 
         if (!$division) {
             return '';
@@ -379,6 +391,7 @@ class Misc
         $text = str_replace("{{ faq_video }}", "", $text);
         $text = str_replace("&nbsp; ", "&nbsp;", $text);
         $text = preg_replace('/\<p\>(&nbsp;){2,}\<\/p\>/', "", $text);
+
         return $text;
     }
 
@@ -386,28 +399,25 @@ class Misc
      * Parse from idiotic string like "1.5 val" to minutes
      *
      * @param string $time
+     *
      * @return int
      */
     public function parseTimeToMinutes($time)
     {
-        $possibleStrings = array('min.', 'val.', 'min', 'val');
+        $pattern = '/('.implode('|', ['val', $this->container->get('translator')->trans('general.hour')]).')/';
 
-        $time = str_replace($possibleStrings, '', $time);
-        $time = str_replace(',', '.', $time);
+        $digits = preg_replace('/[^\d,.\-]/', '', $time);
+        $digits = trim(str_replace(',', '.', $digits));
 
-        if (strpos($time, '-') !== false) {
-            $parts = explode('-', $time);
+        if (strpos($digits, '-') !== false) {
+            $parts = explode('-', $digits);
 
-            $time = $parts[1];
+            $digits = $parts[1];
         }
 
-        $floatValue = floatval($time);
+        $floatValue = floatval($digits);
 
-        if ($floatValue > 5) {
-            $minutes = $floatValue;
-        } else {
-            $minutes = $floatValue*60;
-        }
+        $minutes = (preg_match($pattern, $time)) ? $floatValue * 60 : $floatValue;
 
         return $minutes;
     }
