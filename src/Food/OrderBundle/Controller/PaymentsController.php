@@ -169,11 +169,6 @@ class PaymentsController extends Controller
                     $orderService->setPaymentStatus($orderService::$paymentStatusComplete, 'Paysera billed payment');
                     $orderService->saveOrder();
 
-                    // Inform if:
-                    // autoinform = true in place
-                    // turned off zaval
-                    // is not preorder OR navision
-
                     if ($orderService->getAllowToInform()) {
                         $orderService->informPlace();
                     }

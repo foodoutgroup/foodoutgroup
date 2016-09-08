@@ -76,38 +76,39 @@ class PlaceRepository extends EntityRepository
         $lat = null;
         $lon = null;
         $zaval = 0;
-        if ($container) {
-            $miscService = $container->get('food.app.utils.misc');
-            $zaval = $miscService->getParam('zaval_on');
-        }
+        $pickup = (isset($filters['delivery_type']) && $filters['delivery_type'] == Place::OPT_ONLY_PICKUP);
+        if ($pickup) {
+            $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id";
+        } else {
+            if ($container) {
+                $miscService = $container->get('food.app.utils.misc');
+                $zaval = $miscService->getParam('zaval_on');
+            }
 
-        if (!empty($locationData) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
-            $city = (!empty($locationData['city']) ? $locationData['city'] : null);
-            $lat = str_replace(",", ".", $locationData['lat']);
-            $lon = str_replace(",", ".", $locationData['lng']);
-        } elseif (!empty($locationData) && !empty($locationData['city']) && isset($locationData['city_only']) && $locationData['city_only'] === true) {
-            $city = $locationData['city'];
-        }
+            if (!empty($locationData) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
+                $city = (!empty($locationData['city']) ? $locationData['city'] : null);
+                $lat = str_replace(",", ".", $locationData['lat']);
+                $lon = str_replace(",", ".", $locationData['lng']);
+            } elseif (!empty($locationData) && !empty($locationData['city']) && isset($locationData['city_only']) && $locationData['city_only'] === true) {
+                $city = $locationData['city'];
+            }
 
-        /**
-         * $container->getParameter('default_delivery_distance')
-         *  This stuff needs to be deprecated. And parameter removed.
-         */
+            /**
+             * $container->getParameter('default_delivery_distance')
+             *  This stuff needs to be deprecated. And parameter removed.
+             */
 
-        $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL" . ($zaval ? ' AND ppdzd.active_on_zaval = 1' : '');
-        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pps.id" . ($zaval ? ' AND ppdz.active_on_zaval = 1' : '');
+            $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL" . ($zaval ? ' AND ppdzd.active_on_zaval = 1' : '');
+            $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pps.id" . ($zaval ? ' AND ppdz.active_on_zaval = 1' : '');
 
-        $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id
+            $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id
             AND (
             (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <=
                 IF(($maxDistance) IS NULL, (" . $defaultZone . "), ($maxDistance))
             )
             AND pps.delivery=1
             ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
-        $kitchensQuery = "";
 
-        if (!empty($kitchens)) {
-            $kitchensQuery = " AND p.id IN (SELECT place_id FROM place_kitchen WHERE kitchen_id IN(" . implode(",", $kitchens) . "))";
         }
 
         // Place filters
@@ -142,6 +143,12 @@ class PlaceRepository extends EntityRepository
                     default:
                 }
             }
+        }
+
+        $kitchensQuery = "";
+
+        if (!empty($kitchens)) {
+            $kitchensQuery = " AND p.id IN (SELECT place_id FROM place_kitchen WHERE kitchen_id IN(" . implode(",", $kitchens) . "))";
         }
 
         $otherFilters = '';

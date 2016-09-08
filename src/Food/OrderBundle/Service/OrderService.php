@@ -4447,7 +4447,7 @@ class OrderService extends ContainerAware
                 throw new \InvalidArgumentException('No order is set');
             }
 
-            if (stripos($order->getPlacePointCity(), $miscService->getParam('zaval_cities')) !== false
+            if (stripos($miscService->getParam('zaval_cities'), $order->getPlacePointCity()) !== false
                 && !$order->getPlacePointSelfDelivery()
                 && $order->getDeliveryType() != self::$deliveryPickup
             ) {
