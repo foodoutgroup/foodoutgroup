@@ -17,10 +17,9 @@
             <ul class="menu">
                 {% if place.deliveryOptions != 'pickup' %}
                 <li class="ico-time">
-                    <strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ places_service.getDeliveryTime(place) }} val.
+                    <strong>{% trans %}places.delivery_time{% endtrans %}:</strong>{{ places_service.getDeliveryTime(place) }}
                     {% if place.deliveryTimeInfo is not empty %}
                     <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
-                    {% endif %}
                     {% endif %}
                 </li>
                 <li class="ico-delivery"><strong>{% trans %}places.delivery_price{% endtrans %}:</strong>
