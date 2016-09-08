@@ -238,11 +238,8 @@ class DispatcherAdminController extends Controller
 
             $orderService->saveOrder();
 
-            if (!$orderService->getOrder()->getPreorder() || $orderService->getOrder()->getPlace()->getNavision()) {
-                $isZavalOn = $placeService->getZavalTime($orderService->getOrder()->getPlace());
-                if (!$isZavalOn && $orderService->getOrder()->getPlace()->getAutoInform()) {
-                    $orderService->informPlace();
-                }
+            if ($orderService->getAllowToInform()) {
+                $orderService->informPlace();
             }
 
             return new Response('OK');
@@ -588,14 +585,15 @@ class DispatcherAdminController extends Controller
     {
         $orderId = $request->get('orderId');
         $orderService = $this->get('food.order');
-        $orderService->getOrderById($orderId);
+        $order = $orderService->getOrderById($orderId);
 
         try {
-            if (!$orderService->getOrder()->getPlaceInformed()) {
+            if (!$order->getPlaceInformed()) {
                 $orderService->informPlace();
             }
         } catch (\Exception $e) {
-            $this->get('logger')->error('Error happened assigning a place informed: '.$e->getMessage());
+            $this->get('logger')->error('Error happened assigning a place informed: ' . $e->getMessage());
+
             return new Response('Error: error occured');
         }
 
