@@ -1434,6 +1434,10 @@
                 <source>general.b2b_clients</source>
                 <target>Biznesa klientiem</target>
             </trans-unit>
+            <trans-unit id="general.hour" resname="general.hour">
+                <source>general.hour</source>
+                <target>val.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

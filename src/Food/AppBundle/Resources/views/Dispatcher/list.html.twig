@@ -380,15 +380,11 @@
                         {% else %}
                             <span class="glyphicon glyphicon-user">{{ order.dispatcherId.Firstname }}</span>
                         {% endif %}
-                        {# Zaval Button Begin #}
-                        {% if places_service.getZavalCities(cityName) %}
-                            {% if order.placeInformed is empty and order.deliveryType != 'pickup' and order.preorder is empty and not order.getPlace().getNavision() %}
-                                <button class="btn btn-lg assign_placeinformed_button" item-id="{{ order.id }}" title="{{ 'admin.dispatcher.assign_placeinform'|trans({}, 'SonataAdminBundle') }}">
-                                    <span class="glyphicon glyphicon-info-sign status-change-history"></span>
-                                </button>
-                            {% endif %}
+                        {% if order.placeInformed is empty and order.deliveryType != 'pickup' and order.preorder is empty and not order.getPlace().getNavision() %}
+                            <button class="btn btn-lg assign_placeinformed_button" item-id="{{ order.id }}" title="{{ 'admin.dispatcher.assign_placeinform'|trans({}, 'SonataAdminBundle') }}">
+                                <span class="glyphicon glyphicon-info-sign status-change-history"></span>
+                            </button>
                         {% endif %}
-                        {# Zaval Button End #}
                     </td>
                     {% if type starts with 'canceled' %}
                     <td class="client_contacted_check">

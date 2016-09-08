@@ -155,12 +155,12 @@
     <div class="site-block">
     <div class="page-path clearfix">{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}</div>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}
     <div class="page-title">
-        <h1>{% trans %}places.header_main_part{% endtrans %}{% if location and location.city %} {{ city_translations[location.city]|trans }}{% endif %}</h1>
+        <h1>{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city_translations[location.city]|trans }}{% endif %}</h1>
         <h2 class="clearfix">
             <span class="place-counter"></span>
             <a href="#" id="places-change-location-link">{% trans %}places.change_address{% endtrans %}</a>
         </h2>
-        {% if recommended==0 and ( location == null or (location.not_found == true and location.street_found==true)) %}
+        {% if recommended==0 and ( location == null or (location.not_found and location.street_found)) %}
             <div class="alert alert2 alert-warning alert_not_detailed_search"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
         {% endif %}
     </div>

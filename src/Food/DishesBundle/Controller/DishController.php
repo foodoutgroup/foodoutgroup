@@ -38,8 +38,6 @@ class DishController extends Controller
         } elseif ($sizeCount == 4) {
             $selSize = 3;
         }
-        $miscService = $this->get('food.app.utils.misc');
-        $shifter = $miscService->parseTimeToMinutes($dishEnt->getPlace()->getDeliveryTime());
 
         return $this->render(
             'FoodDishesBundle:Dish:dish.html.twig',

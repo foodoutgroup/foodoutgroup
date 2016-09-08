@@ -35,7 +35,7 @@ class DefaultController extends Controller
             $zaval = true;
         }
 
-        $locData =  $this->get('food.googlegis')->getLocationFromSession();
+        $locData =  $this->get('food.location')->getLocationFromSession();
         $placeService = $this->get('food.places');
         $availableCitiesSlugs = $this->container->getParameter('available_cities_slugs');
 
