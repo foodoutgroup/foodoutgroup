@@ -227,7 +227,6 @@ class DispatcherAdminController extends Controller
     {
         try {
             $orderService = $this->get('food.order');
-            $placeService = $this->get('food.places');
             $orderService->getOrderById($orderId);
 
             if (!$orderService->getOrder()->getPreorder()) {
