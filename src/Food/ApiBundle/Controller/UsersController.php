@@ -520,6 +520,75 @@ class UsersController extends Controller
     }
 
     /**
+     * @return bool
+     */
+    public function AllowToAccess()
+    {
+        $sc = $this->get('security.context');
+        $user = $sc->getToken()->getUser();
+
+        if ($user instanceof User) {
+            return (
+                $sc->isGranted('ROLE_SUPER_ADMIN')
+                || $sc->isGranted('ROLE_ADMIN')
+                || $sc->isGranted('ROLE_MODERATOR')
+                || $sc->isGranted('ROLE_SUPPORT')
+                || $sc->isGranted('ROLE_MARKETING')
+                || $sc->isGranted('ROLE_EDITOR')
+                || $sc->isGranted('ROLE_DISPATCHER')
+            );
+        }
+        return false;
+    }
+
+    public function usersListAction($itemsPerPage, $pageNo, Request $request)
+    {
+        try {
+            $response = array(
+                'success' => false,
+                'users' => [],
+                'total_count' => 0,
+            );
+
+            $this->get('food_api.api')->loginByHash($this->getApiToken($request));
+
+            if ($this->AllowToAccess()) {
+                $users = $this->getDoctrine()->getRepository('FoodUserBundle:User')->findBy(
+                    [],
+                    [],
+                    $itemsPerPage,
+                    ($pageNo - 1) * $itemsPerPage
+                );
+
+                if (count($users)) {
+                    $usersArray = [];
+                    foreach ($users as $user) {
+                        $usersArray[] = $user->toArray();
+                    }
+
+                    $response = array(
+                        'success' => true,
+                        'users' => $usersArray,
+                        'total_count' => count($users),
+                    );
+                }
+            }
+
+            return new JsonResponse($response);
+        } catch (ApiException $e) {
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+    }
+
+
+    /**
      * Logout a user
      *
      * @param Request $request
