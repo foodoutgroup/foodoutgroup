@@ -541,6 +541,31 @@ class UsersController extends Controller
         return false;
     }
 
+    /**
+     * @param User $user
+     * @return array
+     */
+    private function formatUserData(User $user)
+    {
+        $userArray = [];
+        if ($user instanceof User) {
+            $userArray['id'] = $user->getId();
+            $userArray['firstname'] = $user->getFirstname();
+            $userArray['lastname'] = $user->getLastname();
+            $userArray['username'] = $user->getUsername();
+            $userArray['email'] = $user->getEmail();
+            $userArray['phone'] = $user->getPhone();
+            $userArray['enabled'] = $user->isEnabled();
+            $userArray['locked'] = $user->isLocked();
+            $userArray['noInvoice'] = $user->getNoInvoice();
+            $userArray['noMinimumCart'] = $user->getNoMinimumCart();
+            $userArray['isBussinesClient'] = $user->getIsBussinesClient();
+            $userArray['companyName'] = $user->getCompanyName();
+            $userArray['lastLogin'] = $user->getLastLogin();
+        }
+        return $userArray;
+    }
+
     public function usersListAction($itemsPerPage, $pageNo, Request $request)
     {
         try {
@@ -553,7 +578,10 @@ class UsersController extends Controller
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
 
             if ($this->AllowToAccess()) {
-                $users = $this->getDoctrine()->getRepository('FoodUserBundle:User')->findBy(
+                $usersRepo = $this->getDoctrine()->getManager()->getRepository('FoodUserBundle:User');
+                $total_count = $usersRepo->getUsersCount();
+
+                $users = $usersRepo->findBy(
                     [],
                     [],
                     $itemsPerPage,
@@ -563,13 +591,13 @@ class UsersController extends Controller
                 if (count($users)) {
                     $usersArray = [];
                     foreach ($users as $user) {
-                        $usersArray[] = $user->toArray();
+                        $usersArray[] = $this->formatUserData($user);
                     }
 
                     $response = array(
                         'success' => true,
                         'users' => $usersArray,
-                        'total_count' => count($users),
+                        'total_count' => $total_count,
                     );
                 }
             }
