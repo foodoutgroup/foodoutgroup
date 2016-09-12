@@ -41,4 +41,15 @@ class UserRepository extends EntityRepository
 
         return $stmt->fetchColumn();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUsersCount()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('user.id'));
+        $qb->from('FoodUserBundle:User','user');
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }
