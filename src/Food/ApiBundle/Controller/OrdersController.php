@@ -125,10 +125,27 @@ class OrdersController extends Controller
     {
         $this->logActionParams('getOrderDetails action', $request);
         $this->_theJudge($request);
+
+        $token = $request->headers->get('X-API-Authorization');
+        $this->container->get('food_api.api')->loginByHash($token);
+        $security = $this->container->get('security.context');
+
+        $user = $security->getToken()->getUser();
+        if (!$user) {
+            throw new ApiException(
+                'Unauthorized',
+                401,
+                array(
+                    'error' => 'Request requires a sesion_token',
+                    'description' => $this->container->get('translator')->trans('api.orders.user_not_authorized')
+                )
+            );
+        }
+
         try {
             $order = $this->get('food.order')->getOrderById($id);
 
-            if (!$order) {
+            if (!$order || $order->getUser()->getId() != $user->getId()) {
                 throw new ApiException(
                     "Order not found",
                     404,
