@@ -595,7 +595,7 @@ class OrderService extends ContainerAware
                     }
 
                     $dt = new \DateTime('now');
-                    $dt->add(new \DateInterval('P0DT0H' . $timeShift . 'M0S'));
+                    $dt->modify('+'.$timeShift.'minutes');
                     $order->setDeliveryTime($dt);
                 }
                 $this->saveOrder();
