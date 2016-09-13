@@ -151,7 +151,7 @@ food_slug:
     path:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Utena|Plunge|Riga|aplikacijos|susipazinkime|ciligreita)[a-z0-9-\__\"„“\.\+]{4,}"
+        slug : "^(?!admin|cart|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Utena|Plunge|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita)[a-z0-9-\__\"„“\.\+]{4,}"
 
 food_order_nav_test1:
     path: /order/nav_test1
@@ -451,6 +451,10 @@ food_city_riga:
     path: /Riga
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
 
+food_city_tallinn:
+    path: /Tallinn
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Tallinn}
+
 food_city_vilnius_slash:
     path: /Vilnius/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius}
@@ -486,6 +490,10 @@ food_city_plunge_slash:
 food_city_riga_slash:
     path: /Riga/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
+
+food_city_tallinn_slash:
+    path: /Tallinn/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Tallinn}
 
 food_city_vilnius_slash_filter:
     path: /Vilnius/{slug_filter}
@@ -538,6 +546,12 @@ food_city_plunge_slash_filter:
 food_city_riga_slash_filter:
     path: /Riga/{slug_filter}
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_tallinn_slash_filter:
+    path: /Tallinn/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Tallinn, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
 
