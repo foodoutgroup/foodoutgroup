@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="lt" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="admin.report.orders" resname="admin.report.orders">
+                <source>admin.report.orders</source><target>Tellimused</target>
+            </trans-unit>
+            <trans-unit id="admin.report.orders_canceled" resname="admin.report.orders_canceled">
+                <source>admin.report.orders_canceled</source><target>Tühistatud tellimused</target>
+            </trans-unit>
+            <trans-unit id="admin.report.mobile_orders" resname="admin.report.mobile_orders">
+                <source>admin.report.mobile_orders</source><target>Mobiili kaudu esitatud tellimused</target>
+            </trans-unit>
+            <trans-unit id="admin.report.daily_orders_graph" resname="admin.report.daily_orders_graph">
+                <source>admin.report.daily_orders_graph</source><target>Tellimusi päevas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.order_amount" resname="admin.report.order_amount">
+                <source>admin.report.order_amount</source><target>Kogus</target>
+            </trans-unit>
+            <trans-unit id="admin.report.sms" resname="admin.report.sms">
+                <source>admin.report.sms</source><target>Saadetud SMS-id</target>
+            </trans-unit>
+            <trans-unit id="admin.report.sms_undelivered" resname="admin.report.sms_undelivered">
+                <source>admin.report.sms_undelivered</source><target>Kohale toimetamata SMS-id</target>
+            </trans-unit>
+            <trans-unit id="admin.report.daily_sms_graph" resname="admin.report.daily_sms_graph">
+                <source>admin.report.daily_sms_graph</source><target>SMS-e päevas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.amount" resname="admin.report.amount">
+                <source>admin.report.amount</source><target>Kogus</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

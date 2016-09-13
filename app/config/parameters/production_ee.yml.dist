@@ -16,12 +16,12 @@ parameters:
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
 
-    locale: en
-    locales: ["en", "ru"]
+    locale: ee
+    locales: ["ee", "en"]
     available_cities: ["Tallinn"]
     available_cities_slugs: ["Tallinn"]
-    available_locales: ["en", "ru"]
-    available_locales_routing: en | ru
+    available_locales: ["ee", "en"]
+    available_locales_routing: ee | en
     cloudfront_url: estonia.foodout.lt
     time_zone: "Europe/Tallinn"
     sms.sender: "Foodout.ee"
