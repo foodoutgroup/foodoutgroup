@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <!-- Gedmo nesamones -->
+            <trans-unit id="label.name">
+                <source>label.name</source><target>Nimetus</target>
+            </trans-unit>
+            <trans-unit id="label.description">
+                <source>label.description</source><target>Kirjeldus</target>
+            </trans-unit>
+            <trans-unit id="default">
+                <source>Default</source><target>Peamine</target>
+            </trans-unit>
+            <trans-unit id="admin.active">
+                <source>admin.active</source><target>Aktiivne</target>
+            </trans-unit>
+            <trans-unit id="admin.hidden">
+                <source>admin.hidden</source><target>Peidetud</target>
+            </trans-unit>
+            <trans-unit id="admin.visible">
+                <source>admin.visible</source><target>Nähtav</target>
+            </trans-unit>
+            <trans-unit id="admin.static.title">
+                <source>admin.static.title</source><target>Nimetus</target>
+            </trans-unit>
+            <trans-unit id="admin.static.content">
+                <source>admin.static.content</source><target>Sisukord</target>
+            </trans-unit>
+            <trans-unit id="admin.dish.recomended">
+                <source>admin.dish.recomended</source><target>Soovitatakse</target>
+            </trans-unit>
+            <trans-unit id="label.alias">
+                <source>label.alias</source>
+                <target>Alias</target>
+            </trans-unit>
+            <trans-unit id="admin.place.slogan">
+                <source>admin.place.slogan</source><target>Hüüdlause</target>
+            </trans-unit>
+            <trans-unit id="admin.place.description">
+                <source>admin.place.description</source><target>Kirjeldus</target>
+            </trans-unit>
+            <trans-unit id="admin.place.alcohol_rules">
+                <source>admin.place.alcohol_rules</source><target>Alkoholireeglid</target>
+            </trans-unit>
+            <trans-unit id="admin.place.recommended">
+                <source>admin.place.recommended</source><target>Soovit.</target>
+            </trans-unit>
+            <trans-unit id="admin.place.discount_prices_enabled">
+                <source>admin.place.discount_prices_enabled</source><target>Soodustuste hinnad</target>
+            </trans-unit>
+            <trans-unit id="admin.place.delivery_option.delivery_and_pickup">
+                <source>admin.place.delivery_option.delivery_and_pickup</source><target>Kohaletoimetamine ja järeletulemine</target>
+            </trans-unit>
+            <trans-unit id="admin.place.delivery_option.delivery">
+                <source>admin.place.delivery_option.delivery</source><target>Ainult kohaletoimetamine</target>
+            </trans-unit>
+            <trans-unit id="admin.place.delivery_option.ickup">
+                <source>admin.place.delivery_option.pickup</source><target>Ainult järeletulemine</target>
+            </trans-unit>
+            <trans-unit id="admin.place.point.weekdays_worktime">
+                <source>admin.place.point.weekdays_worktime</source><target>Tööaeg</target>
+            </trans-unit>
+            <trans-unit id="admin.place.point.weekday_trans1">
+                <source>admin.place.point.weekday_trans1</source><target>Esmaspäev</target>
+            </trans-unit>
+            <trans-unit id="admin.place.point.weekday_trans2">
+                <source>admin.place.point.weekday_trans2</source><target>Teisipäev</target>
+            </trans-unit>
+            <trans-unit id="admin.place.point.weekday_trans3">
+                <source>admin.place.point.weekday_trans3</source><target>Kolmapäev</target>
+            </trans-unit>
+            <trans-unit id="admin.place.point.weekday_trans4">
+                <source>admin.place.point.weekday_trans4</source><target>Neljapäev</target>
+            </trans-unit>
+            <trans-unit id="admin.place.point.weekday_trans5">
+                <source>admin.place.point.weekday_trans5</source><target>Reede</target>
+            </trans-unit>
+            <trans-unit id="admin.place.point.weekday_trans6">
+                <source>admin.place.point.weekday_trans6</source><target>Laupäev</target>
+            </trans-unit>
+            <trans-unit id="admin.place.point.weekday_trans7">
+                <source>admin.place.point.weekday_trans7</source><target>Pühapäev</target>
+            </trans-unit>
+            <trans-unit id="admin.point.pickup">
+                <source>admin.point.pickup</source><target>Järeletulemine</target>
+            </trans-unit>
+            <trans-unit id="admin.point.delivery">
+                <source>admin.point.delivery</source><target>Kohaletoomine</target>
+            </trans-unit>
+            <trans-unit id="admin.point.active">
+                <source>admin.point.active</source><target>Aktiivne</target>
+            </trans-unit>
+            <trans-unit id="admin.static.seo_title">
+                <source>admin.static.seo_title</source><target>SEO-pealkiri</target>
+            </trans-unit>
+            <trans-unit id="admin.static.seo_description">
+                <source>admin.static.seo_description</source><target>SEO-kirjeldus</target>
+            </trans-unit>
+            <!-- Bendri puslapio -->
+            <trans-unit id="404 Not Found">
+                <source>404 Not Found</source><target>Kahjuks lehekülge ei leitud.</target>
+            </trans-unit>
+            <trans-unit id="global.page_not_found">
+                <source>global.page_not_found</source><target>Lehekülge ei leitud</target>
+            </trans-unit>
+            <trans-unit id="global.page_not_found.description">
+                <source>global.page_not_found.description</source><target>Kontrollige, kas kirjutasite aadressi õigesti.</target>
+            </trans-unit>
+            <trans-unit id="general.error_happened">
+                <source>general.error_happened</source><target>Kahjuks ilmnes tõrge</target>
+            </trans-unit>
+            <trans-unit id="general.error_happened.description">
+                <source>general.error_happened.description</source><target>Palun proovige mõne minuti pärast uuesti</target>
+            </trans-unit>
+            <trans-unit id="label_type_yes">
+                <source>label_type_yes</source><target>Jah</target>
+            </trans-unit>
+            <trans-unit id="label_type_no">
+                <source>label_type_no</source><target>Ei</target>
+            </trans-unit>
+            <!-- Vartotojai -->
+            <trans-unit id="ROLE_ADMIN: ROLE_MODERATOR">
+                <source>ROLE_ADMIN: ROLE_MODERATOR</source><target>Kodulehe administraator</target>
+            </trans-unit>
+            <trans-unit id="ROLE_MODERATOR">
+                <source>ROLE_MODERATOR</source><target>Restorani esindaja</target>
+            </trans-unit>
+            <trans-unit id="ROLE_USER">
+                <source>ROLE_USER</source><target>Külastaja</target>
+            </trans-unit>
+            <trans-unit id="ROLE_MARKETING">
+                <source>ROLE_MARKETING</source>
+                <target>Marketing</target>
+            </trans-unit>
+            <trans-unit id="ROLE_EDITOR">
+                <source>ROLE_EDITOR</source>
+                <target>Editor</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
