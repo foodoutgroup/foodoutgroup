@@ -1,0 +1,21 @@
+callcenter:
+    title: Skambučių centras
+    phone_search_button: Aadress pagal telefona
+    logout_button: Väljalogimine
+    location_panel:
+        title: Parinktas adresas
+        error: Šiuo adresu maisto nepristatome
+    location_form:
+        title: Aadress
+        street: Gatvė, pvž., laisvės
+        house: Namo nr., pvž., 77
+        submit: Toliau
+    places_form:
+        place: Restoran
+        dishes: Patiekalai
+        no_dishes: Patiekalų nėra
+        filter_placeholder: Otsing...gal patiekalo pavadinimą
+        reset: Telimuse tühistamine
+        success: Telimus sėkmingai sukurtas
+        back_to_menu: Gr.... -ssežti .... -sse meniu
+        cart: Ostukorv

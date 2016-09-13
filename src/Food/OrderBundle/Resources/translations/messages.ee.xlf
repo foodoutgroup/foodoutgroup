@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="lt" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="email.dishes.options" resname="email.dishes.options">
+                <source>email.dishes.options</source><target>Lisad</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.invoice_title" resname="order.invoice.invoice_title">
+                <source>order.invoice.invoice_title</source><target>KM-ARVE</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.series" resname="order.invoice.series">
+                <source>order.invoice.series</source><target>Seeria</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.number" resname="order.invoice.number">
+                <source>order.invoice.number</source><target>Nr</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.seller" resname="order.invoice.seller">
+                <source>order.invoice.seller</source><target>MÜÜJA</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.buyer" resname="order.invoice.buyer">
+                <source>order.invoice.buyer</source><target>OSTJA</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.document_date" resname="order.invoice.document_date">
+                <source>order.invoice.document_date</source><target>Dokumendi kuupäev</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.company_code" resname="order.invoice.company_code">
+                <source>order.invoice.company_code</source><target>Registrikood</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.vat_num" resname="order.invoice.vat_num">
+                <source>order.invoice.vat_num</source><target>KMRK</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.bank_code" resname="order.invoice.bank_code">
+                <source>order.invoice.bank_code</source><target>Panga kood</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.line_num" resname="order.invoice.line_num">
+                <source>order.invoice.line_num</source><target>Jrk nr</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.order_no" resname="order.invoice.order_no">
+                <source>order.invoice.order_no</source><target>Tellimuse nr</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.product_name" resname="order.invoice.product_name">
+                <source>order.invoice.product_name</source><target>Nimetus</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.measure_name" resname="order.invoice.measure_name">
+                <source>order.invoice.measure_name</source><target>Mõõtühik</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.quantity" resname="order.invoice.quantity">
+                <source>order.invoice.quantity</source><target>Kogus</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.price" resname="order.invoice.price">
+                <source>order.invoice.price</source><target>Hind</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.sum" resname="order.invoice.sum">
+                <source>order.invoice.sum</source><target>Summa</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.food_from1822" resname="order.invoice.food_from1822">
+                <source>order.invoice.food_from1822</source><target>Toit</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.sum_no_vat" resname="order.invoice.sum_no_vat">
+                <source>order.invoice.sum_no_vat</source><target>Kokku</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.delivery" resname="order.invoice.delivery">
+                <source>order.invoice.delivery</source><target>Kohaletoomine</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.vat" resname="order.invoice.vat">
+                <source>order.invoice.vat</source><target>KM</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.sum_total" resname="order.invoice.sum_total">
+                <source>order.invoice.sum_total</source><target>Maksta kokku</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.sum_words" resname="order.invoice.sum_words">
+                <source>order.invoice.sum_words</source><target>Summa sõnadega</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.invoice_receiver" resname="order.invoice.invoice_receiver">
+                <source>order.invoice.invoice_receiver</source><target>Arve võttis vastu</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_company_name" resname="order.invoice.foodout_company_name">
+                <source>order.invoice.foodout_company_name</source><target>UAB FOODOUT.LT</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_address" resname="order.invoice.foodout_address">
+                <source>order.invoice.foodout_address</source><target>Laisvės pr. 77C-58, 06155 Vilnius</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_company_code" resname="order.invoice.foodout_company_code">
+                <source>order.invoice.foodout_company_code</source><target>303134580</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_vat_code" resname="order.invoice.foodout_vat_code">
+                <source>order.invoice.foodout_vat_code</source><target>LT100008038519</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_bank" resname="order.invoice.foodout_bank">
+                <source>order.invoice.foodout_bank</source><target>Swedbank AB</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_bank_code" resname="order.invoice.foodout_bank_code">
+                <source>order.invoice.foodout_bank_code</source><target>73000</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.foodout_bank_account" resname="order.invoice.foodout_bank_account">
+                <source>order.invoice.foodout_bank_account</source><target>LT92 7300 0101 3664 5307</target>
+            </trans-unit>
+            <trans-unit id="daily_report.metric" resname="daily_report.metric">
+                <source>daily_report.metric</source><target>Mõõdikud</target>
+            </trans-unit>
+            <trans-unit id="daily_report.value" resname="daily_report.value">
+                <source>daily_report.value</source><target>Tähendus</target>
+            </trans-unit>
+            <trans-unit id="daily_report.kpi_metric" resname="daily_report.kpi_metric">
+                <source>daily_report.kpi_metric</source><target>KPI</target>
+            </trans-unit>
+            <trans-unit id="daily_report.income" resname="daily_report.income">
+                <source>daily_report.income</source><target>Sissetulekud</target>
+            </trans-unit>
+            <trans-unit id="daily_report.successful_orders" resname="daily_report.successful_orders">
+                <source>daily_report.successful_orders</source><target>Edukad tellimused</target>
+            </trans-unit>
+            <trans-unit id="daily_report.average_cart_size" resname="daily_report.average_cart_size">
+                <source>daily_report.average_cart_size</source><target>Ostukorvi keskmine summa</target>
+            </trans-unit>
+            <trans-unit id="daily_report.average_delivery_time" resname="daily_report.average_delivery_time">
+                <source>daily_report.average_delivery_time</source><target>Keskmine kohaletoimetamise aeg</target>
+            </trans-unit>
+            <trans-unit id="daily_report.unique_users" resname="daily_report.unique_users">
+                <source>daily_report.unique_users</source><target>Unikaalsete külastajate arv</target>
+            </trans-unit>
+            <trans-unit id="daily_report.returning_users" resname="daily_report.returning_users">
+                <source>daily_report.returning_users</source><target>Tagasi tulnud külastajate arv</target>
+            </trans-unit>
+            <trans-unit id="daily_report.city" resname="daily_report.city">
+                <source>daily_report.city</source><target>Regioon</target>
+            </trans-unit>
+            <trans-unit id="weekly_report.places" resname="weekly_report.places">
+                <source>weekly_report.places</source><target>Restoranide arv</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
