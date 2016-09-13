@@ -586,7 +586,7 @@ class OrderService extends ContainerAware
                         $timeShift = $miscService->parseTimeToMinutes($order->getPlace()->getPickupTime());
                     } else {
                         $place = $order->getPlace();
-                        $timeShift = $placeService->getDeliveryTime($order->getPlace(), $order->getPlacePoint());
+                        $timeShift = $miscService->parseTimeToMinutes($placeService->getDeliveryTime($order->getPlace(), $order->getPlacePoint()));
                     }
 
                     $this->logOrder($order, 'calculating_delivery_time', 'Setting delivery time with a parsed value of ' . $timeShift . ' minutes');
@@ -595,7 +595,7 @@ class OrderService extends ContainerAware
                     }
 
                     $dt = new \DateTime('now');
-                    $dt->modify('+'.$timeShift.'minutes');
+                    $dt->modify('+' . $timeShift . ' minutes');
                     $order->setDeliveryTime($dt);
                 }
                 $this->saveOrder();
