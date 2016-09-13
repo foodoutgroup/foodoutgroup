@@ -292,19 +292,19 @@ class PlaceRepository extends EntityRepository
         }
 
         if ($recommended) {
-            $ppCounter = "SELECT COUNT(*) 
-                         FROM place_point ppc 
-                         WHERE ppc.active=1 
-                          AND ppc.deleted_at IS NULL 
+            $ppCounter = "SELECT COUNT(*)
+                         FROM place_point ppc
+                         WHERE ppc.active=1
+                          AND ppc.deleted_at IS NULL
                           AND ppc.place = p.id";
 
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp 
-                     WHERE pp.place = p.id 
-                        AND p.active=1 
-                        AND pp.active = 1 
-                        AND pp.deleted_at IS NULL " . $placeFilter . $otherFilters . $kitchensQuery . " 
-                        AND recommended=1 
-                     GROUP BY p.id 
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp
+                     WHERE pp.place = p.id
+                        AND p.active=1
+                        AND pp.active = 1
+                        AND pp.deleted_at IS NULL " . $placeFilter . $otherFilters . $kitchensQuery . "
+                        AND recommended=1
+                     GROUP BY p.id
                      ORDER BY p.priority DESC, RAND()";
         } else {
             $ppCounter = "SELECT COUNT(*)
@@ -402,11 +402,11 @@ class PlaceRepository extends EntityRepository
 
         if (!$ignoreWorkTime) {
             $subQuery .= " AND ppwt.week_day = " . $wd;
-            $subQuery .= " 
+            $subQuery .= "
                       AND (
                         (ppwt.start_hour = 0 OR ppwt.start_hour < $dh OR
                           (ppwt.start_hour <= $dh AND ppwt.start_min <= $dm)
-                        ) AND 
+                        ) AND
                         ((ppwt.end_hour >= $dh AND ppwt.end_min >= $dm) OR
                             ppwt.end_hour > $dh OR ppwt.end_hour = 0)
                       )";
@@ -456,14 +456,14 @@ class PlaceRepository extends EntityRepository
                 $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
                 $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id";
 
-                $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) 
+                $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) )))
                     FROM place_point pp, place p, place_point_work_time ppwt
-                    WHERE p.id = pp.place 
+                    WHERE p.id = pp.place
                       AND pp.id = ppwt.place_point
-                      AND pp.active=1 
-                      AND pp.deleted_at IS NULL 
-                      AND p.active=1 
-                      AND pp.city='" . $city . "' 
+                      AND pp.active=1
+                      AND pp.deleted_at IS NULL
+                      AND p.active=1
+                      AND pp.city='" . $city . "'
                       AND pp.place = $placeId
                       AND (
                         (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
@@ -474,7 +474,7 @@ class PlaceRepository extends EntityRepository
                       AND (
                         (ppwt.start_hour = 0 OR ppwt.start_hour < " . $dh . " OR
                           (ppwt.start_hour <= " . $dh . " AND ppwt.start_min <= " . $dm . ")
-                        ) AND 
+                        ) AND
                         ((ppwt.end_hour >= " . $dh . " AND ppwt.end_min >= " . $dm . ") OR
                             ppwt.end_hour > " . $dh . " OR ppwt.end_hour = 0)
                       )
