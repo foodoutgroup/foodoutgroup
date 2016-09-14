@@ -122,7 +122,7 @@
                 {{ order.orderExtra.phone }}
                 {% if order.place.onlyAlcohol %}
                     <br />
-                            {{ order.user.fullName }}
+                            {{ order.orderExtra.firsname }} {{ order.orderExtra.lastname }}
                             {% if order.deliveryType == 'deliver' %}
                                 <br />
                                 {{ order.addressId.address }}, {{ order.addressId.city }}
