@@ -146,6 +146,12 @@ food_landing_b2b_client_lv:
 food_landing_b2b_client_lv_slash:
     path: /b2b-klients/
     defaults: { _controller: FoodAppBundle:Landing:b2bClient }
+food_landing_b2b_client_ee:
+    path: /b2b-clients
+    defaults: { _controller: FoodAppBundle:Landing:b2bClient }
+food_landing_b2b_client_ee_slash:
+    path: /b2b-clients/
+    defaults: { _controller: FoodAppBundle:Landing:b2bClient }
 
 food_slug:
     path:  /{slug}/
@@ -355,6 +361,10 @@ food_place_lv:
     resource: "@FoodPlacesBundle/Resources/config/routing_lv.yml"
     prefix:   /vietas
 
+food_place_ee:
+    resource: "@FoodPlacesBundle/Resources/config/routing_ee.yml"
+    prefix:   /places
+
 food_place_ru:
     resource: "@FoodPlacesBundle/Resources/config/routing_ru.yml"
     prefix:   /mesto
@@ -366,6 +376,10 @@ food_restaurants_lt:
 food_restaurants_lv:
     resource: "@FoodPlacesBundle/Resources/config/routing_lv.yml"
     prefix:   /restorani
+
+food_restaurants_ee:
+    resource: "@FoodPlacesBundle/Resources/config/routing_ee.yml"
+    prefix:   /restourans
 
 food_places_filter:
     path: /places/filter/
