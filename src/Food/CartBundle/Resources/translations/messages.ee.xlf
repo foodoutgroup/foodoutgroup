@@ -89,7 +89,7 @@
                 <source>cart.checkout.delivery_comment</source><target>Lisateave</target>
             </trans-unit>
             <trans-unit id="cart.checkout.cart_rules" resname="cart.checkout.cart_rules">
-                <source>cart.checkout.cart_rules</source><target>Olen <a href=</target>
+                <source>cart.checkout.cart_rules</source><target><![CDATA[Olen <a href="#rules" name="order_rules" class="fancy-box">taisyklėmis</a>]]></target>
             </trans-unit>
             <trans-unit id="cart.checkout.newsletter_subscribe" resname="cart.checkout.newsletter_subscribe">
                 <source>cart.checkout.newsletter_subscribe</source>
@@ -250,7 +250,7 @@ Vilnius</target>
                 <source>order.form.errors.customeraddr</source><target>Aadress on märkimata</target>
             </trans-unit>
             <trans-unit id="order.form.errors.cartlessthanminimum" resname="order.form.errors.cartlessthanminimum">
-                <source>order.form.errors.cartlessthanminimum</source><target><b>Tellimuse summa on ostukorvi minimaalsest summast väiksem</b></target>
+                <source>order.form.errors.cartlessthanminimum</source><target><![CDATA[<b>Tellimuse summa on ostukorvi minimaalsest summast väiksem</b>]]></target>
             </trans-unit>
             <trans-unit id="order.form.errors.cartlessthanminimum_on_pickup" resname="order.form.errors.cartlessthanminimum_on_pickup">
                 <source>order.form.errors.cartlessthanminimum_on_pickup</source><target>Seda toitu praegu ei valmistata: %text%</target>
@@ -275,16 +275,16 @@ Vilnius</target>
                 <source>order.form.errors.cart_rules</source><target>Teil tuleb nõustuda veebisaidi reeglitega.</target>
             </trans-unit>
             <trans-unit id="order.form.errors.problems_with_dish" resname="order.form.errors.problems_with_dish">
-                <source>order.form.errors.problems_with_dish</source><target>Me ei saa teile praegu järgmist toitu valmistada: <b>%text%</b>. Eemaldage see ja valige menüüst mõni muu toit</target>
+                <source>order.form.errors.problems_with_dish</source><target><![CDATA[Me ei saa teile praegu järgmist toitu valmistada: <b>%text%</b>. Eemaldage see ja valige menüüst mõni muu toit]]></target>
             </trans-unit>
             <trans-unit id="order.form.errors.nav_restaurant_no_work" resname="order.form.errors.nav_restaurant_no_work">
-                <source>order.form.errors.nav_restaurant_no_work</source><target><b>Restoran ei saa praegu teie tellimust vastu võtta</b></target>
+                <source>order.form.errors.nav_restaurant_no_work</source><target><![CDATA[<b>Restoran ei saa praegu teie tellimust vastu võtta</b>]]></target>
             </trans-unit>
             <trans-unit id="order.form.errors.nav_restaurant_no_setted" resname="order.form.errors.nav_restaurant_no_setted">
-                <source>order.form.errors.nav_restaurant_no_setted</source><target><b>Restoran ei ole praegu saadaval.</b></target>
+                <source>order.form.errors.nav_restaurant_no_setted</source><target><![CDATA[<b>Restoran ei ole praegu saadaval.</b>]]></target>
             </trans-unit>
             <trans-unit id="order.form.errors.nav_empty_cart" resname="order.form.errors.nav_empty_cart">
-                <source>order.form.errors.nav_empty_cart</source><target><b>Ostukorvis ei ole toite.</b></target>
+                <source>order.form.errors.nav_empty_cart</source><target><![CDATA[<b>Ostukorvis ei ole toite.</b>]]></target>
             </trans-unit>
             <trans-unit id="order.form.errors.empty_company" resname="order.form.errors.empty_company">
                 <source>order.form.errors.empty_company</source><target>Sisestage selle ettevõtte nimi, kellele soovite arvet</target>
@@ -369,7 +369,7 @@ Vilnius</target>
                 <source>general.coupon.not_active</source><target>Teie esitatud sooduskupong ei kehti</target>
             </trans-unit>
             <trans-unit id="general.coupon.popup_link" resname="general.coupon.popup_link">
-                <source>general.coupon.popup_link</source><target>Kui teil on sooduskupong, sisestage <a href=</target>
+                <source>general.coupon.popup_link</source><target><![CDATA[Kui teil on sooduskupong, sisestage <a href="#coupon" class="fancy-box">jo kodą čia</a>]]></target>
             </trans-unit>
             <trans-unit id="general.coupon.note_text" resname="general.coupon.note_text">
                 <source>general.coupon.note_text</source>

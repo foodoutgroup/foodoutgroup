@@ -336,7 +336,7 @@
                 <source>general.login_login_button</source><target>Logige sisse</target>
             </trans-unit>
             <trans-unit id="5ad57190264dcf453d3f80908aa924de" resname="general.help_slug">
-                <source>general.help_slug</source><target>abi</target>
+                <source>general.help_slug</source><target>abi-page</target>
             </trans-unit>
             <trans-unit id="9e30081c6301c29c22942527d1d900ab" resname="general.close_btn">
                 <source>general.close_btn</source><target>Sulgemine</target>
@@ -673,7 +673,7 @@
                 <source>general.email.accounting_report.swedbank-gateway</source><target>Internetis (Swedbanki pangalink)</target>
             </trans-unit>
             <trans-unit id="2a27b06725260bba699dd331a49827d8_new" resname="index.title_page_header">
-                <source>index.title_page_header</source><target>Säästke aega! Tellige toitu<br />koju, kontorisse või välja viimiseks!</target>
+                <source>index.title_page_header</source><target><![CDATA[Säästke aega! Tellige toitu<br />koju, kontorisse või välja viimiseks!]]></target>
             </trans-unit>
             <trans-unit id="02e3d3477fa84ee89d7c8f812fe8d4b1" resname="index.search_form_qlue">
                 <source>index.search_form_qlue</source><target>Sisestage oma aadress, et saada teada, millistest restoranidest on võimalik toitu tellida</target>
@@ -682,7 +682,7 @@
                 <source>general.ip_banned</source><target>Teie IP-aadress on blokeeritud</target>
             </trans-unit>
             <trans-unit id="general.ip_banned_info" resname="general.ip_banned_info">
-                <source>general.ip_banned_info</source><target>Teie IP-aadress (%ip%) on kahjuks blokeeritud.<br />IP-aadressid blokeeritakse, kui külastaja koostab valetellimusi; laimab, solvab või segab sihilikult muul viisil teisi külastajaid või restoranide tööd.<br /><br />Administraatori nimetatud põhjus: </target>
+                <source>general.ip_banned_info</source><target><![CDATA[Teie IP-aadress (%ip%) on kahjuks blokeeritud.<br />IP-aadressid blokeeritakse, kui külastaja koostab valetellimusi; laimab, solvab või segab sihilikult muul viisil teisi külastajaid või restoranide tööd.<br /><br />Administraatori nimetatud põhjus: ]]></target>
             </trans-unit>
             <trans-unit id="general.raty.not_rated_yet" resname="general.raty.not_rated_yet">
                 <source>general.raty.not_rated_yet</source>
@@ -720,7 +720,7 @@
                 <source>general.restaurant_page_title</source><target>%restaurant_name% – toidu tellimine koju</target>
             </trans-unit>
             <trans-unit id="general.cart.success" resname="general.cart.success">
-                <source>general.cart.success</source><target>Teie tellimus on vastu võetud ja peaks teieni jõudma kohe, kui restoran on selle valmis saanud. <br/>Kui teil on küsimusi või soovite teha viimase minuti muudatusi, helistage meile <br/> su <strong>Foodout.lt</strong> telefonil <strong>+370 6100 4970</strong><br/>või<br/>ettevõtte <strong>%placeName%</strong> telefonil <strong>+%placePhone%</strong>.</target>
+                <source>general.cart.success</source><target><![CDATA[Teie tellimus on vastu võetud ja peaks teieni jõudma kohe, kui restoran on selle valmis saanud. <br/>Kui teil on küsimusi või soovite teha viimase minuti muudatusi, helistage meile <br/> su <strong>Foodout.lt</strong> telefonil <strong>+370 6100 4970</strong><br/>või<br/>ettevõtte <strong>%placeName%</strong> telefonil <strong>+%placePhone%</strong>.]]></target>
             </trans-unit>
             <trans-unit id="general.cart.success_pre" resname="general.cart.success_pre">
                 <source>general.cart.success_pre</source>
@@ -730,10 +730,10 @@
                 <source>general.cart.success_title</source><target>Valmis</target>
             </trans-unit>
             <trans-unit id="general.cart.success_no_place_num" resname="general.cart.success_no_place_num">
-                <source>general.cart.success_no_place_num</source><target>Teie tellimus on vastu võetud ja peaks teieni jõudma kohe, kui restoran on selle valmis saanud. <br/>Kui teil on küsimusi või soovite teha viimase minuti muudatusi, helistage meile <br/> su <strong>Foodout.lt</strong> telefonil <strong>+370 6100 4970</strong>.</target>
+                <source>general.cart.success_no_place_num</source><target><![CDATA[Teie tellimus on vastu võetud ja peaks teieni jõudma kohe, kui restoran on selle valmis saanud. <br/>Kui teil on küsimusi või soovite teha viimase minuti muudatusi, helistage meile <br/> su <strong>Foodout.lt</strong> telefonil <strong>+370 6100 4970</strong>.]]></target>
             </trans-unit>
             <trans-unit id="general.cart.wait" resname="general.cart.wait">
-                <source>general.cart.wait</source><target>Teie tellimus on vastu võetud ja edastatakse restoranile kohe, kui olete selle eest maksnud. <br/> <br/>Kui teil on küsimusi või soovite teha viimase minuti muudatusi, helistage meile <br/> su <strong>Foodout.lt</strong> telefonil <strong>+370 6100 4970</strong><br/>või<br/>ettevõtte <strong>%placeName%</strong> telefonil <strong>+%placePhone%</strong>.</target>
+                <source>general.cart.wait</source><target><![CDATA[Teie tellimus on vastu võetud ja edastatakse restoranile kohe, kui olete selle eest maksnud. <br/> <br/>Kui teil on küsimusi või soovite teha viimase minuti muudatusi, helistage meile <br/> su <strong>Foodout.lt</strong> telefonil <strong>+370 6100 4970</strong><br/>või<br/>ettevõtte <strong>%placeName%</strong> telefonil <strong>+%placePhone%</strong>.]]></target>
             </trans-unit>
             <trans-unit id="reporting.monthly.driver_report.title" resname="reporting.monthly.driver_report.title">
                 <source>reporting.monthly.driver_report.title</source><target>Eelmise kuu (%reportDate%) autojuhtide laiali veetud tellimused</target>
@@ -751,13 +751,13 @@
                 <source>reporting.monthly.driver_report.payment_banklink</source><target>Tasutud internetis</target>
             </trans-unit>
             <trans-unit id="reporting.monthly.driver_report.payment_local_sum" resname="reporting.monthly.driver_report.payment_local_sum">
-                <source>reporting.monthly.driver_report.payment_local_sum</source><target>Kohapeal tasutud summa<br />(KM-iga)</target>
+                <source>reporting.monthly.driver_report.payment_local_sum</source><target><![CDATA[Kohapeal tasutud summa<br />(KM-iga)]]></target>
             </trans-unit>
             <trans-unit id="reporting.monthly.driver_report.payment_banklink_sum" resname="reporting.monthly.driver_report.payment_banklink_sum">
-                <source>reporting.monthly.driver_report.payment_banklink_sum</source><target>Internetis tasutud summa<br />(KM-iga)</target>
+                <source>reporting.monthly.driver_report.payment_banklink_sum</source><target><![CDATA[Internetis tasutud summa<br />(KM-iga)]]></target>
             </trans-unit>
             <trans-unit id="reporting.monthly.driver_report.total_order_sum" resname="reporting.monthly.driver_report.total_order_sum">
-                <source>reporting.monthly.driver_report.total_order_sum</source><target>Tellimuste summa kokku<br />(KM-iga)</target>
+                <source>reporting.monthly.driver_report.total_order_sum</source><target><![CDATA[Tellimuste summa kokku<br />(KM-iga)]]></target>
             </trans-unit>
             <trans-unit id="reporting.monthly.driver_report.total_drivers" resname="reporting.monthly.driver_report.total_drivers">
                 <source>reporting.monthly.driver_report.total_drivers</source><target>Vedanud autojuhtide koguarv</target>
@@ -787,19 +787,19 @@
                 <source>reporting.daily.yesterday_orders.payment_type</source><target>Arveldamise tüüp</target>
             </trans-unit>
             <trans-unit id="reporting.daily.yesterday_orders.delivery_with_vat" resname="reporting.daily.yesterday_orders.delivery_with_vat">
-                <source>reporting.daily.yesterday_orders.delivery_with_vat</source><target>Kohaleviimine<br />(KM-iga)</target>
+                <source>reporting.daily.yesterday_orders.delivery_with_vat</source><target><![CDATA[Kohaleviimine<br />(KM-iga)]]></target>
             </trans-unit>
             <trans-unit id="reporting.daily.yesterday_orders.delivery_without_vat" resname="reporting.daily.yesterday_orders.delivery_without_vat">
-                <source>reporting.daily.yesterday_orders.delivery_without_vat</source><target>Kohaleviimine<br />(KM-ita)</target>
+                <source>reporting.daily.yesterday_orders.delivery_without_vat</source><target><![CDATA[Kohaleviimine<br />(KM-ita)]]></target>
             </trans-unit>
             <trans-unit id="reporting.daily.yesterday_orders.dishes_without_vat" resname="reporting.daily.yesterday_orders.dishes_without_vat">
-                <source>reporting.daily.yesterday_orders.dishes_without_vat</source><target>Toidud<br />(KM-ita)</target>
+                <source>reporting.daily.yesterday_orders.dishes_without_vat</source><target><![CDATA[Toidud<br />(KM-ita)]]></target>
             </trans-unit>
             <trans-unit id="reporting.daily.yesterday_orders.vat" resname="reporting.daily.yesterday_orders.vat">
                 <source>reporting.daily.yesterday_orders.vat</source><target>KM</target>
             </trans-unit>
             <trans-unit id="reporting.daily.yesterday_orders.total_with_vat" resname="reporting.daily.yesterday_orders.total_with_vat">
-                <source>reporting.daily.yesterday_orders.total_with_vat</source><target>Kokku<br />(KM-iga)</target>
+                <source>reporting.daily.yesterday_orders.total_with_vat</source><target><![CDATA[Kokku<br />(KM-iga)]]></target>
             </trans-unit>
             <trans-unit id="reporting.daily.yesterday_orders.preorder" resname="reporting.daily.yesterday_orders.preorder">
                 <source>reporting.daily.yesterday_orders.preorder</source>
@@ -818,13 +818,13 @@
                 <source>reporting.daily.yesterday_orders.no_driver</source><target>Ei ole märgitud??</target>
             </trans-unit>
             <trans-unit id="reporting.daily.yesterday_orders.coupon_code" resname="reporting.daily.yesterday_orders.coupon_code">
-                <source>reporting.daily.yesterday_orders.coupon_code</source><target>Soodus-<br />kood</target>
+                <source>reporting.daily.yesterday_orders.coupon_code</source><target><![CDATA[Soodus-<br />kood]]></target>
             </trans-unit>
             <trans-unit id="reporting.daily.yesterday_orders.discount_size" resname="reporting.daily.yesterday_orders.discount_size">
-                <source>reporting.daily.yesterday_orders.discount_size</source><target>Soodustuse<br />suurus (%)</target>
+                <source>reporting.daily.yesterday_orders.discount_size</source><target><![CDATA[Soodustuse<br />suurus (%)]]></target>
             </trans-unit>
             <trans-unit id="reporting.daily.yesterday_orders.discount_sum" resname="reporting.daily.yesterday_orders.discount_sum">
-                <source>reporting.daily.yesterday_orders.discount_sum</source><target>Soodustuse<br />summa</target>
+                <source>reporting.daily.yesterday_orders.discount_sum</source><target><![CDATA[Soodustuse<br />summa]]></target>
             </trans-unit>
             <trans-unit id="reporting.daily.yesterday_orders.sf_number" resname="reporting.daily.yesterday_orders.sf_number">
                 <source>reporting.daily.yesterday_orders.sf_number</source><target>Arve number</target>
@@ -1071,7 +1071,7 @@
                 <source>food.game.its_success</source><target>Aitäh! Olete edukalt registreerunud.</target>
             </trans-unit>
             <trans-unit id="food.game.agree" resname="food.game.agree">
-                <source>food.game.agree</source><target>Olen reeglitega nõus. <a href=</target>
+                <source>food.game.agree</source><target><![CDATA[Olen reeglitega nõus. <a href="rule_url">Taisyklės</a>]]></target>
             </trans-unit>
             <trans-unit id="general.wow_game" resname="general.wow_game">
                 <source>general.wow_game</source>
@@ -1081,10 +1081,10 @@
                 <source>food.marketing.bad_email</source><target>Vale e-posti aadress</target>
             </trans-unit>
             <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
-                <source>general.top_contact.worktime_days</source><target>VII–IV<br />V–I</target>
+                <source>general.top_contact.worktime_days</source><target><![CDATA[VII–IV<br />V–I]]></target>
             </trans-unit>
             <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
-                <source>general.top_contact.worktime</source><target>10.00–23.00<br />10.00–01.00.</target>
+                <source>general.top_contact.worktime</source><target><![CDATA[10.00–23.00<br />10.00–01.00.]]></target>
             </trans-unit>
             <trans-unit id="general.top_contact.phone" resname="general.top_contact.phone">
                 <source>general.top_contact.phone</source><target>+370 610 04970</target>
