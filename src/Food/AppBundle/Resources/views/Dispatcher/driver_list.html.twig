@@ -10,7 +10,7 @@
     {% for driver in drivers %}
     <tr class="{{ loop.index%2 ? 'odd' : 'even' }}">
         <td>{{ driver.name }}</td>
-        <td><a href="tel:{{ driver.phone }}">{{ driver.phone }}</a></td>
+        <td><a href="callto:{{ driver.phone }}">{{ driver.phone }}</a></td>
         {#<td>{{ ('admin.driver.type.' ~ driver.type)|trans({}, 'SonataAdminBundle') }}</td>#}
         {#<td>{{ driver.provider }}</td>#}
         <td>{{ order_service.getOrdersForDriver(driver)|length }}</td>
