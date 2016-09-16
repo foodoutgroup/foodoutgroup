@@ -645,7 +645,7 @@ var Dispatcher = {
                     $oldUserContent.find('.crm-user-firstname').text(data.info.user.firstname);
                     $oldUserContent.find('.crm-user-lastname').text(data.info.user.lastname);
 
-                    $oldUserContent.find('.crm-user-phone a').attr('href', 'tel:'+data.info.user.phone).text(data.info.user.phone);
+                    $oldUserContent.find('.crm-user-phone a').attr('href', 'callto:'+data.info.user.phone).text(data.info.user.phone);
                     $oldUserContent.find('.crm-user-email a').attr('href', 'mailto:'+data.info.user.email).text(data.info.user.email);
 
                     var $addresses = $oldUserContent.find('.crm-user-address a');
