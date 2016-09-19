@@ -4,6 +4,7 @@ namespace Food\ApiBundle\Common;
 
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
+use Food\OrderBundle\Service\OrderService;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
@@ -163,7 +164,7 @@ class Restaurant extends ContainerAware
 
         $devPrice = 0;
         $devCart = 0;
-        if (!empty($locationData)) {
+        if (!empty($locationData) && OrderService::$deliveryPickup != $deliveryType) {
             $placePointMap = $this->container->get('session')->get('point_data');
             if (empty($placePointMap[$place->getId()])) {
                 $ppId = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance(
