@@ -75,22 +75,26 @@ class PlaceRepository extends EntityRepository
         $city = null;
         $lat = null;
         $lon = null;
+        if (!empty($locationData) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
+            $city = (!empty($locationData['city']) ? $locationData['city'] : null);
+            $lat = str_replace(",", ".", $locationData['lat']);
+            $lon = str_replace(",", ".", $locationData['lng']);
+        } elseif (!empty($locationData) && !empty($locationData['city']) && isset($locationData['city_only']) && $locationData['city_only'] === true) {
+            $city = $locationData['city'];
+        }
+
         $zaval = 0;
         $pickup = (isset($filters['delivery_type']) && $filters['delivery_type'] == Place::OPT_ONLY_PICKUP);
         if ($pickup) {
-            $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id";
+            $cityWhere = '';
+            if (!empty($city)) {
+                $cityWhere = ' AND pps.city = \'' . $city . '\'';
+            }
+            $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id $cityWhere GROUP BY pps.place";
         } else {
             if ($container) {
                 $miscService = $container->get('food.app.utils.misc');
                 $zaval = $miscService->getParam('zaval_on');
-            }
-
-            if (!empty($locationData) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
-                $city = (!empty($locationData['city']) ? $locationData['city'] : null);
-                $lat = str_replace(",", ".", $locationData['lat']);
-                $lon = str_replace(",", ".", $locationData['lng']);
-            } elseif (!empty($locationData) && !empty($locationData['city']) && isset($locationData['city_only']) && $locationData['city_only'] === true) {
-                $city = $locationData['city'];
             }
 
             /**
@@ -176,7 +180,7 @@ class PlaceRepository extends EntityRepository
             }
         } else {
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='" . $city . "' AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city='" . $city . "' " . $placeFilter . $otherFilters . " AND pp.id =  (" . $subQuery . ") " . $kitchensQuery . " ORDER BY p.priority DESC, RAND()";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city='" . $city . "' " . $placeFilter . $otherFilters . " AND pp.id = (" . $subQuery . ") " . $kitchensQuery . " ORDER BY p.priority DESC, RAND()";
         }
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
