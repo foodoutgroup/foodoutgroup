@@ -1,0 +1,105 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: 3306
+    database_name: betalt
+    database_user: betalt
+    database_password: GTJKf2JQu5zV1vrV
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
+
+    aws_key: AKIAJN3454YNXAUSJIRA
+    aws_secret: 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
+    aws_region: eu-west-1
+    s3_bucket: foodout-invoice
+
+    locale: lt
+    locales: ["lt", "en", "ru"]
+    available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Utena", "Plungė"]
+    available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda", "Siauliai", "Panevezys", "Alytus", "Utena", "Plunge"]
+    available_locales: ["lt", "en", "ru"]
+    available_locales_routing: lt | en | ru
+    cloudfront_url: images.foodout.lt
+    time_zone: "Europe/Vilnius"
+    sms.sender: "Foodout.lt"
+    admin.emails: [karolis.m@foodout.lt]
+    admin.phones: [37061514333]
+    order.notify_emails: []
+    order.city_coordinators:
+        vilnius: []
+        kaunas: []
+        klaipėda: []
+        ryga: [karolis.m@foodout.lt]
+    order.accept_notify_emails: []
+    order.cancel_notify_emails: [pagalba@foodout.lt]
+    accounting_email: "buhalterija@foodout.lt"
+    payment.methods:
+        - local
+        - local.card
+        - postpaid
+        - paysera
+        - swedbank-gateway
+        - swedbank-credit-card-gateway
+        - seb-banklink
+        - nordea-banklink
+    currency_display: '&euro;'
+    currency_iso: EUR
+    display_currency_alternative:  Lt
+    currency_alternative: false
+    invoice.series: FOO
+    show_best_offers: true
+    show_game: true
+    show_apps_download: true
+    show_is_social: true
+    show_delfi_banner: false
+    track_conversions: false
+    # naudojam telefonu validacijoms
+    country: LT
+    country_full: Lithuania
+    vat: 21
+    title: "Foodout"
+    domain: "foodout.lt"
+    publicdomain: "foodout.lt"
+    google_analytics_uid: "UA-50355577-1"
+    google.analytics.view_id: "85237075"
+    nav_table_prefix: 'Čilija Skambučių Centras'
+    nav_ws_prefix: 'Čilija Skambučių Centras'
+    mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
+    mailer_notify_on_accept: 30010811
+    mailer_notify_pickup_on_accept: 41582385
+    mailer_notify_new_user: 30009253
+    mailer_user_reset: 30013949
+    mailer_partialy_deliverer: 30021995
+    mailer_rate_your_food: 30009271
+    mailer_send_invoice: 30019657
+    mailer_send_corporate_invoice: 41585359
+    mailer_send_corporate_changed_password: 41611093
+    mailer_send_free_delivery_discount: 41611735
+    yt_video: https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=
+    yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
+    default_delivery_distance: 7
+    default_self_delivey_distance: 10
+    dispatcher_phones: []
+    send_sms_on_cancel: false
+    dispatcher_contact_phone: "37069855544"
+    call_centre_phone: "37052195281"
+    week_layout: 1
+    hide_online_payments: false
+    number_format:
+        decimal_places: 2
+        decimal_separator: ','
+        thousands_separator: ' '
+    show_invoice_option: true
+    place_slug_manual: false
+    alcohol_allowed: true
+    place_with_neighbourhood: false
+    dispatcher_bell: false
+    static_page_privacy_policy: 8
+    static_page_b2b_rules: 29
+    b2b_first_month_discount: true
+    b2b_first_month_discount_percent: 10
+    newsletter_subscribe_tick_by_default: true
+    show_making_time_deadline: false
