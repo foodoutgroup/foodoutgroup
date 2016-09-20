@@ -18,6 +18,6 @@ role :db,         domain, :primary => true       # This is where Symfony2 migrat
 #set :skype_topic, "skanu.lt"
 
 # parameters file
-set :parameters_file, "betalt.dist"
+set :parameters_file, "betalt.yml.dist"
 set :kpi_file, "kpi_production.yml.dist"
 set :robots_file, "robots.prod.txt.dist"
