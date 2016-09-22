@@ -40,7 +40,7 @@
             submitKitchens();
         });
 
-        $('.clear-filter-link').click(function() {
+        $(document).on('click', '.clear-filter-link', function() {
             $('.content-lefter input').iCheck('uncheck');
         });
 
