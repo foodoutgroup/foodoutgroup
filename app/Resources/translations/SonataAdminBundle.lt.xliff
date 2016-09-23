@@ -1871,6 +1871,10 @@
                 <source>admin.driver.type.outsource</source>
                 <target>Išorinis</target>
             </trans-unit>
+            <trans-unit id="admin.driver.type.individual">
+                <source>admin.driver.type.individual</source>
+                <target>Individuali veikla</target>
+            </trans-unit>
             <trans-unit id="admin.driver.has_orders">
                 <source>admin.driver.has_orders</source>
                 <target>Užsak.</target>
