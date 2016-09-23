@@ -68,6 +68,10 @@ food_nav_list:
     path: /test/nav/list
     defaults: { _controller: FoodAppBundle:Test:listOrders }
 
+food_nav_list2:
+    path: /test/nav/list2
+    defaults: { _controller: FoodAppBundle:Test:listOrders2 }
+
 food_nav_migrator:
     path: /test/migrator/{date}
     defaults: { _controller: FoodAppBundle:Test:migrator, date: ~ }
