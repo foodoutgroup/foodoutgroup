@@ -2,9 +2,9 @@ parameters:
     database_driver: pdo_mysql
     database_host: localhost
     database_port: 3306
-    database_name: foodout_lv
-    database_user: foodout_lv
-    database_password: U7P9OK7LV9LF5ZN
+    database_name: foodoutlv
+    database_user: foodoutlv
+    database_password: vhYsVr11XTJt3tnO
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
@@ -22,7 +22,7 @@ parameters:
     available_cities_slugs: ["Riga"]
     available_locales: ["lv", "en", "ru"]
     available_locales_routing: lv | en | ru
-    cloudfront_url: images.foodout.lv
+    cloudfront_url: foodout.lv
     time_zone: "Europe/Riga"
     sms.sender: "Foodout.lv"
     admin.emails: [karolis.m@foodout.lt]
