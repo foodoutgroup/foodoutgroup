@@ -770,6 +770,7 @@ class OrderService extends ContainerAware
         }
 
         $restaurant_address = $order->getAddressId()->getAddress() . " " . $order->getAddressId()->getCity();
+        $pickup_restaurant_address = $order->getPlacePointAddress() . ' ' . $order->getPlacePointCity();
         $curr_locale = $this->container->getParameter('locale');
         $languageUtil = $this->container->get('food.app.utils.language');
 
@@ -781,6 +782,7 @@ class OrderService extends ContainerAware
                     'order_id'           => $order->getId(),
                     'restaurant_title'   => $restaurant_title,
                     'restaurant_address' => $restaurant_address,
+                    'pickup_restaurant_address' => $pickup_restaurant_address,
                     'deliver_time'       => $order->getDeliveryTime()->format("H:i")
                 ]
             ) . $orderConfirmRoute,
@@ -792,6 +794,7 @@ class OrderService extends ContainerAware
             $order->getId(),
             $restaurant_title,
             $restaurant_address,
+            $pickup_restaurant_address,
             $order->getDeliveryTime()->format("H:i"),
             $orderConfirmRoute,
             $curr_locale
@@ -840,7 +843,7 @@ class OrderService extends ContainerAware
      * @returns string
      * @throws \Exception
      */
-    public function fitDriverMessage($messageText, $orderId, $restaurantTitle, $restaurantAddress, $deliverTime, $orderRoute, $locale)
+    public function fitDriverMessage($messageText, $orderId, $restaurantTitle, $restaurantAddress, $pickup_restaurant_address, $deliverTime, $orderRoute, $locale)
     {
         $languageUtil = $this->container->get('food.app.utils.language');
 
@@ -857,8 +860,12 @@ class OrderService extends ContainerAware
         if ($all_message_len > $max_len) {
             $restaurant_title_len = mb_strlen($restaurantTitle, 'UTF-8');
             $restaurant_address_len = mb_strlen($restaurantAddress, 'UTF-8');
+            $pickup_restaurant_address_len = mb_strlen($pickup_restaurant_address, 'UTF-8');
             $too_long_len = ($all_message_len - $max_len);
 
+            if ($pickup_restaurant_address_len > 30) {
+                $pickup_restaurant_address = mb_strimwidth($pickup_restaurant_address, 0, ($pickup_restaurant_address_len - $too_long_len / 2), '');
+            }
             if ($restaurant_title_len > 30 && $restaurant_address_len > 30) {
                 $restaurantTitle = mb_strimwidth($restaurantTitle, 0, ($restaurant_title_len - $too_long_len / 2), '');
                 $restaurantAddress = mb_strimwidth($restaurantAddress, 0, ($restaurant_address_len - $too_long_len / 2), '');
@@ -878,6 +885,7 @@ class OrderService extends ContainerAware
                         'order_id'           => $orderId,
                         'restaurant_title'   => $restaurantTitle,
                         'restaurant_address' => $restaurantAddress,
+                        'pickup_restaurant_address' => $pickup_restaurant_address,
                         'deliver_time'       => $deliverTime
                     ]
                 ) . $orderRoute,
