@@ -1,14 +1,13 @@
-set :domain,      "foodout.lt"
-set :deploy_to,   "/home/foodout.lv/"
+set :domain,      "d.foodout.lt"
+set :deploy_to,   "/srv/vhosts/foodout.lv/"
 
 set :scm,         :git
 set :model_manager, "doctrine"
 
-set :user, "skanu"
-set :password, "veM6hee0"
+set :user, "foodoutlv"
+set :password, "RjT8EThq"
 
 set :symfony_env_prod, "prod"
-set :clear_controllers, false
 ssh_options[:keys] = ["C:\Users\drawgas\.ssh\id_rsa"]
 
 role :web,        domain                         # Your HTTP server, Apache/etc
@@ -22,3 +21,7 @@ role :db,         domain, :primary => true       # This is where Symfony2 migrat
 set :parameters_file, "production_lv.yml.dist"
 set :kpi_file, "kpi_production_lv.yml.dist"
 set :robots_file, "robots.prod.txt.dist"
+
+after "deploy" do
+    run "~/sync.sh foodout.lv"
+end
