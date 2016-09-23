@@ -22,7 +22,7 @@ parameters:
     available_cities_slugs: ["Riga"]
     available_locales: ["lv", "en", "ru"]
     available_locales_routing: lv | en | ru
-    cloudfront_url: images.foodout.lv
+    cloudfront_url: foodout.lv
     time_zone: "Europe/Riga"
     sms.sender: "Foodout.lv"
     admin.emails: [karolis.m@foodout.lt]
