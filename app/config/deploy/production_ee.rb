@@ -1,11 +1,11 @@
-set :domain,      "foodout.lt"
-set :deploy_to,   "/home/estonia.foodout.lt/"
+set :domain,      "d.foodout.lt"
+set :deploy_to,   "/srv/vhosts/estonia.foodout.lt/"
 
 set :scm,         :git
 set :model_manager, "doctrine"
 
-set :user, "skanu"
-set :password, "veM6hee0"
+set :user, "foodoutlt"
+set :password, "aZaNFU6b"
 
 set :symfony_env_prod, "prod"
 ssh_options[:keys] = ["C:\Users\drawgas\.ssh\id_rsa"]
@@ -20,3 +20,7 @@ role :db,         domain, :primary => true       # This is where Symfony2 migrat
 # parameters file
 set :parameters_file, "production_ee.yml.dist"
 set :robots_file, "robots.prod.txt.dist"
+
+after "deploy" do
+    run "~/sync.sh estonia.foodout.lt"
+end

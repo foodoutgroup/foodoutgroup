@@ -5,7 +5,7 @@ namespace Food\AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(name="geo_cache", options={"engine"="MyISAM"}, indexes={@ORM\Index(name="request_data_idx", columns={"request_data"}), @ORM\Index(name="request_city_idx", columns={"request_city"}), @ORM\Index(name="request_address_id", columns={"request_address"})})
+ * @ORM\Table(name="geo_cache", indexes={@ORM\Index(name="request_data_idx", columns={"request_data"}), @ORM\Index(name="request_city_idx", columns={"request_city"}), @ORM\Index(name="request_address_id", columns={"request_address"})})
  * @ORM\Entity
  */
 class GeoCache {
@@ -65,7 +65,7 @@ class GeoCache {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -81,14 +81,14 @@ class GeoCache {
     public function setRequestData($requestData)
     {
         $this->requestData = $requestData;
-    
+
         return $this;
     }
 
     /**
      * Get requestData
      *
-     * @return string 
+     * @return string
      */
     public function getRequestData()
     {
@@ -104,14 +104,14 @@ class GeoCache {
     public function setRequestAddress($requestAddress)
     {
         $this->requestAddress = $requestAddress;
-    
+
         return $this;
     }
 
     /**
      * Get requestAddress
      *
-     * @return string 
+     * @return string
      */
     public function getRequestAddress()
     {
@@ -127,14 +127,14 @@ class GeoCache {
     public function setRequestCity($requestCity)
     {
         $this->requestCity = $requestCity;
-    
+
         return $this;
     }
 
     /**
      * Get requestCity
      *
-     * @return string 
+     * @return string
      */
     public function getRequestCity()
     {
@@ -150,14 +150,14 @@ class GeoCache {
     public function setRequestCountry($requestCountry)
     {
         $this->requestCountry = $requestCountry;
-    
+
         return $this;
     }
 
     /**
      * Get requestCountry
      *
-     * @return string 
+     * @return string
      */
     public function getRequestCountry()
     {
@@ -173,14 +173,14 @@ class GeoCache {
     public function setRessponseBody($ressponseBody)
     {
         $this->ressponseBody = $ressponseBody;
-    
+
         return $this;
     }
 
     /**
      * Get ressponseBody
      *
-     * @return string 
+     * @return string
      */
     public function getRessponseBody()
     {
@@ -196,14 +196,14 @@ class GeoCache {
     public function setRequestDate($requestDate)
     {
         $this->requestDate = $requestDate;
-    
+
         return $this;
     }
 
     /**
      * Get requestDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getRequestDate()
     {
@@ -219,14 +219,14 @@ class GeoCache {
     public function setCounter($counter)
     {
         $this->counter = $counter;
-    
+
         return $this;
     }
 
     /**
      * Get counter
      *
-     * @return integer 
+     * @return integer
      */
     public function getCounter()
     {
