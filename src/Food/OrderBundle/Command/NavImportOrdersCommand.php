@@ -272,25 +272,25 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             // User address data
                             $output->writeln('Order delivery type - deliver. Setting address');
                             $output->writeln('Address from NAV: '.var_export($orderData['Address'], true));
-                            $fixedAddress = trim(iconv('CP1257', 'UTF-8', $orderData['Address']));
-                            $output->writeln('Converted address: '.var_export($fixedAddress, true));
+                            //~ $fixedAddress = trim(iconv('CP1257', 'UTF-8', $orderData['Address']));
+                            //~ $output->writeln('Converted address: '.var_export($fixedAddress, true));
                             // OMG, kartais NAV adresas turi bruksniukus, kuriu niekam nereikia.. fuj fuj fuj
-                            if (mb_strpos($fixedAddress, '--') == (mb_strlen($fixedAddress) - 2)) {
+                            if (mb_strpos($orderData['Address'], '--') == (mb_strlen($orderData['Address']) - 2)) {
                                 $output->writeln('Found -- chars.. Cleaning address');
-                                $fixedAddress = mb_substr($fixedAddress, 0, (mb_strlen($fixedAddress) - 2));
+                                $orderData['Address'] = mb_substr($orderData['Address'], 0, (mb_strlen($orderData['Address']) - 2));
                             }
-                            if (mb_strpos($fixedAddress, '--,') !== false) {
+                            if (mb_strpos($orderData['Address'], '--,') !== false) {
                                 $output->writeln('Found --, chars.. Cleaning address');
-                                $fixedAddress = str_replace('--,', ',', $fixedAddress);
+                                $orderData['Address'] = str_replace('--,', ',', $orderData['Address']);
                             }
-                            $output->writeln('Cleaned address: '.var_export($fixedAddress, true));
+                            $output->writeln('Cleaned address: '.var_export($orderData['Address'], true));
 
                             // Format address
                             $fixedCity = iconv('CP1257', 'UTF-8', $orderData['City']);
                             $fixedCity = mb_convert_case($fixedCity, MB_CASE_TITLE, "UTF-8");
                             $output->writeln('Fixed city: '.var_export($fixedCity, true));
 
-                            $addressStr = strstr($fixedAddress, ', ' . $fixedCity, true);
+                            $addressStr = strstr($orderData['Address'], ', ' . $fixedCity, true);
                             $addressStr = mb_convert_case($addressStr, MB_CASE_TITLE, "UTF-8");
                             $addressStr = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressStr);
                             $output->writeln('Fixed street: '.var_export($addressStr, true));
