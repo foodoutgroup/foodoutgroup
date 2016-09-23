@@ -352,6 +352,17 @@ class TestController extends Controller
         die();
     }
 
+    public function listOrders2Action() {
+        $ns = $this->get('food.nav');
+        $query = "SELECT                 dOrder.[Order No_] As [OrderNo],                 dOrder.[Phone No_],                 dOrder.[Date Created],                 dOrder.[Time Created],                 dOrder.[Order Date],                 dOrder.[Contact Pickup Time],                 dOrder.[Driver ID],                 dOrder.[Address],                 dOrder.[City],                 dOrder.[Directions],                 dOrder.[Tender Type],                 dOrder.[Restaurant No_],                 dOrder.[Sales Type],                 dOrder.[Chain],                 dOrder.[Contact No_],                 dOrder.[Amount Incl_ VAT],                 pTrans.[VAT %],                 pTrans.[Amount] AS DeliveryAmount,                 (                     SELECT                     SUM([Amount])                     FROM [skamb_centras].[dbo].[LV Call Center$POS Trans_ Line] pSumTrans                     WHERE                         pSumTrans.[Receipt No_] = dOrder.[Order No_]                         AND pSumTrans.[Deleted] = 0                         AND pSumTrans.[Entry Status] = 0                 ) AS OrderSum,                 (                  SELECT TOP 1                     oStat.[Status]                  FROM [skamb_centras].[dbo].[LV Call Center$Delivery order status] oStat                  WHERE                     [ORDER No_] = dOrder.[Order No_]                  ORDER BY [TIME] DESC                  ) AS OrderStatus,                  cCustomer.[Name] AS CustomerName,                  cCustomer.[Address] AS CustomerAddress,                  cCustomer.[City] AS CustomerCity,                  cCustomer.[VAT Registration No_] AS CustomerVatNo,                  cCustomer.[E-mail] AS CustomerEmail,                  cCustomer.[Registration No_] AS CustomerRegNo             FROM [skamb_centras].[dbo].[LV Call Center$Delivery Order] dOrder             LEFT JOIN [skamb_centras].[dbo].[LV Call Center$POS Trans_ Line] pTrans ON pTrans.[Receipt No_] = dOrder.[Order No_]             LEFT JOIN [skamb_centras].[dbo].[LV Call Center$Contract] cContract ON cContract.[Contract Register No_] = dOrder.[Contract Register No_]             LEFT JOIN [skamb_centras].[dbo].[LV Call Center$Customer] cCustomer ON cCustomer.[No_] = cContract.[Customer No_]             WHERE                 dOrder.[Date Created] >= '2016-09-23'                 AND dOrder.[Time Created] >= '1754-01-01 14:20:02'                 AND dOrder.[Delivery Region] IN ('Vilnius', 'Kaunas', 'Klaipeda','Ryga')                 AND dOrder.[FoodOut Order] != 1                 AND pTrans.[Number] IN ('ZRAW0009996', 'ZRAW0010001', 'ZRAW0010002', 'ZRAW0010190', 'ZRAW0010255')                 AND dOrder.[Replication Counter] > 0             ORDER BY                 dOrder.[Date Created] ASC,                 dOrder.[Time Created] ASC";
+        $rez = $ns->initSqlConn()->query($query);
+        echo "<pre>";
+        while ($rowRez = $this->get('food.mssql')->fetchArray($rez)) {
+            var_dump($rowRez);
+        }
+        die();
+    }
+
     public function migratorAction($date)
     {
         $select = "SELECT * FROM orders WHERE order_date LIKE '$date%' AND order_status='completed' AND payment_status='complete' AND sf_series IS NULL AND sf_number IS NULL";
