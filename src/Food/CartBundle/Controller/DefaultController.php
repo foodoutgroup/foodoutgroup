@@ -535,7 +535,7 @@ class DefaultController extends Controller
         $enable_free_delivery_for_big_basket = $miscService->getParam('enable_free_delivery_for_big_basket');
         $free_delivery_price = $miscService->getParam('free_delivery_price');
         $displayCartInterval = true;
-        $deliveryTotal = 0;
+        $deliveryTotal = $this->get('food.places')->getMinDeliveryPrice($place->getId());
         $basketErrors = [
             'foodQuantityError'  => false,
             'drinkQuantityError' => false,
