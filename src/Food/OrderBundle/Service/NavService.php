@@ -1344,7 +1344,14 @@ class NavService extends ContainerAware
                 continue;
             }
 
-            $navIds[] = $this->getNavOrderId($order);
+            $navOrderId = $this->getNavOrderId($order);
+            if (is_numeric($navOrderId)) {
+                $navIds[] = $this->getNavOrderId($order);
+            } else {
+                $this->container('logger')->error('NAVISION ORDER ID IS NOT NUMERIC! ' . $navOrderId);
+                $this->container('logger')->error('NAVISION ORDER ID IS NOT NUMERIC! ' . $order->getId());
+            }
+
         }
 
         return $navIds;

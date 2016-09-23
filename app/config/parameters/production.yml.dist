@@ -2,9 +2,9 @@ parameters:
     database_driver: pdo_mysql
     database_host: localhost
     database_port: 3306
-    database_name: skanu_lt
-    database_user: skanu_lt
-    database_password: Z7Uz7VqCWwJP4C2mDJscAFH
+    database_name: foodoutlt
+    database_user: foodoutlt
+    database_password: U75RWShbY3n6c0G1
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
@@ -22,7 +22,7 @@ parameters:
     available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda", "Siauliai", "Panevezys", "Alytus", "Utena", "Plunge"]
     available_locales: ["lt", "en", "ru"]
     available_locales_routing: lt | en | ru
-    cloudfront_url: images.foodout.lt
+    cloudfront_url: foodout.lt
     time_zone: "Europe/Vilnius"
     sms.sender: "Foodout.lt"
     admin.emails: [karolis.m@foodout.lt]
