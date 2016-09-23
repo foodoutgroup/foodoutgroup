@@ -400,7 +400,7 @@ class PlacesService extends ContainerAware
     public function getMinDeliveryPrice($placeId)
     {
         $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
-        if (!$place->getSelfDelivery()) {
+        if ($place->getSelfDelivery()) {
             return 0;
         }
 
