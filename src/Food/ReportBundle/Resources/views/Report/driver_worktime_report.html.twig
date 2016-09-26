@@ -1,0 +1,34 @@
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script srt="{{ asset('bundles/foodapp/scripts/jquery-ui/datepicker-lt.js') }}"></script>
+    <script src="{{ asset('bundles/foodreport/js/reports.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+//            Report.bindEvents();
+        });
+    </script>
+{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block side_menu %}{% endblock %}
+
+{% block list_table %}
+    <style type="text/css">div.sidebar.span2 { display: none !important; }</style>
+    <div class="report">
+        <h2>{{ 'admin.report.driver_worktime_report'|trans({}, 'SonataAdminBundle') }}</h2>
+    </div>
+{% endblock %}
+
+{% block list_filters %}
+<div class="sonata-ba-filter span2">
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+//        $('.late_orders.btn').popover();
+    });
+</script>
+{% endblock %}

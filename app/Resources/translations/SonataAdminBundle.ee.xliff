@@ -2171,6 +2171,10 @@
                 <source>admin.report.driver_latency_report</source>
                 <target>Driver latency report</target>
             </trans-unit>
+            <trans-unit id="admin.report.driver_worktime_report">
+                <source>admin.report.driver_worktime_report</source>
+                <target>Driver worktime report</target>
+            </trans-unit>
             <trans-unit id="admin.reports.day">
                 <source>admin.reports.day</source>
                 <target>Day</target>
