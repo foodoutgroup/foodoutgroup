@@ -1,7 +1,18 @@
 parameters:
 
 services:
-    food.report:
-        class: Food\ReportBundle\Service\ReportService
-        calls:
-            - [setContainer, [@service_container]]
+  food.report:
+    class: Food\ReportBundle\Service\ReportService
+    calls:
+      - [setContainer, [@service_container]]
+
+  sonata.admin.driver_worktime:
+    class: Food\ReportBundle\Admin\DriverWorktimeAdmin
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.report.driver_worktime_report" }
+    arguments:
+      - ~
+      - Food\AppBundle\Entity\Driver
+      - 'FoodReportBundle:DriverWorktimeAdmin'
+    calls:
+      - [ setTranslationDomain, [SonataAdminBundle]]
