@@ -41,7 +41,10 @@
         });
 
         $(document).on('click', '.clear-filter-link', function() {
-            $('.content-lefter input').iCheck('uncheck');
+            $.each($('.content-lefter input'), function(k, v) {
+                $(v).attr('checked', false);
+            });
+            submitKitchens();
         });
 
         function submitKitchens() {
