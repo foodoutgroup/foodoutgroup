@@ -1,3 +1,6 @@
 food_order_invoice_fixer:
     pattern: /fix-no-invoice/{date}
     defaults: { _controller: FoodOrderBundle:Fixer:noInvoice, date: ~}
+food_order_invoice_create:
+    pattern: /fix-create-invoice/{id}
+    defaults: { _controller: FoodOrderBundle:Fixer:createInvoice, id: ~}
