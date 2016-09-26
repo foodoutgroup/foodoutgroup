@@ -84,7 +84,7 @@ parameters:
     yt_embeded: //www.youtube-nocookie.com/embed/D-EkSle0r84
     default_delivery_distance: 3
     default_self_delivey_distance: 7
-    dispatcher_phones: [37126110079]
+    dispatcher_phones: []
     send_sms_on_cancel: false
     dispatcher_contact_phone: "37126110079"
     call_centre_phone: "37126110079"
