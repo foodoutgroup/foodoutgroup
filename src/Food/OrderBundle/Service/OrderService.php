@@ -4375,27 +4375,33 @@ class OrderService extends ContainerAware
             throw new \InvalidArgumentException('No order is set');
         }
 
-        $recipient = $this->getOrder()->getOrderExtra()->getPhone();
+        $sendMessage = true;
+        if (in_array($this->getLocale(), array('lv'))) {
+            $sendMessage = false;
+        }
 
-        // SMS siunciam tik tuo atveju jei orderis ne is callcentro
-        if ($this->getOrder()->getOrderFromNav() == false) {
-            if (!empty($recipient)) {
-                $smsService = $this->container->get('food.messages');
-                $sender = $this->container->getParameter('sms.sender');
+        if ($sendMessage) {
+            $recipient = $this->getOrder()->getOrderExtra()->getPhone();
 
-                $text = $this->container->get('translator')
-                    ->trans(
-                        'general.sms.client.order_created',
-                        [
-                            'order_id' => $this->getOrder()->getId(),
-                        ],
-                        null,
-                        $this->getOrder()->getLocale()
-                    )
-                ;
+            // SMS siunciam tik tuo atveju jei orderis ne is callcentro
+            if ($this->getOrder()->getOrderFromNav() == false) {
+                if (!empty($recipient)) {
+                    $smsService = $this->container->get('food.messages');
+                    $sender = $this->container->getParameter('sms.sender');
 
-                $message = $smsService->createMessage($sender, $recipient, $text, $this->getOrder());
-                $smsService->saveMessage($message);
+                    $text = $this->container->get('translator')
+                        ->trans(
+                            'general.sms.client.order_created',
+                            [
+                                'order_id' => $this->getOrder()->getId(),
+                            ],
+                            null,
+                            $this->getOrder()->getLocale()
+                        );
+
+                    $message = $smsService->createMessage($sender, $recipient, $text, $this->getOrder());
+                    $smsService->saveMessage($message);
+                }
             }
         }
     }
