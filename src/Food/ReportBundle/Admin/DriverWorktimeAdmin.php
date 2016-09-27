@@ -32,6 +32,7 @@ class DriverWorktimeAdmin extends SonataAdmin
         parent::configureDatagridFilters($filter);
         $filter
             ->add('id', null, array('label' => 'admin.reports.user_id'))
+            ->add('type', null, array('label' => 'admin.reports.driver_type'))
         ;
     }
 
