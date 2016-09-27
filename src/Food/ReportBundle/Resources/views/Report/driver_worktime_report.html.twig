@@ -1,0 +1,37 @@
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block side_menu %}{% endblock %}
+
+{% block list_table %}
+    <div class="report">
+       <table class="reports_list table">
+            <tr>
+                <th>{{ 'admin.reports.driver_latency.driver'|trans({}, 'SonataAdminBundle') }}</th>
+                {% for day in worktimes|first|keys %}
+                <th>{{ day }}</th>
+                {% endfor %}
+            </tr>
+           {% for worker, days in worktimes %}
+               <tr>
+                   <td>{{ worker }}</td>
+                   {% for day in days %}
+                   <td>{{ day }}</td>
+                   {% endfor %}
+               </tr>
+           {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block list_filters %}
+    <div class="sonata-ba-filter span2">
+
+    </div>
+{% endblock %}

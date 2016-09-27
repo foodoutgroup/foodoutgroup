@@ -29,10 +29,10 @@ class DriverWorktimeAdmin extends SonataAdmin
      */
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
-        parent::configureDatagridFilters($filter);
         $filter
-            ->add('id', null, array('label' => 'admin.reports.user_id'))
-            ->add('type', null, array('label' => 'admin.reports.driver_type'))
+            ->add('id', null, array('label' => 'admin.driver.id'))
+            ->add('name', null, array('label' => 'admin.driver.type'))
+            ->add('type', null, array('label' => 'admin.driver.name'))
         ;
     }
 
@@ -43,10 +43,11 @@ class DriverWorktimeAdmin extends SonataAdmin
      */
     protected function configureListFields(ListMapper $list)
     {
-        parent::configureListFields($list);
         $list
-            ->add('id', null, array('label' => 'admin.reports.user_id'))
-            ->add('name', null, array('label' => 'admin.reports.firstname'))
+            ->add('name', null, array('label' => 'admin.driver.name'))
         ;
+        for ($i=1;$i<=31;$i++) {
+            $list->add('day'.$i, null, array('label' => $i));
+        }
     }
 }
