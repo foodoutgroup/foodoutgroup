@@ -13,6 +13,9 @@ class ParamsController extends Controller
 
         $possibleDeliveryDelay = $miscService->getParam('showMobilePopup');
 
-        return new JsonResponse(array('show' => (bool) $possibleDeliveryDelay));
+        $response = ['show' => (bool) $possibleDeliveryDelay];
+
+        $this->get('logger')->debug('Params:showRatingAction Response:', print_r($response, true));
+        return new JsonResponse($response);
     }
 }

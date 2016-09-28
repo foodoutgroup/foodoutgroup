@@ -16,6 +16,7 @@ class BasketController extends Controller
      */
     public function createBasketAction(Request $request)
     {
+        $this->get('logger')->debug('createBasketAction Request:', (array) $request);
         try {
             $requestJson = new JsonRequest($request);
 
@@ -26,105 +27,155 @@ class BasketController extends Controller
                 $session->start();
             }
 
-            return new JsonResponse($this->get('food_api.basket')->createBasketFromRequest($requestJson));
+            $response = $this->get('food_api.basket')->createBasketFromRequest($requestJson);
         }  catch (ApiException $e) {
+            $this->get('logger')->error('createBasketAction Error:' . $e->getMessage());
+            $this->get('logger')->error('createBasketAction Trace:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('createBasketAction Error:' . $e->getMessage());
+            $this->get('logger')->error('createBasketAction Trace:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->debug('createBasketAction Response:', print_r($response, true));
+        return new JsonResponse($response);
     }
 
     public function updateBasketAction($id, Request $request)
     {
+        $this->get('logger')->debug('updateBasketAction Request: id - '. $id, (array) $request);
         try{
             $requestJson = new JsonRequest($request);
             return new JsonResponse($this->get('food_api.basket')->updateBasketFromRequest($id, $requestJson));
         }  catch (ApiException $e) {
+            $this->get('logger')->error('updateBasketAction Error:' . $e->getMessage());
+            $this->get('logger')->error('updateBasketAction Trace:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('updateBasketAction Error:' . $e->getMessage());
+            $this->get('logger')->error('updateBasketAction Trace:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->debug('updateBasketAction Response:', print_r($response, true));
+        return new JsonResponse($response);
     }
 
     public function getBasketAction($id)
     {
+        $this->get('logger')->debug('getBasketAction Request:' . $id);
         try {
             $basket = $this->get('food_api.basket')->getBasket($id);
-            $resp = new JsonResponse($basket);
-            $resp->setMaxAge(1);
-            $resp->setSharedMaxAge(1);
+            $response = new JsonResponse($basket);
+            $response->setMaxAge(1);
+            $response->setSharedMaxAge(1);
             $date = new \DateTime();
-            $resp->setLastModified($date);
-            return $resp;
+            $response->setLastModified($date);
         }  catch (ApiException $e) {
+            $this->get('logger')->error('getBasketAction Error:' . $e->getMessage());
+            $this->get('logger')->error('getBasketAction Trace:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('getBasketAction Error:' . $e->getMessage());
+            $this->get('logger')->error('getBasketAction Trace:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->debug('getBasketAction Response:', print_r($response, true));
+        return new $response;
     }
 
     public function deleteBasketAction($id)
     {
+        $this->get('logger')->debug('deleteBasketAction Request: ' . $id);
         try {
             $this->get('food_api.basket')->deleteBasket($id);
-            return new Response('', 204);
+            $response = '';
         }  catch (ApiException $e) {
+            $this->get('logger')->error('deleteBasketAction Error:' . $e->getMessage());
+            $this->get('logger')->error('deleteBasketAction Trace:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('deleteBasketAction Error:' . $e->getMessage());
+            $this->get('logger')->error('deleteBasketAction Trace:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->debug('deleteBasketAction Response:', print_r($response, true));
+        return new JsonResponse($response, 204);
     }
 
     public function updateBasketItemAction($id, $basket_item_id, Request $request)
     {
+        $this->get('logger')->debug('updateBasketItemAction Request: id - '. $id . ', basket_item_id - ' . $basket_item_id, (array) $request);
         try{
             $requestJson = new JsonRequest($request);
             $this->get('food_api.basket')->updateBasketItem($id, $basket_item_id, $requestJson);
-            $basket = $this->get('food_api.basket')->getBasket($id);
-            return new JsonResponse($basket);
+            $response = $this->get('food_api.basket')->getBasket($id);
         }  catch (ApiException $e) {
+            $this->get('logger')->error('updateBasketItemAction Error:' . $e->getMessage());
+            $this->get('logger')->error('updateBasketItemAction Trace:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('updateBasketItemAction Error:' . $e->getMessage());
+            $this->get('logger')->error('updateBasketItemAction Trace:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->debug('updateBasketItemAction Response:', print_r($response, true));
+        return new JsonResponse($response);
     }
 
-    public function deleteBasketItemAction($id, $basket_item_id,Request $request)
+    public function deleteBasketItemAction($id, $basket_item_id, Request $request)
     {
+        $this->get('logger')->debug('deleteBasketItemAction Request: id - '. $id . ', basket_item_id - ' . $basket_item_id, (array) $request);
         try {
             $requestJson = new JsonRequest($request);
             $this->get('food_api.basket')->deleteBasketItem($id, $basket_item_id, $requestJson);
-            $basket = $this->get('food_api.basket')->getBasket($id);
-            return new JsonResponse($basket);
+            $response = $this->get('food_api.basket')->getBasket($id);
         }  catch (ApiException $e) {
+            $this->get('logger')->error('deleteBasketItemAction Error:' . $e->getMessage());
+            $this->get('logger')->error('deleteBasketItemAction Trace:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('deleteBasketItemAction Error:' . $e->getMessage());
+            $this->get('logger')->error('deleteBasketItemAction Trace:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->debug('deleteBasketItemAction Response:', print_r($response, true));
+        return new JsonResponse($response);
     }
 
      /**

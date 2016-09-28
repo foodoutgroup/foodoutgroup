@@ -67,6 +67,7 @@ class UsersController extends Controller
      */
     public function registerAction(Request $request)
     {
+        $this->get('logger')->debug('Users:registerAction Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
             $um = $this->getUserManager();
@@ -204,16 +205,23 @@ class UsersController extends Controller
                 'isRealEmailSet' => $this->get('food_api.api')->isRealEmailSet($user)
             );
 
-            return new JsonResponse($response);
         } catch (ApiException $e) {
+            $this->get('logger')->error('Users:registerAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Users:registerAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('Users:registerAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Users:registerAction Trace2:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->debug('Users:registerAction Response:', print_r($response, true));
+        return new JsonResponse($response);
     }
 
     /**
@@ -224,6 +232,7 @@ class UsersController extends Controller
      */
     public function updateAction(Request $request)
     {
+        $this->get('logger')->debug('Users:updateAction Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
             // TODO after testing - remove!
@@ -273,16 +282,23 @@ class UsersController extends Controller
                 'isRealEmailSet' => $this->get('food_api.api')->isRealEmailSet($user)
             );
 
-            return new JsonResponse($response);
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
+            $this->get('logger')->error('Users:updateAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Users:updateAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('Users:updateAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Users:updateAction Trace2:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->debug('Users:updateAction Response:', print_r($response, true));
+        return new JsonResponse($response);
     }
 
     /**

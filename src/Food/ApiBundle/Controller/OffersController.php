@@ -26,11 +26,12 @@ class OffersController extends Controller
      */
     public function getAction($city = null)
     {
+        $this->get('logger')->debug('Offers:getAction Request:' . $city);
         try {
             $repo = $this->get('doctrine')->getRepository('FoodPlacesBundle:BestOffer');
             $offers = $repo->getActiveOffers($city, true);
 
-            $offersToShow = array();
+            $response = [];
 
             foreach ($offers as $misterOffer) {
                 $placeId = null;
@@ -38,7 +39,7 @@ class OffersController extends Controller
                     $placeId = $misterOffer->getPlace()->getId();
                 }
 
-                $offersToShow[] = array(
+                $response[] = [
                     'title' => $misterOffer->getTitle(),
                     'city' => $misterOffer->getCity(),
                     'place' => $placeId,
@@ -47,19 +48,24 @@ class OffersController extends Controller
                     'image' => $misterOffer->getWebPath(),
                     'image_type1' => $misterOffer->getWebPathThumb('type1')
 
-                );
+                ];
             }
 
-            return new JsonResponse($offersToShow);
         }  catch (ApiException $e) {
+            $this->get('logger')->error('Offers:getAction1 Error:' . $e->getMessage());
+            $this->get('logger')->error('Offers:getAction1 Trace:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('Offers:getAction2 Error:' . $e->getMessage());
+            $this->get('logger')->error('Offers:getAction2 Trace:' . $e->getTraceAsString());
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+        $this->get('logger')->debug('Offers:getAction Response:', print_r($response, true));
+        return new JsonResponse($response);
     }
 
 
