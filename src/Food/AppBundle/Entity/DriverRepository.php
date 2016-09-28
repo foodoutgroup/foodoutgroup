@@ -99,16 +99,18 @@ class DriverRepository extends EntityRepository
         if (!$toDate) {
             $toDate = $fromDate;
         }
-
+        // fromDate nuo 6 ryto
+        // toDate iki kitos dienos 6 ryto
         $query = "
 SELECT
   TIME_TO_SEC(TIMEDIFF(MAX(event_date), MIN(event_date))) AS timeDiff
 FROM order_delivery_log
 LEFT JOIN orders ON order_id = orders.id
 WHERE driver_id IS NOT NULL
-      AND DATE(order_date) BETWEEN DATE('{$fromDate}') AND DATE('{$toDate}')
+      AND order_date BETWEEN DATE('{$fromDate}') + INTERVAL 6 HOUR AND DATE('{$toDate}') + INTERVAL 30 HOUR
       AND delivery_type = 'deliver'
-      AND event IN('order_pickedup', 'order_completed')
+      AND preorder != '1'
+      AND event IN('order_assigned', 'order_completed')
       AND driver_id = '{$driverId}'
   GROUP BY DATE(order_date)
         ";

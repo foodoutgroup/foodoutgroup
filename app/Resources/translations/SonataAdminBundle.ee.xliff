@@ -2862,6 +2862,10 @@
                 <source>admin.rfm_status.title</source>
                 <target>Title</target>
             </trans-unit>
+            <trans-unit id="btn_export">
+                <source>btn_export</source>
+                <target>Export</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

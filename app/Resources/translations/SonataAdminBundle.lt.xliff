@@ -2902,6 +2902,10 @@
                 <source>admin.rfm_status.title</source>
                 <target>Pavadinimas</target>
             </trans-unit>
+            <trans-unit id="btn_export">
+                <source>btn_export</source>
+                <target>Exportuoti</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

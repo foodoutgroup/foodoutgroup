@@ -22,32 +22,4 @@ class DriverWorktimeAdmin extends SonataAdmin
         $collection->clearExcept(array('list', 'export'));
     }
 
-    /**
-     * @param DatagridMapper $datagridMapper
-     *
-     * @codeCoverageIgnore
-     */
-    protected function configureDatagridFilters(DatagridMapper $filter)
-    {
-        $filter
-            ->add('id', null, array('label' => 'admin.driver.id'))
-            ->add('name', null, array('label' => 'admin.driver.type'))
-            ->add('type', null, array('label' => 'admin.driver.name'))
-        ;
-    }
-
-    /**
-     * @param ListMapper $listMapper
-     *
-     * @codeCoverageIgnore
-     */
-    protected function configureListFields(ListMapper $list)
-    {
-        $list
-            ->add('name', null, array('label' => 'admin.driver.name'))
-        ;
-        for ($i=1;$i<=31;$i++) {
-            $list->add('day'.$i, null, array('label' => $i));
-        }
-    }
 }

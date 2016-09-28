@@ -7,17 +7,14 @@ use DateTime;
 
 class DriverService extends BaseService
 {
-    public function calculateDriversWorktimesLastMonth()
+    public function calculateDriversWorktimes(DateTime $dateFrom, DateTime $dateTo)
     {
         $times = array();
         $drivers = $this->getDrivers();
-        $begin = new DateTime('first day of last month');
-        $end = new DateTime('last day of last month');
-        $begin = new DateTime('2016-07-01');
-        $end = new DateTime('2016-07-31');
         $interval = new DateInterval('P1D');
-        $dateRange = new DatePeriod($begin, $interval ,$end);
+        $dateRange = new DatePeriod($dateFrom, $interval ,$dateTo);
         foreach ($drivers as $driver) {
+            $times[$driver->getName()]['driver'] = $driver->getName();
             foreach($dateRange as $date) {
                 $times[$driver->getName()][$date->format('Y-m-d')] =
                     $this->em->getRepository('FoodAppBundle:Driver')->getDriverWorkedTime(
