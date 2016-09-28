@@ -397,6 +397,7 @@ sonata_admin:
                       - sonata.admin.restaurant_orders
                       - sonata.admin.latency
                       - sonata.admin.driver_latency
+                      - sonata.admin.driver_worktime
                       - sonata.admin.marketing_user
                       - sonata.admin.rfm
                       - sonata.admin.rfm_status

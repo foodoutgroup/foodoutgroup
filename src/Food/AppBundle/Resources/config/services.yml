@@ -70,3 +70,12 @@ services:
             - [setPrivateKey, ["%google.analytics.base64_private_key%"]]
             - [setScopes, ["%google.analytics.scopes%"]]
             - [setViewId, ["%google.analytics.view_id%"]]
+
+    food.base_service:
+      class: Food\AppBundle\Service\BaseService
+      arguments:
+        - @doctrine.orm.entity_manager
+
+    food.driver_service:
+      class: Food\AppBundle\Service\DriverService
+      parent: food.base_service

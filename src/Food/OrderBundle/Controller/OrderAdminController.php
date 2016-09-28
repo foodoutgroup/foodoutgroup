@@ -305,7 +305,7 @@ class OrderAdminController extends Controller
                       o.delivery_type, o.preorder,
                       o.mobile, o.nav_delivery_order, o.order_from_nav, o.nav_driver_code, 
                       o.place_id, o.point_id, o.place_name, o.place_point_address, o.place_point_city, o.place_point_self_delivery, 
-                      o.driver_id, d.extId as driver_ext_id,
+                      o.driver_id, d.extId as driver_ext_id, d.type AS driver_type,
                       o.total, o.vat, o.coupon_code, o.discount_size, o.discount_sum, o.delivery_price, o.sf_series, o.sf_number,
                       u.firstname AS dispatcher_name, 
                       oe.firstname, oe.lastname, oe.phone, oe.email, oe.cancel_reason, oe.cancel_reason_comment, oe.change_reason,

@@ -51,4 +51,18 @@ class FixerController extends Controller
         echo "</pre>";
         die("END OF CONTROLLER");
     }
+
+    public function createInvoiceAction(Request $request)
+    {
+        $id = $request->get('id');
+        if (!$id) {
+            throw new \InvalidArgumentException('No id setted');
+        }
+
+        $order = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($id);
+
+        $navService = $this->container->get('food.nav');
+        var_dump($navService->createInvoice($order));
+        die;
+    }
 }
