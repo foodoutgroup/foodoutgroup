@@ -249,7 +249,7 @@ class Place extends Uploadable implements Translatable
      *
      * @ORM\Column(name="allow_free_delivery", type="boolean", nullable=true)
      */
-    private $allowFreeDelivery = false;
+    private $allowFreeDelivery = true;
 
     /**
      * @var float

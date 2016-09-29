@@ -1510,6 +1510,9 @@ class OrderService extends ContainerAware
         // Nemokamas pristatymas dideliam krepseliui
         $miscService = $this->container->get('food.app.utils.misc');
         $enable_free_delivery_for_big_basket = $miscService->getParam('enable_free_delivery_for_big_basket');
+        if($enable_free_delivery_for_big_basket) {
+            $enable_free_delivery_for_big_basket = $this->getOrder()->getPlace()->isAllowFreeDelivery();
+        }
         $free_delivery_price = $miscService->getParam('free_delivery_price');
         $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
         $left_sum = 0;
