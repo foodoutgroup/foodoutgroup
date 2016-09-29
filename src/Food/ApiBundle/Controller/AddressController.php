@@ -11,7 +11,8 @@ class AddressController extends Controller
 
     public function findAddressAction(Request $request)
     {
-        $this->get('logger')->debug('findAddressAction Request:', (array) $request);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Address:findAddressAction Request:', (array) $request);
         try {
             $lat = $request->get('lat');
             $lng = $request->get('lng');
@@ -28,8 +29,8 @@ class AddressController extends Controller
                 $response = [];
             }
         } catch (\Exception $e) {
-            $this->get('logger')->error('findAddressAction Error:' . $e->getMessage());
-            $this->get('logger')->error('findAddressAction Trace:' . $e->getTraceAsString());
+            $this->get('logger')->error('Address:findAddressAction Error:' . $e->getMessage());
+            $this->get('logger')->error('Address:findAddressAction Trace:' . $e->getTraceAsString());
 
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
@@ -38,13 +39,15 @@ class AddressController extends Controller
             );
         }
 
-        $this->get('logger')->debug('findAddressAction Response:', print_r($response, true));
+        $this->get('logger')->alert('Address:findAddressAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
     public function findStreetAction(Request $request)
     {
-        $this->get('logger')->debug('findStreetAction Request:', (array) $request);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Address:findStreetAction Request:', (array) $request);
         try {
             $queryPart = $request->get('query');
             $response = array();
@@ -62,8 +65,8 @@ class AddressController extends Controller
                 }
             }
         } catch (\Exception $e) {
-            $this->get('logger')->error('findStreetAction Error:' . $e->getMessage());
-            $this->get('logger')->error('findStreetAction Trace:' . $e->getTraceAsString());
+            $this->get('logger')->error('Address:findStreetAction Error:' . $e->getMessage());
+            $this->get('logger')->error('Address:findStreetAction Trace:' . $e->getTraceAsString());
 
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
@@ -72,7 +75,8 @@ class AddressController extends Controller
             );
         }
 
-        $this->get('logger')->debug('findStreetAction Response:', print_r($response, true));
+        $this->get('logger')->alert('Address:findStreetAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 }

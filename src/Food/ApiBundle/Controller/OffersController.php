@@ -26,7 +26,8 @@ class OffersController extends Controller
      */
     public function getAction($city = null)
     {
-        $this->get('logger')->debug('Offers:getAction Request:' . $city);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Offers:getAction Request:' . $city);
         try {
             $repo = $this->get('doctrine')->getRepository('FoodPlacesBundle:BestOffer');
             $offers = $repo->getActiveOffers($city, true);
@@ -64,7 +65,8 @@ class OffersController extends Controller
                 array('error' => 'server error', 'description' => null)
             );
         }
-        $this->get('logger')->debug('Offers:getAction Response:', print_r($response, true));
+        $this->get('logger')->alert('Offers:getAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 

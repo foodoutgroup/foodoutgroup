@@ -18,12 +18,13 @@ class StaticContentController extends Controller
      */
     public function processAction($id, Request $request)
     {
-        $this->get('logger')->debug('StaticContent:processAction Request: id - ' . $id, (array) $request);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('StaticContent:processAction Request: id - ' . $id, (array) $request);
         // Check if user is not banned
         $ip = $request->getClientIp();
         // Dude is banned - hit him
         if ($this->get('food.app.utils.misc')->isIpBanned($ip)) {
-            $this->get('logger')->debug('StaticContent:processAction Request:', (array) $request);
+            $this->get('logger')->alert('StaticContent:processAction Request:', (array) $request);
             return $this->redirect($this->generateUrl('banned'), 302);
         }
 
@@ -60,7 +61,8 @@ class StaticContentController extends Controller
             );
         }
 
-        $this->get('logger')->debug('StaticContent:processAction Response:', print_r($response, true));
+        $this->get('logger')->alert('StaticContent:processAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 }

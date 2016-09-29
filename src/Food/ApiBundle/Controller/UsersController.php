@@ -67,16 +67,14 @@ class UsersController extends Controller
      */
     public function registerAction(Request $request)
     {
-        $this->get('logger')->debug('Users:registerAction Request:', (array) $request);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Users:registerAction Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
             $um = $this->getUserManager();
 //            $dispatcher = $this->container->get('event_dispatcher');
             $translator = $this->get('translator');
             $miscUtil = $this->get('food.app.utils.misc');
-
-            // TODO after testing - remove!
-            $this->logActionParams('Register user action', $this->requestParams);
 
             /**
              * @var User $user
@@ -220,7 +218,8 @@ class UsersController extends Controller
             );
         }
 
-        $this->get('logger')->debug('Users:registerAction Response:', print_r($response, true));
+        $this->get('logger')->alert('Users:registerAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -232,11 +231,10 @@ class UsersController extends Controller
      */
     public function updateAction(Request $request)
     {
-        $this->get('logger')->debug('Users:updateAction Request:', (array) $request);
+        $this->get('logger')->alert('Users:updateAction Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
             // TODO after testing - remove!
-            $this->logActionParams('Update user action', $this->requestParams);
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
             $miscUtil = $this->get('food.app.utils.misc');
 
@@ -281,7 +279,6 @@ class UsersController extends Controller
                 'email' => $user->getEmail(),
                 'isRealEmailSet' => $this->get('food_api.api')->isRealEmailSet($user)
             );
-
         } catch (ApiException $e) {
             $this->get('logger')->error('Users:updateAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Users:updateAction Trace1:' . $e->getTraceAsString());
@@ -297,7 +294,8 @@ class UsersController extends Controller
             );
         }
 
-        $this->get('logger')->debug('Users:updateAction Response:', print_r($response, true));
+        $this->get('logger')->alert('Users:updateAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -310,10 +308,11 @@ class UsersController extends Controller
      */
     public function changePasswordAction(Request $request)
     {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Users:changePasswordAction Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
             // TODO after testing - remove!
-            $this->logActionParams('Change password action', $this->requestParams);
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
             $translator = $this->get('translator');
 
@@ -356,16 +355,25 @@ class UsersController extends Controller
 
             $um->updateUser($user);
 
-            return new Response('', 204);
-        }  catch (ApiException $e) {
+            $response = '';
+        } catch (ApiException $e) {
+            $this->get('logger')->error('Users:changePasswordAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Users:changePasswordAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('Users:changePasswordAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Users:changePasswordAction Trace2:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('Users:changePasswordAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response, 204);
     }
 
     /**
@@ -376,13 +384,12 @@ class UsersController extends Controller
      */
     public function resetPasswordAction(Request $request)
     {
-        $this->parseRequestBody($request);
-        // TODO after testing - remove!
-        $this->logActionParams('Reset password action', $this->requestParams);
-
-        $email = $this->getRequestParam('email');
-
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Users:resetPasswordAction Request:', (array) $request);
         try {
+            $this->parseRequestBody($request);
+            // TODO after testing - remove!
+            $email = $this->getRequestParam('email');
             $sendResult = $this->get('food.reset_password')->sendEmail($email);
 
             if (!$sendResult) {
@@ -396,10 +403,15 @@ class UsersController extends Controller
                 );
             }
 
-        }  catch (ApiException $e) {
+            $response = '';
+        } catch (ApiException $e) {
+            $this->get('logger')->error('Users:resetPasswordAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Users:resetPasswordAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            $this->get('logger')->error('Error in API password reset: '.$e->getMessage());
+            $this->get('logger')->error('Users:resetPasswordAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Users:resetPasswordAction Trace2:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
@@ -407,10 +419,9 @@ class UsersController extends Controller
             );
         }
 
-        return new Response(
-            '',
-            200
-        );
+        $this->get('logger')->alert('Users:resetPasswordAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response, 200);
     }
 
     /**
@@ -421,11 +432,10 @@ class UsersController extends Controller
      */
     public function loginAction(Request $request)
     {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Users:loginAction Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
-            // TODO after testing - remove!
-            // TODO After Seeing This Disgusting Stuff I'll Never Eat Fast Food Again
-            $this->logActionParams('Login action', $this->requestParams);
             $username = $this->getRequestParam('email');
             $password = $this->getRequestParam('password', 'new-user');
             $phone = $this->getRequestParam('phone');
@@ -481,16 +491,24 @@ class UsersController extends Controller
                 'isRealEmailSet' => $this->get('food_api.api')->isRealEmailSet($user)
             );
 
-            return new JsonResponse($response);
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
+            $this->get('logger')->error('Users:loginAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Users:loginAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('Users:loginAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Users:loginAction Trace2:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('Users:loginAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 
     /**
@@ -501,6 +519,8 @@ class UsersController extends Controller
      */
     public function logoutUserAction(Request $request)
     {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Users:logoutUserAction Request:', (array) $request);
         try {
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
 
@@ -523,16 +543,24 @@ class UsersController extends Controller
             $response = array(
                 'success' => $success,
             );
-            return new JsonResponse($response);
         } catch (ApiException $e) {
+            $this->get('logger')->error('Users:logoutUserAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Users:logoutUserAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('Users:logoutUserAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Users:logoutUserAction Trace2:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('Users:logoutUserAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 
     /**
@@ -584,6 +612,8 @@ class UsersController extends Controller
 
     public function usersListAction($itemsPerPage, $pageNo, Request $request)
     {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Users:usersListAction Request: itemsPerPage - ' . $itemsPerPage . ', pageNo - ' . $pageNo, (array) $request);
         try {
             $response = array(
                 'success' => false,
@@ -617,11 +647,14 @@ class UsersController extends Controller
                     );
                 }
             }
-
-            return new JsonResponse($response);
         } catch (ApiException $e) {
+            $this->get('logger')->error('Users:usersListAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Users:usersListAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('Users:usersListAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Users:usersListAction Trace2:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
@@ -629,6 +662,9 @@ class UsersController extends Controller
             );
         }
 
+        $this->get('logger')->alert('Users:usersListAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 
 
@@ -640,6 +676,8 @@ class UsersController extends Controller
      */
     public function logoutAction(Request $request)
     {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Users:logoutAction Request:', (array) $request);
         try {
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
 
@@ -657,16 +695,25 @@ class UsersController extends Controller
             $security->setToken($token);
             $this->get('session')->invalidate();
 
-            return new Response('', 204);
+            $response = '';
         } catch (ApiException $e) {
+            $this->get('logger')->error('Users:logoutAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Users:logoutAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('Users:logoutAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Users:logoutAction Trace2:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('Users:logoutAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response, 204);
     }
 
     /**
@@ -677,29 +724,38 @@ class UsersController extends Controller
      */
     public function meAction(Request $request)
     {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Users:meAction Request:', (array) $request);
         try {
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
 
             $security = $this->get('security.context');
             $user = $security->getToken()->getUser();
 
-            $userData = array(
+            $response = array(
                 'user_id' => $user->getId(),
                 'phone' => $user->getPhone(),
                 'name' => $user->getFullName(),
                 'email' => $user->getEmail(),
             );
-
-            return new JsonResponse($userData);
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
+            $this->get('logger')->error('Users:meAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Users:meAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('Users:meAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Users:meAction Trace2:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('Users:meAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 
     /**

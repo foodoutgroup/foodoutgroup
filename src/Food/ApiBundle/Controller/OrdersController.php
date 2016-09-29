@@ -31,7 +31,8 @@ class OrdersController extends Controller
      */
     public function getOrdersAction(Request $request)
     {
-        $this->get('logger')->debug('Orders:getOrdersAction Request:', (array) $request);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getOrdersAction Request:', (array) $request);
         $this->_theJudge($request);
         try {
             $requestJson = new JsonRequest($request);
@@ -51,7 +52,8 @@ class OrdersController extends Controller
             );
         }
 
-        $this->get('logger')->debug('Orders:getOrdersAction Response:', print_r($response, true));
+        $this->get('logger')->alert('Orders:getOrdersAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -61,7 +63,8 @@ class OrdersController extends Controller
      */
     public function createOrderAction(Request $request)
     {
-        $this->get('logger')->debug('Orders:createOrderAction Request:', (array) $request);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:createOrderAction Request:', (array) $request);
         $this->_theJudge($request);
         try {
             $requestJson = new JsonRequest($request);
@@ -81,7 +84,8 @@ class OrdersController extends Controller
             );
         }
 
-        $this->get('logger')->debug('Orders:createOrderAction Response:', print_r($response, true));
+        $this->get('logger')->alert('Orders:createOrderAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -91,7 +95,8 @@ class OrdersController extends Controller
      */
     public function createOrderPreAction(Request $request)
     {
-        $this->get('logger')->debug('Orders:createOrderPreAction Request:', (array) $request);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:createOrderPreAction Request:', (array) $request);
         $this->_theJudge($request);
         try {
             $requestJson = new JsonRequest($request);
@@ -111,7 +116,8 @@ class OrdersController extends Controller
             );
         }
 
-        $this->get('logger')->debug('Orders:createOrderPreAction Response:', print_r($response, true));
+        $this->get('logger')->alert('Orders:createOrderPreAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -122,7 +128,8 @@ class OrdersController extends Controller
      */
     public function getOrderDetailsAction($id, Request $request)
     {
-        $this->get('logger')->debug('Orders:getOrderDetailsAction Request: id - ' . $id, (array) $request);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getOrderDetailsAction Request: id - ' . $id, (array) $request);
         $this->_theJudge($request);
 
         $token = $request->headers->get('X-API-Authorization');
@@ -171,7 +178,8 @@ class OrdersController extends Controller
             );
         }
 
-        $this->get('logger')->debug('Orders:getOrderDetailsAction Response:', print_r($response, true));
+        $this->get('logger')->alert('Orders:getOrderDetailsAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -181,7 +189,8 @@ class OrdersController extends Controller
      */
     public function confirmOrderAction($id)
     {
-        $this->get('logger')->debug('Orders:confirmOrderAction Request: id - ' . $id);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:confirmOrderAction Request: id - ' . $id);
         mb_internal_encoding('utf-8');
 
         try {
@@ -222,7 +231,8 @@ class OrdersController extends Controller
             );
         }
 
-        $this->get('logger')->debug('Orders:confirmOrderAction Response:', print_r($response, true));
+        $this->get('logger')->alert('Orders:confirmOrderAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -232,7 +242,8 @@ class OrdersController extends Controller
      */
     public function getOrderStatusAction($id)
     {
-        $this->get('logger')->debug('Orders:getOrderStatusAction Request: id - ' . $id);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getOrderStatusAction Request: id - ' . $id);
         try {
             $order = $this->get('food.order')->getOrderById($id);
 
@@ -274,7 +285,8 @@ class OrdersController extends Controller
             );
         }
 
-        $this->get('logger')->debug('Orders:getOrderStatusAction Response:', print_r($response, true));
+        $this->get('logger')->alert('Orders:getOrderStatusAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -284,7 +296,8 @@ class OrdersController extends Controller
      */
     public function getCouponAction(Request $request)
     {
-        $this->get('logger')->debug('Orders:getCouponAction Request: ', (array) $request);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getCouponAction Request: ', (array) $request);
         $this->_theJudge($request);
         try {
             $place = null;
@@ -458,7 +471,8 @@ class OrdersController extends Controller
             );
         }
 
-        $this->get('logger')->debug('Orders:getOrderStatusAction Response:', print_r($response, true));
+        $this->get('logger')->alert('Orders:getOrderStatusAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
