@@ -87,4 +87,44 @@ class DriverRepository extends EntityRepository
         $stmt->execute();
         return $stmt->fetchAll();
     }
+
+    public function getDriverWorkedTime($driverId, $fromDate = null, $toDate = null)
+    {
+        $time = 0;
+
+        if(!$fromDate) {
+            $fromDate = date('Y-m-d');
+            $toDate = $fromDate;
+        }
+        if (!$toDate) {
+            $toDate = $fromDate;
+        }
+        // fromDate nuo 6 ryto
+        // toDate iki kitos dienos 6 ryto
+        $query = "
+SELECT
+  TIME_TO_SEC(TIMEDIFF(MAX(event_date), MIN(event_date))) AS timeDiff
+FROM order_delivery_log
+LEFT JOIN orders ON order_id = orders.id
+WHERE driver_id IS NOT NULL
+      AND order_date BETWEEN DATE('{$fromDate}') + INTERVAL 6 HOUR AND DATE('{$toDate}') + INTERVAL 30 HOUR
+      AND delivery_type = 'deliver'
+      AND preorder != '1'
+      AND event IN('order_assigned', 'order_completed')
+      AND driver_id = '{$driverId}'
+  GROUP BY DATE(order_date)
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()
+            ->prepare($query);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        if (!empty($results)) {
+            foreach ($results as $result) {
+                $time += $result['timeDiff'];
+            }
+        }
+        $time = number_format($time/3600, 2, '.', '');
+        return $time;
+    }
 }

@@ -2161,6 +2161,10 @@
                 <source>admin.driver.type.outsource</source>
                 <target>Outsourced</target>
             </trans-unit>
+            <trans-unit id="admin.driver.type.individual">
+                <source>admin.driver.type.individual</source>
+                <target>Individual activity</target>
+            </trans-unit>
             <trans-unit id="admin.driver.has_orders">
                 <source>admin.driver.has_orders</source>
                 <target>Order</target>
@@ -2577,6 +2581,10 @@
             <trans-unit id="admin.report.driver_latency_report">
                 <source>admin.report.driver_latency_report</source>
                 <target>Driver latency report</target>
+            </trans-unit>
+            <trans-unit id="admin.report.driver_worktime_report">
+                <source>admin.report.driver_worktime_report</source>
+                <target>Driver worktime report</target>
             </trans-unit>
             <trans-unit id="admin.reports.day">
                 <source>admin.reports.day</source>
@@ -3274,6 +3282,10 @@
             <trans-unit id="admin.rfm_status.title">
                 <source>admin.rfm_status.title</source>
                 <target>Title</target>
+            </trans-unit>
+            <trans-unit id="btn_export">
+                <source>btn_export</source>
+                <target>Export</target>
             </trans-unit>
         </body>
     </file>

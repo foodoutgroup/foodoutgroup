@@ -50,6 +50,7 @@ class DriverAdmin extends FoodAdmin
                     'choices' => array(
                         'local' => $this->trans('admin.driver.type.local'),
                         'outsource' => $this->trans('admin.driver.type.outsource'),
+                        'individual' => $this->trans('admin.driver.type.individual'),
                     )
                 )
             )
@@ -99,6 +100,7 @@ class DriverAdmin extends FoodAdmin
                     'choices' => array(
                         'local' => $this->trans('admin.driver.type.local'),
                         'outsource' => $this->trans('admin.driver.type.outsource'),
+                        'individual' => $this->trans('admin.driver.type.individual'),
                     ),
                 )
             )
