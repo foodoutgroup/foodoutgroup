@@ -30,11 +30,11 @@ parameters:
     order.notify_emails: []
     order.city_coordinators:
         vilnius: []
-        kaunas: [karolis.m@foodout.lt]
-        klaipėda: [karolis.m@foodout.lt]
-        ryga: [karolis.m@foodout.lt]
-        riga: [karolis.m@foodout.lt]
-        rīga: [karolis.m@foodout.lt]
+        kaunas: []
+        klaipėda: []
+        ryga: []
+        riga: []
+        rīga: []
     order.accept_notify_emails: []
     order.cancel_notify_emails: []
     accounting_email: "jolanta@foodout.lv"
