@@ -130,25 +130,26 @@ class OrdersController extends Controller
     {
         $startTime = microtime(true);
         $this->get('logger')->alert('Orders:getOrderDetailsAction Request: id - ' . $id, (array) $request);
-        $this->_theJudge($request);
-
-        $token = $request->headers->get('X-API-Authorization');
-        $this->container->get('food_api.api')->loginByHash($token);
-        $security = $this->container->get('security.context');
-
-        $user = $security->getToken()->getUser();
-        if (!$user) {
-            throw new ApiException(
-                'Unauthorized',
-                401,
-                array(
-                    'error' => 'Request requires a sesion_token',
-                    'description' => $this->container->get('translator')->trans('api.orders.user_not_authorized')
-                )
-            );
-        }
 
         try {
+            $this->_theJudge($request);
+
+            $token = $request->headers->get('X-API-Authorization');
+            $this->container->get('food_api.api')->loginByHash($token);
+            $security = $this->container->get('security.context');
+
+            $user = $security->getToken()->getUser();
+            if (!$user) {
+                throw new ApiException(
+                    'Unauthorized',
+                    401,
+                    array(
+                        'error' => 'Request requires a sesion_token',
+                        'description' => $this->container->get('translator')->trans('api.orders.user_not_authorized')
+                    )
+                );
+            }
+
             $order = $this->get('food.order')->getOrderById($id);
 
             if (!$order || $order->getUser()->getId() != $user->getId()) {
