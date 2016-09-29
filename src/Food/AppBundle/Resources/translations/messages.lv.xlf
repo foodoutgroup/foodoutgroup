@@ -212,7 +212,7 @@
             </trans-unit>
             <trans-unit id="general.sms.client.order_created" resname="general.sms.client.order_created">
                 <source>general.sms.client.order_created</source>
-                <target>Sveiki! Jūsu pasūtījuma numurs. order_id pieņemts. Sākam jūsu bada apspiešanas misiju!</target>
+                <target>Sveiki. Foodout.lv sanema Tavu pasutijumu. Sazinasimies ar restoranu par pasutijuma gatavosanu. Foodout.lv +37167363663</target>
             </trans-unit>
             <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
                 <source>general.sms.client.restourant_cancel</source>
