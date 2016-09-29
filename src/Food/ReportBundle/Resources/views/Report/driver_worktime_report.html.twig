@@ -1,0 +1,57 @@
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/foodapp/scripts/jquery-ui/datepicker-lt.js') }}"></script>
+    <script src="{{ asset('bundles/foodreport/js/reports.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            Report.bindEvents();
+        });
+    </script>
+{% endblock %}
+
+{% block actions %}{% endblock %}
+
+{% block side_menu %}{% endblock %}
+
+{% block list_table %}
+    <table class="reports_list">
+        <tr>
+            <th>{{ 'admin.reports.driver_latency.driver'|trans({}, 'SonataAdminBundle') }}</th>
+            {% for day in worktimes|first|keys %}
+            <th>{{ day }}</th>
+            {% endfor %}
+        </tr>
+       {% for worker, days in worktimes %}
+           <tr>
+               <td style ="word-break:break-all;">{{ worker }}</td>
+               {% for day in days %}
+               <td>{{ day }}</td>
+               {% endfor %}
+           </tr>
+       {% endfor %}
+    </table>
+{% endblock %}
+
+{% block list_filters %}
+    <form class="sonata-filter-form " action="{{ path('food_reports_driver_worktime_list') }}" method="GET">
+        <fieldset class="filter_legend">
+            <legend class="filter_legend">{{ 'label_filters'|trans({}, 'SonataAdminBundle') }}</legend>
+            <div class="filter_container">
+                <div>
+                    <div class="clearfix">
+                        <label for="filter_order_date_value">{{ 'admin.reports.date_range'|trans({}, 'SonataAdminBundle') }}</label>
+                        <input type="text" name="date_from" class="date_pick" value="{{ dateFrom|date("Y-m-d") }}" />
+                        <input type="text" name="date_to" class="date_pick" value="{{ dateTo|date("Y-m-d") }}" />
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <input type="submit" class="btn btn-primary" value="{{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}">
+                <a class="btn btn-primary" target="_blank" href="{{ path('food_reports_driver_worktime_export', {'format': 'xls', 'date_from': dateFrom, 'date_to': dateTo}) }}">{{ 'btn_export'|trans({}, 'SonataAdminBundle') }}</a>
+                <div class="clearfix"></div>
+                <a class="btn" href="{{ path('food_reports_driver_worktime_list') }}">{{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}</a>
+               </div>
+        </fieldset>
+    </form>
+{% endblock %}
