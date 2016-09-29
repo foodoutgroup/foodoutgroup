@@ -96,7 +96,7 @@
             </trans-unit>
             <trans-unit id="aeea36ba9e0a692a0a57973fd619e07b" resname="order.invoice.foodout_company_name">
                 <source>order.invoice.foodout_company_name</source>
-                <target>SIA FOODOUT.LV</target>
+                <target><![CDATA[SIA “Foodout.lv”]]></target>
             </trans-unit>
             <trans-unit id="6ca79c95b994d7290ee472da2685c13a" resname="order.invoice.foodout_address">
                 <source>order.invoice.foodout_address</source>
@@ -108,19 +108,19 @@
             </trans-unit>
             <trans-unit id="90192f734b721d2ebd68d9cb029dcded" resname="order.invoice.foodout_vat_code">
                 <source>order.invoice.foodout_vat_code</source>
-                <target>LT40103764326</target>
+                <target>LV40103764326</target>
             </trans-unit>
             <trans-unit id="75a8691f03596b5e994c207702546edf" resname="order.invoice.foodout_bank">
                 <source>order.invoice.foodout_bank</source>
-                <target>Swedbank A/S</target>
+                <target>SEB Banka</target>
             </trans-unit>
             <trans-unit id="cbf43ed78b45b5682bd4b6f3eec4925d" resname="order.invoice.foodout_bank_code">
                 <source>order.invoice.foodout_bank_code</source>
-                <target></target>
+                <target>UNLALV2X</target>
             </trans-unit>
             <trans-unit id="d7de6172e11f7455acc83d9eb33ded7a" resname="order.invoice.foodout_bank_account">
                 <source>order.invoice.foodout_bank_account</source>
-                <target>LV72HABA0551038036689</target>
+                <target>LV94UNLA0050023573360</target>
             </trans-unit>
             <trans-unit id="daily_report.metric" resname="daily_report.metric">
                 <source>daily_report.metric</source>
