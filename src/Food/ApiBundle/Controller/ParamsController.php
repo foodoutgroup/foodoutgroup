@@ -9,10 +9,15 @@ class ParamsController extends Controller
 {
     public function showRatingAction()
     {
+        $startTime = microtime(true);
         $miscService = $this->get('food.app.utils.misc');
 
         $possibleDeliveryDelay = $miscService->getParam('showMobilePopup');
 
-        return new JsonResponse(array('show' => (bool) $possibleDeliveryDelay));
+        $response = ['show' => (bool) $possibleDeliveryDelay];
+
+        $this->get('logger')->alert('Params:showRatingAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 }

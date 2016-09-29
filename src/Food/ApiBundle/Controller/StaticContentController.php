@@ -18,10 +18,13 @@ class StaticContentController extends Controller
      */
     public function processAction($id, Request $request)
     {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('StaticContent:processAction Request: id - ' . $id, (array) $request);
         // Check if user is not banned
         $ip = $request->getClientIp();
         // Dude is banned - hit him
         if ($this->get('food.app.utils.misc')->isIpBanned($ip)) {
+            $this->get('logger')->alert('StaticContent:processAction Request:', (array) $request);
             return $this->redirect($this->generateUrl('banned'), 302);
         }
 
@@ -43,15 +46,23 @@ class StaticContentController extends Controller
                 'content' => $this->container->get('food.app.utils.misc')->stripFaqVideo($staticPage->getContent()),
             );
 
-            return new JsonResponse($response);
         }  catch (ApiException $e) {
+            $this->get('logger')->error('StaticContent:processAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('StaticContent:processAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('StaticContent:processAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('StaticContent:processAction Trace2:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('StaticContent:processAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 }

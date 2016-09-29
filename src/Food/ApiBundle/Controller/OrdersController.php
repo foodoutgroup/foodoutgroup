@@ -31,25 +31,30 @@ class OrdersController extends Controller
      */
     public function getOrdersAction(Request $request)
     {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getOrdersAction Request:', (array) $request);
         $this->_theJudge($request);
         try {
             $requestJson = new JsonRequest($request);
-            return new JsonResponse($this->get('food_api.order')->getPendingOrders($request, $requestJson));
+            $response = $this->get('food_api.order')->getPendingOrders($request, $requestJson);
         }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:getOrdersAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrdersAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            $errBody = $e->getMessage();
-            $errBody.= "\n\n\n";
-            $errBody.= $e->getTraceAsString();
+            $this->get('logger')->error('Orders:getOrdersAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrdersAction Trace2:' . $e->getTraceAsString());
 
-            $this->get('logger')->warning('GET ORDERS ERROR');
-            $this->get('logger')->warning($errBody);
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('Orders:getOrdersAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 
     /**
@@ -58,25 +63,30 @@ class OrdersController extends Controller
      */
     public function createOrderAction(Request $request)
     {
-        $this->logActionParams('createOrder action', $request);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:createOrderAction Request:', (array) $request);
         $this->_theJudge($request);
-        mail("karolis.m@foodout.lt", "FOO LOGS", print_r($request->getContent(), true), "FROM: test@foodout.lt");
         try {
             $requestJson = new JsonRequest($request);
-            return new JsonResponse($this->get('food_api.order')->createOrder($request, $requestJson));
+            $response = $this->get('food_api.order')->createOrder($request, $requestJson);
         }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:createOrderAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:createOrderAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            $errBody = $e->getMessage();
-            $errBody.= "\n\n\n";
-            $errBody.= $e->getTraceAsString();
-            @mail("karolis.m@foodout.lt", "CREATE ORDER ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
+            $this->get('logger')->error('Orders:createOrderAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:createOrderAction Trace2:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('Orders:createOrderAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 
     /**
@@ -85,35 +95,30 @@ class OrdersController extends Controller
      */
     public function createOrderPreAction(Request $request)
     {
-        $this->logActionParams('createOrderPre action', $request);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:createOrderPreAction Request:', (array) $request);
         $this->_theJudge($request);
-        @mail("karolis.m@foodout.lt", "FOO LOGS PRE ".date("Y-m-d H:i:s"), print_r($request->getContent(), true), "FROM: test@foodout.lt");
         try {
             $requestJson = new JsonRequest($request);
-            return new JsonResponse($this->get('food_api.order')->createOrder($request, $requestJson, true));
-        }  catch (ApiException $e) {
+            $response = $this->get('food_api.order')->createOrder($request, $requestJson, true);
+        } catch (ApiException $e) {
+            $this->get('logger')->error('Orders:createOrderPreAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:createOrderPreAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            $errBody = $e->getMessage();
-            $errBody.= "\n\n\n";
-            $errBody.= "POST\n";
-            $errBody.= print_r($_POST, true);
-            $errBody.= "\n\n\n";
-            $errBody.= "GET\n";
-            $errBody.= print_r($_GET, true);
-            $errBody.= "\n\n\n";
-            $errBody.= "REQUEST BODY\n";
-            $errBody.= print_r(file_get_contents('php://input'), true);
+            $this->get('logger')->error('Orders:createOrderPreAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:createOrderPreAction Trace2:' . $e->getTraceAsString());
 
-            $errBody.= "\n\n\n";
-            $errBody.= $e->getTraceAsString();
-            @mail("karolis.m@foodout.lt", "CREATE ORDER PRE ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('Orders:createOrderPreAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 
     /**
@@ -123,7 +128,8 @@ class OrdersController extends Controller
      */
     public function getOrderDetailsAction($id, Request $request)
     {
-        $this->logActionParams('getOrderDetails action', $request);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getOrderDetailsAction Request: id - ' . $id, (array) $request);
         $this->_theJudge($request);
 
         $token = $request->headers->get('X-API-Authorization');
@@ -156,14 +162,14 @@ class OrdersController extends Controller
                 );
             }
 
-            return new JsonResponse($this->get('food_api.order')->getOrderForResponse($order));
+            $response = $this->get('food_api.order')->getOrderForResponse($order);
         }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:getOrderDetailsAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrderDetailsAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            $errBody = $e->getMessage();
-            $errBody.= "\n\n\n";
-            $errBody.= $e->getTraceAsString();
-            @mail("karolis.m@foodout.lt", "GET ORDER DETAILS ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
+            $this->get('logger')->error('Orders:getOrderDetailsAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrderDetailsAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
@@ -171,6 +177,10 @@ class OrdersController extends Controller
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('Orders:getOrderDetailsAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 
     /**
@@ -179,7 +189,8 @@ class OrdersController extends Controller
      */
     public function confirmOrderAction($id)
     {
-        $this->logActionParams('confirmOrder action', $id);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:confirmOrderAction Request: id - ' . $id);
         mb_internal_encoding('utf-8');
 
         try {
@@ -204,14 +215,14 @@ class OrdersController extends Controller
             $this->container->get('food.order')->setOrder($order);
             $this->container->get('food.order')->deactivateCoupon();
 
-            return new JsonResponse($this->get('food_api.order')->getOrderForResponse($order));
+            $response = $this->get('food_api.order')->getOrderForResponse($order);
         }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:confirmOrderAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:confirmOrderAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
-        }  catch (\Exception $e) {
-            $errBody = $e->getMessage();
-            $errBody.= "\n\n\n";
-            $errBody.= $e->getTraceAsString();
-            @mail("karolis.m@foodout.lt", "CONFIRM ORDER ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Orders:confirmOrderAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:confirmOrderAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
@@ -219,6 +230,10 @@ class OrdersController extends Controller
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('Orders:confirmOrderAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 
     /**
@@ -227,7 +242,8 @@ class OrdersController extends Controller
      */
     public function getOrderStatusAction($id)
     {
-        $this->logActionParams('getOrderStatus action', $id);
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getOrderStatusAction Request: id - ' . $id);
         try {
             $order = $this->get('food.order')->getOrderById($id);
 
@@ -244,25 +260,23 @@ class OrdersController extends Controller
 
             $message = $this->get('food_api.order')->getOrderStatusMessage($order);
 
-            return new JsonResponse(
-                array(
-                    "order_id" => $order->getId(),
-                    "status" => array(
-                        "title" => $this->get('food_api.order')->convertOrderStatus($order->getOrderStatus()),
-                        // TODO Rodome nebe restorano, o dispeceriu nr
-                        "info_number" => "+".$this->container->getParameter('dispatcher_contact_phone'),
+            $response = [
+                "order_id" => $order->getId(),
+                "status" => array(
+                    "title" => $this->get('food_api.order')->convertOrderStatus($order->getOrderStatus()),
+                    // TODO Rodome nebe restorano, o dispeceriu nr
+                    "info_number" => "+".$this->container->getParameter('dispatcher_contact_phone'),
 //                        "info_number" => "+".$order->getPlacePoint()->getPhone(),
-                        "message" => $message
-                    )
+                    "message" => $message
                 )
-            );
+            ];
         }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:getOrderStatusAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrderStatusAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            $errBody = $e->getMessage();
-            $errBody.= "\n\n\n";
-            $errBody.= $e->getTraceAsString();
-            @mail("karolis.m@foodout.lt", "GET ORDER STATUS ERROR ".date("Y-m-d H:i:s"), $errBody, "FROM: info@foodout.lt");
+            $this->get('logger')->error('Orders:getOrderStatusAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrderStatusAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
@@ -270,6 +284,10 @@ class OrdersController extends Controller
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('Orders:getOrderStatusAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 
     /**
@@ -278,6 +296,8 @@ class OrdersController extends Controller
      */
     public function getCouponAction(Request $request)
     {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getCouponAction Request: ', (array) $request);
         $this->_theJudge($request);
         try {
             $place = null;
@@ -310,7 +330,6 @@ class OrdersController extends Controller
 //                    )
 //                );
 //            }
-            $this->logActionParams('getCoupon action', $code);
 
             if (!empty($code)) {
                 $coupon = $orderService->getCouponByCode($code);
@@ -413,7 +432,7 @@ class OrdersController extends Controller
                     }
                 }
 
-                $response = array(
+                $response = [
                     'id' => $coupon->getId(),
                     'name' => $coupon->getName(),
                     'code' => $coupon->getCode(),
@@ -426,8 +445,7 @@ class OrdersController extends Controller
                     'valid_from' => ($coupon->getValidFrom() != null ? $coupon->getValidFrom()->format('Y-m-d H:i:s') : null),
                     'valid_to' => ($coupon->getValidTo() != null ? $coupon->getValidTo()->format('Y-m-d H:i:s') : null),
                     'places' => $arr_places,
-                );
-                return new JsonResponse($response);
+                ];
             } else {
                 throw new ApiException(
                     'Coupon Code Is Empty',
@@ -439,14 +457,23 @@ class OrdersController extends Controller
                 );
             }
         }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:getOrderStatusAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrderStatusAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            $this->get('logger')->error('Orders:getOrderStatusAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrderStatusAction Trace2:' . $e->getTraceAsString());
+
             return new JsonResponse(
                 $this->get('translator')->trans('general.error_happened'),
                 500,
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        $this->get('logger')->alert('Orders:getOrderStatusAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
     }
 
     /**
