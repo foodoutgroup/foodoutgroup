@@ -4376,7 +4376,7 @@ class OrderService extends ContainerAware
         }
 
         $sendMessage = true;
-        if (in_array($this->getLocale(), array('lv'))) {
+        if (in_array($this->getLocale(), array())) {
             $sendMessage = false;
         }
 
