@@ -167,6 +167,9 @@ class ApiService extends ContainerAware
     {
         $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
         $dish = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Dish')->find((int)$menuItem);
+        if (!$dish) {
+            throw new ApiException('Dish does not exist', 400, array('error' => 'Dish does not exist', 'description' => null));
+        }
         $menuItem = new MenuItem(null, $this->container);
         return $menuItem->loadFromEntity($dish, true);
     }
