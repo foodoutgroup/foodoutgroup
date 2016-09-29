@@ -188,8 +188,6 @@ class ApiService extends ContainerAware
     public function loginByHash($hash)
     {
         if (empty($hash)) {
-            $this->container->get('logger')->error("Empty token");
-            $this->container->get('logger')->error("Trace: ", print_r(debug_backtrace(2), true));
             throw new ApiException('Empty token', 400, array('error' => 'Token is empty', 'description' => null));
         }
 
