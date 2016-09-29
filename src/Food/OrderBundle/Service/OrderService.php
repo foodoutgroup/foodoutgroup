@@ -1514,6 +1514,13 @@ class OrderService extends ContainerAware
             $enable_free_delivery_for_big_basket = $this->getOrder()->getPlace()->isAllowFreeDelivery();
         }
         $free_delivery_price = $miscService->getParam('free_delivery_price');
+        if($enable_free_delivery_for_big_basket) {
+            $placeMinimumFreeDeliveryPrice = $place->getMinimumFreeDeliveryPrice();
+            if ($placeMinimumFreeDeliveryPrice) {
+                $free_delivery_price = $placeMinimumFreeDeliveryPrice;
+            }
+        }
+
         $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
         $left_sum = 0;
         if ($enable_free_delivery_for_big_basket) {

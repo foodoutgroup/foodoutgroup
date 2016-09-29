@@ -537,6 +537,12 @@ class DefaultController extends Controller
             $enable_free_delivery_for_big_basket = $place->isAllowFreeDelivery();
         }
         $free_delivery_price = $miscService->getParam('free_delivery_price');
+        if($enable_free_delivery_for_big_basket) {
+            $placeMinimumFreeDeliveryPrice = $place->getMinimumFreeDeliveryPrice();
+            if ($placeMinimumFreeDeliveryPrice) {
+                $free_delivery_price = $placeMinimumFreeDeliveryPrice;
+            }
+        }
         $displayCartInterval = true;
         $deliveryTotal = $this->get('food.places')->getMinDeliveryPrice($place->getId());
         $basketErrors = [
