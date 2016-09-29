@@ -10,6 +10,8 @@ class ImagesController extends Controller
 {
     public function imageAction(Request $request)
     {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('imageAction Request:', (array) $request);
         try {
             $filename = $request->get('imagename');
             $size = $request->get('size');
@@ -85,12 +87,15 @@ class ImagesController extends Controller
             $response->headers->set('Content-Length', $imageLength);
             $response->headers->set('Cache-Control', 'max-age=432000');
 
-            return $response;
         } catch (\InvalidArgumentException $e) {
+            $this->get('logger')->error('imageAction Error:' . $e->getMessage());
+            $this->get('logger')->error('imageAction Trace:' . $e->getTraceAsString());
             $this->get('logger')->error($e->getMessage());
 
             return new Response('The image was not found in this dimension', 404);
         } catch (\Exception $e) {
+            $this->get('logger')->error('imageAction Error:' . $e->getMessage());
+            $this->get('logger')->error('imageAction Trace:' . $e->getTraceAsString());
             $this->get('logger')->error(
                 sprintf(
                     'Resize can not continue. Error occured. Parameters: [imagename]: %s [size]: %s [box]: %s',
@@ -102,5 +107,8 @@ class ImagesController extends Controller
 
             return new Response('We are so sorry - an internal error occured. Please check parameters or grab a coffee', 500);
         }
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+
+        return $response;
     }
 }

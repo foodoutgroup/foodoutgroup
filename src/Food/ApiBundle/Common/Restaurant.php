@@ -175,7 +175,9 @@ class Restaurant extends ContainerAware
                 )
                 ;
 
-                $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($ppId);
+                if ($ppId) {
+                    $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($ppId);
+                }
             } else {
                 // TODO Trying to catch fatal when searching for PlacePoint
                 if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
@@ -184,18 +186,20 @@ class Restaurant extends ContainerAware
                 $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
             }
 
-            $devPrice = $this->container->get('food.cart')->getDeliveryPrice(
-                $place,
-                $locationData,
-                $pointRecord
-            )
-            ;
-            $devCart = $this->container->get('food.cart')->getMinimumCart(
-                $place,
-                $locationData,
-                $pointRecord
-            )
-            ;
+            if (!empty($pointRecord)) {
+                $devPrice = $this->container->get('food.cart')->getDeliveryPrice(
+                    $place,
+                    $locationData,
+                    $pointRecord
+                )
+                ;
+                $devCart = $this->container->get('food.cart')->getMinimumCart(
+                    $place,
+                    $locationData,
+                    $pointRecord
+                )
+                ;
+            }
         }
 
         $currency = $this->container->getParameter('currency_iso');
