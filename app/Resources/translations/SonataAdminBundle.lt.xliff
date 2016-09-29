@@ -2906,6 +2906,14 @@
                 <source>btn_export</source>
                 <target>Exportuoti</target>
             </trans-unit>
+            <trans-unit id="admin.place.allow_free_delivery">
+                <source>admin.place.allow_free_delivery</source>
+                <target>Leisti nemokamą pristatymą</target>
+            </trans-unit>
+            <trans-unit id="admin.place.minimum_free_delivery_price">
+                <source>admin.place.minimum_free_delivery_price</source>
+                <target>Min. nemokamo pristatymo suma</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

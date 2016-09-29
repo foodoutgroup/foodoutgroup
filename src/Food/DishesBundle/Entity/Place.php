@@ -247,6 +247,20 @@ class Place extends Uploadable implements Translatable
     /**
      * @var bool
      *
+     * @ORM\Column(name="allow_free_delivery", type="boolean", nullable=true)
+     */
+    private $allowFreeDelivery = false;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="minimum_free_delivery_price", type="float", nullable=true)
+     */
+    private $minimumFreeDeliveryPrice;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="min_on_self", type="boolean")
      */
     private $minimalOnSelfDel = false;
@@ -2021,5 +2035,37 @@ class Place extends Uploadable implements Translatable
     public function getDishesNumeration()
     {
         return $this->dishesNumeration;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isAllowFreeDelivery()
+    {
+        return $this->allowFreeDelivery;
+    }
+
+    /**
+     * @param boolean $allowFreeDelivery
+     */
+    public function setAllowFreeDelivery($allowFreeDelivery)
+    {
+        $this->allowFreeDelivery = $allowFreeDelivery;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMinimumFreeDeliveryPrice()
+    {
+        return $this->minimumFreeDeliveryPrice;
+    }
+
+    /**
+     * @param float $minimumFreeDeliveryPrice
+     */
+    public function setMinimumFreeDeliveryPrice($minimumFreeDeliveryPrice)
+    {
+        $this->minimumFreeDeliveryPrice = $minimumFreeDeliveryPrice;
     }
 }
