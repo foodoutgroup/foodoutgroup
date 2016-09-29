@@ -92,7 +92,7 @@ class BasketService extends ContainerAware
                 $dc->getRepository('FoodDishesBundle:DishSize')->find(intval($item['size_id'])),
                 $item['count'],
                 $options,//$item['options'] // @todo,
-                $item['additional_info'],
+                (isset($item['additional_info'])) ? $item['additional_info'] : '',
                 $basket->getSession()
             );
         }

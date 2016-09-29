@@ -231,6 +231,7 @@ class UsersController extends Controller
      */
     public function updateAction(Request $request)
     {
+        $startTime = microtime(true);
         $this->get('logger')->alert('Users:updateAction Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
