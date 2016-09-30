@@ -3287,6 +3287,14 @@
                 <source>btn_export</source>
                 <target>Export</target>
             </trans-unit>
+            <trans-unit id="admin.place.allow_free_delivery">
+                <source>admin.place.allow_free_delivery</source>
+                <target>Allow free delivery</target>
+            </trans-unit>
+            <trans-unit id="admin.place.minimum_free_delivery_price">
+                <source>admin.place.minimum_free_delivery_price</source>
+                <target>Minimum free delivery price</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
