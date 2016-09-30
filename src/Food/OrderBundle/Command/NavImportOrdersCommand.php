@@ -275,18 +275,18 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             //~ $fixedAddress = trim(iconv('CP1257', 'UTF-8', $orderData['Address']));
                             //~ $output->writeln('Converted address: '.var_export($fixedAddress, true));
                             // OMG, kartais NAV adresas turi bruksniukus, kuriu niekam nereikia.. fuj fuj fuj
-                            if (mb_strpos($orderData['Address'], '--') == (mb_strlen($orderData['Address']) - 2)) {
-                                $output->writeln('Found -- chars.. Cleaning address');
-                                $orderData['Address'] = mb_substr($orderData['Address'], 0, (mb_strlen($orderData['Address']) - 2));
-                            }
-                            if (mb_strpos($orderData['Address'], '--,') !== false) {
-                                $output->writeln('Found --, chars.. Cleaning address');
-                                $orderData['Address'] = str_replace('--,', ',', $orderData['Address']);
-                            }
+                            //~ if (mb_strpos($orderData['Address'], '--') == (mb_strlen($orderData['Address']) - 2)) {
+                                //~ $output->writeln('Found -- chars.. Cleaning address');
+                                //~ $orderData['Address'] = mb_substr($orderData['Address'], 0, (mb_strlen($orderData['Address']) - 2));
+                            //~ }
+                            //~ if (mb_strpos($orderData['Address'], '--,') !== false) {
+                                //~ $output->writeln('Found --, chars.. Cleaning address');
+                                //~ $orderData['Address'] = str_replace('--,', ',', $orderData['Address']);
+                            //~ }
                             $output->writeln('Cleaned address: '.var_export($orderData['Address'], true));
 
                             // Format address
-                            $fixedCity = iconv('CP1257', 'UTF-8', $orderData['City']);
+                            $fixedCity = $orderData['City'];
                             $fixedCity = mb_convert_case($fixedCity, MB_CASE_TITLE, "UTF-8");
                             $output->writeln('Fixed city: '.var_export($fixedCity, true));
 
@@ -336,12 +336,12 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                 $addressToSave = $order->getAddressId()->getAddress();
                                 $cityToSave = $order->getAddressId()->getCity();
                                 if (!empty($orderData['CustomerAddress'])) {
-                                    $addressToSave = trim(iconv('CP1257', 'UTF-8', $orderData['CustomerAddress']));
+                                    $addressToSave = trim($orderData['CustomerAddress']);
                                     $addressToSave = mb_convert_case($addressToSave, MB_CASE_TITLE, "UTF-8");
                                     $addressToSave = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressToSave);
                                 }
                                 if (!empty($orderData['CustomerCity'])) {
-                                    $cityToSave = iconv('CP1257', 'UTF-8', $orderData['CustomerCity']);
+                                    $cityToSave = $orderData['CustomerCity'];
                                     $cityToSave = mb_convert_case($cityToSave, MB_CASE_TITLE, "UTF-8");
                                 }
 
@@ -352,7 +352,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                 }
 
                                 $order->setCompany(true)
-                                    ->setCompanyName(iconv('CP1257', 'UTF-8', $orderData['CustomerName']))
+                                    ->setCompanyName($orderData['CustomerName'])
                                     ->setCompanyCode(trim($orderData['CustomerRegNo']))
                                     ->setVatCode(trim($orderData['CustomerVatNo']))
                                     ->setCompanyAddress($companyAddress);
