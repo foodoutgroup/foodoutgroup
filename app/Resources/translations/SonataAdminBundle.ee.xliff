@@ -2874,6 +2874,26 @@
                 <source>admin.place.minimum_free_delivery_price</source>
                 <target>Minimum free delivery price</target>
             </trans-unit>
+            <trans-unit id="admin.admin.cities">
+                <source>admin.admin.cities</source>
+                <target>Cities</target>
+            </trans-unit>
+            <trans-unit id="City List">
+                <source>City List</source>
+                <target>City list</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.title">
+                <source>admin.cities.title</source>
+                <target>Title</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.zavalas_on">
+                <source>admin.cities.zavalas_on</source>
+                <target>Zavalas</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.zavalas_time">
+                <source>admin.cities.zavalas_time</source>
+                <target>Zavalas time</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

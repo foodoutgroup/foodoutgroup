@@ -85,3 +85,14 @@ services:
       parent: food.base_service
       arguments:
         - @food.app.utils.misc
+
+    sonata.admin.cities:
+      class: Food\AppBundle\Admin\CityAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.admin.cities" }
+      arguments:
+        - ~
+        - Food\AppBundle\Entity\City
+        - ~
+      calls:
+        - [ setTranslationDomain, [SonataAdminBundle]]
