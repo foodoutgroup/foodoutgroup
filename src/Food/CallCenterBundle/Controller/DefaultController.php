@@ -57,6 +57,9 @@ class DefaultController extends Controller
             $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
             $cartFromMax = $this->get('food.places')->getMaxCartPrice($place->getId());
             $enable_free_delivery_for_big_basket = $miscService->getParam('enable_free_delivery_for_big_basket');
+            if($enable_free_delivery_for_big_basket) {
+                $enable_free_delivery_for_big_basket = $place->isAllowFreeDelivery();
+            }
             $left_sum = 0;
 
             $takeAway = ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup);
