@@ -79,3 +79,9 @@ services:
     food.driver_service:
       class: Food\AppBundle\Service\DriverService
       parent: food.base_service
+
+    food.zavalas_service:
+      class: Food\AppBundle\Service\ZavalasService
+      parent: food.base_service
+      arguments:
+        - @food.app.utils.misc

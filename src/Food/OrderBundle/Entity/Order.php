@@ -442,6 +442,12 @@ class Order
     private $place_informed = false;
 
     /**
+     * @var bool
+     * @ORM\Column(name="during_zavalas", type="boolean", nullable=true)
+     */
+    private $duringZavalas = false;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -2338,5 +2344,21 @@ class Order
     public function getPlaceInformed()
     {
         return $this->place_informed;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDuringZavalas()
+    {
+        return $this->duringZavalas;
+    }
+
+    /**
+     * @param boolean $duringZavalas
+     */
+    public function setDuringZavalas($duringZavalas)
+    {
+        $this->duringZavalas = $duringZavalas;
     }
 }

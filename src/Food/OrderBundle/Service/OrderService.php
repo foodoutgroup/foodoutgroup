@@ -318,6 +318,10 @@ class OrderService extends ContainerAware
             $this->order->setUserIp('');
         }
 
+        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOn()) {
+            $this->order->setDuringZavalas(true);
+        }
+
         return $this->getOrder();
     }
 
@@ -522,57 +526,65 @@ class OrderService extends ContainerAware
             $recipient = $order->getOrderExtra()->getPhone();
             $placeService = $this->container->get('food.places');
 
+            $sendSmsMessage = true;
+            if ($order->getOrderFromNav() == true) {
+                $sendSmsMessage = false;
+            } else if ($order->isDuringZavalas()) {
+                $sendSmsMessage = false;
+            } else if (empty($recipient)) {
+                $sendSmsMessage = false;
+            }
+
             // SMS siunciam tik tuo atveju jei orderis ne is callcentro
-            if ($order->getOrderFromNav() == false) {
-                if (!empty($recipient)) {
-                    $smsService = $this->container->get('food.messages');
+            // and not on during zavalas time period
+            if ($sendSmsMessage) {
+                $smsService = $this->container->get('food.messages');
 
-                    $sender = $this->container->getParameter('sms.sender');
+                $sender = $this->container->getParameter('sms.sender');
 
-                    $translation = 'general.sms.user.order_accepted';
-                    // Preorder message differs
-                    if ($order->getPreorder()) {
-                        $translation = 'general.sms.user.order_accepted_preorder';
-                    }
-
-                    if ($order->getDeliveryType() == self::$deliveryPickup) {
-                        $translation = 'general.sms.user.order_accepted_pickup';
-
-                        if ($order->getPreorder()) {
-                            $translation = 'general.sms.user.order_accepted_pickup_preorder';
-                        }
-                    }
-
-                    $placeName = $this->container->get('food.app.utils.language')
-                        ->removeChars('lt', $order->getPlaceName(), false, false)
-                    ;
-                    $placeName = ucfirst($placeName);
-                    // Hack for too long restaurant names in LT :) Sorry mates, had to do this for whale :D
-                    // Add others if needed
-                    if ($placeName == 'Cili GREITA (tik issinesimui)') {
-                        $placeName = 'Cili GREITA';
-                    }
-
-                    $place = $order->getPlace();
-
-                    $text = $this->container->get('translator')
-                        ->trans(
-                            $translation,
-                            [
-                                'order_id'          => $order->getId(),
-                                'restourant_name'   => $placeName,
-                                'delivery_time'     => ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
-                                'pre_delivery_time' => ($order->getDeliveryTime()->format('m-d H:i')),
-//                                'restourant_phone' => $order->getPlacePoint()->getPhone()
-                            ],
-                            null,
-                            $order->getLocale()
-                        )
-                    ;
-
-                    $message = $smsService->createMessage($sender, $recipient, $text, $order);
-                    $smsService->saveMessage($message);
+                $translation = 'general.sms.user.order_accepted';
+                // Preorder message differs
+                if ($order->getPreorder()) {
+                    $translation = 'general.sms.user.order_accepted_preorder';
                 }
+
+                if ($order->getDeliveryType() == self::$deliveryPickup) {
+                    $translation = 'general.sms.user.order_accepted_pickup';
+
+                    if ($order->getPreorder()) {
+                        $translation = 'general.sms.user.order_accepted_pickup_preorder';
+                    }
+                }
+
+                $placeName = $this->container->get('food.app.utils.language')
+                    ->removeChars('lt', $order->getPlaceName(), false, false)
+                ;
+                $placeName = ucfirst($placeName);
+                // Hack for too long restaurant names in LT :) Sorry mates, had to do this for whale :D
+                // Add others if needed
+                if ($placeName == 'Cili GREITA (tik issinesimui)') {
+                    $placeName = 'Cili GREITA';
+                }
+
+                $place = $order->getPlace();
+
+                $text = $this->container->get('translator')
+                    ->trans(
+                        $translation,
+                        [
+                            'order_id'          => $order->getId(),
+                            'restourant_name'   => $placeName,
+                            'delivery_time'     => ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
+                            'pre_delivery_time' => ($order->getDeliveryTime()->format('m-d H:i')),
+//                                'restourant_phone' => $order->getPlacePoint()->getPhone()
+                        ],
+                        null,
+                        $order->getLocale()
+                    )
+                ;
+
+                $message = $smsService->createMessage($sender, $recipient, $text, $order);
+                $smsService->saveMessage($message);
             }
 
             $order->setAcceptTime(new \DateTime("now"));

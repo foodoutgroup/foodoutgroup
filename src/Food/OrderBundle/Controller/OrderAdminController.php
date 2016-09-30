@@ -316,7 +316,7 @@ class OrderAdminController extends Controller
                       pp.lat as production_peaks_lat,
                       pp.lon as production_peaks_lon,
                       o.order_date as order_date_copy, o.accept_time, o.delivery_time, o.completed_time, 
-                      o.is_delay, o.delay_duration, o.delay_reason, o.assign_late 
+                      o.is_delay, o.delay_duration, o.delay_reason, o.assign_late, o.during_zavalas 
                     FROM orders o
                     LEFT JOIN user_address ua ON o.address_id = ua.id
                     LEFT JOIN order_extra oe ON o.id = oe.order_id
