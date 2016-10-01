@@ -347,7 +347,8 @@ class OrderService extends ContainerAware
         }
 
         if ($serviceVar['type'] != "pickup") {
-            if ($total_cart < $place->getCartMinimum()) {
+            $placeService = $this->container->get('food.places');
+            if ($total_cart < $placeService->getMinCartPrice($place->getId())) {
                 throw new ApiException(
                     'Order Too Small',
                     400,
@@ -357,7 +358,6 @@ class OrderService extends ContainerAware
                     ]
                 );
             }
-
             //if ($serviceVar)
             /**
              *         "address": {
@@ -459,8 +459,6 @@ class OrderService extends ContainerAware
         $customerComment = (!empty($serviceVar['address']) ? $serviceVar['address']['comments'] : "");
 
         $os->setPaymentMethod(($paymentMethod == 'cash' ? 'local' : 'local.card'));
-
-        @mail("karolis.m@foodout.lt", "MOBILE REQUEST JSONobject", print_r($request, true), "FROM: info@foodout.lt");
 
         if ($serviceVar['type'] == "pickup") {
             $os->setDeliveryType($os::$deliveryPickup);
