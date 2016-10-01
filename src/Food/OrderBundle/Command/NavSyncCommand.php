@@ -88,9 +88,9 @@ class NavSyncCommand extends ContainerAwareCommand
                             $navService->changeOrderStatusByNav($order, $orderData);
 
                             // CILI assigns random driver, so we have a lot of problems
-                            //~ if ($orderData['Delivery Status'] > 6 && !empty($orderData['Driver ID'])) {
-                                //~ $navService->setDriverFromNav($order, $orderData['Driver ID']);
-                            //~ }
+                            if ($orderData['Delivery Status'] > 6 && !empty($orderData['Driver ID']) && !$order->getDriver()) {
+                                $navService->setDriverFromNav($order, $orderData['Driver ID']);
+                            }
 
                             if ($order->getOrderFromNav() && isset($orderData['Total Sum']) && !empty($orderData['Total Sum'])) {
                                 if ($order->getTotal() != sprintf('%0.2f', $orderData['Total Sum'])) {
