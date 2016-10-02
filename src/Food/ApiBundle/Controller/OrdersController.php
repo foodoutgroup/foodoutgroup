@@ -126,6 +126,40 @@ class OrdersController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
+    public function getOrderDetailsByHashAction($hash, Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getOrderDetailsByHashAction Request: hash - ' . $hash, (array) $request);
+
+        try {
+            $order = $this->get('food.order')->getOrderByHash($hash);
+
+            $response = $this->get('food_api.order')->getOrderForResponseFull($order);
+        }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:getOrderDetailsByHashAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrderDetailsByHashAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Orders:getOrderDetailsByHashAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrderDetailsByHashAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Orders:getOrderDetailsByHashAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getOrderDetailsAction($id, Request $request)
     {
         $startTime = microtime(true);
