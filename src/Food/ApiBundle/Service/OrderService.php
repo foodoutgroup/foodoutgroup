@@ -589,6 +589,30 @@ class OrderService extends ContainerAware
     /**
      * @param Order $order
      *
+     * @return array
+     */
+    public function getOrderForResponseFull(Order $order)
+    {
+        $returner = $this->getOrderForResponse($order);
+
+        $returner['location'] = [
+            'from' => [
+                'lat' => $order->getPlacePoint()->getLat(),
+                'lon' => $order->getPlacePoint()->getLon(),
+            ],
+            'to' => [
+                'lat' => $order->getAddressId()->getLat(),
+                'lon' => $order->getAddressId()->getLon(),
+            ]
+        ];
+        $returner['details']['restaurant_address'] = $order->getPlacePointAddress();
+
+        return $returner;
+    }
+
+    /**
+     * @param Order $order
+     *
      * @return string
      */
     public function getOrderStatusMessage(Order $order)
