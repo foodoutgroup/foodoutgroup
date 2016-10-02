@@ -606,6 +606,8 @@ class OrderService extends ContainerAware
             ]
         ];
         $returner['details']['restaurant_address'] = $order->getPlacePointAddress();
+        $returner['details']['restaurant_address'] = $order->getPlacePointAddress();
+        $returner['service']['delivery_time'] = $order->getDeliveryTime()->format('Y-m-d H:i:s');
 
         return $returner;
     }
