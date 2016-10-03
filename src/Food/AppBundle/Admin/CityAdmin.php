@@ -32,4 +32,31 @@ class CityAdmin extends FoodAdmin
             ->add('zavalas_time', 'text', array('label' => 'admin.cities.zavalas_time', 'required' => false))
         ;
     }
+
+    /**
+     * Log editing before inserting to database
+     * @inheritdoc
+     *
+     * @param \Food\AppBundle\Entity\City $object
+     * @return mixed|void
+     */
+    public function preUpdate($object)
+    {
+        $this->logCity($object);
+        parent::preUpdate($object);
+    }
+
+    /**
+     * @param \Food\AppBundle\Entity\City $object
+     * @return void
+     */
+    private function logCity($object)
+    {
+        $miscUtils = $this->getContainer()->get('food.app.utils.misc');
+        $original = $this->getContainer()->get('doctrine.orm.entity_manager')
+            ->getRepository('FoodAppBundle:City')->find($object->getId());
+        $original = $this->getContainer()->get('doctrine.orm.entity_manager')
+            ->getUnitOfWork()->getOriginalEntityData($original);
+        $miscUtils->logCityChange($object, $original);
+    }
 }

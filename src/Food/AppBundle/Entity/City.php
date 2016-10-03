@@ -2,15 +2,16 @@
 
 namespace Food\AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Food\AppBundle\Entity\City
  *
  * @ORM\Table(name="cities", indexes={@ORM\Index(name="title_idx", columns={"title"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\AppBundle\Entity\CityRepository")
  */
-class City
+class City implements \JsonSerializable
 {
     /**
      * @var integer
@@ -134,5 +135,15 @@ class City
         }
 
         return $this->getTitle();
+    }
+
+    public function jsonSerialize()
+    {
+        return json_encode(array(
+            'id' => $this->getId(),
+            'title' => $this->getTitle(),
+            'zavalasOn'=> $this->isZavalasOn(),
+            'zavalasTime'=> $this->getZavalasTime(),
+        ));
     }
 }

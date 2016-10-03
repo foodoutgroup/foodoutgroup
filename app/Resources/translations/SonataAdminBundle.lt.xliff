@@ -2914,8 +2914,8 @@
                 <source>admin.place.minimum_free_delivery_price</source>
                 <target>Min. nemokamo pristatymo suma</target>
             </trans-unit>
-            <trans-unit id="admin.admin.cities">
-                <source>admin.admin.cities</source>
+            <trans-unit id="admin.cities">
+                <source>admin.cities</source>
                 <target>Miestai</target>
             </trans-unit>
             <trans-unit id="City List">
@@ -2933,6 +2933,10 @@
             <trans-unit id="admin.cities.zavalas_time">
                 <source>admin.cities.zavalas_time</source>
                 <target>Zavalo trukmė</target>
+            </trans-unit>
+            <trans-unit id="admin.citieslog">
+                <source>admin.citieslog</source>
+                <target>Miestų istorija</target>
             </trans-unit>
         </body>
     </file>

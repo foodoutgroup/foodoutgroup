@@ -3295,8 +3295,8 @@
                 <source>admin.place.minimum_free_delivery_price</source>
                 <target>Minimum free delivery price</target>
             </trans-unit>
-            <trans-unit id="admin.admin.cities">
-                <source>admin.admin.cities</source>
+            <trans-unit id="admin.cities">
+                <source>admin.cities</source>
                 <target>Cities</target>
             </trans-unit>
             <trans-unit id="City List">
@@ -3314,6 +3314,10 @@
             <trans-unit id="admin.cities.zavalas_time">
                 <source>admin.cities.zavalas_time</source>
                 <target>Zavalas time</target>
+            </trans-unit>
+            <trans-unit id="admin.citieslog">
+                <source>admin.citieslog</source>
+                <target>Cities log</target>
             </trans-unit>
         </body>
     </file>

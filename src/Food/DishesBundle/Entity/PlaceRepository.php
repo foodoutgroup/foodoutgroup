@@ -5,6 +5,8 @@ namespace Food\DishesBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Food\OrderBundle\Service\OrderService;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerAware;
 
 class PlaceRepository extends EntityRepository
 {
@@ -17,7 +19,7 @@ class PlaceRepository extends EntityRepository
      * @param array      $filters
      * @param bool       $recommended
      * @param array|null $locationData
-     * @param            $container
+     * @param Container $container
      *
      * @return array
      */
@@ -93,8 +95,10 @@ class PlaceRepository extends EntityRepository
             $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id $cityWhere GROUP BY pps.place";
         } else {
             if ($container) {
-                $miscService = $container->get('food.app.utils.misc');
-                $zaval = $miscService->getParam('zaval_on');
+                $zaval = $container->get('food.zavalas_service')->isZavalasTurnedOnGlobal();
+                if (!empty($city)) {
+                    $zaval = $container->get('food.zavalas_service')->isZavalasTurnedOnByCity($city);
+                }
             }
 
             /**
