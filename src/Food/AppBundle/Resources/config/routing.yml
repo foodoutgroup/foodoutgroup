@@ -157,6 +157,22 @@ food_landing_b2b_client_ee_slash:
     path: /b2b-clients/
     defaults: { _controller: FoodAppBundle:Landing:b2bClient }
 
+food_best_offers_lt:
+  path: /akcijos
+  defaults: { _controller: FoodAppBundle:Default:listBestOffers}
+
+food_best_offers_lt_slash:
+  path: /akcijos/
+  defaults: { _controller: FoodAppBundle:Default:listBestOffers}
+
+food_best_offers_lv:
+  path: /akcijas
+  defaults: { _controller: FoodAppBundle:Default:listBestOffers}
+
+food_best_offers_lv_slash:
+  path: /akcijas/
+  defaults: { _controller: FoodAppBundle:Default:listBestOffers}
+
 food_slug:
     path:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
