@@ -14,6 +14,9 @@
                     <div class="button">{% trans %}index.get_this_offer{% endtrans %}</div>
                 </div></a>
             </div>
+            {% if  loop.index % 4 == 0 %}
+                <div class="clearfix"></div>
+            {% endif %}
         {% endfor %}
     </div>
 {% endif %}
