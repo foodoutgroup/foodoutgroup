@@ -170,4 +170,25 @@ class DefaultController extends Controller
             'FoodAppBundle:Default:meet.html.twig'
         );
     }
+
+    public function listBestOffersAction()
+    {
+        $bestOfferViewOptions = array(
+            'hideAllOffersLink' => true,
+            'best_offers' => $this->getDoctrine()->getRepository('FoodPlacesBundle:BestOffer')->getActiveOffers()
+        );
+
+        $options = array(
+            'staticPage' => array(
+                'title' => $this->get('translator')->trans('index.all_best_offers'),
+                'seoTitle' => '',
+                'seoDescription' => '',
+                'id' => 'all-best-offers',
+                'content' => $this->container->get('templating')
+                    ->render('FoodPlacesBundle:Default:all_best_offers.html.twig', $bestOfferViewOptions),
+            )
+        );
+
+        return $this->render('FoodAppBundle:Static:index.html.twig', $options);
+    }
 }
