@@ -1438,6 +1438,10 @@
                 <source>general.hour</source>
                 <target>val.</target>
             </trans-unit>
+            <trans-unit id="index.all_best_offers">
+                <source>index.all_best_offers</source>
+                <target>All offers</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
