@@ -16,6 +16,11 @@ parameters:
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
 
+    driver.send_to_external: false
+    driver.city_filter: ["Vilnius"]
+    driver.socket_address: tcp://s2.foodout.lt:7778
+    driver.socket_hash: api
+
     locale: lt
     locales: ["lt", "en", "ru"]
     available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Utena", "Plungė"]

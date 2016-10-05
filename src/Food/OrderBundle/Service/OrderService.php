@@ -21,6 +21,7 @@ use Food\OrderBundle\Entity\OrderExtra;
 use Food\OrderBundle\Entity\OrderLog;
 use Food\OrderBundle\Entity\OrderMailLog;
 use Food\OrderBundle\Entity\OrderStatusLog;
+use Food\OrderBundle\Entity\OrderToDriver;
 use Food\OrderBundle\Entity\PaymentLog;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
@@ -575,9 +576,6 @@ class OrderService extends ContainerAware
                 }
             }
 
-            $order->setAcceptTime(new \DateTime("now"));
-            $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
-
             if (!$order->getOrderFromNav()) {
                 if (!$order->getPreorder()) {
                     $miscService = $this->container->get('food.app.utils.misc');
@@ -609,10 +607,12 @@ class OrderService extends ContainerAware
             $this->container->get('food.logistics')->putOrderForSend($order);
 
             // Kitais atvejais tik keiciam statusa, nes gal taip reikia
-        } else {
-            $order->setAcceptTime(new \DateTime("now"));
-            $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
         }
+
+        $order->setAcceptTime(new \DateTime("now"));
+        $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
+
+        $this->updateDriver();
 
         $this->logDeliveryEvent($order, 'order_accepted');
 
@@ -826,6 +826,8 @@ class OrderService extends ContainerAware
         }
         $this->chageOrderStatus(self::$status_assiged, $source, $statusMessage);
 
+        $this->updateDriver();
+
         return $this;
     }
 
@@ -906,6 +908,8 @@ class OrderService extends ContainerAware
     {
         $this->chageOrderStatus(self::$status_forwarded, $source, $statusMessage);
 
+        $this->updateDriver();
+
         return $this;
     }
 
@@ -947,6 +951,8 @@ class OrderService extends ContainerAware
             }
         }
 
+        $this->updateDriver();
+
         return $this;
     }
 
@@ -963,6 +969,8 @@ class OrderService extends ContainerAware
         $this->chageOrderStatus(self::$status_canceled_produced, $source, $statusMessage);
         $this->getOrder()->setCompletedTime(new \DateTime());
         $this->createDiscountCode($order);
+
+        $this->updateDriver();
 
         return $this;
     }
@@ -1137,6 +1145,8 @@ class OrderService extends ContainerAware
         $this->chageOrderStatus(self::$status_finished, $source, $statusMessage);
         $this->logDeliveryEvent($this->getOrder(), 'order_finished');
 
+        $this->updateDriver();
+
         return $this;
     }
 
@@ -1160,6 +1170,8 @@ class OrderService extends ContainerAware
 
         $this->chageOrderStatus(self::$status_canceled, $source, $statusMessage);
 
+        $this->updateDriver();
+
         return $this;
     }
 
@@ -1177,6 +1189,8 @@ class OrderService extends ContainerAware
 
         // Inform logistics
         $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+
+        $this->updateDriver();
 
         return $this;
     }
@@ -2789,6 +2803,11 @@ class OrderService extends ContainerAware
 
         $this->getEm()->persist($log);
         $this->getEm()->flush();
+    }
+
+    public function sentToDriver($order)
+    {
+
     }
 
     /**
@@ -4483,5 +4502,31 @@ class OrderService extends ContainerAware
         }
 
         return $response;
+    }
+
+    public function updateDriver()
+    {
+        $order = $this->getOrder();
+        if (!$order instanceof Order) {
+            throw new \InvalidArgumentException('No order is set');
+        }
+
+        if ($this->container->getParameter('driver.send_to_external')
+            && $order->getDeliveryType() == 'deliver'
+            && $order->getPlacePointSelfDelivery() == false) {
+            $logisticsCityFilter = $this->container->getParameter('driver.city_filter');
+            if (empty($logisticsCityFilter) || in_array($order->getPlacePointCity(), $logisticsCityFilter)) {
+                $this->container->get('food.order')->logOrder($order, 'schedule_driver_api_send', 'Order scheduled to send to driver');
+
+                $om = $this->container->get('doctrine')->getManager();
+                $orderToLogistics = new OrderToDriver();
+
+                $orderToLogistics->setOrder($order)
+                    ->setDateAdded(new \DateTime("now"));
+
+                $om->persist($orderToLogistics);
+                $om->flush();
+            }
+        }
     }
 }
