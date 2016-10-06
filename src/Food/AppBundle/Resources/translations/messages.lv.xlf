@@ -1436,7 +1436,8 @@
             </trans-unit>
             <trans-unit id="general.hour" resname="general.hour">
                 <source>general.hour</source>
-                <target>val.</target>
+                <!-- LV writes time in minutes -->
+                <target>min.</target>
             </trans-unit>
             <trans-unit id="index.all_best_offers">
                 <source>index.all_best_offers</source>
