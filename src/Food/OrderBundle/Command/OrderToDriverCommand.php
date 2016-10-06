@@ -54,7 +54,7 @@ class OrderToDriverCommand extends ContainerAwareCommand
                     $logger->error("$errstr ($errno)");
                     throw new \Exception("$errstr ($errno)");
                 } else {
-                    fwrite($fp, sprintf('{"event":"system:auth","collection":{"secure":"%s","method":"hash","type":"api"}}', $this->getContainer()->getParameter('driver.socket_hash')));
+                    fwrite($fp, sprintf('{"event":"system:auth","collection":{"secure":"%s","method":"hash","type":"api"}}'."\n\n", $this->getContainer()->getParameter('driver.socket_hash')));
                 }
             }
 
@@ -62,7 +62,7 @@ class OrderToDriverCommand extends ContainerAwareCommand
             $i = 0;
             foreach ($orderToDriverCollection as $orderToDriver) {
                 $order = $orderToDriver->getOrder();
-                $msg = '{"event": "system:routing", "collection": [{"event": "api:order:newOrder", "receiver": "logic", "params": {"address": "http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash().'"}}]}';
+                $msg = '{"event": "system:routing", "collection": [{"event": "api:order:newOrder", "receiver": "logic", "params": {"address": "http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash().'"}}]}'."\n\n";
                 if ($debug) {
                     $output->writeln($msg);
                 }
