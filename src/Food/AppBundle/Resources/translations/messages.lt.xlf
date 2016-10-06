@@ -1520,7 +1520,7 @@
             </trans-unit>
             <trans-unit id="index.all_best_offers">
                 <source>index.all_best_offers</source>
-                <target>Visi pasiūlymai</target>
+                <target>Peržiūrėti visus pasiūlymus →</target>
             </trans-unit>
         </body>
     </file>
