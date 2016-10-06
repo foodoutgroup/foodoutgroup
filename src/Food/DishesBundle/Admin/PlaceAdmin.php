@@ -273,7 +273,7 @@ class PlaceAdmin extends FoodAdmin
                         ->setWeekDay($i)
                         ->setStartHour($startHour)
                         ->setStartMin($startMin)
-                        ->setEndHour(0)
+                        ->setEndHour(24)
                         ->setEndMin(0)
                     ;
 
