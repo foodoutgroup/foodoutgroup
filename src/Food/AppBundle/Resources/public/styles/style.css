@@ -865,6 +865,7 @@ input.button {}
 .cupon-bottom {text-transform: uppercase; background: #fff; padding: 4px 10px; letter-spacing: 1.6px; border-radius: 0 0 3px 3px; box-shadow: 0 0px 3px #e3ded9;}
 .cupon-bottom .button {line-height: 28px;color: #b39196; text-align: center; font-size: 10px; display: block;}
 .cupon-name {margin: 0 10px; font-size: 15px; line-height: 21px; color: #513d28; padding-top: 11px; padding-bottom: 3px;}
+.cupon-name:hover {text-decoration: underline}
 .cupon-desc {margin: 0 10px; line-height: 17px; color: #b39196; font-size: 12px;}
 
 .cupom-item:hover {margin-bottom: 0px;}
