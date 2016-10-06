@@ -608,6 +608,13 @@ class OrderService extends ContainerAware
         $returner['details']['restaurant_address'] = $order->getPlacePointAddress();
         $returner['details']['restaurant_address'] = $order->getPlacePointAddress();
         $returner['service']['delivery_time'] = $order->getDeliveryTime()->format('Y-m-d H:i:s');
+        if ($driver = $order->getDriver()) {
+            $returner['driver'] = [
+                'id' => $driver->getId(),
+                'phone' => $driver->getPhone(),
+                'name' => $driver->getName(),
+            ];
+        }
 
         return $returner;
     }
