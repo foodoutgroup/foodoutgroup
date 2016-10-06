@@ -210,3 +210,8 @@ food_api_get_show_popup:
     pattern: /showRating
     defaults: { _controller: FoodApiBundle:Params:showRating}
     methods: [GET]
+
+food_api_driver_information:
+    pattern: /driver/me/{token}
+    defaults: { _controller: FoodApiBundle:Driver:me}
+    methods: [GET]

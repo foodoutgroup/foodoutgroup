@@ -56,6 +56,7 @@ class DriverAdmin extends FoodAdmin
             )
             ->add('provider', null, array('label' => 'admin.driver.provider'))
             ->add('extId', 'text', array('label' => 'admin.driver.ext_id_long', 'required' => false))
+            ->add('token', 'text', array('label' => 'admin.driver.token', 'required' => false))
             ->add('active', 'checkbox', array('label' => 'admin.driver.active', 'required' => false));
         ;
     }
@@ -148,6 +149,10 @@ class DriverAdmin extends FoodAdmin
         $phone = $this->cleanDaPhone($object->getPhone());
         $object->setPhone($phone);
 
+        if (!$object->getToken()) {
+            $object->setToken($this->generateToken());
+        }
+
         parent::prePersist($object);
     }
 
@@ -155,6 +160,10 @@ class DriverAdmin extends FoodAdmin
     {
         $phone = $this->cleanDaPhone($object->getPhone());
         $object->setPhone($phone);
+
+        if (!$object->getToken()) {
+            $object->setToken($this->generateToken());
+        }
 
         parent::preUpdate($object);
     }
@@ -170,6 +179,12 @@ class DriverAdmin extends FoodAdmin
         $phone = str_replace(' ', '', $phone);
 
         return $phone;
+    }
+
+    private function generateToken()
+    {
+        $chars = 'ABCDEFGHYJKLMNPRSTUVZ';
+        return $chars[rand(0, strlen($chars) - 1)].rand(10000, 99999).$chars[rand(0, strlen($chars) - 1)];
     }
 
 }

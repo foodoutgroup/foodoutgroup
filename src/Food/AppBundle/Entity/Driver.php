@@ -44,6 +44,12 @@ class Driver
 
     /**
      * @var string
+     * @ORM\Column(name="token", type="string", length=255, nullable=true)
+     */
+    private $token = null;
+
+    /**
+     * @var string
      * @ORM\Column(name="phone", type="string", length=16)
      */
     private $phone;
@@ -126,7 +132,7 @@ class Driver
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -142,14 +148,14 @@ class Driver
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -165,14 +171,14 @@ class Driver
     public function setProvider($provider)
     {
         $this->provider = $provider;
-    
+
         return $this;
     }
 
     /**
      * Get provider
      *
-     * @return string 
+     * @return string
      */
     public function getProvider()
     {
@@ -188,14 +194,14 @@ class Driver
     public function setExtId($extId)
     {
         $this->extId = $extId;
-    
+
         return $this;
     }
 
     /**
      * Get extId
      *
-     * @return string 
+     * @return string
      */
     public function getExtId()
     {
@@ -211,14 +217,14 @@ class Driver
     public function setPhone($phone)
     {
         $this->phone = $phone;
-    
+
         return $this;
     }
 
     /**
      * Get phone
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -234,14 +240,14 @@ class Driver
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -257,14 +263,14 @@ class Driver
     public function setCity($city)
     {
         $this->city = $city;
-    
+
         return $this;
     }
 
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -280,14 +286,14 @@ class Driver
     public function setActive($active)
     {
         $this->active = $active;
-    
+
         return $this;
     }
 
     /**
      * Get active
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActive()
     {
@@ -303,14 +309,14 @@ class Driver
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -326,7 +332,7 @@ class Driver
     public function setEditedAt($editedAt)
     {
         $this->editedAt = $editedAt;
-    
+
         return $this;
     }
 
@@ -349,14 +355,14 @@ class Driver
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
-    
+
         return $this;
     }
 
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeletedAt()
     {
@@ -372,14 +378,14 @@ class Driver
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
     /**
      * Get createdBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -395,14 +401,14 @@ class Driver
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
         $this->editedBy = $editedBy;
-    
+
         return $this;
     }
 
     /**
      * Get editedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getEditedBy()
     {
@@ -418,14 +424,14 @@ class Driver
     public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
     {
         $this->deletedBy = $deletedBy;
-    
+
         return $this;
     }
 
     /**
      * Get deletedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getDeletedBy()
     {
@@ -453,5 +459,28 @@ class Driver
         }
 
         return $driverContactData;
+    }
+
+    /**
+     * Set token
+     *
+     * @param string $token
+     * @return Driver
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+    
+        return $this;
+    }
+
+    /**
+     * Get token
+     *
+     * @return string 
+     */
+    public function getToken()
+    {
+        return $this->token;
     }
 }
