@@ -1879,6 +1879,10 @@
                 <source>admin.driver.has_orders</source>
                 <target>Užsak.</target>
             </trans-unit>
+            <trans-unit id="admin.driver.token">
+                <source>admin.driver.token</source>
+                <target>Identifikacinis numeris</target>
+            </trans-unit>
             <!-- Banned IP listas -->
             <trans-unit id="admin.banned_ips">
                 <source>admin.banned_ips</source>

@@ -2169,6 +2169,10 @@
                 <source>admin.driver.has_orders</source>
                 <target>Order</target>
             </trans-unit>
+            <trans-unit id="admin.driver.token">
+                <source>admin.driver.token</source>
+                <target>Intetification number</target>
+            </trans-unit>
 
             <!-- Marketing user -->
             <trans-unit id="admin.marketing_user">
