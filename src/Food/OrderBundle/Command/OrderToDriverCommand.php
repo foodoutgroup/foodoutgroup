@@ -73,7 +73,7 @@ class OrderToDriverCommand extends ContainerAwareCommand
             $i = 0;
             foreach ($orderToDriverCollection as $orderToDriver) {
                 $order = $orderToDriver->getOrder();
-                $msg = '{"event": "system:routing", "collection": [{"event": "api:order:newOrder", "receiver": "logic", "params": {"address": "http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash().'"}}]}'."\n\n";
+                $msg = '{"event": "system:routing", "collection": [{"event": "api:order:newOrder", "params": {"address": "http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash().'"}}]}'."\n\n";
                 if ($debug) {
                     $output->writeln($msg);
                 }
