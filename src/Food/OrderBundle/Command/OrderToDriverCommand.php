@@ -20,6 +20,12 @@ class OrderToDriverCommand extends ContainerAwareCommand
                 'dont send, just output orders, that should be sent'
             )
             ->addOption(
+                'limit',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'limit, how much orders to send'
+            )
+            ->addOption(
                 'debug',
                 null,
                 InputOption::VALUE_NONE,
@@ -35,12 +41,17 @@ class OrderToDriverCommand extends ContainerAwareCommand
             $miscService = $this->getContainer()->get('food.app.utils.misc');
             $em = $this->getContainer()->get('doctrine')->getManager();
             $dryRun = false;
+            $limit = 50;
             $debug = false;
 
             // Dont send if dry-run
             if ($input->getOption('dry-run')) {
                 $output->writeln('Dry run - no orders will be sent');
                 $dryRun = true;
+            }
+            if ($input->getOption('limit')) {
+                $output->writeln('Limit');
+                $limit = $input->getOption('limit');
             }
             if ($input->getOption('debug')) {
                 $output->writeln('Debug mode');
@@ -71,6 +82,11 @@ class OrderToDriverCommand extends ContainerAwareCommand
                     $orderToDriver->setDateSent(new \DateTime());
                     $em->persist($orderToDriver);
                     ++$i;
+                    if ($limit < $i) {
+                        $output->writeln('Just reached the limit');
+                        break;
+                    }
+                    usleep(5000);
                 }
             }
             if (!$dryRun) {
