@@ -9,7 +9,7 @@ set :model_manager, "doctrine"
 set :branch, "master"
 
 # multi-stage environment
-set :stages,        %w(betalt betalv production production_lv production_ee)
+set :stages,        %w(betalt betalv production production_lv production_ee pipiras)
 # isijungiam kada reik :)
 set :default_stage, "betalt"
 set :stage_dir,     "app/config/deploy"
