@@ -70,8 +70,12 @@ class OrderToDriverCommand extends ContainerAwareCommand
             }
 
             $orderToDriverCollection = $em->getRepository('FoodOrderBundle:OrderToDriver')->getOrdersToSend();
-            $i = 0;
+            $i = 1;
             foreach ($orderToDriverCollection as $orderToDriver) {
+                if ($limit < $i) {
+                    $output->writeln('Just reached the limit');
+                    break;
+                }
                 $order = $orderToDriver->getOrder();
                 $msg = '{"event": "system:routing", "collection": [{"event": "api:order:newOrder", "params": {"address": "http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash().'"}}]}'."\n\n";
                 if ($debug) {
@@ -82,10 +86,6 @@ class OrderToDriverCommand extends ContainerAwareCommand
                     $orderToDriver->setDateSent(new \DateTime());
                     $em->persist($orderToDriver);
                     ++$i;
-                    if ($limit < $i) {
-                        $output->writeln('Just reached the limit');
-                        break;
-                    }
                     usleep(5000);
                 }
             }
