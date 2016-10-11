@@ -605,9 +605,12 @@ class OrderService extends ContainerAware
                 'lon' => $order->getAddressId()->getLon(),
             ]
         ];
-        $returner['details']['restaurant_address'] = $order->getPlacePointAddress();
+        $returner['details']['restaurant_phone'] = $order->getPlacePoint()->getPhone();
         $returner['details']['restaurant_address'] = $order->getPlacePointAddress();
         $returner['service']['delivery_time'] = $order->getDeliveryTime()->format('Y-m-d H:i:s');
+        $returner['service']['customer_firstname'] = $order->getOrderExtra()->getFirstname();
+        $returner['service']['customer_lastname'] = $order->getOrderExtra()->getLastname();
+        $returner['service']['customer_phone'] = $order->getOrderExtra()->getPhone();
         if ($driver = $order->getDriver()) {
             $returner['driver'] = [
                 'id' => $driver->getId(),
