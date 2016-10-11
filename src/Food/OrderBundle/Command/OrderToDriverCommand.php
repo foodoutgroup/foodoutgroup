@@ -70,10 +70,11 @@ class OrderToDriverCommand extends ContainerAwareCommand
             }
 
             $orderToDriverCollection = $em->getRepository('FoodOrderBundle:OrderToDriver')->getOrdersToSend();
-            $i = 1;
+            $i = 0;
+            $fail = 0;
             foreach ($orderToDriverCollection as $orderToDriver) {
-                if ($limit < $i) {
-                    $output->writeln('Just reached the limit');
+                if ($limit <= $i) {
+                    $output->writeln('Just reached the limit!');
                     break;
                 }
                 $order = $orderToDriver->getOrder();
@@ -82,11 +83,18 @@ class OrderToDriverCommand extends ContainerAwareCommand
                     $output->writeln($msg);
                 }
                 if (!$dryRun) {
-                    fwrite($fp, $msg);
-                    $orderToDriver->setDateSent(new \DateTime());
-                    $em->persist($orderToDriver);
+                    if (fwrite($fp, $msg)) {
+                        $orderToDriver->setDateSent(new \DateTime());
+                        $em->persist($orderToDriver);
+                    } else {
+                        ++$fail;
+                    }
                     ++$i;
                     usleep(5000);
+                }
+                if ($fail >= 3) {
+                    $output->writeln('Too much of fails!');
+                    break;
                 }
             }
             if (!$dryRun) {
@@ -94,7 +102,7 @@ class OrderToDriverCommand extends ContainerAwareCommand
                 fclose($fp);
             }
 
-            $output->writeln(sprintf('Sent %d / %d', $i, count($orderToDriverCollection)));
+            $output->writeln(sprintf('Sent %d / Failed %d / Total %d', $i, $fail, count($orderToDriverCollection)));
 
         } catch (\Exception $e) {
             $output->writeln('Error sending order to driver system');
