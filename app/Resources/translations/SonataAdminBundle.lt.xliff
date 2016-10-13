@@ -1011,6 +1011,10 @@
                 <source>admin.order.user</source>
                 <target>Klientas</target>
             </trans-unit>
+            <trans-unit id="admin.order.metaData">
+                <source>admin.order.metaData</source>
+                <target>Kliento User-Agent</target>
+            </trans-unit>
             <trans-unit id="admin.order.address">
                 <source>admin.order.address</source>
                 <target>Adresas</target>

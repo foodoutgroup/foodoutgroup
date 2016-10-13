@@ -76,6 +76,13 @@ class OrderExtra
      */
     private $changeReason = null;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="meta_data", type="text", nullable=true)
+     */
+    private $metaData = null;
+
     public function __toString()
     {
         if (!$this->getId()) {
@@ -304,5 +311,28 @@ class OrderExtra
     public function getChangeReason()
     {
         return $this->changeReason;
+    }
+
+    /**
+     * Set metaData
+     *
+     * @param string $metaData
+     * @return OrderExtra
+     */
+    public function setMetaData($metaData)
+    {
+        $this->metaData = $metaData;
+    
+        return $this;
+    }
+
+    /**
+     * Get metaData
+     *
+     * @return string 
+     */
+    public function getMetaData()
+    {
+        return $this->metaData;
     }
 }

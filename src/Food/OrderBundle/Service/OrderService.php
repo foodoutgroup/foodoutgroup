@@ -1359,6 +1359,7 @@ class OrderService extends ContainerAware
         // save extra order data to separate table
         $orderExtra = new OrderExtra();
         $orderExtra->setOrder($this->getOrder());
+        $orderExtra->setMetaData($_SERVER['HTTP_USER_AGENT']);
 
         if (!empty($userData)) {
             $orderExtra->setFirstname($userData['firstname'])
