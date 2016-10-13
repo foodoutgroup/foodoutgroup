@@ -25,12 +25,3 @@ set :robots_file, "robots.prod.txt.dist"
 after "deploy" do
     run "~/sync.sh foodout.lt"
 end
-
-before "deploy:finalize_update" do
-   run "ls -1dt #{deploy_to}shared/bin/* | xargs rm -rf"
-end
-
-after "deploy:cleanup" do
-   #run "ls -1dt #{deploy_to}current/app/cache/prod/* | xargs rm -rf"
-   run "ls -1dt #{latest_release}/#{cache_path}/prod/* | xargs rm -rf"
-end
