@@ -263,6 +263,7 @@ class OrderAdmin extends FoodAdmin
             ->add('place_name', 'string', array('label' => 'admin.order.place_name', 'editable' => false,))
             ->add('place_point_address', 'string', array('label' => 'admin.order.place_point'))
             ->add('orderExtra.contact', null, array('label' => 'admin.order.user'))
+            ->add('orderExtra.metaData', null, array('label' => 'admin.order.metaData'))
             ->add('address_id', null, array('label' => 'admin.order.delivery_address'))
             ->add('company', 'sonata_type_collection',
                 array(
