@@ -295,7 +295,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $addressStr = mb_convert_case($addressStr, MB_CASE_TITLE, "UTF-8");
                             $addressStr = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressStr);
                             $output->writeln('Fixed street: '.var_export($addressStr, true));
-                            $gisService->groupData($addressStr, $fixedCity);
+                            $gisAddress = $gisService->groupData($addressStr, $fixedCity);
 
                             $address = $em->getRepository('FoodUserBundle:UserAddress')
                                 ->findOneBy(
@@ -311,8 +311,8 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                 $address->setUser($user)
                                     ->setCity($fixedCity)
                                     ->setAddress($addressStr)
-                                    ->setLat($addressStr->results[0]->geometry->location->lat)
-                                    ->setLon($addressStr->results[0]->geometry->location->lng);
+                                    ->setLat($gisAddress['lat'])
+                                    ->setLon($gisAddress['lng']);
                                 $em->persist($address);
                                 // Deja sitas ispusins ir orderiu insertus :(
                                 $em->flush();
