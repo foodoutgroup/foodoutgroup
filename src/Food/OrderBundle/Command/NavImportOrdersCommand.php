@@ -218,7 +218,8 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             ->setPaymentStatus(OrderService::$paymentStatusComplete)
                             ->setOrderStatus(OrderService::$status_new)
                             ->setLocale($this->getContainer()->getParameter('locale'))
-                            ->setComment(iconv('CP1257', 'UTF-8', $orderData['Directions']));
+                            ->setComment($orderData['Directions']);
+                            //~ ->setComment(iconv('CP1257', 'UTF-8', $orderData['Directions']));
 
 
                         // User data
@@ -275,14 +276,14 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             //~ $fixedAddress = trim(iconv('CP1257', 'UTF-8', $orderData['Address']));
                             //~ $output->writeln('Converted address: '.var_export($fixedAddress, true));
                             // OMG, kartais NAV adresas turi bruksniukus, kuriu niekam nereikia.. fuj fuj fuj
-                            //~ if (mb_strpos($orderData['Address'], '--') == (mb_strlen($orderData['Address']) - 2)) {
-                                //~ $output->writeln('Found -- chars.. Cleaning address');
-                                //~ $orderData['Address'] = mb_substr($orderData['Address'], 0, (mb_strlen($orderData['Address']) - 2));
-                            //~ }
-                            //~ if (mb_strpos($orderData['Address'], '--,') !== false) {
-                                //~ $output->writeln('Found --, chars.. Cleaning address');
-                                //~ $orderData['Address'] = str_replace('--,', ',', $orderData['Address']);
-                            //~ }
+                            if (mb_strpos($orderData['Address'], '--') == (mb_strlen($orderData['Address']) - 2)) {
+                                $output->writeln('Found -- chars.. Cleaning address');
+                                $orderData['Address'] = mb_substr($orderData['Address'], 0, (mb_strlen($orderData['Address']) - 2));
+                            }
+                            if (mb_strpos($orderData['Address'], '--,') !== false) {
+                                $output->writeln('Found --, chars.. Cleaning address');
+                                $orderData['Address'] = str_replace('--,', ',', $orderData['Address']);
+                            }
                             $output->writeln('Cleaned address: '.var_export($orderData['Address'], true));
 
                             // Format address
@@ -310,8 +311,8 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                 $address->setUser($user)
                                     ->setCity($fixedCity)
                                     ->setAddress($addressStr)
-                                    ->setLat($addressData->results[0]->geometry->location->lat)
-                                    ->setLon($addressData->results[0]->geometry->location->lng);
+                                    ->setLat($addressStr->results[0]->geometry->location->lat)
+                                    ->setLon($addressStr->results[0]->geometry->location->lng);
                                 $em->persist($address);
                                 // Deja sitas ispusins ir orderiu insertus :(
                                 $em->flush();
