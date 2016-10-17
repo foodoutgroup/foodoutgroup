@@ -165,7 +165,7 @@
         <div class="site-block clearfix">
             <a href="{{ path('food_lang_homepage') }}" class="main-logo">
                 {#<img alt="Kalėdos" src="{{ asset('bundles/foodapp/images/vaida.png') }}" />#}
-                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{% if site_country == 'LT' %}https://foodout.lt/fobirthday/gimtadienio-logo.png{#{ asset('bundles/foodapp/images/logo_food.png') }#}{% else %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% endif %}" />
+                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{% if site_country == 'LT' %}{# https://foodout.lt/fobirthday/gimtadienio-logo.png#}{{ asset('bundles/foodapp/images/logo_food.png') }}{% else %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% endif %}" />
             </a>
 
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
