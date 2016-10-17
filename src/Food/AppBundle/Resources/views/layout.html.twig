@@ -45,7 +45,7 @@
         <script src="{{ asset('bundles/foodapp/scripts/jquery.ui.selectmenu.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery.raty.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/boxer/jquery.fs.boxer.min.js') }}"></script>
-        <script src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}">		</script>
+        <script src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}">       </script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery.placeholder.min.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery.loadmask.min.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery.typeahead.js') }}"></script>
@@ -165,7 +165,7 @@
         <div class="site-block clearfix">
             <a href="{{ path('food_lang_homepage') }}" class="main-logo">
                 {#<img alt="Kalėdos" src="{{ asset('bundles/foodapp/images/vaida.png') }}" />#}
-                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{% if site_country == 'LT' %}{{ asset('bundles/foodapp/images/logo_food.png') }}{% else %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% endif %}" />
+                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{% if site_country == 'LT' %}https://foodout.lt/fobirthday/gimtadienio-logo.png{#{ asset('bundles/foodapp/images/logo_food.png') }#}{% else %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% endif %}" />
             </a>
 
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
