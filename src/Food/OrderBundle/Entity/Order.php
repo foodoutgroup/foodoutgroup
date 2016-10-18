@@ -195,6 +195,12 @@ class Order
     private $driver;
 
     /**
+     * @var boolean $driverAutoAssigned
+     * @ORM\Column(name="driver_auto_assigned", type="boolean", options={"default"=false})
+     **/
+    private $driverAutoAssigned = false;
+
+    /**
      * @var mixed
      */
     private $driverSafe = array();
@@ -2183,14 +2189,14 @@ class Order
     public function setCompletedTime($completedTime)
     {
         $this->completedTime = $completedTime;
-    
+
         return $this;
     }
 
     /**
      * Get completedTime
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCompletedTime()
     {
@@ -2206,14 +2212,14 @@ class Order
     public function setReminded($reminded)
     {
         $this->reminded = $reminded;
-    
+
         return $this;
     }
 
     /**
      * Get reminded
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getReminded()
     {
@@ -2229,14 +2235,14 @@ class Order
     public function setNewsletterSubscribe($newsletterSubscribe)
     {
         $this->newsletterSubscribe = $newsletterSubscribe;
-    
+
         return $this;
     }
 
     /**
      * Get newsletterSubscribe
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getNewsletterSubscribe()
     {
@@ -2252,14 +2258,14 @@ class Order
     public function setAssignLate($assignLate)
     {
         $this->assignLate = $assignLate;
-    
+
         return $this;
     }
 
     /**
      * Get assignLate
      *
-     * @return integer 
+     * @return integer
      */
     public function getAssignLate()
     {
@@ -2303,14 +2309,14 @@ class Order
     public function setDispatcherId(\Food\UserBundle\Entity\User $dispatcherId = null)
     {
         $this->dispatcher_id = $dispatcherId;
-    
+
         return $this;
     }
 
     /**
      * Get dispatcher_id
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getDispatcherId()
     {
@@ -2326,17 +2332,40 @@ class Order
     public function setPlaceInformed($placeInformed)
     {
         $this->place_informed = $placeInformed;
-    
+
         return $this;
     }
 
     /**
      * Get place_informed
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPlaceInformed()
     {
         return $this->place_informed;
+    }
+
+    /**
+     * Set driverAutoAssigned
+     *
+     * @param boolean $driverAutoAssigned
+     * @return Order
+     */
+    public function setDriverAutoAssigned($driverAutoAssigned)
+    {
+        $this->driverAutoAssigned = $driverAutoAssigned;
+    
+        return $this;
+    }
+
+    /**
+     * Get driverAutoAssigned
+     *
+     * @return boolean 
+     */
+    public function getDriverAutoAssigned()
+    {
+        return $this->driverAutoAssigned;
     }
 }
