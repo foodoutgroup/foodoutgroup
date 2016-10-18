@@ -749,74 +749,75 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public function statusAssigned($source = null, $statusMessage = null)
+    public function statusAssigned($source = null, $statusMessage = null, $api = false)
     {
         // Inform poor user, that his order was accepted
         $order = $this->getOrder();
         $driver = $order->getDriver();
-//        if ($driver->getType() == 'local') {
-        $messagingService = $this->container->get('food.messages');
-        $logger = $this->container->get('logger');
 
-        // Inform driver about new order that was assigned to him
-        $orderConfirmRoute = $this->container->get('router')
-            ->generate('drivermobile', ['hash' => $order->getOrderHash()], true)
-        ;
+        if (!$api) {
+            $messagingService = $this->container->get('food.messages');
+            $logger = $this->container->get('logger');
 
-        $restaurant_title = $order->getPlace()->getName();
-        $internal_code = $order->getPlacePoint()->getInternalCode();
-        if (!empty($internal_code)) {
-            $restaurant_title = $restaurant_title . " - " . $internal_code;
+            // Inform driver about new order that was assigned to him
+            $orderConfirmRoute = $this->container->get('router')
+                ->generate('drivermobile', ['hash' => $order->getOrderHash()], true)
+            ;
+
+            $restaurant_title = $order->getPlace()->getName();
+            $internal_code = $order->getPlacePoint()->getInternalCode();
+            if (!empty($internal_code)) {
+                $restaurant_title = $restaurant_title . " - " . $internal_code;
+            }
+
+            $restaurant_address = $order->getAddressId()->getAddress() . " " . $order->getAddressId()->getCity();
+            $pickup_restaurant_address = $order->getPlacePointAddress() . ' ' . $order->getPlacePointCity();
+            $curr_locale = $this->container->getParameter('locale');
+            $languageUtil = $this->container->get('food.app.utils.language');
+
+            $messageText = $languageUtil->removeChars(
+                $curr_locale,
+                $this->container->get('translator')->trans(
+                    'general.sms.driver_assigned_order',
+                    [
+                        'order_id'           => $order->getId(),
+                        'restaurant_title'   => $restaurant_title,
+                        'restaurant_address' => $restaurant_address,
+                        'pickup_restaurant_address' => $pickup_restaurant_address,
+                        'deliver_time'       => $order->getDeliveryTime()->format("H:i")
+                    ]
+                ) . $orderConfirmRoute,
+                false
+            );
+
+            $messageText = $this->fitDriverMessage(
+                $messageText,
+                $order->getId(),
+                $restaurant_title,
+                $restaurant_address,
+                $pickup_restaurant_address,
+                $order->getDeliveryTime()->format("H:i"),
+                $orderConfirmRoute,
+                $curr_locale
+            );
+
+            $logMessage = sprintf(
+                'Sending message for driver about assigned order #%d to number: %s with text "%s". Used address Id: %d',
+                $order->getId(),
+                $driver->getPhone(),
+                $messageText,
+                $order->getAddressId()->getId()
+            );
+            $logger->alert($logMessage);
+
+            $message = $messagingService->createMessage(
+                $this->container->getParameter('sms.sender'),
+                $driver->getPhone(),
+                $messageText,
+                $order
+            );
+            $messagingService->saveMessage($message);
         }
-
-        $restaurant_address = $order->getAddressId()->getAddress() . " " . $order->getAddressId()->getCity();
-        $pickup_restaurant_address = $order->getPlacePointAddress() . ' ' . $order->getPlacePointCity();
-        $curr_locale = $this->container->getParameter('locale');
-        $languageUtil = $this->container->get('food.app.utils.language');
-
-        $messageText = $languageUtil->removeChars(
-            $curr_locale,
-            $this->container->get('translator')->trans(
-                'general.sms.driver_assigned_order',
-                [
-                    'order_id'           => $order->getId(),
-                    'restaurant_title'   => $restaurant_title,
-                    'restaurant_address' => $restaurant_address,
-                    'pickup_restaurant_address' => $pickup_restaurant_address,
-                    'deliver_time'       => $order->getDeliveryTime()->format("H:i")
-                ]
-            ) . $orderConfirmRoute,
-            false
-        );
-
-        $messageText = $this->fitDriverMessage(
-            $messageText,
-            $order->getId(),
-            $restaurant_title,
-            $restaurant_address,
-            $pickup_restaurant_address,
-            $order->getDeliveryTime()->format("H:i"),
-            $orderConfirmRoute,
-            $curr_locale
-        );
-
-        $logMessage = sprintf(
-            'Sending message for driver about assigned order #%d to number: %s with text "%s". Used address Id: %d',
-            $order->getId(),
-            $driver->getPhone(),
-            $messageText,
-            $order->getAddressId()->getId()
-        );
-        $logger->alert($logMessage);
-
-        $message = $messagingService->createMessage(
-            $this->container->getParameter('sms.sender'),
-            $driver->getPhone(),
-            $messageText,
-            $order
-        );
-        $messagingService->saveMessage($message);
-//        }
 
         $this->logDeliveryEvent($this->getOrder(), 'order_assigned');
 
@@ -826,7 +827,9 @@ class OrderService extends ContainerAware
         }
         $this->chageOrderStatus(self::$status_assiged, $source, $statusMessage);
 
-        $this->updateDriver();
+        if (!$api) {
+            $this->updateDriver();
+        }
 
         return $this;
     }
@@ -2809,6 +2812,19 @@ class OrderService extends ContainerAware
     public function sentToDriver($order)
     {
 
+    }
+
+    public function setAutoAssignedDriver($driver)
+    {
+        $order = $this->getOrder();
+        if ($order->getOrderStatus() == self::$status_accepted) {
+            $this->getOrder()->setDriver($driver);
+            $order->setDriverAutoAssigned(true);
+            $this->statusAssigned('API', 'auto_assigned', true);
+            $this->saveOrder();
+        } else {
+            throw new \Exception('Driver already set');
+        }
     }
 
     /**

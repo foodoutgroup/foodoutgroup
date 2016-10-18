@@ -215,3 +215,23 @@ food_api_driver_information:
     pattern: /driver/me/{token}
     defaults: { _controller: FoodApiBundle:Driver:me}
     methods: [GET]
+
+food_api_driver_information_by_id:
+    pattern: /driver/meId/{id}
+    defaults: { _controller: FoodApiBundle:Driver:meId}
+    methods: [GET]
+
+food_api_driver_assign_to_order:
+    pattern: /driver/assignToOrder/{driverId}/{orderId}
+    defaults: { _controller: FoodApiBundle:Driver:assignToOrder}
+    methods: [GET]
+
+food_api_driver_picked_order:
+    pattern: /driver/picked/{orderId}
+    defaults: { _controller: FoodApiBundle:Driver:picked}
+    methods: [GET]
+
+food_api_driver_completed_order:
+    pattern: /driver/completed/{orderId}
+    defaults: { _controller: FoodApiBundle:Driver:completed}
+    methods: [GET]
