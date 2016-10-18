@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 class DriverController extends Controller
 {
     /**
-     * User information
+     * User information by token
      *
      * @param string $token
      * @param Request $request
@@ -46,6 +46,169 @@ class DriverController extends Controller
         }
 
         $this->get('logger')->alert('Driver:meAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
+    }
+
+    /**
+     * User information by Id
+     *
+     * @param integer $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function meIdAction($id, Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Driver:meIdAction Request: id - ' . $id, (array) $request);
+        try {
+            $driver = $this->get('food_api.api')->getDriverById($id);
+
+            $response = [
+                'id' => $driver->getId(),
+                'type' => $driver->getType(),
+                'extId' => $driver->getExtId(),
+                'phone' => $driver->getPhone(),
+                'name' => $driver->getName(),
+                'city' => $driver->getCity(),
+            ];
+        } catch (ApiException $e) {
+            $this->get('logger')->error('Driver:meIdAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Driver:meIdAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Driver:meIdAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Driver:meIdAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Driver:meIdAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
+    }
+
+    /**
+     * Assign driver to order
+     *
+     * @param integer $driverId
+     * @param integer $orderId
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function assignToOrderAction($driverId, $orderId, Request $request)
+    {
+
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Driver:assignToOrderAction Request: driverId - ' . $driverId . ' / orderId - ' . $orderId, (array) $request);
+        try {
+            $apiService = $this->get('food_api.api');
+            $orderService = $this->get('food.order');
+            $driver = $apiService->getDriverById($driverId);
+            $order = $apiService->getOrderById($orderId);
+            $orderService->setOrder($order);
+            $orderService->setAutoAssignedDriver($driver);
+            $response = true;
+        } catch (ApiException $e) {
+            $this->get('logger')->error('Driver:assignToOrderAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Driver:assignToOrderAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Driver:assignToOrderAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Driver:assignToOrderAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Driver:assignToOrderAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
+    }
+
+    /**
+     * Driver picked order from restaurant
+     *
+     * @param integer $orderId
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function pickedAction($orderId, Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Driver:assignToOrderAction Request: orderId - ' . $orderId, (array) $request);
+        try {
+            $apiService = $this->get('food_api.api');
+            $order = $apiService->getOrderById($orderId);
+            $orderService = $this->get('food.order');
+            $orderService->setOrder($order);
+            $orderService->logDeliveryEvent($orderService->getOrder(), 'order_pickedup');
+            $orderService->getOrder()->setOrderPicked(true);
+            $orderService->saveOrder();
+            //~ $orderService->sendOrderPickedMessage();
+            $response = true;
+        } catch (ApiException $e) {
+            $this->get('logger')->error('Driver:assignToOrderAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Driver:assignToOrderAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Driver:assignToOrderAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Driver:assignToOrderAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Driver:assignToOrderAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
+    }
+
+    /**
+     * Driver completed order
+     *
+     * @param integer $orderId
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function completedAction($orderId, Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Driver:assignToOrderAction Request: orderId - ' . $orderId, (array) $request);
+        try {
+            $apiService = $this->get('food_api.api');
+            $order = $apiService->getOrderById($orderId);
+            $orderService = $this->get('food.order');
+            $orderService->setOrder($order);
+            $orderService->statusCompleted('driver_api');
+            $orderService->saveOrder();
+            $response = true;
+        } catch (ApiException $e) {
+            $this->get('logger')->error('Driver:assignToOrderAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Driver:assignToOrderAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Driver:assignToOrderAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Driver:assignToOrderAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Driver:assignToOrderAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
