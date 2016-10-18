@@ -224,6 +224,197 @@ class UsersController extends Controller
     }
 
     /**
+     * User register
+     *
+     * TODO:
+     *  - success email
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function register2Action(Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Users:register2Action Request:', (array) $request);
+        try {
+            $this->parseRequestBody($request);
+            $um = $this->getUserManager();
+//            $dispatcher = $this->container->get('event_dispatcher');
+            $translator = $this->get('translator');
+            $miscUtil = $this->get('food.app.utils.misc');
+
+            /**
+             * @var User $user
+             */
+            $user = $um->createUser();
+            // TODO issiaiskinti kur dinge FosUserEventai
+//            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, new UserEvent($user, $request));
+
+            $phone = $this->getRequestParam('phone');
+            $name = $this->getRequestParam('name');
+            $email = $this->getRequestParam('email');
+            $password = $this->getRequestParam('password');
+            $birthday = $this->getRequestParam('birthday');
+            $facebook_id = $this->getRequestParam('facebook_id');
+
+            if (empty($phone)) {
+                throw new ApiException(
+                    'Unauthorized',
+                    401,
+                    [
+                        'error'       => 'Missing phone number',
+                        'description' => $this->container->get('translator')->trans('api.orders.user_phone_empty')
+                    ]
+                );
+            }
+
+            $country = $this->container->getParameter('country');
+            $miscUtils = $this->container->get('food.app.utils.misc');
+            if (!$miscUtils->isMobilePhone($phone, $country)) {
+                throw new ApiException(
+                    'Unauthorized',
+                    401,
+                    [
+                        'error'       => 'Invalid phone number',
+                        'description' => $this->container->get('translator')->trans('api.orders.user_phone_invalid')
+                    ]
+                );
+            }
+
+            $nameParsed = $this->parseName($name);
+
+            if (!empty($facebook_id)) {
+                $email = $facebook_id . "@foodout.lt";
+                $password = $facebook_id;
+                $this->validateUserRegister(
+                    array(
+                        'firstname' => $nameParsed['firstname'],
+                        'email' => $email,
+                        'facebook_id' => $facebook_id,
+                    )
+                );
+            } else {
+                $this->validateUserRegister(
+                    array(
+                        'firstname' => $nameParsed['firstname'],
+                        'email' => $email,
+                        'phone' => $phone,
+                        'password' => $password,
+                        'birthday' => $birthday,
+                    )
+                );
+            }
+
+            // User exists???
+            if (!empty($facebook_id)) {
+                $existingUser = $um->findUserBy(array('facebook_id' => $facebook_id));
+            } else {
+                $existingUser = $um->findUserByEmail($email);
+            }
+
+            // Check only for FB users xz about not FB users, ask Egle why "Temporary" check is disabled
+            if ($existingUser && $existingUser->getFullyRegistered() && !empty($facebook_id)) {
+                throw new ApiException(
+                    'User '.$email.' exists',
+                    409,
+                    array(
+                        'error' => 'User exists',
+                        'email' => $email,
+                        'firstname' => $nameParsed['firstname'],
+                        'description' => $translator->trans('registration.user.exists'),
+                    )
+                );
+            }
+
+            // Temporary by Egle request allowing anonymous registers and orders
+            /*if ($existingUser && $existingUser->getFullyRegistered()) {
+                throw new ApiException(
+                    'User '.$email.' exists',
+                    409,
+                    array(
+                        'error' => 'User exists',
+                        'description' => $translator->trans('registration.user.exists'),
+                    )
+                );
+            } else*/
+            if ($existingUser) {
+                $user = $existingUser;
+            }
+
+            $user->setFirstname($nameParsed['firstname'])
+                ->setPhone($miscUtil->formatPhone($phone, $this->container->getParameter('country')))
+                ->setEmail($email);
+            // $user->setRoles(array('ROLE_USER'));
+            $user->addRole('ROLE_USER');
+            $user->setEnabled(true);
+
+            if (!empty($nameParsed['lastname'])) {
+                $user->setLastname($nameParsed['lastname']);
+            }
+
+            if (!empty($facebook_id)) {
+                $user->setFacebookId($facebook_id);
+            }
+
+            if (!$existingUser || $existingUser && !$existingUser->getFullyRegistered()) {
+                if (!empty($password)) {
+                    $user->setPlainPassword($password)
+                        ->setFullyRegistered(true);
+
+                    // TODO turi ateiti emailas apie registracija - kolkas neeina :(
+                    // TODO reikia issiaiskinti kur dingo FosUserEventai...
+//                $event = new UserEvent($user, $request);
+//                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+                } else {
+                    $user->setPlainPassword('new-user')
+                        ->setFullyRegistered(false);
+                }
+            }
+
+            if (!empty($birthday)) {
+                $user->setBirthday(new \DateTime($birthday));
+            }
+
+            // User hash generation action
+            $hash = $this->get('food_api.api')->generateUserHash($user);
+            $user->setApiToken($hash);
+            $user->setApiTokenValidity(new \DateTime('+1 week'));
+
+            $um->updateUser($user);
+
+            $this->loginUser($user);
+
+            $response = array(
+                'user_id' => $user->getId(),
+                'phone' => $user->getPhone(),
+                'name' => $user->getFullName(),
+                'email' => $user->getEmail(),
+                'session_token' => $hash,
+                'refresh_token' => '',
+                'isRealEmailSet' => $this->get('food_api.api')->isRealEmailSet($user)
+            );
+
+        } catch (ApiException $e) {
+            $this->get('logger')->error('Users:register2Action Error1:' . $e->getMessage());
+            $this->get('logger')->error('Users:register2Action Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Users:register2Action Error2:' . $e->getMessage());
+            $this->get('logger')->error('Users:register2Action Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                $this->get('translator')->trans('general.error_happened'),
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Users:register2Action Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
+    }
+
+    /**
      * User update action
      *
      * @param Request $request
