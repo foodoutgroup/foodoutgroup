@@ -92,7 +92,7 @@
 
 {% block body %}
     {# image randomization according to country #}
-    <div style="background-image: url(http://{{ cloudfront_url }}{{ asset('bundles/foodapp/images/title_offer/offer-'~site_country|lower~'-'~random(['2', '3', '4', '5', '6', '9', '10', '14'])~'.jpg') }});" class="site-header special-offer-block">
+    <div style="background-image: url(//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/title_offer/offer-'~site_country|lower~'-'~random(['2', '3', '4', '5', '6', '9', '10', '14'])~'.jpg') }});" class="site-header special-offer-block">
         <div class="site-block">
             <h1 class="no-wrap">{% trans %}index.title_page_header{% endtrans %}</h1>
             <form class="search-food-form"  action="{{ path('food_places_' ~ locale ~ '_main') }}" method="get">
