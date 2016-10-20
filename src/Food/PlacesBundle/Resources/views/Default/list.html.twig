@@ -2,7 +2,7 @@
     {% for place in places %}
         <div class="restaurant-item clearfix">
             <div class="logo">
-                <div class="logo-wrap"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}"><img src="http://{{ cloudfront_url }}/uploads/places/thumb_{{ place.place.logo }}"></a></div>
+                <div class="logo-wrap"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}"><img src="//{{ cloudfront_url }}/uploads/places/thumb_{{ place.place.logo }}"></a></div>
             </div>
             <div class="item-center">
                 <h2 class="name clearfix">

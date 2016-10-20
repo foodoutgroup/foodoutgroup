@@ -9,7 +9,7 @@
                 <a href="{% if best_offer.place is not null and not best_offer.useUrl %}{{ path('food_slug', {'slug': slug_util.slugByItem(best_offer.place.id, 'place') }) }}{% else %}{{ best_offer.link }}{% endif %}" class="cupom-item">
 
                 <div class="cupon-top">
-                    <img src="http://{{ cloudfront_url }}{{ asset(best_offer.getWebPathThumb("type1")) }}" width="180" height="177">
+                    <img src="//{{ cloudfront_url }}{{ asset(best_offer.getWebPathThumb("type1")) }}" width="180" height="177">
                     <p class="cupon-name" style="margin: 0;">{{ best_offer.title }}</p>
                     <p class="cupon-desc" style="margin: 0;">{{ best_offer.text }}</p>
                 </div>
