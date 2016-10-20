@@ -17,7 +17,7 @@ parameters:
     time_zone: "Europe/Vilnius"
     sms.available_providers: [food.infobip, food.silverstreet]
 #    sms.available_providers: [food.infobip]
-    sms.main_provider: "food.infobip"
+    sms.main_provider: "food.silverstreet"
     #sms.sender: "Foodout.lt"
     sms.balance_limit_warn: 20
     sms.balance_limit_critical: 12
