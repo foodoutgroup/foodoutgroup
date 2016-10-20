@@ -32,7 +32,7 @@
                                 <tr class="searchable" data-category="{{ dishCategory.id }}">
                                     <td>
                                         {% if item.getWebPathThumb('type2') is not empty %}
-                                            <img alt="{{ item.name }}" src="http://{{ cloudfront_url }}/{{ item.getWebPathThumb('type2') }}" class="dish-image" />
+                                            <img alt="{{ item.name }}" src="//{{ cloudfront_url }}/{{ item.getWebPathThumb('type2') }}" class="dish-image" />
                                         {% endif %}
                                     </td>
                                     <td>
@@ -78,7 +78,7 @@
             <tbody>
         </table>
         <span id="restaurant_link" data="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"></span>
-        <span id="restaurant_image" data="http://{{ cloudfront_url }}/{{place.getWebPathThumb}}"></span>
+        <span id="restaurant_image" data="//{{ cloudfront_url }}/{{place.getWebPathThumb}}"></span>
         <span id="restaurant_image_alt" data="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}"></span>
         {% if place %}
             {% include 'CallCenterBundle:Default:placeInfo.html.twig' with {place: place, showInfo: false} %}

@@ -21,7 +21,7 @@
     <form class="popup detailed-dish-popup">
         <div class="dish-popup-column1">
             {% if dish.getWebPathThumb('type3') is not empty %}
-                <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
+                <img alt="{{ dish.name }}" src="//{{ cloudfront_url }}/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
             {% endif %}
             <div class="dish-info">
                 <p class="name {% if locale == 'lt' %}style{% endif %}">{{ dish.name }}</p>

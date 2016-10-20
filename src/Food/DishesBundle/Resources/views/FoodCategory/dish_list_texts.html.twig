@@ -14,8 +14,8 @@
                         {% set largeImgClass = ' hidden' %}
                         {% set smallImgClass = '' %}
                     {% endif %}
-                    <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
-                    <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
+                    <img alt="{{ dish.name }}" src="//{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
+                    <img alt="{{ dish.name }}" src="//{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
                 {% endif %}
                 {{ dish.description|nl2br }}
             </p>
