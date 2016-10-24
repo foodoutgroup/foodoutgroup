@@ -39,6 +39,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                     ->end()
+                ->scalarNode('datacash_url')
                 ->end()
         ;
 

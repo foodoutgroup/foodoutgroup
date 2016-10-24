@@ -18,13 +18,25 @@ trait RedirectDecorator
                                               0,
                                               16),
                          'price' => (string)round($order->getTotal() * 100),
-                        //  'price' => '1',
                          'email' => $order->getUser()->getEmail(),
                          'transaction_datetime' => date('Y-m-d H:i:s'),
                          'comment' => 'Foodout.lt uzsakymas #' . $order->getId(),
                          'success_url' => $this->getSuccessUrl($locale),
                          'failure_url' => $this->getFailureUrl($locale),
                          'language' => $locale);
+
+        switch ($locale) {
+            case 'lt':
+                $options['service_type'] = 'LIT_BANK';
+                break;
+            case 'lv':
+                $options['service_type'] = 'LTV_BANK';
+                $options['comment'] = 'Foodout.lv pasūtījums #' . $order->getId();
+                break;
+            case 'ee':
+                $options['service_type'] = 'EST_BANK';
+                break;
+        }
 
         $gateway->set_options($options);
 
