@@ -14,7 +14,9 @@ class Parameters
                                    'comment',
                                    'success_url',
                                    'failure_url',
-                                   'language'];
+                                   'language',
+        'service_type'
+    ];
     protected $exceptional_params = ['price'];
 
     public function set($name, $value)

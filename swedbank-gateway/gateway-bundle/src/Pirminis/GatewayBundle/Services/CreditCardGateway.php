@@ -62,7 +62,7 @@ class CreditCardGateway
         $event = new BanklinkEvent((int)$params->get('order_id'), null, $request->xml());
         $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST, $event);
 
-        $sender = new Sender($request->xml());
+        $sender = new Sender($request->xml(), $this->config['datacash_url']);
         $response = new Response($sender->send());
 
         // for logging purposes
@@ -89,7 +89,7 @@ class CreditCardGateway
         $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
                                     $event);
 
-        $sender = new Sender($request->xml());
+        $sender = new Sender($request->xml(), $this->config['datacash_url']);
         $response = new Response($sender->send());
 
         // for logging purposes
@@ -113,7 +113,7 @@ class CreditCardGateway
             $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
                                         $event);
 
-            $sender = new Sender($request->xml());
+            $sender = new Sender($request->xml(), $this->config['datacash_url']);
             $response = new Response($sender->send());
 
             // for logging purposes
@@ -147,7 +147,7 @@ class CreditCardGateway
         $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
                                     $event);
 
-        $sender = new Sender($request->xml());
+        $sender = new Sender($request->xml(), $this->config['datacash_url']);
         $response = new Response($sender->send());
 
         // for logging purposes
@@ -171,7 +171,7 @@ class CreditCardGateway
             $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST,
                                         $event);
 
-            $sender = new Sender($request->xml());
+            $sender = new Sender($request->xml(), $this->config['datacash_url']);
             $response = new Response($sender->send());
 
             // for logging purposes

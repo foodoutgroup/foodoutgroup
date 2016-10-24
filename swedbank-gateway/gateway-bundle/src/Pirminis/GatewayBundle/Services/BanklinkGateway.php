@@ -157,7 +157,9 @@ class BanklinkGateway
                ->set('comment', $options['comment'])
                ->set('success_url', $options['success_url'])
                ->set('failure_url', $options['failure_url'])
-               ->set('language', $options['language']);
+               ->set('language', $options['language'])
+            ->set('service_type', $options['service_type'])
+        ;
 
         $request = new Request($params);
 
@@ -166,7 +168,7 @@ class BanklinkGateway
         $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST, $event);
 
         // create sender
-        $sender = new Sender($request->xml());
+        $sender = new Sender($request->xml(), $this->config['datacash_url']);
 
         // send request and create response
         $response = new Response($sender->send());
@@ -208,7 +210,7 @@ class BanklinkGateway
                                     $event);
 
         // create sender
-        $sender = new Sender($request->xml());
+        $sender = new Sender($request->xml(), $this->config['datacash_url']);
 
         // send request and create response
         $response = new Response($sender->send());
