@@ -92,3 +92,9 @@ parameters:
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: false
     show_making_time_deadline: false
+
+pirminis_gateway:
+    datacash_url: 'https://mars.transaction.datacash.com/Transaction'
+    swedbank:
+        vtid: "21911859"
+        password: "rMUhc7p7"
