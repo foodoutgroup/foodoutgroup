@@ -21,6 +21,14 @@
             <changefreq>daily</changefreq>
         </url>
     {% endfor %}
+    {% for cityKey, city in citiesKitchens %}
+        {% for kitchen in city %}
+            <url>
+                <loc>http://{{ domain }}{{ path('food_city_' ~ cityKey|lower) }}/{{ slug_util.slugByItem(kitchen.id, 'kitchen') }}</loc>
+                <changefreq>daily</changefreq>
+            </url>
+        {% endfor %}
+    {% endfor %}
     {% for page in staticPages %}
         <url>
             <loc>http://{{ domain }}{{ path('food_slug', {'slug': slug_util.slugByItem(page.id, 'text')}) }}</loc>

@@ -135,7 +135,12 @@ class DefaultController extends Controller
 
         $staticPages = $this->get('food.static')->getActivePages(30, true);
 
-        $citiesSlugs = $this->container->getParameter('available_cities_slugs');
+        $cities = $this->container->getParameter('available_cities_slugs');
+
+        $citiesKitchens = array();
+        foreach ($cities as $city) {
+            $citiesKitchens[$city] = $this->get('food.places')->getKitchensByCity($city);
+        }
 
         $response = new Response();
         $response->headers->set('Content-Type', 'xml');
@@ -145,7 +150,8 @@ class DefaultController extends Controller
                 'domain' => $this->container->getParameter('domain'),
                 'availableLocales' => $availableLocales,
                 'places' => $places,
-                'cities' => $citiesSlugs,
+                'cities' => $cities,
+                'citiesKitchens' => $citiesKitchens,
                 'staticPages' => $staticPages,
             ),
             $response
