@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class SendCommand extends ContainerAwareCommand
 {
     private $timeStart;
-    private $maxChecks = 4;
+    private $maxChecks = 2;
 
     protected function configure()
     {
@@ -62,12 +62,12 @@ class SendCommand extends ContainerAwareCommand
                         $providerChanged = false;
                         // If we have tried 3 trimes, maby lets change provider as it takes too long now
                         if ($message->getTimesSent() >= 2) {
-                            if ($message->getSmsc() == 'Silverstreet') {
+                            if ($message->getSmsc() == 'InfoBip') {
                                 // Pasitikrinam as Silverstreet isvis ijungtas
-                                if (in_array('food.infobip', $messagingProviders)) {
-                                    $altProvider = $this->getContainer()->get('food.infobip');
-                                } else {
+                                if (in_array('food.silverstreet', $messagingProviders)) {
                                     $altProvider = $this->getContainer()->get('food.silverstreet');
+                                } else {
+                                    $altProvider = $this->getContainer()->get('food.infobip');
                                 }
                             } else {
                                 $altProvider = $this->getContainer()->get('food.infobip');
