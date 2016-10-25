@@ -123,15 +123,24 @@ class DefaultController extends Controller
 
     public function sitemapAction()
     {
-        $availableLocales = $this->container->getParameter('available_locales');
 
-        // TODO kolkas ijungta tik viena, tad..
+        /*
+        - visos virtuvės pagal visus galimus miestus (pvz. https://foodout.lt/Vilnius/italiska/ Svarbu, kad būtų segeneruota tik tie URL adresai, kurie turi bent vieną atitinkantį restoraną);
+         */
+        $availableLocales = $this->container->getParameter('available_locales');
         $availableLocales = array($availableLocales[0]);
 
         $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')
             ->findBy(array('active' => 1));
 
         $staticPages = $this->get('food.static')->getActivePages(30, true);
+
+        $cities = $this->container->getParameter('available_cities_slugs');
+
+        $citiesKitchens = array();
+        foreach ($cities as $city) {
+            $citiesKitchens[$city] = $this->get('food.places')->getKitchensByCity($city);
+        }
 
         $response = new Response();
         $response->headers->set('Content-Type', 'xml');
@@ -141,6 +150,8 @@ class DefaultController extends Controller
                 'domain' => $this->container->getParameter('domain'),
                 'availableLocales' => $availableLocales,
                 'places' => $places,
+                'cities' => $cities,
+                'citiesKitchens' => $citiesKitchens,
                 'staticPages' => $staticPages,
             ),
             $response

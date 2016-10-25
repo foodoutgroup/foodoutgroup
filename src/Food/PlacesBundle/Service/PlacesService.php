@@ -1,6 +1,7 @@
 <?php
 namespace Food\PlacesBundle\Service;
 
+use Food\DishesBundle\Entity\Kitchen;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Service\OrderService;
@@ -784,5 +785,36 @@ class PlacesService extends ContainerAware
         }
 
         return [$startHour, $startMin, $endHour, $endMin];
+    }
+
+    /**
+     * @param $city
+     * @return Kitchen[]
+     */
+    public function getKitchensByCity($city)
+    {
+        $kitchensList = array();
+        $places = $this->getPlacesByCity($city);
+        foreach ($places as $place) {
+            foreach ($place->getKitchens() as $kitchen) {
+                if (!in_array($kitchen, $kitchensList)) {
+                    $kitchensList[] = $kitchen;
+                }
+            }
+        }
+        return $kitchensList;
+    }
+
+    /**
+     * @return Place[]
+     */
+    public function getPlacesByCity($city)
+    {
+        $places = array();
+        $placePoints = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findBy(array('city' => $city));
+        foreach ($placePoints as $placePoint) {
+            $places[] = $placePoint->getPlace();
+        }
+        return $places;
     }
 }
