@@ -9,17 +9,23 @@
         <changefreq>hourly</changefreq>
     </url>
     {#{% for locale in availableLocales %}#}
-        {% for place in places %}
+    {% for place in places %}
+    <url>
+        <loc>http://{{ domain }}{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place')}) }}</loc>
+        <changefreq>daily</changefreq>
+    </url>
+    {% endfor %}
+    {% for city in cities %}
         <url>
-            <loc>http://{{ domain }}{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place')}) }}</loc>
+            <loc>http://{{ domain }}{{ path('food_city_' ~ city|lower) }}</loc>
             <changefreq>daily</changefreq>
         </url>
-        {% endfor %}
-        {% for page in staticPages %}
-            <url>
-                <loc>http://{{ domain }}{{ path('food_slug', {'slug': slug_util.slugByItem(page.id, 'text')}) }}</loc>
-                <changefreq>monthly</changefreq>
-            </url>
-        {% endfor %}
+    {% endfor %}
+    {% for page in staticPages %}
+        <url>
+            <loc>http://{{ domain }}{{ path('food_slug', {'slug': slug_util.slugByItem(page.id, 'text')}) }}</loc>
+            <changefreq>monthly</changefreq>
+        </url>
+    {% endfor %}
     {#{% endfor %}#}
 </urlset>
