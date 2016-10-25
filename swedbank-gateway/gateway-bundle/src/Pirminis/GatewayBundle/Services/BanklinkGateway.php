@@ -168,7 +168,11 @@ class BanklinkGateway
         $this->dispatcher->dispatch(BanklinkEvent::BANKLINK_REQUEST, $event);
 
         // create sender
-        $sender = new Sender($request->xml(), $this->config['datacash_url']);
+        if (isset($this->config['datacash_url'])) {
+            $sender = new Sender($request->xml(), $this->config['datacash_url']);
+        } else {
+            $sender = new Sender($request->xml());
+        }
 
         // send request and create response
         $response = new Response($sender->send());
@@ -210,7 +214,11 @@ class BanklinkGateway
                                     $event);
 
         // create sender
-        $sender = new Sender($request->xml(), $this->config['datacash_url']);
+        if (isset($this->config['datacash_url'])) {
+            $sender = new Sender($request->xml(), $this->config['datacash_url']);
+        } else {
+            $sender = new Sender($request->xml());
+        }
 
         // send request and create response
         $response = new Response($sender->send());
