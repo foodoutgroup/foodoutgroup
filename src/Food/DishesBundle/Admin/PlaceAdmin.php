@@ -60,6 +60,8 @@ class PlaceAdmin extends FoodAdmin
                         'slogan'       => ['label' => 'admin.place.slogan', 'required' => false,],
                         'description'  => ['label' => 'admin.place.description', 'required' => true,],
                         'alcoholRules' => $alcoholRules,
+                        'metaDescription'  => ['label' => 'admin.meta_description', 'required' => false],
+                        'metaTitle'  => ['label' => 'admin.meta_title', 'required' => false],
                     ]
                 ])
         ;

@@ -290,6 +290,14 @@
                 <source>places.discount_not_for_business_clients</source>
                 <target>Atsiprašome, šiame restorane negalioja verslo klientų nuolaida</target>
             </trans-unit>
+            <trans-unit id="admin.meta_description" resname="admin.meta_description">
+                <source>admin.meta_description</source>
+                <target>Meta description</target>
+            </trans-unit>
+            <trans-unit id="admin.meta_title" resname="admin.meta_title">
+                <source>admin.meta_title</source>
+                <target>Meta title</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
