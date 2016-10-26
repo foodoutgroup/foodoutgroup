@@ -1,0 +1,4 @@
+{% extends 'FoodPlacesBundle:Default:index.html.twig' %}
+
+{% block title %}{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city_translations[location.city]|trans }}{% endif %}{% endblock %}
+{% block seo_description %}{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city_translations[location.city]|trans }}{% endif %}{% endblock %}

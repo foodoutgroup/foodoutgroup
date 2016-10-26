@@ -86,7 +86,7 @@ class DefaultController extends Controller
         $selectedKitchensNames = $placeService->getKitchensFromSlug($slug_filter, $request, true);
 
         return $this->render(
-            'FoodPlacesBundle:Default:index.html.twig',
+            'FoodPlacesBundle:Default:city.html.twig',
             array(
                 'recommended' => false,
                 'zaval' => false,
