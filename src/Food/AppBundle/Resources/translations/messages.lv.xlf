@@ -1442,6 +1442,10 @@
                 <source>index.all_best_offers</source>
                 <target>Visi piedāvājumi</target>
             </trans-unit>
+            <trans-unit id="general.cities">
+                <source>general.cities</source>
+                <target>Pilsētas</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
