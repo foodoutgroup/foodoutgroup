@@ -1,4 +1,16 @@
 {% extends 'FoodPlacesBundle:Default:index.html.twig' %}
 
-{% block title %}{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city_translations[location.city]|trans }}{% endif %}{% endblock %}
-{% block seo_description %}{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city_translations[location.city]|trans }}{% endif %}{% endblock %}
+{% block title %}{% if meta_title is not empty %}{{ meta_title }}. {% endif %}{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city_translations[location.city]|trans }}{% endif %}{% endblock %}
+{% block seo_description %}{% if meta_description is not empty %}{{ meta_description }}{% else %}{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city_translations[location.city]|trans }}{% endif %}{% endif %}{% endblock %}
+
+{% block breadcrumb %}
+    <a href="{{ path('food_lang_homepage') }}">{% trans %}general.profile.home{% endtrans %}</a>
+    <a href="{{ city_url }}"> {{ city }}</a>
+    {% if selected_kitchens_names is not empty%}
+        <a href="{{ current_url }}"> {{ selected_kitchens_names|first }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block page_title_h1 %}
+    <h1>{% if meta_title is not empty %}{{ meta_title }}. {% endif %}{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city_translations[location.city]|trans }}{% endif %}</h1>
+{% endblock %}
