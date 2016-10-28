@@ -79,3 +79,11 @@ services:
     food.driver_service:
       class: Food\AppBundle\Service\DriverService
       parent: food.base_service
+
+    food.city_service:
+        class: Food\AppBundle\Service\CityService
+        parent: food.base_service
+        arguments:
+          - @router
+        calls:
+          - [setAvailableCitiesSlugs, [%available_cities_slugs%]]
