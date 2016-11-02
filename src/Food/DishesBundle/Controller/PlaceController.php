@@ -80,7 +80,8 @@ class PlaceController extends Controller
             }
 
             $kitchens = $place->getKitchens();
-            if(!empty($kitchens)) {
+            //if(!empty($kitchens) && $kitchens->count() > 0) {
+            if(!empty($kitchens) && $kitchens->count() > 0) {
                 $kitchen = $kitchens->first();
                 $breadcrumbData['kitchen'] = $kitchen->getName();
                 $kitchenSlug = $this->get('food.dishes.utils.slug')->getSlugByItem($kitchen->getId(), 'kitchen');
