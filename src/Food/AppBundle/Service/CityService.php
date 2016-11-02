@@ -2,17 +2,21 @@
 namespace Food\AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Food\AppBundle\Utils\Language;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 class CityService extends BaseService
 {
     protected $router;
     protected $availableCitiesSlugs;
+    protected $locale;
+    protected $language;
 
-    public function __construct(EntityManager $em, Router $router)
+    public function __construct(EntityManager $em, Router $router, Language $language)
     {
         parent::__construct($em);
         $this->router = $router;
+        $this->language = $language;
     }
 
     /**
@@ -24,9 +28,7 @@ class CityService extends BaseService
         $cityInfo = array();
         $availableCitiesSlugs = array_map("mb_strtolower", $this->availableCitiesSlugs);
 
-        $ltChars = array('ą','č','ę','ė','į','š','ų','ū','ž');
-        $enChars = array('a','c','e','e','i','s','u','u','z');
-        $cityString = str_replace($ltChars, $enChars, strtolower($cityString));
+        $cityString = $this->language->removeChars($this->locale, $cityString, true, false);
         $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", ucfirst($cityString));
         $cityInfo['city_slug_lower'] = strtolower($city);
 
@@ -50,5 +52,13 @@ class CityService extends BaseService
     public function setAvailableCitiesSlugs($availableCitiesSlugs)
     {
         $this->availableCitiesSlugs = $availableCitiesSlugs;
+    }
+
+    /**
+     * @param mixed $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
     }
 }
