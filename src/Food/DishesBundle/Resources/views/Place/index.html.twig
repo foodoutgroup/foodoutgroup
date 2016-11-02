@@ -55,26 +55,18 @@
 
     {% include 'FoodDishesBundle:Place:dish_cart_partial.html.twig' %}
 
-
-{#
-    <!-- Add fancyBox main JS and CSS files -->
-    <script type="text/javascript" src="/bundles/foodapp/scripts/fancy/jquery.fancybox.js?v=2.1.5"></script>
-    <link rel="stylesheet" type="text/css" href="/bundles/foodapp/scripts/fancy/jquery.fancybox.css?v=2.1.5" media="screen" />
-
-    <!-- Add Button helper (this is optional) -->
-    <link rel="stylesheet" type="text/css" href="/bund;es/foodapp/scripts/fancy/helpers/jquery.fancybox-buttons.css?v=1.0.5" />
-    <script type="text/javascript" src="/bundles/foodapp/scripts/fancy/helpers/jquery.fancybox-buttons.js?v=1.0.5"></script>
-
-    <!-- Add Thumbnail helper (this is optional) -->
-    <link rel="stylesheet" type="text/css" href="/bundles/foodapp/scripts/fancy/helpers/jquery.fancybox-thumbs.css?v=1.0.7" />
-    <script type="text/javascript" src="/bundles/foodapp/scripts/fancy/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
-
-    <!-- Add Media helper (this is optional) -->
-    <script type="text/javascript" src="/bundles/foodapp/scripts/fancy/helpers/jquery.fancybox-media.js?v=1.0.6"></script>
-#}
     <div style="background-image: url(/bundles/foodapp/images/inner-bg.jpg);" class="site-center image-top">
         <div class="site-block">
-            <div class="page-path clearfix"><a href="{{ path('food_homepage') }}">{% trans %}places.home{% endtrans %}</a>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}<a href="#">{{ place.name }}</a></div>
+            <div class="page-path clearfix">
+                <a href="{{ path('food_homepage') }}">{% trans %}places.home{% endtrans %}</a>
+                {% if breadcrumbData.city is not empty %}
+                    <a href="{{ breadcrumbData.city_url }}">{{ breadcrumbData.city }}</a>
+                    {% if breadcrumbData.kitchen is not empty %}
+                        <a href="{{ breadcrumbData.kitchen_url }}">{{ breadcrumbData.kitchen }}</a>
+                    {% endif %}
+                {% endif %}
+                <a href="#">{{ place.name }}</a>
+            </div>
             <div class="page-title">
                 <h1 class="clearfix"><span>{{ place.name }}{% if place.slogan is not empty %} - {{ place.slogan }}{% endif %}</span>
                     <div data-stars="{{ place.averageRating }}" class="restoran-rating fl"></div>

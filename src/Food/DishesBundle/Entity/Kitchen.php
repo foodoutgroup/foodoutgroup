@@ -126,6 +126,20 @@ class Kitchen extends Uploadable implements Translatable
     private $locale;
 
     /**
+     * @var string
+     * @Gedmo\Translatable
+     * @ORM\Column(name="meta_description", type="text", nullable=true)
+     */
+    private $metaDescription = null;
+
+    /**
+     * @var string
+     * @Gedmo\Translatable
+     * @ORM\Column(name="meta_title", type="text", nullable=true)
+     */
+    private $metaTitle = null;
+
+    /**
      * Convert object to string
      *
      * @return string
@@ -552,5 +566,37 @@ class Kitchen extends Uploadable implements Translatable
     public function getAlias()
     {
         return $this->alias;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetaDescription()
+    {
+        return $this->metaDescription;
+    }
+
+    /**
+     * @param string $metaDescription
+     */
+    public function setMetaDescription($metaDescription)
+    {
+        $this->metaDescription = $metaDescription;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMetaTitle()
+    {
+        return $this->metaTitle;
+    }
+
+    /**
+     * @param string $metaTitle
+     */
+    public function setMetaTitle($metaTitle)
+    {
+        $this->metaTitle = $metaTitle;
     }
 }

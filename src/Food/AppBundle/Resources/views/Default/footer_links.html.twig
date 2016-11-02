@@ -61,7 +61,37 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-
+            </div>
+            <div class="footer-cities">
+                <h5>{% trans %}general.cities{% endtrans %}</h5>
+                <div class="clearfix">
+                    <div class="small-col fl rating-col">
+                        {% for city, citySlug in cities %}
+                            {% if  (loop.index % 2) %}
+                                <div class="clearfix">
+                                    <span class="name fl">
+                                        <a href="{{ path('food_city_'~citySlug) }}">
+                                            {{ city }}
+                                        </a>
+                                    </span>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="small-col fr rating-col">
+                        {% for city, citySlug in cities %}
+                            {% if not (loop.index % 2) %}
+                                <div class="clearfix">
+                                    <span class="name fl">
+                                        <a href="{{ path('food_city_'~citySlug) }}">
+                                            {{ city }}
+                                        </a>
+                                    </span>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
         {% endif %}

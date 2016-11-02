@@ -84,9 +84,21 @@ class DefaultController extends Controller
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
         $placeService = $this->get('food.places');
         $selectedKitchensNames = $placeService->getKitchensFromSlug($slug_filter, $request, true);
+        $current_url = $request->getUri();
+
+
+        $selectedKitchensIds = $placeService->getKitchensFromSlug($slug_filter, $request);
+        if (!empty($selectedKitchensIds)) {
+            $kitchen = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen')->find($selectedKitchensIds[0]);
+            $metaTitle = $kitchen->getMetaTitle();
+            $metaDescription = $kitchen->getMetaDescription();
+        } else {
+            $metaTitle = '';
+            $metaDescription = '';
+        }
 
         return $this->render(
-            'FoodPlacesBundle:Default:index.html.twig',
+            'FoodPlacesBundle:Default:city.html.twig',
             array(
                 'recommended' => false,
                 'zaval' => false,
@@ -95,8 +107,12 @@ class DefaultController extends Controller
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
                 'slug_filter' => $slug_filter,
+                'city' => $city,
                 'city_url' => $city_url,
                 'selected_kitchens_names' => $selectedKitchensNames,
+                'current_url' => $current_url,
+                'meta_title' => $metaTitle,
+                'meta_description' => $metaDescription,
             )
         );
     }

@@ -73,11 +73,19 @@ class DefaultController extends Controller
     {
         $topRatedPlaces = $this->get('food.places')->getTopRatedPlaces(12);
         $staticPages = $this->get('food.static')->getActivePages(10);
+
+        $availableCities = $this->container->getParameter('available_cities');
+        $availableCitiesSlugs = $this->container->getParameter('available_cities_slugs');
+        $availableCitiesSlugs = array_map("mb_strtolower", $availableCitiesSlugs);
+
+        $cities = array_combine($availableCities, $availableCitiesSlugs);
+
         return $this->render(
             'FoodAppBundle:Default:footer_links.html.twig',
             array(
                 'topRatedPlaces' => $topRatedPlaces,
                 'staticPages' => $staticPages,
+                'cities' => $cities
             )
         );
     }
