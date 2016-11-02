@@ -37,6 +37,8 @@ class KitchenAdmin extends FoodAdmin
                 'fields' => array(
                     'name' => array('label' => 'label.name'),
                     'alias' => array('label' => 'label.alias', 'required' => false),
+                    'metaDescription'  => ['label' => 'admin.meta_description', 'required' => false],
+                    'metaTitle'  => ['label' => 'admin.meta_title', 'required' => false],
                 )
             ))
             //->add('file', 'file', $options)

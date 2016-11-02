@@ -1,30 +1,16 @@
 {# Rodomas restoranu sarase #}
-{#
-<div class="filter-title">{% trans %}places.select_kitchen{% endtrans %}</div>
 <div class="filters-list food-type-filters">
-    {% for item in list %}
-    <label class="custom-checkbox">{{ item.name }}<span class="count">{{ item.placeCount }}</span>
-        <input type="checkbox" name="kitchens[]" value="{{ item.id }}" {% if item.id in selected_kitchens %}checked="checked"{% endif %}>
-    </label>
-    {% endfor %}
-</div>#}
-<div class="filters-list food-type-filters">
-    <div class="dropdown">
-        <button id="dLabel" class="button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {% trans %}places.select_kitchen{% endtrans %}
-            <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu scrollable-menu menu" aria-labelledby="dLabel">
+    <p class="kitchens-label">{% trans %}places.select_kitchen{% endtrans %}</p>
+    <ul class="menu" aria-labelledby="dLabel">
+        {% for item in list %}
             <li>
-                <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a><br />
+                <label class="custom-checkbox">{{ item.name }}<span class="count">{{ item.placeCount }}</span>
+                    <input type="checkbox" name="kitchens[]" data-slug="{{ slug_util.slugByItem(item.id, 'kitchen') }}" data-name="{{ item.name }}" value="{{ item.id }}" {% if item.id in selected_kitchens %}checked="checked"{% endif %}>
+                </label>
             </li>
-            {% for item in list %}
-                <li>
-                    <label class="custom-checkbox">{{ item.name }}<span class="count">{{ item.placeCount }}</span>
-                        <input type="checkbox" name="kitchens[]" data-slug="{{ slug_util.slugByItem(item.id, 'kitchen') }}" data-name="{{ item.name }}" value="{{ item.id }}" {% if item.id in selected_kitchens %}checked="checked"{% endif %}>
-                    </label>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+        {% endfor %}
+        <li>
+            <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
+        </li>
+    </ul>
 </div>
