@@ -533,11 +533,11 @@ class DefaultController extends Controller
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
         $miscService = $this->get('food.app.utils.misc');
         $enable_free_delivery_for_big_basket = $miscService->getParam('enable_free_delivery_for_big_basket');
-        if($enable_free_delivery_for_big_basket) {
+        if ($enable_free_delivery_for_big_basket) {
             $enable_free_delivery_for_big_basket = $place->isAllowFreeDelivery();
         }
         $free_delivery_price = $miscService->getParam('free_delivery_price');
-        if($enable_free_delivery_for_big_basket) {
+        if ($enable_free_delivery_for_big_basket) {
             $placeMinimumFreeDeliveryPrice = $place->getMinimumFreeDeliveryPrice();
             if ($placeMinimumFreeDeliveryPrice) {
                 $free_delivery_price = $placeMinimumFreeDeliveryPrice;
@@ -733,21 +733,17 @@ class DefaultController extends Controller
         $left_sum = 0;
         if ($enable_free_delivery_for_big_basket || ($coupon && $coupon->getIgnoreCartPrice())) {
             $minusDiscount = 0;
-            if($coupon && $coupon->getIgnoreCartPrice()) {
+            if ($coupon && $coupon->getIgnoreCartPrice()) {
                 $minusDiscount = $cartSumTotal;
             }
 
-            // Jeigu musu logistika, tada taikom nemokamo pristatymo logika
-            if ($self_delivery == 0 || $place->getId() == 32 && ($free_delivery_price = 50) && in_array(date('w'), [0, 6])) {
-
-                // Kiek liko iki nemokamo pristatymo
-                if ($free_delivery_price > $total_cart) {
-                    $left_sum = sprintf('%.2f', $free_delivery_price - $total_cart - $minusDiscount);
-                }
-                // Krepselio suma pasieke nemokamo pristatymo suma
-                if ($left_sum == 0) {
-                    $deliveryTotal = 0;
-                }
+            // Kiek liko iki nemokamo pristatymo
+            if ($free_delivery_price > $total_cart) {
+                $left_sum = sprintf('%.2f', $free_delivery_price - $total_cart - $minusDiscount);
+            }
+            // Krepselio suma pasieke nemokamo pristatymo suma
+            if ($left_sum == 0) {
+                $deliveryTotal = 0;
             }
         }
 
