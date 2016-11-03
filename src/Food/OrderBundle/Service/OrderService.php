@@ -1542,16 +1542,13 @@ class OrderService extends ContainerAware
         $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
         $left_sum = 0;
         if ($enable_free_delivery_for_big_basket) {
-            // Jeigu musu logistika, tada taikom nemokamo pristatymo logika
-            if ($self_delivery == 0 || $this->getOrder()->getPlace()->getId() == 32 && ($free_delivery_price = 50) && in_array(date('w'), [0, 6])) {
-                // Kiek liko iki nemokamo pristatymo
-                if ($free_delivery_price > $sumTotal) {
-                    $left_sum = sprintf('%.2f', $free_delivery_price - $sumTotal);
-                }
-                // Krepselio suma pasieke nemokamo pristatymo suma
-                if ($left_sum == 0) {
-                    $deliveryPrice = 0;
-                }
+            // Kiek liko iki nemokamo pristatymo
+            if ($free_delivery_price > $sumTotal) {
+                $left_sum = sprintf('%.2f', $free_delivery_price - $sumTotal);
+            }
+            // Krepselio suma pasieke nemokamo pristatymo suma
+            if ($left_sum == 0) {
+                $deliveryPrice = 0;
             }
         }
 
