@@ -92,6 +92,8 @@ class PlaceController extends Controller
             }
         }
 
+        $current_url = $request->getUri();
+
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
             array(
@@ -106,6 +108,7 @@ class PlaceController extends Controller
                 'listType' => $listType,
                 'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
                 'breadcrumbData' => $breadcrumbData,
+                'current_url' => $current_url,
             )
         );
     }

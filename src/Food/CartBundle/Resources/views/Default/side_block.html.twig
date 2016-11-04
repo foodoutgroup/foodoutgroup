@@ -4,7 +4,7 @@
 {% endif %}
 <div class="check-block" id="cartmnu">
     <div class="restaurant-logo tac">
-        <a class="restaurant_link" href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"><img class="restaurant_image" alt="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{place.getWebPathThumb}}"></a>
+        <a class="restaurant_link" href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"><img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{place.getWebPathThumb}}"></a>
     </div>
     <h5 class="tac">{% trans %}cart.block.your_order{% endtrans %}</h5>
     {% if list|length > 0 %}
