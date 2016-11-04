@@ -294,6 +294,10 @@
                 <source>places.discount_not_for_business_clients</source>
                 <target>Atvainojiet, Jūs nevarat izmantot biznesa klienta atlaidi šajā restorānā</target>
             </trans-unit>
+            <trans-unit id="food.city.riga.description">
+                <source>food.city.riga.description</source>
+                <target>__Ēdienu piegāde Rīga</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
