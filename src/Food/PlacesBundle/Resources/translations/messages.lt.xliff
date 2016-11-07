@@ -1,182 +1,179 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="file.ext">
-        <body>
-            <!-- Gedmo nesamones -->
-            <trans-unit id="label.name">
-                <source>label.name</source>
-                <target>Pavadinimas</target>
-            </trans-unit>
-            <trans-unit id="label.description">
-                <source>label.description</source>
-                <target>Aprašymas</target>
-            </trans-unit>
-            <trans-unit id="default">
-                <source>Default</source>
-                <target>Pagr.</target>
-            </trans-unit>
-            <trans-unit id="admin.active">
-                <source>admin.active</source>
-                <target>Aktyvus</target>
-            </trans-unit>
-            <trans-unit id="admin.hidden">
-                <source>admin.hidden</source>
-                <target>Slepiamas</target>
-            </trans-unit>
-            <trans-unit id="admin.visible">
-                <source>admin.visible</source>
-                <target>Rodoma</target>
-            </trans-unit>
-            <trans-unit id="admin.static.title">
-                <source>admin.static.title</source>
-                <target>Pavadinimas</target>
-            </trans-unit>
-            <trans-unit id="admin.static.content">
-                <source>admin.static.content</source>
-                <target>Turinys</target>
-            </trans-unit>
-            <trans-unit id="admin.dish.recomended">
-                <source>admin.dish.recomended</source>
-                <target>Rekomenduojama</target>
-            </trans-unit>
-            <trans-unit id="label.alias">
-                <source>label.alias</source>
-                <target>Alias</target>
-            </trans-unit>
-            <trans-unit id="admin.place.slogan">
-                <source>admin.place.slogan</source>
-                <target>Šūkis</target>
-            </trans-unit>
-            <trans-unit id="admin.place.description">
-                <source>admin.place.description</source>
-                <target>Aprašymas</target>
-            </trans-unit>
-            <trans-unit id="admin.place.alcohol_rules">
-                <source>admin.place.alcohol_rules</source>
-                <target>Alkoh. taisyklės</target>
-            </trans-unit>
-            <trans-unit id="admin.place.recommended">
-                <source>admin.place.recommended</source>
-                <target>Rekomend.</target>
-            </trans-unit>
-            <trans-unit id="admin.place.discount_prices_enabled">
-                <source>admin.place.discount_prices_enabled</source>
-                <target>Nuol.kainos</target>
-            </trans-unit>
-            <trans-unit id="admin.place.delivery_option.delivery_and_pickup">
-                <source>admin.place.delivery_option.delivery_and_pickup</source>
-                <target>Pristatymas ir atsiėmimas</target>
-            </trans-unit>
-            <trans-unit id="admin.place.delivery_option.delivery">
-                <source>admin.place.delivery_option.delivery</source>
-                <target>Tik pristatymas</target>
-            </trans-unit>
-            <trans-unit id="admin.place.delivery_option.ickup">
-                <source>admin.place.delivery_option.pickup</source>
-                <target>Tik atsiėmimas</target>
-            </trans-unit>
-            <trans-unit id="admin.place.point.weekdays_worktime">
-                <source>admin.place.point.weekdays_worktime</source>
-                <target>Darbo laikas</target>
-            </trans-unit>
-            <trans-unit id="admin.place.point.weekday_trans1">
-                <source>admin.place.point.weekday_trans1</source>
-                <target>Pirmadienis</target>
-            </trans-unit>
-            <trans-unit id="admin.place.point.weekday_trans2">
-                <source>admin.place.point.weekday_trans2</source>
-                <target>Antradienis</target>
-            </trans-unit>
-            <trans-unit id="admin.place.point.weekday_trans3">
-                <source>admin.place.point.weekday_trans3</source>
-                <target>Trečiadienis</target>
-            </trans-unit>
-            <trans-unit id="admin.place.point.weekday_trans4">
-                <source>admin.place.point.weekday_trans4</source>
-                <target>Ketvirtadienis</target>
-            </trans-unit>
-            <trans-unit id="admin.place.point.weekday_trans5">
-                <source>admin.place.point.weekday_trans5</source>
-                <target>Penktadienis</target>
-            </trans-unit>
-            <trans-unit id="admin.place.point.weekday_trans6">
-                <source>admin.place.point.weekday_trans6</source>
-                <target>Šeštadienis</target>
-            </trans-unit>
-            <trans-unit id="admin.place.point.weekday_trans7">
-                <source>admin.place.point.weekday_trans7</source>
-                <target>Sekmadienis</target>
-            </trans-unit>
-            <trans-unit id="admin.point.pickup">
-                <source>admin.point.pickup</source>
-                <target>Atsiimti vietoje</target>
-            </trans-unit>
-            <trans-unit id="admin.point.delivery">
-                <source>admin.point.delivery</source>
-                <target>Pristatymas</target>
-            </trans-unit>
-            <trans-unit id="admin.point.active">
-                <source>admin.point.active</source>
-                <target>Aktyvus</target>
-            </trans-unit>
-            <trans-unit id="admin.static.seo_title">
-                <source>admin.static.seo_title</source>
-                <target>SEO Title</target>
-            </trans-unit>
-            <trans-unit id="admin.static.seo_description">
-                <source>admin.static.seo_description</source>
-                <target>SEO Description</target>
-            </trans-unit>
-            <!-- Bendri puslapio -->
-            <trans-unit id="404 Not Found">
-                <source>404 Not Found</source>
-                <target>Atsiprašome, puslapis nerastas.</target>
-            </trans-unit>
-            <trans-unit id="global.page_not_found">
-                <source>global.page_not_found</source>
-                <target>Puslapis nerastas</target>
-            </trans-unit>
-            <trans-unit id="global.page_not_found.description">
-                <source>global.page_not_found.description</source>
-                <target>Pasitikrinkite, ar teisingai surinkote adresą.</target>
-            </trans-unit>
-            <trans-unit id="general.error_happened">
-                <source>general.error_happened</source>
-                <target>Atsiprašome, įvyko klaida</target>
-            </trans-unit>
-            <trans-unit id="general.error_happened.description">
-                <source>general.error_happened.description</source>
-                <target>Prašome pabandyti iš naujo po keletos minučių</target>
-            </trans-unit>
-            <trans-unit id="label_type_yes">
-                <source>label_type_yes</source>
-                <target>Taip</target>
-            </trans-unit>
-            <trans-unit id="label_type_no">
-                <source>label_type_no</source>
-                <target>Ne</target>
-            </trans-unit>
-            <!-- Vartotojai -->
-            <trans-unit id="ROLE_ADMIN: ROLE_MODERATOR">
-                <source>ROLE_ADMIN: ROLE_MODERATOR</source>
-                <target>Svetainės administratorius</target>
-            </trans-unit>
-            <trans-unit id="ROLE_MODERATOR">
-                <source>ROLE_MODERATOR</source>
-                <target>Restorano atstovas</target>
-            </trans-unit>
-            <trans-unit id="ROLE_USER">
-                <source>ROLE_USER</source>
-                <target>Lankytojas</target>
-            </trans-unit>
-            <trans-unit id="ROLE_MARKETING">
-                <source>ROLE_MARKETING</source>
-                <target>Marketing</target>
-            </trans-unit>
-            <trans-unit id="ROLE_EDITOR">
-                <source>ROLE_EDITOR</source>
-                <target>Editor</target>
-            </trans-unit>
-        </body>
-    </file>
+  <file source-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="1">
+        <source><![CDATA[label.name]]></source>
+        <target><![CDATA[Pavadinimas]]></target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source><![CDATA[label.description]]></source>
+        <target><![CDATA[Aprašymas]]></target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source><![CDATA[Default]]></source>
+        <target><![CDATA[Pagr.]]></target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source><![CDATA[admin.active]]></source>
+        <target><![CDATA[Aktyvus]]></target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source><![CDATA[admin.hidden]]></source>
+        <target><![CDATA[Slepiamas]]></target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source><![CDATA[admin.visible]]></source>
+        <target><![CDATA[Rodoma]]></target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source><![CDATA[admin.static.title]]></source>
+        <target><![CDATA[Pavadinimas]]></target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source><![CDATA[admin.static.content]]></source>
+        <target><![CDATA[Turinys]]></target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source><![CDATA[admin.dish.recomended]]></source>
+        <target><![CDATA[Rekomenduojama]]></target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source><![CDATA[label.alias]]></source>
+        <target><![CDATA[Alias]]></target>
+      </trans-unit>
+      <trans-unit id="11">
+        <source><![CDATA[admin.place.slogan]]></source>
+        <target><![CDATA[Šūkis]]></target>
+      </trans-unit>
+      <trans-unit id="12">
+        <source><![CDATA[admin.place.description]]></source>
+        <target><![CDATA[Aprašymas]]></target>
+      </trans-unit>
+      <trans-unit id="13">
+        <source><![CDATA[admin.place.alcohol_rules]]></source>
+        <target><![CDATA[Alkoh. taisyklės]]></target>
+      </trans-unit>
+      <trans-unit id="14">
+        <source><![CDATA[admin.place.recommended]]></source>
+        <target><![CDATA[Rekomend.]]></target>
+      </trans-unit>
+      <trans-unit id="15">
+        <source><![CDATA[admin.place.discount_prices_enabled]]></source>
+        <target><![CDATA[Nuol.kainos]]></target>
+      </trans-unit>
+      <trans-unit id="16">
+        <source><![CDATA[admin.place.delivery_option.delivery_and_pickup]]></source>
+        <target><![CDATA[Pristatymas ir atsiėmimas]]></target>
+      </trans-unit>
+      <trans-unit id="17">
+        <source><![CDATA[admin.place.delivery_option.delivery]]></source>
+        <target><![CDATA[Tik pristatymas]]></target>
+      </trans-unit>
+      <trans-unit id="18">
+        <source><![CDATA[admin.place.delivery_option.pickup]]></source>
+        <target><![CDATA[Tik atsiėmimas]]></target>
+      </trans-unit>
+      <trans-unit id="19">
+        <source><![CDATA[admin.place.point.weekdays_worktime]]></source>
+        <target><![CDATA[Darbo laikas]]></target>
+      </trans-unit>
+      <trans-unit id="20">
+        <source><![CDATA[admin.place.point.weekday_trans1]]></source>
+        <target><![CDATA[Pirmadienis]]></target>
+      </trans-unit>
+      <trans-unit id="21">
+        <source><![CDATA[admin.place.point.weekday_trans2]]></source>
+        <target><![CDATA[Antradienis]]></target>
+      </trans-unit>
+      <trans-unit id="22">
+        <source><![CDATA[admin.place.point.weekday_trans3]]></source>
+        <target><![CDATA[Trečiadienis]]></target>
+      </trans-unit>
+      <trans-unit id="23">
+        <source><![CDATA[admin.place.point.weekday_trans4]]></source>
+        <target><![CDATA[Ketvirtadienis]]></target>
+      </trans-unit>
+      <trans-unit id="24">
+        <source><![CDATA[admin.place.point.weekday_trans5]]></source>
+        <target><![CDATA[Penktadienis]]></target>
+      </trans-unit>
+      <trans-unit id="25">
+        <source><![CDATA[admin.place.point.weekday_trans6]]></source>
+        <target><![CDATA[Šeštadienis]]></target>
+      </trans-unit>
+      <trans-unit id="26">
+        <source><![CDATA[admin.place.point.weekday_trans7]]></source>
+        <target><![CDATA[Sekmadienis]]></target>
+      </trans-unit>
+      <trans-unit id="27">
+        <source><![CDATA[admin.point.pickup]]></source>
+        <target><![CDATA[Atsiimti vietoje]]></target>
+      </trans-unit>
+      <trans-unit id="28">
+        <source><![CDATA[admin.point.delivery]]></source>
+        <target><![CDATA[Pristatymas]]></target>
+      </trans-unit>
+      <trans-unit id="29">
+        <source><![CDATA[admin.point.active]]></source>
+        <target><![CDATA[Aktyvus]]></target>
+      </trans-unit>
+      <trans-unit id="30">
+        <source><![CDATA[admin.static.seo_title]]></source>
+        <target><![CDATA[SEO Title]]></target>
+      </trans-unit>
+      <trans-unit id="31">
+        <source><![CDATA[admin.static.seo_description]]></source>
+        <target><![CDATA[SEO Description]]></target>
+      </trans-unit>
+      <trans-unit id="32">
+        <source><![CDATA[404 Not Found]]></source>
+        <target><![CDATA[Atsiprašome, puslapis nerastas.]]></target>
+      </trans-unit>
+      <trans-unit id="33">
+        <source><![CDATA[global.page_not_found]]></source>
+        <target><![CDATA[Puslapis nerastas]]></target>
+      </trans-unit>
+      <trans-unit id="34">
+        <source><![CDATA[global.page_not_found.description]]></source>
+        <target><![CDATA[Pasitikrinkite, ar teisingai surinkote adresą.]]></target>
+      </trans-unit>
+      <trans-unit id="35">
+        <source><![CDATA[general.error_happened]]></source>
+        <target><![CDATA[Atsiprašome, įvyko klaida]]></target>
+      </trans-unit>
+      <trans-unit id="36">
+        <source><![CDATA[general.error_happened.description]]></source>
+        <target><![CDATA[Prašome pabandyti iš naujo po keletos minučių]]></target>
+      </trans-unit>
+      <trans-unit id="37">
+        <source><![CDATA[label_type_yes]]></source>
+        <target><![CDATA[Taip]]></target>
+      </trans-unit>
+      <trans-unit id="38">
+        <source><![CDATA[label_type_no]]></source>
+        <target><![CDATA[Ne]]></target>
+      </trans-unit>
+      <trans-unit id="39">
+        <source><![CDATA[ROLE_ADMIN: ROLE_MODERATOR]]></source>
+        <target><![CDATA[Svetainės administratorius]]></target>
+      </trans-unit>
+      <trans-unit id="40">
+        <source><![CDATA[ROLE_MODERATOR]]></source>
+        <target><![CDATA[Restorano atstovas]]></target>
+      </trans-unit>
+      <trans-unit id="41">
+        <source><![CDATA[ROLE_USER]]></source>
+        <target><![CDATA[Lankytojas]]></target>
+      </trans-unit>
+      <trans-unit id="42">
+        <source><![CDATA[ROLE_MARKETING]]></source>
+        <target><![CDATA[Marketing]]></target>
+      </trans-unit>
+      <trans-unit id="43">
+        <source><![CDATA[ROLE_EDITOR]]></source>
+        <target><![CDATA[Editor]]></target>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

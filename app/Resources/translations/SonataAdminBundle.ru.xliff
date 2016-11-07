@@ -1,0 +1,395 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="1">
+        <source><![CDATA[sonata_administration]]></source>
+        <target><![CDATA[Administration]]></target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source><![CDATA[action_delete]]></source>
+        <target><![CDATA[Удалить]]></target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source><![CDATA[btn_batch]]></source>
+        <target><![CDATA[OK]]></target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source><![CDATA[btn_create]]></source>
+        <target><![CDATA[Создать]]></target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source><![CDATA[btn_create_and_edit_again]]></source>
+        <target><![CDATA[Создать и редактировать]]></target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source><![CDATA[btn_create_and_create_a_new_one]]></source>
+        <target><![CDATA[Создать и добавить новый]]></target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source><![CDATA[btn_create_and_return_to_list]]></source>
+        <target><![CDATA[Создать и вернуться к списку]]></target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source><![CDATA[btn_filter]]></source>
+        <target><![CDATA[Фильтровать]]></target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source><![CDATA[btn_update]]></source>
+        <target><![CDATA[Сохранить]]></target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source><![CDATA[btn_update_and_edit_again]]></source>
+        <target><![CDATA[Сохранить]]></target>
+      </trans-unit>
+      <trans-unit id="11">
+        <source><![CDATA[btn_update_and_return_to_list]]></source>
+        <target><![CDATA[Сохранить и вернуться к списку]]></target>
+      </trans-unit>
+      <trans-unit id="12">
+        <source><![CDATA[link_delete]]></source>
+        <target><![CDATA[Удалить]]></target>
+      </trans-unit>
+      <trans-unit id="13">
+        <source><![CDATA[link_action_create]]></source>
+        <target><![CDATA[Добавить новый]]></target>
+      </trans-unit>
+      <trans-unit id="14">
+        <source><![CDATA[link_action_list]]></source>
+        <target><![CDATA[Вернуться к списку]]></target>
+      </trans-unit>
+      <trans-unit id="15">
+        <source><![CDATA[link_action_show]]></source>
+        <target><![CDATA[Показать]]></target>
+      </trans-unit>
+      <trans-unit id="16">
+        <source><![CDATA[link_action_edit]]></source>
+        <target><![CDATA[Редактировать]]></target>
+      </trans-unit>
+      <trans-unit id="17">
+        <source><![CDATA[link_add]]></source>
+        <target><![CDATA[Добавить новый]]></target>
+      </trans-unit>
+      <trans-unit id="18">
+        <source><![CDATA[link_list]]></source>
+        <target><![CDATA[Список]]></target>
+      </trans-unit>
+      <trans-unit id="19">
+        <source><![CDATA[link_reset_filter]]></source>
+        <target><![CDATA[Сбросить]]></target>
+      </trans-unit>
+      <trans-unit id="20">
+        <source><![CDATA[title_create]]></source>
+        <target><![CDATA[Создать]]></target>
+      </trans-unit>
+      <trans-unit id="21">
+        <source><![CDATA[title_dashboard]]></source>
+        <target><![CDATA[Панель администрирования]]></target>
+      </trans-unit>
+      <trans-unit id="22">
+        <source><![CDATA[title_edit]]></source>
+        <target><![CDATA[Редактировать "%name%"]]></target>
+      </trans-unit>
+      <trans-unit id="23">
+        <source><![CDATA[title_list]]></source>
+        <target><![CDATA[Список]]></target>
+      </trans-unit>
+      <trans-unit id="24">
+        <source><![CDATA[link_next_pager]]></source>
+        <target><![CDATA[Следующая]]></target>
+      </trans-unit>
+      <trans-unit id="25">
+        <source><![CDATA[link_previous_pager]]></source>
+        <target><![CDATA[Предыдущая]]></target>
+      </trans-unit>
+      <trans-unit id="26">
+        <source><![CDATA[link_first_pager]]></source>
+        <target><![CDATA[Первая]]></target>
+      </trans-unit>
+      <trans-unit id="27">
+        <source><![CDATA[link_last_pager]]></source>
+        <target><![CDATA[Последняя]]></target>
+      </trans-unit>
+      <trans-unit id="28">
+        <source><![CDATA[Admin]]></source>
+        <target><![CDATA[Администрирование]]></target>
+      </trans-unit>
+      <trans-unit id="29">
+        <source><![CDATA[link_expand]]></source>
+        <target><![CDATA[развернуть/свернуть]]></target>
+      </trans-unit>
+      <trans-unit id="30">
+        <source><![CDATA[no_result]]></source>
+        <target><![CDATA[Нет результатов]]></target>
+      </trans-unit>
+      <trans-unit id="31">
+        <source><![CDATA[confirm_msg]]></source>
+        <target><![CDATA[Вы уверены?]]></target>
+      </trans-unit>
+      <trans-unit id="32">
+        <source><![CDATA[action_edit]]></source>
+        <target><![CDATA[Редактировать]]></target>
+      </trans-unit>
+      <trans-unit id="33">
+        <source><![CDATA[action_show]]></source>
+        <target><![CDATA[Показать]]></target>
+      </trans-unit>
+      <trans-unit id="34">
+        <source><![CDATA[all_elements]]></source>
+        <target><![CDATA[Применить для всех]]></target>
+      </trans-unit>
+      <trans-unit id="35">
+        <source><![CDATA[flash_batch_empty]]></source>
+        <target><![CDATA[Действие отменено. Нет выбранных объектов.]]></target>
+      </trans-unit>
+      <trans-unit id="36">
+        <source><![CDATA[flash_create_success]]></source>
+        <target><![CDATA[Элемент создан успешно]]></target>
+      </trans-unit>
+      <trans-unit id="37">
+        <source><![CDATA[flash_create_error]]></source>
+        <target><![CDATA[При создании элемента произошла ошибка.]]></target>
+      </trans-unit>
+      <trans-unit id="38">
+        <source><![CDATA[flash_edit_success]]></source>
+        <target><![CDATA[Элемент успешно обновлен.]]></target>
+      </trans-unit>
+      <trans-unit id="39">
+        <source><![CDATA[flash_edit_error]]></source>
+        <target><![CDATA[Во время обновления элемента произошла ошибка.]]></target>
+      </trans-unit>
+      <trans-unit id="40">
+        <source><![CDATA[flash_batch_delete_success]]></source>
+        <target><![CDATA[Выбранные элементы были успешно удалены.]]></target>
+      </trans-unit>
+      <trans-unit id="41">
+        <source><![CDATA[flash_batch_delete_error]]></source>
+        <target><![CDATA[Во время удаления выбранных элементов произошла ошибка.]]></target>
+      </trans-unit>
+      <trans-unit id="42">
+        <source><![CDATA[flash_delete_error]]></source>
+        <target><![CDATA[Во время удаления элемента произошла ошибка.]]></target>
+      </trans-unit>
+      <trans-unit id="43">
+        <source><![CDATA[flash_delete_success]]></source>
+        <target><![CDATA[Элемент успешно удален.]]></target>
+      </trans-unit>
+      <trans-unit id="44">
+        <source><![CDATA[breadcrumb.link_dashboard]]></source>
+        <target><![CDATA[⌂]]></target>
+      </trans-unit>
+      <trans-unit id="45">
+        <source><![CDATA[title_delete]]></source>
+        <target><![CDATA[Подтверждение удаления]]></target>
+      </trans-unit>
+      <trans-unit id="46">
+        <source><![CDATA[message_delete_confirmation]]></source>
+        <target><![CDATA[Вы действительно хотите удалить выбранный элемент?]]></target>
+      </trans-unit>
+      <trans-unit id="47">
+        <source><![CDATA[btn_delete]]></source>
+        <target><![CDATA[Да, удалить]]></target>
+      </trans-unit>
+      <trans-unit id="48">
+        <source><![CDATA[title_batch_confirmation]]></source>
+        <target><![CDATA[Подтверждение пакетного действия]]></target>
+      </trans-unit>
+      <trans-unit id="49">
+        <source><![CDATA[message_batch_confirmation]]></source>
+        <target><![CDATA[Вы действительно хотите произвести выбранное действие для данного элемента?|Вы действительно хотите произвести выбранное действие для данных элементов?|Вы действительно хотите произвести выбранное действие для %count% выбранных элементов?]]></target>
+      </trans-unit>
+      <trans-unit id="50">
+        <source><![CDATA[message_batch_all_confirmation]]></source>
+        <target><![CDATA[Вы действительно хотите произвести выбранное действие для всех элементов?]]></target>
+      </trans-unit>
+      <trans-unit id="51">
+        <source><![CDATA[btn_execute_batch_action]]></source>
+        <target><![CDATA[Да, выполнить]]></target>
+      </trans-unit>
+      <trans-unit id="52">
+        <source><![CDATA[label_type_yes]]></source>
+        <target><![CDATA[да]]></target>
+      </trans-unit>
+      <trans-unit id="53">
+        <source><![CDATA[label_type_no]]></source>
+        <target><![CDATA[нет]]></target>
+      </trans-unit>
+      <trans-unit id="54">
+        <source><![CDATA[label_type_contains]]></source>
+        <target><![CDATA[содержит]]></target>
+      </trans-unit>
+      <trans-unit id="55">
+        <source><![CDATA[label_type_not_contains]]></source>
+        <target><![CDATA[не содержит]]></target>
+      </trans-unit>
+      <trans-unit id="56">
+        <source><![CDATA[label_type_equals]]></source>
+        <target><![CDATA[равен]]></target>
+      </trans-unit>
+      <trans-unit id="57">
+        <source><![CDATA[label_type_not_equals]]></source>
+        <target><![CDATA[не равен]]></target>
+      </trans-unit>
+      <trans-unit id="58">
+        <source><![CDATA[label_type_equal]]></source>
+        <target><![CDATA[=]]></target>
+      </trans-unit>
+      <trans-unit id="59">
+        <source><![CDATA[label_type_greater_equal]]></source>
+        <target><![CDATA[>=]]></target>
+      </trans-unit>
+      <trans-unit id="60">
+        <source><![CDATA[label_type_greater_than]]></source>
+        <target><![CDATA[>]]></target>
+      </trans-unit>
+      <trans-unit id="61">
+        <source><![CDATA[label_type_less_equal]]></source>
+        <target><![CDATA[<=]]></target>
+      </trans-unit>
+      <trans-unit id="62">
+        <source><![CDATA[label_type_less_than]]></source>
+        <target><![CDATA[<]]></target>
+      </trans-unit>
+      <trans-unit id="63">
+        <source><![CDATA[label_date_type_equal]]></source>
+        <target><![CDATA[=]]></target>
+      </trans-unit>
+      <trans-unit id="64">
+        <source><![CDATA[label_date_type_greater_equal]]></source>
+        <target><![CDATA[>=]]></target>
+      </trans-unit>
+      <trans-unit id="65">
+        <source><![CDATA[label_date_type_greater_than]]></source>
+        <target><![CDATA[>]]></target>
+      </trans-unit>
+      <trans-unit id="66">
+        <source><![CDATA[label_date_type_less_equal]]></source>
+        <target><![CDATA[<=]]></target>
+      </trans-unit>
+      <trans-unit id="67">
+        <source><![CDATA[label_date_type_less_than]]></source>
+        <target><![CDATA[<]]></target>
+      </trans-unit>
+      <trans-unit id="68">
+        <source><![CDATA[label_date_type_null]]></source>
+        <target><![CDATA[пусто]]></target>
+      </trans-unit>
+      <trans-unit id="69">
+        <source><![CDATA[label_date_type_not_null]]></source>
+        <target><![CDATA[не пуст]]></target>
+      </trans-unit>
+      <trans-unit id="70">
+        <source><![CDATA[label_date_type_between]]></source>
+        <target><![CDATA[между]]></target>
+      </trans-unit>
+      <trans-unit id="71">
+        <source><![CDATA[label_date_type_not_between]]></source>
+        <target><![CDATA[не между]]></target>
+      </trans-unit>
+      <trans-unit id="72">
+        <source><![CDATA[label_filters]]></source>
+        <target><![CDATA[Фильтры]]></target>
+      </trans-unit>
+      <trans-unit id="73">
+        <source><![CDATA[delete_or]]></source>
+        <target><![CDATA[или]]></target>
+      </trans-unit>
+      <trans-unit id="74">
+        <source><![CDATA[link_action_history]]></source>
+        <target><![CDATA[Изменения]]></target>
+      </trans-unit>
+      <trans-unit id="75">
+        <source><![CDATA[td_action]]></source>
+        <target><![CDATA[Действие]]></target>
+      </trans-unit>
+      <trans-unit id="76">
+        <source><![CDATA[td_revision]]></source>
+        <target><![CDATA[Изменения]]></target>
+      </trans-unit>
+      <trans-unit id="77">
+        <source><![CDATA[td_timestamp]]></source>
+        <target><![CDATA[Дата]]></target>
+      </trans-unit>
+      <trans-unit id="78">
+        <source><![CDATA[td_username]]></source>
+        <target><![CDATA[Автор]]></target>
+      </trans-unit>
+      <trans-unit id="79">
+        <source><![CDATA[label_view_revision]]></source>
+        <target><![CDATA[Просмотр изменений]]></target>
+      </trans-unit>
+      <trans-unit id="80">
+        <source><![CDATA[list_results_count]]></source>
+        <target><![CDATA[{0} Нет данных |{1} Всего %count% запись |{2,3,4} Всего %count% записи |[5,Inf] Всего %count% записей]]></target>
+      </trans-unit>
+      <trans-unit id="81">
+        <source><![CDATA[label_export_download]]></source>
+        <target><![CDATA[Экспорт: ]]></target>
+      </trans-unit>
+      <trans-unit id="82">
+        <source><![CDATA[loading_information]]></source>
+        <target><![CDATA[Загрузка информации…]]></target>
+      </trans-unit>
+      <trans-unit id="83">
+        <source><![CDATA[btn_preview]]></source>
+        <target><![CDATA[Предпросмотр]]></target>
+      </trans-unit>
+      <trans-unit id="84">
+        <source><![CDATA[btn_preview_approve]]></source>
+        <target><![CDATA[Одобрить]]></target>
+      </trans-unit>
+      <trans-unit id="85">
+        <source><![CDATA[btn_preview_decline]]></source>
+        <target><![CDATA[Отклонить]]></target>
+      </trans-unit>
+      <trans-unit id="86">
+        <source><![CDATA[label_per_page]]></source>
+        <target><![CDATA[Записей на страницу]]></target>
+      </trans-unit>
+      <trans-unit id="87">
+        <source><![CDATA[list_select]]></source>
+        <target><![CDATA[Выбрать]]></target>
+      </trans-unit>
+      <trans-unit id="88">
+        <source><![CDATA[confirm_exit]]></source>
+        <target><![CDATA[У вас есть несохраненные данные]]></target>
+      </trans-unit>
+      <trans-unit id="89">
+        <source><![CDATA[link_edit_acl]]></source>
+        <target><![CDATA[Редактировать ACL]]></target>
+      </trans-unit>
+      <trans-unit id="90">
+        <source><![CDATA[btn_update_acl]]></source>
+        <target><![CDATA[Обновить ACL]]></target>
+      </trans-unit>
+      <trans-unit id="91">
+        <source><![CDATA[flash_acl_edit_success]]></source>
+        <target><![CDATA[ACL успешно отредактирован]]></target>
+      </trans-unit>
+      <trans-unit id="92">
+        <source><![CDATA[link_action_acl]]></source>
+        <target><![CDATA[ACL]]></target>
+      </trans-unit>
+      <trans-unit id="93">
+        <source><![CDATA[short_object_description_placeholder]]></source>
+        <target><![CDATA[Ничего не выбрано]]></target>
+      </trans-unit>
+      <trans-unit id="94">
+        <source><![CDATA[title_search_results]]></source>
+        <target><![CDATA[Результат поиска: %query%]]></target>
+      </trans-unit>
+      <trans-unit id="95">
+        <source><![CDATA[search_placeholder]]></source>
+        <target><![CDATA[Поиск]]></target>
+      </trans-unit>
+      <trans-unit id="96">
+        <source><![CDATA[no_results_found]]></source>
+        <target><![CDATA[Ничего не найдено]]></target>
+      </trans-unit>
+      <trans-unit id="97">
+        <source><![CDATA[add_new_entry]]></source>
+        <target><![CDATA[Добавить новую запись]]></target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

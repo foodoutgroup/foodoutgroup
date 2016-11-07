@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="1">
+        <source><![CDATA[link_add]]></source>
+        <target><![CDATA[Add new]]></target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source><![CDATA[label_type_yes]]></source>
+        <target><![CDATA[yes]]></target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source><![CDATA[label_type_no]]></source>
+        <target><![CDATA[no]]></target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source><![CDATA[sonata_core_template_box_file_found_in]]></source>
+        <target><![CDATA[This file can be found in]]></target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source><![CDATA[label_type_equals]]></source>
+        <target><![CDATA[is equal to]]></target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source><![CDATA[label_type_not_equals]]></source>
+        <target><![CDATA[is not equal to]]></target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

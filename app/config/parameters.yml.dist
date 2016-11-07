@@ -111,3 +111,9 @@ parameters:
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: false
+lexik_translation:
+    fallback_locale: %locale%         # (required) default locale(s) to use
+    managed_locales: %locales% # (required) locales that the bundle have to manage
+    resources_registration:
+        type:                 all  # all | files | database
+        managed_locales_only: true

@@ -1,83 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file source-language="lt" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.basket_does_not_exists" resname="api.orders.basket_does_not_exists">
-                <source>api.orders.basket_does_not_exists</source>
-                <target>Krepšelis neegzistuoja</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="lt" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_does_not_exists">
-                <source>api.orders.coupon_does_not_exists</source>
-                <target>Atsiprašome, kodas negalioja</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="lt" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_too_early">
-                <source>api.orders.coupon_too_early</source>
-                <target>Kuponas dar neįsigaliojo</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="lt" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_expired">
-                <source>api.orders.coupon_expired</source>
-                <target>Kuponas jau baigė galioti</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="lt" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.coupon_empty" resname="api.orders.coupon_empty">
-                <source>api.orders.coupon_empty</source>
-                <target>Nenurodytas nuolaidos kodas</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="lt" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.user_not_authorized" resname="api.orders.user_not_authorized">
-                <source>api.orders.user_not_authorized</source>
-                <target>Neprijungtas vartotojas</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="lt" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.user_phone_empty" resname="api.orders.user_phone_empty">
-                <source>api.orders.user_phone_empty</source>
-                <target>Prašome įvesti telefono numerį savo paskyroje</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="lt" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.user_lastname_empty" resname="api.orders.user_lastname_empty">
-                <source>api.orders.user_lastname_empty</source>
-                <target>Prašome įvesti pavardę savo paskyroje</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="lt" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.user_phone_invalid" resname="api.orders.user_phone_invalid">
-                <source>api.orders.user_phone_invalid</source>
-                <target>Neteisingas telefono numeris</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="lt" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.order_to_small" resname="api.orders.order_to_small">
-                <source>api.orders.order_to_small</source>
-                <target>Per mažas užsakymas</target>
-            </trans-unit>
-        </body>
-    </file>
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="1">
+        <source><![CDATA[api.orders.basket_does_not_exists]]></source>
+        <target><![CDATA[Krepšelis neegzistuoja]]></target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source><![CDATA[api.orders.coupon_does_not_exists]]></source>
+        <target><![CDATA[Atsiprašome, kodas negalioja]]></target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source><![CDATA[api.orders.coupon_too_early]]></source>
+        <target><![CDATA[Kuponas dar neįsigaliojo]]></target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source><![CDATA[api.orders.coupon_expired]]></source>
+        <target><![CDATA[Kuponas jau baigė galioti]]></target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source><![CDATA[api.orders.coupon_empty]]></source>
+        <target><![CDATA[Nenurodytas nuolaidos kodas]]></target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source><![CDATA[api.orders.user_not_authorized]]></source>
+        <target><![CDATA[Neprijungtas vartotojas]]></target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source><![CDATA[api.orders.user_phone_empty]]></source>
+        <target><![CDATA[Prašome įvesti telefono numerį savo paskyroje]]></target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source><![CDATA[api.orders.user_lastname_empty]]></source>
+        <target><![CDATA[Prašome įvesti pavardę savo paskyroje]]></target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source><![CDATA[api.orders.user_phone_invalid]]></source>
+        <target><![CDATA[Neteisingas telefono numeris]]></target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source><![CDATA[api.orders.order_to_small]]></source>
+        <target><![CDATA[Per mažas užsakymas]]></target>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

@@ -1,175 +1,175 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file source-language="lt" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="email.dishes.options" resname="email.dishes.options">
-                <source>email.dishes.options</source>
-                <target>Priedai</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.invoice_title" resname="order.invoice.invoice_title">
-                <source>order.invoice.invoice_title</source>
-                <target>PVM SĄSKAITA-FAKTŪRA</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.series" resname="order.invoice.series">
-                <source>order.invoice.series</source>
-                <target>Serija</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.number" resname="order.invoice.number">
-                <source>order.invoice.number</source>
-                <target>Nr.</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.seller" resname="order.invoice.seller">
-                <source>order.invoice.seller</source>
-                <target>PARDAVĖJAS</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.buyer" resname="order.invoice.buyer">
-                <source>order.invoice.buyer</source>
-                <target>PIRKĖJAS</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.document_date" resname="order.invoice.document_date">
-                <source>order.invoice.document_date</source>
-                <target>Dok.data</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.company_code" resname="order.invoice.company_code">
-                <source>order.invoice.company_code</source>
-                <target>Įmonės kodas</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.vat_num" resname="order.invoice.vat_num">
-                <source>order.invoice.vat_num</source>
-                <target>PVM mok.kodas</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.bank_code" resname="order.invoice.bank_code">
-                <source>order.invoice.bank_code</source>
-                <target>Banko kodas</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.line_num" resname="order.invoice.line_num">
-                <source>order.invoice.line_num</source>
-                <target>Eil. Nr.</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.order_no" resname="order.invoice.order_no">
-                <source>order.invoice.order_no</source>
-                <target>Užsakymo Nr.</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.product_name" resname="order.invoice.product_name">
-                <source>order.invoice.product_name</source>
-                <target>Pavadinimas</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.measure_name" resname="order.invoice.measure_name">
-                <source>order.invoice.measure_name</source>
-                <target>Mato vnt.</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.quantity" resname="order.invoice.quantity">
-                <source>order.invoice.quantity</source>
-                <target>Kiekis</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.price" resname="order.invoice.price">
-                <source>order.invoice.price</source>
-                <target>Kaina</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.sum" resname="order.invoice.sum">
-                <source>order.invoice.sum</source>
-                <target>Suma</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.food_from1822" resname="order.invoice.food_from1822">
-                <source>order.invoice.food_from1822</source>
-                <target>Maistas</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.sum_no_vat" resname="order.invoice.sum_no_vat">
-                <source>order.invoice.sum_no_vat</source>
-                <target>Iš viso be PVM</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.delivery" resname="order.invoice.delivery">
-                <source>order.invoice.delivery</source>
-                <target>Pristatymas</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.vat" resname="order.invoice.vat">
-                <source>order.invoice.vat</source>
-                <target>PVM</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.sum_total" resname="order.invoice.sum_total">
-                <source>order.invoice.sum_total</source>
-                <target>Viso</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.sum_words" resname="order.invoice.sum_words">
-                <source>order.invoice.sum_words</source>
-                <target>Suma žodžiais</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.invoice_receiver" resname="order.invoice.invoice_receiver">
-                <source>order.invoice.invoice_receiver</source>
-                <target>Sąskaitą gavo</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.foodout_company_name" resname="order.invoice.foodout_company_name">
-                <source>order.invoice.foodout_company_name</source>
-                <target>UAB FOODOUT.LT</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.foodout_address" resname="order.invoice.foodout_address">
-                <source>order.invoice.foodout_address</source>
-                <target>Žemaitės g. 21, Vilnius 03118, Lithuania</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.foodout_company_code" resname="order.invoice.foodout_company_code">
-                <source>order.invoice.foodout_company_code</source>
-                <target>303134580</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.foodout_vat_code" resname="order.invoice.foodout_vat_code">
-                <source>order.invoice.foodout_vat_code</source>
-                <target>LT100008038519</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.foodout_bank" resname="order.invoice.foodout_bank">
-                <source>order.invoice.foodout_bank</source>
-                <target>Swedbank AB</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.foodout_bank_code" resname="order.invoice.foodout_bank_code">
-                <source>order.invoice.foodout_bank_code</source>
-                <target>73000</target>
-            </trans-unit>
-            <trans-unit id="order.invoice.foodout_bank_account" resname="order.invoice.foodout_bank_account">
-                <source>order.invoice.foodout_bank_account</source>
-                <target>LT92 7300 0101 3664 5307</target>
-            </trans-unit>
-            <trans-unit id="daily_report.metric" resname="daily_report.metric">
-                <source>daily_report.metric</source>
-                <target>Metrika</target>
-            </trans-unit>
-            <trans-unit id="daily_report.value" resname="daily_report.value">
-                <source>daily_report.value</source>
-                <target>Reikšmė</target>
-            </trans-unit>
-            <trans-unit id="daily_report.kpi_metric" resname="daily_report.kpi_metric">
-                <source>daily_report.kpi_metric</source>
-                <target>KPI</target>
-            </trans-unit>
-            <trans-unit id="daily_report.income" resname="daily_report.income">
-                <source>daily_report.income</source>
-                <target>Pajamos</target>
-            </trans-unit>
-            <trans-unit id="daily_report.successful_orders" resname="daily_report.successful_orders">
-                <source>daily_report.successful_orders</source>
-                <target>Sėkmingi užsakymai</target>
-            </trans-unit>
-            <trans-unit id="daily_report.average_cart_size" resname="daily_report.average_cart_size">
-                <source>daily_report.average_cart_size</source>
-                <target>Vidutinė krepšelio suma</target>
-            </trans-unit>
-            <trans-unit id="daily_report.average_delivery_time" resname="daily_report.average_delivery_time">
-                <source>daily_report.average_delivery_time</source>
-                <target>Vidutinis pristatymo laikas</target>
-            </trans-unit>
-            <trans-unit id="daily_report.unique_users" resname="daily_report.unique_users">
-                <source>daily_report.unique_users</source>
-                <target>Unikalių lankytojų skaičius</target>
-            </trans-unit>
-            <trans-unit id="daily_report.returning_users" resname="daily_report.returning_users">
-                <source>daily_report.returning_users</source>
-                <target>Grįžusių lankytojų skaičius</target>
-            </trans-unit>
-            <trans-unit id="daily_report.city" resname="daily_report.city">
-                <source>daily_report.city</source>
-                <target>Regionas</target>
-            </trans-unit>
-            <trans-unit id="weekly_report.places" resname="weekly_report.places">
-                <source>weekly_report.places</source>
-                <target>Restoranų skaičius</target>
-            </trans-unit>
-        </body>
-    </file>
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="1">
+        <source><![CDATA[email.dishes.options]]></source>
+        <target><![CDATA[Priedai]]></target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source><![CDATA[order.invoice.invoice_title]]></source>
+        <target><![CDATA[PVM SĄSKAITA-FAKTŪRA]]></target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source><![CDATA[order.invoice.series]]></source>
+        <target><![CDATA[Serija]]></target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source><![CDATA[order.invoice.number]]></source>
+        <target><![CDATA[Nr.]]></target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source><![CDATA[order.invoice.seller]]></source>
+        <target><![CDATA[PARDAVĖJAS]]></target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source><![CDATA[order.invoice.buyer]]></source>
+        <target><![CDATA[PIRKĖJAS]]></target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source><![CDATA[order.invoice.document_date]]></source>
+        <target><![CDATA[Dok.data]]></target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source><![CDATA[order.invoice.company_code]]></source>
+        <target><![CDATA[Įmonės kodas]]></target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source><![CDATA[order.invoice.vat_num]]></source>
+        <target><![CDATA[PVM mok.kodas]]></target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source><![CDATA[order.invoice.bank_code]]></source>
+        <target><![CDATA[Banko kodas]]></target>
+      </trans-unit>
+      <trans-unit id="11">
+        <source><![CDATA[order.invoice.line_num]]></source>
+        <target><![CDATA[Eil. Nr.]]></target>
+      </trans-unit>
+      <trans-unit id="12">
+        <source><![CDATA[order.invoice.order_no]]></source>
+        <target><![CDATA[Užsakymo Nr.]]></target>
+      </trans-unit>
+      <trans-unit id="13">
+        <source><![CDATA[order.invoice.product_name]]></source>
+        <target><![CDATA[Pavadinimas]]></target>
+      </trans-unit>
+      <trans-unit id="14">
+        <source><![CDATA[order.invoice.measure_name]]></source>
+        <target><![CDATA[Mato vnt.]]></target>
+      </trans-unit>
+      <trans-unit id="15">
+        <source><![CDATA[order.invoice.quantity]]></source>
+        <target><![CDATA[Kiekis]]></target>
+      </trans-unit>
+      <trans-unit id="16">
+        <source><![CDATA[order.invoice.price]]></source>
+        <target><![CDATA[Kaina]]></target>
+      </trans-unit>
+      <trans-unit id="17">
+        <source><![CDATA[order.invoice.sum]]></source>
+        <target><![CDATA[Suma]]></target>
+      </trans-unit>
+      <trans-unit id="18">
+        <source><![CDATA[order.invoice.food_from1822]]></source>
+        <target><![CDATA[Maistas]]></target>
+      </trans-unit>
+      <trans-unit id="19">
+        <source><![CDATA[order.invoice.sum_no_vat]]></source>
+        <target><![CDATA[Iš viso be PVM]]></target>
+      </trans-unit>
+      <trans-unit id="20">
+        <source><![CDATA[order.invoice.delivery]]></source>
+        <target><![CDATA[Pristatymas]]></target>
+      </trans-unit>
+      <trans-unit id="21">
+        <source><![CDATA[order.invoice.vat]]></source>
+        <target><![CDATA[PVM]]></target>
+      </trans-unit>
+      <trans-unit id="22">
+        <source><![CDATA[order.invoice.sum_total]]></source>
+        <target><![CDATA[Viso]]></target>
+      </trans-unit>
+      <trans-unit id="23">
+        <source><![CDATA[order.invoice.sum_words]]></source>
+        <target><![CDATA[Suma žodžiais]]></target>
+      </trans-unit>
+      <trans-unit id="24">
+        <source><![CDATA[order.invoice.invoice_receiver]]></source>
+        <target><![CDATA[Sąskaitą gavo]]></target>
+      </trans-unit>
+      <trans-unit id="25">
+        <source><![CDATA[order.invoice.foodout_company_name]]></source>
+        <target><![CDATA[UAB FOODOUT.LT]]></target>
+      </trans-unit>
+      <trans-unit id="26">
+        <source><![CDATA[order.invoice.foodout_address]]></source>
+        <target><![CDATA[Žemaitės g. 21, Vilnius 03118, Lithuania]]></target>
+      </trans-unit>
+      <trans-unit id="27">
+        <source><![CDATA[order.invoice.foodout_company_code]]></source>
+        <target><![CDATA[303134580]]></target>
+      </trans-unit>
+      <trans-unit id="28">
+        <source><![CDATA[order.invoice.foodout_vat_code]]></source>
+        <target><![CDATA[LT100008038519]]></target>
+      </trans-unit>
+      <trans-unit id="29">
+        <source><![CDATA[order.invoice.foodout_bank]]></source>
+        <target><![CDATA[Swedbank AB]]></target>
+      </trans-unit>
+      <trans-unit id="30">
+        <source><![CDATA[order.invoice.foodout_bank_code]]></source>
+        <target><![CDATA[73000]]></target>
+      </trans-unit>
+      <trans-unit id="31">
+        <source><![CDATA[order.invoice.foodout_bank_account]]></source>
+        <target><![CDATA[LT92 7300 0101 3664 5307]]></target>
+      </trans-unit>
+      <trans-unit id="32">
+        <source><![CDATA[daily_report.metric]]></source>
+        <target><![CDATA[Metrika]]></target>
+      </trans-unit>
+      <trans-unit id="33">
+        <source><![CDATA[daily_report.value]]></source>
+        <target><![CDATA[Reikšmė]]></target>
+      </trans-unit>
+      <trans-unit id="34">
+        <source><![CDATA[daily_report.kpi_metric]]></source>
+        <target><![CDATA[KPI]]></target>
+      </trans-unit>
+      <trans-unit id="35">
+        <source><![CDATA[daily_report.income]]></source>
+        <target><![CDATA[Pajamos]]></target>
+      </trans-unit>
+      <trans-unit id="36">
+        <source><![CDATA[daily_report.successful_orders]]></source>
+        <target><![CDATA[Sėkmingi užsakymai]]></target>
+      </trans-unit>
+      <trans-unit id="37">
+        <source><![CDATA[daily_report.average_cart_size]]></source>
+        <target><![CDATA[Vidutinė krepšelio suma]]></target>
+      </trans-unit>
+      <trans-unit id="38">
+        <source><![CDATA[daily_report.average_delivery_time]]></source>
+        <target><![CDATA[Vidutinis pristatymo laikas]]></target>
+      </trans-unit>
+      <trans-unit id="39">
+        <source><![CDATA[daily_report.unique_users]]></source>
+        <target><![CDATA[Unikalių lankytojų skaičius]]></target>
+      </trans-unit>
+      <trans-unit id="40">
+        <source><![CDATA[daily_report.returning_users]]></source>
+        <target><![CDATA[Grįžusių lankytojų skaičius]]></target>
+      </trans-unit>
+      <trans-unit id="41">
+        <source><![CDATA[daily_report.city]]></source>
+        <target><![CDATA[Regionas]]></target>
+      </trans-unit>
+      <trans-unit id="42">
+        <source><![CDATA[weekly_report.places]]></source>
+        <target><![CDATA[Restoranų skaičius]]></target>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

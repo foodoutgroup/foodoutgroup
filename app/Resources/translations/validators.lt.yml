@@ -1,36 +1,30 @@
-fos_user:
-    firstname:
-        blank: Prašome įvesti vardą
-        short: "[-Inf,Inf]Vardas per trumpas"
-        long: "[-Inf,Inf]Vardas per ilgas"
-        letters_spaces_only: "Vardą turi sudaryti tik raidės arba tarpelio simbolis"
-    lastname:
-        blank: Prašome įvesti pavardę
-        short: "[-Inf,Inf]Pavardė per trumpa"
-        long: "[-Inf,Inf]Pavardė per ilga"
-        letters_spaces_only: "Pavardę turi sudaryti tik raidės arba tarpelio simbolis"
-    phone:
-        blank: Prašome įvesti telefono numerį
-        short: "[-Inf,Inf]Numeris per trumpas"
-        long: "[-Inf,Inf]Numeris per ilgas"
-    email:
-        already_used: El. paštas jau užimtas
-        blank: Prašome įvesti el. paštą
-        short: "[-Inf,Inf]El. paštas pert rumpas"
-        long: "[-Inf,Inf]El. paštas per ilgas"
-        invalid: El. paštas neteisingas
-    password:
-        blank: Prašome įvesti slaptažodį
-        short: "[-Inf,Inf]Slaptažodis per trumpas"
-        mismatch: Įvesti skirtingi slaptažodžiai
-    new_password:
-        blank: Prašome įvesti naują slaptažodį
-        short: "[-Inf,Inf]Naujas slaptažodis per trumpas"
-    current_password:
-        invalid: Neteisingai įvestas slaptažodis
-    group:
-        blank: Prašome įvesti pavadinimą
-        short: "[-Inf,Inf]Pavadinimas per trumpas"
-        long: "[-Inf,Inf]Pavadinimas per trumpas"
-    form:
-        invalid_current_password: Blogas dabartinis slaptažodis
+fos_user.firstname.blank: 'Prašome įvesti vardą'
+fos_user.firstname.short: '[-Inf,Inf]Vardas per trumpas'
+fos_user.firstname.long: '[-Inf,Inf]Vardas per ilgas'
+fos_user.firstname.letters_spaces_only: 'Vardą turi sudaryti tik raidės arba tarpelio simbolis'
+fos_user.lastname.blank: 'Prašome įvesti pavardę'
+fos_user.lastname.short: '[-Inf,Inf]Pavardė per trumpa'
+fos_user.lastname.long: '[-Inf,Inf]Pavardė per ilga'
+fos_user.lastname.letters_spaces_only: 'Pavardę turi sudaryti tik raidės arba tarpelio simbolis'
+fos_user.phone.blank: 'Prašome įvesti telefono numerį'
+fos_user.phone.short: '[-Inf,Inf]Numeris per trumpas'
+fos_user.phone.long: '[-Inf,Inf]Numeris per ilgas'
+fos_user.email.already_used: 'El. paštas jau užimtas'
+fos_user.email.blank: 'Prašome įvesti el. paštą'
+fos_user.email.short: '[-Inf,Inf]El. paštas pert rumpas'
+fos_user.email.long: '[-Inf,Inf]El. paštas per ilgas'
+fos_user.email.invalid: 'El. paštas neteisingas'
+fos_user.password.blank: 'Prašome įvesti slaptažodį'
+fos_user.password.short: '[-Inf,Inf]Slaptažodis per trumpas'
+fos_user.password.mismatch: 'Įvesti skirtingi slaptažodžiai'
+fos_user.new_password.blank: 'Prašome įvesti naują slaptažodį'
+fos_user.new_password.short: '[-Inf,Inf]Naujas slaptažodis per trumpas'
+fos_user.current_password.invalid: 'Neteisingai įvestas slaptažodis'
+fos_user.group.blank: 'Prašome įvesti pavadinimą'
+fos_user.group.short: '[-Inf,Inf]Pavadinimas per trumpas'
+fos_user.group.long: '[-Inf,Inf]Pavadinimas per trumpas'
+fos_user.form.invalid_current_password: 'Blogas dabartinis slaptažodis'
+fos_user.username.already_used: 'Naudotojo vardas jau užimtas'
+fos_user.username.blank: 'Prašome įvesti naudotojo vardą'
+fos_user.username.short: '[-Inf,Inf]Naudotojo vardas pertrumpas'
+fos_user.username.long: '[-Inf,Inf]Naudotojo vardas perilgas'

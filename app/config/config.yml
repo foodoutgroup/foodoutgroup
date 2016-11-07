@@ -151,7 +151,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle, FoodPlacesBundle, CallCenterBundle ]
+    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle, FoodPlacesBundle, CallCenterBundle, LexikTranslationBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -472,4 +472,3 @@ knp_snappy:
         enabled:    false
 #        binary:     /usr/local/bin/wkhtmltoimage
 #        options:    []
-

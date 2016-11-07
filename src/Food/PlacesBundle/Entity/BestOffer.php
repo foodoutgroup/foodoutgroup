@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Food\AppBundle\Entity\Uploadable;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ExecutionContextInterface;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
 
 /**
  * BestOffer
@@ -13,6 +15,8 @@ use Symfony\Component\Validator\ExecutionContextInterface;
  * @ORM\Table(name="best_offer")
  * @ORM\Entity(repositoryClass="\Food\PlacesBundle\Entity\BestOfferRepository")
  * @Callback(methods={"isFileSizeValid"})
+ * @Gedmo\TranslationEntity(class="Food\PlacesBundle\Entity\BestOfferLocalized")
+
  */
 class BestOffer extends Uploadable
 {
@@ -29,15 +33,21 @@ class BestOffer extends Uploadable
     private $id;
 
     /**
+     * @ORM\OneToMany(targetEntity="BestOfferLocalized", mappedBy="object", cascade={"persist", "remove"})
+     **/
+    private $translations;
+
+
+    /**
      * @var string
-     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
     /**
      * @var string
-     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="city", type="string", length=128, nullable=true)
      */
     private $city;
@@ -52,14 +62,14 @@ class BestOffer extends Uploadable
 
     /**
      * @var string
-     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="link", type="text")
      */
     private $link;
 
     /**
      * @var string
-     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="text", type="text")
      */
     private $text;
@@ -80,7 +90,6 @@ class BestOffer extends Uploadable
 
     /**
      * @var string
-     *
      * @ORM\Column(name="image", type="string", length=255)
      */
     private $image = '';
@@ -94,6 +103,19 @@ class BestOffer extends Uploadable
         'type1' => array('w' => 180, 'h' => 177),
         'type2' => array('w' => 640, 'h' => 480),
     );
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+
+
+    public function __construct()
+    {
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
@@ -335,4 +357,46 @@ class BestOffer extends Uploadable
     {
         return $this->useUrl;
     }
+
+    /**
+     * @param $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * Add translations
+     *
+     * @param \Food\PlacesBundle\Entity\BestOfferLocalized $t
+     */
+    public function addTranslation(\Food\PlacesBundle\Entity\BestOfferLocalized $t)
+    {
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
+    }
+
+    /**
+     * Remove translations
+     *
+     * @param \Food\PlacesBundle\Entity\BestOfferLocalized $translations
+     */
+    public function removeTranslation(\Food\PlacesBundle\Entity\BestOfferLocalized $translations)
+    {
+        $this->translations->removeElement($translations);
+    }
+
+    /**
+     * Get translations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
 }

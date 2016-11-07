@@ -31,11 +31,20 @@ class BestOfferAdmin extends FoodAdmin
             $options['help'] = '<img src="/' . $pl->getWebPathThumb("type1") . '" />';
         }
 
-        $formMapper->add('title', 'text', ['label' => 'admin.best_offers.title'])
-                   ->add('city', 'text', ['label' => 'admin.best_offers.city', 'required' => false])
-                   ->add('place', null, ['label' => 'admin.best_offers.place', 'required' => true])
-                   ->add('link', 'text', ['label' => 'admin.best_offers.link'])
-                   ->add('text', 'textarea', ['label' => 'admin.best_offers.text'])
+        $formMapper->add(
+            'translations',
+            'a2lix_translations_gedmo',
+            array(
+                'translatable_class' => 'Food\PlacesBundle\Entity\BestOffer',
+                'fields' => array(
+                    'title' => [],
+                    'city' => ['required' => false],
+                    'link' => ['required' => false],
+                    'text' => [],
+                 )
+            ));
+
+        $formMapper->add('place', null, ['label' => 'admin.best_offers.place', 'required' => true])
                    ->add('useUrl', 'checkbox', ['label' => 'admin.best_offers.use_url', 'required' => false])
                    ->add('active', 'checkbox', ['label' => 'admin.best_offers.active', 'required' => false])
                    ->add('file', 'file', $options);
