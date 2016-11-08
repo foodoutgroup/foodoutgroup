@@ -296,7 +296,7 @@
             </trans-unit>
             <trans-unit id="food.city.riga.description">
                 <source>food.city.riga.description</source>
-                <target>__Ēdienu piegāde Rīga</target>
+                <target>Pasūti ēdienu ar piegādi uz mājām vai biroju Rīgā! Piegāde stundas laikā. Populārākie restorāni: Čilī pica, Pizza Hut, Turkebab, Wok to Walk.</target>
             </trans-unit>
         </body>
     </file>
