@@ -74,6 +74,10 @@ class PlaceController extends Controller
         $locationData =  $this->get('food.googlegis')->getLocationFromSession();
 
         if (isset($locationData['city'])) {
+            if (!$this->get('food.places')->isPlaceDeliversToCity($place, $locationData['city'])) {
+                $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
+                $locationData['city'] = $placeCities[0];
+            }
             $cityInfo = $this->get('food.city_service')->getCityInfo($locationData['city']);
             if (!empty($cityInfo)) {
                 $breadcrumbData = array_merge($breadcrumbData, $cityInfo);
@@ -87,6 +91,8 @@ class PlaceController extends Controller
                 $breadcrumbData['kitchen_url'] = $this->generateUrl('food_city_'.$cityInfo['city_slug_lower'], array(), true).'/'.$kitchenSlug;
             }
         }
+
+        $current_url = $request->getUri();
 
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
@@ -102,6 +108,7 @@ class PlaceController extends Controller
                 'listType' => $listType,
                 'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
                 'breadcrumbData' => $breadcrumbData,
+                'current_url' => $current_url,
             )
         );
     }

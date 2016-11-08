@@ -56,7 +56,7 @@
     {% include 'FoodDishesBundle:Place:dish_cart_partial.html.twig' %}
 
     <div style="background-image: url(/bundles/foodapp/images/inner-bg.jpg);" class="site-center image-top">
-        <div class="site-block">
+        <div class="site-block" itemscope itemtype="http://schema.org/Restaurant">
             <div class="page-path clearfix">
                 <a href="{{ path('food_homepage') }}">{% trans %}places.home{% endtrans %}</a>
                 {% if breadcrumbData.city is not empty %}
@@ -65,11 +65,11 @@
                         <a href="{{ breadcrumbData.kitchen_url }}">{{ breadcrumbData.kitchen }}</a>
                     {% endif %}
                 {% endif %}
-                <a href="#">{{ place.name }}</a>
+                <a itemprop="url" href="{{ current_url }}">{{ place.name }}</a>
             </div>
             <div class="page-title">
-                <h1 class="clearfix"><span>{{ place.name }}{% if place.slogan is not empty %} - {{ place.slogan }}{% endif %}</span>
-                    <div data-stars="{{ place.averageRating }}" class="restoran-rating fl"></div>
+                <h1 class="clearfix"><span itemprop="name">{{ place.name }}{% if place.slogan is not empty %} - {{ place.slogan }}{% endif %}</span>
+                    <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" data-stars="{{ place.averageRating }}" class="restoran-rating fl"><meta itemprop="ratingValue" content = "{{ place.averageRating }}"/><meta itemprop="reviewCount" content="1"></div>
                 </h1>
             </div>
                 <div class="clearfix">
@@ -78,7 +78,7 @@
                         <ul>
                             <li><a href="#detailed-restaurant-menu">{% trans %}places.menu{% endtrans %}</a></li>
                             {#<li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>#}
-                            <li class="last restaurant-info-tab"><a href="#detailed-restaurant-info">{% trans %}places.information{% endtrans %}</a></li>
+                            <li class="last restaurant-info-tab"><a itemprop="menu" href="{{ current_url }}#detailed-restaurant-info">{% trans %}places.information{% endtrans %}</a></li>
                         </ul>
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
                             <div class="clearfix">
@@ -206,7 +206,7 @@
                                         <li class="ico-kitchen">
                                             <strong>{% trans %}places.kitchen{% endtrans %}:</strong>
                                             {% for kitchen in place.kitchens %}
-                                                {% if loop.index != 1 %}, {% endif %}{{ kitchen.name }}
+                                                {% if loop.index != 1 %}, {% endif %}<span itemprop="servesCuisine">{{ kitchen.name }}</span>
                                             {% endfor %}
                                         </li>
                                         <li class="ico-pickup">
@@ -249,7 +249,7 @@
                                         <label for="place-select">{% trans %}places.select_place_point{% endtrans %}:</label>
                                         <select id="place-select" class="custom-select">
                                             {% for point in placePoints%}
-                                                <option value="{{ point.id }}">{{ point.address }}, {{ point.city }}</option>
+                                                <option itemprop="address" value="{{ point.id }}">{{ point.address }}, {{ point.city }}</option>
                                             {% endfor %}
                                         </select>
                                         <div class="location-work-hours clearfix">
@@ -289,7 +289,7 @@
                                             </div>
                                         </div>
                                     {% endif %}
-                                    <p class="restaurant-description">{{ place.description|raw|nl2br }}</p>
+                                    <p class="restaurant-description" itemprop="description">{{ place.description|raw|nl2br }}</p>
                                 </div>
                             </div>
                         </div>

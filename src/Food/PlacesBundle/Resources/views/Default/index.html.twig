@@ -47,6 +47,16 @@
             submitKitchens();
         });
 
+        $(document).on('click', '.filters-list a', function() {
+            targetInput = $(this).parent().find('input');
+            if (targetInput.is(':checked')) {
+                targetInput.attr('checked', false);
+            } else {
+                targetInput.attr('checked', true);
+            }
+            submitKitchens();
+        });
+
         function submitKitchens() {
 
             var $filters = $(".filters-list input:checked");
