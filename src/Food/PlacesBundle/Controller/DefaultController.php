@@ -74,6 +74,7 @@ class DefaultController extends Controller
 
         if (!empty($city) && in_array(mb_strtolower($city), $availableCitiesSlugs)) {
             $city_url = $this->generateUrl('food_city_' . lcfirst($city), [], true);
+            $city_name = lcfirst($city);
         } else {
             $city_name = lcfirst(reset($availableCitiesSlugs));
             $city = ucfirst($city_name);
@@ -94,7 +95,7 @@ class DefaultController extends Controller
             $metaDescription = $kitchen->getMetaDescription();
         } else {
             $metaTitle = '';
-            $metaDescription = '';
+            $metaDescription = $this->get('translator')->trans('food.city.' . $city_name . '.description');
         }
 
         return $this->render(
