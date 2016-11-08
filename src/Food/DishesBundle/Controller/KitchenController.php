@@ -68,12 +68,16 @@ class KitchenController extends Controller
 
         $list = $this->getKitchens($recommended, $request);
 
+        $currentCity = $this->get('food.location')->getLocationFromSession();
+        $currentCity = $this->get('food.city_service')->getCityInfo($currentCity['city']);
+
         return $this->render(
             'FoodDishesBundle:Kitchen:list_items.html.twig',
             array(
                 'list' => $list,
                 'selected_kitchens' => $selectedKitchens,
                 'selected_kitchens_slugs' => $selectedKitchensSlugs,
+                'city' => $currentCity
             )
         );
     }
