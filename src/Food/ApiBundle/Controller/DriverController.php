@@ -21,6 +21,7 @@ class DriverController extends Controller
         $this->get('logger')->alert('Driver:meAction Request: token - ' . $token, (array) $request);
         try {
             $driver = $this->get('food_api.api')->getDriverByToken($token);
+            $translator = $this->get('translator');
 
             $response = array(
                 'id' => $driver->getId(),
@@ -29,6 +30,9 @@ class DriverController extends Controller
                 'phone' => $driver->getPhone(),
                 'name' => $driver->getName(),
                 'city' => $driver->getCity(),
+                'dispatchPhone' => $translator->trans('general.top_contact.phone'),
+                //'bannerUrl' => '',
+                //'timezone' => '2'
             );
         } catch (ApiException $e) {
             $this->get('logger')->error('Driver:meAction Error1:' . $e->getMessage());
@@ -63,6 +67,7 @@ class DriverController extends Controller
         $this->get('logger')->alert('Driver:meIdAction Request: id - ' . $id, (array) $request);
         try {
             $driver = $this->get('food_api.api')->getDriverById($id);
+            $translator = $this->get('translator');
 
             $response = [
                 'id' => $driver->getId(),
@@ -71,6 +76,9 @@ class DriverController extends Controller
                 'phone' => $driver->getPhone(),
                 'name' => $driver->getName(),
                 'city' => $driver->getCity(),
+                'dispatchPhone' => $translator->trans('general.top_contact.phone'),
+                //'bannerUrl' => '',
+                //'timezone' => '2'
             ];
         } catch (ApiException $e) {
             $this->get('logger')->error('Driver:meIdAction Error1:' . $e->getMessage());
