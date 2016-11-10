@@ -216,6 +216,8 @@
 
                 {% if order_service.isLate(order) %}
                     {% set additional_class = 'late_warning' %}
+                {% elseif order.preorder %}
+                    {% set additional_class = 'pre_order' %}
                 {% elseif order_service.isBigDaddyOrder(order) %}
                     {% set additional_class = 'big_daddy_order' %}
                 {% elseif order_service.deliveryComing(order) %}
