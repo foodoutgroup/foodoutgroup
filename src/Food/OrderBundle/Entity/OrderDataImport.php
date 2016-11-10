@@ -33,6 +33,11 @@ class OrderDataImport
     private $file;
 
     /**
+     * @ORM\Column(name="infodata", type="text")
+     */
+    private $infodata;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -102,5 +107,21 @@ class OrderDataImport
     public function setFile($file)
     {
         $this->file = $file;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInfodata()
+    {
+        return $this->infodata;
+    }
+
+    /**
+     * @param mixed $infodata
+     */
+    public function setInfodata($infodata)
+    {
+        $this->infodata = $infodata;
     }
 }
