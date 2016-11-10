@@ -500,6 +500,8 @@ class CartService {
             }
             if ($cartItem->getDishId()->getNoDiscounts()) {
                 $thisDishFitsUs = false;
+            } elseif ($this->isAlcohol($cartItem->getDishId())) {
+                $thisDishFitsUs = false;
             }
             $theDish = 0;
             if ($thisDishFitsUs) {
@@ -784,13 +786,25 @@ class CartService {
     {
         if (count($dishes)) {
             foreach ($dishes as $dish) {
-                $dishCategories = $dish->getDishId()->getCategories();
-                foreach ($dishCategories as $dishCategory) {
-                    $isAlcohol = $dishCategory->getAlcohol();
-                    if ($isAlcohol) {
-                        return true;
-                    }
+                if ($this->isAlcohol($dish->getDishId())) {
+                    return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\Dish $dish
+     * @return bool
+     */
+    public function isAlcohol($dish)
+    {
+        $dishCategories = $dish->getCategories();
+        foreach ($dishCategories as $dishCategory) {
+            $isAlcohol = $dishCategory->getAlcohol();
+            if ($isAlcohol) {
+                return true;
             }
         }
         return false;
