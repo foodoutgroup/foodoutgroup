@@ -561,7 +561,8 @@ class OrderService extends ContainerAware
             'total_price' => [
                 //'amount' => $order->getTotal() * 100,
                 'amount'   => $total_sum,
-                'currency' => $this->container->getParameter('currency_iso')
+                'currency' => $this->container->getParameter('currency_iso'),
+                'driver_amount' => $order->getTotal()
             ],
             'discount'    => $discount,
             'state'       => [
@@ -758,6 +759,7 @@ class OrderService extends ContainerAware
             FO::$status_failed             => 'failed',
             FO::$status_finished           => 'prepared',
             FO::$status_canceled           => 'canceled',
+            FO::$status_canceled_prepared  => 'completed',
             FO::$status_pre                => 'pre'
         ];
 
