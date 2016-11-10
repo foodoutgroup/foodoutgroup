@@ -635,10 +635,6 @@ class DefaultController extends Controller
         if (!empty($couponCode)) {
             $coupon = $this->get('food.order')->getCouponByCode($couponCode);
 
-            if ($coupon->getIgnoreCartPrice()) {
-                $noMinimumCart = true;
-            }
-
             if ($coupon) {
                 $applyDiscount = true;
 
@@ -650,7 +646,7 @@ class DefaultController extends Controller
 
                 $discountSize = $coupon->getDiscount();
                 if (!empty($discountSize)) {
-                    $discountSum = $this->getCartService()->getTotalDiscount($list,$coupon->getDiscount());
+                    $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
                 } else {
                     $discountSize = null;
                     $discountInSum = true;
@@ -660,26 +656,22 @@ class DefaultController extends Controller
 
                 $otherPriceTotal = 0;
                 foreach ($list as $dish) {
-                    $foodCat = $dish->getDishId()->getCategories();
                     $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
-                    if (!$foodCat[0]->getAlcohol()) {
+                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
                         $otherPriceTotal += $sum;
                     }
                 }
 
                 // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
                 $otherMinusDiscount = $otherPriceTotal - $discountSum;
-                if($otherMinusDiscount < 0){
-
-
-
+                if ($otherMinusDiscount < 0){
                     $discountSum = $otherPriceTotal;
                 }
 
                 $total_cart -= $discountSum;
 
                 if ($total_cart <= 0) {
-                    if ($coupon->getFullOrderCovers()|| $coupon->getIncludeDelivery()) {
+                    if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
                         $deliveryTotal = $deliveryTotal + $total_cart;
                         if ($deliveryTotal < 0 || $total_cart < $realDiscountSum) {
                             $deliveryTotal = 0;
@@ -697,9 +689,8 @@ class DefaultController extends Controller
                 $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
                 $otherPriceTotal = 0;
                 foreach ($list as $dish) {
-                    $foodCat = $dish->getDishId()->getCategories();
                     $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
-                    if (!$foodCat[0]->getAlcohol()) {
+                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
                         $otherPriceTotal += $sum;
                     }
                 }
