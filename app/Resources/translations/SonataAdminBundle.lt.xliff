@@ -2922,6 +2922,14 @@
                 <source>admin.place.minimum_free_delivery_price</source>
                 <target>Min. nemokamo pristatymo suma</target>
             </trans-unit>
+            <trans-unit id="admin.order.data_import">
+                <source>admin.order.data_import</source>
+                <target>Užsakymo duomenų importavimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.data_file">
+                <source>admin.order.data_file</source>
+                <target>Duomenų failas</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

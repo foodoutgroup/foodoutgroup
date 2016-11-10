@@ -2882,6 +2882,14 @@
                 <source>admin.place.minimum_free_delivery_price</source>
                 <target>Minimum free delivery price</target>
             </trans-unit>
+            <trans-unit id="admin.order.data_import">
+                <source>admin.order.data_import</source>
+                <target>Order data import</target>
+            </trans-unit>
+            <trans-unit id="admin.order.data_file">
+                <source>admin.order.data_file</source>
+                <target>Data file</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

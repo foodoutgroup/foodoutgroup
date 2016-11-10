@@ -72,7 +72,8 @@
         "pirminis/maybe-monad": "1.2.10",
         "knplabs/knp-snappy-bundle": "dev-master",
         "aws/aws-sdk-php": "2.7.*@dev",
-        "google/apiclient": "~1.1.0"
+        "google/apiclient": "~1.1.0",
+        "phpoffice/phpexcel": "^1.8"
     },
     "scripts": {
         "post-install-cmd": [
