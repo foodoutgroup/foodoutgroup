@@ -396,7 +396,7 @@ class OrderService extends ContainerAware
      */
     public function isBigDaddyOrder(Order $order)
     {
-        return $order->getTotal() >= 40;
+        return $order->getTotal() >= 50;
     }
 
     /**
