@@ -759,7 +759,7 @@ class OrderService extends ContainerAware
             FO::$status_failed             => 'failed',
             FO::$status_finished           => 'prepared',
             FO::$status_canceled           => 'canceled',
-            FO::$status_canceled_prepared  => 'completed',
+            FO::$status_canceled_produced  => 'completed',
             FO::$status_pre                => 'pre'
         ];
 
