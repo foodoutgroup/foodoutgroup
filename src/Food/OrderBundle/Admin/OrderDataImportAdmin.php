@@ -42,16 +42,11 @@ class OrderDataImportAdmin extends FoodAdmin
         parent::prePersist($object);
         $now = new \DateTime();
         $object->setDate($now);
+
         $currentUser = $this->getContainer()->get('security.context')->getToken()->getUser();
         $object->setUser($currentUser);
-    }
 
-    /**
-     * @param OrderDataImport $object
-     */
-    public function postPersist($object)
-    {
-        parent::postPersist($object);
-        $this->getContainer()->get('food.order_data_import_service')->importData($object->getFile());
+        $changeLog = $this->getContainer()->get('food.order_data_import_service')->importData($object->getFile());
+        $object->setInfodata(json_encode($changeLog));
     }
 }

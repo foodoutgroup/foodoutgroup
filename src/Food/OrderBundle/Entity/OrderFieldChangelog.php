@@ -37,6 +37,11 @@ class OrderFieldChangelog
     private $date;
 
     /**
+     * @ORM\Column(name="fieldname", type="text")
+     */
+    private $fieldname;
+
+    /**
      * @ORM\Column(name="old_value", type="text")
      */
     private $oldValue;
@@ -51,6 +56,11 @@ class OrderFieldChangelog
      * @ORM\JoinColumn(name="data_import_id", referencedColumnName="id")
      **/
     private $dataImport;
+
+    public function __toString()
+    {
+        return implode(' ', array($this->getId(), $this->getFieldname(), $this->getOldValue(), $this->getNewValue()));
+    }
 
     /**
      * Get id
@@ -191,5 +201,21 @@ class OrderFieldChangelog
     public function setDataImport($dataImport)
     {
         $this->dataImport = $dataImport;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFieldname()
+    {
+        return $this->fieldname;
+    }
+
+    /**
+     * @param mixed $fieldname
+     */
+    public function setFieldname($fieldname)
+    {
+        $this->fieldname = $fieldname;
     }
 }
