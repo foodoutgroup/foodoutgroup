@@ -57,9 +57,14 @@ class OrderFieldChangelog
      **/
     private $dataImport;
 
-    public function __toString()
+    public function getChangeData()
     {
-        return implode(' ', array($this->getId(), $this->getOrder()->getId(), $this->getFieldname(), $this->getOldValue(), $this->getNewValue()));
+        return array(
+            'order' => $this->getOrder()->getId(),
+            'fieldname' => $this->getFieldname(),
+            'old_value' => $this->getOldValue(),
+            'new_value' => $this->getNewValue()
+        );
     }
 
     /**

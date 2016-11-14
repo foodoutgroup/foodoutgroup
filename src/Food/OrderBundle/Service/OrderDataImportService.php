@@ -69,94 +69,100 @@ class OrderDataImportService extends BaseService
         if (count($realOrder)) {
             foreach ($this->orderFieldsMapping as $mapKey => $mapIndex) {
                 $valueChanged = false;
+                $oldValue = null;
+                $newValue = null;
                 if ($excelData[$mapIndex]) {
                     switch ($mapKey) {
                         case 'order_date':
                             $oldValue = $realOrder->getOrderDate()->format('Y-m-d');
-                            $errorList = $this->validator->validateValue($oldValue, array(
+                            $newValue = $excelData[$mapIndex];
+                            $errorList = $this->validator->validateValue($newValue, array(
                                 new Date(),
                                 new NotNull()
                             ));
-                            if ($oldValue != date('Y-m-d', strtotime($excelData[$mapIndex])) && count($errorList) == 0) {
+                            if ($oldValue != date('Y-m-d', strtotime($newValue)) && count($errorList) == 0) {
                                 $valueChanged = true;
-                                // validate
-                                $realOrder->setOrderDate(new \DateTime($excelData[$mapIndex]));
+                                $realOrder->setOrderDate(new \DateTime($newValue));
                             }
                             break;
                         case 'place_id':
                             $oldValue = $realOrder->getPlace()->getId();
-                            $errorList = $this->validator->validateValue($oldValue, array(
+                            $newValue = $excelData[$mapIndex];
+                            $errorList = $this->validator->validateValue($newValue, array(
                                 new Type(array('type' => 'int')),
                                 new NotNull()
                             ));
-                            if ($oldValue != $excelData[$mapIndex] && count($errorList) == 0) {
+                            if ($oldValue != $newValue && count($errorList) == 0) {
                                 $valueChanged = true;
-                                // validate
-                                $realOrder->setPlace($this->em->getRepository('FoodDishesBundle:Place')->find($excelData[$mapIndex]));
+                                $realOrder->setPlace($this->em->getRepository('FoodDishesBundle:Place')->find($newValue));
                             }
                             break;
                         case 'driver_id':
-                            $oldValue = $realOrder->getDriver()->getId();
-                            $errorList = $this->validator->validateValue($oldValue, array(
+                            if ($realOrder->getDriver()) {
+                                $oldValue = $realOrder->getDriver()->getId();
+                            }
+                            $newValue = $excelData[$mapIndex];
+                            $errorList = $this->validator->validateValue($newValue, array(
                                 new Type(array('type' => 'int')),
                                 new NotNull()
                             ));
-                            if ($oldValue != $excelData[$mapIndex] && count($errorList) == 0) {
+                            if ($oldValue != $newValue && count($errorList) == 0) {
                                 $valueChanged = true;
-                                // validate
-                                $realOrder->setDriver($this->em->getRepository('FoodAppBundle:Driver')->find($excelData[$mapIndex]));
+                                $realOrder->setDriver($this->em->getRepository('FoodAppBundle:Driver')->find($newValue));
                             }
                             break;
                         case 'payment_method':
                             $oldValue = $realOrder->getPaymentMethod();
-                            $errorList = $this->validator->validateValue($oldValue, array(
+                            $newValue = $excelData[$mapIndex];
+                            $errorList = $this->validator->validateValue($newValue, array(
                                 new Type(array('type' => 'string')),
                                 new NotNull()
                             ));
-                            if ($oldValue != $excelData[$mapIndex] && count($errorList) == 0) {
+                            if ($oldValue != $newValue && count($errorList) == 0) {
                                 $valueChanged = true;
-                                // validate
-                                $realOrder->setPaymentMethod($excelData[$mapIndex]);
+                                $realOrder->setPaymentMethod($newValue);
                             }
                             break;
                         case 'delivery_price':
                             $oldValue = $realOrder->getDeliveryPrice();
-                            $errorList = $this->validator->validateValue($oldValue, array(
+                            $newValue = $excelData[$mapIndex];
+                            $errorList = $this->validator->validateValue($newValue, array(
                                 new Type(array('type' => 'double')),
                                 new NotNull()
                             ));
-                            if ($oldValue != $excelData[$mapIndex] && count($errorList) == 0) {
+                            if ($oldValue != $newValue && count($errorList) == 0) {
                                 $valueChanged = true;
-                                // validate
-                                $realOrder->setDeliveryPrice($excelData[$mapIndex]);
+                                $realOrder->setDeliveryPrice($newValue);
                             }
                             break;
                         case 'total':
                             $oldValue = $realOrder->getTotal();
-                            $errorList = $this->validator->validateValue($oldValue, array(
+                            $newValue = $excelData[$mapIndex];
+                            $errorList = $this->validator->validateValue($newValue, array(
                                 new Type(array('type' => 'double')),
                                 new NotNull()
                             ));
-                            if ($oldValue != $excelData[$mapIndex] && count($errorList) == 0) {
+
+                            if ($oldValue != $newValue && count($errorList) == 0) {
                                 $valueChanged = true;
-                                // validate
-                                $realOrder->setTotal($excelData[$mapIndex]);
+                                $realOrder->setTotal($newValue);
                             }
                             break;
                         case 'discount_sum':
                             $oldValue = $realOrder->getDiscountSum();
-                            $errorList = $this->validator->validateValue($oldValue, array(
+                            $newValue = $excelData[$mapIndex];
+                            $errorList = $this->validator->validateValue($newValue, array(
                                 new Type(array('type' => 'double')),
                                 new NotNull()
                             ));
-                            if ($oldValue != $excelData[$mapIndex] && count($errorList) == 0) {
+                            if ($oldValue != $newValue && count($errorList) == 0) {
                                 $valueChanged = true;
-                                $realOrder->setDiscountSum($excelData[$mapIndex]);
+                                $realOrder->setDiscountSum($newValue);
                             }
                             break;
                     }
                     if ($valueChanged) {
-                        $updateLog[] = (string)$this->logChange($realOrder, $mapKey, $oldValue, $excelData[$mapIndex]);
+                        $updateLog[] = $this->logChange($realOrder, $mapKey, $oldValue, $newValue);
                         $this->em->persist($realOrder);
                     }
                 }
@@ -182,7 +188,7 @@ class OrderDataImportService extends BaseService
         }
         $this->em->persist($change);
 
-        return $change;
+        return $change->getChangeData();
     }
 
     private function getMapIndex($fieldname)
@@ -196,9 +202,9 @@ class OrderDataImportService extends BaseService
             'sf_number' => 0,
             'id' => 1,
             'order_date' => 2,
-            /*'place_id' => 3,
+            'place_id' => 3,
             'place_name' => 4,
-            'driver_id' => 5,*/
+            'driver_id' => 5,
             'payment_method' => 10,
             'delivery_price' => 13,
             'total' => 14,
