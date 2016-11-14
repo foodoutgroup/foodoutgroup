@@ -301,6 +301,10 @@ class InvoiceService extends ContainerAware
             }
         }
 
+        if ($order->getCompany() && $this->container->getParameter('b2b_invoice_email')) {
+            $emails[] = $this->container->getParameter('b2b_invoice_email');
+        }
+
         $ml = $this->container->get('food.mailer');
         $logger = $this->container->get('logger');
 
