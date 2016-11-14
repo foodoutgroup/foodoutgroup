@@ -73,6 +73,10 @@ class PlaceController extends Controller
 
         $locationData =  $this->get('food.googlegis')->getLocationFromSession();
 
+        if (!isset($locationData['city'])) {
+            $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
+            $locationData['city'] = $placeCities[0];
+        }
         if (isset($locationData['city'])) {
             if (!$this->get('food.places')->isPlaceDeliversToCity($place, $locationData['city'])) {
                 $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
