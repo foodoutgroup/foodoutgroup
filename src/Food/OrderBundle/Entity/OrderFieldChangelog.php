@@ -59,7 +59,7 @@ class OrderFieldChangelog
 
     public function __toString()
     {
-        return implode(' ', array($this->getId(), $this->getFieldname(), $this->getOldValue(), $this->getNewValue()));
+        return implode(' ', array($this->getId(), $this->getOrder()->getId(), $this->getFieldname(), $this->getOldValue(), $this->getNewValue()));
     }
 
     /**

@@ -54,15 +54,71 @@ class OrderDataImportService extends BaseService
         ));
 
         if (count($realOrder)) {
-            foreach ($this->orderFieldsMapping as $mapKey => $mapValue) {
-                if ($excelData[$mapValue['index']]) {
-                    $oldValue = $realOrder->$mapValue['getter']();
-                    if ($oldValue != $excelData[$mapValue]) {
-                        $updateLog[] = (string)$this->logChange($realOrder, $mapKey, $oldValue, $excelData[$mapValue['index']]);
-                        $realOrder->$mapValue['setter']($excelData[$mapValue['index']]);
+            foreach ($this->orderFieldsMapping as $mapKey => $mapIndex) {
+                $valueChanged = false;
+                if ($excelData[$mapIndex]) {
+                    switch ($mapKey) {
+                        case 'order_date':
+                            $oldValue = $realOrder->getOrderDate()->format('Y-m-d');
+                            if ($oldValue != date('Y-m-d', strtotime($excelData[$mapIndex]))) {
+                                $valueChanged = true;
+                                // validate
+                                $realOrder->setOrderDate(new \DateTime($excelData[$mapIndex]));
+                            }
+                            break;
+                        case 'place_id':
+                            $oldValue = $realOrder->getPlace()->getId();
+                            if ($oldValue != $excelData[$mapIndex]) {
+                                $valueChanged = true;
+                                // validate
+                                $realOrder->setPlace($this->em->getRepository('FoodDishesBundle:Place')->find($excelData[$mapIndex]));
+                            }
+                            break;
+                        case 'driver_id':
+                            $oldValue = $realOrder->getDriver()->getId();
+                            if ($oldValue != $excelData[$mapIndex]) {
+                                $valueChanged = true;
+                                // validate
+                                $realOrder->setDriver($this->em->getRepository('FoodAppBundle:Driver')->find($excelData[$mapIndex]));
+                            }
+                            break;
+                        case 'payment_method':
+                            $oldValue = $realOrder->getPaymentMethod();
+                            if ($oldValue != $excelData[$mapIndex]) {
+                                $valueChanged = true;
+                                // validate
+                                $realOrder->setPaymentMethod($excelData[$mapIndex]);
+                            }
+                            break;
+                        case 'delivery_price':
+                            $oldValue = $realOrder->getDeliveryPrice();
+                            if ($oldValue != $excelData[$mapIndex]) {
+                                $valueChanged = true;
+                                // validate
+                                $realOrder->setDeliveryPrice($excelData[$mapIndex]);
+                            }
+                            break;
+                        case 'total':
+                            $oldValue = $realOrder->getTotal();
+                            if ($oldValue != $excelData[$mapIndex]) {
+                                $valueChanged = true;
+                                // validate
+                                $realOrder->setTotal($excelData[$mapIndex]);
+                            }
+                            break;
+                        case 'discount_sum':
+                            $oldValue = $realOrder->getDiscountSum();
+                            if ($oldValue != $excelData[$mapIndex]) {
+                                $valueChanged = true;
+                                // validate
+                                $realOrder->setDiscountSum($excelData[$mapIndex]);
+                            }
+                            break;
+                    }
+                    if ($valueChanged) {
+                        $updateLog[] = (string)$this->logChange($realOrder, $mapKey, $oldValue, $excelData[$mapIndex]);
                         $this->em->persist($realOrder);
                     }
-                    break;
                 }
             }
         }
@@ -73,7 +129,7 @@ class OrderDataImportService extends BaseService
     private function logChange($realOrder, $fieldname, $oldValue, $newValue)
     {
         $change = new OrderFieldChangelog();
-        $currentUser = $this->getContainer()->get('security.context')->getToken()->getUser();
+        $currentUser = $this->securityContext->getToken()->getUser();
         $change->setUser($currentUser);
         $now = new \DateTime();
         $change->setDate($now);
@@ -89,19 +145,22 @@ class OrderDataImportService extends BaseService
 
     private function getMapIndex($fieldname)
     {
-        return $this->orderFieldsMapping[$fieldname]['index'];
+        return $this->orderFieldsMapping[$fieldname];
     }
 
     private function getOrderFieldsMapping()
     {
         return array(
-            'sf_number' => array('index' => 0, 'getter' => 'getSfNumber', 'setter' => 'setSfNumber'),
+            'sf_number' => 0,
             'id' => 1,
             'order_date' => 2,
-            'place_id' => 3,
+            /*'place_id' => 3,
             'place_name' => 4,
-            'driver_id' => 5,
-            'point_id' => 16,
+            'driver_id' => 5,*/
+            'payment_method' => 10,
+            'delivery_price' => 13,
+            'total' => 14,
+            'discount_sum' => 15,
         );
     }
 }
