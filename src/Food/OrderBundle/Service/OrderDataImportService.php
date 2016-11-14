@@ -37,7 +37,10 @@ class OrderDataImportService extends BaseService
         if ($importObject) {
             $this->importObject = $importObject;
         }
-        $importLog = array();
+        $importLog = array(
+            'infodata' => array(),
+            'orders' => array(),
+        );
         $headers = array();
         $objPHPExcel = PHPExcel_IOFactory::load($uploadedFile->getRealPath());
         foreach ($objPHPExcel->getAllSheets() as $sheet) {
@@ -48,11 +51,13 @@ class OrderDataImportService extends BaseService
             unset($excelOrders[0]);
             foreach ($excelOrders as $excelOrder) {
                 $importLogData = $this->updateOrder($excelOrder);
-                if (!empty($importLogData)) {
-                    $importLog[] = $importLogData;
+                if (!empty($importLogData['infodata'])) {
+                    $importLog['infodata'][] = $importLogData['infodata'];
+                    $importLog['orders'] = array_merge($importLog['orders'], $importLogData['orders']);
                 }
             }
         }
+        $importLog['orders'] = array_unique($importLog['orders']);
         return $importLog;
     }
 
@@ -162,7 +167,8 @@ class OrderDataImportService extends BaseService
                             break;
                     }
                     if ($valueChanged) {
-                        $updateLog[] = $this->logChange($realOrder, $mapKey, $oldValue, $newValue);
+                        $updateLog['infodata'][] = $this->logChange($realOrder, $mapKey, $oldValue, $newValue);
+                        $updateLog['orders'][] = $realOrder->getId();
                         $this->em->persist($realOrder);
                     }
                 }

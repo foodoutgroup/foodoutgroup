@@ -38,6 +38,16 @@ class OrderDataImport
     private $infodata;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Food\OrderBundle\Entity\Order", inversedBy="orders")
+     */
+    private $ordersChanged;
+
+    public function __construct()
+    {
+        $this->ordersChanged = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -123,5 +133,13 @@ class OrderDataImport
     public function setInfodata($infodata)
     {
         $this->infodata = $infodata;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrdersChanged()
+    {
+        return $this->ordersChanged;
     }
 }

@@ -34,6 +34,8 @@ class OrderDataImportAdmin extends FoodAdmin
         $list->add('date', 'date', []);
         $list->add('user', 'user', []);
         $list->add('infodata', 'infodata', []);
+        // @TODO
+        //$list->add('ordersChanged');
     }
 
     /**
@@ -48,6 +50,9 @@ class OrderDataImportAdmin extends FoodAdmin
         $object->setUser($this->getUser());
 
         $changeLog = $this->getContainer()->get('food.order_data_import_service')->importData($object->getFile(), $object);
-        $object->setInfodata(json_encode($changeLog));
+        $object->setInfodata(json_encode($changeLog['infodata']));
+        foreach ($changeLog['orders'] as $order) {
+            $object->getOrdersChanged()->add($this->getContainer()->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($order));
+        }
     }
 }
