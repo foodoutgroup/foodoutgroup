@@ -152,13 +152,13 @@ trait OrderDataForNavDecorator
 
         $query = $this->constructInsertOrderQuery($data);
         $logger = $this->container->get('logger');
-        $logger->debug('--- NAV INSERT DATA ---');
-        $logger->debug(var_export($data, true));
-        $logger->debug('--- NAV INSERT QUERY ---');
-        $logger->debug($query);
+        $logger->info('--- NAV INSERT DATA ---');
+        $logger->info(var_export($data, true));
+        $logger->info('--- NAV INSERT QUERY ---');
+        $logger->info($query);
         $success = $conn->query($query);
-        $logger->debug('--- NAV INSERT RESULT ---');
-        $logger->debug(var_export($success, true));
+        $logger->info('--- NAV INSERT RESULT ---');
+        $logger->info(var_export($success, true));
 
         return false === $success ? false : true;
     }
@@ -171,13 +171,13 @@ trait OrderDataForNavDecorator
 
         $query = $this->constructUpdateOrderQuery($data);
         $logger = $this->container->get('logger');
-        $logger->debug('--- NAV UPDATE DATA ---');
-        $logger->debug(var_export($data, true));
-        $logger->debug('--- NAV UPDATE QUERY ---');
-        $logger->debug($query);
+        $logger->info('--- NAV UPDATE DATA ---');
+        $logger->info(var_export($data, true));
+        $logger->info('--- NAV UPDATE QUERY ---');
+        $logger->info($query);
         $success = $conn->query($query);
-        $logger->debug('--- NAV UPDATE RESULT ---');
-        $logger->debug(var_export($success, true));
+        $logger->info('--- NAV UPDATE RESULT ---');
+        $logger->info(var_export($success, true));
 
         return false === $success ? false : true;
     }
