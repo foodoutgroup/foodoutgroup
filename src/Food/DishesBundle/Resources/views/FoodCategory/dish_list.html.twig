@@ -65,8 +65,6 @@
                             {% endif %}
                         {% else %}
                             <meta itemprop="price" content="{{ smallestPrice|replace({',': '.'}) }}" />
-                            <meta itemprop="lowPrice" content="{{ smallestPrice|replace({',': '.'}) }}" />
-                            <meta itemprop="highPrice" content="{{ largestPrice|replace({',': '.'}) }}" />
                             {{ currency_display | raw}} {{ smallestPrice|replace({'.': ','}) }} - {{ largestPrice|replace({'.': ','}) }}
                             {% if currency_alternative %}
                                 <span class="euro">

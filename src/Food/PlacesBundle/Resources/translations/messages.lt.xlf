@@ -330,6 +330,14 @@
                 <source>food.city.plunge.description</source>
                 <target>Užsisakykite maisto į namus Plungėje. Atvešime per 1h. Populiariausi restoranai: Charlie pizza.</target>
             </trans-unit>
+            <trans-unit id="food.order_food_in_home">
+                <source>food.order_food_in_home</source>
+                <target>Užsisakykite maisto į namus</target>
+            </trans-unit>
+            <trans-unit id="food.will_deliver_in_hour">
+                <source>food.will_deliver_in_hour</source>
+                <target>Atvešime per 1h.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -92,7 +92,10 @@ class DefaultController extends Controller
         if (!empty($selectedKitchensIds)) {
             $kitchen = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen')->find($selectedKitchensIds[0]);
             $metaTitle = $kitchen->getMetaTitle();
-            $metaDescription = $kitchen->getMetaDescription();
+            $metaDescription = $this->get('translator')->trans('food.order_food_in_home') . ' ' .
+                $this->get('translator')->trans('places.in_'.$city_name) . '. ' .
+                $kitchen->getMetaDescription() . ' ' .
+                $this->get('translator')->trans('food.will_deliver_in_hour');
         } else {
             $metaTitle = '';
             $metaDescription = $this->get('translator')->trans('food.city.' . $city_name . '.description');
