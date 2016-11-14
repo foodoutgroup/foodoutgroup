@@ -2930,6 +2930,34 @@
                 <source>admin.order.data_file</source>
                 <target>Duomenų failas</target>
             </trans-unit>
+            <trans-unit id="admin.order.field_changelog">
+                <source>admin.order.field_changelog</source>
+                <target>Pakeitimų istorija</target>
+            </trans-unit>
+            <trans-unit id="admin.order.data_preview">
+                <source>admin.order.data_preview</source>
+                <target>Peržiūra</target>
+            </trans-unit>
+            <trans-unit id="admin.order.username">
+                <source>admin.order.username</source>
+                <target>Naudotojo vardas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.date">
+                <source>admin.order.date</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="admin.order.fieldname">
+                <source>admin.order.fieldname</source>
+                <target>Laukelio pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.old_value">
+                <source>admin.order.old_value</source>
+                <target>Sena reikšmė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.new_value">
+                <source>admin.order.new_value</source>
+                <target>Nauja reikšmė</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

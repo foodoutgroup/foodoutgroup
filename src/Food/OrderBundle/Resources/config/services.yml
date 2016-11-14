@@ -136,3 +136,4 @@ services:
       parent: food.base_service
       arguments:
         - @security.context
+        - @validator

@@ -2890,6 +2890,34 @@
                 <source>admin.order.data_file</source>
                 <target>Data file</target>
             </trans-unit>
+            <trans-unit id="admin.order.field_changelog">
+                <source>admin.order.field_changelog</source>
+                <target>Order fields changelog</target>
+            </trans-unit>
+            <trans-unit id="admin.order.data_preview">
+                <source>admin.order.data_preview</source>
+                <target>Preview</target>
+            </trans-unit>
+            <trans-unit id="admin.order.username">
+                <source>admin.order.username</source>
+                <target>Username</target>
+            </trans-unit>
+            <trans-unit id="admin.order.date">
+                <source>admin.order.date</source>
+                <target>Date</target>
+            </trans-unit>
+            <trans-unit id="admin.order.fieldname">
+                <source>admin.order.fieldname</source>
+                <target>Fieldname</target>
+            </trans-unit>
+            <trans-unit id="admin.order.old_value">
+                <source>admin.order.old_value</source>
+                <target>Old value</target>
+            </trans-unit>
+            <trans-unit id="admin.order.new_value">
+                <source>admin.order.new_value</source>
+                <target>New value</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

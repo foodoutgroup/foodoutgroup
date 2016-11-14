@@ -32,6 +32,8 @@ class OrderDataImportAdmin extends FoodAdmin
     {
         parent::configureListFields($list);
         $list->add('date', 'date', []);
+        $list->add('user', 'user', []);
+        $list->add('infodata', 'infodata', []);
     }
 
     /**
@@ -43,10 +45,9 @@ class OrderDataImportAdmin extends FoodAdmin
         $now = new \DateTime();
         $object->setDate($now);
 
-        $currentUser = $this->getContainer()->get('security.context')->getToken()->getUser();
-        $object->setUser($currentUser);
+        $object->setUser($this->getUser());
 
-        $changeLog = $this->getContainer()->get('food.order_data_import_service')->importData($object->getFile());
+        $changeLog = $this->getContainer()->get('food.order_data_import_service')->importData($object->getFile(), $object);
         $object->setInfodata(json_encode($changeLog));
     }
 }

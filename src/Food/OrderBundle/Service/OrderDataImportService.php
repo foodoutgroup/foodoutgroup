@@ -8,24 +8,35 @@ use Food\OrderBundle\Entity\OrderFieldChangelog;
 use PHPExcel_IOFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\TypeValidator;
+use Symfony\Component\Validator\Validator;
 
 class OrderDataImportService extends BaseService
 {
     private $orderFieldsMapping;
     private $securityContext;
+    private $validator;
+    private $importObject;
 
-    public function __construct(EntityManager $em, SecurityContextInterface $securityContext)
+    public function __construct(EntityManager $em, SecurityContextInterface $securityContext, Validator $validator)
     {
         parent::__construct($em);
         $this->securityContext = $securityContext;
         $this->orderFieldsMapping = $this->getOrderFieldsMapping();
+        $this->validator = $validator;
     }
 
     /**
      * @param UploadedFile $uploadedFile
      */
-    public function importData($uploadedFile)
+    public function importData($uploadedFile, $importObject = null)
     {
+        if ($importObject) {
+            $this->importObject = $importObject;
+        }
         $importLog = array();
         $headers = array();
         $objPHPExcel = PHPExcel_IOFactory::load($uploadedFile->getRealPath());
@@ -36,10 +47,12 @@ class OrderDataImportService extends BaseService
             }
             unset($excelOrders[0]);
             foreach ($excelOrders as $excelOrder) {
-                $importLog[] = $this->updateOrder($excelOrder);
+                $importLogData = $this->updateOrder($excelOrder);
+                if (!empty($importLogData)) {
+                    $importLog[] = $importLogData;
+                }
             }
         }
-        die;
         return $importLog;
     }
 
@@ -60,7 +73,11 @@ class OrderDataImportService extends BaseService
                     switch ($mapKey) {
                         case 'order_date':
                             $oldValue = $realOrder->getOrderDate()->format('Y-m-d');
-                            if ($oldValue != date('Y-m-d', strtotime($excelData[$mapIndex]))) {
+                            $errorList = $this->validator->validateValue($oldValue, array(
+                                new Date(),
+                                new NotNull()
+                            ));
+                            if ($oldValue != date('Y-m-d', strtotime($excelData[$mapIndex])) && count($errorList) == 0) {
                                 $valueChanged = true;
                                 // validate
                                 $realOrder->setOrderDate(new \DateTime($excelData[$mapIndex]));
@@ -68,7 +85,11 @@ class OrderDataImportService extends BaseService
                             break;
                         case 'place_id':
                             $oldValue = $realOrder->getPlace()->getId();
-                            if ($oldValue != $excelData[$mapIndex]) {
+                            $errorList = $this->validator->validateValue($oldValue, array(
+                                new Type(array('type' => 'int')),
+                                new NotNull()
+                            ));
+                            if ($oldValue != $excelData[$mapIndex] && count($errorList) == 0) {
                                 $valueChanged = true;
                                 // validate
                                 $realOrder->setPlace($this->em->getRepository('FoodDishesBundle:Place')->find($excelData[$mapIndex]));
@@ -76,7 +97,11 @@ class OrderDataImportService extends BaseService
                             break;
                         case 'driver_id':
                             $oldValue = $realOrder->getDriver()->getId();
-                            if ($oldValue != $excelData[$mapIndex]) {
+                            $errorList = $this->validator->validateValue($oldValue, array(
+                                new Type(array('type' => 'int')),
+                                new NotNull()
+                            ));
+                            if ($oldValue != $excelData[$mapIndex] && count($errorList) == 0) {
                                 $valueChanged = true;
                                 // validate
                                 $realOrder->setDriver($this->em->getRepository('FoodAppBundle:Driver')->find($excelData[$mapIndex]));
@@ -84,7 +109,11 @@ class OrderDataImportService extends BaseService
                             break;
                         case 'payment_method':
                             $oldValue = $realOrder->getPaymentMethod();
-                            if ($oldValue != $excelData[$mapIndex]) {
+                            $errorList = $this->validator->validateValue($oldValue, array(
+                                new Type(array('type' => 'string')),
+                                new NotNull()
+                            ));
+                            if ($oldValue != $excelData[$mapIndex] && count($errorList) == 0) {
                                 $valueChanged = true;
                                 // validate
                                 $realOrder->setPaymentMethod($excelData[$mapIndex]);
@@ -92,7 +121,11 @@ class OrderDataImportService extends BaseService
                             break;
                         case 'delivery_price':
                             $oldValue = $realOrder->getDeliveryPrice();
-                            if ($oldValue != $excelData[$mapIndex]) {
+                            $errorList = $this->validator->validateValue($oldValue, array(
+                                new Type(array('type' => 'double')),
+                                new NotNull()
+                            ));
+                            if ($oldValue != $excelData[$mapIndex] && count($errorList) == 0) {
                                 $valueChanged = true;
                                 // validate
                                 $realOrder->setDeliveryPrice($excelData[$mapIndex]);
@@ -100,7 +133,11 @@ class OrderDataImportService extends BaseService
                             break;
                         case 'total':
                             $oldValue = $realOrder->getTotal();
-                            if ($oldValue != $excelData[$mapIndex]) {
+                            $errorList = $this->validator->validateValue($oldValue, array(
+                                new Type(array('type' => 'double')),
+                                new NotNull()
+                            ));
+                            if ($oldValue != $excelData[$mapIndex] && count($errorList) == 0) {
                                 $valueChanged = true;
                                 // validate
                                 $realOrder->setTotal($excelData[$mapIndex]);
@@ -108,9 +145,12 @@ class OrderDataImportService extends BaseService
                             break;
                         case 'discount_sum':
                             $oldValue = $realOrder->getDiscountSum();
-                            if ($oldValue != $excelData[$mapIndex]) {
+                            $errorList = $this->validator->validateValue($oldValue, array(
+                                new Type(array('type' => 'double')),
+                                new NotNull()
+                            ));
+                            if ($oldValue != $excelData[$mapIndex] && count($errorList) == 0) {
                                 $valueChanged = true;
-                                // validate
                                 $realOrder->setDiscountSum($excelData[$mapIndex]);
                             }
                             break;
@@ -137,7 +177,9 @@ class OrderDataImportService extends BaseService
         $change->setFieldname($fieldname);
         $change->setOldValue($oldValue);
         $change->setNewValue($newValue);
-        $change->setDataImport($realOrder);
+        if ($this->importObject) {
+            $change->setDataImport($this->importObject);
+        }
         $this->em->persist($change);
 
         return $change;
