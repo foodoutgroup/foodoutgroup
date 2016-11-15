@@ -4426,8 +4426,9 @@ class OrderService extends ContainerAware
         if ($sendMessage) {
             $recipient = $this->getOrder()->getOrderExtra()->getPhone();
 
+            // SMS siunciam tik preorder // nutartis 2016-11-15 mng meet
             // SMS siunciam tik tuo atveju jei orderis ne is callcentro
-            if ($this->getOrder()->getOrderFromNav() == false) {
+            if ($this->getOrder()->getOrderFromNav() == false && $this->getOrder()->getPreorder()) {
                 if (!empty($recipient)) {
                     $smsService = $this->container->get('food.messages');
                     $sender = $this->container->getParameter('sms.sender');
