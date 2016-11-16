@@ -42,7 +42,7 @@ class OrderFieldChangelog
     private $fieldname;
 
     /**
-     * @ORM\Column(name="old_value", type="text")
+     * @ORM\Column(name="old_value", type="text", nullable=true)
      */
     private $oldValue;
 
