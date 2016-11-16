@@ -722,7 +722,7 @@ input.button {}
 .site-center {background: #f5f0eb; padding-bottom: 98px}
 .site-center.site-center-bottom { margin-top: -98px }
 
-.content-lefter {width: 180px; float: left; background: #fff; border-radius: 4px;}
+.content-lefter {width: 180px; float: left;}
 .content-righter {width: 780px; float: right; background: #fff; border-radius: 4px;}
 
 .content-lefter-big {float: left; width: 780px;}
@@ -753,9 +753,12 @@ input.button {}
 /*Left filters*/
 .filter-title {color: #b39196; font-size: 10px; text-transform: uppercase; line-height: 17px; padding: 17px 20px; letter-spacing: 1.7px; padding-bottom: 14px;}
 
-.filters-list {border-bottom: 1px solid #ebe2d9;}
-.food-type-filters {padding-bottom: 9px; padding-left: 20px;}
+.kitchens-label {font-size: 1.5em;}
+.filters-list {border-bottom: 1px solid #ebe2d9; background: #fff; border-radius: 4px; margin-bottom: 10px;}
+.food-type-filters {padding-top: 9px; padding-bottom: 9px; padding-left: 20px;}
+.food-type-filters label a{color: #513d28;}
 .filters-list .custom-checkbox {margin-bottom: 11px; margin-left: 20px; margin-right: 20px; padding-left: 23px;}
+.filters-list > ul .custom-checkbox {margin-left: 0px;}
 .custom-checkbox .count {position: absolute; right: 3px; top: 3px; font-size: 10px; color: #b39196;}
 
 .clear-filter-link {display: block; color: #b39196; font-size: 10px; text-transform: uppercase; line-height: 17px; padding: 15px 20px; padding-left: 30px; background: url(/bundles/foodapp/images/remove-ico.png) no-repeat 19px center; letter-spacing: 1.7px; text-align: center;}
@@ -782,9 +785,9 @@ input.button {}
 .restaurant-item .min-cart-size {padding-left: 20px;}
 .restaurant-item .select-place-point {display: block; margin-top: 2px;}
 .restaurant-item .select-place-point a { color: #000000;}
-.restaurant-item .delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left 2px; margin-right: 36px;}
-.restaurant-item .pickup {background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left 2px; margin-right: 36px; color: #55422e; padding-left: 13px; letter-spacing: 0.5px;}
-.restaurant-item .min-cart-size {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left 1px;}
+.restaurant-item .delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left 2px;  display: block; float: right}
+.restaurant-item .pickup {background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left 2px; color: #55422e; padding-left: 20px; letter-spacing: 0.5px; display: block; float: left}
+.restaurant-item .min-cart-size {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left 1px; display: block; float: left}
 
 .restaurant-item .delivery span,
 .restaurant-item .min-cart-size span {padding-left: 13px; color: #bea2a6; letter-spacing: 0.5px;}
@@ -865,6 +868,7 @@ input.button {}
 .cupon-bottom {text-transform: uppercase; background: #fff; padding: 4px 10px; letter-spacing: 1.6px; border-radius: 0 0 3px 3px; box-shadow: 0 0px 3px #e3ded9;}
 .cupon-bottom .button {line-height: 28px;color: #b39196; text-align: center; font-size: 10px; display: block;}
 .cupon-name {margin: 0 10px; font-size: 15px; line-height: 21px; color: #513d28; padding-top: 11px; padding-bottom: 3px;}
+.cupon-name:hover {text-decoration: underline}
 .cupon-desc {margin: 0 10px; line-height: 17px; color: #b39196; font-size: 12px;}
 
 .cupom-item:hover {margin-bottom: 0px;}
@@ -2730,4 +2734,10 @@ div.coupon_form_popup {
 
 .company_data .alert a {
     text-decoration: underline;
+}
+
+.footer-cities {
+    border-top: 1px solid #b3162d;
+    margin-top: 10px;
+    padding-top: 10px;
 }

@@ -9,7 +9,7 @@ set :model_manager, "doctrine"
 set :branch, "master"
 
 # multi-stage environment
-set :stages,        %w(betalt betalv production production_lv production_ee)
+set :stages,        %w(betalt betalv production production_lv production_ee pipiras)
 # isijungiam kada reik :)
 set :default_stage, "betalt"
 set :stage_dir,     "app/config/deploy"
@@ -61,8 +61,8 @@ after "deploy:rollback", "symfony:cache:clear"
 
 #
 # Be more verbose by uncommenting the following line
-logger.level = Logger::MAX_LEVEL
-# logger.level = 0
+#logger.level = Logger::MAX_LEVEL
+logger.level = 0
 
 # copy parameters.yml to specific env
 set :parameters_dir, "app/config/parameters"

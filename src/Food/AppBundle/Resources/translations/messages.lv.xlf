@@ -1312,7 +1312,7 @@
             </trans-unit>
             <trans-unit id="general.base_page_description" resname="general.base_page_description">
                 <source>general.base_page_description</source>
-                <target>Plaša izvēle - Ātra piegāde! Vairāk nekā 40 restorānu ēdienu piedāvājums. Apskati ēdienkarti, izvēlies to, kas garšo un pasūti jau tagad!</target>
+                <target>Foodout.lv - līderis ēdienu piegādē Latvijā! Vairāk nekā 55 restorānu ēdienu piedāvājums vienuviet. Apskati ēdienkarti, izvēlies to, kas garšo, un pasūti jau tagad! Plaša izvēle - Ātra piegāde!</target>
             </trans-unit>
             <trans-unit id="general.restaurant_page_title" resname="general.restaurant_page_title">
                 <source>general.restaurant_page_title</source>
@@ -1436,7 +1436,15 @@
             </trans-unit>
             <trans-unit id="general.hour" resname="general.hour">
                 <source>general.hour</source>
-                <target>val.</target>
+                <target>h.</target>
+            </trans-unit>
+            <trans-unit id="index.all_best_offers">
+                <source>index.all_best_offers</source>
+                <target>Visi piedāvājumi</target>
+            </trans-unit>
+            <trans-unit id="general.cities">
+                <source>general.cities</source>
+                <target>Pilsētas</target>
             </trans-unit>
         </body>
     </file>

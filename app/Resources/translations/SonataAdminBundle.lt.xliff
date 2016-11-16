@@ -1011,6 +1011,10 @@
                 <source>admin.order.user</source>
                 <target>Klientas</target>
             </trans-unit>
+            <trans-unit id="admin.order.metaData">
+                <source>admin.order.metaData</source>
+                <target>Kliento User-Agent</target>
+            </trans-unit>
             <trans-unit id="admin.order.address">
                 <source>admin.order.address</source>
                 <target>Adresas</target>
@@ -1878,6 +1882,10 @@
             <trans-unit id="admin.driver.has_orders">
                 <source>admin.driver.has_orders</source>
                 <target>Užsak.</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.token">
+                <source>admin.driver.token</source>
+                <target>Identifikacinis numeris</target>
             </trans-unit>
             <!-- Banned IP listas -->
             <trans-unit id="admin.banned_ips">
@@ -2913,6 +2921,46 @@
             <trans-unit id="admin.place.minimum_free_delivery_price">
                 <source>admin.place.minimum_free_delivery_price</source>
                 <target>Min. nemokamo pristatymo suma</target>
+            </trans-unit>
+            <trans-unit id="admin.order.data_import">
+                <source>admin.order.data_import</source>
+                <target>Užsakymo duomenų importavimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.data_file">
+                <source>admin.order.data_file</source>
+                <target>Duomenų failas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.field_changelog">
+                <source>admin.order.field_changelog</source>
+                <target>Pakeitimų istorija</target>
+            </trans-unit>
+            <trans-unit id="admin.order.data_preview">
+                <source>admin.order.data_preview</source>
+                <target>Peržiūra</target>
+            </trans-unit>
+            <trans-unit id="admin.order.username">
+                <source>admin.order.username</source>
+                <target>Naudotojo vardas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.date">
+                <source>admin.order.date</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="admin.order.fieldname">
+                <source>admin.order.fieldname</source>
+                <target>Laukelio pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.old_value">
+                <source>admin.order.old_value</source>
+                <target>Sena reikšmė</target>
+            </trans-unit>
+            <trans-unit id="admin.order.new_value">
+                <source>admin.order.new_value</source>
+                <target>Nauja reikšmė</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.cancel_reason.changing_order">
+                <source>admin.dispatcher.cancel_reason.changing_order</source>
+                <target>Užsakymas keičiamas</target>
             </trans-unit>
             <trans-unit id="admin.cities">
                 <source>admin.cities</source>

@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class SendCommand extends ContainerAwareCommand
 {
     private $timeStart;
-    private $maxChecks = 5;
+    private $maxChecks = 2;
 
     protected function configure()
     {
@@ -61,7 +61,7 @@ class SendCommand extends ContainerAwareCommand
                     foreach($unsentMessages as $message) {
                         $providerChanged = false;
                         // If we have tried 3 trimes, maby lets change provider as it takes too long now
-                        if ($message->getTimesSent() >= 3) {
+                        if ($message->getTimesSent() >= 2) {
                             if ($message->getSmsc() == 'InfoBip') {
                                 // Pasitikrinam as Silverstreet isvis ijungtas
                                 if (in_array('food.silverstreet', $messagingProviders)) {

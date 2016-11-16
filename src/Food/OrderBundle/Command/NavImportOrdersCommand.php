@@ -218,7 +218,8 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             ->setPaymentStatus(OrderService::$paymentStatusComplete)
                             ->setOrderStatus(OrderService::$status_new)
                             ->setLocale($this->getContainer()->getParameter('locale'))
-                            ->setComment(iconv('CP1257', 'UTF-8', $orderData['Directions']));
+                            ->setComment($orderData['Directions']);
+                            //~ ->setComment(iconv('CP1257', 'UTF-8', $orderData['Directions']));
 
 
                         // User data
@@ -286,7 +287,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $output->writeln('Cleaned address: '.var_export($orderData['Address'], true));
 
                             // Format address
-                            $fixedCity = iconv('CP1257', 'UTF-8', $orderData['City']);
+                            $fixedCity = $orderData['City'];
                             $fixedCity = mb_convert_case($fixedCity, MB_CASE_TITLE, "UTF-8");
                             $output->writeln('Fixed city: '.var_export($fixedCity, true));
 
@@ -294,7 +295,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $addressStr = mb_convert_case($addressStr, MB_CASE_TITLE, "UTF-8");
                             $addressStr = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressStr);
                             $output->writeln('Fixed street: '.var_export($addressStr, true));
-                            $gisService->groupData($addressStr, $fixedCity);
+                            $gisAddress = $gisService->groupData($addressStr, $fixedCity);
 
                             $address = $em->getRepository('FoodUserBundle:UserAddress')
                                 ->findOneBy(
@@ -310,8 +311,8 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                 $address->setUser($user)
                                     ->setCity($fixedCity)
                                     ->setAddress($addressStr)
-                                    ->setLat($addressData->results[0]->geometry->location->lat)
-                                    ->setLon($addressData->results[0]->geometry->location->lng);
+                                    ->setLat($gisAddress['lat'])
+                                    ->setLon($gisAddress['lng']);
                                 $em->persist($address);
                                 // Deja sitas ispusins ir orderiu insertus :(
                                 $em->flush();
@@ -336,12 +337,12 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                 $addressToSave = $order->getAddressId()->getAddress();
                                 $cityToSave = $order->getAddressId()->getCity();
                                 if (!empty($orderData['CustomerAddress'])) {
-                                    $addressToSave = trim(iconv('CP1257', 'UTF-8', $orderData['CustomerAddress']));
+                                    $addressToSave = trim($orderData['CustomerAddress']);
                                     $addressToSave = mb_convert_case($addressToSave, MB_CASE_TITLE, "UTF-8");
                                     $addressToSave = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressToSave);
                                 }
                                 if (!empty($orderData['CustomerCity'])) {
-                                    $cityToSave = iconv('CP1257', 'UTF-8', $orderData['CustomerCity']);
+                                    $cityToSave = $orderData['CustomerCity'];
                                     $cityToSave = mb_convert_case($cityToSave, MB_CASE_TITLE, "UTF-8");
                                 }
 
@@ -352,7 +353,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                 }
 
                                 $order->setCompany(true)
-                                    ->setCompanyName(iconv('CP1257', 'UTF-8', $orderData['CustomerName']))
+                                    ->setCompanyName($orderData['CustomerName'])
                                     ->setCompanyCode(trim($orderData['CustomerRegNo']))
                                     ->setVatCode(trim($orderData['CustomerVatNo']))
                                     ->setCompanyAddress($companyAddress);

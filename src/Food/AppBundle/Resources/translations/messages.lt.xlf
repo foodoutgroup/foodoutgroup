@@ -1518,6 +1518,14 @@
                 <source>general.hour</source>
                 <target>val.</target>
             </trans-unit>
+            <trans-unit id="index.all_best_offers">
+                <source>index.all_best_offers</source>
+                <target>Peržiūrėti visus pasiūlymus →</target>
+            </trans-unit>
+            <trans-unit id="general.cities">
+                <source>general.cities</source>
+                <target>Miestai</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

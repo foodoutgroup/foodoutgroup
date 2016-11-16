@@ -263,6 +263,7 @@ class OrderAdmin extends FoodAdmin
             ->add('place_name', 'string', array('label' => 'admin.order.place_name', 'editable' => false,))
             ->add('place_point_address', 'string', array('label' => 'admin.order.place_point'))
             ->add('orderExtra.contact', null, array('label' => 'admin.order.user'))
+            ->add('orderExtra.metaData', null, array('label' => 'admin.order.metaData'))
             ->add('address_id', null, array('label' => 'admin.order.delivery_address'))
             ->add('company', 'sonata_type_collection',
                 array(
@@ -324,6 +325,12 @@ class OrderAdmin extends FoodAdmin
             ->add('newsletterSubscribe', null, array('label' => 'admin.order.newsletter_subscribe'))
             ->add('orderExtra.changeReason', null, array('label' => 'admin.order.change_reason'))
             ->add('dispatcher_id', null, array('label' => 'admin.order.dispatcher'))
+            ->add('order_field_changelog', 'sonata_type_collection',
+                array(
+                    'label' => 'admin.order.field_changelog',
+                    'template' => 'FoodOrderBundle:Admin:order_field_changelog.html.twig'
+                )
+            )
         ;
 
         // Remove Fields For Restaurant User (Moderator)

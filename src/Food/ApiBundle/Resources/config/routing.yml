@@ -92,6 +92,11 @@ food_api_order_details:
     defaults: { _controller: FoodApiBundle:Orders:getOrderDetails }
     methods: [GET]
 
+food_api_order_details_hash:
+    pattern: /ordersByHash/{hash}
+    defaults: { _controller: FoodApiBundle:Orders:getOrderDetailsByHash }
+    methods: [GET]
+
 food_api_order_details2:
     pattern: /orders2/{id}
     defaults: { _controller: FoodApiBundle:Orders:getOrderDetails }
@@ -136,6 +141,11 @@ food_api_find_street:
 food_api_users_register:
     pattern: /users
     defaults: { _controller: FoodApiBundle:Users:register}
+    methods: [POST]
+
+food_api_users_register2:
+    pattern: /users2
+    defaults: { _controller: FoodApiBundle:Users:register2}
     methods: [POST]
 
 food_api_users_reset_password:
@@ -204,4 +214,29 @@ food_api_get_static_content:
 food_api_get_show_popup:
     pattern: /showRating
     defaults: { _controller: FoodApiBundle:Params:showRating}
+    methods: [GET]
+
+food_api_driver_information:
+    pattern: /driver/me/{token}
+    defaults: { _controller: FoodApiBundle:Driver:me}
+    methods: [GET]
+
+food_api_driver_information_by_id:
+    pattern: /driver/meId/{id}
+    defaults: { _controller: FoodApiBundle:Driver:meId}
+    methods: [GET]
+
+food_api_driver_assign_to_order:
+    pattern: /driver/assignToOrder/{driverId}/{orderId}
+    defaults: { _controller: FoodApiBundle:Driver:assignToOrder}
+    methods: [GET]
+
+food_api_driver_picked_order:
+    pattern: /driver/picked/{orderId}
+    defaults: { _controller: FoodApiBundle:Driver:picked}
+    methods: [GET]
+
+food_api_driver_completed_order:
+    pattern: /driver/completed/{orderId}
+    defaults: { _controller: FoodApiBundle:Driver:completed}
     methods: [GET]

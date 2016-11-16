@@ -15,7 +15,8 @@
             {% set largestPrice = dish_service.largestDishPrice(dish.id) %}
         {% endif %}
         {% set showByHours = order_service.isOrderableByTime(dish) %}
-        <div class="restaurant-menu-item {% if showByHours == false %}disabled_dish{% endif %}" id="dish{{ dish.id }}" data-category="{{ category.id }}">
+        <div itemscope itemtype="http://schema.org/Product" class="restaurant-menu-item {% if showByHours == false %}disabled_dish{% endif %}" id="dish{{ dish.id }}" data-category="{{ category.id }}">
+            <meta itemprop="productID" content="{{ dish.id }}"/>
             {% if dish.getWebPathThumb('type1') is not empty %}
                 {% if listType == 'thumbs' %}
                     {% set largeImgClass = '' %}
@@ -26,19 +27,20 @@
                 {% endif %}
                 {% if showByHours %}
                     <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax fancy-box image">
-                        <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
-                        <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
+                        <img itemprop="image" alt="{{ dish.name }}" src="//{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
+                        <img alt="{{ dish.name }}" src="//{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
                     </a>
                 {% else %}
                     <span class="got-title disabled" title="{% trans %}dishes.no_production{% endtrans %}">
-                        <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
-                        <img alt="{{ dish.name }}" src="http://{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
+                        <img itemprop="image" alt="{{ dish.name }}" src="//{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
+                        <img alt="{{ dish.name }}" src="//{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
                     </span>
                 {% endif %}
             {% endif %}
-            <h3 class="name">{% if dish.place.dishesNumeration %}{{ loop.index }}. {% endif %}{{ dish.name }}</h3>
-            <p class="desc">{{ dish.description|nl2br }}</p>
-            <div class="menu-item-bottom clearfix">
+            <h3 class="name" itemprop="name">{% if dish.place.dishesNumeration %}{{ loop.index }}. {% endif %}{{ dish.name }}</h3>
+            <p class="desc" itemprop="description">{{ dish.description|nl2br }}</p>
+            <div class="menu-item-bottom clearfix" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                <meta itemprop="priceCurrency" content="EUR" />
                 {% if smallestPrice and largestPrice %}
                     {% set hasDiscount = false %}
                     {% set multiLine = false %}
@@ -54,6 +56,7 @@
                     {% endif %}
                     <span class="price {% if hasDiscount %}discounted{% endif %} {% if hasDiscount and multiLine %}multiline{% endif %} {{ priceClass }}">
                         {% if smallestPrice == largestPrice %}
+                            <meta itemprop="price" content="{{ smallestPrice|replace({',': '.'}) }}" />
                             {{ currency_display | raw}} {{ smallestPrice|replace({'.': ','}) }}
                             {% if currency_alternative %}
                                 <span class="euro">
@@ -61,6 +64,7 @@
                                 </span>
                             {% endif %}
                         {% else %}
+                            <meta itemprop="price" content="{{ smallestPrice|replace({',': '.'}) }}" />
                             {{ currency_display | raw}} {{ smallestPrice|replace({'.': ','}) }} - {{ largestPrice|replace({'.': ','}) }}
                             {% if currency_alternative %}
                                 <span class="euro">

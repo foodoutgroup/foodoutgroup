@@ -20,7 +20,7 @@ role :db,         domain, :primary => true       # This is where Symfony2 migrat
 # parameters file
 set :parameters_file, "betalt.yml.dist"
 set :kpi_file, "kpi_production.yml.dist"
-set :robots_file, "robots.prod.txt.dist"
+set :robots_file, "robots.dev.txt.dist"
 
 after "deploy" do
     run "~/sync.sh beta.foodout.lt"

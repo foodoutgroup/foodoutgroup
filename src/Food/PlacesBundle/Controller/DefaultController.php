@@ -74,6 +74,7 @@ class DefaultController extends Controller
 
         if (!empty($city) && in_array(mb_strtolower($city), $availableCitiesSlugs)) {
             $city_url = $this->generateUrl('food_city_' . lcfirst($city), [], true);
+            $city_name = lcfirst($city);
         } else {
             $city_name = lcfirst(reset($availableCitiesSlugs));
             $city = ucfirst($city_name);
@@ -84,9 +85,24 @@ class DefaultController extends Controller
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
         $placeService = $this->get('food.places');
         $selectedKitchensNames = $placeService->getKitchensFromSlug($slug_filter, $request, true);
+        $current_url = $request->getUri();
+
+
+        $selectedKitchensIds = $placeService->getKitchensFromSlug($slug_filter, $request);
+        if (!empty($selectedKitchensIds)) {
+            $kitchen = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen')->find($selectedKitchensIds[0]);
+            $metaTitle = $kitchen->getMetaTitle();
+            $metaDescription = $this->get('translator')->trans('food.order_food_in_home') . ' ' .
+                $this->get('translator')->trans('places.in_'.$city_name) . '. ' .
+                $kitchen->getMetaDescription() . ' ' .
+                $this->get('translator')->trans('food.will_deliver_in_hour');
+        } else {
+            $metaTitle = '';
+            $metaDescription = $this->get('translator')->trans('food.city.' . $city_name . '.description');
+        }
 
         return $this->render(
-            'FoodPlacesBundle:Default:index.html.twig',
+            'FoodPlacesBundle:Default:city.html.twig',
             array(
                 'recommended' => false,
                 'zaval' => false,
@@ -95,8 +111,12 @@ class DefaultController extends Controller
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
                 'slug_filter' => $slug_filter,
+                'city' => $city,
                 'city_url' => $city_url,
                 'selected_kitchens_names' => $selectedKitchensNames,
+                'current_url' => $current_url,
+                'meta_title' => $metaTitle,
+                'meta_description' => $metaDescription,
             )
         );
     }

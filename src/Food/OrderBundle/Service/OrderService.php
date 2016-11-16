@@ -21,6 +21,7 @@ use Food\OrderBundle\Entity\OrderExtra;
 use Food\OrderBundle\Entity\OrderLog;
 use Food\OrderBundle\Entity\OrderMailLog;
 use Food\OrderBundle\Entity\OrderStatusLog;
+use Food\OrderBundle\Entity\OrderToDriver;
 use Food\OrderBundle\Entity\PaymentLog;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
@@ -399,7 +400,7 @@ class OrderService extends ContainerAware
      */
     public function isBigDaddyOrder(Order $order)
     {
-        return $order->getTotal() >= 40;
+        return $order->getTotal() >= 50;
     }
 
     /**
@@ -587,9 +588,6 @@ class OrderService extends ContainerAware
                 $smsService->saveMessage($message);
             }
 
-            $order->setAcceptTime(new \DateTime("now"));
-            $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
-
             if (!$order->getOrderFromNav()) {
                 if (!$order->getPreorder()) {
                     $miscService = $this->container->get('food.app.utils.misc');
@@ -621,10 +619,12 @@ class OrderService extends ContainerAware
             $this->container->get('food.logistics')->putOrderForSend($order);
 
             // Kitais atvejais tik keiciam statusa, nes gal taip reikia
-        } else {
-            $order->setAcceptTime(new \DateTime("now"));
-            $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
         }
+
+        $order->setAcceptTime(new \DateTime("now"));
+        $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
+
+        $this->updateDriver();
 
         $this->logDeliveryEvent($order, 'order_accepted');
 
@@ -761,74 +761,75 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public function statusAssigned($source = null, $statusMessage = null)
+    public function statusAssigned($source = null, $statusMessage = null, $api = false)
     {
         // Inform poor user, that his order was accepted
         $order = $this->getOrder();
         $driver = $order->getDriver();
-//        if ($driver->getType() == 'local') {
-        $messagingService = $this->container->get('food.messages');
-        $logger = $this->container->get('logger');
 
-        // Inform driver about new order that was assigned to him
-        $orderConfirmRoute = $this->container->get('router')
-            ->generate('drivermobile', ['hash' => $order->getOrderHash()], true)
-        ;
+        if (!$api) {
+            $messagingService = $this->container->get('food.messages');
+            $logger = $this->container->get('logger');
 
-        $restaurant_title = $order->getPlace()->getName();
-        $internal_code = $order->getPlacePoint()->getInternalCode();
-        if (!empty($internal_code)) {
-            $restaurant_title = $restaurant_title . " - " . $internal_code;
+            // Inform driver about new order that was assigned to him
+            $orderConfirmRoute = $this->container->get('router')
+                ->generate('drivermobile', ['hash' => $order->getOrderHash()], true)
+            ;
+
+            $restaurant_title = $order->getPlace()->getName();
+            $internal_code = $order->getPlacePoint()->getInternalCode();
+            if (!empty($internal_code)) {
+                $restaurant_title = $restaurant_title . " - " . $internal_code;
+            }
+
+            $restaurant_address = $order->getAddressId()->getAddress() . " " . $order->getAddressId()->getCity();
+            $pickup_restaurant_address = $order->getPlacePointAddress() . ' ' . $order->getPlacePointCity();
+            $curr_locale = $this->container->getParameter('locale');
+            $languageUtil = $this->container->get('food.app.utils.language');
+
+            $messageText = $languageUtil->removeChars(
+                $curr_locale,
+                $this->container->get('translator')->trans(
+                    'general.sms.driver_assigned_order',
+                    [
+                        'order_id'           => $order->getId(),
+                        'restaurant_title'   => $restaurant_title,
+                        'restaurant_address' => $restaurant_address,
+                        'pickup_restaurant_address' => $pickup_restaurant_address,
+                        'deliver_time'       => $order->getDeliveryTime()->format("H:i")
+                    ]
+                ) . $orderConfirmRoute,
+                false
+            );
+
+            $messageText = $this->fitDriverMessage(
+                $messageText,
+                $order->getId(),
+                $restaurant_title,
+                $restaurant_address,
+                $pickup_restaurant_address,
+                $order->getDeliveryTime()->format("H:i"),
+                $orderConfirmRoute,
+                $curr_locale
+            );
+
+            $logMessage = sprintf(
+                'Sending message for driver about assigned order #%d to number: %s with text "%s". Used address Id: %d',
+                $order->getId(),
+                $driver->getPhone(),
+                $messageText,
+                $order->getAddressId()->getId()
+            );
+            $logger->alert($logMessage);
+
+            $message = $messagingService->createMessage(
+                $this->container->getParameter('sms.sender'),
+                $driver->getPhone(),
+                $messageText,
+                $order
+            );
+            $messagingService->saveMessage($message);
         }
-
-        $restaurant_address = $order->getAddressId()->getAddress() . " " . $order->getAddressId()->getCity();
-        $pickup_restaurant_address = $order->getPlacePointAddress() . ' ' . $order->getPlacePointCity();
-        $curr_locale = $this->container->getParameter('locale');
-        $languageUtil = $this->container->get('food.app.utils.language');
-
-        $messageText = $languageUtil->removeChars(
-            $curr_locale,
-            $this->container->get('translator')->trans(
-                'general.sms.driver_assigned_order',
-                [
-                    'order_id'           => $order->getId(),
-                    'restaurant_title'   => $restaurant_title,
-                    'restaurant_address' => $restaurant_address,
-                    'pickup_restaurant_address' => $pickup_restaurant_address,
-                    'deliver_time'       => $order->getDeliveryTime()->format("H:i")
-                ]
-            ) . $orderConfirmRoute,
-            false
-        );
-
-        $messageText = $this->fitDriverMessage(
-            $messageText,
-            $order->getId(),
-            $restaurant_title,
-            $restaurant_address,
-            $pickup_restaurant_address,
-            $order->getDeliveryTime()->format("H:i"),
-            $orderConfirmRoute,
-            $curr_locale
-        );
-
-        $logMessage = sprintf(
-            'Sending message for driver about assigned order #%d to number: %s with text "%s". Used address Id: %d',
-            $order->getId(),
-            $driver->getPhone(),
-            $messageText,
-            $order->getAddressId()->getId()
-        );
-        $logger->alert($logMessage);
-
-        $message = $messagingService->createMessage(
-            $this->container->getParameter('sms.sender'),
-            $driver->getPhone(),
-            $messageText,
-            $order
-        );
-        $messagingService->saveMessage($message);
-//        }
 
         $this->logDeliveryEvent($this->getOrder(), 'order_assigned');
 
@@ -837,6 +838,10 @@ class OrderService extends ContainerAware
             $order->setAssignLate($late->d * 1440 + $late->h * 60 + $late->i);
         }
         $this->chageOrderStatus(self::$status_assiged, $source, $statusMessage);
+
+        if (!$api) {
+            $this->updateDriver();
+        }
 
         return $this;
     }
@@ -918,6 +923,8 @@ class OrderService extends ContainerAware
     {
         $this->chageOrderStatus(self::$status_forwarded, $source, $statusMessage);
 
+        $this->updateDriver();
+
         return $this;
     }
 
@@ -959,6 +966,8 @@ class OrderService extends ContainerAware
             }
         }
 
+        $this->updateDriver();
+
         return $this;
     }
 
@@ -975,6 +984,8 @@ class OrderService extends ContainerAware
         $this->chageOrderStatus(self::$status_canceled_produced, $source, $statusMessage);
         $this->getOrder()->setCompletedTime(new \DateTime());
         $this->createDiscountCode($order);
+
+        $this->updateDriver();
 
         return $this;
     }
@@ -1149,6 +1160,8 @@ class OrderService extends ContainerAware
         $this->chageOrderStatus(self::$status_finished, $source, $statusMessage);
         $this->logDeliveryEvent($this->getOrder(), 'order_finished');
 
+        $this->updateDriver();
+
         return $this;
     }
 
@@ -1172,6 +1185,8 @@ class OrderService extends ContainerAware
 
         $this->chageOrderStatus(self::$status_canceled, $source, $statusMessage);
 
+        $this->updateDriver();
+
         return $this;
     }
 
@@ -1189,6 +1204,8 @@ class OrderService extends ContainerAware
 
         // Inform logistics
         $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
+
+        $this->updateDriver();
 
         return $this;
     }
@@ -1357,6 +1374,7 @@ class OrderService extends ContainerAware
         // save extra order data to separate table
         $orderExtra = new OrderExtra();
         $orderExtra->setOrder($this->getOrder());
+        $orderExtra->setMetaData($_SERVER['HTTP_USER_AGENT']);
 
         if (!empty($userData)) {
             $orderExtra->setFirstname($userData['firstname'])
@@ -1536,16 +1554,13 @@ class OrderService extends ContainerAware
         $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
         $left_sum = 0;
         if ($enable_free_delivery_for_big_basket) {
-            // Jeigu musu logistika, tada taikom nemokamo pristatymo logika
-            if ($self_delivery == 0 || $this->getOrder()->getPlace()->getId() == 32 && ($free_delivery_price = 50) && in_array(date('w'), [0, 6])) {
-                // Kiek liko iki nemokamo pristatymo
-                if ($free_delivery_price > $sumTotal) {
-                    $left_sum = sprintf('%.2f', $free_delivery_price - $sumTotal);
-                }
-                // Krepselio suma pasieke nemokamo pristatymo suma
-                if ($left_sum == 0) {
-                    $deliveryPrice = 0;
-                }
+            // Kiek liko iki nemokamo pristatymo
+            if ($free_delivery_price > $sumTotal) {
+                $left_sum = sprintf('%.2f', $free_delivery_price - $sumTotal);
+            }
+            // Krepselio suma pasieke nemokamo pristatymo suma
+            if ($left_sum == 0) {
+                $deliveryPrice = 0;
             }
         }
 
@@ -2803,6 +2818,24 @@ class OrderService extends ContainerAware
         $this->getEm()->flush();
     }
 
+    public function sentToDriver($order)
+    {
+
+    }
+
+    public function setAutoAssignedDriver($driver)
+    {
+        $order = $this->getOrder();
+        if ($order->getOrderStatus() == self::$status_accepted) {
+            $this->getOrder()->setDriver($driver);
+            $order->setDriverAutoAssigned(true);
+            $this->statusAssigned('API', 'auto_assigned', true);
+            $this->saveOrder();
+        } else {
+            throw new \Exception('Driver already set');
+        }
+    }
+
     /**
      * @param Order  $order
      * @param string $event
@@ -3322,7 +3355,7 @@ class OrderService extends ContainerAware
 
             if (empty($locationData) && $user instanceof User) {
                 $locationData = $locationService->setLocationFromUser($user);
-                @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr2" . date("Y-m-d H:i:s"), print_r($locationData, true) . print_r($user, true) . print_r($placePointMap, true) . print_r($_POST, true) . print_r($_GET, true), "FROM: info@foodout.lt");
+                //@mail("karolis.m@foodout.lt", "order.form.errors.customeraddr2" . date("Y-m-d H:i:s"), print_r($locationData, true) . print_r($user, true) . print_r($placePointMap, true) . print_r($_POST, true) . print_r($_GET, true), "FROM: info@foodout.lt");
             }
             // TODO Trying to catch fatal when searching for PlacePoint
             if (!empty($locationData['address_orig'])) {
@@ -3334,7 +3367,7 @@ class OrderService extends ContainerAware
                     $this->container->get('session')->set('point_data', $placePointMap);
                 }
             } else {
-                @mail("karolis.m@foodout.lt", "order.form.errors.customeraddr1" . date("Y-m-d H:i:s"), print_r($locationData, true) . print_r($user->getUsername(), true) . print_r($placePointMap, true) . print_r($_POST, true) . print_r($_GET, true), "FROM: info@foodout.lt");
+                //@mail("karolis.m@foodout.lt", "order.form.errors.customeraddr1" . date("Y-m-d H:i:s"), print_r($locationData, true) . print_r($user->getUsername(), true) . print_r($placePointMap, true) . print_r($_POST, true) . print_r($_GET, true), "FROM: info@foodout.lt");
                 $formErrors[] = 'order.form.errors.customeraddr';
             }
 
@@ -4405,8 +4438,9 @@ class OrderService extends ContainerAware
         if ($sendMessage) {
             $recipient = $this->getOrder()->getOrderExtra()->getPhone();
 
+            // SMS siunciam tik preorder // nutartis 2016-11-15 mng meet
             // SMS siunciam tik tuo atveju jei orderis ne is callcentro
-            if ($this->getOrder()->getOrderFromNav() == false) {
+            if ($this->getOrder()->getOrderFromNav() == false && $this->getOrder()->getPreorder()) {
                 if (!empty($recipient)) {
                     $smsService = $this->container->get('food.messages');
                     $sender = $this->container->getParameter('sms.sender');
@@ -4494,5 +4528,31 @@ class OrderService extends ContainerAware
         }
 
         return $response;
+    }
+
+    public function updateDriver()
+    {
+        $order = $this->getOrder();
+        if (!$order instanceof Order) {
+            throw new \InvalidArgumentException('No order is set');
+        }
+
+        if ($this->container->getParameter('driver.send_to_external')
+            && $order->getDeliveryType() == 'deliver'
+            && $order->getPlacePointSelfDelivery() == false) {
+            $logisticsCityFilter = $this->container->getParameter('driver.city_filter');
+            if (empty($logisticsCityFilter) || in_array($order->getPlacePointCity(), $logisticsCityFilter)) {
+                $this->container->get('food.order')->logOrder($order, 'schedule_driver_api_send', 'Order scheduled to send to driver');
+
+                $om = $this->container->get('doctrine')->getManager();
+                $orderToLogistics = new OrderToDriver();
+
+                $orderToLogistics->setOrder($order)
+                    ->setDateAdded(new \DateTime("now"));
+
+                $om->persist($orderToLogistics);
+                $om->flush();
+            }
+        }
     }
 }

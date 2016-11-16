@@ -130,3 +130,10 @@ services:
             - [setContainer, [@service_container]]
         tags:
             - { name: kernel.event_listener, event: food.soap.fault, method: onSoapFault }
+
+    food.order_data_import_service:
+      class: Food\OrderBundle\Service\OrderDataImportService
+      parent: food.base_service
+      arguments:
+        - @security.context
+        - @validator

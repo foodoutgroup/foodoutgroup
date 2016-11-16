@@ -16,6 +16,11 @@ parameters:
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
 
+    driver.send_to_external: false
+    driver.city_filter: ["Vilnius"]
+    driver.socket_address: tcp://s2.foodout.lt:7778
+    driver.socket_hash: api
+
     locale: lt
     locales: ["lt", "en", "ru"]
     available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Utena", "Plungė"]
@@ -36,6 +41,7 @@ parameters:
     order.accept_notify_emails: []
     order.cancel_notify_emails: [pagalba@foodout.lt]
     accounting_email: "buhalterija@foodout.lt"
+    b2b_invoice_email: ""
     payment.methods:
         - local
         - local.card
@@ -103,3 +109,9 @@ parameters:
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: false
+
+pirminis_gateway:
+    datacash_url: 'https://mars.transaction.datacash.com/Transaction'
+    swedbank:
+        vtid: "21911859"
+        password: "rMUhc7p7"

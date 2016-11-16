@@ -47,6 +47,16 @@
             submitKitchens();
         });
 
+        $(document).on('click', '.filters-list a', function() {
+            targetInput = $(this).parent().find('input');
+            if (targetInput.is(':checked')) {
+                targetInput.attr('checked', false);
+            } else {
+                targetInput.attr('checked', true);
+            }
+            submitKitchens();
+        });
+
         function submitKitchens() {
 
             var $filters = $(".filters-list input:checked");
@@ -156,9 +166,11 @@
     <div class="change-location-box"></div>
     <div class="site-center">
     <div class="site-block">
-    <div class="page-path clearfix">{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}</div>{# TODO breadcrumbs <a href="#">Restoranai arti Žirmūnų</a>#}
+    <div class="page-path clearfix">{% block breadcrumb %}{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}{% endblock %}</div>
     <div class="page-title">
+        {% block page_title_h1 %}
         <h1>{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city_translations[location.city]|trans }}{% endif %}</h1>
+        {% endblock %}
         <h2 class="clearfix">
             <span class="place-counter"></span>
             <a href="#" id="places-change-location-link">{% trans %}places.change_address{% endtrans %}</a>
@@ -228,33 +240,33 @@
                         {#<script type='text/javascript'>
                             OA_show('zone-1');
                         </script>#}
-                        <iframe id='a5c12068' name='a5c12068' src='http://ads.foodout.lt/delivery/afr.php?zoneid=13&amp;cb=213443425' frameborder='0' scrolling='no' width='180' height='250'><a href='http://ads.foodout.lt/delivery/ck.php?n=a1fba806&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://ads.foodout.lt/delivery/avw.php?zoneid=13&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a1fba806' border='0' alt='' /></a></iframe>
+                        <iframe id='a5c12068' name='a5c12068' src='//ads.foodout.lt/delivery/afr.php?zoneid=13&amp;cb=213443425' frameborder='0' scrolling='no' width='180' height='250'><a href='//ads.foodout.lt/delivery/ck.php?n=a1fba806&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='//ads.foodout.lt/delivery/avw.php?zoneid=13&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a1fba806' border='0' alt='' /></a></iframe>
                     </div>
 
                     <div>
                         {#<script type='text/javascript'>
                             OA_show('zone-22');
                         </script>#}
-                        <iframe id='ac4f9d5b' name='ac4f9d5b' src='http://ads.foodout.lt/delivery/afr.php?zoneid=14&amp;cb=5646456846549' frameborder='0' scrolling='no' width='180' height='250'><a href='http://ads.foodout.lt/delivery/ck.php?n=a10498ed&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://ads.foodout.lt/delivery/avw.php?zoneid=14&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a10498ed' border='0' alt='' /></a></iframe>
+                        <iframe id='ac4f9d5b' name='ac4f9d5b' src='//ads.foodout.lt/delivery/afr.php?zoneid=14&amp;cb=5646456846549' frameborder='0' scrolling='no' width='180' height='250'><a href='//ads.foodout.lt/delivery/ck.php?n=a10498ed&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='//ads.foodout.lt/delivery/avw.php?zoneid=14&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a10498ed' border='0' alt='' /></a></iframe>
                     </div>
                     <div>
                         {#<script type='text/javascript'>
                             OA_show('zona-3');
                         </script>#}
-                        <iframe id='a9034681' name='a9034681' src='http://ads.foodout.lt/delivery/afr.php?zoneid=15&amp;cb=852422323426' frameborder='0' scrolling='no' width='180' height='250'><a href='http://ads.foodout.lt/delivery/ck.php?n=a5f27b25&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://ads.foodout.lt/delivery/avw.php?zoneid=15&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a5f27b25' border='0' alt='' /></a></iframe>
+                        <iframe id='a9034681' name='a9034681' src='//ads.foodout.lt/delivery/afr.php?zoneid=15&amp;cb=852422323426' frameborder='0' scrolling='no' width='180' height='250'><a href='//ads.foodout.lt/delivery/ck.php?n=a5f27b25&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='//ads.foodout.lt/delivery/avw.php?zoneid=15&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a5f27b25' border='0' alt='' /></a></iframe>
                     </div>
                 {% else %}
                     {# Revive Ads init for foodout.lt #}
                     <div>
-                        <iframe id='a5fe853c' name='a5fe853c' src='http://ads.foodout.lt/delivery/afr.php?zoneid=18&amp;cb=5645641545' frameborder='0' scrolling='no' width='180' height='250'><a href='http://ads.foodout.lt/delivery/ck.php?n=afb33539&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://ads.foodout.lt/delivery/avw.php?zoneid=18&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=afb33539' border='0' alt='' /></a></iframe>
+                        <iframe id='a5fe853c' name='a5fe853c' src='//ads.foodout.lt/delivery/afr.php?zoneid=18&amp;cb=5645641545' frameborder='0' scrolling='no' width='180' height='250'><a href='//ads.foodout.lt/delivery/ck.php?n=afb33539&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='//ads.foodout.lt/delivery/avw.php?zoneid=18&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=afb33539' border='0' alt='' /></a></iframe>
                     </div>
 
                     <div>
-                        <iframe id='a8768084' name='a8768084' src='http://ads.foodout.lt/delivery/afr.php?zoneid=17&amp;cb=215453646' frameborder='0' scrolling='no' width='180' height='250'><a href='http://ads.foodout.lt/delivery/ck.php?n=aa1b0015&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://ads.foodout.lt/delivery/avw.php?zoneid=17&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=aa1b0015' border='0' alt='' /></a></iframe>
+                        <iframe id='a8768084' name='a8768084' src='//ads.foodout.lt/delivery/afr.php?zoneid=17&amp;cb=215453646' frameborder='0' scrolling='no' width='180' height='250'><a href='//ads.foodout.lt/delivery/ck.php?n=aa1b0015&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='//ads.foodout.lt/delivery/avw.php?zoneid=17&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=aa1b0015' border='0' alt='' /></a></iframe>
                     </div>
 
                     <div>
-                        <iframe id='a4bc4d32' name='a4bc4d32' src='http://ads.foodout.lt/delivery/afr.php?zoneid=19&amp;cb=8754512333' frameborder='0' scrolling='no' width='180' height='250'><a href='http://ads.foodout.lt/delivery/ck.php?n=a6d86579&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://ads.foodout.lt/delivery/avw.php?zoneid=19&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a6d86579' border='0' alt='' /></a></iframe>
+                        <iframe id='a4bc4d32' name='a4bc4d32' src='//ads.foodout.lt/delivery/afr.php?zoneid=19&amp;cb=8754512333' frameborder='0' scrolling='no' width='180' height='250'><a href='//ads.foodout.lt/delivery/ck.php?n=a6d86579&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='//ads.foodout.lt/delivery/avw.php?zoneid=19&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a6d86579' border='0' alt='' /></a></iframe>
                     </div>
                     <script async src="//ads.foodout.lt/delivery/asyncjs.php"></script>
                 {% endif %}

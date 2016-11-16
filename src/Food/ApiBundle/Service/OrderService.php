@@ -347,7 +347,8 @@ class OrderService extends ContainerAware
         }
 
         if ($serviceVar['type'] != "pickup") {
-            if ($total_cart < $place->getCartMinimum()) {
+            $placeService = $this->container->get('food.places');
+            if ($total_cart < $placeService->getMinCartPrice($place->getId())) {
                 throw new ApiException(
                     'Order Too Small',
                     400,
@@ -357,7 +358,6 @@ class OrderService extends ContainerAware
                     ]
                 );
             }
-
             //if ($serviceVar)
             /**
              *         "address": {
@@ -459,8 +459,6 @@ class OrderService extends ContainerAware
         $customerComment = (!empty($serviceVar['address']) ? $serviceVar['address']['comments'] : "");
 
         $os->setPaymentMethod(($paymentMethod == 'cash' ? 'local' : 'local.card'));
-
-        @mail("karolis.m@foodout.lt", "MOBILE REQUEST JSONobject", print_r($request, true), "FROM: info@foodout.lt");
 
         if ($serviceVar['type'] == "pickup") {
             $os->setDeliveryType($os::$deliveryPickup);
@@ -591,6 +589,43 @@ class OrderService extends ContainerAware
     /**
      * @param Order $order
      *
+     * @return array
+     */
+    public function getOrderForResponseFull(Order $order)
+    {
+        $returner = $this->getOrderForResponse($order);
+
+        $returner['location'] = [
+            'from' => [
+                'lat' => $order->getPlacePoint()->getLat(),
+                'lon' => $order->getPlacePoint()->getLon(),
+            ],
+            'to' => [
+                'lat' => $order->getAddressId()->getLat(),
+                'lon' => $order->getAddressId()->getLon(),
+            ]
+        ];
+        $returner['details']['restaurant_phone'] = $order->getPlacePoint()->getPhone();
+        $returner['details']['restaurant_address'] = $order->getPlacePointAddress();
+        $returner['details']['items'] = $this->_getItemsForResponseFull($order);
+        $returner['service']['delivery_time'] = $order->getDeliveryTime()->format('Y-m-d H:i:s');
+        $returner['service']['customer_firstname'] = $order->getOrderExtra()->getFirstname();
+        $returner['service']['customer_lastname'] = $order->getOrderExtra()->getLastname();
+        $returner['service']['customer_phone'] = $order->getOrderExtra()->getPhone();
+        if ($driver = $order->getDriver()) {
+            $returner['driver'] = [
+                'id' => $driver->getId(),
+                'phone' => $driver->getPhone(),
+                'name' => $driver->getName(),
+            ];
+        }
+
+        return $returner;
+    }
+
+    /**
+     * @param Order $order
+     *
      * @return string
      */
     public function getOrderStatusMessage(Order $order)
@@ -640,6 +675,55 @@ class OrderService extends ContainerAware
             $sum = sprintf("%.0f", ($sum * 100));
             $returner[] = [
                 'title' => $detail->getDishName(), //.', '.$detail->getDishUnitName(), Po pokalbio su shernu - laikinai skipinam papildoma info.
+                'count' => $detail->getQuantity(),
+                'price' => [
+                    'amount'   => $sum,
+                    'currency' => $currency
+                ]
+            ];
+        }
+
+        return $returner;
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return array
+     */
+    private function _getItemsForResponseFull(Order $order)
+    {
+        $returner = [];
+        $currency = $this->container->getParameter('currency_iso');
+
+        foreach ($order->getDetails() as $detail) {
+            $sum = 0;
+            //$sum+= $detail->getPrice() * $detail->getQuantity();
+            if ($detail->getDishId()->getDiscountPricesEnabled() && $order->getPlace()->getDiscountPricesEnabled()) {
+                $current_price = $detail->getOrigPrice();
+                $sizes = $detail->getDishId()->getSizes();
+                foreach ($sizes as $size) {
+                    if ($size->getUnit()->getId() == $detail->getDishUnitId()) {
+                        $current_price = $size->getCurrentPrice();
+                    }
+                }
+                $sum += $current_price * $detail->getQuantity();
+            } else {
+                $sum += $detail->getOrigPrice() * $detail->getQuantity(); // egles prasymu rodom orig_price
+            }
+
+            foreach ($detail->getOptions() as $option) {
+                $sum += $option->getPrice() * $option->getQuantity();
+            }
+            $sum = sprintf("%.0f", ($sum * 100));
+            $options = [];
+            foreach ($detail->getOptions() as $option) {
+                $options[] = $option->getDishOptionName();
+            }
+            $returner[] = [
+                'title' => $detail->getDishName(),
+                'unit' => $detail->getDishUnitName(),
+                'options' => $options,
                 'count' => $detail->getQuantity(),
                 'price' => [
                     'amount'   => $sum,
@@ -724,6 +808,7 @@ class OrderService extends ContainerAware
             FO::$status_failed             => 'failed',
             FO::$status_finished           => 'prepared',
             FO::$status_canceled           => 'canceled',
+            FO::$status_canceled_produced  => 'completed',
             FO::$status_pre                => 'pre'
         ];
 

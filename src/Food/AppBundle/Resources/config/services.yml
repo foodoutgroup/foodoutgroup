@@ -80,6 +80,16 @@ services:
       class: Food\AppBundle\Service\DriverService
       parent: food.base_service
 
+    food.city_service:
+        class: Food\AppBundle\Service\CityService
+        parent: food.base_service
+        arguments:
+          - @router
+          - @food.app.utils.language
+        calls:
+          - [setAvailableCitiesSlugs, [%available_cities_slugs%]]
+          - [setLocale, [%locale%]]
+
     food.zavalas_service:
       class: Food\AppBundle\Service\ZavalasService
       parent: food.base_service

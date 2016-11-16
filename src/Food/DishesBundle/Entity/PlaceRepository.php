@@ -162,7 +162,7 @@ class PlaceRepository extends EntityRepository
         $otherFilters = '';
         // 21:30 isjungiame alkoholiku rodyma :)
         $hour = date("H");
-        if ($hour > '21' || ($hour == '21' && date('i') > '30')) {
+        if ($hour > '21' || ($hour == '21' && date('i') > '30') || $hour < 6) {
             $otherFilters .= ' AND p.only_alcohol != 1';
         }
 
@@ -587,11 +587,11 @@ class PlaceRepository extends EntityRepository
                   FROM `place_point_work_time`
                   WHERE week_day = ' . $wd . '
                     AND (
-                        (start_hour = 0 OR start_hour < ' . $totalH . ' OR
+                        (start_hour < ' . $totalH . ' OR
                             (start_hour <= ' . $totalH . ' AND start_min <= ' . $totalM . ')
                         ) AND (
                         (end_hour >= ' . $totalH . ' AND end_min >= ' . $totalM . ') OR
-                            end_hour > ' . $totalH . ' OR end_hour = 0))
+                            end_hour > ' . $totalH . '))
                     AND `place_point` = ' . $placePoint->getId() . '
                     LIMIT 1';
 

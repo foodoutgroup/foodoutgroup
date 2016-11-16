@@ -290,6 +290,54 @@
                 <source>places.discount_not_for_business_clients</source>
                 <target>Atsiprašome, šiame restorane negalioja verslo klientų nuolaida</target>
             </trans-unit>
+            <trans-unit id="admin.meta_description" resname="admin.meta_description">
+                <source>admin.meta_description</source>
+                <target>Meta description</target>
+            </trans-unit>
+            <trans-unit id="admin.meta_title" resname="admin.meta_title">
+                <source>admin.meta_title</source>
+                <target>Meta title</target>
+            </trans-unit>
+            <trans-unit id="food.city.vilnius.description">
+                <source>food.city.vilnius.description</source>
+                <target>Užsisakykite maisto į namus Vilniuje. Atvešime per 1h. Populiariausi restoranai: Čili Pizza, Hesburger, Charlie pizza, Sushi City.</target>
+            </trans-unit>
+            <trans-unit id="food.city.kaunas.description">
+                <source>food.city.kaunas.description</source>
+                <target>Užsisakykite maisto į namus Kaune. Atvešime per 1h. Populiariausi restoranai: Čili Pizza, Can Can, Charlie pizza, Alkanas Briedis.</target>
+            </trans-unit>
+            <trans-unit id="food.city.klaipeda.description">
+                <source>food.city.klaipeda.description</source>
+                <target>Užsisakykite maisto į namus Klaipėdoje. Atvešime per 1h. Populiariausi restoranai: Čili Pizza, Manami, Charlie pizza, KANPAI.</target>
+            </trans-unit>
+            <trans-unit id="food.city.siauliai.description">
+                <source>food.city.siauliai.description</source>
+                <target>Užsisakykite maisto į namus Šiauliuose. Atvešime per 1h. Populiariausi restoranai: Čili Pizza, La Crepe, Charlie pizza.</target>
+            </trans-unit>
+            <trans-unit id="food.city.panevezys.description">
+                <source>food.city.panevezys.description</source>
+                <target>Užsisakykite maisto į namus Panevėžyje. Atvešime per 1h. Populiariausi restoranai: Charlie pizza, La Crepe.</target>
+            </trans-unit>
+            <trans-unit id="food.city.alytus.description">
+                <source>food.city.alytus.description</source>
+                <target>Užsisakykite maisto į namus Alytuje. Atvešime per 1h. Populiariausi restoranai: Charlie pizza.</target>
+            </trans-unit>
+            <trans-unit id="food.city.utena.description">
+                <source>food.city.utena.description</source>
+                <target>Užsisakykite maisto į namus Utenoje. Atvešime per 1h. Populiariausi restoranai: Charlie pizza.</target>
+            </trans-unit>
+            <trans-unit id="food.city.plunge.description">
+                <source>food.city.plunge.description</source>
+                <target>Užsisakykite maisto į namus Plungėje. Atvešime per 1h. Populiariausi restoranai: Charlie pizza.</target>
+            </trans-unit>
+            <trans-unit id="food.order_food_in_home">
+                <source>food.order_food_in_home</source>
+                <target>Užsisakykite maisto į namus</target>
+            </trans-unit>
+            <trans-unit id="food.will_deliver_in_hour">
+                <source>food.will_deliver_in_hour</source>
+                <target>Atvešime per 1h.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

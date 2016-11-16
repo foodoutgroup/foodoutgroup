@@ -1518,6 +1518,14 @@
                 <source>general.hour</source>
                 <target>h.</target>
             </trans-unit>
+            <trans-unit id="index.all_best_offers">
+                <source>index.all_best_offers</source>
+                <target>All offers</target>
+            </trans-unit>
+            <trans-unit id="general.cities">
+                <source>general.cities</source>
+                <target>Cities</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

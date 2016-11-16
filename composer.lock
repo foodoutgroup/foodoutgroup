@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4a74fbceb34da520962d4190ecc9d2a5",
-    "content-hash": "2c1256b3b695257b82d491f2e8b0693e",
+    "hash": "5bbcc91d7c045dd013905cc719deb4d8",
+    "content-hash": "696b1b68e47710ff352e16d9cb016e8e",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -1608,6 +1608,7 @@
                 "rest",
                 "web service"
             ],
+            "abandoned": "guzzlehttp/guzzle",
             "time": "2015-03-18 18:23:50"
         },
         {
@@ -2674,6 +2675,63 @@
                 "set"
             ],
             "time": "2014-03-11 13:46:42"
+        },
+        {
+            "name": "phpoffice/phpexcel",
+            "version": "1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PHPExcel.git",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPExcel": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Mark Baker"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Erik Tilt"
+                }
+            ],
+            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "http://phpexcel.codeplex.com",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "time": "2015-05-01 07:00:55"
         },
         {
             "name": "phpoption/phpoption",
@@ -4017,6 +4075,7 @@
                 "icu",
                 "intl"
             ],
+            "abandoned": "symfony/intl",
             "time": "2014-07-25 10:00:11"
         },
         {
@@ -4420,7 +4479,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/paysera/libwebtopay/get/3c6ae2af32b51218543c48a224f63a6938a2a8e4.zip",
+                "url": "https://bitbucket.org/paysera/libwebtopay/get/079982087188ace4c33504e7974e8dc573b3463c.zip",
                 "reference": "3c6ae2af32b51218543c48a224f63a6938a2a8e4",
                 "shasum": ""
             },
@@ -4680,6 +4739,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "doctrine/orm": 20,
         "doctrine/doctrine-fixtures-bundle": 20,
         "doctrine/migrations": 20,
         "doctrine/doctrine-migrations-bundle": 20,

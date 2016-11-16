@@ -294,6 +294,18 @@
                 <source>places.discount_not_for_business_clients</source>
                 <target>Atvainojiet, Jūs nevarat izmantot biznesa klienta atlaidi šajā restorānā</target>
             </trans-unit>
+            <trans-unit id="food.city.riga.description">
+                <source>food.city.riga.description</source>
+                <target>Pasūti ēdienu ar piegādi uz mājām vai biroju Rīgā! Piegāde stundas laikā. Populārākie restorāni: Čilī pica, Pizza Hut, Turkebab, Wok to Walk.</target>
+            </trans-unit>
+            <trans-unit id="food.order_food_in_home">
+                <source>food.order_food_in_home</source>
+                <target>Pasūti ēdienu ar piegādi uz mājām vai biroju</target>
+            </trans-unit>
+            <trans-unit id="food.will_deliver_in_hour">
+                <source>food.will_deliver_in_hour</source>
+                <target>Piegāde stundas laikā.</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

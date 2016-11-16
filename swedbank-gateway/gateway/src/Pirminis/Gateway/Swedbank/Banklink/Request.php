@@ -61,7 +61,7 @@ class Request
           </BillingDetails>
         </TransactionDetails>
         <MethodDetails>
-          <ServiceType>LIT_BANK</ServiceType>
+          <ServiceType>%service_type%</ServiceType>
         </MethodDetails>
       </AlternativePayment>
     </APMTxn>

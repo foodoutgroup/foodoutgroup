@@ -4,9 +4,11 @@ namespace Food\ApiBundle\Service;
 use Food\ApiBundle\Common\MenuItem;
 use Food\ApiBundle\Common\Restaurant;
 use Food\ApiBundle\Exceptions\ApiException;
+use Food\AppBundle\Entity\Driver;
 use Food\DishesBundle\Entity\FoodCategory;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
+use Food\OrderBundle\Entity\Order;
 use Food\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -248,5 +250,63 @@ class ApiService extends ContainerAware
             return false;
         }
         return true;
+    }
+
+    /**
+     * @param string $token
+     * @return Driver
+     * @throws ApiException
+     */
+    public function getDriverByToken($token)
+    {
+        if (empty($token)) {
+            throw new ApiException('Empty token', 400, array('error' => 'Token is empty', 'description' => null));
+        }
+
+        $driver = $this->container->get('doctrine')->getRepository('FoodAppBundle:Driver')->findOneByToken($token);
+
+        if (!$driver instanceof Driver) {
+            throw new ApiException('Token does not exist', 400, array('error' => 'Token does not exist', 'description' => null));
+        }
+
+        return $driver;
+    }
+
+    /**
+     * @param string $token
+     * @return Driver
+     * @throws ApiException
+     */
+    public function getDriverById($id)
+    {
+        if (empty($id)) {
+            throw new ApiException('Empty id', 400, array('error' => 'Id is empty', 'description' => null));
+        }
+        $driver = $this->container->get('doctrine')->getRepository('FoodAppBundle:Driver')->find($id);
+
+        if (!$driver instanceof Driver) {
+            throw new ApiException('Id does not exist', 400, array('error' => 'Id does not exist', 'description' => null));
+        }
+
+        return $driver;
+    }
+
+    /**
+     * @param string $token
+     * @return Order
+     * @throws ApiException
+     */
+    public function getOrderById($id)
+    {
+        if (empty($id)) {
+            throw new ApiException('Empty id', 400, array('error' => 'Id is empty', 'description' => null));
+        }
+        $order = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($id);
+
+        if (!$order instanceof Order) {
+            throw new ApiException('Id does not exist', 400, array('error' => 'Id does not exist', 'description' => null));
+        }
+
+        return $order;
     }
 }

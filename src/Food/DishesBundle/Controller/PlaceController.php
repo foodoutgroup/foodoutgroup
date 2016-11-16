@@ -63,6 +63,41 @@ class PlaceController extends Controller
         $wasHere = $this->wasHere($place, $this->user());
         $alreadyWrote = $this->alreadyWrote($place, $this->user());
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
+
+        $breadcrumbData = array(
+            'city' => '',
+            'city_url' => '',
+            'kitchen' => '',
+            'kitchen_url' => ''
+        );
+
+        $locationData =  $this->get('food.googlegis')->getLocationFromSession();
+
+        if (!isset($locationData['city'])) {
+            $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
+            $locationData['city'] = $placeCities[0];
+        }
+        if (isset($locationData['city'])) {
+            if (!$this->get('food.places')->isPlaceDeliversToCity($place, $locationData['city'])) {
+                $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
+                $locationData['city'] = $placeCities[0];
+            }
+            $cityInfo = $this->get('food.city_service')->getCityInfo($locationData['city']);
+            if (!empty($cityInfo)) {
+                $breadcrumbData = array_merge($breadcrumbData, $cityInfo);
+            }
+
+            $kitchens = $place->getKitchens();
+            if(!empty($kitchens) && $kitchens->count() > 0) {
+                $kitchen = $kitchens->first();
+                $breadcrumbData['kitchen'] = $kitchen->getName();
+                $kitchenSlug = $this->get('food.dishes.utils.slug')->getSlugByItem($kitchen->getId(), 'kitchen');
+                $breadcrumbData['kitchen_url'] = $this->generateUrl('food_city_'.$cityInfo['city_slug_lower'], array(), true).'/'.$kitchenSlug;
+            }
+        }
+
+        $current_url = $request->getUri();
+
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
             array(
@@ -76,6 +111,8 @@ class PlaceController extends Controller
                 'placePointsAll' => $placePointsAll,
                 'listType' => $listType,
                 'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
+                'breadcrumbData' => $breadcrumbData,
+                'current_url' => $current_url,
             )
         );
     }

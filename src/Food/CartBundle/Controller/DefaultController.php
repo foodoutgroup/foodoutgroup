@@ -533,11 +533,11 @@ class DefaultController extends Controller
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
         $miscService = $this->get('food.app.utils.misc');
         $enable_free_delivery_for_big_basket = $miscService->getParam('enable_free_delivery_for_big_basket');
-        if($enable_free_delivery_for_big_basket) {
+        if ($enable_free_delivery_for_big_basket) {
             $enable_free_delivery_for_big_basket = $place->isAllowFreeDelivery();
         }
         $free_delivery_price = $miscService->getParam('free_delivery_price');
-        if($enable_free_delivery_for_big_basket) {
+        if ($enable_free_delivery_for_big_basket) {
             $placeMinimumFreeDeliveryPrice = $place->getMinimumFreeDeliveryPrice();
             if ($placeMinimumFreeDeliveryPrice) {
                 $free_delivery_price = $placeMinimumFreeDeliveryPrice;
@@ -635,10 +635,6 @@ class DefaultController extends Controller
         if (!empty($couponCode)) {
             $coupon = $this->get('food.order')->getCouponByCode($couponCode);
 
-            if ($coupon->getIgnoreCartPrice()) {
-                $noMinimumCart = true;
-            }
-
             if ($coupon) {
                 $applyDiscount = true;
 
@@ -650,45 +646,38 @@ class DefaultController extends Controller
 
                 $discountSize = $coupon->getDiscount();
                 if (!empty($discountSize)) {
-                    $discountSum = $this->getCartService()->getTotalDiscount($list,$coupon->getDiscount());
+                    $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
                 } else {
                     $discountSize = null;
                     $discountInSum = true;
                     $discountSum = $coupon->getDiscountSum();
                 }
+                $realDiscountSum = $discountSum;
 
                 $otherPriceTotal = 0;
                 foreach ($list as $dish) {
-                    $foodCat = $dish->getDishId()->getCategories();
                     $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
-                    if (!$foodCat[0]->getAlcohol()) {
+                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
                         $otherPriceTotal += $sum;
                     }
                 }
 
                 // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
                 $otherMinusDiscount = $otherPriceTotal - $discountSum;
-                if($otherMinusDiscount < 0){
-
-
-
+                if ($otherMinusDiscount < 0){
                     $discountSum = $otherPriceTotal;
                 }
 
                 $total_cart -= $discountSum;
 
-                if ($total_cart < 0) {
-                    if ($coupon->getFullOrderCovers()|| $coupon->getIncludeDelivery()) {
+                if ($total_cart <= 0) {
+                    if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
                         $deliveryTotal = $deliveryTotal + $total_cart;
-                        if ($deliveryTotal < 0) {
+                        if ($deliveryTotal < 0 || $total_cart < $realDiscountSum) {
                             $deliveryTotal = 0;
                             $freeDelivery = true;
                         }
                     }
-                    $total_cart = 0;
-                }
-
-                if ($total_cart < 0) {
                     $total_cart = 0;
                 }
             }
@@ -700,9 +689,8 @@ class DefaultController extends Controller
                 $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
                 $otherPriceTotal = 0;
                 foreach ($list as $dish) {
-                    $foodCat = $dish->getDishId()->getCategories();
                     $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
-                    if (!$foodCat[0]->getAlcohol()) {
+                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
                         $otherPriceTotal += $sum;
                     }
                 }
@@ -736,21 +724,17 @@ class DefaultController extends Controller
         $left_sum = 0;
         if ($enable_free_delivery_for_big_basket || ($coupon && $coupon->getIgnoreCartPrice())) {
             $minusDiscount = 0;
-            if($coupon && $coupon->getIgnoreCartPrice()) {
+            if ($coupon && $coupon->getIgnoreCartPrice()) {
                 $minusDiscount = $cartSumTotal;
             }
 
-            // Jeigu musu logistika, tada taikom nemokamo pristatymo logika
-            if ($self_delivery == 0 || $place->getId() == 32 && ($free_delivery_price = 50) && in_array(date('w'), [0, 6])) {
-
-                // Kiek liko iki nemokamo pristatymo
-                if ($free_delivery_price > $total_cart) {
-                    $left_sum = sprintf('%.2f', $free_delivery_price - $total_cart - $minusDiscount);
-                }
-                // Krepselio suma pasieke nemokamo pristatymo suma
-                if ($left_sum == 0) {
-                    $deliveryTotal = 0;
-                }
+            // Kiek liko iki nemokamo pristatymo
+            if ($free_delivery_price > $total_cart) {
+                $left_sum = sprintf('%.2f', $free_delivery_price - $total_cart - $minusDiscount);
+            }
+            // Krepselio suma pasieke nemokamo pristatymo suma
+            if ($left_sum == 0) {
+                $deliveryTotal = 0;
             }
         }
 
