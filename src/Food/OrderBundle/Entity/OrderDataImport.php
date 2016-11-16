@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Food\OrderBundle\FoodOrderBundle;
 
 /**
  * @ORM\Table(name="order_data_import")
@@ -136,10 +137,31 @@ class OrderDataImport
     }
 
     /**
-     * @return mixed
+     * @return \Food\OrderBundle\Entity\Order[]
      */
     public function getOrdersChanged()
     {
         return $this->ordersChanged;
+    }
+
+    /**
+     * @param \Food\OrderBundle\Entity\Order $ordersChanged
+     */
+    public function setOrdersChanged($ordersChanged) {
+        $this->ordersChanged = $ordersChanged;
+    }
+
+    /**
+     * @param \Food\OrderBundle\Entity\Order $ordersChanged
+     */
+    public function addOrdersChanged($ordersChanged) {
+        $this->ordersChanged[]= $ordersChanged;
+    }
+
+    /**
+     * @param \Food\OrderBundle\Entity\Order $ordersChanged
+     */
+    public function removeOrdersChanged($ordersChanged) {
+        $this->ordersChanged->removeElement($ordersChanged);
     }
 }

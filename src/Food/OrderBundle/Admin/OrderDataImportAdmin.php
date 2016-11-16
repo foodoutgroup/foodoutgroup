@@ -34,8 +34,7 @@ class OrderDataImportAdmin extends FoodAdmin
         $list->add('date', 'date', []);
         $list->add('user', 'user', []);
         $list->add('infodata', 'infodata', []);
-        // @TODO
-        //$list->add('ordersChanged');
+        $list->add('ordersChanged', 'sonata_type_list', array('admin_code' => 'sonata.admin.order', 'route' => array( 'name' => 'show') ));
     }
 
     /**
