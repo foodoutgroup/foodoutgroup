@@ -440,3 +440,14 @@ services:
                     - ~
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.order.data_import:
+      class: Food\OrderBundle\Admin\OrderDataImportAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.order.data_import" }
+      arguments:
+        - ~
+        - Food\OrderBundle\Entity\OrderDataImport
+        - ~
+      calls:
+        - [ setTranslationDomain, [SonataAdminBundle]]

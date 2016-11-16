@@ -325,6 +325,12 @@ class OrderAdmin extends FoodAdmin
             ->add('newsletterSubscribe', null, array('label' => 'admin.order.newsletter_subscribe'))
             ->add('orderExtra.changeReason', null, array('label' => 'admin.order.change_reason'))
             ->add('dispatcher_id', null, array('label' => 'admin.order.dispatcher'))
+            ->add('order_field_changelog', 'sonata_type_collection',
+                array(
+                    'label' => 'admin.order.field_changelog',
+                    'template' => 'FoodOrderBundle:Admin:order_field_changelog.html.twig'
+                )
+            )
         ;
 
         // Remove Fields For Restaurant User (Moderator)

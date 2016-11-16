@@ -448,6 +448,12 @@ class Order
     private $place_informed = false;
 
     /**
+     * @var \Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog
+     * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderFieldChangelog", mappedBy="order")
+     **/
+    private $orderFieldChangelog;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -2367,5 +2373,13 @@ class Order
     public function getDriverAutoAssigned()
     {
         return $this->driverAutoAssigned;
+    }
+
+    /**
+     * @return OrderFieldChangelog
+     */
+    public function getOrderFieldChangelog()
+    {
+        return $this->orderFieldChangelog;
     }
 }
