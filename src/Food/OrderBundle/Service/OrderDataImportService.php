@@ -76,7 +76,7 @@ class OrderDataImportService extends BaseService
                 $valueChanged = false;
                 $oldValue = null;
                 $newValue = null;
-                if ($excelData[$mapIndex]) {
+                if (isset($excelData[$mapIndex])) {
                     switch ($mapKey) {
                         case 'order_date':
                             $oldValue = $realOrder->getOrderDate()->format('Y-m-d');
