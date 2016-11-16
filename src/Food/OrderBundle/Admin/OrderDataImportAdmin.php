@@ -11,6 +11,10 @@ class OrderDataImportAdmin extends FoodAdmin
     protected $baseRouteName = 'order_data_import';
     protected $baseRoutePattern = 'order_data_import';
 
+    protected $datagridValues = array(
+        '_sort_order' => 'DESC'
+    );
+
     /**
      * @param \Sonata\AdminBundle\Route\RouteCollection $collection
      * @inheritdoc
@@ -35,6 +39,7 @@ class OrderDataImportAdmin extends FoodAdmin
         $list->add('user', 'user', []);
         $list->add('infodata', 'infodata', []);
         $list->add('ordersChanged', 'sonata_type_list', array('admin_code' => 'sonata.admin.order', 'route' => array( 'name' => 'show') ));
+
     }
 
     /**
