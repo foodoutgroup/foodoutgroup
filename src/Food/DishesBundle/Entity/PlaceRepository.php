@@ -577,8 +577,8 @@ class PlaceRepository extends EntityRepository
         }
         $wd = date('w', $ts);
         if ($wd == 0) $wd = 7;
-        $totalH = date("H");
-        $totalM = date("i");
+        $totalH = date("H", $ts);
+        $totalM = date("i", $ts);
         $count = 'SELECT count(id)
                   FROM `place_point_work_time`
                   WHERE week_day = ' . $wd . '
