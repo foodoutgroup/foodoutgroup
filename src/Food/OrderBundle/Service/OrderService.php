@@ -3027,14 +3027,13 @@ class OrderService extends ContainerAware
 
         $todayError = $openError = $closeError = true;
         if (!$this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->isPlacePointWorks($placePoint, $ts)) {
-
             foreach ($placePoint->getWorkTimes() as $workTime) {
                 if ($workTime->getWeekDay() == $wd) {
                     $todayError = false;
                     if ($workTime->getStartHour() < $hour || $workTime->getStartHour() == $hour && $workTime->getStartMin() < $minute) {
                         $openError = false;
                     }
-                    if ($workTime->getStartHour() > $hour || $workTime->getStartHour() == $hour && $workTime->getStartMin() > $minute) {
+                    if ($workTime->getEndHour() > $hour || $workTime->getEndHour() == $hour && $workTime->getEndMin() > $minute) {
                         $closeError = false;
                     }
                 }
@@ -3400,12 +3399,13 @@ class OrderService extends ContainerAware
             }
         }
 
+        $preOrder = $request->get('pre-order');
         $pointRecord = null;
         if (empty($placePointId)) {
             $placePointMap = $this->container->get('session')->get('point_data');
             if (!empty($placePointMap[$place->getId()])) {
                 $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
-                if ($pointRecord) {
+                if ($pointRecord && $preOrder != 'it-is') {
                     $isWork = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->isPlacePointWorks($pointRecord);
                     $locationData = $locationService->getLocationFromSession();
                     if (!$isWork) {
@@ -3440,7 +3440,6 @@ class OrderService extends ContainerAware
         }
 
         // Test if correct dates passed to pre order
-        $preOrder = $request->get('pre-order');
         if ($preOrder == 'it-is') {
             $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
 
