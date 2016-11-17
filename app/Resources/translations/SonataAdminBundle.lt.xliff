@@ -2962,6 +2962,10 @@
                 <source>admin.dispatcher.cancel_reason.changing_order</source>
                 <target>Užsakymas keičiamas</target>
             </trans-unit>
+            <trans-unit id="admin.dish_option_size_price">
+                <source>admin.dish_option_size_price</source>
+                <target>Dydis/Kaina</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

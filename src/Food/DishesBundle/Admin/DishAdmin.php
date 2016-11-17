@@ -39,7 +39,6 @@ class DishAdmin extends FoodAdmin
         return 'FoodDishesBundle:Dish:base_edit.html.twig';
     }
 
-    // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
         // Override edit template by our magic one with ajax
@@ -180,51 +179,13 @@ class DishAdmin extends FoodAdmin
         ;
     }
 
-    // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
-        $datagridMapper
-            ->add('name', null, array('label' => 'admin.dish.name'));
-
-        //if ($this->isAdmin()) {
-            $datagridMapper->add('place');
-        //}
-
-        $datagridMapper
-            ->add('categories')
-            //->add('options')
-            //->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended'))
-            //->add('discountPricesEnabled', 'checkbox', array('label' => 'admin.dish.discount_prices_enabled'))
-            //->add('createdBy', null, array('label' => 'admin.created_by'))
-        // TODO isjungiau, nes nenaudojam, o po sonatos update - griuna widget optionsas
-//            ->add(
-//                'createdAt',
-//                'doctrine_orm_datetime_range',
-//                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
-//                null,
-//                array(
-//                    'widget' => 'single_text',
-//                    'required' => false,
-//                    'format' => 'Y-m-d',
-//                    'attr' => array('class' => 'datepicker')
-//                )
-//            )
-//            ->add(
-//                'deletedAt',
-//                'doctrine_orm_datetime_range',
-//                array('label' => 'admin.deleted_at', 'format' => 'Y-m-d',),
-//                null,
-//                array(
-//                    'widget' => 'single_text',
-//                    'required' => false,
-//                    'format' => 'Y-m-d',
-//                    'attr' => array('class' => 'datepicker')
-//                )
-//            )
-        ;
+        $datagridMapper->add('name', null, array('label' => 'admin.dish.name'));
+        $datagridMapper->add('place');
+        $datagridMapper->add('categories');
     }
 
-    // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
