@@ -1529,7 +1529,7 @@ class OrderService extends ContainerAware
                 $this->getEm()->persist($orderOpt);
                 $this->getEm()->flush();
 
-                $sumTotal += $cartDish->getQuantity() * $opt->getDishOptionId()->getPrice();
+                $sumTotal += $cartDish->getQuantity() * $dishOptionPrice;
             }
         }
 
