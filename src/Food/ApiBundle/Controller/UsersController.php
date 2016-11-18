@@ -549,7 +549,7 @@ class UsersController extends Controller
 
             $um->updateUser($user);
 
-            $response = '';
+            $response = ['status' => true];
         } catch (ApiException $e) {
             $this->get('logger')->error('Users:changePasswordAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Users:changePasswordAction Trace1:' . $e->getTraceAsString());
@@ -597,7 +597,7 @@ class UsersController extends Controller
                 );
             }
 
-            $response = '';
+            $response = ['status' => true];
         } catch (ApiException $e) {
             $this->get('logger')->error('Users:resetPasswordAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Users:resetPasswordAction Trace1:' . $e->getTraceAsString());
@@ -889,7 +889,7 @@ class UsersController extends Controller
             $security->setToken($token);
             $this->get('session')->invalidate();
 
-            $response = '';
+            $response = ['status' => true];
         } catch (ApiException $e) {
             $this->get('logger')->error('Users:logoutAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Users:logoutAction Trace1:' . $e->getTraceAsString());
