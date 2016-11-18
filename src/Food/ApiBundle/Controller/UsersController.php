@@ -378,9 +378,9 @@ class UsersController extends Controller
             // User hash generation action
             if (!$this->getApiToken($request)) {
                 $hash = $this->get('food_api.api')->generateUserHash($user);
+                $user->setApiToken($hash);
+                $user->setApiTokenValidity(new \DateTime('+1 week'));
             }
-            $user->setApiToken($hash);
-            $user->setApiTokenValidity(new \DateTime('+1 week'));
 
             $um->updateUser($user);
 
