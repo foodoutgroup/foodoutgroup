@@ -415,6 +415,8 @@ sonata_admin:
                       - sonata.admin.drivers
                       - sonata.admin.params
                       - sonata.admin.paramslog
+                      - sonata.admin.cities
+                      - sonata.admin.citieslog
                   roles: [ ROLE_DISPATCHER ]
               acme.admin.group.misc: ~
 
