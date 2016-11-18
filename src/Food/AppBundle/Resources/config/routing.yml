@@ -9,8 +9,8 @@ food_order_status_check:
         expose: true
 
 food_lang_homepage:
-    path: /
-    defaults: { _controller: FoodAppBundle:Default:index }
+    path: /{_locale}
+    defaults: { _controller: FoodAppBundle:Default:index, _locale: lt }
 
 food_test_payment:
     path:  /test/payment

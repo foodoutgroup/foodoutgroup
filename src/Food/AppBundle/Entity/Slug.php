@@ -16,6 +16,7 @@ class Slug
     const TYPE_PLACE = 'place';
     const TYPE_FOOD_CATEGORY = 'food_category';
     const TYPE_TEXT = 'text';
+    const TYPE_PAGE = 'page';
 
 
     /**

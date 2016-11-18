@@ -76,6 +76,11 @@ class SlugController extends Controller
         }
 
         switch($slugRow->getType()) {
+
+            case Slug::TYPE_PAGE:
+                return $this->forward('FoodAppBundle:StaticPage:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
+
+
             case Slug::TYPE_TEXT:
                 return $this->forward('FoodAppBundle:Static:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
 
