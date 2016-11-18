@@ -44,12 +44,6 @@
                         groupElements[i].attr('checked', 'checked');
                         groupElements[i].closest('.iradio').addClass('checked');
                     }
-
-                    // Dish options price calculation by dish size
-                    updateDishOptionsPrices(dishBlock.find('input[type="radio"]').val());
-                    dishBlock.find('input[type="radio"]').on('ifChecked', function(event){
-                        updateDishOptionsPrices($(this).val());
-                    });
                 }
                 $('img.popup-header').on('load', function(){
                     $.fancybox.update();
@@ -174,14 +168,6 @@
             {# Facebook ViewContent Begin #}
             fbq('track', 'ViewContent');
             {# Facebook ViewContent End #}
-        }
-    }
-
-    function updateDishOptionsPrices(checkedValue) {
-        if (dishOptionsPrices[checkedValue]) {
-            $.each(dishOptionsPrices[checkedValue], function (index, price) {
-                $('.dish-ingredients .dishOptionPrice_'+index).html('+{{ currency_display|raw }} ' + price);
-            })
         }
     }
 </script>

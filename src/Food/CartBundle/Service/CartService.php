@@ -415,7 +415,13 @@ class CartService {
             if (!$cartItem->getIsFree()) {
                 $total += ((float)$cartItem->getDishSizeId()->getCurrentPrice() * 100) * (int)$cartItem->getQuantity();
                 foreach ($cartItem->getOptions() as $opt) {
-                    $total += ((float)$opt->getDishOptionId()->getPrice() * 100) * (int)$cartItem->getQuantity();
+                    $dishOptionsPrices = $this->getContainer()->get('food.dishes')->getDishOptionsPrices($cartItem->getDishId());
+                    if (isset($dishOptionsPrices[$cartItem->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()])) {
+                        $dishOptionsPrice = (float)$dishOptionsPrices[$cartItem->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()];
+                    } else {
+                        $dishOptionsPrice = (float)$opt->getDishOptionId()->getPrice();
+                    }
+                    $total += ($dishOptionsPrice * 100) * (int)$cartItem->getQuantity();
                 }
             }
         }
