@@ -104,7 +104,7 @@ class BasketController extends Controller
 
         $this->get('logger')->alert('getBasketAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new $response;
+        return $response;
     }
 
     public function deleteBasketAction($id)
