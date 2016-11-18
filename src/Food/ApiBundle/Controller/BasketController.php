@@ -104,7 +104,7 @@ class BasketController extends Controller
 
         $this->get('logger')->alert('getBasketAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new $response;
+        return $response;
     }
 
     public function deleteBasketAction($id)
@@ -113,7 +113,7 @@ class BasketController extends Controller
         $this->get('logger')->alert('deleteBasketAction Request: ' . $id);
         try {
             $this->get('food_api.basket')->deleteBasket($id);
-            $response = '';
+            $response = ['status' => true];
         }  catch (ApiException $e) {
             $this->get('logger')->error('deleteBasketAction Error:' . $e->getMessage());
             $this->get('logger')->error('deleteBasketAction Trace:' . $e->getTraceAsString());
