@@ -1507,12 +1507,20 @@ class OrderService extends ContainerAware
 
             $sumTotal += $cartDish->getQuantity() * $price;
 
+            $dishOptionPrices = $this->container->get('food.dishes')->getDishOptionsPrices($cartDish->getDishId());
             foreach ($options as $opt) {
+                
+                if (isset($dishOptionPrices[$cartDish->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()])) {
+                    $dishOptionPrice = $dishOptionPrices[$cartDish->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()];
+                } else {
+                    $dishOptionPrice = $opt->getDishOptionId()->getPrice();
+                }
+
                 $orderOpt = new OrderDetailsOptions();
                 $orderOpt->setDishOptionId($opt->getDishOptionId())
                     ->setDishOptionCode($opt->getDishOptionId()->getCode())
                     ->setDishOptionName($opt->getDishOptionId()->getName())
-                    ->setPrice($opt->getDishOptionId()->getPrice())
+                    ->setPrice($dishOptionPrice)
                     ->setDishId($cartDish->getDishId())
                     ->setOrderId($this->getOrder())
                     ->setQuantity($cartDish->getQuantity())// @todo Kolkas paveldimas. Veliau taps valdomas kiekvienam topingui atskirai

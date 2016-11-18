@@ -414,8 +414,9 @@ class CartService {
         foreach ($cartItems as $cartItem) {
             if (!$cartItem->getIsFree()) {
                 $total += ((float)$cartItem->getDishSizeId()->getCurrentPrice() * 100) * (int)$cartItem->getQuantity();
+
+                $dishOptionsPrices = $this->getContainer()->get('food.dishes')->getDishOptionsPrices($cartItem->getDishId());
                 foreach ($cartItem->getOptions() as $opt) {
-                    $dishOptionsPrices = $this->getContainer()->get('food.dishes')->getDishOptionsPrices($cartItem->getDishId());
                     if (isset($dishOptionsPrices[$cartItem->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()])) {
                         $dishOptionsPrice = (float)$dishOptionsPrices[$cartItem->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()];
                     } else {
