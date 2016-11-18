@@ -3024,7 +3024,7 @@ class OrderService extends ContainerAware
      *
      * @todo fix laiku poslinkiai
      */
-    private function workTimeErrors(PlacePoint $placePoint, &$errors, $dateTime = null)
+    public function workTimeErrors(PlacePoint $placePoint, &$errors, $dateTime = null)
     {
         if ($dateTime) {
             $ts = strtotime($dateTime);

@@ -240,6 +240,16 @@ class DefaultController extends Controller
             $workingHoursForInterval[date("Y-m-d", strtotime("+" . $i . " day"))] = $placeService->getFullRangeWorkTimes($place, $pointRecord, "+" . $i . " day");
         }
 
+        // Dirba / Nedirba ?
+        $pointWorkingErrors = [];
+        $pointIsWorking = true;
+        if ($pointRecord) {
+            $orderService->workTimeErrors($pointRecord, $pointWorkingErrors);
+        }
+        if (!empty($pointWorkingErrors)) {
+            $pointIsWorking = false;
+        }
+
         /**
          * $workingHoursToday = $placeService->getFullRangeWorkTimes($place, $pointRecord);
          * $workingHoursTommorow = $placeService->getFullRangeWorkTimes($place, $pointRecord, '+1 day');
@@ -494,6 +504,7 @@ class DefaultController extends Controller
             'workingDaysCount'        => $workingDaysCount,
             'isCallcenter'            => ($isCallcenter ? true : false),
             'require_lastname'        => $require_lastname,
+            'pointIsWorking'          => $pointIsWorking,
         ];
 
 
