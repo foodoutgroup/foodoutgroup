@@ -2,6 +2,8 @@
 
 namespace Food\AppBundle\Utils;
 
+use Food\AppBundle\Entity\City;
+use Food\AppBundle\Entity\CityLog;
 use Food\AppBundle\Entity\Param;
 use Food\AppBundle\Traits;
 use Food\OrderBundle\Entity\Order;
@@ -277,6 +279,31 @@ class Misc
                 ->setEventDate(new \DateTime('now'))
                 ->setOldValue($oldValue)
                 ->setNewValue($param->getValue())
+            ;
+
+            if ($user instanceof User) {
+                $log->setUser($user);
+            }
+
+            $em->persist($log);
+        }
+    }
+
+    /**
+     * @param City  $newValue
+     * @param City  $oldValue
+     */
+    public function logCityChange($newValue, $oldValue)
+    {
+        $em = $this->getContainer()->get('doctrine')->getManager();
+
+        if ($this->getContainer()->get('security.context')->getToken()) {
+            $user = $this->getContainer()->get('security.context')->getToken()->getUser();
+            $log = new CityLog();
+            $log->setCity($newValue)
+                ->setEventDate(new \DateTime('now'))
+                ->setOldValue(json_encode($oldValue))
+                ->setNewValue($newValue->jsonSerialize())
             ;
 
             if ($user instanceof User) {

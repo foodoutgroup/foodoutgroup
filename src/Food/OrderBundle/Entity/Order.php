@@ -448,6 +448,12 @@ class Order
     private $place_informed = false;
 
     /**
+     * @var bool
+     * @ORM\Column(name="during_zavalas", type="boolean", nullable=true)
+     */
+    private $duringZavalas = false;
+
+    /**
      * @var \Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog
      * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderFieldChangelog", mappedBy="order")
      **/
@@ -2361,14 +2367,14 @@ class Order
     public function setDriverAutoAssigned($driverAutoAssigned)
     {
         $this->driverAutoAssigned = $driverAutoAssigned;
-    
+
         return $this;
     }
 
     /**
      * Get driverAutoAssigned
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDriverAutoAssigned()
     {
@@ -2381,5 +2387,21 @@ class Order
     public function getOrderFieldChangelog()
     {
         return $this->orderFieldChangelog;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDuringZavalas()
+    {
+        return $this->duringZavalas;
+    }
+
+    /**
+     * @param boolean $duringZavalas
+     */
+    public function setDuringZavalas($duringZavalas)
+    {
+        $this->duringZavalas = $duringZavalas;
     }
 }

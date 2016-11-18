@@ -682,11 +682,12 @@ class PlacesService extends ContainerAware
     public function getDeliveryTime(Place $place, PlacePoint $placePoint = null)
     {
         $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
-        $miscService = $this->container->get('food.app.utils.misc');
-        if (!$place->getSelfDelivery() && !$place->getNavision() && $miscService->getParam('zaval_on')) {
-            if ($this->isShowZavalDeliveryTime($place)) {
-                $deliveryTime = $this->getZavalTime();
+        if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
+            $zavalasTimeByPlace = $this->container->get('food.zavalas_service')->getZavalasTimeByPlace($place);
+            if ($zavalasTimeByPlace) {
+                $deliveryTime = $zavalasTimeByPlace;
             }
+            $deliveryTime = $zavalasTimeByPlace;
         }
 
         return $deliveryTime;
@@ -706,16 +707,15 @@ class PlacesService extends ContainerAware
     public function isShowZavalDeliveryTime(Place $place)
     {
         $response = false;
-        $miscService = $this->container->get('food.app.utils.misc');
-        if ($miscService->getParam('zaval_on')) {
-            $zavalCities = $miscService->getParam('zaval_cities');
-            $cities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
-            foreach ($cities as $city) {
-                if (stripos($zavalCities, $city) !== false) {
-                    $locationData = $this->container->get('food.location')->getLocationFromSession();
+        $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
+        $locationData = $this->container->get('food.location')->getLocationFromSession();
+
+        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnGlobal()) {
+            foreach ($placeCities as $city) {
+                if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($city)) {
                     if (empty($locationData)
                         || empty($locationData['city'])
-                        || stripos($zavalCities, $locationData['city']) !== false
+                        || $this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($locationData['city'])
                         || !$this->isPlaceDeliversToCity($place, $locationData['city'])
                     ) {
                         $response = true;
@@ -738,14 +738,6 @@ class PlacesService extends ContainerAware
         $cities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
 
         return in_array($city, $cities);
-    }
-
-    /**
-     * @return string
-     */
-    public function getZavalTime()
-    {
-        return round($this->container->get('food.app.utils.misc')->getParam('zaval_time') / 60, 2) . " " . $this->container->get('translator')->trans('general.hour');
     }
 
     /**
