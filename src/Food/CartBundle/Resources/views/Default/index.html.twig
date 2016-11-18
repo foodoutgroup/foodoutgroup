@@ -128,25 +128,6 @@
                 $('.company_data').addClass('hidden');
             }
         });
-        {#
-        // Holy shit. Delete it...
-        $('#today_date').on('click', function(event){
-            console.log('TODAY DAY CLICKED');
-            if ($(this).is('checked')) {
-                console.log('TODAY DAY IS CHECKED');
-                $('.today_times').removeClass('hidden').attr('disabled', false);
-                $('.tommorow_times').addClass('hidden').attr('disabled', true);
-            }
-        });
-        $('#tommorow_date').on('click', function(event){
-            console.log('TOMORROW DAY CLICKED');
-            if ($(this).is('checked')) {
-                console.log('TOMORROW DAY IS CHECKED');
-                $('.today_times').addClass('hidden').attr('disabled', true);
-                $('.tommorow_times').removeClass('hidden').attr('disabled', false);
-            }
-        });
-        #}
 
         var orderingHours = [];
         {% for day, dayInfo in workingHoursForInterval %}

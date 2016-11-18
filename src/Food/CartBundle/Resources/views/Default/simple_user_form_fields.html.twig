@@ -26,13 +26,20 @@
     <label><br></label>
     <div class="order-type-radios clearfix">
         <label class="custom-radio">{% trans %}cart.checkout.order_now{% endtrans %}
-            <input type="radio" name="pre-order" value="not-this-time" {% if dataToLoad is empty or (dataToLoad is not empty and dataToLoad['pre-order'] is not empty and dataToLoad['pre-order'] == "not-this-time") %}checked="checked"{% endif %}>
+            <input type="radio" name="pre-order" value="not-this-time" {% if dataToLoad is empty or (dataToLoad is not empty and dataToLoad['pre-order'] is not empty and dataToLoad['pre-order'] == "not-this-time") %}checked="checked"{% endif %}{% if pointIsWorking == false %} disabled{% endif %}>
         </label>
         <label class="custom-radio">{% trans %}cart.checkout.order_later{% endtrans %}
-            <input type="radio" name="pre-order" value="it-is" {% if (dataToLoad is not empty and dataToLoad['pre-order'] is not empty and dataToLoad['pre-order'] == "it-is") %}checked="checked"{% endif %}>
+            <input type="radio" name="pre-order" value="it-is" {% if ((dataToLoad is not empty and dataToLoad['pre-order'] is not empty and dataToLoad['pre-order'] == "it-is") or pointIsWorking == false) %}checked="checked"{% endif %}>
         </label>
     </div>
 </div>
+{% if pointIsWorking == false %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.preorder_dates').removeClass('hidden');
+        });
+    </script>
+{% endif %}
 <div class="preorder_dates {% if dataToLoad is empty or (dataToLoad is not empty and dataToLoad['pre-order'] is not empty and dataToLoad['pre-order'] == "not-this-time") %}hidden{% endif %}" >
     <div class="form-row">
         <label>{% trans %}cart.checkout.delivery_date{% endtrans %}:</label>
