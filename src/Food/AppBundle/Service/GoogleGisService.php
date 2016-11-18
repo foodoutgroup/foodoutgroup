@@ -2,7 +2,6 @@
 namespace Food\AppBundle\Service;
 
 use Food\AppBundle\Entity\GeoCache;
-use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Curl;
 use Symfony\Component\Form\Tests\Extension\Validator\Type\BaseValidatorExtensionTest;
@@ -143,6 +142,10 @@ class GoogleGisService extends ContainerAware
             }
         }
 
+        if (!empty($returner['city'])) {
+            $returner['city'] = $city;
+        }
+
         $this->setLocationToSession($returner);
 
         return $returner;
@@ -207,14 +210,19 @@ class GoogleGisService extends ContainerAware
 
     public function setCityOnlyToSession($city)
     {
-        $returner = [];
-        $returner['not_found'] = true;
-        $returner['street_found'] = false;
-        $returner['address_found'] = false;
-        $returner['city'] = $city;
-        $returner['address'] = $returner['city'];
-        $returner['city_only'] = true;
-        $this->setLocationToSession($returner);
+        $returner = $this->getLocationFromSession();
+
+        if (empty($returner) || $returner['city'] != $city) {
+            $returner['not_found'] = true;
+            $returner['street_found'] = false;
+            $returner['address_found'] = false;
+            $returner['city'] = $city;
+            $returner['address'] = $returner['city'];
+            $returner['city_only'] = true;
+            $this->setLocationToSession($returner);
+        }
+
+        return $returner;
     }
 
     private function __getCity($results)
@@ -222,6 +230,8 @@ class GoogleGisService extends ContainerAware
         foreach ($results as $res) {
             if (in_array('locality', $res->types) && in_array('political', $res->types)) {
                 return $res->long_name;
+            } elseif (in_array('administrative_area_level_2', $res->types) && in_array('political', $res->types)) {
+                return $res->short_name;
             }
         }
 
