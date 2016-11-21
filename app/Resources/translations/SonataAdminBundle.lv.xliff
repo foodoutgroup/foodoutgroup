@@ -2922,6 +2922,30 @@
                 <source>admin.dispatcher.cancel_reason.changing_order</source>
                 <target>Order changing</target>
             </trans-unit>
+            <trans-unit id="admin.cities">
+                <source>admin.cities</source>
+                <target>Cities</target>
+            </trans-unit>
+            <trans-unit id="City List">
+                <source>City List</source>
+                <target>City list</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.title">
+                <source>admin.cities.title</source>
+                <target>Title</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.zavalas_on">
+                <source>admin.cities.zavalas_on</source>
+                <target>Zavalas</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.zavalas_time">
+                <source>admin.cities.zavalas_time</source>
+                <target>Zavalas time</target>
+            </trans-unit>
+            <trans-unit id="admin.citieslog">
+                <source>admin.citieslog</source>
+                <target>Cities log</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

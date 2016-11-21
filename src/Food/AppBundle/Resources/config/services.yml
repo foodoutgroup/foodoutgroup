@@ -1,5 +1,4 @@
 services:
-
     food.app.utils.language:
         class: Food\AppBundle\Utils\Language
         calls:
@@ -102,3 +101,35 @@ services:
     hook.b2b_client:
           class: Food\AppBundle\Service\HookB2BClient
           arguments: ['@service_container']
+
+
+    food.zavalas_service:
+      class: Food\AppBundle\Service\ZavalasService
+      parent: food.base_service
+      arguments:
+        - @food.app.utils.misc
+        - @translator.default
+        - @food.location
+        - @food.places
+
+    sonata.admin.cities:
+      class: Food\AppBundle\Admin\CityAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.cities" }
+      arguments:
+        - ~
+        - Food\AppBundle\Entity\City
+        - ~
+      calls:
+        - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.citieslog:
+      class: Food\AppBundle\Admin\CityLogAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.citieslog" }
+      arguments:
+        - ~
+        - Food\AppBundle\Entity\CityLog
+        - ~
+      calls:
+        - [ setTranslationDomain, [SonataAdminBundle]]
