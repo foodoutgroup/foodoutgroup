@@ -95,6 +95,12 @@ tr.big_daddy_order.odd {
 tr.big_daddy_order.even {
     background-color: #7fff65 !important;
 }
+tr.pre_order.odd {
+    background-color: #87ceeb !important;
+}
+tr.pre_order.even {
+    background-color: #77bedb !important;
+}
 
 tr.delivery_coming_noti.odd {
     background-color: #ffe575 !important;

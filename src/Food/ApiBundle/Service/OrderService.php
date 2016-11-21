@@ -607,6 +607,7 @@ class OrderService extends ContainerAware
         ];
         $returner['details']['restaurant_phone'] = $order->getPlacePoint()->getPhone();
         $returner['details']['restaurant_address'] = $order->getPlacePointAddress();
+        $returner['details']['items'] = $this->_getItemsForResponseFull($order);
         $returner['service']['delivery_time'] = $order->getDeliveryTime()->format('Y-m-d H:i:s');
         $returner['service']['customer_firstname'] = $order->getOrderExtra()->getFirstname();
         $returner['service']['customer_lastname'] = $order->getOrderExtra()->getLastname();
@@ -674,6 +675,55 @@ class OrderService extends ContainerAware
             $sum = sprintf("%.0f", ($sum * 100));
             $returner[] = [
                 'title' => $detail->getDishName(), //.', '.$detail->getDishUnitName(), Po pokalbio su shernu - laikinai skipinam papildoma info.
+                'count' => $detail->getQuantity(),
+                'price' => [
+                    'amount'   => $sum,
+                    'currency' => $currency
+                ]
+            ];
+        }
+
+        return $returner;
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return array
+     */
+    private function _getItemsForResponseFull(Order $order)
+    {
+        $returner = [];
+        $currency = $this->container->getParameter('currency_iso');
+
+        foreach ($order->getDetails() as $detail) {
+            $sum = 0;
+            //$sum+= $detail->getPrice() * $detail->getQuantity();
+            if ($detail->getDishId()->getDiscountPricesEnabled() && $order->getPlace()->getDiscountPricesEnabled()) {
+                $current_price = $detail->getOrigPrice();
+                $sizes = $detail->getDishId()->getSizes();
+                foreach ($sizes as $size) {
+                    if ($size->getUnit()->getId() == $detail->getDishUnitId()) {
+                        $current_price = $size->getCurrentPrice();
+                    }
+                }
+                $sum += $current_price * $detail->getQuantity();
+            } else {
+                $sum += $detail->getOrigPrice() * $detail->getQuantity(); // egles prasymu rodom orig_price
+            }
+
+            foreach ($detail->getOptions() as $option) {
+                $sum += $option->getPrice() * $option->getQuantity();
+            }
+            $sum = sprintf("%.0f", ($sum * 100));
+            $options = [];
+            foreach ($detail->getOptions() as $option) {
+                $options[] = $option->getDishOptionName();
+            }
+            $returner[] = [
+                'title' => $detail->getDishName(),
+                'unit' => $detail->getDishUnitName(),
+                'options' => $options,
                 'count' => $detail->getQuantity(),
                 'price' => [
                     'amount'   => $sum,
@@ -758,6 +808,7 @@ class OrderService extends ContainerAware
             FO::$status_failed             => 'failed',
             FO::$status_finished           => 'prepared',
             FO::$status_canceled           => 'canceled',
+            FO::$status_canceled_produced  => 'completed',
             FO::$status_pre                => 'pre'
         ];
 

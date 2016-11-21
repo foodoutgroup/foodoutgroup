@@ -756,6 +756,7 @@ input.button {}
 .kitchens-label {font-size: 1.5em;}
 .filters-list {border-bottom: 1px solid #ebe2d9; background: #fff; border-radius: 4px; margin-bottom: 10px;}
 .food-type-filters {padding-top: 9px; padding-bottom: 9px; padding-left: 20px;}
+.food-type-filters label a{color: #513d28;}
 .filters-list .custom-checkbox {margin-bottom: 11px; margin-left: 20px; margin-right: 20px; padding-left: 23px;}
 .filters-list > ul .custom-checkbox {margin-left: 0px;}
 .custom-checkbox .count {position: absolute; right: 3px; top: 3px; font-size: 10px; color: #b39196;}

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "65fda2924b877e2418b20f427d794512",
-    "content-hash": "ffe054f3c656664f734e2eef8d772450",
+    "hash": "5bbcc91d7c045dd013905cc719deb4d8",
+    "content-hash": "696b1b68e47710ff352e16d9cb016e8e",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -2362,64 +2362,6 @@
             "time": "2014-12-29 20:45:53"
         },
         {
-            "name": "lexik/translation-bundle",
-            "version": "v1.4.5",
-            "target-dir": "Lexik/Bundle/TranslationBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lexik/LexikTranslationBundle.git",
-                "reference": "e1c82369223dd8fddbc9154c566bd961faf0a443"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lexik/LexikTranslationBundle/zipball/e1c82369223dd8fddbc9154c566bd961faf0a443",
-                "reference": "e1c82369223dd8fddbc9154c566bd961faf0a443",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "symfony/framework-bundle": "~2.1"
-            },
-            "suggest": {
-                "doctrine/mongodb-odm": "1.0.*@dev",
-                "doctrine/orm": ">=2.1"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-jqgrid_ui": "1.4.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Lexik\\Bundle\\TranslationBundle": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Dev Lexik",
-                    "email": "dev@lexik.fr"
-                },
-                {
-                    "name": "Cedric Girard",
-                    "email": "c.girard@lexik.fr"
-                }
-            ],
-            "description": "This bundle allow to import translation files content into the database and provide a GUI to edit translations.",
-            "homepage": "https://github.com/lexik/LexikTranslationBundle",
-            "keywords": [
-                "Symfony2",
-                "bundle",
-                "i18n",
-                "translation"
-            ],
-            "time": "2014-03-20 16:49:42"
-        },
-        {
             "name": "michelf/php-markdown",
             "version": "1.5.0",
             "source": {
@@ -2733,6 +2675,63 @@
                 "set"
             ],
             "time": "2014-03-11 13:46:42"
+        },
+        {
+            "name": "phpoffice/phpexcel",
+            "version": "1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PHPExcel.git",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPExcel": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Mark Baker"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Erik Tilt"
+                }
+            ],
+            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "http://phpexcel.codeplex.com",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "time": "2015-05-01 07:00:55"
         },
         {
             "name": "phpoption/phpoption",

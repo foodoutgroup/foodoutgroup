@@ -1,0 +1,10 @@
+<p>
+    {% for row in cities %}
+        {% if not loop.first %}<br><br />{% endif %}<strong>{{ row.city }}: </strong>
+        {% for place in places %}
+            {% if place.city == row.city %}
+            <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place')}) }}" title="{{ place.name }}"><span style="color:#696969">{{ place.name }}</span></a>{% if not loop.last %}, {% endif -%}
+            {% endif -%}
+        {% endfor -%}{% if loop.last %}.{% endif %}
+    {% endfor %}
+</p>

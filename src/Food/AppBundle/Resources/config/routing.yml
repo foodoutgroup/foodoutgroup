@@ -137,47 +137,12 @@ food_slug_locale_slug2:
     requirements:
         redirLocale:  "[a-z]{2}"
 
-# landing pages
-food_landing_b2b_client_lt:
-    path: /b2b-klientams
-    defaults: { _controller: FoodAppBundle:Landing:b2bClient }
-food_landing_b2b_client_lt_slash:
-    path: /b2b-klientams/
-    defaults: { _controller: FoodAppBundle:Landing:b2bClient }
-food_landing_b2b_client_lv:
-    path: /b2b-klients
-    defaults: { _controller: FoodAppBundle:Landing:b2bClient }
-food_landing_b2b_client_lv_slash:
-    path: /b2b-klients/
-    defaults: { _controller: FoodAppBundle:Landing:b2bClient }
-food_landing_b2b_client_ee:
-    path: /b2b-clients
-    defaults: { _controller: FoodAppBundle:Landing:b2bClient }
-food_landing_b2b_client_ee_slash:
-    path: /b2b-clients/
-    defaults: { _controller: FoodAppBundle:Landing:b2bClient }
-
-food_best_offers_lt:
-  path: /akcijos
-  defaults: { _controller: FoodAppBundle:Default:listBestOffers}
-
-food_best_offers_lt_slash:
-  path: /akcijos/
-  defaults: { _controller: FoodAppBundle:Default:listBestOffers}
-
-food_best_offers_lv:
-  path: /akcijas
-  defaults: { _controller: FoodAppBundle:Default:listBestOffers}
-
-food_best_offers_lv_slash:
-  path: /akcijas/
-  defaults: { _controller: FoodAppBundle:Default:listBestOffers}
-
 food_slug:
     path:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
         slug : "^(?!admin|cart|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Utena|Plunge|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita)[a-z0-9-\__\"„“\.\+]{4,}"
+
 
 food_order_nav_test1:
     path: /order/nav_test1
@@ -448,147 +413,161 @@ food_newsletter_thank:
     path: /newsletter/thank/
     defaults: { _controller: FoodAppBundle:Default:newsletterThank}
 
-# Miestai
-food_city_vilnius:
-    path: /Vilnius
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius}
 
-food_city_kaunas:
-    path: /Kaunas
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kaunas}
-
-food_city_klaipeda:
-    path: /Klaipeda
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda}
-
-food_city_siauliai:
-    path: /Siauliai
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Siauliai}
-
-food_city_panevezys:
-    path: /Panevezys
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Panevezys}
-
-food_city_alytus:
-    path: /Alytus
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Alytus}
-
-food_city_utena:
-    path: /Utena
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Utena}
-
-food_city_plunge:
-    path: /Plunge
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Plunge}
-
-food_city_riga:
-    path: /Riga
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
-
-food_city_tallinn:
-    path: /Tallinn
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Tallinn}
-
-food_city_vilnius_slash:
-    path: /Vilnius/
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius}
-
-food_city_kaunas_slash:
-    path: /Kaunas/
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kaunas}
-
-food_city_klaipeda_slash:
-    path: /Klaipeda/
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda}
-
-food_city_siauliai_slash:
-    path: /Siauliai/
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Siauliai}
-
-food_city_panevezys_slash:
-    path: /Panevezys/
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Panevezys}
-
-food_city_alytus_slash:
-    path: /Alytus/
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Alytus}
-
-food_city_utena_slash:
-    path: /Utena/
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Utena}
-
-food_city_plunge_slash:
-    path: /Plunge/
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Plunge}
-
-food_city_riga_slash:
-    path: /Riga/
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
-
-food_city_tallinn_slash:
-    path: /Tallinn/
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Tallinn}
-
-food_city_vilnius_slash_filter:
-    path: /Vilnius/{slug_filter}
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius, slug_filter: ~}
-    requirements:
-        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
-
-food_city_kaunas_slash_filter:
-    path: /Kaunas/{slug_filter}
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kaunas, slug_filter: ~}
-    requirements:
-        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
-
-food_city_klaipeda_slash_filter:
-    path: /Klaipeda/{slug_filter}
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda, slug_filter: ~}
-    requirements:
-        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
-
-food_city_siauliai_slash_filter:
-    path: /Siauliai/{slug_filter}
+food_city:
+    path: /{city}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity}
+food_city_slash:
+    path: /{city}/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity}
+food_city_slash_filter:
+    path: /{city}/{slug_filter}
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Siauliai, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
 
-food_city_panevezys_slash_filter:
-    path: /Panevezys/{slug_filter}
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Panevezys, slug_filter: ~}
-    requirements:
-        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
-
-food_city_alytus_slash_filter:
-    path: /Alytus/{slug_filter}
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Alytus, slug_filter: ~}
-    requirements:
-        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
-
-food_city_utena_slash_filter:
-    path: /Utena/{slug_filter}
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Utena, slug_filter: ~}
-    requirements:
-        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
-
-food_city_plunge_slash_filter:
-    path: /Plunge/{slug_filter}
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Plunge, slug_filter: ~}
-    requirements:
-        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
-
-food_city_riga_slash_filter:
-    path: /Riga/{slug_filter}
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga, slug_filter: ~}
-    requirements:
-        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
-
-food_city_tallinn_slash_filter:
-    path: /Tallinn/{slug_filter}
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Tallinn, slug_filter: ~}
-    requirements:
-        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
-
-food_test_daugis_report:
-    path: /test/where/the/magic/happens/but/we/dont/know/anything
-    defaults: { _controller: FoodAppBundle:Test:magicReportForDaugis }
+#
+## Miestai
+#food_city_vilnius:
+#    path: /Vilnius
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius}
+#
+#food_city_kaunas:
+#    path: /Kaunas
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kaunas}
+#
+#food_city_klaipeda:
+#    path: /Klaipeda
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda}
+#
+#food_city_siauliai:
+#    path: /Siauliai
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Siauliai}
+#
+#food_city_panevezys:
+#    path: /Panevezys
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Panevezys}
+#
+#food_city_alytus:
+#    path: /Alytus
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Alytus}
+#
+#food_city_utena:
+#    path: /Utena
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Utena}
+#
+#food_city_plunge:
+#    path: /Plunge
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Plunge}
+#
+#food_city_riga:
+#    path: /Riga
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
+#
+#food_city_tallinn:
+#    path: /Tallinn
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Tallinn}
+#
+#food_city_vilnius_slash:
+#    path: /Vilnius/
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius}
+#
+#food_city_kaunas_slash:
+#    path: /Kaunas/
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kaunas}
+#
+#food_city_klaipeda_slash:
+#    path: /Klaipeda/
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda}
+#
+#food_city_siauliai_slash:
+#    path: /Siauliai/
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Siauliai}
+#
+#food_city_panevezys_slash:
+#    path: /Panevezys/
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Panevezys}
+#
+#food_city_alytus_slash:
+#    path: /Alytus/
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Alytus}
+#
+#food_city_utena_slash:
+#    path: /Utena/
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Utena}
+#
+#food_city_plunge_slash:
+#    path: /Plunge/
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Plunge}
+#
+#food_city_riga_slash:
+#    path: /Riga/
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
+#
+#food_city_tallinn_slash:
+#    path: /Tallinn/
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Tallinn}
+#
+#food_city_vilnius_slash_filter:
+#    path: /Vilnius/{slug_filter}
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius, slug_filter: ~}
+#    requirements:
+#        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+#
+#food_city_kaunas_slash_filter:
+#    path: /Kaunas/{slug_filter}
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kaunas, slug_filter: ~}
+#    requirements:
+#        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+#
+#food_city_klaipeda_slash_filter:
+#    path: /Klaipeda/{slug_filter}
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Klaipeda, slug_filter: ~}
+#    requirements:
+#        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+#
+#food_city_siauliai_slash_filter:
+#    path: /Siauliai/{slug_filter}
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Siauliai, slug_filter: ~}
+#    requirements:
+#        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+#
+#food_city_panevezys_slash_filter:
+#    path: /Panevezys/{slug_filter}
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Panevezys, slug_filter: ~}
+#    requirements:
+#        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+#
+#food_city_alytus_slash_filter:
+#    path: /Alytus/{slug_filter}
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Alytus, slug_filter: ~}
+#    requirements:
+#        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+#
+#food_city_utena_slash_filter:
+#    path: /Utena/{slug_filter}
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Utena, slug_filter: ~}
+#    requirements:
+#        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+#
+#food_city_plunge_slash_filter:
+#    path: /Plunge/{slug_filter}
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Plunge, slug_filter: ~}
+#    requirements:
+#        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+#
+#food_city_riga_slash_filter:
+#    path: /Riga/{slug_filter}
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga, slug_filter: ~}
+#    requirements:
+#        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+#
+#food_city_tallinn_slash_filter:
+#    path: /Tallinn/{slug_filter}
+#    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Tallinn, slug_filter: ~}
+#    requirements:
+#        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+#
+#food_test_daugis_report:
+#    path: /test/where/the/magic/happens/but/we/dont/know/anything
+#    defaults: { _controller: FoodAppBundle:Test:magicReportForDaugis }

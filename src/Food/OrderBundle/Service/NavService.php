@@ -295,11 +295,11 @@ class NavService extends ContainerAware
             'Order with Alcohol' => '0'
         ];
         $queryPart = $this->generateQueryPart($dataToPut);
-        $this->getContainer()->get('logger')->debug('INSERT INTO ' . $this->getHeaderTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')');
+        $this->getContainer()->get('logger')->alert('INSERT INTO ' . $this->getHeaderTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')');
         $rez = sqlsrv_query($this->getConnection(), 'INSERT INTO ' . $this->getHeaderTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')');
 
         if ($rez === false) {
-            $this->getContainer()->get('logger')->debug(print_r(sqlsrv_errors(), true));
+            $this->getContainer()->get('logger')->alert(print_r(sqlsrv_errors(), true));
             die(print_r(sqlsrv_errors(), true));
         }
 
@@ -331,8 +331,9 @@ class NavService extends ContainerAware
     public function putTheOrderToTheNAV(Order $order)
     {
         $dbgEmail = date("Y-m-d H:i:s") . "\n\n\n" . print_r($_SERVER, true) . "\n\n\n" . print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 0), true);
-        $this->getContainer()->get('logger')->debug("putTheOrderToTheNAV backtrace #" . $order->getId());
-        $this->getContainer()->get('logger')->debug($dbgEmail);
+        $logger = $this->getContainer()->get('logger');
+        $logger->alert("putTheOrderToTheNAV backtrace #" . $order->getId());
+        $logger->alert($dbgEmail);
 
         $orderNewId = $this->getNavOrderId($order);
 
@@ -374,7 +375,9 @@ class NavService extends ContainerAware
         $orderDate = $order->getOrderDate();
         $orderDate->add(new \DateInterval('P0DT0H'));
         $deliveryDate = $order->getDeliveryTime();
-        $deliveryDate->sub(new \DateInterval('P0DT3H'));
+        //~ $deliveryDate->sub(new \DateInterval('P0DT3H'));
+        $deliveryDate->sub(new \DateInterval('P0DT2H'));
+        //~ $deliveryDate->setTimezone(new DateTimeZone('UTC'));
         /**
          * This thing is when we move to daytime saving mode.
          * @todo put to the CONFIG or make AUTO
@@ -426,8 +429,8 @@ class NavService extends ContainerAware
         ];
         $queryPart = $this->generateQueryPart($dataToPut);
         $query = 'INSERT INTO ' . $this->getHeaderTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        $this->getContainer()->get('logger')->debug('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#HEADER');
-        $this->getContainer()->get('logger')->debug($query);
+        $logger->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#HEADER');
+        $logger->alert($query);
         $sqlSS = $this->initSqlConn()->query($query);
 
         $this->_processLines($order, $orderNewId);
@@ -479,8 +482,8 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        $this->getContainer()->get('logger')->debug('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#PREPAID');
-        $this->getContainer()->get('logger')->debug($query);
+        $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#PREPAID');
+        $this->getContainer()->get('logger')->alert($query);
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
@@ -516,8 +519,8 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        $this->getContainer()->get('logger')->debug('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#DELIVERY');
-        $this->getContainer()->get('logger')->debug($query);
+        $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#DELIVERY');
+        $this->getContainer()->get('logger')->alert($query);
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
@@ -644,8 +647,8 @@ class NavService extends ContainerAware
         ];
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        $this->getContainer()->get('logger')->debug('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#' . $key);
-        $this->getContainer()->get('logger')->debug($query);
+        $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#' . $key);
+        $this->getContainer()->get('logger')->alert($query);
 
         $sqlSS = $this->initSqlConn()->query($query);
 
@@ -675,8 +678,8 @@ class NavService extends ContainerAware
                 ];
                 $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
                 $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-                $this->getContainer()->get('logger')->debug('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query SUBQ]#' . $key . "-" . $okey);
-                $this->getContainer()->get('logger')->debug($query);
+                $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query SUBQ]#' . $key . "-" . $okey);
+                $this->getContainer()->get('logger')->alert($query);
                 $sqlSS = $this->initSqlConn()->query($query);
             }
         }

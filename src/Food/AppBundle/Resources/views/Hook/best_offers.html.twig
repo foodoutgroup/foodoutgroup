@@ -1,8 +1,4 @@
 {% if best_offers %}
-    {#<div class="items-list-title clearfix">
-        <h2>{% trans %}places.best_offers_block_title{% endtrans %}</h2>
-    </div>#}
-
     <div class="items-list clearfix best-offers-top-line">
         {% for best_offer in best_offers %}
             <div class="items-list-col">
@@ -18,9 +14,9 @@
                     <div class="button">{% trans %}index.get_this_offer{% endtrans %}</div>
                 </div></a>
             </div>
+            {% if  loop.index % 4 == 0 %}
+                <div class="clearfix"></div>
+            {% endif %}
         {% endfor %}
     </div>
-    {#<div class="all-best-offers-link clearfix text-center">#} {#// TODO: LANGUAGE #}
-        {#<a class="cupon-name" href="{{ path('food_best_offers_' ~ locale) }}">{% trans %}index.all_best_offers{% endtrans %}</a>#}
-    {#</div>#}
 {% endif %}

@@ -13,6 +13,7 @@ class SlugController extends Controller
 {
     public function processAction(Request $request, $slug)
     {
+
         // Check if user is not banned
         $ip = $request->getClientIp();
         // Dude is banned - hit him
@@ -74,10 +75,10 @@ class SlugController extends Controller
                 throw new NotFoundHttpException('Sorry page "'.$slug.'" does not exist');
             }
         }
-
         switch($slugRow->getType()) {
 
             case Slug::TYPE_PAGE:
+
                 return $this->forward('FoodAppBundle:StaticPage:index', ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName()]);
 
 

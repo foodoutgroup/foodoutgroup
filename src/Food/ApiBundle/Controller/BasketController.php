@@ -113,7 +113,7 @@ class BasketController extends Controller
         $this->get('logger')->alert('deleteBasketAction Request: ' . $id);
         try {
             $this->get('food_api.basket')->deleteBasket($id);
-            $response = '';
+            $response = ['status' => true];
         }  catch (ApiException $e) {
             $this->get('logger')->error('deleteBasketAction Error:' . $e->getMessage());
             $this->get('logger')->error('deleteBasketAction Trace:' . $e->getTraceAsString());

@@ -21,17 +21,40 @@ class StaticPageController extends Controller
             throw new NotFoundHttpException('Sorry not existing!');
         }
 
-        $this->findService();
-
+        $this->page->setContent(str_replace("&quot;", '"', $this->page->getContent()));
+        $serviceCollection = $this->initServiceTag();
+        foreach ($serviceCollection as $s){
+            $serviceContent = $s['service'];
+            if(is_array($serviceContent)) {
+                if(isset($serviceContent['template'])) {
+                    return $this->render($serviceContent['template'], isset($serviceContent['params']) ? $serviceContent['params'] : []);
+                }
+            } else {
+                $this->page->setContent(str_replace($s["replace"], $serviceContent, $this->page->getContent()));
+            }
+        }
 
         return $this->render('FoodAppBundle:StaticPage:index.html.twig', ['page' => $this->page]);
     }
 
-    private function findService()
+    private function initServiceTag()
     {
-        preg_match_all('/\[s=\"(.*)\"\]/', $this->page->getContent(), $matches);
 
-        var_dump($matches);
+        $serviceCollection = [];
+        preg_match_all('/\[s=\"(.*)\"\]/', htmlspecialchars_decode($this->page->getContent()), $matches);
+        if(count($matches[1])) {
+            for($i=0;$i<count($matches[1]); $i++) {
+                $service = $matches[1][$i];
+                $serviceDetail = explode(":", $service);
+                try {
+                    $serviceCollection[] = [
+                        'replace' => $matches[0][$i],
+                        'service' => $this->get($serviceDetail[0])->build($serviceDetail),
+                    ];
+                } catch (\Exception $ignore) {}
+            }
+        }
 
+        return $serviceCollection;
     }
 }
