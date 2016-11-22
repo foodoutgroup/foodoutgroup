@@ -161,6 +161,12 @@ class Order
 
     /**
      * @var string
+     * @ORM\Column(name="payment_method_code", type="string", length=100, nullable=true)
+     */
+    private $paymentMethodCode = null;
+
+    /**
+     * @var string
      * @ORM\Column(name="payment_status", type="string")
      */
     private $paymentStatus = 'new';
@@ -2403,5 +2409,21 @@ class Order
     public function setDuringZavalas($duringZavalas)
     {
         $this->duringZavalas = $duringZavalas;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentMethodCode()
+    {
+        return $this->paymentMethodCode;
+    }
+
+    /**
+     * @param string $paymentMethodCode
+     */
+    public function setPaymentMethodCode($paymentMethodCode)
+    {
+        $this->paymentMethodCode = $paymentMethodCode;
     }
 }
