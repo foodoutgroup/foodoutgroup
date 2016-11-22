@@ -128,6 +128,18 @@ class OrderDataImportService extends BaseService
                                 $realOrder->setPaymentMethod($newValue);
                             }
                             break;
+                        case 'payment_method':
+                            $oldValue = $realOrder->getPaymentMethodType();
+                            $newValue = $excelData[$mapIndex];
+                            $errorList = $this->validator->validateValue($newValue, array(
+                                new Type(array('type' => 'string')),
+                                new NotNull()
+                            ));
+                            if ($oldValue != $newValue && count($errorList) == 0) {
+                                $valueChanged = true;
+                                $realOrder->setPaymentMethodType($newValue);
+                            }
+                            break;
                         case 'delivery_price':
                             $oldValue = $realOrder->getDeliveryPrice();
                             $newValue = $excelData[$mapIndex];
@@ -212,6 +224,7 @@ class OrderDataImportService extends BaseService
             'place_name' => 4,
             'driver_id' => 5,
             'payment_method' => 10,
+            'payment_method_type' => 11,
             'delivery_price' => 13,
             'total' => 14,
             'discount_sum' => 15,

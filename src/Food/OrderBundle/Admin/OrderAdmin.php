@@ -301,6 +301,7 @@ class OrderAdmin extends FoodAdmin
                 )
             )
             ->add('paymentMethod', 'string', array('label' => 'admin.order.payment_method'))
+            ->add('paymentMethodCode', 'string', array('label' => 'admin.order.payment_method_code'))
             ->add('paymentStatus', 'sonata_type_collection',
                 array(
                     'label' => 'admin.order.payment_status',

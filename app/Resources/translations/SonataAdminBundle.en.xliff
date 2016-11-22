@@ -1348,6 +1348,10 @@
                 <source>admin.order.payment_method</source>
                 <target>Payment type</target>
             </trans-unit>
+            <trans-unit id="admin.order.payment_method_code">
+                <source>admin.order.payment_method_code</source>
+                <target>Payment type code</target>
+            </trans-unit>
             <trans-unit id="admin.order.payment_method_short">
                 <source>admin.order.payment_method_short</source>
                 <target>Payment type</target>
