@@ -502,11 +502,10 @@ class PlacesService extends ContainerAware
 
             $placePoint = $placePoints[0];
         }
-
         $workTime = $placePoint->{'getWd' . $day}();
         $workTime = preg_replace('~\s*-\s*~', '-', $workTime);
         $intervals = explode(' ', $workTime);
-        $firstOnDay = true;
+        $firstIntervalOnDay = true;
         $graph = [];
         foreach ($intervals as $interval) {
             if ($times = $this->parseIntervalToTimes($interval)) {
@@ -535,15 +534,15 @@ class PlacesService extends ContainerAware
                 $endMin = 30;
             }
 
+            $strtime = $firstIntervalOnDay ? '+1 hour' : '+30 minute';
 
-            $strtime = $firstOnDay ? '+1 hour' : '+30 minute';
-
-            if (0 != $dateShift ||
+            if (date('w') != $day ||
                 (date('H', strtotime($strtime)) < $startHour ||
-                    date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) < $startMin)
+                    date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) < $startMin) ||
+                        (date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) > 30)
             ) {
                 // first open on day +1h
-                if ($firstOnDay) {
+                if ($firstIntervalOnDay) {
                     $startHour++;
 
                     // else +30min
@@ -572,7 +571,7 @@ class PlacesService extends ContainerAware
                 }
             }
 
-            $firstOnDay = false;
+            $firstIntervalOnDay = false;
         }
 
         natsort($graph);

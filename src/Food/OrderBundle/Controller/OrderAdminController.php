@@ -301,7 +301,7 @@ class OrderAdminController extends Controller
         for ($i = 0; $i < $total; $i += 1000) {
             $qry = "SELECT 
                       o.id AS order_id, o.order_date, o.order_status, o.comment, o.place_comment, o.order_hash, 
-                      o.payment_method, o.payment_status, o.submitted_for_payment, o.last_updated, o.last_payment_error,
+                      o.payment_method, o.payment_method_code, o.payment_status, o.submitted_for_payment, o.last_updated, o.last_payment_error,
                       o.delivery_type, o.preorder,
                       o.mobile, o.nav_delivery_order, o.order_from_nav, o.nav_driver_code, 
                       o.place_id, o.point_id, o.place_name, o.place_point_address, o.place_point_city, o.place_point_self_delivery, 
