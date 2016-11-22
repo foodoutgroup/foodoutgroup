@@ -36,6 +36,41 @@
 {% endblock %}
 
 {% block body %}
+    {% if oldFriendIsHere == 1 %}
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $.fancybox({href: '#select-cities'});
+                $('#region_select').on('change', function(e){
+                    e.preventDefault();
+                    var city = $(this).val();
+                    if (city == 'Vilnius' || city == 'Kaunas' || city == 'Klaipeda') {
+                        $.fancybox.close();
+                    } else if (city != '') {
+                        //document.location = '{{ path('food_lang_homepage') }}cili/' + city;
+                        document.location = '{{ path('food_lang_homepage') }}' + city;
+                    } else {
+                        return false;
+                    }
+                });
+            });
+        </script>
+        <div style="display:none;">
+            <form id="select-cities">
+                <h1>{% trans %}places.region_select{% endtrans %}</h1>
+                <select id="region_select">
+                    <option label="-----" value="">-----</option>
+                    <option label="Vilnius" value="Vilnius">Vilnius</option>
+                    <option label="Kaunas" value="Kaunas">Kaunas</option>
+                    <option label="Klaipėda" value="Klaipeda">Klaipėda</option>
+                    <option label="Šiauliai" value="Siauliai">Šiauliai</option>
+                    <option label="Panevėžys" value="Panevezys">Panevėžys</option>
+                    <option label="Alytus" value="Alytus">Alytus</option>
+                    <option label="Utena" value="Alytus">Utena</option>
+                    <option label="Plungė" value="Plunge">Plungė</option>
+                </select>
+            </form>
+        </div>
+    {% endif %}
     {# Facebook ViewContent Begin #}
     <script>fbq('track', 'ViewContent');</script>
     {# Facebook ViewContent End #}

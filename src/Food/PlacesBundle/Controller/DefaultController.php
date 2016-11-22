@@ -25,7 +25,6 @@ class DefaultController extends Controller
         'Riga' => 'places.in_riga',
         'Rīga' => 'places.in_riga',
         'Tallinn' => 'places.in_tallinn',
-        'Tallinn' => 'places.in_tallinn'
     ];
 
     public function indexAction($recommended = false, $zaval = false)
