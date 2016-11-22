@@ -1055,6 +1055,10 @@
                 <source>admin.order.payment_method</source>
                 <target>Mokėjimo būdas</target>
             </trans-unit>
+            <trans-unit id="admin.order.payment_method_code">
+                <source>admin.order.payment_method_code</source>
+                <target>Mokėjimo būdo kodas</target>
+            </trans-unit>
             <trans-unit id="admin.order.payment_method_short">
                 <source>admin.order.payment_method_short</source>
                 <target>Mok. būdas</target>
