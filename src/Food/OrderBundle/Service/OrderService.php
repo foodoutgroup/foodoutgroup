@@ -620,7 +620,7 @@ class OrderService extends ContainerAware
 
             // Kitais atvejais tik keiciam statusa, nes gal taip reikia
         }
-
+        $order->setDriver(null);
         $order->setAcceptTime(new \DateTime("now"));
         $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
 
@@ -922,6 +922,24 @@ class OrderService extends ContainerAware
     public function statusForwarded($source = null, $statusMessage = null)
     {
         $this->chageOrderStatus(self::$status_forwarded, $source, $statusMessage);
+
+        $this->updateDriver();
+
+        return $this;
+    }
+
+    /**
+     * @param null|string $source
+     * @param null|string $statusMessage
+     *
+     * @return $this
+     */
+    public function statusPicked($source = null, $statusMessage = null)
+    {
+        $order = $this->getOrder();
+        $this->logDeliveryEvent($this->getOrder(), 'order_pickedup');
+        $this->getOrder()->setOrderPicked(true);
+        $this->sendOrderPickedMessage();
 
         $this->updateDriver();
 

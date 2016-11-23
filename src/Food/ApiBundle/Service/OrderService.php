@@ -569,7 +569,8 @@ class OrderService extends ContainerAware
                 // TODO Rodome nebe restorano, o dispeceriu nr
                 "info_number" => "+" . $this->container->getParameter('dispatcher_contact_phone'),
 //                'info_number' => '+'.$order->getPlacePoint()->getPhone(),
-                'message'     => $message
+                'message' => $message,
+                'picked'  => $order->getOrderPicked()
             ],
             'details'     => [
                 'restaurant_id'    => $order->getPlace()->getId(),
@@ -595,16 +596,18 @@ class OrderService extends ContainerAware
     {
         $returner = $this->getOrderForResponse($order);
 
-        $returner['location'] = [
-            'from' => [
-                'lat' => $order->getPlacePoint()->getLat(),
-                'lon' => $order->getPlacePoint()->getLon(),
-            ],
-            'to' => [
-                'lat' => $order->getAddressId()->getLat(),
-                'lon' => $order->getAddressId()->getLon(),
-            ]
-        ];
+        if ($order->getAddressId()) {
+            $returner['location'] = [
+                'from' => [
+                    'lat' => $order->getPlacePoint()->getLat(),
+                    'lon' => $order->getPlacePoint()->getLon(),
+                ],
+                'to' => [
+                    'lat' => $order->getAddressId()->getLat(),
+                    'lon' => $order->getAddressId()->getLon(),
+                ]
+            ];
+        }
         $returner['details']['restaurant_phone'] = $order->getPlacePoint()->getPhone();
         $returner['details']['restaurant_address'] = $order->getPlacePointAddress();
         $returner['details']['items'] = $this->_getItemsForResponseFull($order);
@@ -808,7 +811,7 @@ class OrderService extends ContainerAware
             FO::$status_failed             => 'failed',
             FO::$status_finished           => 'prepared',
             FO::$status_canceled           => 'canceled',
-            FO::$status_canceled_produced  => 'completed',
+            FO::$status_canceled_produced  => 'canceled_produced',
             FO::$status_pre                => 'pre'
         ];
 
