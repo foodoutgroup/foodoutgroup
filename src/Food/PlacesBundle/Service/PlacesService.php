@@ -537,7 +537,7 @@ class PlacesService extends ContainerAware
             $strtime = $firstIntervalOnDay ? '+1 hour' : '+30 minute';
 
             if (date('w') != $day ||
-                (date('H', strtotime($strtime)) < $startHour ||
+                (date('H', strtotime($strtime)) <= $startHour ||
                     date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) < $startMin) ||
                         (date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) > 30)
             ) {
