@@ -307,4 +307,23 @@ class PlaceController extends Controller
 
         return $review;
     }
+
+    public function getCiliUrlByCityAction(Request $request) {
+        $placeService = $this->get('food.places');
+        $found_data = ['status' => 'fail', 'city' => null, 'url' => null];
+        $city = $request->get('city');
+
+        if (!empty($city)) {
+            $url = $placeService->getCiliUrlByCity($city);
+            if (!empty($url)) {
+                $found_data = ['status' => 'success', 'city' => $city, 'url' => $url];
+            }
+        }
+
+        $response = new JsonResponse($found_data);
+        $response->setCharset('UTF-8');
+        $response->prepare($request);
+
+        return $response;
+    }
 }

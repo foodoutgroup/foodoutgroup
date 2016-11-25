@@ -600,11 +600,10 @@ food_1822_friends:
         _controller: FrameworkBundle:Redirect:redirect
         route: food_1822_friends_slash
         permanent: true
-
 food_1822_friends_slash:
     path: /1822/
     defaults: { _controller: FoodDishesBundle:Place:index, id: 63, slug: 'cili-pica', categoryId: '', oldFriendIsHere: 1 }
 
-food_cili_by_city:
-    path: /cili/{city}
-    defaults: { _controller: FoodDishesBundle:Place:index, id: 63, slug: 'cili-pica', categoryId: '', oldFriendIsHere: 1, city: ~ }
+food_cili_url_by_city:
+    path: /getCiliUrlByCity
+    defaults: { _controller: FoodDishesBundle:Place:getCiliUrlByCity }

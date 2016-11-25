@@ -2754,3 +2754,8 @@ div.coupon_form_popup {
         padding: 5px;
         border-radius: 4px;
     }
+    #select-cities button {
+        display: block;
+        width: 100px;
+        margin: 20px auto 0 auto;
+    }
