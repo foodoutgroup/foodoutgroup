@@ -1,6 +1,7 @@
 <?php
 namespace Food\DishesBundle\Service;
 
+use Food\DishesBundle\Entity\DishOption;
 use Food\UserBundle\Entity\User;
 use Food\DishesBundle\Entity\Dish;
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -183,5 +184,20 @@ class DishesService extends ContainerAware {
         }
 
         return true;
+    }
+
+    public function getDishOptionsPrices(Dish $dish)
+    {
+        $prices = array();
+        foreach ($dish->getSizes() as $dishSize) {
+            foreach ($dish->getOptions() as $option) {
+                foreach ($option->getSizesPrices() as $sizePrice) {
+                    if ($sizePrice->getUnit()->getId() == $dishSize->getUnit()->getId()) {
+                        $prices[$dishSize->getId()][$option->getId()] = $sizePrice->getPrice();
+                    }
+                }
+            }
+        }
+        return $prices;
     }
 }

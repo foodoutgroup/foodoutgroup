@@ -163,6 +163,13 @@ class DishOption implements Translatable
     private $groupName;
 
     /**
+     * @var DishOptionSizePrice[]
+     *
+     * @ORM\OneToMany(targetEntity="DishOptionSizePrice", mappedBy="dish_option", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $sizesPrices;
+
+    /**
      * Returns the name
      *
      * @return string
@@ -707,5 +714,38 @@ class DishOption implements Translatable
     public function getFirstLevel()
     {
         return $this->firstLevel;
+    }
+
+    /**
+     * Add sizes
+     *
+     * @param \Food\DishesBundle\Entity\DishOptionSizePrice $sizes
+     * @return Dish
+     */
+    public function addSizesPrice(\Food\DishesBundle\Entity\DishOptionSizePrice $sizePrice)
+    {
+        $this->sizesPrices[] = $sizePrice;
+
+        return $this;
+    }
+
+    /**
+     * Remove sizes
+     *
+     * @param \Food\DishesBundle\Entity\DishOptionSizePrice $sizes
+     */
+    public function removeSizesPrice(\Food\DishesBundle\Entity\DishOptionSizePrice $sizePrice)
+    {
+        $this->sizesPrices->removeElement($sizePrice);
+    }
+
+    /**
+     * Get sizes
+     *
+     * @return DishOptionSizePrice[]
+     */
+    public function getSizesPrices()
+    {
+        return $this->sizesPrices;
     }
 }

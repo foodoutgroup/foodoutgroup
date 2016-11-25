@@ -38,14 +38,14 @@ class DishController extends Controller
         } elseif ($sizeCount == 4) {
             $selSize = 3;
         }
-
         return $this->render(
             'FoodDishesBundle:Dish:dish.html.twig',
             array(
                 'dish' => $dishEnt,
                 'selectedSize' => $selSize,
                 'cart' => null,
-                'place' => $dishEnt->getPlace()
+                'place' => $dishEnt->getPlace(),
+                'dishOptionsPrices' => $this->get('food.dishes')->getDishOptionsPrices($dishEnt)
             )
         );
     }

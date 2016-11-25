@@ -2922,6 +2922,10 @@
                 <source>admin.citieslog</source>
                 <target>Cities log</target>
             </trans-unit>
+            <trans-unit id="admin.dish_option_size_price">
+                <source>admin.dish_option_size_price</source>
+                <target>Size/Price</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
