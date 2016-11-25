@@ -2741,3 +2741,21 @@ div.coupon_form_popup {
     margin-top: 10px;
     padding-top: 10px;
 }
+
+#select-cities {
+    padding: 20px;
+}
+    #select-cities > h1 {
+        margin: 0 0 20px;
+    }
+    #select-cities select {
+        font-size: 14px;
+        width: 100%;
+        padding: 5px;
+        border-radius: 4px;
+    }
+    #select-cities button {
+        display: block;
+        width: 100px;
+        margin: 20px auto 0 auto;
+    }

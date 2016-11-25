@@ -14,7 +14,7 @@ use Food\UserBundle\Entity\User;
 
 class PlaceController extends Controller
 {
-    public function indexAction($id, $slug, $categoryId, Request $request)
+    public function indexAction($id, $slug, $categoryId, Request $request, $oldFriendIsHere = false, $city = false)
     {
 
         $session = $this->get('session');
@@ -29,6 +29,10 @@ class PlaceController extends Controller
                 $this->generateUrl('food_homepage'),
                 307
             );
+        }
+
+        if (!empty($city)) {
+            $this->get('food.googlegis')->setCityOnlyToSession($city);
         }
 
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
@@ -113,6 +117,7 @@ class PlaceController extends Controller
                 'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
                 'breadcrumbData' => $breadcrumbData,
                 'current_url' => $current_url,
+                'oldFriendIsHere' => $oldFriendIsHere,
             )
         );
     }
@@ -301,5 +306,24 @@ class PlaceController extends Controller
         ;
 
         return $review;
+    }
+
+    public function getCiliUrlByCityAction(Request $request) {
+        $placeService = $this->get('food.places');
+        $found_data = ['status' => 'fail', 'city' => null, 'url' => null];
+        $city = $request->get('city');
+
+        if (!empty($city)) {
+            $url = $placeService->getCiliUrlByCity($city);
+            if (!empty($url)) {
+                $found_data = ['status' => 'success', 'city' => $city, 'url' => $url];
+            }
+        }
+
+        $response = new JsonResponse($found_data);
+        $response->setCharset('UTF-8');
+        $response->prepare($request);
+
+        return $response;
     }
 }

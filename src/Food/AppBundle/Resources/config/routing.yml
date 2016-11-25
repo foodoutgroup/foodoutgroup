@@ -177,7 +177,7 @@ food_slug:
     path:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Utena|Plunge|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita)[a-z0-9-\__\"„“\.\+]{4,}"
+        slug : "^(?!admin|cart|1822|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Utena|Plunge|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita)[a-z0-9-\__\"„“\.\+]{4,}"
 
 food_order_nav_test1:
     path: /order/nav_test1
@@ -592,3 +592,18 @@ food_city_tallinn_slash_filter:
 food_test_daugis_report:
     path: /test/where/the/magic/happens/but/we/dont/know/anything
     defaults: { _controller: FoodAppBundle:Test:magicReportForDaugis }
+
+# 1822
+food_1822_friends:
+    path: /1822
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: food_1822_friends_slash
+        permanent: true
+food_1822_friends_slash:
+    path: /1822/
+    defaults: { _controller: FoodDishesBundle:Place:index, id: 63, slug: 'cili-pica', categoryId: '', oldFriendIsHere: 1 }
+
+food_cili_url_by_city:
+    path: /getCiliUrlByCity
+    defaults: { _controller: FoodDishesBundle:Place:getCiliUrlByCity }
