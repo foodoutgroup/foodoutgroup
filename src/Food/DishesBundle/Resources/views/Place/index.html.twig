@@ -36,6 +36,46 @@
 {% endblock %}
 
 {% block body %}
+    {% if oldFriendIsHere == 1 %}
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $.fancybox({
+                    href: '#select-cities'
+                });
+
+                $('#select-cities').on('submit', function(e){
+                    e.preventDefault();
+                    var cities_form = $(this);
+                    var city = cities_form.find('#region_select').val();
+
+                    if (city == 'Vilnius' || city == 'Kaunas' || city == 'Klaipėda') {
+                        $.fancybox.close();
+                    } else if (city != '') {
+                        $.get("{{ path('food_cili_url_by_city') }}", { city: city }).done(function(data) {
+                            if (data && data.url && data.status == 'success') {
+                                document.location = '{{ path('food_lang_homepage') }}/' + data.url;
+                            } else {
+                                $.fancybox.close();
+                            }
+                        });
+                    }
+                    return false;
+                });
+            });
+        </script>
+        <div style="display:none;">
+            <form id="select-cities">
+                <h1>{% trans %}places.region_select{% endtrans %}</h1>
+                <select id="region_select">
+                    <option label="" value=""></option>
+                    {% for city in available_cities %}
+                        <option label="{{ city }}" value="{{ city }}">{{ city }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="button-normal submit">{% trans %}places.region_confirm{% endtrans %}</button>
+            </form>
+        </div>
+    {% endif %}
     {# Facebook ViewContent Begin #}
     <script>fbq('track', 'ViewContent');</script>
     {# Facebook ViewContent End #}

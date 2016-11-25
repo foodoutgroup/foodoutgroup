@@ -58,6 +58,14 @@
                 <source>places.home</source>
                 <target>Home</target>
             </trans-unit>
+            <trans-unit id="places.region_select" resname="places.region_select">
+                <source>places.region_select</source>
+                <target>Region select</target>
+            </trans-unit>
+            <trans-unit id="places.region_confirm" resname="places.region_confirm">
+                <source>places.region_confirm</source>
+                <target>Confirm</target>
+            </trans-unit>
             <trans-unit id="acd4bfe53bef0a8ccb990ef6be9f0e38" resname="places.menu">
                 <source>places.menu</source>
                 <target>Menu</target>

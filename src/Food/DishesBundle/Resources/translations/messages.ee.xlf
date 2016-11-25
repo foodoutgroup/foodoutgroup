@@ -44,6 +44,14 @@
             <trans-unit id="f2377b3408835a32e98c2b5eb8b21043" resname="places.home">
                 <source>places.home</source><target>Algus</target>
             </trans-unit>
+            <trans-unit id="places.region_select" resname="places.region_select">
+                <source>places.region_select</source>
+                <target>Region select</target>
+            </trans-unit>
+            <trans-unit id="places.region_confirm" resname="places.region_confirm">
+                <source>places.region_confirm</source>
+                <target>Confirm</target>
+            </trans-unit>
             <trans-unit id="acd4bfe53bef0a8ccb990ef6be9f0e38" resname="places.menu">
                 <source>places.menu</source><target>Menüü</target>
             </trans-unit>
