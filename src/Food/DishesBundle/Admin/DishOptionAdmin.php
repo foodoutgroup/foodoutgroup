@@ -10,7 +10,6 @@ use Sonata\AdminBundle\Form\FormMapper;
 class DishOptionAdmin extends FoodAdmin
 {
 
-    // Fields to be shown on create/edit forms
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->add(
@@ -35,11 +34,15 @@ class DishOptionAdmin extends FoodAdmin
             $formMapper->add('place', 'entity', array('class' => 'Food\DishesBundle\Entity\Place'));
         }
 
-        $formMapper->add('price')
-        ;
+        $formMapper->add('price');
+        $formMapper->add(
+            'sizesPrices',
+            'sonata_type_collection',
+            array('required' => false, 'by_reference' => false, 'label' => 'admin.dish_option_size_price'),
+            array('edit' => 'inline','inline' => 'table')
+        );
     }
 
-    // Fields to be shown on filter forms
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
@@ -48,35 +51,9 @@ class DishOptionAdmin extends FoodAdmin
             ->add('infocode', null, array('label' => 'admin.dish_option.infocode'))
             ->add('code', null, array('label' => 'admin.dish_option.code'))
             ->add('subCode', null, array('label' => 'admin.dish_option.sub_code'))
-            ->add('price', null, array('label' => 'admin.dish_option.price'))
-//            ->add(
-//                'createdAt',
-//                'doctrine_orm_datetime_range',
-//                array('label' => 'admin.created_at', 'format' => 'Y-m-d',),
-//                null,
-//                array(
-//                    'widget' => 'single_text',
-//                    'required' => false,
-//                    'format' => 'Y-m-d',
-//                    'attr' => array('class' => 'datepicker')
-//                )
-//            )
-//            ->add(
-//                'deletedAt',
-//                'doctrine_orm_datetime_range',
-//                array('label' => 'admin.deleted_at', 'format' => 'Y-m-d',),
-//                null,
-//                array(
-//                    'widget' => 'single_text',
-//                    'required' => false,
-//                    'format' => 'Y-m-d',
-//                    'attr' => array('class' => 'datepicker')
-//                )
-//            )
-        ;
+            ->add('price', null, array('label' => 'admin.dish_option.price'));
     }
 
-    // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
@@ -98,8 +75,7 @@ class DishOptionAdmin extends FoodAdmin
                     'delete' => array(),
                 ),
                 'label' => 'admin.actions'
-            ))
-        ;
+            ));
 
         $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
             ->setPlaceFilterEnabled(true);
@@ -116,5 +92,25 @@ class DishOptionAdmin extends FoodAdmin
             $object->setPlace($place);
         }
         parent::prePersist($object);
+        $this->fixRelations($object);
+    }
+
+    public function preUpdate($object)
+    {
+        parent::preUpdate($object);
+        $this->fixRelations($object);
+    }
+
+    /**
+     * @param \Food\DishesBundle\Entity\DishOption $object
+     */
+    private function fixRelations($object)
+    {
+        $dishSizesPrices = $object->getSizesPrices();
+        if (!empty($dishSizesPrices)) {
+            foreach ($dishSizesPrices as $dishSizesPrice) {
+                $dishSizesPrice->setDishOption($object);
+            }
+        }
     }
 }
