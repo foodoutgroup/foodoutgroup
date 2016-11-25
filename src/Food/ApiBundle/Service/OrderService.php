@@ -672,13 +672,16 @@ class OrderService extends ContainerAware
                 $sum += $detail->getOrigPrice() * $detail->getQuantity(); // egles prasymu rodom orig_price
             }
 
+            $options = [];
             foreach ($detail->getOptions() as $option) {
                 $sum += $option->getPrice() * $option->getQuantity();
+                $options[] = $option->getDishOptionId()->getId();
             }
             $sum = sprintf("%.0f", ($sum * 100));
             $returner[] = [
                 'title' => $detail->getDishName(), //.', '.$detail->getDishUnitName(), Po pokalbio su shernu - laikinai skipinam papildoma info.
                 'count' => $detail->getQuantity(),
+                'options' => $options,
                 'price' => [
                     'amount'   => $sum,
                     'currency' => $currency
