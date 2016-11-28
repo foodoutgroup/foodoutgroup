@@ -53,7 +53,7 @@
                     } else if (city != '') {
                         $.get("{{ path('food_cili_url_by_city') }}", { city: city }).done(function(data) {
                             if (data && data.url && data.status == 'success') {
-                                document.location = '{{ path('food_lang_homepage') }}/' + data.url;
+                                window.location.replace(data.url);
                             } else {
                                 $.fancybox.close();
                             }
