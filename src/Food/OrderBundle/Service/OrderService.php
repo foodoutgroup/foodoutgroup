@@ -3157,14 +3157,19 @@ class OrderService extends ContainerAware
      */
     public function isPlaceDeliveringToAddress(Place $place)
     {
+        $isDelivering = true;
+        $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
         $pointId = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')
             ->getPlacePointNear(
                 $place->getId(),
-                $this->container->get('food.googlegis')->getLocationFromSession(),
+                $locationData,
                 true
             )
         ;
-        return (!empty($pointId) ? 1 : 0);
+        if (empty($pointId) && isset($locationData['status'])) {
+            $isDelivering = false;
+        }
+        return $isDelivering;
     }
 
     /**
