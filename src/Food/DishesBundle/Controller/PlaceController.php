@@ -310,13 +310,19 @@ class PlaceController extends Controller
 
     public function getCiliUrlByCityAction(Request $request) {
         $placeService = $this->get('food.places');
+        $domain = $this->container->getParameter('domain');
+
         $found_data = ['status' => 'fail', 'city' => null, 'url' => null];
         $city = $request->get('city');
 
         if (!empty($city)) {
             $url = $placeService->getCiliUrlByCity($city);
             if (!empty($url)) {
-                $found_data = ['status' => 'success', 'city' => $city, 'url' => $url];
+                $found_data = [
+                    'status' => 'success',
+                    'city' => $city,
+                    'url' => '//' . $domain . '/' . $url
+                ];
             }
         }
 
