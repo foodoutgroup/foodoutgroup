@@ -203,24 +203,22 @@ class CouponRangeAdmin extends FoodAdmin
     private function generateCouponsRange($obj)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
+
+        $build_code = function(CouponRange $obj, $em) use ($obj, $em) {
+            do {
+                $new_code = strtoupper($obj->getPrefix() . substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 8) . $obj->getSuffix());
+                $query = "SELECT count(*) FROM `coupons` WHERE `code` = '" . $new_code . "' AND `active` = 1 AND `deleted_at` IS NULL";
+                $stmt = $em->getConnection()->prepare($query);
+                $stmt->execute();
+                $found = $stmt->fetchColumn(0);
+            } while($found);
+            return $new_code;
+        };
+
         $coupons_qty = $obj->getCouponsQty();
         if (!empty($coupons_qty) && $coupons_qty > 0) {
             for ($i = 1; $i <= $coupons_qty; $i++) {
-                $part = "";
-                if ($i < 1000) {
-                    $part = "0";
-                }
-                if ($i < 100) {
-                    $part="00";
-                }
-                if ($i < 10) {
-                    $part="000";
-                }
-                $someR = $i % 65;
-                $part2 = "";
-                if ($someR < 10) {
-                    $part2 = "0";
-                }
+                $code = $build_code($obj, $em);
                 $coupon = new Coupon();
                 $coupon->setCouponRange($obj);
                 $coupon->setActive($obj->getActive());
@@ -246,7 +244,7 @@ class CouponRangeAdmin extends FoodAdmin
                 $coupon->setEnableValidateDate($obj->getEnableValidateDate());
                 $coupon->setIgnoreCartPrice($obj->getIgnoreCartPrice());
                 $coupon->setIncludeDelivery($obj->getIncludeDelivery());
-                $coupon->setCode($obj->getPrefix() . $part . $i . $part2 . $someR . $obj->getSuffix());
+                $coupon->setCode($code);
                 $coupon->setName($obj->getName(). ' - ' . date('Y-m-d'));
                 if ($this->getContainer()->getParameter('country') == "LT"
                     || $this->getContainer()->getParameter('country')== 'LV') {
