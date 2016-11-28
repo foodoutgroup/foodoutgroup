@@ -675,7 +675,10 @@ class OrderService extends ContainerAware
             $options = [];
             foreach ($detail->getOptions() as $option) {
                 $sum += $option->getPrice() * $option->getQuantity();
-                $options[] = $option->getDishOptionId()->getId();
+                $options[] = [
+                    'id' => $option->getDishOptionId()->getId(),
+                    'title' => $option->getDishOptionId()->getName()
+                ];
             }
             $sum = sprintf("%.0f", ($sum * 100));
             $returner[] = [
