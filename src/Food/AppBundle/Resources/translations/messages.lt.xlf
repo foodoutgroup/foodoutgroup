@@ -1526,6 +1526,14 @@
                 <source>general.cities</source>
                 <target>Miestai</target>
             </trans-unit>
+            <trans-unit id="general.restaurant_not_delivering_to_address">
+                <source>general.restaurant_not_delivering_to_address</source>
+                <target>Restoranas, iš kurio pristatoma jūsų nurodytu adresu, šiuo metu nedirba.</target>
+            </trans-unit>
+            <trans-unit id="general.restaurant_not_delivering_to_address_explained">
+                <source>general.restaurant_not_delivering_to_address_explained</source>
+                <target>Restoranas, iš kurio pristatoma jūsų nurodytu adresu, šiuo metu nedirba. Restorano darbo laiką rasite rastorano puslapyje "Kaip rasti restoraną".</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

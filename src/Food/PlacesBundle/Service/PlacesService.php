@@ -225,6 +225,7 @@ class PlacesService extends ContainerAware
         $sortArrPrio = [];
         $sortArr = [];
         $sortTop = [];
+        $sortIsDelivering = [];
         foreach ($places as &$place) {
             $place['show_top'] = 0;
             if ($place['pp_count'] == 1) {
@@ -241,15 +242,17 @@ class PlacesService extends ContainerAware
                     }
                 }
             }
+            $place['is_delivering'] = $this->getContainer()->get('food.order')->isPlaceDeliveringToAddress($place['place']);
             /*if ($place['place']->getNavision()) {
                 $place['show_top'] = 1;
             }*/
             $sortArrPrio[] = intval($place['priority']);// + ($place['place']->getNavision() ? 20:0);
             $sortArr[] = $place['is_work'];
             $sortTop[] = $place['show_top'];
+            $sortIsDelivering[] = $place['is_delivering'];
         }
 
-        array_multisort($sortTop, SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
+        array_multisort($sortTop, SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortIsDelivering, SORT_NUMERIC, SORT_DESC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
 
         return $places;
     }
