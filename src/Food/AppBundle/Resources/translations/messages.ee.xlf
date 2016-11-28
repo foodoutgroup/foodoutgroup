@@ -1236,6 +1236,14 @@
                 <source>general.cities</source>
                 <target>Cities</target>
             </trans-unit>
+            <trans-unit id="general.restaurant_not_delivering_to_address">
+                <source>general.restaurant_not_delivering_to_address</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="general.restaurant_not_delivering_to_address_explained">
+                <source>general.restaurant_not_delivering_to_address_explained</source>
+                <target></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

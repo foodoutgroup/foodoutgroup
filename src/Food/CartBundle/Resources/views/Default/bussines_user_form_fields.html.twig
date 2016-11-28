@@ -49,6 +49,10 @@
             $('.preorder_dates').removeClass('hidden');
         });
     </script>
+    <div class="form-row">
+        <label><br></label>
+        <div class="clearfix">{{ 'general.restaurant_not_delivering_to_address_explained'|trans }}</div>
+    </div>
 {% endif %}
 <div class="preorder_dates {% if dataToLoad is empty or (dataToLoad is not empty and dataToLoad['pre-order'] is not empty and dataToLoad['pre-order'] == "not-this-time") %}hidden{% endif %}" >
     <div class="form-row">
