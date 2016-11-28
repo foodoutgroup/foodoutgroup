@@ -1448,11 +1448,11 @@
             </trans-unit>
             <trans-unit id="general.restaurant_not_delivering_to_address">
                 <source>general.restaurant_not_delivering_to_address</source>
-                <target></target>
+                <target>Restorāns, kas veic piegādēs uz norādīto adresi, šobrīd ir slēgts</target>
             </trans-unit>
             <trans-unit id="general.restaurant_not_delivering_to_address_explained">
                 <source>general.restaurant_not_delivering_to_address_explained</source>
-                <target></target>
+                <target>Restorāns, kas veic piegādēs uz norādīto adresi, šobrīd ir slēgts</target>
             </trans-unit>
         </body>
     </file>
