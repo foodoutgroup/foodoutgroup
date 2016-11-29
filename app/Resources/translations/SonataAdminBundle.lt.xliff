@@ -2994,6 +2994,10 @@
                 <source>admin.dish_option_size_price</source>
                 <target>Dydis/Kaina</target>
             </trans-unit>
+            <trans-unit id="admin.report.orders_by_restaurant">
+                <source>admin.report.orders_by_restaurant</source>
+                <target>Užsakymų ataskaita</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
