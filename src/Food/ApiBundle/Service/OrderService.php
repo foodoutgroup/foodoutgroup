@@ -677,8 +677,13 @@ class OrderService extends ContainerAware
                 $sum += $option->getPrice() * $option->getQuantity();
                 if ($option->getDishOptionId()) {
                     $options[] = [
-                        'id' => $option->getDishOptionId()->getId(),
-                        'title' => $option->getDishOptionId()->getName()
+                        'option_id' => $option->getDishOptionId()->getId(),
+                        'price' => [
+                            'count' => $option->getQuantity(),
+                            'amount' => $option->getPrice(),
+                            'currency' => $currency,
+                        ],
+                        'title' => $option->getDishOptionName()
                     ];
                 }
             }
