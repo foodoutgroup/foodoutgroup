@@ -60,11 +60,7 @@
             </trans-unit>
             <trans-unit id="places.region_select" resname="places.region_select">
                 <source>places.region_select</source>
-                <target>Pasirinkite regioną</target>
-            </trans-unit>
-            <trans-unit id="places.region_select" resname="places.region_select">
-                <source>places.region_select</source>
-                <target>Pasirinkite regioną</target>
+                <target>Select region</target>
             </trans-unit>
             <trans-unit id="places.region_confirm" resname="places.region_confirm">
                 <source>places.region_confirm</source>
