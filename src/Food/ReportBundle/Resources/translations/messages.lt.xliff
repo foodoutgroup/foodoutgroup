@@ -38,6 +38,38 @@
                 <source>admin.report.amount</source>
                 <target>Kiekis</target>
             </trans-unit>
+            <trans-unit id="admin.report.filters">
+                <source>admin.report.filters</source>
+                <target>Filtrai</target>
+            </trans-unit>
+            <trans-unit id="admin.report.history">
+                <source>admin.report.history</source>
+                <target>Istorija</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurants">
+                <source>admin.report.restaurants</source>
+                <target>Restoranai</target>
+            </trans-unit>
+            <trans-unit id="admin.report.from_to_label">
+                <source>admin.report.from_to_label</source>
+                <target>Data nuo - iki</target>
+            </trans-unit>
+            <trans-unit id="admin.report.report_type">
+                <source>admin.report.report_type</source>
+                <target>Ataskaitos tipas</target>
+            </trans-unit>
+            <trans-unit id="restaurant_report_type">
+                <source>restaurant_report_type</source>
+                <target>Restoranui</target>
+            </trans-unit>
+            <trans-unit id="custom_report_type">
+                <source>custom_report_type</source>
+                <target>Administracijai</target>
+            </trans-unit>
+            <trans-unit id="admin.report.generate_excel">
+                <source>admin.report.generate_excel</source>
+                <target>Generuoti Excel</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
