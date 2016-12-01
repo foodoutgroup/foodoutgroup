@@ -78,6 +78,29 @@ class OrderDataImportService extends BaseService
                 $newValue = null;
                 if (isset($excelData[$mapIndex])) {
                     switch ($mapKey) {
+                        case 'sf_number':
+                            $newValue = $excelData[$mapIndex];
+                            $errorList = $this->validator->validateValue($newValue, array(
+                                new Type(array('type' => 'string')),
+                                new NotNull()
+                            ));
+
+                            $oldValueSeries = $realOrder->getSfSeries();
+                            $oldValueNumber = $realOrder->getSfNumber();
+                            preg_match_all('/(\D+)(\d+)/', $newValue, $matches);
+                            $newValueSeries = $matches[1][0];
+                            $newValueNumber = $matches[2][0];
+
+                            if ($oldValueSeries != $newValueSeries && count($errorList) == 0) {
+                                $valueChanged = true;
+                                $realOrder->setSfSeries($newValueSeries);
+                            }
+
+                            if ($oldValueNumber != $newValueNumber && count($errorList) == 0) {
+                                $valueChanged = true;
+                                $realOrder->setSfNumber($newValueNumber);
+                            }
+                            break;
                         case 'order_date':
                             $oldValue = $realOrder->getOrderDate()->format('Y-m-d');
                             $newValue = $excelData[$mapIndex];
