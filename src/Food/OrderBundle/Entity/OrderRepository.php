@@ -824,6 +824,41 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     * @param string $orderStatus
+     * @return array
+     */
+    public function getAvgBasketByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
+    {
+        if (empty($orderStatus)) {
+            $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+        } else {
+            $orderStatus = "'".$orderStatus."'";
+        }
+
+        $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
+
+        $query = "
+          SELECT
+            DATE_FORMAT(o.order_date, '%y-%m-%d') AS report_day,
+            AVG(o.total) AS order_count
+          FROM orders o
+          WHERE
+            o.order_status IN ({$orderStatus})
+            AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
+            ".($mobile ? 'AND mobile=1':'')."
+          GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
+          ORDER BY DATE_FORMAT(o.order_date, '%y-%m-%d') ASC
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
      * @return Order[]|array
      */
     public function getUnclosedOrders()
