@@ -106,6 +106,10 @@
                 <source>places.work_hours</source>
                 <target>Darbo laikas</target>
             </trans-unit>
+            <trans-unit id="places.phone" resname="places.phone">
+                <source>places.phone</source>
+                <target>Telefonas</target>
+            </trans-unit>
             <trans-unit id="54a568de728392bbf4375dd135a19a2c" resname="%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų">
                 <source>%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų</source>
                 <target>%count% Atsiliepimas |%count% Atsiliepimai |%count% Atsiliepimų</target>

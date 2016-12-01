@@ -713,6 +713,10 @@
                 <source>admin.point.address</source>
                 <target>Address</target>
             </trans-unit>
+            <trans-unit id="admin.point.additional_info">
+                <source>admin.point.additional_info</source>
+                <target>Additional info</target>
+            </trans-unit>
             <trans-unit id="admin.point.company_code">
                 <source>admin.point.company_code</source>
                 <target>Comp. Code</target>

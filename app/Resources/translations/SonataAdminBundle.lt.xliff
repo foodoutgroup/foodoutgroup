@@ -588,6 +588,10 @@
                 <source>admin.point.address</source>
                 <target>Adresas</target>
             </trans-unit>
+            <trans-unit id="admin.point.additional_info">
+                <source>admin.point.additional_info</source>
+                <target>Papildoma info</target>
+            </trans-unit>
             <trans-unit id="admin.point.company_code">
                 <source>admin.point.company_code</source>
                 <target>Įm.kodas</target>

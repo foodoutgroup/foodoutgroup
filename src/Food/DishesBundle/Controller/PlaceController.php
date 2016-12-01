@@ -140,6 +140,10 @@ class PlaceController extends Controller
             $placePointData['allowInternetPayments'] = !$place->getDisabledOnlinePayment();
         }
 
+        if ($placePoint->getPhone()) {
+            $placePointData['phone'] = $placePoint->getPhone();
+        }
+
         $response = new JsonResponse($placePointData);
         $response->setCharset('UTF-8');
         $response->prepare($request);
