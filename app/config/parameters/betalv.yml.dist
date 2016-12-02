@@ -113,7 +113,7 @@ parameters:
     show_making_time_deadline: true
 
 pirminis_gateway:
-    datacash_url: 'https://accreditation.datacash.com/Transaction/acq_a'
+    datacash_url: 'https://mars.transaction.datacash.com/Transaction'
     swedbank:
-        vtid: "88121250"
-        password: "hrR4EntMZ"
+        vtid: "21918823"
+        password: "nttQXrhq7Yf6"
