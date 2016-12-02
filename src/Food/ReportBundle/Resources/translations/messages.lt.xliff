@@ -70,6 +70,107 @@
                 <source>admin.report.generate_excel</source>
                 <target>Generuoti Excel</target>
             </trans-unit>
+            <trans-unit id="admin.report.total">
+                <source>admin.report.total</source>
+                <target>Viso</target>
+            </trans-unit>
+
+            <trans-unit id="admin.report.nr">
+                <source>admin.report.nr</source>
+                <target>Nr.</target>
+            </trans-unit>
+            <trans-unit id="admin.report.order_date">
+                <source>admin.report.order_date</source>
+                <target>Užsakymo data</target>
+            </trans-unit>
+            <trans-unit id="admin.report.foodout_sf_number">
+                <source>admin.report.foodout_sf_number</source>
+                <target>Foodout SF numeris</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurant_name">
+                <source>admin.report.restaurant_name</source>
+                <target>Restorano pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.total_sum_with_vat">
+                <source>admin.report.total_sum_with_vat</source>
+                <target>Suma su PVM</target>
+            </trans-unit>
+            <trans-unit id="admin.report.paid_cash">
+                <source>admin.report.paid_cash</source>
+                <target>Mokėjimas grynais</target>
+            </trans-unit>
+            <trans-unit id="admin.report.total_sum_without_vat">
+                <source>admin.report.total_sum_without_vat</source>
+                <target>Suma be PVM</target>
+            </trans-unit>
+            <trans-unit id="admin.report.delivery_sum">
+                <source>admin.report.delivery_sum</source>
+                <target>Pristatymo suma (su PVM)</target>
+            </trans-unit>
+            <trans-unit id="admin.report.comissions_10_35">
+                <source>admin.report.comissions_10_35</source>
+                <target>Komisiniai 35%</target>
+            </trans-unit>
+            <trans-unit id="admin.report.comissions_15">
+                <source>admin.report.comissions_15</source>
+                <target>Komisiniai 1.5%</target>
+            </trans-unit>
+            <trans-unit id="admin.report.comissions_2">
+                <source>admin.report.comissions_2</source>
+                <target>Komisiniai 2%</target>
+            </trans-unit>
+<trans-unit id="admin.report.order_id">
+                <source>admin.report.order_id</source>
+                <target>Užsakymo ID</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurant_id">
+                <source>admin.report.restaurant_id</source>
+                <target>Restorano ID</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurant_placepoint_address">
+                <source>admin.report.restaurant_placepoint_address</source>
+                <target>Gamybos taško adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurant_placepoint_code">
+                <source>admin.report.restaurant_placepoint_code</source>
+                <target>Gamybos taško kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.client_name">
+                <source>admin.report.client_name</source>
+                <target>Kliento vardas/pavardė/pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.delivery_address">
+                <source>admin.report.delivery_address</source>
+                <target>Pristatymo adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.city">
+                <source>admin.report.city</source>
+                <target>Miestas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.payment_type">
+                <source>admin.report.payment_type</source>
+                <target>Mokėjimo būdo tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.payment_type_code">
+                <source>admin.report.payment_type_code</source>
+                <target>Mokėjimo būdo kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.driver_id">
+                <source>admin.report.driver_id</source>
+                <target>Vairuotojo ID</target>
+            </trans-unit>
+            <trans-unit id="admin.report.food_sum_with_vat">
+                <source>admin.report.food_sum_with_vat</source>
+                <target>Maistas (suma su PVM)</target>
+            </trans-unit>
+            <trans-unit id="admin.report.food_sum_without_vat">
+                <source>admin.report.food_sum_without_vat</source>
+                <target>Maistas (suma be PVM)</target>
+            </trans-unit>
+            <trans-unit id="admin.report.discount_sum">
+                <source>admin.report.discount_sum</source>
+                <target>Nuolaidos suma</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
