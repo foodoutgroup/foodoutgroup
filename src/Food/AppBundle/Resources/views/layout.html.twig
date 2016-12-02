@@ -183,7 +183,7 @@
                     <span>{% trans %}general.top_contact.worktime_days{% endtrans %}</span>
                     <span>{% trans %}general.top_contact.worktime{% endtrans %}</span>
                 </span>
-                <span class="phone"><a href="tel://{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}" title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>
+                <span class="phone"><a href="callto:{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}" title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>
             </div>
         </div>
     </div>

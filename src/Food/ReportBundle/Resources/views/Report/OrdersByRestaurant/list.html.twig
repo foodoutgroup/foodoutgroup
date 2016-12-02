@@ -1,0 +1,85 @@
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        .tab-content {
+            overflow: hidden;
+        }
+        .restaurant-list {
+            max-height: 600px;
+            overflow-y: scroll;
+        }
+        .report-filters label {
+            padding-bottom: 10px;
+        }
+        .report-filters label.restaurant-checklabel {
+            padding-bottom: 0px;
+        }
+    </style>
+{% endblock %}
+{% block actions %}{% endblock %}
+{% block side_menu %}{% endblock %}
+{% block list_filters %}{% endblock %}
+
+{% block list_table %}
+<div class="report_container">
+    <script type="application/javascript">
+        $(function() {
+            $('.datepicker').datepicker({
+                'dateFormat': 'yy-mm-dd'
+            });
+
+        });
+        function toggleRestaurants(source) {
+            checkboxes = $('.restaurant-checklabel input');
+            for(var i=0, n=checkboxes.length;i<n;i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+    </script>
+    <div class="tabbable"> <!-- Only required for left/right tabs -->
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#filters" data-toggle="tab">{{ 'admin.report.filters'|trans }}</a></li>
+            <li><a href="#history" data-toggle="tab">{{ 'admin.report.history'|trans }}</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="filters">
+                <form method="post" class="report-filters">
+                    <div class="span4">
+                        <div class="control-group">
+                            <label>{{ 'admin.report.from_to_label'|trans }}</label>
+                            <input class="datepicker" type="text" name="dateFrom" placeholder="yyyy-mm-dd" value=""/>
+                            <input class="datepicker" type="text" name="dateTo" placeholder="yyyy-mm-dd" value=""/>
+                        </div>
+                        <div class="control-group">
+                            <label>{{ 'admin.report.report_type'|trans }}</label>
+                            <select name="types">
+                                <option value=""></option>
+                                <option value="1">{{ 'restaurant_report_type'|trans }}</option>
+                                <option value="2">{{ 'custom_report_type'|trans }}</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn">{{ 'admin.report.generate_excel'|trans }}</button>
+                    </div>
+                    <div class="span4">
+                        <div class="control-group restaurant-list">
+                            <label>
+                                <input type="checkbox" class="toggle-restaurants" onClick="toggleRestaurants(this)">{{ 'admin.report.restaurants'|trans }}
+                            </label>
+                            {% for place in places %}
+                            <label class="checkbox restaurant-checklabel">
+                                <input type="checkbox" name="restaurants[]" value="{{ place.id }}"/> {{ place.name }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane" id="history">
+                {{ parent() }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
