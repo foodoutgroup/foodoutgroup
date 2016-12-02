@@ -14,6 +14,10 @@
             <trans-unit id="admin.report.daily_orders_graph" resname="admin.report.daily_orders_graph">
                 <source>admin.report.daily_orders_graph</source><target>Tellimusi päevas</target>
             </trans-unit>
+            <trans-unit id="admin.report.daily_avg_basket_graph" resname="admin.report.daily_avg_basket_graph">
+                <source>admin.report.daily_avg_basket_graph</source>
+                <target>Average basket</target>
+            </trans-unit>
             <trans-unit id="admin.report.order_amount" resname="admin.report.order_amount">
                 <source>admin.report.order_amount</source><target>Kogus</target>
             </trans-unit>

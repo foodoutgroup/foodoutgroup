@@ -284,7 +284,9 @@ class UsersController extends Controller
             $nameParsed = $this->parseName($name);
 
             if (!empty($facebook_id)) {
-                $email = $facebook_id . "@foodout.lt";
+                if (empty($email)) {
+                    $email = $facebook_id . "@foodout.lt";
+                }
                 $password = $facebook_id;
                 $this->validateUserRegister(
                     array(
@@ -293,17 +295,17 @@ class UsersController extends Controller
                         'facebook_id' => $facebook_id,
                     )
                 );
-            } else {
-                $this->validateUserRegister(
-                    array(
-                        'firstname' => $nameParsed['firstname'],
-                        'email' => $email,
-                        'phone' => $phone,
-                        'password' => $password,
-                        'birthday' => $birthday,
-                    )
-                );
             }
+
+            $this->validateUserRegister(
+                array(
+                    'firstname' => $nameParsed['firstname'],
+                    'email' => $email,
+                    'phone' => $phone,
+                    'password' => $password,
+                    'birthday' => $birthday,
+                )
+            );
 
             // User exists???
             if (!empty($facebook_id)) {
@@ -1003,22 +1005,18 @@ class UsersController extends Controller
                 'error' => 'Email empty',
                 'description' => $translator->trans('registration.email.is_empty')
             );
-        } else {
-            if (filter_var($data['email'], FILTER_VALIDATE_EMAIL) === false) {
-                $error = array(
-                    'error' => 'Email invalid',
-                    'description' => $translator->trans('food.marketing.bad_email')
-                );
-            }
+        } elseif (filter_var($data['email'], FILTER_VALIDATE_EMAIL) === false) {
+            $error = array(
+                'error' => 'Email invalid',
+                'description' => $translator->trans('food.marketing.bad_email')
+            );
         }
 
-        if (empty($data['facebook_id'])) {
-            if (empty($data['phone'])) {
-                $error = array(
-                    'error' => 'Phone empty',
-                    'description' => $translator->trans('registration.phone.is_empty')
-                );
-            }
+        if (empty($data['facebook_id']) && empty($data['phone'])) {
+            $error = array(
+                'error' => 'Phone empty',
+                'description' => $translator->trans('registration.phone.is_empty')
+            );
         }
 
         if (!empty($error)) {
