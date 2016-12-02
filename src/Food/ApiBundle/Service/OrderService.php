@@ -556,6 +556,11 @@ class OrderService extends ContainerAware
             $discount['total_sum_with_discount'] = $total_sum_with_discount;
         }
 
+        $productionTime = $order->getPlacePoint()->getProductionTime();
+        if (empty($productionTime) || $productionTime == 0) {
+            $productionTime = $order->getPlace()->getProductionTime();
+        }
+
         $returner = [
             'order_id'    => $order->getId(),
             'total_price' => [
@@ -575,6 +580,7 @@ class OrderService extends ContainerAware
             'details'     => [
                 'restaurant_id'    => $order->getPlace()->getId(),
                 'restaurant_title' => $order->getPlace()->getName(),
+                'production_time' => (!empty($productionTime) && $productionTime > 0 ? $productionTime : 30),
                 'payment_options'  => [
                     'cash'        => ($order->getPaymentMethod() == "local" ? true : false),
                     'credit_card' => ($order->getPaymentMethod() == "local.card" ? true : false),

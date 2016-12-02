@@ -33,13 +33,6 @@ class PlacePoint
     /**
      * @var string
      *
-     * @ORM\Column(name="additional_info", type="string", length=255, nullable=true)
-     */
-    private $additional_info;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="company_code", type="string", length=20)
      */
     private $company_code;
@@ -147,6 +140,13 @@ class PlacePoint
      * @ORM\Column(name="delivery_time_info", type="string", nullable=true)
      */
     private $deliveryTimeInfo;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="production_time", type="integer", nullable=true)
+     */
+    private $productionTime = 30;
 
     /**
      * @var bool
@@ -1386,25 +1386,25 @@ class PlacePoint
 
 
     /**
-     * Set additional_info
+     * Set productionTime
      *
-     * @param string $additionalInfo
+     * @param integer $productionTime
      * @return PlacePoint
      */
-    public function setAdditionalInfo($additionalInfo)
+    public function setProductionTime($productionTime)
     {
-        $this->additional_info = $additionalInfo;
+        $this->productionTime = $productionTime;
     
         return $this;
     }
 
     /**
-     * Get additional_info
+     * Get productionTime
      *
-     * @return string 
+     * @return integer 
      */
-    public function getAdditionalInfo()
+    public function getProductionTime()
     {
-        return $this->additional_info;
+        return $this->productionTime;
     }
 }

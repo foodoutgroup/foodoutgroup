@@ -1677,6 +1677,7 @@ class OrderService extends ContainerAware
         }
 
         // TODO negrazu, bet laikina :(
+        // Nieko nera labiau amzino, nei tai, kas laikina..
         $this->order = $order[0];
 
         return $this->order;

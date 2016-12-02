@@ -519,6 +519,10 @@
                 <source>admin.place.pickup_time</source>
                 <target>Pickup time</target>
             </trans-unit>
+            <trans-unit id="admin.place.production_time">
+                <source>admin.place.production_time</source>
+                <target>Production Time</target>
+            </trans-unit>
             <trans-unit id="admin.place.delivery_time_info">
                 <source>admin.place.delivery_time_info</source>
                 <target>Extra.deliv.info</target>
@@ -712,10 +716,6 @@
             <trans-unit id="admin.point.address">
                 <source>admin.point.address</source>
                 <target>Address</target>
-            </trans-unit>
-            <trans-unit id="admin.point.additional_info">
-                <source>admin.point.additional_info</source>
-                <target>Additional info</target>
             </trans-unit>
             <trans-unit id="admin.point.company_code">
                 <source>admin.point.company_code</source>
@@ -3378,10 +3378,6 @@
             <trans-unit id="admin.dish_option_size_price">
                 <source>admin.dish_option_size_price</source>
                 <target>Size/Price</target>
-            </trans-unit>
-            <trans-unit id="admin.report.orders_by_restaurant">
-                <source>admin.report.orders_by_restaurant</source>
-                <target>Orders report</target>
             </trans-unit>
         </body>
     </file>
