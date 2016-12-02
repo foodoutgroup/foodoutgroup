@@ -93,7 +93,9 @@ class UsersController extends Controller
             $nameParsed = $this->parseName($name);
 
             if (!empty($facebook_id)) {
-                $email = $facebook_id . "@foodout.lt";
+                if (empty($email)) {
+                    $email = $facebook_id . "@foodout.lt";
+                }
                 $password = $facebook_id;
                 $this->validateUserRegister(
                     array(
