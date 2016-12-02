@@ -168,7 +168,7 @@
                     {% trans %}cart.checkout.delivery_to_home{% endtrans %}
                 </label>
                 <label class="custom-radio{% if place.deliveryOptions == "delivery" %} disabled{% endif %}">
-                    <input type="radio" name="delivery_type" value="pickup" {% if takeAway %}checked="checked"{% endif %}{% if place.deliveryOptions == "delivery" %} disabled="disabled"{% endif %}>
+                    <input type="radio" name="delivery_type" value="pickup" {% if takeAway or place.deliveryOptions == "pickup" %}checked="checked"{% endif %}{% if place.deliveryOptions == "delivery" %} disabled="disabled"{% endif %}>
                     {% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
                 </label>
                 <br />

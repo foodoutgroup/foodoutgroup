@@ -130,8 +130,16 @@
                 <source>cart.checkout.cash_on_delivery</source>
                 <target>Skaidrā naudā piegādes brīdī</target>
             </trans-unit>
+            <trans-unit id="51401b79dc9570ffe18190d54b163466" resname="cart.checkout.cash_on_pickup">
+                <source>cart.checkout.cash_on_pickup</source>
+                <target>Skaidrā naudā piegādes brīdī</target>
+            </trans-unit>
             <trans-unit id="9330627cdb5d1c945003084cf89374b6" resname="cart.checkout.card_on_delivery">
                 <source>cart.checkout.card_on_delivery</source>
+                <target>Ar kredītkarti piegādes brīdī</target>
+            </trans-unit>
+            <trans-unit id="51401b79dc9570ffe18190d54b163466" resname="cart.checkout.card_on_pickup">
+                <source>cart.checkout.card_on_pickup</source>
                 <target>Ar kredītkarti piegādes brīdī</target>
             </trans-unit>
             <trans-unit id="619e1217b03f57e9d78b922c31b688d4" resname="cart.checkout.classic_seb">
