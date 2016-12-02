@@ -105,11 +105,17 @@
             <trans-unit id="51401b79dc9570ffe18190d54b163466" resname="cart.checkout.cash_on_delivery">
                 <source>cart.checkout.cash_on_delivery</source><target>Sularahas, kohaletoimetamise ajal</target>
             </trans-unit>
+            <trans-unit id="51401b79dc9570ffe18190d54b163466" resname="cart.checkout.cash_on_pickup">
+                <source>cart.checkout.cash_on_pickup</source><target>Sularahas, kohaletoimetamise ajal</target>
+            </trans-unit>
             <trans-unit id="cart.checkout.corporate_pay" resname="cart.checkout.corporate_pay">
                 <source>cart.checkout.corporate_pay</source><target>Maksekorraldusega, kuu lõpus</target>
             </trans-unit>
             <trans-unit id="9330627cdb5d1c945003084cf89374b6" resname="cart.checkout.card_on_delivery">
                 <source>cart.checkout.card_on_delivery</source><target>Krediitkaardiga, pärast kohaletoomist</target>
+            </trans-unit>
+            <trans-unit id="9330627cdb5d1c945003084cf89374b6" resname="cart.checkout.card_on_pickup">
+                <source>cart.checkout.card_on_pickup</source><target>Krediitkaardiga, pärast kohaletoomist</target>
             </trans-unit>
             <trans-unit id="cart.checkout.classic_seb" resname="cart.checkout.classic_seb">
                 <source>cart.checkout.classic_seb</source><target>SEB pangalink</target>
