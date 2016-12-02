@@ -1,0 +1,11 @@
+services:
+  sonata.admin.report.orders_by_restaurant:
+    class: Food\ReportBundle\Admin\OrdersByRestaurantAdmin
+    tags:
+      - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.report.orders_by_restaurant" }
+    arguments:
+      - ~
+      - Food\ReportBundle\Entity\OrdersByRestaurantFile
+      - 'FoodReportBundle:OrdersByRestaurantAdmin'
+    calls:
+      - [ setTranslationDomain, [SonataAdminBundle]]

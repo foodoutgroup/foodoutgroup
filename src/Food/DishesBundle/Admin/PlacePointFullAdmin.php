@@ -33,6 +33,7 @@ class PlacePointFullAdmin extends FoodAdmin
             ->add('public',null, array('label' => 'admin.point.public', 'required' => false))
             ->add('pickUp',null, array('label' => 'admin.point.pickup', 'required' => false))
             ->add('delivery', null, array('label' => 'admin.point.delivery', 'required' => false))
+            ->add('productionTime', null, array('label' => 'admin.place.production_time', 'required' => false))
             ->add('active', null, array('label' => 'admin.point.active', 'required' => false))
             ->add('fast', null, array('label' => 'admin.point.fast', 'required' => false))
             ->add('allowCash', null, array('label' => 'admin.point.allow_cash', 'required' => false))

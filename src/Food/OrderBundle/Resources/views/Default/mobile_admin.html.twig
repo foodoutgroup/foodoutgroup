@@ -84,7 +84,7 @@
         <tr>
             <td colspan="5">
                 <strong>{% trans %}mobile.restourant_place_point_address{% endtrans %}:</strong>
-                {{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.city }} <a href="tel:+{{ order.placePoint.phone }}">+{{ order.placePoint.phone }}</a>
+                {{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.city }} <a href="callto:+{{ order.placePoint.phone }}">+{{ order.placePoint.phone }}</a>
             </td>
         </tr>
         {% if order.deliveryType == 'deliver' %}
@@ -110,7 +110,7 @@
             </tr>
         {% endif %}
         <tr>
-            <td colspan="5"><strong>{% trans %}mobile.customer_phone{% endtrans %}:</strong> <a href="tel:+{{ order.orderExtra.phone }}">+{{ order.orderExtra.phone }}</td>
+            <td colspan="5"><strong>{% trans %}mobile.customer_phone{% endtrans %}:</strong> <a href="callto:+{{ order.orderExtra.phone }}">+{{ order.orderExtra.phone }}</td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>

@@ -253,6 +253,18 @@ var Place = {
                         paymentsDataField.removeClass('hidden');
                     }
 
+                    var pp_phone_holder = $('.pp_phone_holder');
+                    if (data.phone) {
+                        var pp_phone_link = pp_phone_holder.find('.pp_phone_link');
+                        var phone_number = '+' + data.phone;
+                        var phone_number_nice = phone_number.replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, "$1 $2 $3");
+                        pp_phone_link
+                            .attr('href', 'callto:' + phone_number)
+                            .attr('title', phone_number)
+                            .find('b').html(phone_number_nice)
+                        ;
+                        pp_phone_holder.show();
+                    }
 
                     var workTimesHolder = $('.work-times');
 

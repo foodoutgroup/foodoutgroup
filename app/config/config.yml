@@ -402,6 +402,7 @@ sonata_admin:
                       - sonata.admin.marketing_user
                       - sonata.admin.rfm
                       - sonata.admin.rfm_status
+                      - sonata.admin.report.orders_by_restaurant
                   roles: [ ROLE_ADMIN ]
               admin.restaurant:
                   items: ~

@@ -142,6 +142,13 @@ class PlacePoint
     private $deliveryTimeInfo;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="production_time", type="integer", nullable=true)
+     */
+    private $productionTime = 30;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="pick_up", type="boolean")
@@ -1377,4 +1384,27 @@ class PlacePoint
         return $this->work_times;
     }
 
+
+    /**
+     * Set productionTime
+     *
+     * @param integer $productionTime
+     * @return PlacePoint
+     */
+    public function setProductionTime($productionTime)
+    {
+        $this->productionTime = $productionTime;
+    
+        return $this;
+    }
+
+    /**
+     * Get productionTime
+     *
+     * @return integer 
+     */
+    public function getProductionTime()
+    {
+        return $this->productionTime;
+    }
 }
