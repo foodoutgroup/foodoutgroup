@@ -29,6 +29,22 @@
             <trans-unit id="admin.report.amount" resname="admin.report.amount">
                 <source>admin.report.amount</source><target>Kogus</target>
             </trans-unit>
+            <trans-unit id="admin.report.filters">
+                <source>admin.report.filters</source>
+                <target>Filters</target>
+            </trans-unit>
+            <trans-unit id="admin.report.history">
+                <source>admin.report.history</source>
+                <target>History</target>
+            </trans-unit>
+            <trans-unit id="restaurant_report_type">
+                <source>restaurant_report_type</source>
+                <target>For restaurant</target>
+            </trans-unit>
+            <trans-unit id="custom_report_type">
+                <source>custom_report_type</source>
+                <target>For administration</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
