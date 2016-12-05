@@ -1,4 +1,4 @@
-git <?php
+<?php
 
 namespace Food\PlacesBundle\Entity;
 
