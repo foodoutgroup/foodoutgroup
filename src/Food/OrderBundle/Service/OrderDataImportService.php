@@ -9,6 +9,7 @@ use PHPExcel_IOFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\TypeValidator;
@@ -89,22 +90,28 @@ class OrderDataImportService extends BaseService
                             $oldValueSeries = $realOrder->getSfSeries();
                             $oldValueNumber = $realOrder->getSfNumber();
                             preg_match_all('/(\D+)(\d+)/', $newValue, $matches);
-                            $newValueSeries = $matches[1][0];
-                            $newValueNumber = $matches[2][0];
+                            if (!empty($matches[1]) && !empty($matches[2])) {
+                                $newValueSeries = $matches[1][0];
+                                $newValueNumber = $matches[2][0];
 
-                            if ($oldValueSeries != $newValueSeries && count($errorList) == 0) {
-                                $valueChanged = true;
-                                $realOrder->setSfSeries($newValueSeries);
-                            }
+                                if ($oldValueSeries != $newValueSeries && count($errorList) == 0) {
+                                    $valueChanged = true;
+                                    $realOrder->setSfSeries($newValueSeries);
+                                }
 
-                            if ($oldValueNumber != $newValueNumber && count($errorList) == 0) {
-                                $valueChanged = true;
-                                $realOrder->setSfNumber($newValueNumber);
+                                if ($oldValueNumber != $newValueNumber && count($errorList) == 0) {
+                                    $valueChanged = true;
+                                    $realOrder->setSfNumber($newValueNumber);
+                                }
                             }
                             break;
                         case 'order_date':
                             $oldValue = $realOrder->getOrderDate()->format('Y-m-d');
-                            $newValue = date('Y-m-d', strtotime($excelData[$mapIndex]));
+
+                            // Excel returns reversed date. This
+                            list($month, $day, $year) = explode('-', $excelData[$mapIndex]);
+                            $newValue = date('Y-m-d', strtotime($year . '-' . $month . '-' . $day));
+
                             $errorList = $this->validator->validateValue($newValue, array(
                                 new Date(),
                                 new NotNull()
