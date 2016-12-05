@@ -72,6 +72,7 @@ class OrderDataImportService extends BaseService
         ));
 
         if (count($realOrder)) {
+            $epsilon = 0.001;
             foreach ($this->orderFieldsMapping as $mapKey => $mapIndex) {
                 $valueChanged = false;
                 $oldValue = null;
@@ -103,12 +104,12 @@ class OrderDataImportService extends BaseService
                             break;
                         case 'order_date':
                             $oldValue = $realOrder->getOrderDate()->format('Y-m-d');
-                            $newValue = $excelData[$mapIndex];
+                            $newValue = date('Y-m-d', strtotime($excelData[$mapIndex]));
                             $errorList = $this->validator->validateValue($newValue, array(
                                 new Date(),
                                 new NotNull()
                             ));
-                            if ($oldValue != date('Y-m-d', strtotime($newValue)) && count($errorList) == 0) {
+                            if ($oldValue != $newValue && count($errorList) == 0) {
                                 $valueChanged = true;
                                 $realOrder->setOrderDate(new \DateTime($newValue));
                             }
@@ -151,8 +152,8 @@ class OrderDataImportService extends BaseService
                                 $realOrder->setPaymentMethod($newValue);
                             }
                             break;
-                        case 'payment_method':
-                            $oldValue = $realOrder->getPaymentMethodType();
+                        case 'payment_method_code':
+                            $oldValue = $realOrder->getPaymentMethodCode();
                             $newValue = $excelData[$mapIndex];
                             $errorList = $this->validator->validateValue($newValue, array(
                                 new Type(array('type' => 'string')),
@@ -160,7 +161,7 @@ class OrderDataImportService extends BaseService
                             ));
                             if ($oldValue != $newValue && count($errorList) == 0) {
                                 $valueChanged = true;
-                                $realOrder->setPaymentMethodType($newValue);
+                                $realOrder->setPaymentMethodCode($newValue);
                             }
                             break;
                         case 'delivery_price':
@@ -170,7 +171,7 @@ class OrderDataImportService extends BaseService
                                 new Type(array('type' => 'double')),
                                 new NotNull()
                             ));
-                            if ($oldValue != $newValue && count($errorList) == 0) {
+                            if (!(abs($oldValue-$newValue) < $epsilon) && count($errorList) == 0) {
                                 $valueChanged = true;
                                 $realOrder->setDeliveryPrice($newValue);
                             }
@@ -183,7 +184,7 @@ class OrderDataImportService extends BaseService
                                 new NotNull()
                             ));
 
-                            if ($oldValue != $newValue && count($errorList) == 0) {
+                            if (!(abs($oldValue-$newValue) < $epsilon) && count($errorList) == 0) {
                                 $valueChanged = true;
                                 $realOrder->setTotal($newValue);
                             }
@@ -195,7 +196,7 @@ class OrderDataImportService extends BaseService
                                 new Type(array('type' => 'double')),
                                 new NotNull()
                             ));
-                            if ($oldValue != $newValue && count($errorList) == 0) {
+                            if (!(abs($oldValue-$newValue) < $epsilon) && count($errorList) == 0) {
                                 $valueChanged = true;
                                 $realOrder->setDiscountSum($newValue);
                             }
@@ -247,7 +248,7 @@ class OrderDataImportService extends BaseService
             'place_name' => 4,
             'driver_id' => 5,
             'payment_method' => 10,
-            'payment_method_type' => 11,
+            'payment_method_code' => 11,
             'delivery_price' => 13,
             'total' => 14,
             'discount_sum' => 15,
