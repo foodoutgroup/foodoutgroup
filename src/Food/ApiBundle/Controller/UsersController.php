@@ -119,7 +119,9 @@ class UsersController extends Controller
             // User exists???
             if (!empty($facebook_id)) {
                 $existingUser = $um->findUserBy(array('facebook_id' => $facebook_id));
-            } else {
+            }
+
+            if (!$existingUser) {
                 $existingUser = $um->findUserByEmail($email);
             }
 
