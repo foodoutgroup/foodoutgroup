@@ -594,16 +594,47 @@ food_test_daugis_report:
     defaults: { _controller: FoodAppBundle:Test:magicReportForDaugis }
 
 # 1822
-food_1822_friends:
+food_1822:
     path: /1822
     defaults:
         _controller: FrameworkBundle:Redirect:redirect
-        route: food_1822_friends_slash
+        route: food_1822_cili_slash
         permanent: true
-food_1822_friends_slash:
+food_1822_slash:
     path: /1822/
-    defaults: { _controller: FoodDishesBundle:Place:index, id: 63, slug: 'cili-pica', categoryId: '', oldFriendIsHere: 1 }
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: food_1822_cili_slash
+        permanent: true
+food_1822_cili:
+    path: /1822/cili-pica
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: food_1822_cili_slash
+        permanent: true
 
-food_cili_url_by_city:
-    path: /getCiliUrlByCity
-    defaults: { _controller: FoodDishesBundle:Place:getCiliUrlByCity }
+food_1822_cili_kaimas:
+    path: /1822/cili-kaimas
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: food_1822_cili_kaimas_slash
+        permanent: true
+food_1822_soya:
+    path: /1822/soya
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: food_1822_soya_slash
+        permanent: true
+food_1822_cili_slash:
+    path: /1822/cili-pica/
+    defaults: { _controller: FoodDishesBundle:Place:index, id: 63, slug: 'cili-pica', categoryId: '', oldFriendIsHere: 1 }
+food_1822_cili_kaimas_slash:
+    path: /1822/cili-kaimas/
+    defaults: { _controller: FoodDishesBundle:Place:index, id: 105, slug: 'cili-kaimas-vilnius', categoryId: '', oldFriendIsHere: 1 }
+food_1822_soya_slash:
+    path: /1822/soya/
+    defaults: { _controller: FoodDishesBundle:Place:index, id: 70, slug: 'soya', categoryId: '', oldFriendIsHere: 1 }
+
+food_place_url_by_city:
+    path: /getPlaceUrlByCity/{placeId}
+    defaults: { _controller: FoodDishesBundle:Place:getPlaceUrlByCity }

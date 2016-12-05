@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * PlacePoint
  *
  * @ORM\Table(name="place_point", indexes={@ORM\Index(name="city_idx", columns={"city"}),@ORM\Index(name="active_idx", columns={"active"}),@ORM\Index(name="fast_idx", columns={"fast"}),@ORM\Index(name="public_idx", columns={"public"}),@ORM\Index(name="deleted_at_idx", columns={"deleted_at"}),@ORM\Index(name="showable_idx", columns={"active", "deleted_at"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\PlacePointRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class PlacePoint
