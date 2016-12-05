@@ -813,6 +813,7 @@ class OrderService extends ContainerAware
     public function convertOrderStatus($status)
     {
         $statusMap = [
+            FO::$status_preorder           => 'preorder',
             FO::$status_nav_problems       => 'accepted',
             FO::$status_new                => 'accepted',
             FO::$status_unapproved         => 'accepted',
