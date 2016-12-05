@@ -51,7 +51,7 @@
                     if (city == 'Vilnius' || city == 'Kaunas' || city == 'Klaipėda') {
                         $.fancybox.close();
                     } else if (city != '') {
-                        $.get("{{ path('food_cili_url_by_city') }}", { city: city }).done(function(data) {
+                        $.get("{{ path('food_place_url_by_city', { 'placeId': place.getId }) }}", { city: city }).done(function(data) {
                             if (data && data.url && data.status == 'success') {
                                 window.location = data.url;
                             } else {
