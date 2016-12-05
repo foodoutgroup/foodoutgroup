@@ -812,13 +812,24 @@ class PlacesService extends ContainerAware
         return $places;
     }
 
-    public function getCiliUrlByCity($city)
+    /**
+     * @param $placeId
+     * @param $city
+     * @return null
+     */
+    public function getPlaceUrlByCity($placeId, $city)
     {
-        $placePoints = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findBy(array('city' => $city, 'active' => 1));
-        foreach ($placePoints as $placePoint) {
-            $place = $placePoint->getPlace();
-            if (strstr($place->getName(), 'Čili') && $place->getActive()) {
-                return $this->container->get('food.dishes.utils.slug')->getSlugByItem($place->getId(), 'place');
+        $current_place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find((int) $placeId);
+        if (!empty($current_place) && !empty($city)) {
+            $name = $current_place->getName();
+            $repo = $this->em()->getRepository('FoodDishesBundle:PlacePoint');
+            $placePoints = $repo->getPlacePointsBy($name, $city);
+
+            foreach ($placePoints as $placePoint) {
+                $place = $placePoint->getPlace();
+                if ($place->getActive()) {
+                    return $this->container->get('food.dishes.utils.slug')->getSlugByItem($place->getId(), 'place');
+                }
             }
         }
         return null;
