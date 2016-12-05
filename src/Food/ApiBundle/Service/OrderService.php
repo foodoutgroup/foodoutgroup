@@ -493,16 +493,10 @@ class OrderService extends ContainerAware
         if (!$isThisPre) {
             $billingUrl = $os->billOrder();
         }
-        $order = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->findOneBy(
-            [
-                'id' => $os->getOrder()->getId()
-            ]
-        )
-        ;
 
-        $this->container->get('doctrine')->getManager()->refresh($order);
+        $this->container->get('doctrine')->getManager()->refresh($os->getOrder());
 
-        return $this->getOrderForResponse($order, $list);
+        return $this->getOrderForResponse($os->getOrder(), $list);
     }
 
     public function getCartService()
@@ -663,6 +657,7 @@ class OrderService extends ContainerAware
         $currency = $this->container->getParameter('currency_iso');
 
         foreach ($order->getDetails() as $detail) {
+            $this->container->get('doctrine')->getManager()->refresh($detail);
             $sum = 0;
             //$sum+= $detail->getPrice() * $detail->getQuantity();
             if ($detail->getDishId()->getDiscountPricesEnabled() && $order->getPlace()->getDiscountPricesEnabled()) {
