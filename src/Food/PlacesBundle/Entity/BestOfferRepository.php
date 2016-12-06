@@ -21,13 +21,15 @@ class BestOfferRepository extends EntityRepository
         foreach ($offers as $off) {
             $activeIds[] = $off['id'];
         }
+        $items = array();
+        if (!empty($activeIds)) {
+            $queryBuilder = $this->createQueryBuilder('best_offer')
+                ->where('best_offer.id IN (:ids)')
+                ->setParameter('ids', $activeIds);
 
-        $queryBuilder = $this->createQueryBuilder('best_offer')
-                             ->where('best_offer.id IN (:ids)')
-                             ->setParameter('ids', $activeIds);
-
-        $items = $queryBuilder->getQuery()->getResult();
-        shuffle($items);
+            $items = $queryBuilder->getQuery()->getResult();
+            shuffle($items);
+        }
 
         return $items;
     }

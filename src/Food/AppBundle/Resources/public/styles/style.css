@@ -760,6 +760,109 @@ input.button {}
 .filters-list .custom-checkbox {margin-bottom: 11px; margin-left: 20px; margin-right: 20px; padding-left: 23px;}
 .filters-list > ul .custom-checkbox {margin-left: 0px;}
 .custom-checkbox .count {position: absolute; right: 3px; top: 3px; font-size: 10px; color: #b39196;}
+.category-list-holder {
+    display: block;
+    width: 164px;
+    border: 1px solid #F5F0EB;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0px 1px 5px 0px rgba(207, 180, 184, 0.44);
+}
+    .category-list-holder .category-title {
+        font-size: 18px;
+        color: #55422e;
+        font-weight: normal;
+        margin: 0;
+        padding: 10px 0 5px;
+    }
+    .category-list-holder hr {
+        margin: 3px 18px;
+        border-top: 1px dashed #a9a197;
+    }
+    .category-list-holder .category-list {
+        display: block;
+        list-style: none;
+        margin: 10px 0 0;
+        padding: 0;
+    }
+        .category-list-holder .category-list li {
+            display: block;
+            padding: 0;
+            margin: 0;
+        }
+            .category-list-holder .category-list li:focus a,
+            .category-list-holder .category-list li:hover a {
+                background-image: -webkit-linear-gradient(top, #f5f5f5 0%, #e8e8e8 100%);
+                background-image: -o-linear-gradient(top, #f5f5f5 0%, #e8e8e8 100%);
+                background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#e8e8e8));
+                background-image: linear-gradient(to bottom, #f5f5f5 0%, #e8e8e8 100%);
+                background-repeat: repeat-x;
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5', endColorstr='#ffe8e8e8', GradientType=0);
+                background-color: #e8e8e8;
+            }
+
+.btn-walk {
+    display: inline-block;
+    border: 2px solid #F2C74C;
+    background-color: #FFDC36;
+    padding: 2px 9px;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px 0 rgba(207, 180, 184, 0.44);
+    -webkit-transition: border 0.2s ease-in-out;
+    -moz-transition: border 0.2s ease-in-out;
+    -o-transition: border 0.2s ease-in-out;
+    transition: border 0.2s ease-in-out;
+}
+.btn-walk:focus,
+.btn-walk:hover {
+    border: 2px solid #ecaf00;
+}
+.btn-walk > span {
+        display: inline-block;
+        vertical-align: top;
+        color: #333;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+    .btn-walk > span > b {
+        display: inline-block;
+        vertical-align: bottom;
+        margin: 0 5px 0 4px;
+        font-weight: normal;
+        text-shadow: 0 0 0 #000;
+    }
+.icon-walk {
+    display: inline-block;
+    vertical-align: middle;
+    width: 9px;
+    height: 16px;
+    background: url(/bundles/foodapp/images/walking-icon.png) no-repeat center center;
+}
+.icon-arrow {
+    display: inline-block;
+    vertical-align: middle;
+    width: 3px;
+    height: 5px;
+    margin-top: 1px;
+    background: url(/bundles/foodapp/images/arrow-right.png) no-repeat center center;
+}
+.pp_phone_link {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+    .pp_phone_link b {
+        font-weight: normal;
+    }
+.phone_ico {
+    display: inline-block;
+    vertical-align: top;
+    margin: 2px 5px 0 0;
+    width: 16px;
+    height: 16px;
+    background: url(/bundles/foodapp/images/phone_ico.png) no-repeat center center;
+}
 
 .clear-filter-link {display: block; color: #b39196; font-size: 10px; text-transform: uppercase; line-height: 17px; padding: 15px 20px; padding-left: 30px; background: url(/bundles/foodapp/images/remove-ico.png) no-repeat 19px center; letter-spacing: 1.7px; text-align: center;}
 
@@ -2741,3 +2844,21 @@ div.coupon_form_popup {
     margin-top: 10px;
     padding-top: 10px;
 }
+
+#select-cities {
+    padding: 20px;
+}
+    #select-cities > h1 {
+        margin: 0 0 20px;
+    }
+    #select-cities select {
+        font-size: 14px;
+        width: 100%;
+        padding: 5px;
+        border-radius: 4px;
+    }
+    #select-cities button {
+        display: block;
+        width: 100px;
+        margin: 20px auto 0 auto;
+    }

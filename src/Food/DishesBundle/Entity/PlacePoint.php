@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * PlacePoint
  *
  * @ORM\Table(name="place_point", indexes={@ORM\Index(name="city_idx", columns={"city"}),@ORM\Index(name="active_idx", columns={"active"}),@ORM\Index(name="fast_idx", columns={"fast"}),@ORM\Index(name="public_idx", columns={"public"}),@ORM\Index(name="deleted_at_idx", columns={"deleted_at"}),@ORM\Index(name="showable_idx", columns={"active", "deleted_at"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\PlacePointRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class PlacePoint
@@ -29,6 +29,13 @@ class PlacePoint
      * @ORM\Column(name="address", type="string", length=255)
      */
     private $address;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="additional_info", type="string", length=255, nullable=true)
+     */
+    private $additional_info;
 
     /**
      * @var string
@@ -140,6 +147,13 @@ class PlacePoint
      * @ORM\Column(name="delivery_time_info", type="string", nullable=true)
      */
     private $deliveryTimeInfo;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="production_time", type="integer", nullable=true)
+     */
+    private $productionTime = 30;
 
     /**
      * @var bool
@@ -1377,4 +1391,43 @@ class PlacePoint
         return $this->work_times;
     }
 
+
+    /**
+     * Set productionTime
+     *
+     * @param integer $productionTime
+     * @return PlacePoint
+     */
+    public function setProductionTime($productionTime)
+    {
+        $this->productionTime = $productionTime;
+    
+        return $this;
+    }
+
+    /**
+     * Get productionTime
+     *
+     * @return integer 
+     */
+    public function getProductionTime()
+    {
+        return $this->productionTime;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdditionalInfo()
+    {
+        return $this->additional_info;
+    }
+
+    /**
+     * @param string $additional_info
+     */
+    public function setAdditionalInfo($additional_info)
+    {
+        $this->additional_info = $additional_info;
+    }
 }

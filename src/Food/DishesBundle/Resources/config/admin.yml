@@ -451,3 +451,14 @@ services:
         - ~
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.dish.dish_option_size_price:
+      class: Food\DishesBundle\Admin\DishOptionSizePriceAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.dish_option_size_price" }
+      arguments:
+        - ~
+        - Food\DishesBundle\Entity\DishOptionSizePrice
+        - ~
+      calls:
+        - [ setTranslationDomain, [SonataAdminBundle]]

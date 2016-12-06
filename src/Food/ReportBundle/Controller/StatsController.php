@@ -15,12 +15,14 @@ class StatsController extends Controller
             $dateTo = new \DateTime("now");
 
             $orderCountGraph = $reportService->prepareOrderCountByDayGraph($dateFrom, $dateTo);
+            $avgBasketGraph = $reportService->prepareAvgBasketByDayGraph($dateFrom, $dateTo);
             $smsCountGraph = $reportService->prepareSmsCountByDayGraph($dateFrom, $dateTo);
 
             return $this->render(
                 'FoodReportBundle:Report:dasboard_stats.html.twig',
                 array(
                     'orderCountGraph' => $orderCountGraph,
+                    'avgBasketGraph' => $avgBasketGraph,
                     'smsCountGraph' => $smsCountGraph,
                 )
             );

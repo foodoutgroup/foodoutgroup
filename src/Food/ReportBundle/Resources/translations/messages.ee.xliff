@@ -14,6 +14,10 @@
             <trans-unit id="admin.report.daily_orders_graph" resname="admin.report.daily_orders_graph">
                 <source>admin.report.daily_orders_graph</source><target>Tellimusi päevas</target>
             </trans-unit>
+            <trans-unit id="admin.report.daily_avg_basket_graph" resname="admin.report.daily_avg_basket_graph">
+                <source>admin.report.daily_avg_basket_graph</source>
+                <target>Average basket</target>
+            </trans-unit>
             <trans-unit id="admin.report.order_amount" resname="admin.report.order_amount">
                 <source>admin.report.order_amount</source><target>Kogus</target>
             </trans-unit>
@@ -28,6 +32,22 @@
             </trans-unit>
             <trans-unit id="admin.report.amount" resname="admin.report.amount">
                 <source>admin.report.amount</source><target>Kogus</target>
+            </trans-unit>
+            <trans-unit id="admin.report.filters">
+                <source>admin.report.filters</source>
+                <target>Filters</target>
+            </trans-unit>
+            <trans-unit id="admin.report.history">
+                <source>admin.report.history</source>
+                <target>History</target>
+            </trans-unit>
+            <trans-unit id="restaurant_report_type">
+                <source>restaurant_report_type</source>
+                <target>For restaurant</target>
+            </trans-unit>
+            <trans-unit id="custom_report_type">
+                <source>custom_report_type</source>
+                <target>For administration</target>
             </trans-unit>
         </body>
     </file>

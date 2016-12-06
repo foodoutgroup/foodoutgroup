@@ -62,6 +62,7 @@
 
                 </div>
                 {% if dish.options|length > 0 %}
+                    {% set dishOptionsPrices = dish_service.getDishOptionsPrices(dish.dishId) %}
                     {% for option in dish.options %}
                         <div class="clearfix">
                             <div class="extra" title="{{ option.dishOptionId.name }}">{{ option.dishOptionId.name }}</div>
@@ -72,7 +73,11 @@
                                         <span class="euro">/&nbsp;{{  '0'|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>
                                     {% endif %}
                                 {% else %}
+                                    {% if dishOptionsPrices[dish.dishSizeId.id] %}
+                                        {{ currency_display|raw }}{{ dishOptionsPrices[dish.dishSizeId.id][option.dishOptionId.id]|number_format(2, ',', ' ') }}
+                                    {% else %}
                                     {{ currency_display|raw }}{{ option.dishOptionId.price|number_format(2, ',', ' ') }}
+                                    {% endif %}
                                     {% if currency_alternative %}
                                         <span class="euro">/&nbsp;{{  misc_utils.getLitas(option.dishOptionId.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>
                                     {% endif %}
@@ -144,8 +149,7 @@
         {% endif %}
 
         {# Nemokamas pristatymas nuo XX eur #}
-
-        {% if takeAway == false and enable_free_delivery_for_big_basket and not freeDelivery %}
+        {% if place.deliveryOptions != 'pickup' and enable_free_delivery_for_big_basket and not freeDelivery %}
             {% if left_sum > 0 and self_delivery == 0 %}
                 <div class="alert alert-warning text-left left-to-free-message">
                     <span>{% trans with {'%left_sum%': left_sum} %}cart.left_to_free_delivery{% endtrans %}</span>
@@ -163,7 +167,7 @@
                     {% trans %}cart.checkout.delivery_to_home{% endtrans %}
                 </label>
                 <label class="custom-radio{% if place.deliveryOptions == "delivery" %} disabled{% endif %}">
-                    <input type="radio" name="delivery_type" value="pickup" {% if takeAway %}checked="checked"{% endif %}{% if place.deliveryOptions == "delivery" %} disabled="disabled"{% endif %}>
+                    <input type="radio" name="delivery_type" value="pickup" {% if takeAway or place.deliveryOptions == "pickup" %}checked="checked"{% endif %}{% if place.deliveryOptions == "delivery" %} disabled="disabled"{% endif %}>
                     {% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
                 </label>
                 <br />

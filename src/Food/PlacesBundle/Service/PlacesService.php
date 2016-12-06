@@ -225,6 +225,7 @@ class PlacesService extends ContainerAware
         $sortArrPrio = [];
         $sortArr = [];
         $sortTop = [];
+        $sortIsDelivering = [];
         foreach ($places as &$place) {
             $place['show_top'] = 0;
             if ($place['pp_count'] == 1) {
@@ -241,15 +242,17 @@ class PlacesService extends ContainerAware
                     }
                 }
             }
+            $place['is_delivering'] = $this->getContainer()->get('food.order')->isPlaceDeliveringToAddress($place['place']);
             /*if ($place['place']->getNavision()) {
                 $place['show_top'] = 1;
             }*/
             $sortArrPrio[] = intval($place['priority']);// + ($place['place']->getNavision() ? 20:0);
             $sortArr[] = $place['is_work'];
             $sortTop[] = $place['show_top'];
+            $sortIsDelivering[] = $place['is_delivering'];
         }
 
-        array_multisort($sortTop, SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
+        array_multisort($sortTop, SORT_NUMERIC, SORT_DESC, $sortArr, SORT_NUMERIC, SORT_ASC, $sortIsDelivering, SORT_NUMERIC, SORT_DESC, $sortArrPrio, SORT_NUMERIC, SORT_DESC, $places);
 
         return $places;
     }
@@ -539,7 +542,7 @@ class PlacesService extends ContainerAware
             $strtime = $firstIntervalOnDay ? '+1 hour' : '+30 minute';
 
             if (date('w') != $day ||
-                (date('H', strtotime($strtime)) < $startHour ||
+                (date('H', strtotime($strtime)) <= $startHour ||
                     date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) < $startMin) ||
                         (date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) > 30)
             ) {
@@ -809,5 +812,28 @@ class PlacesService extends ContainerAware
             $places[] = $placePoint->getPlace();
         }
         return $places;
+    }
+
+    /**
+     * @param $placeId
+     * @param $city
+     * @return null
+     */
+    public function getPlaceUrlByCity($placeId, $city)
+    {
+        $current_place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find((int) $placeId);
+        if (!empty($current_place) && !empty($city)) {
+            $name = $current_place->getName();
+            $repo = $this->em()->getRepository('FoodDishesBundle:PlacePoint');
+            $placePoints = $repo->getPlacePointsBy($name, $city);
+
+            foreach ($placePoints as $placePoint) {
+                $place = $placePoint->getPlace();
+                if ($place->getActive()) {
+                    return $this->container->get('food.dishes.utils.slug')->getSlugByItem($place->getId(), 'place');
+                }
+            }
+        }
+        return null;
     }
 }

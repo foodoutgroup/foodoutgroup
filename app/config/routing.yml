@@ -83,14 +83,14 @@ food_homepage:
 
 
 food_cili_slash:
-    path: /cili/
+    path: /cilipica/
     defaults:
         _controller: FrameworkBundle:Redirect:urlRedirect
         path: /lt/cili-pica
         permanent: true
 
 food_cili:
-    path: /cili
+    path: /cilipica
     defaults:
         _controller: FrameworkBundle:Redirect:urlRedirect
         path: /lt/cili-pica

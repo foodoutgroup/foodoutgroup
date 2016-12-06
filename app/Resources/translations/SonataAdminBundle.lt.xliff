@@ -423,6 +423,10 @@
                 <source>admin.place.pickup_time</source>
                 <target>Atsiemim. trukmė</target>
             </trans-unit>
+            <trans-unit id="admin.place.production_time">
+                <source>admin.place.production_time</source>
+                <target>Gamybos trukmė</target>
+            </trans-unit>
             <trans-unit id="admin.place.delivery_time_info">
                 <source>admin.place.delivery_time_info</source>
                 <target>Papild. trukm. info.</target>
@@ -587,6 +591,10 @@
             <trans-unit id="admin.point.address">
                 <source>admin.point.address</source>
                 <target>Adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.point.additional_info">
+                <source>admin.point.additional_info</source>
+                <target>Papildoma info</target>
             </trans-unit>
             <trans-unit id="admin.point.company_code">
                 <source>admin.point.company_code</source>
@@ -1054,6 +1062,10 @@
             <trans-unit id="admin.order.payment_method">
                 <source>admin.order.payment_method</source>
                 <target>Mokėjimo būdas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.payment_method_code">
+                <source>admin.order.payment_method_code</source>
+                <target>Mokėjimo būdo kodas</target>
             </trans-unit>
             <trans-unit id="admin.order.payment_method_short">
                 <source>admin.order.payment_method_short</source>
@@ -2986,6 +2998,54 @@
                 <source>admin.citieslog</source>
                 <target>Miestų istorija</target>
             </trans-unit>
+            <trans-unit id="admin.dish_option_size_price">
+                <source>admin.dish_option_size_price</source>
+                <target>Dydis/Kaina</target>
+            </trans-unit>
+             <trans-unit id="admin.report.orders_by_restaurant">
+                 <source>admin.report.orders_by_restaurant</source>
+                 <target>Užsakymų ataskaita</target>
+             </trans-unit>
+             <trans-unit id="Orders By Restaurant File List">
+                 <source>Orders By Restaurant File List</source>
+                 <target>Užsakymų ataskaita</target>
+             </trans-unit>
+             <trans-unit id="admin.report.filename">
+                 <source>admin.report.filename</source>
+                 <target>Failas</target>
+             </trans-unit>
+             <trans-unit id="admin.report.type">
+                 <source>admin.report.type</source>
+                 <target>Tipas</target>
+             </trans-unit>
+             <trans-unit id="admin.report.date_from">
+                 <source>admin.report.date_from</source>
+                 <target>Data nuo</target>
+             </trans-unit>
+             <trans-unit id="admin.report.date_to">
+                 <source>admin.report.date_to</source>
+                 <target>Data iki</target>
+             </trans-unit>
+             <trans-unit id="admin.report.restaurants">
+                 <source>admin.report.restaurants</source>
+                 <target>Restoranai</target>
+             </trans-unit>
+             <trans-unit id="admin.report.date_created">
+                 <source>admin.report.date_created</source>
+                 <target>Sukūrimo data</target>
+             </trans-unit>
+             <trans-unit id="restaurant_report_type">
+                 <source>restaurant_report_type</source>
+                 <target>Restoranui</target>
+             </trans-unit>
+             <trans-unit id="custom_report_type">
+                 <source>custom_report_type</source>
+                 <target>Administracijai</target>
+             </trans-unit>
+             <trans-unit id="admin.report.documents_generated_preview_in_history">
+                 <source>admin.report.documents_generated_preview_in_history</source>
+                 <target>Dokumentai sugeneruoti, peržiūrėkite istorijoje</target>
+             </trans-unit>
         </body>
     </file>
 </xliff>

@@ -87,6 +87,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('deliveryOptions', 'choice', ['label' => 'admin.place.delivery_options', 'required' => true, 'choices' => $deliveryOptionChoices])
             ->add('deliveryTime', null, ['label' => 'admin.place.delivery_time'])
             ->add('pickupTime', null, ['label' => 'admin.place.pickup_time'])
+            ->add('productionTime', null, ['label' => 'admin.place.production_time', 'required' => false])
             ->add('deliveryTimeInfo', null, ['label' => 'admin.place.delivery_time_info', 'required' => false])
             ->add('deliveryPrice', null, ['label' => 'admin.place.delivery_price'])
             ->add('cartMinimum', null, ['label' => 'admin.place.cart_minimum'])

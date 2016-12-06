@@ -58,6 +58,14 @@
                 <source>places.home</source>
                 <target>Sākums</target>
             </trans-unit>
+            <trans-unit id="places.region_select" resname="places.region_select">
+                <source>places.region_select</source>
+                <target>Select region</target>
+            </trans-unit>
+            <trans-unit id="places.region_confirm" resname="places.region_confirm">
+                <source>places.region_confirm</source>
+                <target>Confirm</target>
+            </trans-unit>
             <trans-unit id="acd4bfe53bef0a8ccb990ef6be9f0e38" resname="places.menu">
                 <source>places.menu</source>
                 <target>Ēdienkarte</target>
@@ -97,6 +105,10 @@
             <trans-unit id="places.work_hours" resname="places.work_hours">
                 <source>places.work_hours</source>
                 <target>Darba laiks</target>
+            </trans-unit>
+            <trans-unit id="places.phone" resname="places.phone">
+                <source>places.phone</source>
+                <target>Telefons</target>
             </trans-unit>
             <trans-unit id="22056c616e95f30e6682641408e22382" resname="places.add_review">
                 <source>places.add_review</source>

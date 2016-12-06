@@ -16,6 +16,7 @@ class PlacePointFullAdmin extends FoodAdmin
     {
         $formMapper
             ->add('address', 'text', array('label' => 'admin.point.address'))
+            ->add('additional_info', 'text', array('label' => 'admin.point.additional_info', 'required' => false))
             ->add('company_code', 'text', array('label' => 'admin.point.company_code'))
             ->add('city', 'text', array('label' => 'admin.point.city'))
             ->add('internal_code', null, array('label' => 'admin.place.internal_code', 'required' => false,))
@@ -33,6 +34,7 @@ class PlacePointFullAdmin extends FoodAdmin
             ->add('public',null, array('label' => 'admin.point.public', 'required' => false))
             ->add('pickUp',null, array('label' => 'admin.point.pickup', 'required' => false))
             ->add('delivery', null, array('label' => 'admin.point.delivery', 'required' => false))
+            ->add('productionTime', null, array('label' => 'admin.place.production_time', 'required' => false))
             ->add('active', null, array('label' => 'admin.point.active', 'required' => false))
             ->add('fast', null, array('label' => 'admin.point.fast', 'required' => false))
             ->add('allowCash', null, array('label' => 'admin.point.allow_cash', 'required' => false))

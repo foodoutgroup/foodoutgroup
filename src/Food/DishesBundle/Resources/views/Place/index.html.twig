@@ -36,6 +36,46 @@
 {% endblock %}
 
 {% block body %}
+    {% if oldFriendIsHere == 1 %}
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $.fancybox({
+                    href: '#select-cities'
+                });
+
+                $('#select-cities').on('submit', function(e){
+                    e.preventDefault();
+                    var cities_form = $(this);
+                    var city = cities_form.find('#region_select').val();
+
+                    if (city == 'Vilnius' || city == 'Kaunas' || city == 'Klaipėda') {
+                        $.fancybox.close();
+                    } else if (city != '') {
+                        $.get("{{ path('food_place_url_by_city', { 'placeId': place.getId }) }}", { city: city }).done(function(data) {
+                            if (data && data.url && data.status == 'success') {
+                                window.location = data.url;
+                            } else {
+                                $.fancybox.close();
+                            }
+                        });
+                    }
+                    return false;
+                });
+            });
+        </script>
+        <div style="display:none;">
+            <form id="select-cities">
+                <h1>{% trans %}places.region_select{% endtrans %}</h1>
+                <select id="region_select">
+                    <option label="" value=""></option>
+                    {% for city in available_cities %}
+                        <option label="{{ city }}" value="{{ city }}">{{ city }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="button-normal submit">{% trans %}places.region_confirm{% endtrans %}</button>
+            </form>
+        </div>
+    {% endif %}
     {# Facebook ViewContent Begin #}
     <script>fbq('track', 'ViewContent');</script>
     {# Facebook ViewContent End #}
@@ -83,29 +123,52 @@
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
                             <div class="clearfix">
                                 <div class="menu-lefter" id="catmnu">
-                                    <div class="dropdown">
-                                        <button id="dLabel" class="button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            {% trans %}places.food_categories{% endtrans %}
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu scrollable-menu menu" aria-labelledby="dLabel">
-                                            {% for category in placeCategories %}
-                                                {% if category.dishes and dishService.activeDishesByCategory(category.id)|length > 0 %}
-                                                    <li {# {% if category.id == selectedCategory.id %} class="active"{% endif %} #}>
-                                                        <a href="#{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}<span>{{ category.activeDishesCount }}</span></a>
-                                                    </li>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-
-                                    {% if place.id == 63 and site_country == 'LT' %}
-                                        {# Link to Cili Express #}
-                                        <div class="express-button">
-                                            <a href="{{ path('food_cili_greita') }}">
-                                                <img alt="Čili greita" src="{{ asset('bundles/foodapp/images/cili-greitai-button.png') }}" />
-                                            </a>
+                                    {% if placeCategories|length > 10 %}
+                                        <div class="dropdown">
+                                            <button id="dLabel" class="button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {% trans %}places.food_categories{% endtrans %}
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu scrollable-menu menu" aria-labelledby="dLabel">
+                                                {% for category in placeCategories %}
+                                                    {% if category.dishes and dishService.activeDishesByCategory(category.id)|length > 0 %}
+                                                        <li {# {% if category.id == selectedCategory.id %} class="active"{% endif %} #}>
+                                                            <a href="#{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}<span>{{ category.activeDishesCount }}</span></a>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
                                         </div>
+                                    {% else %}
+                                        <div class="category-list-holder">
+                                            <p class="category-title">{% trans %}places.food_categories{% endtrans %}</p>
+                                            <hr />
+                                            <ul class="category-list" aria-labelledby="dLabel">
+                                                {% for category in placeCategories %}
+                                                    {% if category.dishes and dishService.activeDishesByCategory(category.id)|length > 0 %}
+                                                        <li>
+                                                            <a href="#{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}<span class="pull-right">{{ category.activeDishesCount }}</span></a>
+                                                        </li>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+
+                                    {% if site_country == 'LT' %}
+                                        {% if place.id == 63 %}
+                                            {# Link to Cili Express #}
+                                            <br />
+                                            <a class="btn-walk" href="{{ path('food_cili_greita') }}">
+                                                <span><i class="icon-walk"></i><b>Eiti į Čili Take Away</b><i class="icon-arrow"></i></span>
+                                            </a>
+                                        {% elseif place.id == 142 %}
+                                            {# Link to Cili #}
+                                            <br />
+                                            <a class="btn-walk" href="{{ path('food_cili') }}">
+                                                <span><i class="icon-walk"></i><b>Eiti į Čili Pica</b><i class="icon-arrow"></i></span>
+                                            </a>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                         {# Meniu #}
@@ -248,13 +311,18 @@
                                     {% if placePoints is not empty %}
                                         <label for="place-select">{% trans %}places.select_place_point{% endtrans %}:</label>
                                         <select id="place-select" class="custom-select">
-                                            {% for point in placePoints%}
-                                                <option itemprop="address" value="{{ point.id }}">{{ point.address }}, {{ point.city }}</option>
+                                            {% for point in placePoints %}
+                                                <option itemprop="address" value="{{ point.id }}">{{ point.address }}, {{ point.city }}{% if point.getAdditionalInfo %} ({{ point.getAdditionalInfo }}){% endif %}</option>
                                             {% endfor %}
                                         </select>
                                         <div class="location-work-hours clearfix">
                                             <div class="lefter" id="restaurant-map-location" style="height: 300px;width: 300px;"></div>
                                             <div class="righter">
+                                                <div class="pp_phone_holder" style="display:none;">
+                                                    <h3>{% trans %}places.phone{% endtrans %}:</h3>
+                                                    <a class="pp_phone_link"><i class="phone_ico"></i><b></b></a>
+                                                    <br />
+                                                </div>
                                                 <h3>{% trans %}places.work_hours{% endtrans %}:</h3>
                                                 <table class="work-times">
                                                     <tr>

@@ -217,6 +217,13 @@ class Place extends Uploadable implements Translatable
     private $pickupTime;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="production_time", type="integer", nullable=true)
+     */
+    private $productionTime = 30;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="delivery_time_info", type="string", nullable=true)
@@ -2067,5 +2074,38 @@ class Place extends Uploadable implements Translatable
     public function setMinimumFreeDeliveryPrice($minimumFreeDeliveryPrice)
     {
         $this->minimumFreeDeliveryPrice = $minimumFreeDeliveryPrice;
+    }
+
+    /**
+     * Set productionTime
+     *
+     * @param integer $productionTime
+     * @return Place
+     */
+    public function setProductionTime($productionTime)
+    {
+        $this->productionTime = $productionTime;
+    
+        return $this;
+    }
+
+    /**
+     * Get productionTime
+     *
+     * @return integer 
+     */
+    public function getProductionTime()
+    {
+        return $this->productionTime;
+    }
+
+    /**
+     * Get allowFreeDelivery
+     *
+     * @return boolean 
+     */
+    public function getAllowFreeDelivery()
+    {
+        return $this->allowFreeDelivery;
     }
 }

@@ -118,3 +118,9 @@ lexik_translation:
     resources_registration:
         type:                 all  # all | files | database
         managed_locales_only: true
+
+pirminis_gateway:
+    datacash_url: 'https://mars.transaction.datacash.com/Transaction'
+    swedbank:
+        vtid: "21911859"
+        password: "rMUhc7p7"

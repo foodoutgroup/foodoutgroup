@@ -16,3 +16,13 @@ services:
       - 'FoodReportBundle:DriverWorktimeAdmin'
     calls:
       - [ setTranslationDomain, [SonataAdminBundle]]
+
+  food.report.orders_by_restaurant_service:
+    class: Food\ReportBundle\Service\OrdersByRestaurantReportService
+    parent: food.base_service
+    arguments:
+      - @security.context
+      - @translator
+      - @filesystem
+    calls:
+      - [ setSaveDirectory, ['%kernel.root_dir%/../web/uploads/documents/order_reports']]

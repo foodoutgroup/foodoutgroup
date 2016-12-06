@@ -276,12 +276,12 @@ class AjaxController extends Controller
             // Coupon is still valid
             if ($coupon->getEnableValidateDate()) {
                 $now = date('Y-m-d H:i:s');
-                if ($coupon->getValidFrom()->format('Y-m-d H:i:s') > $now) {
+                if ($coupon->getValidFrom() && $coupon->getValidFrom()->format('Y-m-d H:i:s') > $now) {
                     $cont['status'] = false;
                     $cont['data']['error'] = $trans->trans('general.coupon.coupon_too_early');
                 }
 
-                if ($coupon->getValidTo()->format('Y-m-d H:i:s') < $now) {
+                if ($coupon->getValidTo() && $coupon->getValidTo()->format('Y-m-d H:i:s') < $now) {
                     $cont['status'] = false;
                     $cont['data']['error'] = $trans->trans('general.coupon.coupon_expired');
                 }

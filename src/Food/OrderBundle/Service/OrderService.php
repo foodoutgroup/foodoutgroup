@@ -620,7 +620,7 @@ class OrderService extends ContainerAware
 
             // Kitais atvejais tik keiciam statusa, nes gal taip reikia
         }
-
+        $order->setDriver(null);
         $order->setAcceptTime(new \DateTime("now"));
         $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
 
@@ -922,6 +922,24 @@ class OrderService extends ContainerAware
     public function statusForwarded($source = null, $statusMessage = null)
     {
         $this->chageOrderStatus(self::$status_forwarded, $source, $statusMessage);
+
+        $this->updateDriver();
+
+        return $this;
+    }
+
+    /**
+     * @param null|string $source
+     * @param null|string $statusMessage
+     *
+     * @return $this
+     */
+    public function statusPicked($source = null, $statusMessage = null)
+    {
+        $order = $this->getOrder();
+        $this->logDeliveryEvent($this->getOrder(), 'order_pickedup');
+        $this->getOrder()->setOrderPicked(true);
+        $this->sendOrderPickedMessage();
 
         $this->updateDriver();
 
@@ -1473,29 +1491,31 @@ class OrderService extends ContainerAware
                 $price = 0;
                 $origPrice = $cartDish->getDishSizeId()->getCurrentPrice();
             } else {
-                if ($origPrice == $price && $discountPercent > 0) {
-                    $price = round($origPrice * ((100 - $discountPercent) / 100), 2);
-                    $discountPercentForInsert = $discountPercent;
-                } elseif ($discountSumLeft > 0) {
-                    /**
-                     * Uz toki graba ash degsiu pragare.... :/
-                     */
-                    $priceForInsert = $price;
-                    $discountPart = (float)round($price * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
-                    if ($discountPart < $discountSumLeft) {
-                        $discountSum = $discountPart;
-                    } else {
-                        if ($discountUsed + $discountPart > $discountSumTotal) {
-                            $discountSum = $discountSumTotal - $discountUsed;
+                if (!$this->getCartService()->isAlcohol($cartDish->getDishId())) {
+                    if ($origPrice == $price && $discountPercent > 0) {
+                        $price = round($origPrice * ((100 - $discountPercent) / 100), 2);
+                        $discountPercentForInsert = $discountPercent;
+                    } elseif ($discountSumLeft > 0) {
+                        /**
+                         * Uz toki graba ash degsiu pragare.... :/
+                         */
+                        $priceForInsert = $price;
+                        $discountPart = (float)round($price * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
+                        if ($discountPart < $discountSumLeft) {
+                            $discountSum = $discountPart;
                         } else {
-                            $discountSum = $discountSumLeft;
+                            if ($discountUsed + $discountPart > $discountSumTotal) {
+                                $discountSum = $discountSumTotal - $discountUsed;
+                            } else {
+                                $discountSum = $discountSumLeft;
+                            }
                         }
+                        $discountSum = (float)round($discountSum / $cartDish->getQuantity() * 100, 2) / 100;
+                        $priceForInsert = $price - $discountSum;
+                        $discountSumLeft = $discountSumLeft - $discountSum;
+                        $discountUsed = $discountUsed + $discountSum;
+                        $price = $priceForInsert;
                     }
-                    $discountSum = (float)round($discountSum / $cartDish->getQuantity() * 100, 2) / 100;
-                    $priceForInsert = $price - $discountSum;
-                    $discountSumLeft = $discountSumLeft - $discountSum;
-                    $discountUsed = $discountUsed + $discountSum;
-                    $price = $priceForInsert;
                 }
             }
 
@@ -1519,12 +1539,20 @@ class OrderService extends ContainerAware
 
             $sumTotal += $cartDish->getQuantity() * $price;
 
+            $dishOptionPrices = $this->container->get('food.dishes')->getDishOptionsPrices($cartDish->getDishId());
             foreach ($options as $opt) {
+                
+                if (isset($dishOptionPrices[$cartDish->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()])) {
+                    $dishOptionPrice = $dishOptionPrices[$cartDish->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()];
+                } else {
+                    $dishOptionPrice = $opt->getDishOptionId()->getPrice();
+                }
+
                 $orderOpt = new OrderDetailsOptions();
                 $orderOpt->setDishOptionId($opt->getDishOptionId())
                     ->setDishOptionCode($opt->getDishOptionId()->getCode())
                     ->setDishOptionName($opt->getDishOptionId()->getName())
-                    ->setPrice($opt->getDishOptionId()->getPrice())
+                    ->setPrice($dishOptionPrice)
                     ->setDishId($cartDish->getDishId())
                     ->setOrderId($this->getOrder())
                     ->setQuantity($cartDish->getQuantity())// @todo Kolkas paveldimas. Veliau taps valdomas kiekvienam topingui atskirai
@@ -1533,7 +1561,7 @@ class OrderService extends ContainerAware
                 $this->getEm()->persist($orderOpt);
                 $this->getEm()->flush();
 
-                $sumTotal += $cartDish->getQuantity() * $opt->getDishOptionId()->getPrice();
+                $sumTotal += $cartDish->getQuantity() * $dishOptionPrice;
             }
         }
 
@@ -1649,6 +1677,7 @@ class OrderService extends ContainerAware
         }
 
         // TODO negrazu, bet laikina :(
+        // Nieko nera labiau amzino, nei tai, kas laikina..
         $this->order = $order[0];
 
         return $this->order;
@@ -3121,6 +3150,27 @@ class OrderService extends ContainerAware
         }
 
         return $returner;
+    }
+
+    /**
+     * @param Place $place
+     * @return bool
+     */
+    public function isPlaceDeliveringToAddress(Place $place)
+    {
+        $isDelivering = true;
+        $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
+        $pointId = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')
+            ->getPlacePointNear(
+                $place->getId(),
+                $locationData,
+                true
+            )
+        ;
+        if (empty($pointId) && isset($locationData['status'])) {
+            $isDelivering = false;
+        }
+        return $isDelivering;
     }
 
     /**

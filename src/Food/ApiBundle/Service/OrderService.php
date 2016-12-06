@@ -493,16 +493,10 @@ class OrderService extends ContainerAware
         if (!$isThisPre) {
             $billingUrl = $os->billOrder();
         }
-        $order = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->findOneBy(
-            [
-                'id' => $os->getOrder()->getId()
-            ]
-        )
-        ;
 
-        $this->container->get('doctrine')->getManager()->refresh($order);
+        $this->container->get('doctrine')->getManager()->refresh($os->getOrder());
 
-        return $this->getOrderForResponse($order, $list);
+        return $this->getOrderForResponse($os->getOrder(), $list);
     }
 
     public function getCartService()
@@ -556,6 +550,11 @@ class OrderService extends ContainerAware
             $discount['total_sum_with_discount'] = $total_sum_with_discount;
         }
 
+        $productionTime = $order->getPlacePoint()->getProductionTime();
+        if (empty($productionTime) || $productionTime == 0) {
+            $productionTime = $order->getPlace()->getProductionTime();
+        }
+
         $returner = [
             'order_id'    => $order->getId(),
             'total_price' => [
@@ -569,11 +568,13 @@ class OrderService extends ContainerAware
                 // TODO Rodome nebe restorano, o dispeceriu nr
                 "info_number" => "+" . $this->container->getParameter('dispatcher_contact_phone'),
 //                'info_number' => '+'.$order->getPlacePoint()->getPhone(),
-                'message'     => $message
+                'message' => $message,
+                'picked'  => $order->getOrderPicked()
             ],
             'details'     => [
                 'restaurant_id'    => $order->getPlace()->getId(),
                 'restaurant_title' => $order->getPlace()->getName(),
+                'production_time' => (!empty($productionTime) && $productionTime > 0 ? $productionTime : 30),
                 'payment_options'  => [
                     'cash'        => ($order->getPaymentMethod() == "local" ? true : false),
                     'credit_card' => ($order->getPaymentMethod() == "local.card" ? true : false),
@@ -595,16 +596,18 @@ class OrderService extends ContainerAware
     {
         $returner = $this->getOrderForResponse($order);
 
-        $returner['location'] = [
-            'from' => [
-                'lat' => $order->getPlacePoint()->getLat(),
-                'lon' => $order->getPlacePoint()->getLon(),
-            ],
-            'to' => [
-                'lat' => $order->getAddressId()->getLat(),
-                'lon' => $order->getAddressId()->getLon(),
-            ]
-        ];
+        if ($order->getAddressId()) {
+            $returner['location'] = [
+                'from' => [
+                    'lat' => $order->getPlacePoint()->getLat(),
+                    'lon' => $order->getPlacePoint()->getLon(),
+                ],
+                'to' => [
+                    'lat' => $order->getAddressId()->getLat(),
+                    'lon' => $order->getAddressId()->getLon(),
+                ]
+            ];
+        }
         $returner['details']['restaurant_phone'] = $order->getPlacePoint()->getPhone();
         $returner['details']['restaurant_address'] = $order->getPlacePointAddress();
         $returner['details']['items'] = $this->_getItemsForResponseFull($order);
@@ -654,6 +657,7 @@ class OrderService extends ContainerAware
         $currency = $this->container->getParameter('currency_iso');
 
         foreach ($order->getDetails() as $detail) {
+            $this->container->get('doctrine')->getManager()->refresh($detail);
             $sum = 0;
             //$sum+= $detail->getPrice() * $detail->getQuantity();
             if ($detail->getDishId()->getDiscountPricesEnabled() && $order->getPlace()->getDiscountPricesEnabled()) {
@@ -669,13 +673,26 @@ class OrderService extends ContainerAware
                 $sum += $detail->getOrigPrice() * $detail->getQuantity(); // egles prasymu rodom orig_price
             }
 
+            $options = [];
             foreach ($detail->getOptions() as $option) {
                 $sum += $option->getPrice() * $option->getQuantity();
+                if ($option->getDishOptionId()) {
+                    $options[] = [
+                        'option_id' => $option->getDishOptionId()->getId(),
+                        'price' => [
+                            'count' => $option->getQuantity(),
+                            'amount' => $option->getPrice(),
+                            'currency' => $currency,
+                        ],
+                        'title' => $option->getDishOptionName()
+                    ];
+                }
             }
             $sum = sprintf("%.0f", ($sum * 100));
             $returner[] = [
                 'title' => $detail->getDishName(), //.', '.$detail->getDishUnitName(), Po pokalbio su shernu - laikinai skipinam papildoma info.
                 'count' => $detail->getQuantity(),
+                'options' => $options,
                 'price' => [
                     'amount'   => $sum,
                     'currency' => $currency
@@ -796,6 +813,7 @@ class OrderService extends ContainerAware
     public function convertOrderStatus($status)
     {
         $statusMap = [
+            FO::$status_preorder           => 'preorder',
             FO::$status_nav_problems       => 'accepted',
             FO::$status_new                => 'accepted',
             FO::$status_unapproved         => 'accepted',
@@ -808,7 +826,7 @@ class OrderService extends ContainerAware
             FO::$status_failed             => 'failed',
             FO::$status_finished           => 'prepared',
             FO::$status_canceled           => 'canceled',
-            FO::$status_canceled_produced  => 'completed',
+            FO::$status_canceled_produced  => 'canceled_produced',
             FO::$status_pre                => 'pre'
         ];
 

@@ -1,43 +1,180 @@
-<?xml version="1.0"?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-  <file source-language="en" datatype="plaintext" original="file.ext">
-    <body>
-      <trans-unit id="1">
-        <source><![CDATA[admin.report.orders]]></source>
-        <target><![CDATA[Užsakymai]]></target>
-      </trans-unit>
-      <trans-unit id="2">
-        <source><![CDATA[admin.report.orders_canceled]]></source>
-        <target><![CDATA[Atšaukti užsakymai]]></target>
-      </trans-unit>
-      <trans-unit id="3">
-        <source><![CDATA[admin.report.mobile_orders]]></source>
-        <target><![CDATA[Mobile užsakymai]]></target>
-      </trans-unit>
-      <trans-unit id="4">
-        <source><![CDATA[admin.report.daily_orders_graph]]></source>
-        <target><![CDATA[Užsakymų per dieną]]></target>
-      </trans-unit>
-      <trans-unit id="5">
-        <source><![CDATA[admin.report.order_amount]]></source>
-        <target><![CDATA[Kiekis]]></target>
-      </trans-unit>
-      <trans-unit id="6">
-        <source><![CDATA[admin.report.sms]]></source>
-        <target><![CDATA[Pristatyti SMS]]></target>
-      </trans-unit>
-      <trans-unit id="7">
-        <source><![CDATA[admin.report.sms_undelivered]]></source>
-        <target><![CDATA[Nepristatyti SMS]]></target>
-      </trans-unit>
-      <trans-unit id="8">
-        <source><![CDATA[admin.report.daily_sms_graph]]></source>
-        <target><![CDATA[SMS pranešimų per dieną]]></target>
-      </trans-unit>
-      <trans-unit id="9">
-        <source><![CDATA[admin.report.amount]]></source>
-        <target><![CDATA[Kiekis]]></target>
-      </trans-unit>
-    </body>
-  </file>
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="lt" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="admin.report.orders" resname="admin.report.orders">
+                <source>admin.report.orders</source>
+                <target>Užsakymai</target>
+            </trans-unit>
+            <trans-unit id="admin.report.orders_canceled" resname="admin.report.orders_canceled">
+                <source>admin.report.orders_canceled</source>
+                <target>Atšaukti užsakymai</target>
+            </trans-unit>
+            <trans-unit id="admin.report.mobile_orders" resname="admin.report.mobile_orders">
+                <source>admin.report.mobile_orders</source>
+                <target>Mobile užsakymai</target>
+            </trans-unit>
+            <trans-unit id="admin.report.daily_orders_graph" resname="admin.report.daily_orders_graph">
+                <source>admin.report.daily_orders_graph</source>
+                <target>Užsakymų per dieną</target>
+            </trans-unit>
+            <trans-unit id="admin.report.daily_avg_basket_graph" resname="admin.report.daily_avg_basket_graph">
+                <source>admin.report.daily_avg_basket_graph</source>
+                <target>Vidutinis krepšelis</target>
+            </trans-unit>
+            <trans-unit id="admin.report.order_amount" resname="admin.report.order_amount">
+                <source>admin.report.order_amount</source>
+                <target>Kiekis</target>
+            </trans-unit>
+            <trans-unit id="admin.report.sms" resname="admin.report.sms">
+                <source>admin.report.sms</source>
+                <target>Pristatyti SMS</target>
+            </trans-unit>
+            <trans-unit id="admin.report.sms_undelivered" resname="admin.report.sms_undelivered">
+                <source>admin.report.sms_undelivered</source>
+                <target>Nepristatyti SMS</target>
+            </trans-unit>
+            <trans-unit id="admin.report.daily_sms_graph" resname="admin.report.daily_sms_graph">
+                <source>admin.report.daily_sms_graph</source>
+                <target>SMS pranešimų per dieną</target>
+            </trans-unit>
+            <trans-unit id="admin.report.amount" resname="admin.report.amount">
+                <source>admin.report.amount</source>
+                <target>Kiekis</target>
+            </trans-unit>
+            <trans-unit id="admin.report.filters">
+                <source>admin.report.filters</source>
+                <target>Filtrai</target>
+            </trans-unit>
+            <trans-unit id="admin.report.history">
+                <source>admin.report.history</source>
+                <target>Istorija</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurants">
+                <source>admin.report.restaurants</source>
+                <target>Restoranai</target>
+            </trans-unit>
+            <trans-unit id="admin.report.from_to_label">
+                <source>admin.report.from_to_label</source>
+                <target>Data nuo - iki</target>
+            </trans-unit>
+            <trans-unit id="admin.report.report_type">
+                <source>admin.report.report_type</source>
+                <target>Ataskaitos tipas</target>
+            </trans-unit>
+            <trans-unit id="restaurant_report_type">
+                <source>restaurant_report_type</source>
+                <target>Restoranui</target>
+            </trans-unit>
+            <trans-unit id="custom_report_type">
+                <source>custom_report_type</source>
+                <target>Administracijai</target>
+            </trans-unit>
+            <trans-unit id="admin.report.generate_excel">
+                <source>admin.report.generate_excel</source>
+                <target>Generuoti Excel</target>
+            </trans-unit>
+            <trans-unit id="admin.report.total">
+                <source>admin.report.total</source>
+                <target>Viso</target>
+            </trans-unit>
+
+            <trans-unit id="admin.report.nr">
+                <source>admin.report.nr</source>
+                <target>Nr.</target>
+            </trans-unit>
+            <trans-unit id="admin.report.order_date">
+                <source>admin.report.order_date</source>
+                <target>Užsakymo data</target>
+            </trans-unit>
+            <trans-unit id="admin.report.foodout_sf_number">
+                <source>admin.report.foodout_sf_number</source>
+                <target>Foodout SF numeris</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurant_name">
+                <source>admin.report.restaurant_name</source>
+                <target>Restorano pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.total_sum_with_vat">
+                <source>admin.report.total_sum_with_vat</source>
+                <target>Suma su PVM</target>
+            </trans-unit>
+            <trans-unit id="admin.report.paid_cash">
+                <source>admin.report.paid_cash</source>
+                <target>Mokėjimas grynais</target>
+            </trans-unit>
+            <trans-unit id="admin.report.total_sum_without_vat">
+                <source>admin.report.total_sum_without_vat</source>
+                <target>Suma be PVM</target>
+            </trans-unit>
+            <trans-unit id="admin.report.delivery_sum">
+                <source>admin.report.delivery_sum</source>
+                <target>Pristatymo suma (su PVM)</target>
+            </trans-unit>
+            <trans-unit id="admin.report.comissions_10_35">
+                <source>admin.report.comissions_10_35</source>
+                <target>Komisiniai 35%</target>
+            </trans-unit>
+            <trans-unit id="admin.report.comissions_15">
+                <source>admin.report.comissions_15</source>
+                <target>Komisiniai 1.5%</target>
+            </trans-unit>
+            <trans-unit id="admin.report.comissions_2">
+                <source>admin.report.comissions_2</source>
+                <target>Komisiniai 2%</target>
+            </trans-unit>
+<trans-unit id="admin.report.order_id">
+                <source>admin.report.order_id</source>
+                <target>Užsakymo ID</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurant_id">
+                <source>admin.report.restaurant_id</source>
+                <target>Restorano ID</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurant_placepoint_address">
+                <source>admin.report.restaurant_placepoint_address</source>
+                <target>Gamybos taško adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.restaurant_placepoint_code">
+                <source>admin.report.restaurant_placepoint_code</source>
+                <target>Gamybos taško kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.client_name">
+                <source>admin.report.client_name</source>
+                <target>Kliento vardas/pavardė/pavadinimas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.delivery_address">
+                <source>admin.report.delivery_address</source>
+                <target>Pristatymo adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.city">
+                <source>admin.report.city</source>
+                <target>Miestas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.payment_type">
+                <source>admin.report.payment_type</source>
+                <target>Mokėjimo būdo tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.payment_type_code">
+                <source>admin.report.payment_type_code</source>
+                <target>Mokėjimo būdo kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.report.driver_id">
+                <source>admin.report.driver_id</source>
+                <target>Vairuotojo ID</target>
+            </trans-unit>
+            <trans-unit id="admin.report.food_sum_with_vat">
+                <source>admin.report.food_sum_with_vat</source>
+                <target>Maistas (suma su PVM)</target>
+            </trans-unit>
+            <trans-unit id="admin.report.food_sum_without_vat">
+                <source>admin.report.food_sum_without_vat</source>
+                <target>Maistas (suma be PVM)</target>
+            </trans-unit>
+            <trans-unit id="admin.report.discount_sum">
+                <source>admin.report.discount_sum</source>
+                <target>Nuolaidos suma</target>
+            </trans-unit>
+        </body>
+    </file>
 </xliff>

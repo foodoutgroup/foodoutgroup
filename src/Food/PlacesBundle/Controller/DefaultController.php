@@ -11,8 +11,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class DefaultController extends Controller
 {
        public function indexAction($recommended = false, $zaval = false)
-    {
-
+       {
         $locData =  $this->get('food.location')->getLocationFromSession();
         $placeService = $this->get('food.places');
         $cityService = $this->get('food.city_service');

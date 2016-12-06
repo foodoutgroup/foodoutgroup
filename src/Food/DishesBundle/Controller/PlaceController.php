@@ -14,7 +14,7 @@ use Food\UserBundle\Entity\User;
 
 class PlaceController extends Controller
 {
-    public function indexAction($id, $slug, $categoryId = null, Request $request)
+    public function indexAction($id, $slug, Request $request)
     {
 
         $session = $this->get('session');
@@ -26,6 +26,10 @@ class PlaceController extends Controller
         // If no id - kill yourself
         if (empty($id)) {
             return $this->redirect($this->get('slug')->toHomepage(), 307);
+        }
+
+        if (!empty($city)) {
+            $this->get('food.googlegis')->setCityOnlyToSession($city);
         }
 
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
@@ -110,6 +114,7 @@ class PlaceController extends Controller
                 'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
                 'breadcrumbData' => $breadcrumbData,
                 'current_url' => $current_url,
+                'oldFriendIsHere' => $oldFriendIsHere,
             )
         );
     }
@@ -130,6 +135,10 @@ class PlaceController extends Controller
         if ($placePoint->getActive() && $placePoint->getPublic()) {
             $placePointData = $placePoint->__toArray();
             $placePointData['allowInternetPayments'] = !$place->getDisabledOnlinePayment();
+        }
+
+        if ($placePoint->getPhone()) {
+            $placePointData['phone'] = $placePoint->getPhone();
         }
 
         $response = new JsonResponse($placePointData);
@@ -294,5 +303,30 @@ class PlaceController extends Controller
         ;
 
         return $review;
+    }
+
+    public function getPlaceUrlByCityAction($placeId, Request $request) {
+        $placeService = $this->get('food.places');
+        $domain = $this->container->getParameter('domain');
+
+        $found_data = ['status' => 'fail', 'city' => null, 'url' => null];
+        $city = $request->get('city');
+
+        if (!empty($city) && !empty($placeId)) {
+            $url = $placeService->getPlaceUrlByCity($placeId, $city);
+            if (!empty($url)) {
+                $found_data = [
+                    'status' => 'success',
+                    'city' => $city,
+                    'url' => '//' . $domain . '/' . $url
+                ];
+            }
+        }
+
+        $response = new JsonResponse($found_data);
+        $response->setCharset('UTF-8');
+        $response->prepare($request);
+
+        return $response;
     }
 }

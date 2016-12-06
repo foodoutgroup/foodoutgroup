@@ -9,6 +9,7 @@ use PHPExcel_IOFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\TypeValidator;
@@ -72,20 +73,50 @@ class OrderDataImportService extends BaseService
         ));
 
         if (count($realOrder)) {
+            $epsilon = 0.001;
             foreach ($this->orderFieldsMapping as $mapKey => $mapIndex) {
                 $valueChanged = false;
                 $oldValue = null;
                 $newValue = null;
                 if (isset($excelData[$mapIndex])) {
                     switch ($mapKey) {
+                        case 'sf_number':
+                            $newValue = $excelData[$mapIndex];
+                            $errorList = $this->validator->validateValue($newValue, array(
+                                new Type(array('type' => 'string')),
+                                new NotNull()
+                            ));
+
+                            $oldValueSeries = $realOrder->getSfSeries();
+                            $oldValueNumber = $realOrder->getSfNumber();
+                            preg_match_all('/(\D+)(\d+)/', $newValue, $matches);
+                            if (!empty($matches[1]) && !empty($matches[2])) {
+                                $newValueSeries = $matches[1][0];
+                                $newValueNumber = $matches[2][0];
+
+                                if ($oldValueSeries != $newValueSeries && count($errorList) == 0) {
+                                    $valueChanged = true;
+                                    $realOrder->setSfSeries($newValueSeries);
+                                }
+
+                                if ($oldValueNumber != $newValueNumber && count($errorList) == 0) {
+                                    $valueChanged = true;
+                                    $realOrder->setSfNumber($newValueNumber);
+                                }
+                            }
+                            break;
                         case 'order_date':
                             $oldValue = $realOrder->getOrderDate()->format('Y-m-d');
-                            $newValue = $excelData[$mapIndex];
+
+                            // Excel returns reversed date. This
+                            list($month, $day, $year) = explode('-', $excelData[$mapIndex]);
+                            $newValue = date('Y-m-d', strtotime($year . '-' . $month . '-' . $day));
+
                             $errorList = $this->validator->validateValue($newValue, array(
                                 new Date(),
                                 new NotNull()
                             ));
-                            if ($oldValue != date('Y-m-d', strtotime($newValue)) && count($errorList) == 0) {
+                            if ($oldValue != $newValue && count($errorList) == 0) {
                                 $valueChanged = true;
                                 $realOrder->setOrderDate(new \DateTime($newValue));
                             }
@@ -128,6 +159,18 @@ class OrderDataImportService extends BaseService
                                 $realOrder->setPaymentMethod($newValue);
                             }
                             break;
+                        case 'payment_method_code':
+                            $oldValue = $realOrder->getPaymentMethodCode();
+                            $newValue = $excelData[$mapIndex];
+                            $errorList = $this->validator->validateValue($newValue, array(
+                                new Type(array('type' => 'string')),
+                                new NotNull()
+                            ));
+                            if ($oldValue != $newValue && count($errorList) == 0) {
+                                $valueChanged = true;
+                                $realOrder->setPaymentMethodCode($newValue);
+                            }
+                            break;
                         case 'delivery_price':
                             $oldValue = $realOrder->getDeliveryPrice();
                             $newValue = $excelData[$mapIndex];
@@ -135,7 +178,7 @@ class OrderDataImportService extends BaseService
                                 new Type(array('type' => 'double')),
                                 new NotNull()
                             ));
-                            if ($oldValue != $newValue && count($errorList) == 0) {
+                            if (!(abs($oldValue-$newValue) < $epsilon) && count($errorList) == 0) {
                                 $valueChanged = true;
                                 $realOrder->setDeliveryPrice($newValue);
                             }
@@ -148,7 +191,7 @@ class OrderDataImportService extends BaseService
                                 new NotNull()
                             ));
 
-                            if ($oldValue != $newValue && count($errorList) == 0) {
+                            if (!(abs($oldValue-$newValue) < $epsilon) && count($errorList) == 0) {
                                 $valueChanged = true;
                                 $realOrder->setTotal($newValue);
                             }
@@ -160,7 +203,7 @@ class OrderDataImportService extends BaseService
                                 new Type(array('type' => 'double')),
                                 new NotNull()
                             ));
-                            if ($oldValue != $newValue && count($errorList) == 0) {
+                            if (!(abs($oldValue-$newValue) < $epsilon) && count($errorList) == 0) {
                                 $valueChanged = true;
                                 $realOrder->setDiscountSum($newValue);
                             }
@@ -212,6 +255,7 @@ class OrderDataImportService extends BaseService
             'place_name' => 4,
             'driver_id' => 5,
             'payment_method' => 10,
+            'payment_method_code' => 11,
             'delivery_price' => 13,
             'total' => 14,
             'discount_sum' => 15,
