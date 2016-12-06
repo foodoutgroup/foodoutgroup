@@ -161,7 +161,7 @@ class BestOfferLocalized extends AbstractPersonalTranslation
     /**
      * Get object
      *
-     * @return \Food\PlacesBundle\Entity\DishUnitCategory
+     * @return \Food\PlacesBundle\Entity\BestOffer
      */
     public function getObject()
     {

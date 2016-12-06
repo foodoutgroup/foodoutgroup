@@ -25,6 +25,8 @@
                     },
                     success:  function(resp){
                         if (resp.data.success == 1) {
+                            console.log(resp.data);
+                            alert();
                             $('.search-food-form').trigger('submit');
                         } else {
                             var dialogOpts = {
@@ -46,9 +48,10 @@
             }
 
             $('#index_submit').click(function(e){
-                if ($('#index_city').val() !="" && $('#index_city').val() != null && $('#index_address').val()=="") {
-                    var url = '{{ path('food_lang_homepage') }}' + $('#index_city option:selected').data('cityurl');
-                    window.location.href = url;
+
+
+                if ($('#index_city').val().length > 0 && $('#index_address').val().length > 0) {
+                    window.location.href = $('#index_city option:selected').data('cityurl');
                 } else {
                     getCrds();
                 }
@@ -95,14 +98,13 @@
     <div style="background-image: url(//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/title_offer/offer-'~site_country|lower~'-'~random(['2', '3', '4', '5', '6', '9', '10', '14'])~'.jpg') }});" class="site-header special-offer-block">
         <div class="site-block">
             <h1 class="no-wrap">{% trans %}index.title_page_header{% endtrans %}</h1>
-            <form class="search-food-form"  action="{{ path('food_places_' ~ locale ~ '_main') }}" method="get">
+            <form class="search-food-form"  action="#" method="get">
                 <p class="title">{% trans %}index.search_form_qlue{% endtrans %}</p>
                 <div class="clearfix">
-                    {# TODO remove city hardcode, damn it... #}
+
                     <select id="index_city">
-                        <option value="" data-cityurl="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %}index.city{% endtrans %}</option>
-                        {% for city in available_cities %}
-                            <option value="{{ city }}" data-cityurl="{{ city|replace({'ė':'e','Š':'S','ž':'z','ī':'i'}) }}" {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e','Š':'S','ž':'z','ī':'i'}) %}selected{% endif %}>{{ city }}</option>
+                        {% for city in cityCollection %}
+                            <option value="{{ city.getId() }}" data-cityurl="{{ slug.getUrl(city.getId(), 'city') }}" {% if formDefaults.city == city.getId() %}selected{% endif %}>{{ city.getTitle() }}</option>
                         {% endfor %}
                     </select>
 

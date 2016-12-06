@@ -68,7 +68,7 @@
                         text: '{% trans %}cart.checkout.show_me_places{% endtrans %}',
                         click: function() {
                             $(this).parent().mask();
-                            window.location.href = '{{ path('food_places_' ~ locale ~ '_main') }}';
+                            window.location.href = '{{ path('food_places') }}';
                         }
                     }
                 }
@@ -424,12 +424,18 @@
     </div>
     {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'change-address', hideQlu: true, usr_address: userAllAddress} %}
     <div class="hidden">
-        <div id="rules" class="cart_rules_content">
-            <div class="cart_rules_inner">{{ static_service.getPage(slug_util.oneByName('ordering_rules', locale).itemId).content|raw }}</div>
-        </div>
-        <div id="privacy" class="privacy_content">
-            <div class="privacy_inner">{{ static_service.getPage(static_page_privacy_policy).content|raw }}</div>
-        </div>
+        {% set page = pageService.getByParam('page.rules') %}
+        {% if page %}
+            <div id="rules" class="cart_rules_content">
+                <div class="cart_rules_inner">{{ page.content|raw }}</div>
+            </div>
+        {% endif %}
+        {% set page = pageService.getByParam('page.privacy') %}
+        {% if page %}
+            <div id="privacy" class="privacy_content">
+                <div class="privacy_inner">{{ page.content|raw }}</div>
+            </div>
+        {% endif %}
         <div id="coupon" class="coupon_form_popup">
             <div class="coupon_inner">
                 <form id="coupon_form">

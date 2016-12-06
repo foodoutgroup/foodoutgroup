@@ -608,9 +608,11 @@ class PlaceRepository extends EntityRepository
      */
     public function getCities(Place $place)
     {
+
         if (empty(self::$_citiesCache[$place->getId()])) {
             self::$_citiesCache[$place->getId()] = [];
             foreach ($place->getPoints() as $placePoint) {
+
                 if ($placePoint->getActive() && !in_array($placePoint->getCity(), self::$_citiesCache[$place->getId()])) {
                     self::$_citiesCache[$place->getId()][] = $placePoint->getCity();
                 }

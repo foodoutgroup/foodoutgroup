@@ -212,7 +212,7 @@ class GoogleGisService extends ContainerAware
     {
         $returner = $this->getLocationFromSession();
 
-        if (empty($returner) || $returner['city'] != $city) {
+        if ($returner || empty($returner) || $returner['city'] != $city) {
             $returner['not_found'] = true;
             $returner['street_found'] = false;
             $returner['address_found'] = false;

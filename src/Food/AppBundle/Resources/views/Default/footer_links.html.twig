@@ -6,7 +6,7 @@
             <ul class="menu">
                 {% for page in staticPages %}
                     <li>
-                        <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(page.id, 'text')}) }}">
+                        <a href="{{ slug.getUrl(page.id, 'text')}}">
                             {{ page.title }}
                         </a>
                     </li>
@@ -38,7 +38,7 @@
                         {% if  (loop.index % 2) %}
                             <div class="clearfix">
                                 <span class="name fl">
-                                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place')}) }}">
+                                    <a href="{{ slug.getUrl(place.id, 'place')}}">
                                         {{ place.name }}
                                     </a>
                                 </span>
@@ -52,7 +52,7 @@
                         {% if not (loop.index % 2) %}
                             <div class="clearfix">
                                 <span class="name fl">
-                                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place')}) }}">
+                                    <a href="{{ slug.getUrl(place.id, 'place') }}">
                                         {{ place.name }}
                                     </a>
                                 </span>
@@ -66,12 +66,12 @@
                 <h5>{% trans %}general.cities{% endtrans %}</h5>
                 <div class="clearfix">
                     <div class="small-col fl rating-col">
-                        {% for city, citySlug in cities %}
+                        {% for city in cities %}
                             {% if  (loop.index % 2) %}
                                 <div class="clearfix">
                                     <span class="name fl">
-                                        <a href="{{ path('food_city_'~citySlug) }}">
-                                            {{ city }}
+                                        <a href="{{ slug.getUrl(city.getId(), 'city') }}">
+                                            {{ city.getTitle() }}
                                         </a>
                                     </span>
                                 </div>
@@ -79,12 +79,12 @@
                         {% endfor %}
                     </div>
                     <div class="small-col fr rating-col">
-                        {% for city, citySlug in cities %}
+                        {% for city in cities %}
                             {% if not (loop.index % 2) %}
                                 <div class="clearfix">
                                     <span class="name fl">
-                                        <a href="{{ path('food_city_'~citySlug) }}">
-                                            {{ city }}
+                                        <a href="{{ slug.getUrl(city.getId(), 'city') }}">
+                                            {{ city.getTitle }}
                                         </a>
                                     </span>
                                 </div>

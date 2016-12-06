@@ -34,3 +34,11 @@ food_cart:
     defaults: { _controller: FoodCartBundle:Default:index, takeAway: ~}
     options:
             expose: true
+
+food_cart_action_locale:
+    path:  /action/{action}/
+    defaults: { _controller: FoodCartBundle:Default:action, redirLocale: ~, action: empty, _locale: %kernel.default_locale% }
+    options:
+        expose: true
+    requirements:
+        _locale:  "[a-z]{2}"

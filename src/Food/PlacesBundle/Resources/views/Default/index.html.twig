@@ -122,8 +122,9 @@
                 return url;
             };
 
-            var currentUrl = remove_last_slash('{{ city_url }}');
+            var currentUrl = remove_last_slash('{{ cityUrl }}');
             var new_url = currentUrl + '/' + _page_url;
+
 
             document.title = _page_title.replace(/%s/g, '{% trans %}general.places{% endtrans %}' + (_title_row !== '' ? ': ' : '') + _title_row.substr(0, _title_row.length - 3));
             if (_kitchens_count > 1) {
@@ -150,6 +151,7 @@
         }
     });
 {% endblock %}
+
 {% block body %}
     {# Facebook ViewContent Begin #}
     <script>fbq('track', 'ViewContent');</script>
@@ -169,7 +171,7 @@
     <div class="page-path clearfix">{% block breadcrumb %}{#<a href="{{ path('food_homepage') }}">Pradžia</a>#}{% endblock %}</div>
     <div class="page-title">
         {% block page_title_h1 %}
-        <h1>{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city_translations[location.city]|trans }}{% endif %}</h1>
+        <h1>{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city.getTitle() }}{% endif %}</h1>
         {% endblock %}
         <h2 class="clearfix">
             <span class="place-counter"></span>
@@ -187,8 +189,8 @@
                     var data_callback, data_callback;
 
                     click_callback = function(options) {
-                        if (options.response.data.success == 1) {
-                            window.location = '{{ url('food_places_lt_main') }}';
+                        if (options.response.data.success == 1 && options.response.data.url != '#error' ) {
+                            window.location.href = options.response.data.url;
                         } else {
                             options.dialog.unmask();
                             options.alert.show();
@@ -197,16 +199,13 @@
                                 options.alert.hide();
                             }, 5000);
                         }
-                    }
+                    };
 
                     data_callback = function() {
-                        return { city: $('.city-row select').val(),
-                                 address: $('.address-row input').val() };
-                    }
+                        return { city: $('.city-row select').val(), address: $('.address-row input').val() };
+                    };
 
-                    change_location($('#places-change-address'),
-                                    click_callback,
-                                    data_callback,
+                    change_location($('#places-change-address'), click_callback, data_callback,
                                     '{% trans %}cart.checkout.address_change_change{% endtrans %}',
                                     '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
                                     '{{ url('food_ajax', {'action': 'find-address'}) }}');
@@ -225,13 +224,8 @@
     </div>
     <div class="clearfix">
         <div class="content-lefter">
-            {% if zaval %}
-                {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended, 'slug_filter': slug_filter, 'zaval': true})) }}
-            {% else %}
-                {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended, 'slug_filter': slug_filter})) }}
-            {% endif %}
+            {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended, 'slug_filter': slug_filter, 'zaval': zaval, 'city' : city})) }}
             {{ render(controller('FoodDishesBundle:Place:filtersList')) }}
-
             <div class="banners">
                 {% if site_country == 'LT' %}
                     <div>
@@ -293,7 +287,7 @@
                 </div>
             </div>#}
             {% if zaval %}
-                {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended, 'slug_filter': slug_filter, 'zaval': true})) }}
+                {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended, 'slug_filter': [], 'zaval': true})) }}
             {% else %}
                 {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended, 'slug_filter': slug_filter})) }}
             {% endif %}

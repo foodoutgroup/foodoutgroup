@@ -4,7 +4,7 @@
     <ul class="menu" aria-labelledby="dLabel">
         {% for item in list %}
             <li>
-                <label class="custom-checkbox"><a href="{{ url('food_city_' ~ city.city_slug_lower ~ '_slash', {} ) ~ slug_util.slugByItem(item.id, 'kitchen') }}" onclick="return false;"> {{ item.name }}</a><span class="count">{{ item.placeCount }}</span>
+                <label class="custom-checkbox"><a href="{{ url('food_slug', {'slug' : city.getSlug() } ) ~ slug_util.slugByItem(item.id, 'kitchen') }}" onclick="return false;"> {{ item.name }}</a><span class="count">{{ item.placeCount }}</span>
                     <input type="checkbox" name="kitchens[]" data-slug="{{ slug_util.slugByItem(item.id, 'kitchen') }}" data-name="{{ item.name }}" value="{{ item.id }}" {% if item.id in selected_kitchens %}checked="checked"{% endif %}>
                 </label>
             </li>

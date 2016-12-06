@@ -126,7 +126,7 @@
                 {% if isCallcenter == true %}
                     <a href="#" class="button back_to_dishes show">{{ 'cart.go_back_to_place'|trans }}</a>
                 {% else %}
-                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>
+                    <a href="{{ slug.getUrl(place.id, 'place') }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>
                 {% endif %}
             </div>
         {% endif %}
@@ -215,9 +215,11 @@
                 cartmnu.addClass('overflow_auto');
             }
 
-            $(window).resize(function() {
-                Place.adjustCartMenuHeight();
-            });
+            if(typeof Place !== 'undefined') {
+                $(window).resize(function () {
+                    Place.adjustCartMenuHeight();
+                });
+            }
         });
         var takeAway = 0;
         $('#cartmnu').on('ifToggled', '.cart_delivery_type input', function(event) {

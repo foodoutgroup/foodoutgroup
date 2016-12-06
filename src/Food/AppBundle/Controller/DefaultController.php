@@ -16,6 +16,7 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
+
         $miscUtils = $this->get('food.app.utils.misc');
         // Check if user is not banned
         $ip = $request->getClientIp();
@@ -61,11 +62,13 @@ class DefaultController extends Controller
             );
         }
 
+        $cityCollection = $this->get("food.city_service")->getActiveCity();
+
         return $this->render(
-            'FoodAppBundle:Default:index.html.twig',
-            array(
-                'formDefaults' => $formDefaults
-            )
+            'FoodAppBundle:Default:index.html.twig', [
+                'formDefaults' => $formDefaults,
+                'cityCollection' => $cityCollection,
+            ]
         );
     }
 
@@ -74,18 +77,14 @@ class DefaultController extends Controller
         $topRatedPlaces = $this->get('food.places')->getTopRatedPlaces(12);
         $staticPages = $this->get('food.static')->getActivePages(10);
 
-        $availableCities = $this->container->getParameter('available_cities');
-        $availableCitiesSlugs = $this->container->getParameter('available_cities_slugs');
-        $availableCitiesSlugs = array_map("mb_strtolower", $availableCitiesSlugs);
-
-        $cities = array_combine($availableCities, $availableCitiesSlugs);
+        $cityService = $this->get('food.city_service');
 
         return $this->render(
             'FoodAppBundle:Default:footer_links.html.twig',
             array(
                 'topRatedPlaces' => $topRatedPlaces,
                 'staticPages' => $staticPages,
-                'cities' => $cities
+                'cities' => $cityService->getActiveCity()
             )
         );
     }
@@ -97,36 +96,24 @@ class DefaultController extends Controller
         $repository = $this->getDoctrine()->getRepository('FoodAppBundle:BannedIp');
         $ipInfo = $repository->findOneBy(array('ip' => $ip));
 
-        return $this->render(
-            'FoodAppBundle:Default:banned.html.twig',
-            array(
-                'ipInfo' => $ipInfo
-            )
-        );
+        return $this->render('FoodAppBundle:Default:banned.html.twig', ['ipInfo' => $ipInfo]);
     }
 
     /**
-     * Subscribtion to newsletter
+     * Thank for subscription to newsletter
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return Response
      */
-    public function newsletterSubscribeAction(Request $request)
+    public function newsletterSubscriptionAction(Request $request)
     {
-        $newsleterEmail = $request->get('newsletter_email');
+        switch ($request->getMethod()) {
+            case "POST":
+                $this->get('food.newsletter')->subscribe($request->get('newsletter_email'), $request->getLocale());
+                return $this->redirect($this->generateUrl('food_newsletter_subscribe'), 302);
+            default:
+                return $this->render('FoodAppBundle:Default:newsletter_subscription.html.twig');
 
-        $this->get('food.newsletter')->subscribe($newsleterEmail, $request->getLocale());
-
-        // Pagal visa tvarka, po posto - turi but redirectas
-        return $this->redirect($this->generateUrl('food_newsletter_thank'), 302);
-    }
-
-    /**
-     * Thank for subscribtion to newsletter
-     * @return Response
-     */
-    public function newsletterThankAction()
-    {
-        return $this->render('FoodAppBundle:Default:newsletter_subscribtion.html.twig');
+        }
     }
 
     public function sitemapAction()
@@ -138,12 +125,12 @@ class DefaultController extends Controller
         $availableLocales = $this->container->getParameter('available_locales');
         $availableLocales = array($availableLocales[0]);
 
-        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')
-            ->findBy(array('active' => 1));
+        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->findBy(array('active' => 1));
 
         $staticPages = $this->get('food.static')->getActivePages(30, true);
 
-        $cities = $this->container->getParameter('available_cities_slugs');
+        $cities = $this->get('food.city_service')->getActiveCity();
+        var_dump($cities);
 
         $citiesKitchens = array();
         foreach ($cities as $city) {
@@ -181,13 +168,6 @@ class DefaultController extends Controller
         } else {
             return new Response();
         }
-    }
-
-    public function meetAction()
-    {
-        return $this->render(
-            'FoodAppBundle:Default:meet.html.twig'
-        );
     }
 
     public function listBestOffersAction()

@@ -1,0 +1,72 @@
+
+food_test_payment:
+    path:  /payment
+    defaults: { _controller: FoodAppBundle:Test:payment }
+
+food_test_report:
+    path:  /report
+    defaults: { _controller: FoodAppBundle:Test:report }
+
+food_test_zones:
+    path: /zones/{id}
+    defaults: { _controller: FoodAppBundle:Test:zones, id: ~ }
+
+food_test_devzones:
+    path: /test/devzones/{id}
+    defaults: { _controller: FoodAppBundle:Test:devzones, id: ~ }
+
+food_test_betacode:
+    path: /beta_code/
+    defaults: { _controller: FoodAppBundle:Test:betaCode }
+
+food_test_index:
+    path:  /
+    defaults: { _controller: FoodAppBundle:Test:index }
+
+food_test:
+    path:  /mssql
+    defaults: { _controller: FoodAppBundle:Test:mssql }
+
+food_migrator:
+    path: /migrate-cili
+    defaults: { _controller: FoodAppBundle:Test:migrateCili }
+
+food_putorder:
+    path:  /put-order/{id}
+    defaults: { _controller: FoodAppBundle:Test:putOrder, id: ~ }
+
+food_test_pdf:
+    path:  /pdf
+    defaults: { _controller: FoodAppBundle:Test:pdf }
+
+food_test_invoice:
+    path:  /invoice
+    defaults: { _controller: FoodAppBundle:Test:invoice }
+
+food_test_time_format:
+    path:  /time-format
+    defaults: { _controller: FoodAppBundle:Test:timeParse }
+
+food_nav_test1:
+    path: /nav/test1
+    defaults: { _controller: FoodAppBundle:Test:nav1 }
+
+food_nav_list:
+    path: /nav/list
+    defaults: { _controller: FoodAppBundle:Test:listOrders }
+
+food_nav_list2:
+    path: /nav/list2
+    defaults: { _controller: FoodAppBundle:Test:listOrders2 }
+
+food_nav_migrator:
+    path: /migrator/{date}
+    defaults: { _controller: FoodAppBundle:Test:migrator, date: ~ }
+
+food_game:
+    path: /game/
+    defaults: { _controller: FoodAppBundle:Game:index }
+
+food_test_daugis_report:
+    path: /where/the/magic/happens/but/we/dont/know/anything
+    defaults: { _controller: FoodAppBundle:Test:magicReportForDaugis }

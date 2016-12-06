@@ -14,7 +14,7 @@ use Food\UserBundle\Entity\User;
 
 class PlaceController extends Controller
 {
-    public function indexAction($id, $slug, $categoryId, Request $request)
+    public function indexAction($id, $slug, $categoryId = null, Request $request)
     {
 
         $session = $this->get('session');
@@ -25,20 +25,14 @@ class PlaceController extends Controller
 
         // If no id - kill yourself
         if (empty($id)) {
-            return $this->redirect(
-                $this->generateUrl('food_homepage'),
-                307
-            );
+            return $this->redirect($this->get('slug')->toHomepage(), 307);
         }
 
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
 
         // Place is incative, why show it?
-        if (!$place || !$place instanceof Place || $place->getActive() == false) {
-            return $this->redirect(
-                $this->generateUrl('food_homepage'),
-                307 // Temporary redirect status
-            );
+        if (!$place || !$place instanceof Place || !$place->getActive()) {
+            return $this->redirect($this->get('slug')->toHomepage(), 307);
         }
 
         $categoryList = $this->get('food.places')->getActiveCategories($place);
@@ -73,8 +67,11 @@ class PlaceController extends Controller
 
         $locationData =  $this->get('food.googlegis')->getLocationFromSession();
 
+        $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
+
+        // todo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! $placeCities neranda
+
         if (!isset($locationData['city'])) {
-            $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
             $locationData['city'] = $placeCities[0];
         }
         if (isset($locationData['city'])) {
@@ -92,7 +89,7 @@ class PlaceController extends Controller
                 $kitchen = $kitchens->first();
                 $breadcrumbData['kitchen'] = $kitchen->getName();
                 $kitchenSlug = $this->get('food.dishes.utils.slug')->getSlugByItem($kitchen->getId(), 'kitchen');
-                $breadcrumbData['kitchen_url'] = $this->generateUrl('food_city_'.$cityInfo['city_slug_lower'], array(), true).'/'.$kitchenSlug;
+                $breadcrumbData['kitchen_url'] = $kitchenSlug;
             }
         }
 
@@ -145,10 +142,7 @@ class PlaceController extends Controller
     public function reviewAction($id)
     {
         if (empty($id)) {
-            return $this->redirect(
-                $this->generateUrl('food_homepage'),
-                307
-            );
+            return $this->redirect($this->get('slug')->toHomepage(), 307);
         }
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
         $review = $this->defaultReview($place, $this->user());
@@ -164,13 +158,12 @@ class PlaceController extends Controller
 
     public function reviewCreateAction($id, Request $request)
     {
-        if (empty($id)) {
-            return $this->redirect(
-                $this->generateUrl('food_homepage'),
-                307
-            );
-        }
+
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
+        if($place) {
+            return $this->redirect($this->get('slug')->toHomepage(), 307);
+        }
+
         $review = $this->defaultReview($place, $this->user());
         $form = $this->reviewForm($review);
         $placeService = $this->get('food.places');

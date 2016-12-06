@@ -1,3 +1,5 @@
+
+
 food_monitoring:
     resource: "@FoodMonitoringBundle/Resources/config/routing.yml"
     prefix:   /
@@ -76,16 +78,9 @@ _sonata_admin:
         _locale:  "[a-z]{2}"
 
 food_homepage:
-    pattern: /
-    defaults: { _controller: FoodAppBundle:Default:index }
+    pattern: /{_locale}
+    defaults: { _controller: FoodAppBundle:Default:index, _locale: %kernel.default_locale%}
 
-food_applikacija:
-    pattern:  /aplikacijos
-    defaults: { _controller: FoodAppBundle:Application:index }
-
-food_lets_meet:
-    pattern:  /susipazinkime
-    defaults: { _controller: FoodAppBundle:Default:meet }
 
 food_cili_slash:
     path: /cili/
@@ -121,12 +116,6 @@ food_cili_express_slash:
         _controller: FrameworkBundle:Redirect:urlRedirect
         path: /lt/ciliexpress
         permanent: true
-
-food_app:
-    resource: "@FoodAppBundle/Resources/config/routing.yml"
-#    prefix:   /{_locale}/
-#    requirements:
-#        _locale:  "[a-z]{2}"
 
 adminroot:
     path: /admin/
@@ -241,3 +230,12 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /change-password
 
+lexik_translation_edition:
+    resource: "@LexikTranslationBundle/Resources/config/routing.yml"
+    prefix:   /trans
+
+food_app:
+    resource: "@FoodAppBundle/Resources/config/routing.yml"
+#    prefix:   /{_locale}/
+#    requirements:
+#        _locale:  "[a-z]{2}"

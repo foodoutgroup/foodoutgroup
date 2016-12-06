@@ -1,4 +1,15 @@
 services:
+
+    slug:
+        class: Food\AppBundle\Service\SlugService
+        arguments: ["@doctrine.orm.entity_manager", @service_container, @router, %available_locales%, %kernel.default_locale%]
+
+    validate.slug:
+        class: Food\AppBundle\Validator\Constraints\SlugValidator
+        arguments: [@doctrine.orm.entity_manager, %available_locales%]
+        tags:
+          - { name: validator.constraint_validator, alias: validate.slug }
+
     food.app.utils.language:
         class: Food\AppBundle\Utils\Language
         calls:
@@ -86,22 +97,32 @@ services:
         arguments:
           - @router
           - @food.app.utils.language
+          - @service_container
         calls:
           - [setAvailableCitiesSlugs, [%available_cities_slugs%]]
           - [setLocale, [%locale%]]
-
+    food.page_service:
+        class: Food\AppBundle\Service\PageService
+        arguments:
+          - @doctrine.orm.entity_manager
+          - @router
     hook.free_delivery_restaurant:
-          class: Food\AppBundle\Service\HookFreeDeliveryRestaurant
-          arguments: ["@templating", "@doctrine.orm.entity_manager"]
+        class: Food\AppBundle\Service\HookFreeDeliveryRestaurant
+        arguments: ["@templating", "@doctrine.orm.entity_manager"]
 
     hook.best_offer:
-          class: Food\AppBundle\Service\HookBestOffer
-          arguments: ["@templating", "@doctrine.orm.entity_manager"]
+        class: Food\AppBundle\Service\HookBestOffer
+        arguments: ["@templating", "@doctrine.orm.entity_manager"]
 
     hook.b2b_client:
-          class: Food\AppBundle\Service\HookB2BClient
-          arguments: ['@service_container']
+        class: Food\AppBundle\Service\HookB2BClient
+        arguments: ['@service_container']
 
+    hook.application:
+        class: Food\AppBundle\Service\HookApplication
+
+    hook.meet:
+        class: Food\AppBundle\Service\HookMeet
 
     food.zavalas_service:
       class: Food\AppBundle\Service\ZavalasService

@@ -157,9 +157,12 @@
 
 {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'change-address', hideQlu: false, usr_address: userAllAddress} %}
 <div class="hidden">
-    <div id="rules" class="cart_rules_content">
-        <div class="cart_rules_inner">{{ static_service.getPage(slug_util.oneByName('ordering_rules', locale).itemId).content|raw }}</div>
-    </div>
+    {% set page = pageService.getByParam('page.rules') %}
+    {% if page %}
+        <div id="rules" class="cart_rules_content">
+            <div class="cart_rules_inner">{{ page.content|raw }}</div>
+        </div>
+    {% endif %}
 
     <div id="coupon" class="coupon_form_popup">
         <div class="coupon_inner">

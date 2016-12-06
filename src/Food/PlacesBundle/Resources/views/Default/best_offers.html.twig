@@ -6,7 +6,7 @@
     <div class="items-list clearfix best-offers-top-line">
         {% for best_offer in best_offers %}
             <div class="items-list-col">
-                <a href="{% if best_offer.place is not null and not best_offer.useUrl %}{{ path('food_slug', {'slug': slug_util.slugByItem(best_offer.place.id, 'place') }) }}{% else %}{{ best_offer.link }}{% endif %}" class="cupom-item">
+                <a href="{% if best_offer.place is not null and not best_offer.useUrl %}{{ slug.getUrl(best_offer.place.id, 'place') }}{% else %}{{ best_offer.link }}{% endif %}" class="cupom-item">
 
                 <div class="cupon-top">
                     <img src="//{{ cloudfront_url }}{{ asset(best_offer.getWebPathThumb("type1")) }}" width="180" height="177">
@@ -16,11 +16,15 @@
 
                 <div class="cupon-bottom">
                     <div class="button">{% trans %}index.get_this_offer{% endtrans %}</div>
-                </div></a>
+                </div>
+                </a>
             </div>
         {% endfor %}
     </div>
-    {#<div class="all-best-offers-link clearfix text-center">#} {#// TODO: LANGUAGE #}
-        {#<a class="cupon-name" href="{{ path('food_best_offers_' ~ locale) }}">{% trans %}index.all_best_offers{% endtrans %}</a>#}
-    {#</div>#}
+    {% set page = pageService.getByParam('page.best_offer') %}
+    {% if page %}
+        <div class="all-best-offers-link clearfix text-center">
+            <a class="cupon-name" href="{{ slug.getUrl(page.getId(), 'page') }}">{{ page.getTitle() }}</a>
+        </div>
+    {% endif %}
 {% endif %}

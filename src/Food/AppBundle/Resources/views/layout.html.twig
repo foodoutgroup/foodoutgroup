@@ -163,15 +163,18 @@
     {% block delfi_banner %}{% endblock %}
     <div class="site-top">
         <div class="site-block clearfix">
-            <a href="{{ path('food_lang_homepage') }}" class="main-logo">
+            <a href="{{ slug.toHomepage() }}" class="main-logo">
                 {#<img alt="Kalėdos" src="{{ asset('bundles/foodapp/images/vaida.png') }}" />#}
                 <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{% if site_country == 'LT' %}{{ asset('bundles/foodapp/images/logo_food.png') }}{% else %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% endif %}" />
             </a>
 
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
+            {% set page = pageService.getByParam('page.help') %}
+            {% if page %}
             <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
-                <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}general.help_button{% endtrans %}</span></a></li>
+                <li><a href="{{ slug.getUrl(page.getId(), 'page')}}"><span> {{ page.getTitle() }}</span></a></li>
             </ul>
+            {% endif %}
             <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
                 <li class="login-ico">
                     {% render(controller('FoodUserBundle:Default:loginButton')) %}

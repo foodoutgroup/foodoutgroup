@@ -58,7 +58,7 @@
     <div style="background-image: url(/bundles/foodapp/images/inner-bg.jpg);" class="site-center image-top">
         <div class="site-block" itemscope itemtype="http://schema.org/Restaurant">
             <div class="page-path clearfix">
-                <a href="{{ path('food_homepage') }}">{% trans %}places.home{% endtrans %}</a>
+                <a href="{{ slug.toHomepage() }}">{% trans %}places.home{% endtrans %}</a>
                 {% if breadcrumbData.city is not empty %}
                     <a href="{{ breadcrumbData.city_url }}">{{ breadcrumbData.city }}</a>
                     {% if breadcrumbData.kitchen is not empty %}

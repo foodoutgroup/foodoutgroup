@@ -12,8 +12,9 @@
         <div class="form-row form-row-required city-row width463">
             <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
             <select id="address_city" class="custom-select">
-                {% for city in available_cities %}
-                    <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e','ī':'i'})) %}selected{% endif %}>{{ city }}</option>
+
+                {% for city in cityService.getActiveCity() %}
+                    <option value="{{ city.getId() }}" {% if location and location.city is defined and location.city == city.getId() %}selected{% endif %}>{{ city.getTitle() }}</option>
                 {% endfor %}
             </select>
         </div>

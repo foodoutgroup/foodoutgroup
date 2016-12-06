@@ -27,11 +27,11 @@ class DefaultControllerTest extends WebTestCase
             $crawler->filter('html:contains("test purpose")')->count() > 0
         );
 
-        // Test ban in action for diferent url
-        $crawler = $client->request('GET', '/lt/pagalba/');
-        $this->assertTrue(
-            $crawler->filter('html:contains("test purpose")')->count() > 0
-        );
+//        // Test ban in action for diferent url
+//        $crawler = $client->request('GET', '/lt/pagalba/');
+//        $this->assertTrue(
+//            $crawler->filter('html:contains("test purpose")')->count() > 0
+//        );
 
         // Test - ban is lifted
         $em->remove($ipBan);

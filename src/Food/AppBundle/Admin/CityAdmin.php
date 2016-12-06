@@ -2,6 +2,7 @@
 namespace Food\AppBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\AppBundle\Validator\Constraints\Slug;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
@@ -27,22 +28,26 @@ class CityAdmin extends FoodAdmin
 
     function configureFormFields(FormMapper $form)
     {
-        $form->add(
-            'translations',
-            'a2lix_translations_gedmo',
-            array(
-                'translatable_class' => 'Food\AppBundle\Entity\CityLocalized',
-                'fields' => array(
+
+        $form->add('translations', 'a2lix_translations_gedmo', [
+            'translatable_class' => 'Food\AppBundle\Entity\City',
+                'fields' => [
                     'title' => [],
                     'meta_title' => ['required' => false],
                     'meta_description' => ['required' => false],
-                    'slug' => ['required' => true]
-                )
-            ));
+                    'slug' => [
+                        'constraints' => new Slug('city', $form),
+                    ]
+                ]
+        ]);
+
+
         $form->add('zavalas_on', 'checkbox', array('label' => 'admin.cities.zavalas_on', 'required' => false))
             ->add('zavalas_time', 'text', array('label' => 'admin.cities.zavalas_time', 'required' => false))
-            ->add('active', 'checkbox', array('label' => 'active', 'required' => false))
+            ->add('position', 'text', array('required' => false))
+            ->add('active', 'checkbox', array('required' => false))
         ;
+
     }
 
     /**
@@ -54,6 +59,7 @@ class CityAdmin extends FoodAdmin
      */
     public function preUpdate($object)
     {
+//        $this->getContainer()->get('food.slug_service')->generate($object);
         $this->logCity($object);
         parent::preUpdate($object);
     }

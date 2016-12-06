@@ -11,12 +11,14 @@ class CityService extends BaseService
     protected $availableCitiesSlugs;
     protected $locale;
     protected $language;
+    protected $request;
 
-    public function __construct(EntityManager $em, Router $router, Language $language)
+    public function __construct(EntityManager $em, Router $router, Language $language, $container)
     {
         parent::__construct($em);
         $this->router = $router;
         $this->language = $language;
+        $this->request = $container->get('request');
     }
 
     /**
@@ -32,14 +34,14 @@ class CityService extends BaseService
         $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", ucfirst($cityString));
         $cityInfo['city_slug_lower'] = strtolower($city);
 
-        if (!empty($city) && in_array(mb_strtolower($city), $availableCitiesSlugs)) {
-            $city_url = $this->router->generate('food_city_' . lcfirst($city), [], true);
-        } else {
-            $city_name = lcfirst(reset($availableCitiesSlugs));
-            $city = ucfirst($city_name);
-            $city_url = $this->router->generate('food_city_' . (!empty($city_name) ? $city_name : 'vilnius'), [], true);
-        }
-
+//        if (!empty($city) && in_array(mb_strtolower($city), $availableCitiesSlugs)) {
+//            $city_url = $this->router->generate('food_city_' . lcfirst($city), [], true);
+//        } else {
+//            $city_name = lcfirst(reset($availableCitiesSlugs));
+//            $city = ucfirst($city_name);
+//            $city_url = $this->router->generate('food_city_' . (!empty($city_name) ? $city_name : 'vilnius'), [], true);
+//        }
+        $city_url = '';
         $cityInfo['city_url'] = $city_url;
         $cityInfo['city'] = $city;
 
@@ -61,4 +63,26 @@ class CityService extends BaseService
     {
         $this->locale = $locale;
     }
+
+    public function getActiveCity()
+    {
+        return $this->em->getRepository('FoodAppBundle:City')->getActive();
+    }
+
+    public function getDefaultCity()
+    {
+        return $this->em->getRepository('FoodAppBundle:City')->findOneBy(null, ['position' => 'ASC']);
+    }
+
+    public function getCityById($cityId)
+    {
+        return $this->em->getRepository('FoodAppBundle:City')->findOneBy(['id' => $cityId]);
+    }
+
+    public function getCityBySlug($slug)
+    {
+        return $this->em->getRepository('FoodAppBundle:City')->findOneBy(['slug' => $slug]);
+    }
+
+
 }

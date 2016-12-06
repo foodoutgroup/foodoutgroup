@@ -57,19 +57,32 @@ class AjaxController extends Controller
      */
     private function _ajaxActFindAddress(Response $response, $city, $address, Request $request)
     {
-        $locationInfo = $this->get('food.googlegis')->groupData($address, $city);
+
+        $cityService = $this->get('food.city_service');
+
+        if(!$city = $cityService->getCityById($city)){
+            $city = $cityService->getDefaultCity();
+        }
+
+
+        $locationInfo = $this->get('food.googlegis')->groupData($address, $city->getTitle());
 
         $respData = [
             'success' => 0,
             'message' => $this->get('translator')->trans('index.address_not_found'),
             'adr'     => 0,
-            'str'     => 0
+            'str'     => 0,
+            'url'    => $this->get('slug')->getUrl($city->getId(), 'city'),
         ];
+
+
+
+
         if ((!$locationInfo['not_found'] || $locationInfo['street_found']) && $locationInfo['lng'] > 20 && $locationInfo['lat'] > 50) {
             $respData['success'] = 1;
             unset($respData['message']);
         }
-        if (!$locationInfo['not_found']) {
+        if (!$locationInfo['address_found']) {
             $respData['adr'] = 1;
         }
         if (!$locationInfo['street_found']) {
@@ -77,18 +90,19 @@ class AjaxController extends Controller
         }
         if (!empty($respData) && $respData['success'] == 1 && $respData['adr'] == 1) {
             $session = $request->getSession();
-            $session->set('locationData', ['address' => $address, 'city' => $city]);
+            $session->set('locationData', ['address' => $address, 'city' => $city->getId()]);
         }
 
         // Only City Selected
         $city_only = $request->get('city_only');
-        if (!empty($city) && empty($address) && !empty($city_only)) {
-            $this->get('food.googlegis')->setCityOnlyToSession($city);
+        if ($city && empty($address) && !empty($city_only)) {
+            $this->get('food.googlegis')->setCityOnlyToSession($city->getId());
             $response->setContent(json_encode([
                 'data' => [
                     'success' => 1,
                     'adr'     => 1,
-                    'str'     => 0
+                    'str'     => 0,
+                    'url'    => $this->get('slug')->getUrl($city->getId(), 'city'),
                 ]
             ]));
         } else {

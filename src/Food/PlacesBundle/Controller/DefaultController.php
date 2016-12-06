@@ -5,89 +5,61 @@ namespace Food\PlacesBundle\Controller;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 
 class DefaultController extends Controller
 {
-    protected $cityTranslations = [
-        'Vilnius' => 'places.in_vilnius',
-        'Kaunas' => 'places.in_kaunas',
-        'Klaipėda' => 'places.in_klaipeda',
-        'Klaipeda' => 'places.in_klaipeda',
-        'Šiauliai' => 'places.in_siauliai',
-        'Siauliai' => 'places.in_siauliai',
-        'Panevėžys' => 'places.in_panevezys',
-        'Panevezys' => 'places.in_panevezys',
-        'Alytus' => 'places.in_alytus',
-        'Utena' => 'places.in_utena',
-        'Plungė' => 'places.in_plunge',
-        'Plunge' => 'places.in_plunge',
-        'Riga' => 'places.in_riga',
-        'Rīga' => 'places.in_riga',
-        'Tallinn' => 'places.in_tallinn',
-        'Tallinn' => 'places.in_tallinn'
-    ];
-
-    public function indexAction($recommended = false, $zaval = false)
+       public function indexAction($recommended = false, $zaval = false)
     {
-        if ($recommended) {
-            $recommended = true;
-        }
-        if ($zaval) {
-            $zaval = true;
-        }
 
         $locData =  $this->get('food.location')->getLocationFromSession();
         $placeService = $this->get('food.places');
-        $availableCitiesSlugs = $this->container->getParameter('available_cities_slugs');
+        $cityService = $this->get('food.city_service');
 
-        if (!empty($locData['city']) && in_array(mb_strtolower($locData['city']), $availableCitiesSlugs)) {
-            $city_url = $this->generateUrl('food_city_' . lcfirst($locData['city']), [], true);
-        } else {
-            $city_name = lcfirst(reset($availableCitiesSlugs));
-            $city_url = $this->generateUrl('food_city_' . (!empty($city_name) ? $city_name : 'vilnius'), [], true);
+
+        if(!$city = $cityService->getCityById($locData['city'])) {
+            if(!$city = $cityService->getDefaultCity()){
+                throw new NotFoundHttpException('City was not found');
+            }
         }
 
         return $this->render(
-            'FoodPlacesBundle:Default:index.html.twig',
-            array(
+            'FoodPlacesBundle:Default:index.html.twig', [
                 'recommended' => $recommended,
                 'zaval' => $zaval,
                 'location' => $locData,
-                'city_translations' => $this->cityTranslations,
                 'default_city' => 'Vilnius',
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
                 'slug_filter' => null,
-                'city_url' => $city_url,
-                'selected_kitchens_names' => array(),
-            )
+                'selected_kitchens_names' => [],
+                'city' => $city,
+                'cityUrl' => $this->generateUrl('food_slug', ['slug' => $city->getSlug()])
+            ]
         );
     }
 
-    public function indexCityAction($city, $slug_filter = false, Request $request)
+    public function indexCityAction($id, $slug, $params = [])
     {
-        $city = ucfirst($city);
-        $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
-        $availableCitiesSlugs = $this->container->getParameter('available_cities_slugs');
-        $availableCitiesSlugs = array_map("mb_strtolower", $availableCitiesSlugs);
 
-        if (!empty($city) && in_array(mb_strtolower($city), $availableCitiesSlugs)) {
-            $city_url = $this->generateUrl('food_city_' . lcfirst($city), [], true);
-        } else {
-            $city_name = lcfirst(reset($availableCitiesSlugs));
-            $city = ucfirst($city_name);
-            $city_url = $this->generateUrl('food_city_' . (!empty($city_name) ? $city_name : 'vilnius'), [], true);
+        $request = $this->get('request');
+
+        $cityService = $this->get('food.city_service');
+        if(!$city = $cityService->getCityById($id)) {
+            if(!$city = $cityService->getDefaultCity()){
+                throw new NotFoundHttpException('City was not found');
+            }
         }
 
-        $this->get('food.googlegis')->setCityOnlyToSession($city);
+        $this->get('food.googlegis')->setCityOnlyToSession($city->getTitle());
         $locData =  $this->get('food.googlegis')->getLocationFromSession();
         $placeService = $this->get('food.places');
-        $selectedKitchensNames = $placeService->getKitchensFromSlug($slug_filter, $request, true);
+        $selectedKitchensNames = $placeService->getKitchensFromSlug($params, $request, true);
         $current_url = $request->getUri();
 
 
-        $selectedKitchensIds = $placeService->getKitchensFromSlug($slug_filter, $request);
+        $selectedKitchensIds = $placeService->getKitchensFromSlug($params, $request);
         if (!empty($selectedKitchensIds)) {
             $kitchen = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen')->find($selectedKitchensIds[0]);
             $metaTitle = $kitchen->getMetaTitle();
@@ -103,31 +75,22 @@ class DefaultController extends Controller
                 'recommended' => false,
                 'zaval' => false,
                 'location' => $locData,
-                'city_translations' => $this->cityTranslations,
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
-                'slug_filter' => $slug_filter,
-                'city' => $city,
-                'city_url' => $city_url,
+                'slug_filter' => implode("/", $params),
                 'selected_kitchens_names' => $selectedKitchensNames,
                 'current_url' => $current_url,
                 'meta_title' => $metaTitle,
                 'meta_description' => $metaDescription,
+                'city' => $city,
+                'cityUrl' => $this->generateUrl('food_slug', ['slug' => $city->getSlug()]),
             )
         );
     }
 
     public function listAction($recommended = false, $slug_filter = false, $zaval = false, Request $request)
     {
-        if ($recommended) {
-            $recommended = true;
-        }
-        if ($zaval) {
-            $zaval = true;
-        }
-
-        $recommendedFromRequest = $request->get('recommended', null);
-        if ($recommendedFromRequest !== null) {
+        if ($recommendedFromRequest = $request->get('recommended', null) !== null) {
             $recommended = (bool)$recommendedFromRequest;
         }
 
@@ -167,12 +130,9 @@ class DefaultController extends Controller
 
     public function bestOffersAction()
     {
-        $view = 'FoodPlacesBundle:Default:best_offers.html.twig';
-        $options = [
+        return $this->render('FoodPlacesBundle:Default:best_offers.html.twig', [
             'best_offers' => $this->getBestOffers(5)
-        ];
-
-        return $this->render($view, $options);
+        ]);
     }
 
     public function changeLocationAction()

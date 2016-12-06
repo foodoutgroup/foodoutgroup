@@ -6,18 +6,19 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 
 /**
-     * CityLocalized
-     * @ORM\Entity
-     * @ORM\Table(name="cities_localized",
-     *     uniqueConstraints={@ORM\UniqueConstraint(name="lookup_unique_idx", columns={
-     *         "locale", "object_id", "field"
-     *     })})
-     */
+ * CityLocalized
+ *
+ * @ORM\Table(name="city_localized",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="lookup_unique_idx", columns={
+ *         "locale", "object_id", "field"
+ *     })})
+ * @ORM\Entity
+ */
 class CityLocalized extends AbstractPersonalTranslation
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="City", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="Food\AppBundle\Entity\City", inversedBy="<")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $object;
@@ -161,7 +162,7 @@ class CityLocalized extends AbstractPersonalTranslation
     /**
      * Get object
      *
-     * @return \Food\AppBundle\Entity\CityLocalized
+     * @return \Food\AppBundle\Entity\City
      */
     public function getObject()
     {

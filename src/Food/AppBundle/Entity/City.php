@@ -5,15 +5,15 @@ namespace Food\AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
+use Symfony\Component\Validator\Constraints as Assert;
+use Food\AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * City
  *
- * @ORM\Table(name="cities")
+ * @ORM\Table(name="city")
  * @ORM\Entity(repositoryClass="Food\AppBundle\Entity\CityRepository")
  * @Gedmo\TranslationEntity(class="Food\AppBundle\Entity\CityLocalized")
-
  */
 class City implements \JsonSerializable
 {
@@ -25,6 +25,11 @@ class City implements \JsonSerializable
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Food\AppBundle\Entity\CityLocalized", mappedBy="object", cascade={"persist", "remove"})
+     **/
+    private $translations;
 
     /**
      * @var string
@@ -51,6 +56,7 @@ class City implements \JsonSerializable
      * @var string
      * @Gedmo\Translatable
      * @ORM\Column(name="slug", type="string", length=255, nullable=true, unique=true)
+     * @Assert\Regex(pattern="/^[A-Za-z\d-_]+$/", message="invalid.slug")
      */
     private $slug;
 
@@ -61,12 +67,20 @@ class City implements \JsonSerializable
      */
     private $zavalasOn;
 
+
     /**
      * @var string
      *
-     * @ORM\Column(name="zavalas_time", type="string", length=50, nullable=true)
+     * @ORM\Column(name="zavalas_time", type="string", nullable=true)
      */
     private $zavalasTime;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="position", type="integer", nullable=true)
+     */
+    private $position;
 
     /**
      * @var boolean
@@ -74,11 +88,6 @@ class City implements \JsonSerializable
      * @ORM\Column(name="active", type="boolean", nullable=true)
      */
     private $active;
-
-    /**
-     * @ORM\OneToMany(targetEntity="CityLocalized", mappedBy="object", cascade={"persist", "remove"})
-     **/
-    private $translations;
 
     /**
      * @Gedmo\Locale
@@ -299,6 +308,28 @@ class City implements \JsonSerializable
     {
         $this->slug = $slug;
     }
+
+    /**
+     * @return integer
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * @param integer $position
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+    }
+
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
 
 
 

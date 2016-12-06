@@ -22,4 +22,23 @@ class SlugRepository extends EntityRepository
 
         return $slug;
     }
+
+    public function getByIdAndTypeAndSlug($id, $type, $slug)
+    {
+        return $this->findOneBy(['item_id' => (int) $id, 'type' => $type, 'name' => $slug]);
+    }
+
+    public function getBySlug($slug)
+    {
+        return $this->findOneBy(['name' => $slug]);
+    }
+
+    public function exist($slug)
+    {
+        if($this->findOneBy(array('name' => $slug))) {
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -261,15 +261,18 @@ class PlacesService extends ContainerAware
      *
      * @return array
      */
-    public function getKitchensFromSlug($slug_filter = '', $request, $names = false)
+    public function getKitchensFromSlug($slugCollection, $request, $names = false)
     {
         $kitchens = [];
-        $slugs = explode("/", $slug_filter);
-        foreach ($slugs as $skey => &$slug) {
+
+        if(!is_array($slugCollection)) {
+            $slugCollection = explode("/", $slugCollection);
+        }
+
+        foreach ($slugCollection as $key => &$value) {
             $item_by_slug = $this->container->get('doctrine')->getManager()
                 ->getRepository('FoodAppBundle:Slug')
-                ->findOneBy(['name' => str_replace('#', '', trim($slug)), 'type' => 'kitchen', 'lang_id' => $request->getLocale()])
-            ;
+                ->findOneBy(['name' => str_replace('#', '', trim($value)), 'type' => 'kitchen', 'lang_id' => $request->getLocale()]);
             if (!empty($item_by_slug)) {
                 if ($names == false) {
                     $kitchens[] = $item_by_slug->getItemId();
@@ -283,7 +286,6 @@ class PlacesService extends ContainerAware
                 }
             }
         }
-
         return $kitchens;
     }
 

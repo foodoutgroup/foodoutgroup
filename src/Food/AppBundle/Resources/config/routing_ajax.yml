@@ -1,0 +1,25 @@
+food_ajax_dish:
+    path: /dish/add/{dish}
+    defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~}
+
+food_ajax_edit_dish:
+    path: /dish/edit/{dish}/{cartId}
+    defaults: { _controller: FoodDishesBundle:Dish:editDishInCart, dish: ~, cartId: ~}
+
+food_ajax_remove_dish:
+    path: /dish/remove/{dish}/{cartId}/{inCart}
+    defaults: { _controller: FoodDishesBundle:Dish:removeDishInCart, dish: ~, cartId: ~, inCart: 0}
+
+food_ajax:
+    path: /{action}/
+    defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
+    options:
+        expose: true
+
+food_place_point_data:
+    path: /place-point/{point_id}
+    defaults: { _controller: FoodDishesBundle:Place:placePoint, point_id: ~}
+
+food_place_menu_layout:
+    path: /save-menu-layout/{layout}
+    defaults: { _controller: FoodDishesBundle:FoodCategory:restaurantMenuLayout, layout: ~}

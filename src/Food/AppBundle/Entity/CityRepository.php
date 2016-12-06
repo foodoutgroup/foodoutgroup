@@ -11,4 +11,9 @@ class CityRepository extends EntityRepository
     {
         return $this->findOneBy(array('title' => $cityTitle))->getZavalasTime();
     }
+
+    public function getActive()
+    {
+        return $this->findBy(['active' => 1], ['position' => 'ASC']);
+    }
 }

@@ -1,0 +1,115 @@
+food_admin_get_place_units:
+    path: /place/get-units/{placeId}
+    defaults: { _controller: FoodDishesBundle:DishAdmin:getDishUnitsFromPlace }
+    options:
+        expose: true
+
+food_admin_get_place_categories:
+    path: /place/get-categories/{placeId}
+    defaults: {_controller: FoodDishesBundle:DishAdmin:getCategoryOptionsFromPlace}
+    options:
+        expose: true
+
+food_admin_get_place_points:
+    path: /place/get-points/{placeId}
+    defaults: {_controller: FoodDishesBundle:DishAdmin:getPointsFromPlace}
+    options:
+        expose: true
+
+food_admin_get_place_dish_options:
+    path: /place/get-dish-options/{placeId}/{uniqueId}
+    defaults: {_controller: FoodDishesBundle:DishAdmin:getDishOptionsFromPlace}
+    options:
+        expose: true
+
+food_admin_get_order_status_popup:
+    path: /dispatcher/get_order_status_popup/{orderId}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:statusPopup}
+    options:
+        expose: true
+
+food_admin_approve_order:
+    path: /dispatcher/approve_order/{orderId}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:approveOrder}
+    options:
+        expose: true
+
+food_admin_set_order_status:
+    path: /dispatcher/set-order-status/{orderId}/{status}/{delayDuration}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:setOrderStatus, delayDuration: null }
+    requirements:
+        delayDuration:  "\d+"
+    options:
+        expose: true
+
+food_admin_get_driver_list:
+    path: /dispatcher/get-driver-list/{orders}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:getDriverList}
+    options:
+        expose: true
+
+food_admin_send_message:
+    path: /dispatcher/send-message/{orderId}/{message}
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:sendOrderMessage}
+    options:
+        expose: true
+
+food_admin_assign_driver:
+    path: /dispatcher/assign-driver/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignDriver}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
+
+food_admin_assign_dispatcher:
+    path: /dispatcher/assign-dispacher/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignDispatcher}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
+
+food_admin_assign_placeinformed:
+    path: /dispatcher/assign-placeinformed/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignPlaceInformed}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
+
+food_admin_check_new_orders:
+    path: /dispatcher/check-new-orders/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:checkNewOrders}
+    options:
+        expose: true
+    requirements:
+          _method:  GET
+
+food_admin_mark_order_contacted:
+    path: /dispatcher/mark-contacted/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:markOrderContacted}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
+
+food_admin_mark_order_problem_solved:
+    path: /dispatcher/mark-solved/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:markOrderSolved}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
+
+food_admin_get_user_info_by_phone:
+    path: /dispatcher/user-info/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:getUserInfoByPhone}
+    options:
+        expose: true
+
+food_admin_get_place_unit_categories:
+    path: /place/get-unit-categories/{placeId}
+    defaults: {_controller: FoodDishesBundle:DishUnitAdmin:getUnitCategoryOptionsFromPlace}
+    options:
+        expose: true
