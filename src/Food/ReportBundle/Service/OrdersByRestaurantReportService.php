@@ -7,6 +7,7 @@ use Food\AppBundle\Service\BaseService;
 use Food\OrderBundle\Entity\Order;
 use Food\ReportBundle\Entity\OrdersByRestaurantFile;
 use PHPExcel;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -15,12 +16,14 @@ class OrdersByRestaurantReportService extends BaseService
     private $securityContext;
     private $translator;
     private $saveDirectory;
+    private $fileSystem;
 
-    public function __construct(EntityManager $em, SecurityContextInterface $securityContext, TranslatorInterface $translator)
+    public function __construct(EntityManager $em, SecurityContextInterface $securityContext, TranslatorInterface $translator, Filesystem $fileSystem)
     {
         parent::__construct($em);
         $this->securityContext = $securityContext;
         $this->translator = $translator;
+        $this->fileSystem = $fileSystem;
     }
 
     /**
@@ -32,6 +35,9 @@ class OrdersByRestaurantReportService extends BaseService
     public function generateDocument($type, $restaurants, $dateFrom, $dateTo)
     {
         if (!empty($restaurants)) {
+            if (!$this->fileSystem->exists($this->saveDirectory)) {
+                $this->fileSystem->mkdir($this->saveDirectory);
+            }
             foreach ($restaurants as $restaurant) {
                 $query = $this->em->getRepository('FoodOrderBundle:Order')->createQueryBuilder('o')
                     ->where('o.order_date BETWEEN :dateFrom AND :dateTo')
