@@ -332,7 +332,7 @@
                                 </label>
                                 {% endif %}
                                 {% if not place.disabledPaymentOnDelivery %}
-                                    <label class="custom-radio">{% if takeAway %}{% trans %}cart.checkout.cash_on_pickup{% endtrans %}{% else %}{% trans %}cart.checkout.cash_on_delivery{% endtrans %}{% endif %}
+                                    <label class="custom-radio">{% if takeAway %}{% if place.cardOnDelivery %}{% trans %}cart.checkout.cash_cc_on_pickup{% endtrans %}{% else %}{% trans %}cart.checkout.cash_on_pickup{% endtrans %}{% endif %}{% else %}{% trans %}cart.checkout.cash_on_delivery{% endtrans %}{% endif %}
                                         <input type="radio" name="payment-type" value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local') or (dataToLoad is empty) %} checked="checked"{% endif %}>
                                     </label>
                                     {% if takeAway != true and place.cardOnDelivery %}
