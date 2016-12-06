@@ -630,7 +630,7 @@ food_1822_cili_slash:
     defaults: { _controller: FoodDishesBundle:Place:index, id: 63, slug: 'cili-pica', categoryId: '', oldFriendIsHere: 1 }
 food_1822_cili_kaimas_slash:
     path: /1822/cili-kaimas/
-    defaults: { _controller: FoodDishesBundle:Place:index, id: 105, slug: 'cili-kaimas-vilnius', categoryId: '', oldFriendIsHere: 1 }
+    defaults: { _controller: FoodDishesBundle:Place:index, id: 67, slug: 'cili-kaimas-kaunas', categoryId: '', oldFriendIsHere: 1 }
 food_1822_soya_slash:
     path: /1822/soya/
     defaults: { _controller: FoodDishesBundle:Place:index, id: 70, slug: 'soya', categoryId: '', oldFriendIsHere: 1 }
