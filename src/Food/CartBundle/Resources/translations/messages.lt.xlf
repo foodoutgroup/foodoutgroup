@@ -134,6 +134,10 @@
                 <source>cart.checkout.cash_on_pickup</source>
                 <target>Grynais atsiėmimo metu</target>
             </trans-unit>
+            <trans-unit id="51401b79dc9570ffe18190d54b163468" resname="cart.checkout.cash_cc_on_pickup">
+                <source>cart.checkout.cash_cc_on_pickup</source>
+                <target>Grynais/kortele atsiėmimo metu</target>
+            </trans-unit>
             <trans-unit id="cart.checkout.corporate_pay" resname="cart.checkout.corporate_pay">
                 <source>cart.checkout.corporate_pay</source>
                 <target>Pavedimu mėnesio gale</target>
