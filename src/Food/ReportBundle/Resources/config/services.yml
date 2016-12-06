@@ -23,5 +23,6 @@ services:
     arguments:
       - @security.context
       - @translator
+      - @filesystem
     calls:
       - [ setSaveDirectory, ['%kernel.root_dir%/../web/uploads/documents/order_reports']]
