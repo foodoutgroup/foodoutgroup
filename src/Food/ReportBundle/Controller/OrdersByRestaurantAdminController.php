@@ -36,7 +36,7 @@ class OrdersByRestaurantAdminController extends Controller
             'datagrid'   => $datagrid,
             'csrf_token' => $this->getCsrfToken('sonata.batch'),
             'places'     => $this->get('doctrine.orm.entity_manager')
-                ->getRepository('FoodDishesBundle:Place')->findBy(['active' => 1]),
+                ->getRepository('FoodDishesBundle:Place')->findBy(['active' => 1], ['name' => 'ASC']),
             'types'     => OrdersByRestaurantFile::getOrdersByRestaurantFileTypes(),
         ));
     }
