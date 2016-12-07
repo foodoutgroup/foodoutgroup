@@ -37,8 +37,7 @@ class OrdersByRestaurantAdmin extends SonataAdmin
     {
         parent::configureRoutes($collection);
 
-        $collection->add('download', $this->getRouterIdParameter() . '/download');
-        $collection->clearExcept(array('list', 'download'));
+        $collection->clearExcept(array('list'));
     }
 }
 

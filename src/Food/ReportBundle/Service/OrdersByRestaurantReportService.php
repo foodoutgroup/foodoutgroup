@@ -5,6 +5,7 @@ namespace Food\ReportBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Service\BaseService;
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Service\OrderService;
 use Food\ReportBundle\Entity\OrdersByRestaurantFile;
 use PHPExcel;
 use Symfony\Component\Filesystem\Filesystem;
@@ -42,9 +43,11 @@ class OrdersByRestaurantReportService extends BaseService
                 $query = $this->em->getRepository('FoodOrderBundle:Order')->createQueryBuilder('o')
                     ->where('o.order_date BETWEEN :dateFrom AND :dateTo')
                     ->andWhere('o.place = :place')
+                    ->andWhere('o.order_status = :orderStatus')
                     ->setParameter('dateFrom', date('Y-m-d', strtotime($dateFrom)))
                     ->setParameter('dateTo', date('Y-m-d', strtotime($dateTo)))
                     ->setParameter('place', $restaurant)
+                    ->setParameter('orderStatus', OrderService::$status_completed)
                     ->getQuery();
                 $orders = $query->getResult();
                 $xlsData = array();
@@ -89,6 +92,8 @@ class OrdersByRestaurantReportService extends BaseService
                             $this->translator->trans('admin.report.order_date'),
                             $this->translator->trans('admin.report.foodout_sf_number'),
                             $this->translator->trans('admin.report.restaurant_name'),
+                            $this->translator->trans('admin.report.restaurant_placepoint_address'),
+                            $this->translator->trans('admin.report.restaurant_placepoint_code'),
                             $this->translator->trans('admin.report.total_sum_with_vat'),
                             $this->translator->trans('admin.report.paid_cash'),
                             $this->translator->trans('admin.report.total_sum_without_vat'),
@@ -129,9 +134,11 @@ class OrdersByRestaurantReportService extends BaseService
                                 $order->getOrderDate(),
                                 $order->getSfSeries().$order->getSfNumber(),
                                 $order->getPlaceName(),
-                                $order->getTotal(),
+                                $order->getPlacePointAddress(),
+                                ($order->getPlacePoint() ? $order->getPlacePoint()->getId() : ''),
+                                ($order->getTotal() - $order->getDeliveryPrice()),
                                 ($order->getPaymentMethod() == 'local' ? 'Taip' : 'Ne'),
-                                $order->getTotalWithoutVat(),
+                                ($order->getTotal() - $order->getDeliveryPrice())/1.21,
                                 $order->getDeliveryPrice(),
                                 $order->getTotal() * 0.35,
                                 $order->getTotal() * 0.015,
