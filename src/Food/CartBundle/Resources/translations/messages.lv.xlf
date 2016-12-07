@@ -142,7 +142,7 @@
                 <source>cart.checkout.card_on_delivery</source>
                 <target>Ar kredītkarti piegādes brīdī</target>
             </trans-unit>
-            <trans-unit id="51401b79dc9570ffe18190d54b163468" resname="cart.checkout.card_on_pickup">
+            <trans-unit id="9330627cdb5d1c945003084cf89374b7" resname="cart.checkout.card_on_pickup">
                 <source>cart.checkout.card_on_pickup</source>
                 <target>Ar kredītkarti piegādes brīdī</target>
             </trans-unit>
