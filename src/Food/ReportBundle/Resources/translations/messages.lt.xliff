@@ -87,6 +87,10 @@
                 <source>admin.report.order_date</source>
                 <target>Užsakymo data</target>
             </trans-unit>
+            <trans-unit id="admin.report.order_delivery_date">
+                <source>admin.report.order_delivery_date</source>
+                <target>Užsakymo pristatymo data</target>
+            </trans-unit>
             <trans-unit id="admin.report.foodout_sf_number">
                 <source>admin.report.foodout_sf_number</source>
                 <target>Foodout SF numeris</target>

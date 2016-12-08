@@ -41,17 +41,18 @@ class OrdersByRestaurantReportService extends BaseService
             }
             foreach ($restaurants as $restaurant) {
                 $query = $this->em->getRepository('FoodOrderBundle:Order')->createQueryBuilder('o')
-                    ->where('o.order_date BETWEEN :dateFrom AND :dateTo')
+                    ->where('o.deliveryTime BETWEEN :dateFrom AND :dateTo')
                     ->andWhere('o.place = :place')
                     ->andWhere('o.order_status = :orderStatus')
-                    ->setParameter('dateFrom', date('Y-m-d', strtotime($dateFrom)))
-                    ->setParameter('dateTo', date('Y-m-d', strtotime($dateTo)))
+                    ->setParameter('dateFrom', date('Y-m-d 06:00:00', strtotime($dateFrom)))
+                    ->setParameter('dateTo', date('Y-m-d 06:00:00', strtotime($dateTo. ' +1 day')))
                     ->setParameter('place', $restaurant)
                     ->setParameter('orderStatus', OrderService::$status_completed)
                     ->getQuery();
                 $orders = $query->getResult();
                 $xlsData = array();
                 if (!empty($orders)) {
+                    $totalFoodSumWithVat = 0;
                     $totalSumWithVat = 0;
                     $totalSumWithoutVat = 0;
                     $totalDeliverySum = 0;
@@ -66,7 +67,7 @@ class OrdersByRestaurantReportService extends BaseService
                         $xlsData[] = [
                             $this->translator->trans('admin.report.order_id'),
                             $this->translator->trans('admin.report.foodout_sf_number'),
-                            $this->translator->trans('admin.report.order_date'),
+                            $this->translator->trans('admin.report.order_delivery_date'),
                             $this->translator->trans('admin.report.restaurant_id'),
                             $this->translator->trans('admin.report.restaurant_name'),
                             $this->translator->trans('admin.report.restaurant_placepoint_address'),
@@ -89,7 +90,7 @@ class OrdersByRestaurantReportService extends BaseService
                     } else {
                         $xlsData[] = [
                             $this->translator->trans('admin.report.nr'),
-                            $this->translator->trans('admin.report.order_date'),
+                            $this->translator->trans('admin.report.order_delivery_date'),
                             $this->translator->trans('admin.report.foodout_sf_number'),
                             $this->translator->trans('admin.report.restaurant_name'),
                             $this->translator->trans('admin.report.restaurant_placepoint_address'),
@@ -103,6 +104,9 @@ class OrdersByRestaurantReportService extends BaseService
                             $this->translator->trans('admin.report.comissions_2'),
                         ];
                     }
+                    /**
+                     * @var Order[] $orders
+                     */
                     foreach ($orders as $order) {
                         if ($type == OrdersByRestaurantFile::TYPE_FOR_RESTAURANT) {
                             $xlsData[] = [
@@ -120,7 +124,7 @@ class OrdersByRestaurantReportService extends BaseService
                                 $order->getPaymentMethodCode(),
                                 ($order->getDriver() ? $order->getDriver()->getId() : ''),
                                 ($order->getTotal() - $order->getDeliveryPrice()),
-                                ($order->getTotal() - $order->getDeliveryPrice())/1.21,
+                                $order->getDishesWithoutVat(),
                                 $order->getDiscountSum(),
                                 $order->getDeliveryPrice(),
                                 $order->getTotal(),
@@ -138,28 +142,55 @@ class OrdersByRestaurantReportService extends BaseService
                                 ($order->getPlacePoint() ? $order->getPlacePoint()->getId() : ''),
                                 ($order->getTotal() - $order->getDeliveryPrice()),
                                 ($order->getPaymentMethod() == 'local' ? 'Taip' : 'Ne'),
-                                ($order->getTotal() - $order->getDeliveryPrice())/1.21,
+                                $order->getDishesWithoutVat(),
                                 $order->getDeliveryPrice(),
                                 $order->getTotal() * 0.35,
                                 $order->getTotal() * 0.015,
                                 $order->getTotal() * 0.02,
                             ];
-                            $totalSumWithVat += $order->getTotal();
-                            $totalSumWithoutVat += $order->getTotalWithoutVat();
-                            $totalDeliverySum += $order->getDeliveryPrice();
-                            $totalCommissionsSum30 += $order->getTotal() * 0.35;
-                            $totalCommissionsSum15 += $order->getTotal() * 0.015;
-                            $totalCommissionsSum2 += $order->getTotal() * 0.02;
                         }
+                        $totalFoodSumWithVat += ($order->getTotal() - $order->getDeliveryPrice());
+                        $totalSumWithVat += $order->getTotal();
+                        $totalSumWithoutVat += $order->getDishesWithoutVat();
+                        $totalDeliverySum += $order->getDeliveryPrice();
+                        $totalCommissionsSum30 += $order->getTotal() * 0.35;
+                        $totalCommissionsSum15 += $order->getTotal() * 0.015;
+                        $totalCommissionsSum2 += $order->getTotal() * 0.02;
                     }
 
-                    if ($type == OrdersByRestaurantFile::TYPE_FOR_ADMINISTRATION) {
+                    if ($type == OrdersByRestaurantFile::TYPE_FOR_RESTAURANT) {
                         $xlsData[] = [
                             '',
                             '',
                             '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
                             $this->translator->trans('admin.report.total'),
+                            $totalFoodSumWithVat,
+                            $totalSumWithoutVat,
+                            '',
+                            $totalDeliverySum,
                             $totalSumWithVat,
+                            $totalCommissionsSum30,
+                            $totalCommissionsSum15,
+                            $totalCommissionsSum2,
+                        ];
+                    } else {
+                        $xlsData[] = [
+                            '',
+                            '',
+                            '',
+                            '',
+                            '',
+                            $this->translator->trans('admin.report.total'),
+                            $totalFoodSumWithVat,
                             '',
                             $totalSumWithoutVat,
                             $totalDeliverySum,
@@ -196,6 +227,8 @@ class OrdersByRestaurantReportService extends BaseService
             }
         }
     }
+
+
 
     public function setSaveDirectory($saveDirectory)
     {
