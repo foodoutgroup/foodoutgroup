@@ -44,8 +44,8 @@ class OrdersByRestaurantReportService extends BaseService
                     ->where('o.deliveryTime BETWEEN :dateFrom AND :dateTo')
                     ->andWhere('o.place = :place')
                     ->andWhere('o.order_status = :orderStatus')
-                    ->setParameter('dateFrom', date('Y-m-d', strtotime($dateFrom)))
-                    ->setParameter('dateTo', date('Y-m-d 23:59:59', strtotime($dateTo)))
+                    ->setParameter('dateFrom', date('Y-m-d 06:00:00', strtotime($dateFrom)))
+                    ->setParameter('dateTo', date('Y-m-d 06:00:00', strtotime($dateTo. ' +1 day')))
                     ->setParameter('place', $restaurant)
                     ->setParameter('orderStatus', OrderService::$status_completed)
                     ->getQuery();
@@ -67,7 +67,7 @@ class OrdersByRestaurantReportService extends BaseService
                         $xlsData[] = [
                             $this->translator->trans('admin.report.order_id'),
                             $this->translator->trans('admin.report.foodout_sf_number'),
-                            $this->translator->trans('admin.report.order_date'),
+                            $this->translator->trans('admin.report.order_delivery_date'),
                             $this->translator->trans('admin.report.restaurant_id'),
                             $this->translator->trans('admin.report.restaurant_name'),
                             $this->translator->trans('admin.report.restaurant_placepoint_address'),
@@ -90,7 +90,7 @@ class OrdersByRestaurantReportService extends BaseService
                     } else {
                         $xlsData[] = [
                             $this->translator->trans('admin.report.nr'),
-                            $this->translator->trans('admin.report.order_date'),
+                            $this->translator->trans('admin.report.order_delivery_date'),
                             $this->translator->trans('admin.report.foodout_sf_number'),
                             $this->translator->trans('admin.report.restaurant_name'),
                             $this->translator->trans('admin.report.restaurant_placepoint_address'),
