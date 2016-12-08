@@ -45,7 +45,7 @@ class OrdersByRestaurantReportService extends BaseService
                     ->andWhere('o.place = :place')
                     ->andWhere('o.order_status = :orderStatus')
                     ->setParameter('dateFrom', date('Y-m-d', strtotime($dateFrom)))
-                    ->setParameter('dateTo', date('Y-m-d', strtotime($dateTo)))
+                    ->setParameter('dateTo', date('Y-m-d 23:59:59', strtotime($dateTo)))
                     ->setParameter('place', $restaurant)
                     ->setParameter('orderStatus', OrderService::$status_completed)
                     ->getQuery();
