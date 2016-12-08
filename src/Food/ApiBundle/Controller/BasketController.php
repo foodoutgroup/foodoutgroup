@@ -38,7 +38,7 @@ class BasketController extends Controller
             $this->get('logger')->error('createBasketAction Trace:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -65,7 +65,7 @@ class BasketController extends Controller
             $this->get('logger')->error('updateBasketAction Trace:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -96,7 +96,7 @@ class BasketController extends Controller
             $this->get('logger')->error('getBasketAction Trace:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -123,7 +123,7 @@ class BasketController extends Controller
             $this->get('logger')->error('deleteBasketAction Trace:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -151,7 +151,7 @@ class BasketController extends Controller
             $this->get('logger')->error('updateBasketItemAction Trace:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -179,7 +179,7 @@ class BasketController extends Controller
             $this->get('logger')->error('deleteBasketItemAction Trace:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );

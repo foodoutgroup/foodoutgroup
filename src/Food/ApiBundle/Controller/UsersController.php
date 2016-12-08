@@ -216,7 +216,7 @@ class UsersController extends Controller
             $this->get('logger')->error('Users:registerAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -411,7 +411,7 @@ class UsersController extends Controller
             $this->get('logger')->error('Users:register2Action Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -488,7 +488,7 @@ class UsersController extends Controller
             $this->get('logger')->error('Users:updateAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -565,7 +565,7 @@ class UsersController extends Controller
             $this->get('logger')->error('Users:changePasswordAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -613,7 +613,7 @@ class UsersController extends Controller
             $this->get('logger')->error('Users:resetPasswordAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -700,7 +700,7 @@ class UsersController extends Controller
             $this->get('logger')->error('Users:loginAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -752,7 +752,7 @@ class UsersController extends Controller
             $this->get('logger')->error('Users:logoutUserAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -856,7 +856,7 @@ class UsersController extends Controller
             $this->get('logger')->error('Users:usersListAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -905,7 +905,7 @@ class UsersController extends Controller
             $this->get('logger')->error('Users:logoutAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -947,7 +947,7 @@ class UsersController extends Controller
             $this->get('logger')->error('Users:meAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
