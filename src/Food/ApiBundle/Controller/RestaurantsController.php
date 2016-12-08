@@ -112,7 +112,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getRestaurantsAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -201,7 +201,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getRestaurantsFilteredAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -296,7 +296,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getRestaurantAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -340,7 +340,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getMenuAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -376,7 +376,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getMenuItemAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -425,7 +425,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getMenuCategoriesAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );

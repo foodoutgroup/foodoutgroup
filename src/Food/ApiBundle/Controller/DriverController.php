@@ -43,7 +43,7 @@ class DriverController extends Controller
             $this->get('logger')->error('Driver:meAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -89,7 +89,7 @@ class DriverController extends Controller
             $this->get('logger')->error('Driver:meIdAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -130,7 +130,7 @@ class DriverController extends Controller
             $this->get('logger')->error('Driver:assignToOrderAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -171,7 +171,7 @@ class DriverController extends Controller
             $this->get('logger')->error('Driver:assignToOrderAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -210,7 +210,7 @@ class DriverController extends Controller
             $this->get('logger')->error('Driver:assignToOrderAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -249,7 +249,7 @@ class DriverController extends Controller
             $this->get('logger')->error('Driver:assignToOrderAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );

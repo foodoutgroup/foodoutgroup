@@ -46,7 +46,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:getOrdersAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -78,7 +78,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:createOrderAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -110,7 +110,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:createOrderPreAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -144,7 +144,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:getOrderDetailsByHashAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -207,7 +207,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:getOrderDetailsAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -260,7 +260,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:confirmOrderAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -314,7 +314,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:getOrderStatusAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -500,7 +500,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:getOrderStatusAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
