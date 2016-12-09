@@ -3,6 +3,7 @@
 namespace Food\ApiBundle\Service;
 
 use Food\ApiBundle\Common\JsonRequest;
+use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\Coupon;
 use Food\UserBundle\Entity\User;
@@ -624,6 +625,35 @@ class OrderService extends ContainerAware
         }
 
         return $returner;
+    }
+
+    /**
+     * @param Order[] $orders
+     * @return array
+     */
+    public function getOrdersForResponseFull($orders, $hash)
+    {
+        /**
+         * @var PlacePoint $placePoint
+         */
+        $placePoint = $this->container->get('doctrine.orm.entity_manager')
+            ->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash])
+        ;
+        if (!empty($placePoint)) {
+            $ordersData = [
+                'restaurant' => [
+                    'title' => $placePoint->getPlace()->getName(),
+                    'address' => $placePoint->getAddress(),
+                    'logo' => $placePoint->getPlace()->getLogo()
+                ]
+            ];
+            foreach ($orders as $order) {
+                $ordersData['orders'][] = $order;
+            }
+        } else {
+            throw new \Exception('Place point not found.');
+        }
+        return $ordersData;
     }
 
     /**

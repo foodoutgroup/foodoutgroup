@@ -155,6 +155,34 @@ class OrdersController extends Controller
         return new JsonResponse($response);
     }
 
+    public function getOrdersByPlacepointHashAction($hash, Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Request: hash - ' . $hash, (array) $request);
+
+        try {
+            $orders = $this->get('food.order')->getOrdersByPlacepointHash($hash);
+            $response = $this->get('food_api.order')->getOrdersForResponseFull($orders, $hash);
+        }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                ['error' => $this->get('translator')->trans('general.error_happened')],
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
+    }
+
     /**
      * @param int $id
      * @param Request $request
