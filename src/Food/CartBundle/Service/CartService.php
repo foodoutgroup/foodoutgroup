@@ -700,9 +700,9 @@ class CartService {
                     $this->_applyUnitBundles($bund, $dishUnits[$bund->getDishUnit()->getId()]);
                 }
             }
-            if ($bund->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_CATEGORY) {
-                $this->getContainer()->get('logger')->debug('OPT_COMBO_APPLY_CATEGORY not implemented');
-            }
+            //~ if ($bund->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_CATEGORY) {
+                //~ $this->getContainer()->get('logger')->debug('OPT_COMBO_APPLY_CATEGORY not implemented');
+            //~ }
         }
     }
 

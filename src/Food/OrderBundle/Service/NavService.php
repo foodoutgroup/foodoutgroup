@@ -948,8 +948,8 @@ class NavService extends ContainerAware
                 }
             }
         }
-        $this->container->get('logger')->debug('CILI NVB VALIDATE LINES');
-        $this->container->get('logger')->debug(print_r($requestData, true));
+        //~ $this->container->get('logger')->debug('CILI NVB VALIDATE LINES');
+        //~ $this->container->get('logger')->debug(print_r($requestData, true));
         // this is more like anomaly than a rule
         if (empty($requestData['Lines'])) {
             $returner = [
@@ -966,8 +966,8 @@ class NavService extends ContainerAware
         }
 
         ob_start();
-        $this->container->get('logger')->debug('CILI NVB VALIDATE REQUEST');
-        $this->container->get('logger')->debug(print_r($requestData, true));
+        //~ $this->container->get('logger')->debug('CILI NVB VALIDATE REQUEST');
+        //~ $this->container->get('logger')->debug(print_r($requestData, true));
         $response = $this->getWSConnection()->FoodOutValidateOrder(
             [
                 'params' => $requestData,
@@ -975,8 +975,8 @@ class NavService extends ContainerAware
             ]
         )
         ;
-        $this->container->get('logger')->debug('CILI NVB VALIDATE RESPONSE');
-        $this->container->get('logger')->debug(print_r($response, true));
+        //~ $this->container->get('logger')->debug('CILI NVB VALIDATE RESPONSE');
+        //~ $this->container->get('logger')->debug(print_r($response, true));
         ob_end_clean();
 
         $prbDish = "";
