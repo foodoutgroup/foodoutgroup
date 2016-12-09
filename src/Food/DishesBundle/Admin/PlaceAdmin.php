@@ -241,6 +241,10 @@ class PlaceAdmin extends FoodAdmin
             if (empty($createdBy)) {
                 $point->setCreatedBy($user);
             }
+            if (empty($point->getHash())) {
+                $hash = $this->getContainer()->get('food.place_point_service')->generatePlacePointHash($point);
+                $point->setHash($hash);
+            }
         }
     }
 

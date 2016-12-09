@@ -320,6 +320,12 @@ class PlacePoint
      */
     private $noReplication = false;
 
+    /**
+     * @var string
+     * @ORM\Column(name="hash", type="string", length=256, nullable=true)
+     */
+    private $hash;
+
     public function getElement()
     {
         return '';
@@ -1429,5 +1435,21 @@ class PlacePoint
     public function setAdditionalInfo($additional_info)
     {
         $this->additional_info = $additional_info;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @param string $hash
+     */
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
     }
 }
