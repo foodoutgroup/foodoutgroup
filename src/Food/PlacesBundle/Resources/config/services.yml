@@ -1,7 +1,9 @@
 services:
-    food.places:
-        class: Food\PlacesBundle\Service\PlacesService
-        calls:
-            - [setContainer, [@service_container]]
+  food.places:
+    class: Food\PlacesBundle\Service\PlacesService
+    calls:
+      - [setContainer, [@service_container]]
 
-
+  food.place_point_service:
+    class: Food\PlacesBundle\Service\PlacePointService
+    parent: food.base_service

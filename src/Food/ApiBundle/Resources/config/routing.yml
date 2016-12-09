@@ -97,6 +97,11 @@ food_api_order_details_hash:
     defaults: { _controller: FoodApiBundle:Orders:getOrderDetailsByHash }
     methods: [GET]
 
+food_api_placepont_orders_by_hash:
+    pattern: /ordersByPlacepointHash/{hash}
+    defaults: { _controller: FoodApiBundle:Orders:getOrdersByPlacepointHash }
+    methods: [GET]
+
 food_api_order_details2:
     pattern: /orders2/{id}
     defaults: { _controller: FoodApiBundle:Orders:getOrderDetails }

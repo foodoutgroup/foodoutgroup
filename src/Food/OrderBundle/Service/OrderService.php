@@ -1683,6 +1683,17 @@ class OrderService extends ContainerAware
         return $this->order;
     }
 
+    public function getOrdersByPlacepointHash($hash)
+    {
+        $placePoint = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash]);
+        if (!empty($placePoint)) {
+            $orders = $this->em->getRepository('FoodOrderBundle:Order')->findBy(['place_point' => $placePoint]);
+            return $orders;
+        } else {
+            throw new \Exception('Place point not found.');
+        }
+    }
+
     /**
      * @param int $id Nav delivery Order Id
      *
