@@ -286,8 +286,8 @@ class MessagesService
     public function updateMessagesDelivery($dlrData)
     {
         $logger = $this->container->get("logger");
-        $logger->debug('-- updateMessageDelivery:  --');
-        $logger->debug(var_export($dlrData, true));
+        //~ $logger->debug('-- updateMessageDelivery:  --');
+        //~ $logger->debug(var_export($dlrData, true));
         if (empty($dlrData)) {
             throw new \InvalidArgumentException('No DLR data received');
         }
@@ -301,7 +301,7 @@ class MessagesService
 
                     if (!$message) {
                         $logger->error('Message not found!');
-                        $logger->debug('Message id: '.$messageData['extId']);
+                        //~ $logger->debug('Message id: '.$messageData['extId']);
                     } else {
                         $message->setDelivered($messageData['delivered']);
 
