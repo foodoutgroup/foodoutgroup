@@ -647,8 +647,11 @@ class OrderService extends ContainerAware
                     'logo' => $placePoint->getPlace()->getLogo()
                 ]
             ];
+            /**
+             * @var Order[] $orders
+             */
             foreach ($orders as $order) {
-                $ordersData['orders'][] = $order;
+                $ordersData['orders'][] = $order->__toArray();
             }
         } else {
             throw new \Exception('Place point not found.');
