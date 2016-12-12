@@ -1029,9 +1029,17 @@
                 <source>places.in_alytus</source>
                 <target>Alytuje</target>
             </trans-unit>
+            <trans-unit id="places.in_marijampole" resname="places.in_marijampole">
+                <source>places.in_marijampole</source>
+                <target>Marijampolėje</target>
+            </trans-unit>
             <trans-unit id="places.in_utena" resname="places.in_utena">
                 <source>places.in_utena</source>
                 <target>Utenoje</target>
+            </trans-unit>
+            <trans-unit id="places.in_kedainiai" resname="places.in_kedainiai">
+                <source>places.in_kedainiai</source>
+                <target>Kėdainiuose</target>
             </trans-unit>
             <trans-unit id="places.in_plunge" resname="places.in_plunge">
                 <source>places.in_plunge</source>

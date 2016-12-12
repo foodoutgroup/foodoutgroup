@@ -23,8 +23,8 @@ parameters:
 
     locale: lt
     locales: ["lt", "en", "ru"]
-    available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Utena", "Plungė"]
-    available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda", "Siauliai", "Panevezys", "Alytus", "Utena", "Plunge"]
+    available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Marijampolė", "Utena", "Kėdainiai", "Plungė"]
+    available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda", "Siauliai", "Panevezys", "Alytus", "Marijampole", "Utena", "Kedainiai", "Plunge"]
     available_locales: ["lt", "en", "ru"]
     available_locales_routing: lt | en | ru
     cloudfront_url: foodout.lt
