@@ -24,4 +24,20 @@ class PlacePointRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param $name
+     * @return array
+     */
+    public function getCitiesByPlaceName($name)
+    {
+        return $this->createQueryBuilder('pp')
+            ->select('pp')
+            ->innerJoin('Food\DishesBundle\Entity\Place', 'p', 'WITH', 'p.id = pp.place')
+            ->where('p.name LIKE :name')
+            ->andWhere('pp.active = 1')
+            ->setParameter('name', '%' . $name . '%')
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -638,3 +638,7 @@ food_1822_soya_slash:
 food_place_url_by_city:
     path: /getPlaceUrlByCity/{placeId}
     defaults: { _controller: FoodDishesBundle:Place:getPlaceUrlByCity }
+
+food_cities_by_place:
+    path: /getCitiesByPlace/{placeId}
+    defaults: { _controller: FoodDishesBundle:Place:getCitiesByPlace }

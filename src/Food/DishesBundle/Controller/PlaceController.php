@@ -336,4 +336,25 @@ class PlaceController extends Controller
 
         return $response;
     }
+
+    public function getCitiesByPlaceAction($placeId, Request $request) {
+        $placeService = $this->get('food.places');
+        $found_data = ['status' => 'fail', 'cities' => null];
+
+        if (!empty($placeId)) {
+            $cities = $placeService->getCitiesByPlace($placeId);
+            if (!empty($cities)) {
+                $found_data = [
+                    'status' => 'success',
+                    'cities' => $cities
+                ];
+            }
+        }
+
+        $response = new JsonResponse($found_data);
+        $response->setCharset('UTF-8');
+        $response->prepare($request);
+
+        return $response;
+    }
 }
