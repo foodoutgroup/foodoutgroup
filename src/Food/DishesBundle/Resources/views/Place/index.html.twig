@@ -61,6 +61,19 @@
                     }
                     return false;
                 });
+
+                var region_select = $('#region_select');
+                if (region_select.length) {
+                    $.get("{{ path('food_cities_by_place', { 'placeId': place.getId }) }}").done(function(data) {
+                        if (data && data.cities && data.status == 'success') {
+                            region_select.empty();
+                            region_select.append("<option label='' value=''></option>");
+                            $.each(data.cities, function (key, value) {
+                                region_select.append($("<option></option>").val(value).attr('label', value).html(value));
+                            });
+                        }
+                    });
+                }
             });
         </script>
         <div style="display:none;">
