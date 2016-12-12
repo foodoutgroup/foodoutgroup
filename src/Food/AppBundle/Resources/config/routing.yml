@@ -177,7 +177,7 @@ food_slug:
     path:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|1822|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Utena|Plunge|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita|cilipica)[a-z0-9-\__\"„“\.\+]{4,}"
+        slug : "^(?!admin|cart|1822|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|maina|mesto|monitoring|nagios|banned|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Marijampole|Utena|Kedainiai|Plunge|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita|cilipica)[a-z0-9-\__\"„“\.\+]{4,}"
 
 food_order_nav_test1:
     path: /order/nav_test1
@@ -473,9 +473,17 @@ food_city_alytus:
     path: /Alytus
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Alytus}
 
+food_city_marijampole:
+    path: /Marijampole
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Marijampole}
+
 food_city_utena:
     path: /Utena
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Utena}
+
+food_city_kedainiai:
+    path: /Kedainiai
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kedainiai}
 
 food_city_plunge:
     path: /Plunge
@@ -513,9 +521,17 @@ food_city_alytus_slash:
     path: /Alytus/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Alytus}
 
+food_city_marijampole_slash:
+    path: /Marijampole/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Marijampole}
+
 food_city_utena_slash:
     path: /Utena/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Utena}
+
+food_city_kedainiai_slash:
+    path: /Kedainiai/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kedainiai}
 
 food_city_plunge_slash:
     path: /Plunge/
@@ -565,9 +581,21 @@ food_city_alytus_slash_filter:
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
 
+food_city_marijampole_slash_filter:
+    path: /Marijampole/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Marijampole, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
 food_city_utena_slash_filter:
     path: /Utena/{slug_filter}
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Utena, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_kedainiai_slash_filter:
+    path: /Kedainiai/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kedainiai, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
 
