@@ -714,7 +714,7 @@ class OrderService extends ContainerAware
                         'option_id' => $option->getDishOptionId()->getId(),
                         'price' => [
                             'count' => $option->getQuantity(),
-                            'amount' => $option->getPrice(),
+                            'amount' => sprintf("%.0f", ($option->getQuantity() * $option->getPrice() * 100)),
                             'currency' => $currency,
                         ],
                         'title' => $option->getDishOptionName()

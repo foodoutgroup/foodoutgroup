@@ -319,7 +319,7 @@ class UsersController extends Controller
             }
 
             // Check only for FB users xz about not FB users, ask Egle why "Temporary" check is disabled
-            if ($existingUser && $existingUser->getFullyRegistered() && !empty($facebook_id)) {
+            /*if ($existingUser && $existingUser->getFullyRegistered() && !empty($facebook_id)) {
                 throw new ApiException(
                     'User '.$email.' exists',
                     409,
@@ -330,7 +330,7 @@ class UsersController extends Controller
                         'description' => $translator->trans('registration.user.exists'),
                     )
                 );
-            }
+            }*/
 
             // Temporary by Egle request allowing anonymous registers and orders
             /*if ($existingUser && $existingUser->getFullyRegistered()) {
