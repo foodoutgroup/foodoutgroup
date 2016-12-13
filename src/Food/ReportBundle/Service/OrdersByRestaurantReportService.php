@@ -83,9 +83,9 @@ class OrdersByRestaurantReportService extends BaseService
                             $this->translator->trans('admin.report.discount_sum'),
                             $this->translator->trans('admin.report.delivery_sum'),
                             $this->translator->trans('admin.report.total_sum_with_vat'),
-                            $this->translator->trans('admin.report.comissions_10_35'),
-                            $this->translator->trans('admin.report.comissions_15'),
-                            $this->translator->trans('admin.report.comissions_2'),
+                            //$this->translator->trans('admin.report.comissions_10_35'),
+                            //$this->translator->trans('admin.report.comissions_15'),
+                            //$this->translator->trans('admin.report.comissions_2'),
                         ];
                     } else {
                         $xlsData[] = [
@@ -99,9 +99,9 @@ class OrdersByRestaurantReportService extends BaseService
                             $this->translator->trans('admin.report.paid_cash'),
                             $this->translator->trans('admin.report.total_sum_without_vat'),
                             $this->translator->trans('admin.report.delivery_sum'),
-                            $this->translator->trans('admin.report.comissions_10_35'),
-                            $this->translator->trans('admin.report.comissions_15'),
-                            $this->translator->trans('admin.report.comissions_2'),
+                            //$this->translator->trans('admin.report.comissions_10_35'),
+                            //$this->translator->trans('admin.report.comissions_15'),
+                            //$this->translator->trans('admin.report.comissions_2'),
                         ];
                     }
                     /**
@@ -128,9 +128,9 @@ class OrdersByRestaurantReportService extends BaseService
                                 $order->getDiscountSum(),
                                 $order->getDeliveryPrice(),
                                 $order->getTotal(),
-                                $order->getTotal() * 0.35,
-                                $order->getTotal() * 0.015,
-                                $order->getTotal() * 0.02,
+                                //$order->getTotal() * 0.35,
+                                //$order->getTotal() * 0.015,
+                                //$order->getTotal() * 0.02,
                             ];
                         } else {
                             $xlsData[] = [
@@ -144,18 +144,18 @@ class OrdersByRestaurantReportService extends BaseService
                                 ($order->getPaymentMethod() == 'local' ? 'Taip' : 'Ne'),
                                 $order->getDishesWithoutVat(),
                                 $order->getDeliveryPrice(),
-                                $order->getTotal() * 0.35,
-                                $order->getTotal() * 0.015,
-                                $order->getTotal() * 0.02,
+                                //$order->getTotal() * 0.35,
+                                //$order->getTotal() * 0.015,
+                                //$order->getTotal() * 0.02,
                             ];
                         }
                         $totalFoodSumWithVat += ($order->getTotal() - $order->getDeliveryPrice());
                         $totalSumWithVat += $order->getTotal();
                         $totalSumWithoutVat += $order->getDishesWithoutVat();
                         $totalDeliverySum += $order->getDeliveryPrice();
-                        $totalCommissionsSum30 += $order->getTotal() * 0.35;
-                        $totalCommissionsSum15 += $order->getTotal() * 0.015;
-                        $totalCommissionsSum2 += $order->getTotal() * 0.02;
+                        //$totalCommissionsSum30 += $order->getTotal() * 0.35;
+                        //$totalCommissionsSum15 += $order->getTotal() * 0.015;
+                        //$totalCommissionsSum2 += $order->getTotal() * 0.02;
                     }
 
                     if ($type == OrdersByRestaurantFile::TYPE_FOR_RESTAURANT) {
@@ -178,9 +178,9 @@ class OrdersByRestaurantReportService extends BaseService
                             '',
                             $totalDeliverySum,
                             $totalSumWithVat,
-                            $totalCommissionsSum30,
-                            $totalCommissionsSum15,
-                            $totalCommissionsSum2,
+                            //$totalCommissionsSum30,
+                            //$totalCommissionsSum15,
+                            //$totalCommissionsSum2,
                         ];
                     } else {
                         $xlsData[] = [
@@ -194,9 +194,9 @@ class OrdersByRestaurantReportService extends BaseService
                             '',
                             $totalSumWithoutVat,
                             $totalDeliverySum,
-                            $totalCommissionsSum30,
-                            $totalCommissionsSum15,
-                            $totalCommissionsSum2,
+                            //$totalCommissionsSum30,
+                            //$totalCommissionsSum15,
+                            //$totalCommissionsSum2,
                         ];
                     }
 
