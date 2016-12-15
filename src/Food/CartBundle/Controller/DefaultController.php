@@ -537,6 +537,18 @@ class DefaultController extends Controller
         $session = $this->get('session');
         $isCallcenter = $session->get('isCallcenter');
 
+        $enableDiscount = !$place->getOnlyAlcohol();
+//                foreach ($list as $dish) {
+//                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
+//                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
+//                        $otherPriceTotal += $sum;
+//                    } else {
+//                        $enableDiscount = false;
+//                    }
+//                }
+
+
+
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
         $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
@@ -656,6 +668,7 @@ class DefaultController extends Controller
                 $freeDelivery = $coupon->getFreeDelivery();
 
                 $discountSize = $coupon->getDiscount();
+
                 if (!empty($discountSize)) {
                     $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
                 } else {
@@ -663,18 +676,15 @@ class DefaultController extends Controller
                     $discountInSum = true;
                     $discountSum = $coupon->getDiscountSum();
                 }
+
                 $realDiscountSum = $discountSum;
-//                $place->alc
-                $enableDiscount = $place->getOnlyAlcohol();
                 $otherPriceTotal = 0;
-//                foreach ($list as $dish) {
-//                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
-//                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
-//                        $otherPriceTotal += $sum;
-//                    } else {
-//                        $enableDiscount = false;
-//                    }
-//                }
+                foreach ($list as $dish) {
+                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
+                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
+                        $otherPriceTotal += $sum;
+                    }
+                }
 
                 // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
                 $otherMinusDiscount = $otherPriceTotal - $discountSum;
@@ -706,23 +716,18 @@ class DefaultController extends Controller
                 $discountSize = $this->get('food.user')->getDiscount($current_user);
                 $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
                 $otherPriceTotal = 0;
-
-                $enableDiscount = $place->getOnlyAlcohol();
-
-//                foreach ($list as $dish) {
-//                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
-//                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
-//                        $otherPriceTotal += $sum;
-//                    } else {
-//                        $enableDiscount = false;
-//                    }
-//                }
-
+                foreach ($list as $dish) {
+                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
+                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
+                        $otherPriceTotal += $sum;
+                    }
+                }
                 // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
                 $otherMinusDiscount = $otherPriceTotal - $discountSum;
                 if($otherMinusDiscount < 0){
                     $discountSum = $otherPriceTotal;
                 }
+
                 if($enableDiscount) {
                     $total_cart -= $discountSum;
                 } else {
