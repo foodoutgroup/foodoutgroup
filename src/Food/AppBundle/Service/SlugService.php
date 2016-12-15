@@ -121,6 +121,18 @@ class SlugService {
         return $this->router->generate($route, $params);
     }
 
+    public function generatePath($route, $route_locale = null, $params = [])
+    {
+        $locale = $this->getLocale();
+
+        if ($locale != $this->defaultLocale) {
+            $params['_locale'] = $locale;
+            $route = ($route_locale == null ? $route.'_locale' : $route_locale);
+        }
+
+        return $this->router->generate($route, $params);
+    }
+
     public function toHomepage()
     {
         $locale = $this->getLocale();

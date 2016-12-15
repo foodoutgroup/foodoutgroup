@@ -109,7 +109,7 @@ class DefaultController extends Controller
         switch ($request->getMethod()) {
             case "POST":
                 $this->get('food.newsletter')->subscribe($request->get('newsletter_email'), $request->getLocale());
-                return $this->redirect($this->generateUrl('food_newsletter_subscribe'), 302);
+                return $this->redirect($this->get('slug')->generateURL('food_newsletter_subscribe', 'food_newsletter_subscribe_locale'), 302);
             default:
                 return $this->render('FoodAppBundle:Default:newsletter_subscription.html.twig');
 

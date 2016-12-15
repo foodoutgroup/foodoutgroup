@@ -14,7 +14,7 @@ use Food\UserBundle\Entity\User;
 
 class PlaceController extends Controller
 {
-    public function indexAction($id, $slug, Request $request)
+    public function indexAction($id, $slug, Request $request, $oldFriendIsHere = false)
     {
 
         $session = $this->get('session');

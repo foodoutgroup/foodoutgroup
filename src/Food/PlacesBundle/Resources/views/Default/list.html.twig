@@ -2,11 +2,11 @@
     {% for place in places %}
         <div class="restaurant-item clearfix">
             <div class="logo">
-                <div class="logo-wrap"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}"><img src="//{{ cloudfront_url }}/uploads/places/thumb_{{ place.place.logo }}"></a></div>
+                <div class="logo-wrap"><a href="{{ slug.getUrl(place.place.id, 'place') }}"><img src="//{{ cloudfront_url }}/uploads/places/thumb_{{ place.place.logo }}"></a></div>
             </div>
             <div class="item-center">
                 <h2 class="name clearfix">
-                    <span class="text"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}">{{ place.place.name }}</a></span>
+                    <span class="text"><a href="{{ slug.getUrl(place.place.id, 'place') }}">{{ place.place.name }}</a></span>
                     {% if place.point.fast %}
                     <span class="tag">
                         <img src="/bundles/foodapp/images/tag-speed.png">
@@ -107,9 +107,9 @@
                 <div class="clearfix">
                     <div data-stars="{{ place.place.rating }}" class="restoran-rating fl"></div>
                     {% if place.place.reviewCount != 0 %}
-                        <div class="rating-count fr"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}#detailed-restaurant-review">{{ place.place.reviewCount }} {% transchoice place.place.reviewCount %}places.reviews_count{% endtranschoice %}</a></div>
+                        <div class="rating-count fr"><a href="{{ slug.getUrl(place.place.id, 'place') }}#detailed-restaurant-review">{{ place.place.reviewCount }} {% transchoice place.place.reviewCount %}places.reviews_count{% endtranschoice %}</a></div>
                     {% endif %}
-                </div><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
+                </div><a href="{{ slug.getUrl(place.place.id, 'place') }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
             </div>
         </div>
     {% endfor %}

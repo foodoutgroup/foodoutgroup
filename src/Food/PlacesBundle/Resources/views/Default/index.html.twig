@@ -134,7 +134,7 @@
             }
 
             $('.content-righter').mask();
-            $.post('{{ path('food_places_filter') }}', params, function(resp) {
+            $.post('{{ slug.generateUrl('food_places_filter') }}', params, function(resp) {
                 var $container = $('.content-righter');
                 $container.find('.restaurants-list').remove();
                 $container.unmask();
