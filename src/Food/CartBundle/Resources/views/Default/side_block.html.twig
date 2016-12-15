@@ -73,7 +73,7 @@
                                         <span class="euro">/&nbsp;{{  '0'|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>
                                     {% endif %}
                                 {% else %}
-                                    {% if dishOptionsPrices[dish.dishSizeId.id] %}
+                                    {% if dishOptionsPrices[dish.dishSizeId.id] is defined %}
                                         {{ currency_display|raw }}{{ dishOptionsPrices[dish.dishSizeId.id][option.dishOptionId.id]|number_format(2, ',', ' ') }}
                                     {% else %}
                                     {{ currency_display|raw }}{{ option.dishOptionId.price|number_format(2, ',', ' ') }}
