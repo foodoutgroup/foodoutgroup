@@ -200,7 +200,7 @@
             </trans-unit>-->
             <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
                 <source>general.sms.user.order_accepted_preorder</source>
-                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime ~pre_delivery_time.! Tavo alkis - musu misija!</target>
+                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime ~pre_delivery_time.! Isbandyk Foodout mob.programele: http://bit.ly/2fIHtWc</target>
             </trans-unit>
             <!--<trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
                 <source>general.sms.user.order_accepted_preorder</source>
@@ -224,11 +224,11 @@
             </trans-unit>-->
             <trans-unit id="general.sms.client.driver_picked_up" resname="general.sms.client.driver_picked_up">
                 <source>general.sms.client.driver_picked_up</source>
-                <target>Psst, Tavo uzsakymas jau foodoutmobilyje! Maista pristatysime  netrukus! Ar jauti, kaip tavo alkis dreba is baimes? ;)</target>
+                <target>Psst, Tavo uzsakymas jau vezamas! Uzsisakyk maista patogiau – atsisiusk mob.programele: http://bit.ly/2f3YgRH</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_created" resname="general.sms.client.order_created">
                 <source>general.sms.client.order_created</source>
-                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Pradedame Tavo alkio numalsinimo misija!</target>
+                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Numalsink alki greiciau - uzsisakyk per mob.programele: http://bit.ly/2glLO66</target>
             </trans-unit>
             <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
                 <source>general.sms.client.restourant_cancel</source>
