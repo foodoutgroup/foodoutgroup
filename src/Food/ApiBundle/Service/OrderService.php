@@ -558,6 +558,7 @@ class OrderService extends ContainerAware
 
         $returner = [
             'order_id'    => $order->getId(),
+            'order_hash'    => $order->getOrderHash(),
             'total_price' => [
                 //'amount' => $order->getTotal() * 100,
                 'amount'   => $total_sum,
