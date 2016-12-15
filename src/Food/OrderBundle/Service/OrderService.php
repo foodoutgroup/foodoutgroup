@@ -1369,13 +1369,13 @@ class OrderService extends ContainerAware
 
         $placeObject = $this->container->get('food.places')->getPlace($place);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
-        $enableDiscount = true;
-        foreach ($itemCollection as $item) {
-            if ($this->getCartService()->isAlcohol($item->getDishId())) {
-                $enableDiscount = false;
-                break;
-            }
-        }
+        $enableDiscount = $placeObject->getOnlyAlcohol();
+//        foreach ($itemCollection as $item) {
+//            if ($this->getCartService()->isAlcohol($item->getDishId())) {
+//                $enableDiscount = false;
+//                break;
+//            }
+//        }
 
 
         if (!empty($orderDate)) {

@@ -1617,7 +1617,7 @@ class Place extends Uploadable implements Translatable
      */
     public function getOnlyAlcohol()
     {
-        return $this->onlyAlcohol;
+        return (bool) $this->onlyAlcohol;
     }
 
     /**

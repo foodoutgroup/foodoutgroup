@@ -664,17 +664,17 @@ class DefaultController extends Controller
                     $discountSum = $coupon->getDiscountSum();
                 }
                 $realDiscountSum = $discountSum;
-
-                $enableDiscount = true;
+//                $place->alc
+                $enableDiscount = $place->getOnlyAlcohol();
                 $otherPriceTotal = 0;
-                foreach ($list as $dish) {
-                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
-                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
-                        $otherPriceTotal += $sum;
-                    } else {
-                        $enableDiscount = false;
-                    }
-                }
+//                foreach ($list as $dish) {
+//                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
+//                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
+//                        $otherPriceTotal += $sum;
+//                    } else {
+//                        $enableDiscount = false;
+//                    }
+//                }
 
                 // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
                 $otherMinusDiscount = $otherPriceTotal - $discountSum;
@@ -707,16 +707,16 @@ class DefaultController extends Controller
                 $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
                 $otherPriceTotal = 0;
 
-                $enableDiscount = true;
+                $enableDiscount = $place->getOnlyAlcohol();
 
-                foreach ($list as $dish) {
-                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
-                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
-                        $otherPriceTotal += $sum;
-                    } else {
-                        $enableDiscount = false;
-                    }
-                }
+//                foreach ($list as $dish) {
+//                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
+//                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
+//                        $otherPriceTotal += $sum;
+//                    } else {
+//                        $enableDiscount = false;
+//                    }
+//                }
 
                 // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
                 $otherMinusDiscount = $otherPriceTotal - $discountSum;
