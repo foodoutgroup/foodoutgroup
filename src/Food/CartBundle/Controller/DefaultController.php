@@ -665,11 +665,14 @@ class DefaultController extends Controller
                 }
                 $realDiscountSum = $discountSum;
 
+                $enableDiscount = true;
                 $otherPriceTotal = 0;
                 foreach ($list as $dish) {
                     $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
                     if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
                         $otherPriceTotal += $sum;
+                    } else {
+                        $enableDiscount = false;
                     }
                 }
 
@@ -679,7 +682,11 @@ class DefaultController extends Controller
                     $discountSum = $otherPriceTotal;
                 }
 
-                $total_cart -= $discountSum;
+                if($enableDiscount) {
+                    $total_cart -= $discountSum;
+                } else {
+                    $discountSum = 0;
+                }
 
                 if ($total_cart <= 0) {
                     if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
@@ -699,10 +706,15 @@ class DefaultController extends Controller
                 $discountSize = $this->get('food.user')->getDiscount($current_user);
                 $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
                 $otherPriceTotal = 0;
+
+                $enableDiscount = true;
+
                 foreach ($list as $dish) {
                     $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
                     if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
                         $otherPriceTotal += $sum;
+                    } else {
+                        $enableDiscount = false;
                     }
                 }
 
@@ -711,8 +723,11 @@ class DefaultController extends Controller
                 if($otherMinusDiscount < 0){
                     $discountSum = $otherPriceTotal;
                 }
-
-                $total_cart -= $discountSum;
+                if($enableDiscount) {
+                    $total_cart -= $discountSum;
+                } else {
+                    $discountSum = 0;
+                }
             }
         }
         $cartSumTotal = $total_cart;
