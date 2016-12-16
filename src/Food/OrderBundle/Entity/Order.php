@@ -117,6 +117,12 @@ class Order
 
     /**
      * @var float
+     * @ORM\Column(name="total_before_discount", type="decimal", precision=8, scale=2, nullable=true)
+     */
+    private $totalBeforeDiscount;
+
+    /**
+     * @var float
      * @ORM\Column(name="delivery_price", type="float", nullable=true)
      */
     private $deliveryPrice;
@@ -2426,4 +2432,25 @@ class Order
     {
         $this->paymentMethodCode = $paymentMethodCode;
     }
+
+    /**
+     * @return float
+     */
+    public function getTotalBeforeDiscount()
+    {
+        return $this->totalBeforeDiscount;
+    }
+
+    /**
+     * @param float $totalBeforeDiscount
+     */
+    public function setTotalBeforeDiscount($totalBeforeDiscount)
+    {
+        $this->totalBeforeDiscount = $totalBeforeDiscount;
+
+        return $this;
+    }
+
+
+
 }

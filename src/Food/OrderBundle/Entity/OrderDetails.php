@@ -68,6 +68,11 @@ class OrderDetails
     private $origPrice;
 
     /**
+     * @ORM\Column(name="price_before_discount", type="decimal", precision=8, scale=2, nullable=true)
+     */
+    private $priceBeforeDiscount;
+
+    /**
      * @var bool
      * @ORM\Column(name="percent_discount", type="integer", nullable=true)
      */
@@ -388,4 +393,23 @@ class OrderDetails
     {
         return $this->isFree;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getPriceBeforeDiscount()
+    {
+        return $this->priceBeforeDiscount;
+    }
+
+    /**
+     * @param mixed $priceBeforeDiscount
+     */
+    public function setPriceBeforeDiscount($priceBeforeDiscount)
+    {
+        $this->priceBeforeDiscount = $priceBeforeDiscount;
+        return $this;
+    }
+
+
 }

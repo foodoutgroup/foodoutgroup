@@ -281,6 +281,7 @@ class OrderAdmin extends FoodAdmin
             )
             ->add('vat', 'string', array('label' => 'admin.order.vat'))
             ->add('total', 'string', array('label' => 'admin.order.total'))
+            ->add('total_before_discount', 'string', array('label' => 'admin.order.total_before_discount'))
             ->add('deliveryPrice', 'string', array('label' => 'admin.order.delivery_price'))
             ->add('couponCode', 'string', array('label' => 'admin.order.coupon_code'))
             ->add('discountSize', 'string', array('label' => 'admin.order.discount_size'))
