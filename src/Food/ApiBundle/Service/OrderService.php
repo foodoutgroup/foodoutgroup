@@ -564,6 +564,10 @@ class OrderService extends ContainerAware
                 'amount'   => $total_sum,
                 'currency' => $this->container->getParameter('currency_iso')
             ],
+            'delivery_price' => $order->getDeliveryPrice(),
+            'place_point_self_delivery' => $order->getPlacePointSelfDelivery(),
+            'payment_method' => $this->container->get('translator')->trans('mobile.payment.'.$order->getPaymentMethod()),
+            'order_date' => $order->getOrderDate()->format('H:i'),
             'discount'    => $discount,
             'state'       => [
                 'title'       => $title,
@@ -576,6 +580,7 @@ class OrderService extends ContainerAware
             'details'     => [
                 'restaurant_id'    => $order->getPlace()->getId(),
                 'restaurant_title' => $order->getPlace()->getName(),
+                'restaurant_only_alcohol' => $order->getPlace()->getOnlyAlcohol(),
                 'production_time' => (!empty($productionTime) && $productionTime > 0 ? $productionTime : 30),
                 'payment_options'  => [
                     'cash'        => ($order->getPaymentMethod() == "local" ? true : false),
@@ -645,7 +650,7 @@ class OrderService extends ContainerAware
                 'restaurant' => [
                     'title' => $placePoint->getPlace()->getName(),
                     'address' => $placePoint->getAddress(),
-                    'logo' => $placePoint->getPlace()->getLogo()
+                    'logo' => $placePoint->getPlace()->getWebPath()
                 ]
             ];
             /**
