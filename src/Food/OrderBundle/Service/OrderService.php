@@ -1502,7 +1502,7 @@ class OrderService extends ContainerAware
                 $price = 0;
                 $origPrice = $cartDish->getDishSizeId()->getCurrentPrice();
             } else {
-                if ($enableDiscount) {
+                if (!$this->getCartService()->isAlcohol($cartDish->getDishId()) && $enableDiscount) {
                     if ($origPrice == $price && $discountPercent > 0) {
                         $price = round($origPrice * ((100 - $discountPercent) / 100), 2);
                         $discountPercentForInsert = $discountPercent;
