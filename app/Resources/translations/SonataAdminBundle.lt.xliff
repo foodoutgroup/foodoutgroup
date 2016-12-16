@@ -3046,6 +3046,18 @@
                  <source>admin.report.documents_generated_preview_in_history</source>
                  <target>Dokumentai sugeneruoti, peržiūrėkite istorijoje</target>
              </trans-unit>
+             <trans-unit id="admin.order.details.full_price_discount_price_disc">
+                 <source>admin.order.details.full_price_discount_price_disc</source>
+                 <target>Kainų skirtumas</target>
+             </trans-unit>
+             <trans-unit id="admin.order.details.price_before_discount">
+                 <source>admin.order.details.price_before_discount</source>
+                 <target>Kaina be nuolaidos</target>
+             </trans-unit>
+             <trans-unit id="admin.order.total_before_discount">
+                 <source>admin.order.total_before_discount</source>
+                 <target>Viso be nuolaidos (Su PVM)</target>
+             </trans-unit>
         </body>
     </file>
 </xliff>

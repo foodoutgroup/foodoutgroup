@@ -12,6 +12,7 @@ use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Coupon;
 use Food\OrderBundle\Entity\CouponGenerator;
+use Food\OrderBundle\Entity\CouponRange;
 use Food\OrderBundle\Entity\CouponUser;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDeliveryLog;
@@ -1360,6 +1361,7 @@ class OrderService extends ContainerAware
      */
     public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null)
     {
+
         $this->createOrder($place, $placePoint, false, $orderDate);
         $this->getOrder()->setDeliveryType(($selfDelivery ? 'pickup' : 'deliver'));
         $this->getOrder()->setLocale($locale);
@@ -1368,6 +1370,9 @@ class OrderService extends ContainerAware
 
 
         $placeObject = $this->container->get('food.places')->getPlace($place);
+        $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
+
+        $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
         $enableDiscount = !$placeObject->getOnlyAlcohol();
 //        foreach ($itemCollection as $item) {
@@ -1377,11 +1382,9 @@ class OrderService extends ContainerAware
 //            }
 //        }
 
-
+        // jei PRE ORDER
         if (!empty($orderDate)) {
-            $this->getOrder()->setOrderStatus(self::$status_preorder)
-                ->setPreorder(true)
-            ;
+            $this->getOrder()->setOrderStatus(self::$status_preorder)->setPreorder(true);
         } else if (empty($orderDate) && $selfDelivery) {
             // Lets fix pickup situation
             $miscService = $this->container->get('food.app.utils.misc');
@@ -1393,12 +1396,10 @@ class OrderService extends ContainerAware
             }
 
             $deliveryTime = new \DateTime("now");
-            $deliveryTime->modify("+" . $timeShift . " minutes");
-            $this->getOrder()->setDeliveryTime($deliveryTime);
+            $this->getOrder()->setDeliveryTime($deliveryTime->modify("+" . $timeShift . " minutes"));
         }
 
         $this->saveOrder();
-
 
         // save extra order data to separate table
         $orderExtra = new OrderExtra();
@@ -1420,62 +1421,50 @@ class OrderService extends ContainerAware
         }
 
         $this->getOrder()->setOrderExtra($orderExtra);
-
-        $sumTotal = 0;
-
-        $preSum = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
-
         $deliveryPrice = $this->getCartService()->getDeliveryPrice(
             $this->getOrder()->getPlace(),
             $this->container->get('food.location')->getLocationFromSession(),
             $this->getOrder()->getPlacePoint()
-        )
-        ;
+        );
 
         // Pritaikom nuolaida
+        $sumTotal = 0;
         $discountPercent = 0;
         $discountSum = 0;
-        $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
 
+        $selfDelivery = $this->getOrder()->getPlace()->getSelfDelivery();
         $includeDelivery = true;
+
+
         if($enableDiscount) {
             if (!empty($coupon) && $coupon instanceof Coupon) {
-                $order = $this->getOrder();
-                $order->setCoupon($coupon)
-                    ->setCouponCode($coupon->getCode());
 
                 $discountSize = $coupon->getDiscount();
 
                 if (!empty($discountSize)) {
-                    $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+                    $discountSum = $this->getCartService()->getTotalDiscount($itemCollection, $discountSize);
                     $discountPercent = $discountSize;
                 } else {
                     $discountSum = $coupon->getDiscountSum();
                 }
 
-                $order->setDiscountSize($discountSize)
-                    ->setDiscountSum($discountSum);
+                $this->getOrder()->setDiscountSize($discountSize)->setDiscountSum($discountSum);
 
                 if ($coupon->getFreeDelivery()) {
                     $deliveryPrice = 0;
                 }
 
-
-                if ($coupon->getIgnoreCartPrice() && !$coupon->getFreeDelivery()
-                    || !$coupon->getIncludeDelivery()
-                ) {
+                if ($coupon->getIgnoreCartPrice() && !$coupon->getFreeDelivery() || !$coupon->getIncludeDelivery()) {
                     $includeDelivery = false;
                 }
 
             } elseif ($user->getIsBussinesClient()) {
                 // Jeigu musu logistika, tada taikom fiksuota nuolaida
-                if ($self_delivery == 0) {
+                if (!$selfDelivery) {
                     $discountSize = $this->container->get('food.user')->getDiscount($user);
                     $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
                     $discountPercent = $discountSize;
-                    $this->getOrder()
-                        ->setDiscountSize($discountSize)
-                        ->setDiscountSum($discountSum);
+                    $this->getOrder()->setDiscountSize($discountSize)->setDiscountSum($discountSum);
                 }
             }
         }
@@ -1484,33 +1473,29 @@ class OrderService extends ContainerAware
          * Na daugiau kintamuju jau nebesugalvojau :/
          */
         $discountOverTotal = 0;
-        if ($discountSum > $preSum) {
-            $discountOverTotal = $discountSum - $preSum;
-            $discountSum = $preSum;
+        if ($discountSum > $priceBeforeDiscount) {
+            $discountOverTotal = $discountSum - $priceBeforeDiscount;
+            $discountSum = $priceBeforeDiscount;
         }
         $discountSumLeft = $discountSum;
         $discountSumTotal = $discountSum;
         $discountUsed = 0;
-        $relationPart = $discountSum / $preSum;
+        $relationPart = $discountSum / $priceBeforeDiscount;
 
         foreach ($itemCollection as $cartDish) {
-            $options = $this->getCartService()->getCartDishOptions($cartDish);
-            $price = $cartDish->getDishSizeId()->getCurrentPrice();
-            $origPrice = $cartDish->getDishSizeId()->getPrice();
+
+            $priceBeforeDiscount = $cartDish->getDishSizeId()->getPrice();
             $discountPercentForInsert = 0;
-            if ($cartDish->getIsFree()) {
-                $price = 0;
-                $origPrice = $cartDish->getDishSizeId()->getCurrentPrice();
-            } else {
+
+            $price = 0;
+            if (!$cartDish->getIsFree()) {
+                $price = $cartDish->getDishSizeId()->getCurrentPrice();
                 if (!$this->getCartService()->isAlcohol($cartDish->getDishId()) && $enableDiscount) {
-                    if ($origPrice == $price && $discountPercent > 0) {
-                        $price = round($origPrice * ((100 - $discountPercent) / 100), 2);
+                    if ($priceBeforeDiscount == $price && $discountPercent > 0) { // todo? :::................... $priceBeforeDiscount == $price
+                        $price = round($priceBeforeDiscount * ((100 - $discountPercent) / 100), 2);
                         $discountPercentForInsert = $discountPercent;
                     } elseif ($discountSumLeft > 0) {
-                        /**
-                         * Uz toki graba ash degsiu pragare.... :/
-                         */
-                        $priceForInsert = $price;
+
                         $discountPart = (float)round($price * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
                         if ($discountPart < $discountSumLeft) {
                             $discountSum = $discountPart;
@@ -1523,21 +1508,22 @@ class OrderService extends ContainerAware
                         }
                         $discountSum = (float)round($discountSum / $cartDish->getQuantity() * 100, 2) / 100;
                         $priceForInsert = $price - $discountSum;
-                        $discountSumLeft = $discountSumLeft - $discountSum;
-                        $discountUsed = $discountUsed + $discountSum;
+                        $discountSumLeft -= $discountSum;
+                        $discountUsed += $discountSum;
                         $price = $priceForInsert;
                     }
                 }
             }
 
-            $dish = new OrderDetails();
 
+            $dish = new OrderDetails();
             $dish->setDishId($cartDish->getDishId())
                 ->setOrderId($this->getOrder())
                 ->setQuantity($cartDish->getQuantity())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
                 ->setPrice($price)
-                ->setOrigPrice($origPrice)
+                ->setOrigPrice($priceBeforeDiscount)
+                ->setPriceBeforeDiscount($priceBeforeDiscount)
                 ->setPercentDiscount($discountPercentForInsert)
                 ->setDishName($cartDish->getDishId()->getName())
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
@@ -1550,13 +1536,35 @@ class OrderService extends ContainerAware
 
             $sumTotal += $cartDish->getQuantity() * $price;
 
-            $dishOptionPrices = $this->container->get('food.dishes')->getDishOptionsPrices($cartDish->getDishId());
-            foreach ($options as $opt) {
-                
-                if (isset($dishOptionPrices[$cartDish->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()])) {
-                    $dishOptionPrice = $dishOptionPrices[$cartDish->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()];
+            $optionCollection = $this->getCartService()->getCartDishOptions($cartDish);
+            $dishOptionPricesBeforeDiscount = $this->container->get('food.dishes')->getDishOptionsPrices($cartDish->getDishId());
+            foreach ($optionCollection as $opt) {
+
+                if (isset($dishOptionPricesBeforeDiscount[$cartDish->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()])) {
+                    $dishOptionPricesBeforeDiscount = $dishOptionPricesBeforeDiscount[$cartDish->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()];
                 } else {
-                    $dishOptionPrice = $opt->getDishOptionId()->getPrice();
+                    $dishOptionPricesBeforeDiscount = $opt->getDishOptionId()->getPrice();
+                }
+
+                $dishOptionPrice = $dishOptionPricesBeforeDiscount;
+
+                if($enableDiscount && $discountSumLeft > 0) {
+
+                    $discountPart = (float)round($dishOptionPrice * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
+                    if ($discountPart < $discountSumLeft) {
+                        $discountSum = $discountPart;
+                    } else {
+                        if ($discountUsed + $discountPart > $discountSumTotal) {
+                            $discountSum = $discountSumTotal - $discountUsed;
+                        } else {
+                            $discountSum = $discountSumLeft;
+                        }
+                    }
+                    $discountSum = (float)round($discountSum / $cartDish->getQuantity() * 100, 2) / 100;
+                    $priceForInsert = $dishOptionPrice - $discountSum;
+                    $discountSumLeft -= $discountSum;
+                    $discountUsed += $discountSum;
+                    $dishOptionPrice = $priceForInsert;
                 }
 
                 $orderOpt = new OrderDetailsOptions();
@@ -1564,6 +1572,7 @@ class OrderService extends ContainerAware
                     ->setDishOptionCode($opt->getDishOptionId()->getCode())
                     ->setDishOptionName($opt->getDishOptionId()->getName())
                     ->setPrice($dishOptionPrice)
+                    ->setPriceBeforeDiscount($dishOptionPricesBeforeDiscount)
                     ->setDishId($cartDish->getDishId())
                     ->setOrderId($this->getOrder())
                     ->setQuantity($cartDish->getQuantity())// @todo Kolkas paveldimas. Veliau taps valdomas kiekvienam topingui atskirai
