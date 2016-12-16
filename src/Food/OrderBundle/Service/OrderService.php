@@ -1368,12 +1368,19 @@ class OrderService extends ContainerAware
         $this->getOrder()->setUser($user);
 
 
+
         $placeObject = $this->container->get('food.places')->getPlace($place);
         $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
 
         $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
         $enableDiscount = !$placeObject->getOnlyAlcohol();
+//        foreach ($itemCollection as $item) {
+//            if ($this->getCartService()->isAlcohol($item->getDishId())) {
+//                $enableDiscount = false;
+//                break;
+//            }
+//        }
 
         // jei PRE ORDER
         if (!empty($orderDate)) {
@@ -1381,7 +1388,9 @@ class OrderService extends ContainerAware
         } else if (empty($orderDate) && $selfDelivery) {
             // Lets fix pickup situation
             $miscService = $this->container->get('food.app.utils.misc');
+
             $timeShift = $miscService->parseTimeToMinutes($placeObject->getPickupTime());
+
             if (empty($timeShift) || $timeShift <= 0) {
                 $timeShift = 60;
             }
@@ -4626,6 +4635,4 @@ class OrderService extends ContainerAware
             }
         }
     }
-
-
 }
