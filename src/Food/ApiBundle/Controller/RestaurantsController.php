@@ -304,7 +304,13 @@ class RestaurantsController extends Controller
 
         $this->get('logger')->alert('Restaurants:getRestaurantAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        $realResponse = new JsonResponse($response);
+        $responseHeaders = $realResponse->headers;
+        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
+        $responseHeaders->set('Access-Control-Allow-Origin', '*');
+        $responseHeaders->set('Access-Control-Allow-Methods', 'GET');
+
+        return $realResponse;
     }
 
     /**
