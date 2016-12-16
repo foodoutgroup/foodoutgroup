@@ -704,6 +704,22 @@ class DefaultController extends Controller
                 $discountSize = $this->get('food.user')->getDiscount($current_user);
                 $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
 
+
+                $otherPriceTotal = 0;
+                foreach ($list as $dish) {
+                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
+                        $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
+                        $otherPriceTotal += $sum;
+                    }
+                }
+
+                // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
+                $otherMinusDiscount = $otherPriceTotal - $discountSum;
+                if ($otherMinusDiscount < 0){
+                    $discountSum = $otherPriceTotal;
+                }
+
+
                 if($enableDiscount) {
                     $total_cart -= $discountSum;
                 } else {
