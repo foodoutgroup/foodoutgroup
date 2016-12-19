@@ -1622,11 +1622,8 @@ class OrderService extends ContainerAware
             }
         }
 
-        if (!$selfDelivery) {
-            $sumTotal += $deliveryPrice;
-        } else {
-            $deliveryPrice = 0;
-        }
+        $sumTotal += $deliveryPrice;
+
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
         $this->saveOrder();
