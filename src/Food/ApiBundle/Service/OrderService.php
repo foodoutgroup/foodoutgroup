@@ -564,6 +564,7 @@ class OrderService extends ContainerAware
                 'amount'   => $total_sum,
                 'currency' => $this->container->getParameter('currency_iso')
             ],
+            'status' => $order->getOrderStatus(),
             'delivery_price' => $order->getDeliveryPrice(),
             'place_point_self_delivery' => $order->getPlacePointSelfDelivery(),
             'payment_method' => $this->container->get('translator')->trans('mobile.payment.'.$order->getPaymentMethod()),
@@ -631,6 +632,80 @@ class OrderService extends ContainerAware
         }
 
         return $returner;
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return array
+     */
+    public function changeOrderStatus(Order $order, $status, $request = null)
+    {
+        $orderService = $this->container->get('food.order');
+        if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $this->formToEntityStatus($status))) {
+            switch($status) {
+                case 'confirm':
+                    $orderService->statusAccepted('restourant_mobile');
+                    break;
+
+                case 'delay':
+                    $orderService->statusDelayed('restourant_mobile', 'delay reason: '.$request->get('delay_reason'));
+                    $orderService->getOrder()->setDelayed(true);
+                    if (!empty($request)) {
+                        $orderService->getOrder()->setDelayReason($request->get('delay_reason'));
+                        $orderService->getOrder()->setDelayDuration($request->get('delay_duration'));
+                    }
+                    $orderService->saveDelay();
+                    break;
+
+                case 'cancel':
+                    $orderService->statusCanceled('restourant_mobile');
+                    break;
+
+                case 'finish':
+                    $orderService->statusFinished('restourant_mobile');
+                    break;
+
+                case 'completed':
+                    $orderService->statusCompleted('restourant_mobile');
+                    break;
+            }
+
+            $orderService->saveOrder();
+
+            return array('status' => true);
+        } else {
+            $errorMessage = sprintf(
+                'Restoranas %s bande uzsakymui #%d pakeisti uzsakymo statusa is "%s" i "%s"',
+                $orderService->getOrder()->getPlaceName(),
+                $orderService->getOrder()->getId(),
+                $order->getOrderStatus(),
+                $this->formToEntityStatus($status)
+            );
+            $this->container->get('logger')->alert($errorMessage);
+        }
+    }
+
+    /**
+     * @param string$formStatus
+     * @return string
+     */
+    public function formToEntityStatus($formStatus)
+    {
+        $statusTable = array(
+            'confirm' => \Food\OrderBundle\Service\OrderService::$status_accepted,
+            'delay' => \Food\OrderBundle\Service\OrderService::$status_delayed,
+            'cancel' => \Food\OrderBundle\Service\OrderService::$status_canceled,
+            'finish' => \Food\OrderBundle\Service\OrderService::$status_finished,
+            'partialy_completed' => \Food\OrderBundle\Service\OrderService::$status_partialy_completed,
+            'completed' => \Food\OrderBundle\Service\OrderService::$status_completed,
+        );
+
+        if (!isset($statusTable[$formStatus])) {
+            return '';
+        }
+
+        return $statusTable[$formStatus];
     }
 
     /**
