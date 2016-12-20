@@ -38,6 +38,7 @@ class CityService extends BaseService
             $city_name = lcfirst(reset($availableCitiesSlugs));
             $city = ucfirst($city_name);
             $city_url = $this->router->generate('food_city_' . (!empty($city_name) ? $city_name : 'vilnius'), [], true);
+            $cityInfo['city_slug_lower'] = strtolower($city);
         }
 
         $cityInfo['city_url'] = $city_url;
