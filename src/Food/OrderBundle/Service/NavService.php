@@ -636,7 +636,7 @@ class NavService extends ContainerAware
             'Line No_'        => $key,
             'Entry Type'      => 0,
             'No_'             => "'" . $code . "'",
-            'Description'     => $desc,
+            //~ 'Description'     => $desc, // V.Puras is Foodout i musu sistema neturetu buti paduodami patiekalu pavadinimai, tik DIS numeriai.
             'Quantity'        => $detail->getQuantity(),
             'Price'           => $priceForInsert, //$detail->getPrice(), // @todo test the price. Kaip gula. Total ar ne.
             'Parent Line'     => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
@@ -896,7 +896,7 @@ class NavService extends ContainerAware
                 'ParentLineNo' => 0,
                 'EntryType'    => 0,
                 'ItemNo'       => $code,
-                'Description'  => mb_substr($cart->getDishId()->getName(), 0, 30, 'utf-8'),
+                //~ 'Description'  => mb_substr($cart->getDishId()->getName(), 0, 30, 'utf-8'),
                 'Quantity'     => $cart->getQuantity(),
                 'Price'        => $cart->getDishSizeId()->getPrice(),
                 'Amount'       => $cart->getDishSizeId()->getPrice() * $cart->getQuantity()
@@ -939,7 +939,7 @@ class NavService extends ContainerAware
                         'ParentLineNo' => $parencyLineNo,
                         'EntryType'    => $entryType,
                         'ItemNo'       => $optionCode,
-                        'Description'  => mb_substr($description, 0, 30, 'utf-8'),
+                        //~ 'Description'  => mb_substr($description, 0, 30, 'utf-8'),
                         'Quantity'     => $cart->getQuantity(),
                         'Price'        => $option->getDishOptionId()->getPrice(),
                         'Amount'       => $option->getDishOptionId()->getPrice() * $cart->getQuantity()
@@ -1388,6 +1388,7 @@ class NavService extends ContainerAware
      */
     public function syncDisDescription($date = null)
     {
+        return; //temp disable
         $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM ' . $this->getItemsTable() . " WHERE LEN([No_]) > 3 AND [No_] LIKE 'DIS%'");
         if ($result === false) {
             throw new \InvalidArgumentException('Wow Such fail.. Many problems... Such no results?');
