@@ -564,7 +564,6 @@ class OrderService extends ContainerAware
                 'amount'   => $total_sum,
                 'currency' => $this->container->getParameter('currency_iso')
             ],
-            'status' => $order->getOrderStatus(),
             'delivery_price' => $order->getDeliveryPrice(),
             'place_point_self_delivery' => $order->getPlacePointSelfDelivery(),
             'payment_method' => $this->container->get('translator')->trans('mobile.payment.'.$order->getPaymentMethod()),
@@ -623,6 +622,7 @@ class OrderService extends ContainerAware
         $returner['service']['customer_firstname'] = $order->getOrderExtra()->getFirstname();
         $returner['service']['customer_lastname'] = $order->getOrderExtra()->getLastname();
         $returner['service']['customer_phone'] = $order->getOrderExtra()->getPhone();
+        $returner['status'] = $order->getOrderStatus();
         if ($driver = $order->getDriver()) {
             $returner['driver'] = [
                 'id' => $driver->getId(),
