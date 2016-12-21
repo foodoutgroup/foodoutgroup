@@ -659,6 +659,10 @@
                 <source>admin.place.internal_code</source>
                 <target>Internal code</target>
             </trans-unit>
+            <trans-unit id="admin.place.hash" resname="admin.place.hash">
+                <source>admin.place.hash</source>
+                <target>HASH code</target>
+            </trans-unit>
             <trans-unit id="admin.place.phone_placeholder" resname="admin.place.phone_placeholder">
                 <source>admin.place.phone_placeholder</source>
                 <target>3706xxxxxxxx</target>

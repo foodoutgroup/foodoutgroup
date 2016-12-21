@@ -543,6 +543,10 @@
                 <source>admin.place.internal_code</source>
                 <target>Internal code</target>
             </trans-unit>
+            <trans-unit id="admin.place.hash" resname="admin.place.hash">
+                <source>admin.place.hash</source>
+                <target>HASH code</target>
+            </trans-unit>
             <!-- Place points -->
             <trans-unit id="place-point-list">
                 <source>Place Point List</source>
