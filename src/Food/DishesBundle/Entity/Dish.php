@@ -44,6 +44,14 @@ class Dish extends Uploadable implements Translatable
      * @var string
      *
      * @Gedmo\Translatable
+     * @ORM\Column(name="name_to_nav", type="string", length=32, nullable=true)
+     */
+    private $nameToNav;
+
+    /**
+     * @var string
+     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="description", type="text")
      */
     private $description;
@@ -268,7 +276,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -284,14 +292,14 @@ class Dish extends Uploadable implements Translatable
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -307,14 +315,14 @@ class Dish extends Uploadable implements Translatable
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -330,7 +338,7 @@ class Dish extends Uploadable implements Translatable
     public function setEditedAt($editedAt)
     {
         $this->editedAt = $editedAt;
-    
+
         return $this;
     }
 
@@ -353,7 +361,7 @@ class Dish extends Uploadable implements Translatable
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
-    
+
         return $this;
     }
 
@@ -376,14 +384,14 @@ class Dish extends Uploadable implements Translatable
     public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
     {
         $this->place = $place;
-    
+
         return $this;
     }
 
     /**
      * Get place
      *
-     * @return \Food\DishesBundle\Entity\Place 
+     * @return \Food\DishesBundle\Entity\Place
      */
     public function getPlace()
     {
@@ -399,7 +407,7 @@ class Dish extends Uploadable implements Translatable
     public function addCategorie(\Food\DishesBundle\Entity\FoodCategory $categories)
     {
         $this->categories[] = $categories;
-    
+
         return $this;
     }
 
@@ -432,7 +440,7 @@ class Dish extends Uploadable implements Translatable
     public function addOption(\Food\DishesBundle\Entity\DishOption $options)
     {
         $this->options[] = $options;
-    
+
         return $this;
     }
 
@@ -491,7 +499,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get translations
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTranslations()
     {
@@ -507,14 +515,14 @@ class Dish extends Uploadable implements Translatable
     public function setUnit(\Food\DishesBundle\Entity\DishUnit $unit = null)
     {
         $this->unit = $unit;
-    
+
         return $this;
     }
 
     /**
      * Get unit
      *
-     * @return \Food\DishesBundle\Entity\DishUnit 
+     * @return \Food\DishesBundle\Entity\DishUnit
      */
     public function getUnit()
     {
@@ -530,14 +538,14 @@ class Dish extends Uploadable implements Translatable
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
     /**
      * Get createdBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -553,14 +561,14 @@ class Dish extends Uploadable implements Translatable
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
         $this->editedBy = $editedBy;
-    
+
         return $this;
     }
 
     /**
      * Get editedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getEditedBy()
     {
@@ -576,14 +584,14 @@ class Dish extends Uploadable implements Translatable
     public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
     {
         $this->deletedBy = $deletedBy;
-    
+
         return $this;
     }
 
     /**
      * Get deletedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getDeletedBy()
     {
@@ -599,14 +607,14 @@ class Dish extends Uploadable implements Translatable
     public function setRecomended($recomended)
     {
         $this->recomended = $recomended;
-    
+
         return $this;
     }
 
     /**
      * Get recomended
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getRecomended()
     {
@@ -622,7 +630,7 @@ class Dish extends Uploadable implements Translatable
     public function addSize(\Food\DishesBundle\Entity\DishSize $sizes)
     {
         $this->sizes[] = $sizes;
-    
+
         return $this;
     }
 
@@ -655,14 +663,14 @@ class Dish extends Uploadable implements Translatable
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -678,7 +686,7 @@ class Dish extends Uploadable implements Translatable
     public function addCategory(\Food\DishesBundle\Entity\FoodCategory $categories)
     {
         $this->categories[] = $categories;
-    
+
         return $this;
     }
 
@@ -701,14 +709,14 @@ class Dish extends Uploadable implements Translatable
     public function setPhoto($photo)
     {
         $this->photo = $photo;
-    
+
         return $this;
     }
 
     /**
      * Get photo
      *
-     * @return string 
+     * @return string
      */
     public function getPhoto()
     {
@@ -759,14 +767,14 @@ class Dish extends Uploadable implements Translatable
     public function setActive($active)
     {
         $this->active = $active;
-    
+
         return $this;
     }
 
     /**
      * Get active
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActive()
     {
@@ -798,14 +806,14 @@ class Dish extends Uploadable implements Translatable
     public function setTimeFrom($timeFrom)
     {
         $this->timeFrom = $timeFrom;
-    
+
         return $this;
     }
 
     /**
      * Get timeFrom
      *
-     * @return string 
+     * @return string
      */
     public function getTimeFrom()
     {
@@ -821,14 +829,14 @@ class Dish extends Uploadable implements Translatable
     public function setTimeTo($timeTo)
     {
         $this->timeTo = $timeTo;
-    
+
         return $this;
     }
 
     /**
      * Get timeTo
      *
-     * @return string 
+     * @return string
      */
     public function getTimeTo()
     {
@@ -844,14 +852,14 @@ class Dish extends Uploadable implements Translatable
     public function setDiscountPricesEnabled($discountPricesEnabled)
     {
         $this->discountPricesEnabled = $discountPricesEnabled;
-    
+
         return $this;
     }
 
     /**
      * Get discountPricesEnabled
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDiscountPricesEnabled()
     {
@@ -883,14 +891,14 @@ class Dish extends Uploadable implements Translatable
     public function setNoDiscounts($noDiscounts)
     {
         $this->noDiscounts = $noDiscounts;
-    
+
         return $this;
     }
 
     /**
      * Get noDiscounts
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getNoDiscounts()
     {
@@ -906,14 +914,14 @@ class Dish extends Uploadable implements Translatable
     public function setShowPublicPrice($showPublicPrice)
     {
         $this->showPublicPrice = $showPublicPrice;
-    
+
         return $this;
     }
 
     /**
      * Get showPublicPrice
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getShowPublicPrice()
     {
@@ -929,7 +937,7 @@ class Dish extends Uploadable implements Translatable
     public function addDate(\Food\DishesBundle\Entity\DishDate $dates)
     {
         $this->dates[] = $dates;
-    
+
         return $this;
     }
 
@@ -946,7 +954,7 @@ class Dish extends Uploadable implements Translatable
     /**
      * Get dates
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getDates()
     {
@@ -962,14 +970,14 @@ class Dish extends Uploadable implements Translatable
     public function setCheckEvenOddWeek($checkEvenOddWeek)
     {
         $this->checkEvenOddWeek = $checkEvenOddWeek;
-    
+
         return $this;
     }
 
     /**
      * Get checkEvenOddWeek
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getCheckEvenOddWeek()
     {
@@ -985,14 +993,14 @@ class Dish extends Uploadable implements Translatable
     public function setEvenWeek($evenWeek)
     {
         $this->evenWeek = $evenWeek;
-    
+
         return $this;
     }
 
     /**
      * Get evenWeek
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEvenWeek()
     {
@@ -1008,14 +1016,14 @@ class Dish extends Uploadable implements Translatable
     public function setUseDateInterval($useDateInterval)
     {
         $this->useDateInterval = $useDateInterval;
-    
+
         return $this;
     }
 
     /**
      * Get useDateInterval
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getUseDateInterval()
     {
@@ -1031,17 +1039,40 @@ class Dish extends Uploadable implements Translatable
     public function setGroup($group)
     {
         $this->group = $group;
-    
+
         return $this;
     }
 
     /**
      * Get group
      *
-     * @return string 
+     * @return string
      */
     public function getGroup()
     {
         return $this->group;
+    }
+
+    /**
+     * Set nameToNav
+     *
+     * @param string $nameToNav
+     * @return Dish
+     */
+    public function setNameToNav($nameToNav)
+    {
+        $this->nameToNav = $nameToNav;
+    
+        return $this;
+    }
+
+    /**
+     * Get nameToNav
+     *
+     * @return string 
+     */
+    public function getNameToNav()
+    {
+        return $this->nameToNav;
     }
 }

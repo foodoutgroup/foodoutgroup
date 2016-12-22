@@ -21,6 +21,9 @@ class DishOptionAdmin extends FoodAdmin
                     'name' => array('label' => 'label.name'),
                     'description' => array('label' => 'label.description', 'required' => false),
                 ),
+                'nameToNav' => array(
+                    'label' => 'label.nameToNav'
+                ),
             )
         )
         ->add('infocode', 'checkbox', array('label' => 'admin.dish_option.infocode', 'required' => false,))

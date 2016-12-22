@@ -47,6 +47,14 @@ class DishOption implements Translatable
     private $name;
 
     /**
+     * @var string
+     *
+     * @Gedmo\Translatable
+     * @ORM\Column(name="name_to_nav", type="string", length=32, nullable=true)
+     */
+    private $nameToNav = null;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="infocode", type="boolean", nullable=true)
@@ -189,11 +197,11 @@ class DishOption implements Translatable
         $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
         $this->dishes = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -209,14 +217,14 @@ class DishOption implements Translatable
     public function setPrice($price)
     {
         $this->price = $price;
-    
+
         return $this;
     }
 
     /**
      * Get price
      *
-     * @return float 
+     * @return float
      */
     public function getPrice()
     {
@@ -240,14 +248,14 @@ class DishOption implements Translatable
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -263,14 +271,14 @@ class DishOption implements Translatable
     public function setHidden($hidden)
     {
         $this->hidden = $hidden;
-    
+
         return $this;
     }
 
     /**
      * Get hidden
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getHidden()
     {
@@ -286,14 +294,14 @@ class DishOption implements Translatable
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -309,7 +317,7 @@ class DishOption implements Translatable
     public function setEditedAt($editedAt)
     {
         $this->editedAt = $editedAt;
-    
+
         return $this;
     }
 
@@ -332,7 +340,7 @@ class DishOption implements Translatable
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
-    
+
         return $this;
     }
 
@@ -355,7 +363,7 @@ class DishOption implements Translatable
     public function addDishe(\Food\DishesBundle\Entity\Dish $dishes)
     {
         $this->dishes[] = $dishes;
-    
+
         return $this;
     }
 
@@ -372,7 +380,7 @@ class DishOption implements Translatable
     /**
      * Get dishes
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getDishes()
     {
@@ -393,7 +401,7 @@ class DishOption implements Translatable
                 $translations->setObject($this);
             }
         }
-    
+
         return $this;
     }
 
@@ -410,7 +418,7 @@ class DishOption implements Translatable
     /**
      * Get translations
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTranslations()
     {
@@ -426,14 +434,14 @@ class DishOption implements Translatable
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -449,14 +457,14 @@ class DishOption implements Translatable
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
     /**
      * Get createdBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -472,14 +480,14 @@ class DishOption implements Translatable
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
         $this->editedBy = $editedBy;
-    
+
         return $this;
     }
 
     /**
      * Get editedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getEditedBy()
     {
@@ -495,14 +503,14 @@ class DishOption implements Translatable
     public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
     {
         $this->deletedBy = $deletedBy;
-    
+
         return $this;
     }
 
     /**
      * Get deletedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getDeletedBy()
     {
@@ -518,14 +526,14 @@ class DishOption implements Translatable
     public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
     {
         $this->place = $place;
-    
+
         return $this;
     }
 
     /**
      * Get place
      *
-     * @return \Food\DishesBundle\Entity\Place 
+     * @return \Food\DishesBundle\Entity\Place
      */
     public function getPlace()
     {
@@ -541,14 +549,14 @@ class DishOption implements Translatable
     public function setCode($code)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -564,7 +572,7 @@ class DishOption implements Translatable
     public function addDish(\Food\DishesBundle\Entity\Dish $dishes)
     {
         $this->dishes[] = $dishes;
-    
+
         return $this;
     }
 
@@ -587,14 +595,14 @@ class DishOption implements Translatable
     public function setSingleSelect($singleSelect)
     {
         $this->singleSelect = $singleSelect;
-    
+
         return $this;
     }
 
     /**
      * Get singleSelect
      *
-     * @return integer 
+     * @return integer
      */
     public function getSingleSelect()
     {
@@ -610,14 +618,14 @@ class DishOption implements Translatable
     public function setGroupName($groupName)
     {
         $this->groupName = $groupName;
-    
+
         return $this;
     }
 
     /**
      * Get groupName
      *
-     * @return string 
+     * @return string
      */
     public function getGroupName()
     {
@@ -633,14 +641,14 @@ class DishOption implements Translatable
     public function setInfocode($infocode)
     {
         $this->infocode = $infocode;
-    
+
         return $this;
     }
 
     /**
      * Get infocode
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getInfocode()
     {
@@ -656,14 +664,14 @@ class DishOption implements Translatable
     public function setSubCode($subCode)
     {
         $this->subCode = $subCode;
-    
+
         return $this;
     }
 
     /**
      * Get subCode
      *
-     * @return string 
+     * @return string
      */
     public function getSubCode()
     {
@@ -679,14 +687,14 @@ class DishOption implements Translatable
     public function setPriceOld($priceOld)
     {
         $this->priceOld = $priceOld;
-    
+
         return $this;
     }
 
     /**
      * Get priceOld
      *
-     * @return string 
+     * @return string
      */
     public function getPriceOld()
     {
@@ -702,14 +710,14 @@ class DishOption implements Translatable
     public function setFirstLevel($firstLevel)
     {
         $this->firstLevel = $firstLevel;
-    
+
         return $this;
     }
 
     /**
      * Get firstLevel
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getFirstLevel()
     {
@@ -747,5 +755,28 @@ class DishOption implements Translatable
     public function getSizesPrices()
     {
         return $this->sizesPrices;
+    }
+
+    /**
+     * Set nameToNav
+     *
+     * @param string $nameToNav
+     * @return DishOption
+     */
+    public function setNameToNav($nameToNav)
+    {
+        $this->nameToNav = $nameToNav;
+    
+        return $this;
+    }
+
+    /**
+     * Get nameToNav
+     *
+     * @return string 
+     */
+    public function getNameToNav()
+    {
+        return $this->nameToNav;
     }
 }
