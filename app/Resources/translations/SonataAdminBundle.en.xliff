@@ -207,6 +207,10 @@
                 <source>admin.dish.group</source>
                 <target>Group</target>
             </trans-unit>
+            <trans-unit id="admin.dish.nameToNav">
+                <source>admin.dish.nameToNav</source>
+                <target>Navision name</target>
+            </trans-unit>
             <trans-unit id="admin.dish.time_from">
                 <source>admin.dish.time_from</source>
                 <target>Dish time from</target>
