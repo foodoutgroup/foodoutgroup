@@ -528,35 +528,35 @@ class NavService extends ContainerAware
     {
         $this->container->get('doctrine')->getManager()->refresh($detail);
 
-        $desc = $detail->getDishName();
-        $unitDesc = $detail->getDishUnitName();
+        //~ $desc = $detail->getDishName();
+        //~ $unitDesc = $detail->getDishUnitName();
 
-        $desc = str_replace(["'", '"', ',', '(', ')'], '', $desc);
-        $desc = str_replace(['ė', 'e', 'Ę', 'Ė'], 'e', $desc);
-        $desc = str_replace(['ą', 'Ą'], 'a', $desc);
-        $desc = str_replace(['č', 'Č'], 'c', $desc);
-        $desc = str_replace(['į', 'Į'], 'i', $desc);
-        $desc = str_replace(['š', 'Š'], 's', $desc);
-        $desc = str_replace(['ų', 'ū', 'Ų', 'Ū'], 'u', $desc);
-        $desc = strtolower($desc);
+        //~ $desc = str_replace(["'", '"', ',', '(', ')'], '', $desc);
+        //~ $desc = str_replace(['ė', 'e', 'Ę', 'Ė'], 'e', $desc);
+        //~ $desc = str_replace(['ą', 'Ą'], 'a', $desc);
+        //~ $desc = str_replace(['č', 'Č'], 'c', $desc);
+        //~ $desc = str_replace(['į', 'Į'], 'i', $desc);
+        //~ $desc = str_replace(['š', 'Š'], 's', $desc);
+        //~ $desc = str_replace(['ų', 'ū', 'Ų', 'Ū'], 'u', $desc);
+        //~ $desc = strtolower($desc);
 
-        $unitDesc = str_replace(["'", '"', ',', '(', ')'], '', $unitDesc);
-        $unitDesc = str_replace(['ė', 'e', 'Ę', 'Ė'], 'e', $unitDesc);
-        $unitDesc = str_replace(['ą', 'Ą'], 'a', $unitDesc);
-        $unitDesc = str_replace(['č', 'Č'], 'c', $unitDesc);
-        $unitDesc = str_replace(['į', 'Į'], 'i', $unitDesc);
-        $unitDesc = str_replace(['š', 'Š'], 's', $unitDesc);
-        $unitDesc = str_replace(['ų', 'ū', 'Ų', 'Ū'], 'u', $unitDesc);
-        $unitDesc = strtolower($unitDesc);
+        //~ $unitDesc = str_replace(["'", '"', ',', '(', ')'], '', $unitDesc);
+        //~ $unitDesc = str_replace(['ė', 'e', 'Ę', 'Ė'], 'e', $unitDesc);
+        //~ $unitDesc = str_replace(['ą', 'Ą'], 'a', $unitDesc);
+        //~ $unitDesc = str_replace(['č', 'Č'], 'c', $unitDesc);
+        //~ $unitDesc = str_replace(['į', 'Į'], 'i', $unitDesc);
+        //~ $unitDesc = str_replace(['š', 'Š'], 's', $unitDesc);
+        //~ $unitDesc = str_replace(['ų', 'ū', 'Ų', 'Ū'], 'u', $unitDesc);
+        //~ $unitDesc = strtolower($unitDesc);
 
-        $desc = str_replace("makaronai", "makar", $desc);
-        $desc = str_replace("lasisomis", "lasis", $desc);
+        //~ $desc = str_replace("makaronai", "makar", $desc);
+        //~ $desc = str_replace("lasisomis", "lasis", $desc);
 
-        $desc = "'" . substr($desc, 0, 29) . " " . $unitDesc . "'";
-        $desc = str_replace(" pica", "", $desc);
-        $desc = str_replace("Apkepti", "apk", $desc);
-        $desc = str_replace("blyneliai", "blynel", $desc);
-        $desc = str_replace(" Porcija", "", $desc);
+        //~ $desc = "'" . substr($desc, 0, 29) . " " . $unitDesc . "'";
+        //~ $desc = str_replace(" pica", "", $desc);
+        //~ $desc = str_replace("Apkepti", "apk", $desc);
+        //~ $desc = str_replace("blyneliai", "blynel", $desc);
+        //~ $desc = str_replace(" Porcija", "", $desc);
 
         $code = $detail->getDishSizeCode();
         $optionIdUsed = -1;
@@ -578,6 +578,8 @@ class NavService extends ContainerAware
             if ($data) {
                 $desc = "'" . $data->getDescription() . "'";
             }
+        } else {
+            $desc = "'" . $detail->getNameToNav() . "'";
         }
 
         $priceForInsert = $detail->getOrigPrice();
@@ -636,7 +638,7 @@ class NavService extends ContainerAware
             'Line No_'        => $key,
             'Entry Type'      => 0,
             'No_'             => "'" . $code . "'",
-            'Description'     => $desc, // V.Puras is Foodout i musu sistema neturetu buti paduodami patiekalu pavadinimai, tik DIS numeriai.
+            'Description'     => $desc,
             'Quantity'        => $detail->getQuantity(),
             'Price'           => $priceForInsert, //$detail->getPrice(), // @todo test the price. Kaip gula. Total ar ne.
             'Parent Line'     => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
@@ -657,7 +659,7 @@ class NavService extends ContainerAware
             if ($okey != $optionIdUsed) {
                 $okeyCounter++;
                 $code = $opt->getDishOptionCode();
-                $desc = $opt->getDishOptionName();
+                $desc = $opt->getNameToNav();
                 if ($opt->getDishOptionId()->getInfocode()) {
                     $desc = $opt->getDishOptionId()->getSubCode();
                 }
@@ -896,7 +898,7 @@ class NavService extends ContainerAware
                 'ParentLineNo' => 0,
                 'EntryType'    => 0,
                 'ItemNo'       => $code,
-                'Description'  => mb_substr($cart->getDishId()->getName(), 0, 30, 'utf-8'),
+                'Description'  => mb_substr($cart->getDishId()->getNameToNav(), 0, 30, 'utf-8'),
                 'Quantity'     => $cart->getQuantity(),
                 'Price'        => $cart->getDishSizeId()->getPrice(),
                 'Amount'       => $cart->getDishSizeId()->getPrice() * $cart->getQuantity()
@@ -917,7 +919,7 @@ class NavService extends ContainerAware
                         $optionCode = $option->getDishOptionId()->getCode();
                         $description = $option->getDishOptionId()->getSubCode();
                     } else {
-                        $description = $option->getDishOptionId()->getName();
+                        $description = $option->getDishOptionId()->getNameToNav();
                     }
                     $lineNo = $lineNo + 1;
                     if ($option->getDishOptionId()->getFirstLevel()) {

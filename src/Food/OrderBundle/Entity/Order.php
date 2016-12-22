@@ -2453,4 +2453,37 @@ class Order
 
 
 
+
+    /**
+     * Get duringZavalas
+     *
+     * @return boolean 
+     */
+    public function getDuringZavalas()
+    {
+        return $this->duringZavalas;
+    }
+
+    /**
+     * Add orderFieldChangelog
+     *
+     * @param \Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog
+     * @return Order
+     */
+    public function addOrderFieldChangelog(\Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog)
+    {
+        $this->orderFieldChangelog[] = $orderFieldChangelog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove orderFieldChangelog
+     *
+     * @param \Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog
+     */
+    public function removeOrderFieldChangelog(\Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog)
+    {
+        $this->orderFieldChangelog->removeElement($orderFieldChangelog);
+    }
 }

@@ -101,6 +101,9 @@ class DishAdmin extends FoodAdmin
                     'name' => array(
                         'label' => 'label.name'
                     ),
+                    'nameToNav' => array(
+                        'label' => 'label.nameToNav'
+                    ),
                     'description' => array(
                         'label' => 'label.description'
                     ),
