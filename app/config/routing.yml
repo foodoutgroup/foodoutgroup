@@ -146,6 +146,10 @@ banned:
     path: /banned/
     defaults: { _controller: FoodAppBundle:Default:banned}
 
+banned_email:
+    path: /banned-email/
+    defaults: { _controller: FoodAppBundle:Default:bannedEmail}
+
 logistics_order_status:
     path: /logistics/status-update/
     defaults: { _controller: FoodOrderBundle:Logistics:orderStatus}

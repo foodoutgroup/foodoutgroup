@@ -120,3 +120,14 @@ services:
         - ~
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.banned_email:
+      class: Food\AppBundle\Admin\BannedEmailAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.banned_email" }
+      arguments:
+        - ~
+        - Food\AppBundle\Entity\BannedEmail
+        - ~
+      calls:
+        - [ setTranslationDomain, [SonataAdminBundle]]

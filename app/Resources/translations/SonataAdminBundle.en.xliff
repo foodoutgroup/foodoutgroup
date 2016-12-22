@@ -3390,7 +3390,31 @@
             <trans-unit id="admin.report.orders_by_restaurant">
                 <source>admin.report.orders_by_restaurant</source>
                 <target>Orders report</target>
-             </trans-unit>
+            </trans-unit>
+            <trans-unit id="admin.banned_email">
+                <source>admin.banned_email</source>
+                <target>Banned email address</target>
+            </trans-unit>
+            <trans-unit id="Banned Email List">
+                <source>Banned Email List</source>
+                <target>Banned email address</target>
+            </trans-unit>
+            <trans-unit id="admin.general.email">
+                <source>admin.general.email</source>
+                <target>Email</target>
+            </trans-unit>
+            <trans-unit id="admin.general.reason">
+                <source>admin.general.reason</source>
+                <target>Reason</target>
+            </trans-unit>
+            <trans-unit id="admin.general.active">
+                <source>admin.general.active</source>
+                <target>Active</target>
+            </trans-unit>
+            <trans-unit id="admin.general.id">
+                <source>admin.general.id</source>
+                <target>ID</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

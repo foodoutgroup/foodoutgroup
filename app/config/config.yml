@@ -336,6 +336,7 @@ sonata_admin:
                       - sonata.admin.static
                       - sonata.admin.newsletter_subscribers
                       - sonata.admin.banned_ips
+                      - sonata.admin.banned_email
                       - sonata.admin.street
                       - sonata.admin.unused_sf_numbers
                       - sonata.admin.seorecords
