@@ -61,18 +61,22 @@ class DailyOrdersCommand extends ContainerAwareCommand
 
             $message->addTo($email);
 
-            $message->setBody($this->getContainer()->get('templating')
+            $content = $this->getContainer()->get('templating')
                 ->render(
                     'FoodOrderBundle:Command:accounting_yesterday_report.html.twig',
                     array(
                         'orders' => $orders,
                         'reportFor' => $date,
                     )
-                ), 'text/html');
+                );
+
+            $message->setBody($content, 'text/html');
 
             // Dont send if dry-run
             if (!$input->getOption('dry-run')) {
                 $mailer->send($message);
+            } else {
+                $output->writeln($content);
             }
 
             $output->writeln('Report generated for date: '.$date);
