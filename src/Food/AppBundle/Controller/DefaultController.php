@@ -105,6 +105,11 @@ class DefaultController extends Controller
         );
     }
 
+    public function bannedEmailAction(Request $request)
+    {
+        return $this->render('FoodAppBundle:Default:banned_email.html.twig');
+    }
+
     /**
      * Subscribtion to newsletter
      * @param \Symfony\Component\HttpFoundation\Request $request

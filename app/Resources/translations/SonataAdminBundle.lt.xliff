@@ -3066,6 +3066,30 @@
                  <source>admin.order.total_before_discount</source>
                  <target>Viso be nuolaidos (Su PVM)</target>
              </trans-unit>
+            <trans-unit id="admin.banned_email">
+                <source>admin.banned_email</source>
+                <target>Blokuoti el. pašto adresai</target>
+            </trans-unit>
+            <trans-unit id="Banned Email List">
+                <source>Banned Email List</source>
+                <target>Blokuoti el. pašto adresai</target>
+            </trans-unit>
+            <trans-unit id="admin.general.email">
+                <source>admin.general.email</source>
+                <target>El. paštas</target>
+            </trans-unit>
+            <trans-unit id="admin.general.reason">
+                <source>admin.general.reason</source>
+                <target>Priežastis</target>
+            </trans-unit>
+            <trans-unit id="admin.general.active">
+                <source>admin.general.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.general.id">
+                <source>admin.general.id</source>
+                <target>ID</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
