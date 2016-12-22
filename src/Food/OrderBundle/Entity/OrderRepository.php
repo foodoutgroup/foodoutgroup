@@ -227,7 +227,7 @@ class OrderRepository extends EntityRepository
         $filter = array(
             'daily_grouped_report' =>  true,
             'order_date_between' => array('from' => $dateFrom, 'to' => $dateTo),
-            'paymentMethod' => 'complete'
+            'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
