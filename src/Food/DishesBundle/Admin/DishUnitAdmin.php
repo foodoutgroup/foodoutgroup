@@ -33,9 +33,9 @@ class DishUnitAdmin extends FoodAdmin
                 'fields' => array(
                     'name' => array('label' => 'label.name'),
                     'shortName' => array('label' => 'label.short_name'),
-                ),
-                'nameToNav' => array(
-                    'label' => 'label.nameToNav'
+                    'nameToNav' => array(
+                        'label' => 'Navision name'
+                    ),
                 ),
             ));
 
