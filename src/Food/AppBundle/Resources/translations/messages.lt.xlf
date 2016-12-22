@@ -192,24 +192,12 @@
             </trans-unit>
             <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
                 <source>general.sms.user.order_accepted</source>
-                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime per ~delivery_time.! Tavo alkis - musu misija!</target>
+                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime per ~delivery_time.! Isbandyk Foodout mob.programele: http://bit.ly/2fIHtWc</target>
             </trans-unit>
-            <!--<trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
-                <source>general.sms.user.order_accepted</source>
-                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista turetume pristatyti per delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
-            </trans-unit>-->
             <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
                 <source>general.sms.user.order_accepted_preorder</source>
                 <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime ~pre_delivery_time.! Isbandyk Foodout mob.programele: http://bit.ly/2fIHtWc</target>
             </trans-unit>
-            <!--<trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
-                <source>general.sms.user.order_accepted_preorder</source>
-                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista turetume pristatyti pre_delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
-            </trans-unit>-->
-            <!--<trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
-                <source>general.sms.user.order_accepted_pickup</source>
-                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista galesite atsiimti po delivery_time! Jei turite dar klausimu susisiekite telefonu +37069855544!</target>
-            </trans-unit>-->
             <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
                 <source>general.sms.user.order_accepted_pickup</source>
                 <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Atsiimti galesite po ~delivery_time.! Tavo alkis - musu misija!</target>
@@ -218,10 +206,6 @@
                 <source>general.sms.user.order_accepted_pickup_preorder</source>
                 <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Atsiimti galesite ~pre_delivery_time.! Tavo alkis - musu misija!</target>
             </trans-unit>
-            <!--<trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
-                <source>general.sms.user.order_accepted_pickup_preorder</source>
-                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista galesite atsiimti pre_delivery_time! Jei turite dar klausimu susisiekite telefonu +37069855544!</target>
-            </trans-unit>-->
             <trans-unit id="general.sms.client.driver_picked_up" resname="general.sms.client.driver_picked_up">
                 <source>general.sms.client.driver_picked_up</source>
                 <target>Psst, Tavo uzsakymas jau vezamas! Uzsisakyk maista patogiau – atsisiusk mob.programele: http://bit.ly/2f3YgRH</target>
