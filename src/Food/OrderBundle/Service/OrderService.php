@@ -600,6 +600,7 @@ class OrderService extends ContainerAware
                         $timeShift = $miscService->parseTimeToMinutes($placeService->getDeliveryTime($order->getPlace(), $order->getPlacePoint()));
                     }
 
+                    $this->logOrder($order, 'calculating_delivery_time', 'Old delivery time: ' . $order->getDeliveryTime()->format('Y-m-d H:i:s'));
                     $this->logOrder($order, 'calculating_delivery_time', 'Setting delivery time with a parsed value of ' . $timeShift . ' minutes');
                     if (empty($timeShift) || $timeShift <= 0) {
                         $timeShift = 60;
@@ -1529,7 +1530,9 @@ class OrderService extends ContainerAware
                 ->setPriceBeforeDiscount($priceBeforeDiscount)
                 ->setPercentDiscount($discountPercentForInsert)
                 ->setDishName($cartDish->getDishId()->getName())
+                ->setNameToNav(mb_substr($cartDish->getDishId()->getNameToNav() . $cartDish->getDishSizeId()->getUnit()->getNameToNav(), 0, 32, 'UTF-8'))
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
+                ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
                 ->setIsFree($cartDish->getIsFree())
@@ -1574,6 +1577,7 @@ class OrderService extends ContainerAware
                 $orderOpt->setDishOptionId($opt->getDishOptionId())
                     ->setDishOptionCode($opt->getDishOptionId()->getCode())
                     ->setDishOptionName($opt->getDishOptionId()->getName())
+                    ->setNameToNav($opt->getDishOptionId()->getNameToNav())
                     ->setPrice($dishOptionPrice)
                     ->setPriceBeforeDiscount($dishOptionPricesBeforeDiscount)
                     ->setDishId($cartDish->getDishId())
