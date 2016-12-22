@@ -681,6 +681,10 @@
             <trans-unit id="general.ip_banned" resname="general.ip_banned">
                 <source>general.ip_banned</source><target>Teie IP-aadress on blokeeritud</target>
             </trans-unit>
+            <trans-unit id="general.email_banned" resname="general.email_banned">
+                <source>general.email_banned</source>
+                <target>Your email is banned</target>
+            </trans-unit>
             <trans-unit id="general.ip_banned_info" resname="general.ip_banned_info">
                 <source>general.ip_banned_info</source><target><![CDATA[Teie IP-aadress (%ip%) on kahjuks blokeeritud.<br />IP-aadressid blokeeritakse, kui külastaja koostab valetellimusi; laimab, solvab või segab sihilikult muul viisil teisi külastajaid või restoranide tööd.<br /><br />Administraatori nimetatud põhjus: ]]></target>
             </trans-unit>

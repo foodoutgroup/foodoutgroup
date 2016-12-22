@@ -822,6 +822,10 @@
                 <source>general.ip_banned</source>
                 <target>Jūsu IP adrese ir bloķēta</target>
             </trans-unit>
+            <trans-unit id="general.email_banned" resname="general.email_banned">
+                <source>general.email_banned</source>
+                <target>Jūsu email ir bloķēta</target>
+            </trans-unit>
             <trans-unit id="620c7ce4e5b0c3f1f527813491a9152f" resname="general.ip_banned_info">
                 <source>general.ip_banned_info</source>
                 <target><![CDATA[Atvainojamies! Taču Jūsu IP adrese (%ip%) ir bloķēta.<br />IP adreses tiek bloķētas, ja: apmeklētājs veido nepatiesus pasūtījumus; apmelo, aizskar vai ar citām tīšām darbībām traucē citiem apmeklētājiem vai restorāna darbam.<br /><br />Administrācijas norādītais iemesls: "%reason%".<br /><br />Ja uzskatāt, ka tas ir noticis kļūdas dēļ – sazinieties ar mums <strong><a href="mailto:info@foodout.lv">info@foodout.lv</a></strong> vai pa tālruni <strong>+371 67363663</strong>]]></target>
