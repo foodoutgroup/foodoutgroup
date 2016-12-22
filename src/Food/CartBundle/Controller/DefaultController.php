@@ -488,6 +488,13 @@ class DefaultController extends Controller
             // TODO Crap happened?
         }
 
+        $disabledPreorderDaysParam = $this->get('food.app.utils.misc')->getParam('disabled_preorder_days');
+        if (!empty($disabledPreorderDaysParam)) {
+            $disabledPreorderDays = array_map('trim', explode(",", $disabledPreorderDaysParam));
+        } else {
+            $disabledPreorderDays = array();
+        }
+
         $data = [
             'order'                   => $order,
             'formHasErrors'           => $formHasErrors,
@@ -505,6 +512,7 @@ class DefaultController extends Controller
             'isCallcenter'            => ($isCallcenter ? true : false),
             'require_lastname'        => $require_lastname,
             'pointIsWorking'          => $pointIsWorking,
+            'disabledPreorderDays'    => $disabledPreorderDays,
         ];
 
 
