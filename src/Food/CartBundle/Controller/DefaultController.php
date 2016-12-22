@@ -351,12 +351,6 @@ class DefaultController extends Controller
 
                 $user = $fosUserManager->findUserByEmail($userEmail);
 
-                $blockedEmails = $this->getDoctrine()
-                    ->getRepository('FoodAppBundle:BannedEmail')->findByEmail($userEmail);
-                if (!empty($blockedEmails) || !$user->isAccountNonLocked() || !$user->isEnabled()) {
-                    return $this->redirect($this->generateUrl('banned_email'));
-                }
-
                 // If bussines user - load it from here please
                 try {
                     $tmpUser = $this->container->get('security.context')->getToken()->getUser();
@@ -389,6 +383,12 @@ class DefaultController extends Controller
                     $user->setEnabled(true);
 
                     $fosUserManager->updateUser($user);
+                }
+
+                $blockedEmails = $this->getDoctrine()
+                    ->getRepository('FoodAppBundle:BannedEmail')->findByEmail($userEmail);
+                if (!empty($blockedEmails) || !$user->isAccountNonLocked() || !$user->isEnabled()) {
+                    return $this->redirect($this->generateUrl('banned_email'));
                 }
 
                 $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
