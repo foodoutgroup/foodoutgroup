@@ -850,6 +850,10 @@
                 <source>general.ip_banned</source>
                 <target>Your IP is banned</target>
             </trans-unit>
+            <trans-unit id="general.email_banned" resname="general.email_banned">
+                <source>general.email_banned</source>
+                <target>Your email is banned</target>
+            </trans-unit>
             <trans-unit id="general.ip_banned_info" resname="general.ip_banned_info">
                 <source>general.ip_banned_info</source>
                 <target><![CDATA[Sorry, Your IP (%ip%) is banned.<br />IP address is banned if: visitor is creating fake orders; interrupt restaurant work on purpouse.<br /><br />Reason of ban: "%reason%".<br /><br />Please, contact us if You think Your IP is blocked incorrectly <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> or by phone <strong>+370 698 55544</strong>]]></target>
