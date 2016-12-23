@@ -28,6 +28,8 @@ class CloseOrdersCommand extends ContainerAwareCommand
             $em = $this->getContainer()->get('doctrine')->getManager();
             $orderService = $this->getContainer()->get('food.order');
             $orders = $em->getRepository('FoodOrderBundle:Order')->getUnclosedOrders();
+            $selfDeliveryOrders = $em->getRepository('FoodOrderBundle:Order')->getUnclosedSelfDeliveryOrders();
+            $orders = array_merge($orders, $selfDeliveryOrders);
 
             $output->write(sprintf("Found %d unclosed orders", count($orders)));
             $processedOrders = 0;
