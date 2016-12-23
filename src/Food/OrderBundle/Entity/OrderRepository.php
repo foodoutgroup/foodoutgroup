@@ -907,6 +907,36 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * @return Order[]|array
+     */
+    public function getUnclosedSelfDeliveryOrders()
+    {
+        $orderStatus = "'".OrderService::$status_accepted
+            ."', '".OrderService::$status_assiged
+            ."', '".OrderService::$status_finished
+            ."', '".OrderService::$status_delayed."'";
+        $paymentStatus = OrderService::$paymentStatusComplete;
+
+        $dateFilter = new \DateTime("-120 minute");
+
+        $query = "
+          SELECT
+            o.id,
+            o.delivery_time
+          FROM orders o
+          WHERE
+            o.order_status IN ({$orderStatus})
+            AND o.payment_status = '{$paymentStatus}'
+            AND o.place_point_self_delivery = TRUE
+            AND o.delivery_time < '{$dateFilter}'
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
      * @return array
      */
     public function getPreOrders()
