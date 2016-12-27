@@ -179,7 +179,7 @@
             </ul>
             <div class="separator"></div>
             <div class="top-contact-block">
-                {% if site_country == 'LT' %}
+                {% if ("now"|date('d') == 24 or "now"|date('d') == 25) and site_country == 'LT' %}
                 <span class="work-time" style="text-align: right">
                     12.24 10:00-15:00<br/>
                     12.25-26 12:00-21:00
