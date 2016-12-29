@@ -2280,9 +2280,9 @@ class OrderService extends ContainerAware
         }
 
         // Preorder tik navision siunciam i NAV info, o paprastus restoranus informuos cronas
-        if ($order->getOrderStatus() == OrderService::$status_preorder && !$order->getPlace()->getNavision()) {
-            return;
-        }
+        //if ($order->getOrderStatus() == OrderService::$status_preorder && !$order->getPlace()->getNavision()) {
+        //    return;
+        //}
 
         // Inform by email about create and if Nav - send it to Nav
         if (!$isReminder) {
