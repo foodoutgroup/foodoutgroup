@@ -18,7 +18,7 @@ parameters:
 
     driver.send_to_external: true
     driver.city_filter: ["Vilnius"]
-    driver.socket_address: tcp://s2.foodout.lt:7778
+    driver.socket_address: tcp://cl1:7778
     driver.socket_hash: api
 
     locale: lt
