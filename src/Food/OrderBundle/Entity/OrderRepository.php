@@ -918,6 +918,7 @@ class OrderRepository extends EntityRepository
         $paymentStatus = OrderService::$paymentStatusComplete;
 
         $dateFilter = new \DateTime("-120 minute");
+        $dateFilter = $dateFilter->format("Y-m-d H:i:s");
 
         $query = "
           SELECT
