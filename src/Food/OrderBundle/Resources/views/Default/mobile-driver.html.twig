@@ -4,6 +4,17 @@
 
 
 {% block body %}
+    <style type="text/css">
+        {% if order.orderStatus in ['canceled', 'canceled_produced'] %}
+        body {
+            background: #f2dbd4;
+        }
+        {% elseif order.preorder %}
+        body {
+            background: #d6ebf2;
+        }
+        {% endif %}
+    </style>
     <table class="table table-bordered table condensed">
         <thead>
         <tr>
