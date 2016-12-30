@@ -1,0 +1,25 @@
+<td colspan="2">
+    <b>{{ field_description.options.label|trans({}, 'SonataAdminBundle') }}</b>
+    <br/>
+    <div class="collapsable">
+        <h4 class="padded">{{ 'admin.order.data_preview'|trans({}, 'SonataAdminBundle') }}</h4>
+        <div id="field_container_details" class="field-container">
+            <table>
+                <tr>
+                    <th>{{ 'admin.general.date'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.general.phone_number'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.general.type'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.general.user'|trans({}, 'SonataAdminBundle') }}</th>
+                </tr>
+            {% for fieldInfo in object.orderCallLog %}
+                <tr>
+                    <td>{{ fieldInfo.callDate|date("Y-m-d H:i:s") }}</td>
+                    <td>{{ fieldInfo.number }}</td>
+                    <td>{{ fieldInfo.type }}</td>
+                    <td>{{ fieldInfo.user }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+</td>
