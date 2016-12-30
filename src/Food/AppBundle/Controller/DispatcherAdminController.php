@@ -599,4 +599,15 @@ class DispatcherAdminController extends Controller
 
         return new Response('OK');
     }
+
+    public function logCallEventAction(Request $request)
+    {
+        $dispatcherService = $this->get('food.dispatcher_service');
+        $dispatcherService->saveCallLog(
+            $request->get('type'),
+            $request->get('number'),
+            $request->get('orderId')
+        );
+        return new Response();
+    }
 }

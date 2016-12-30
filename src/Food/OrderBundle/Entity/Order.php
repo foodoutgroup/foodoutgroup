@@ -472,6 +472,12 @@ class Order
     private $orderFieldChangelog;
 
     /**
+     * @var \Food\AppBundle\Entity\CallLog $orderFieldChangelog
+     * @ORM\OneToMany(targetEntity="\Food\AppBundle\Entity\CallLog", mappedBy="order_id")
+     **/
+    private $orderCallLog;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -1453,6 +1459,7 @@ class Order
         $this->orderStatusLog = new \Doctrine\Common\Collections\ArrayCollection();
         $this->paymentLog = new \Doctrine\Common\Collections\ArrayCollection();
         $this->orderLog = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->orderCallLog = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -2485,5 +2492,38 @@ class Order
     public function removeOrderFieldChangelog(\Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog)
     {
         $this->orderFieldChangelog->removeElement($orderFieldChangelog);
+    }
+
+    /**
+     * Add orderLog
+     *
+     * @param \Food\AppBundle\Entity\CallLog $orderCallLog
+     * @return Order
+     */
+    public function addOrderCallLog(\Food\AppBundle\Entity\CallLog $orderCallLog)
+    {
+        $this->orderCallLog[] = $orderCallLog;
+
+        return $this;
+    }
+
+    /**
+     * Remove orderLog
+     *
+     * @param \Food\AppBundle\Entity\CallLog $orderCallLog
+     */
+    public function removeOrderCallLog(\Food\AppBundle\Entity\CallLog $orderCallLog)
+    {
+        $this->orderCallLog->removeElement($orderCallLog);
+    }
+
+    /**
+     * Get orderLog
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrderCallLog()
+    {
+        return $this->orderCallLog;
     }
 }

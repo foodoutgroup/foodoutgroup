@@ -250,13 +250,13 @@
                         {{ order.placeName }}
                         {% if order.placePoint is not empty and order.placePoint.internalCode is not empty %} - {{ order.placePoint.internalCode }}{% endif %}
                         {% if order.placePoint is not empty %}
-                            <a href="callto:{{ order.placePoint.phone }}"><span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ order.placePoint.phone }}"></span></a>
+                            <a onclick="Dispatcher.logCallEvent('restaurant', {{ order.placePoint.phone }}, {{ order.id }})" href="callto:{{ order.placePoint.phone }}"><span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ order.placePoint.phone }}"></span></a>
                         {% endif %}
                         {% if order.placePoint is not empty and order.placePoint.altPhone1 is not empty%}
-                            <a href="callto:{{ order.placePoint.altPhone1 }}"><span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ order.placePoint.altPhone1 }}"></span></a>
+                            <a onclick="Dispatcher.logCallEvent('restaurant', {{ order.placePoint.altPhone1 }}, {{ order.id }})" href="callto:{{ order.placePoint.altPhone1 }}"><span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ order.placePoint.altPhone1 }}"></span></a>
                         {% endif %}
                         {% if order.placePoint is not empty and order.placePoint.altPhone2 is not empty%}
-                            <a href="callto:{{ order.placePoint.altPhone2 }}"><span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ order.placePoint.altPhone2 }}"></span></a>
+                            <a onclick="Dispatcher.logCallEvent('restaurant', {{ order.placePoint.altPhone2 }}, {{ order.id }})" href="callto:{{ order.placePoint.altPhone2 }}"><span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ order.placePoint.altPhone2 }}"></span></a>
                         {% endif %}
                     </td>
                 {% if type != 'canceled' %}
@@ -273,7 +273,7 @@
                             {% endif %}
                         {% endif %}
                     </td>
-                    <td style="white-space: nowrap"><a href="callto:{{ order.orderExtra.phone }}"><span class="glyphicon glyphicon-phone-alt restourant-phones"></span></a>{{ order.orderExtra.phone }}
+                    <td style="white-space: nowrap"><a onclick="Dispatcher.logCallEvent('client', {{ order.orderExtra.phone }}, {{ order.id }})" href="callto:{{ order.orderExtra.phone }}"><span class="glyphicon glyphicon-phone-alt restourant-phones"></span></a>{{ order.orderExtra.phone }}
                     </td>
                 {% endif %}
                     <td class="order_date" title="{{ order.orderDate|date("Y-m-d") }}">{{ order.orderDate|date("H:i") }}</td>
@@ -333,7 +333,7 @@
                                     ~ 'admin.driver.provider'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.provider ~ "<br/>"
                                     ~ 'admin.driver.ext_id'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.extId ~ "<br/>"
                                     %}
-                                    {{ order.driver.name }} <span class="driver-info-extended glyphicon glyphicon-info-sign" title="{{ driverInfo }}"></span> <a href="callto:{{ order.driver.phone }}"><span class="glyphicon glyphicon-phone-alt restourant-phones"></span></a>
+                                    {{ order.driver.name }} <span class="driver-info-extended glyphicon glyphicon-info-sign" title="{{ driverInfo }}"></span> <a onclick="Dispatcher.logCallEvent('driver', {{ order.driver.phone }}, {{ order.id }})" href="callto:{{ order.driver.phone }}"><span class="glyphicon glyphicon-phone-alt restourant-phones"></span></a>
                                 {% else %}
                                     <span style="font-weight: bold; color: #FF0000;">{{ 'admin.dispatcher.no_driver_assigned'|trans({}, 'SonataAdminBundle') }}</span>
                                 {% endif %}
@@ -639,7 +639,7 @@
                         {% endif %}
                         <tr class="{{ loop.index%2 ? 'odd' : 'even' }}" data-driver-id="{{ driver.id }}">
                             <td>{{ driver['name'] }}</td>
-                            <td><a href="callto:{{ driver['phone'] }}">{{ driver['phone'] }}</a></td>
+                            <td><a onclick="Dispatcher.logCallEvent('driver', {{ driver.phone }})" href="callto:{{ driver['phone'] }}">{{ driver['phone'] }}</a></td>
                             {#<td>{{ ('admin.driver.type.' ~ driver.type)|trans({}, 'SonataAdminBundle') }}</td>#}
                             {#<td>{{ driver.provider }}</td>#}
                             <td>{{ driver['order_count'] }}</td>

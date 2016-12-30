@@ -3090,6 +3090,30 @@
                 <source>admin.general.id</source>
                 <target>ID</target>
             </trans-unit>
+            <trans-unit id="admin.call_log">
+                <source>admin.call_log</source>
+                <target>Skambučių istorija</target>
+            </trans-unit>
+            <trans-unit id="admin.general.order">
+                <source>admin.general.order</source>
+                <target>Užsakymas</target>
+            </trans-unit>
+            <trans-unit id="admin.general.date">
+                <source>admin.general.date</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="admin.general.phone_number">
+                <source>admin.general.phone_number</source>
+                <target>Tel. nr.</target>
+            </trans-unit>
+            <trans-unit id="admin.general.type">
+                <source>admin.general.type</source>
+                <target>Tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.general.user">
+                <source>admin.general.user</source>
+                <target>Vartotojas</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

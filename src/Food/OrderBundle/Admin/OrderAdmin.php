@@ -333,6 +333,12 @@ class OrderAdmin extends FoodAdmin
                     'template' => 'FoodOrderBundle:Admin:order_field_changelog.html.twig'
                 )
             )
+            ->add('order_call_log', 'sonata_type_collection',
+                array(
+                    'label' => 'admin.call_log',
+                    'template' => 'FoodOrderBundle:Admin:order_call_log.html.twig'
+                )
+            )
         ;
 
         // Remove Fields For Restaurant User (Moderator)
