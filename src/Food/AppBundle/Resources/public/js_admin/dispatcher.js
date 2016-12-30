@@ -680,5 +680,10 @@ var Dispatcher = {
     crmOpen: function(list) {
         $('.crm-close').removeClass('hidden');
         list.slideDown();
+    },
+
+    logCallEvent: function (type, number, orderId) {
+        var url = Routing.generate('food_admin_log_call_event', { '_locale': Dispatcher._locale, _sonata_admin: 'sonata.admin.dish' });
+        $.post(url, {type: type, number: number, orderId: orderId});
     }
 };
