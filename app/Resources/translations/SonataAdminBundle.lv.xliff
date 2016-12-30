@@ -2998,6 +2998,30 @@
                 <source>admin.general.id</source>
                 <target>ID</target>
             </trans-unit>
+            <trans-unit id="admin.call_log">
+                <source>admin.call_log</source>
+                <target>Call log</target>
+            </trans-unit>
+            <trans-unit id="admin.general.order">
+                <source>admin.general.order</source>
+                <target>Order</target>
+            </trans-unit>
+            <trans-unit id="admin.general.date">
+                <source>admin.general.date</source>
+                <target>Date</target>
+            </trans-unit>
+            <trans-unit id="admin.general.phone_number">
+                <source>admin.general.phone_number</source>
+                <target>Phone</target>
+            </trans-unit>
+            <trans-unit id="admin.general.type">
+                <source>admin.general.type</source>
+                <target>Type</target>
+            </trans-unit>
+            <trans-unit id="admin.general.user">
+                <source>admin.general.user</source>
+                <target>User</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

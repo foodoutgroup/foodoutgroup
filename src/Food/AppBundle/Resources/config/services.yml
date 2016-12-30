@@ -131,3 +131,20 @@ services:
         - ~
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.call_log:
+      class: Food\AppBundle\Admin\CallLogAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.call_log" }
+      arguments:
+        - ~
+        - Food\AppBundle\Entity\CallLog
+        - ~
+      calls:
+        - [ setTranslationDomain, [SonataAdminBundle]]
+
+    food.dispatcher_service:
+      class: Food\AppBundle\Service\DispatcherService
+      parent: food.base_service
+      calls:
+        - [ setSecurityContext, [@security.context]]

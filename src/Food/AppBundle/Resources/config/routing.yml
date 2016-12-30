@@ -309,6 +309,14 @@ food_admin_get_user_info_by_phone:
     options:
         expose: true
 
+food_admin_log_call_event:
+    path: /admin/dispatcher/log-call-event/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:logCallEvent}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
+
 food_admin_get_place_unit_categories:
     path: /admin/place/get-unit-categories/{placeId}
     defaults: {_controller: FoodDishesBundle:DishUnitAdmin:getUnitCategoryOptionsFromPlace}
