@@ -656,6 +656,10 @@
                 <source>admin.point.use_external_logistics</source>
                 <target>Siųsti į Metrikas (logistika)</target>
             </trans-unit>
+            <trans-unit id="admin.point.sync_url">
+                <source>admin.point.sync_url</source>
+                <target>HTTP adresas siųsti užsakymams</target>
+            </trans-unit>
             <!-- Place reviews -->
             <trans-unit id="place-reviews-list">
                 <source>Place Reviews List</source>
