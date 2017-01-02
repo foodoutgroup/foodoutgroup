@@ -58,7 +58,7 @@ class PlaceAdmin extends FoodAdmin
                     'translatable_class' => 'Food\DishesBundle\Entity\Place',
                     'fields'             => [
                         'slogan'       => ['label' => 'admin.place.slogan', 'required' => false,],
-                        'description'  => ['label' => 'admin.place.description', 'required' => true,],
+                        'description'  => ['label' => 'admin.place.description', 'required' => false,],
                         'alcoholRules' => $alcoholRules,
                     ]
                 ])
