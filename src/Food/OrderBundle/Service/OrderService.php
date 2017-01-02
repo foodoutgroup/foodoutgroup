@@ -600,7 +600,6 @@ class OrderService extends ContainerAware
                         $timeShift = $miscService->parseTimeToMinutes($placeService->getDeliveryTime($order->getPlace(), $order->getPlacePoint()));
                     }
 
-                    $this->logOrder($order, 'calculating_delivery_time', 'Old delivery time: ' . $order->getDeliveryTime()->format('Y-m-d H:i:s'));
                     $this->logOrder($order, 'calculating_delivery_time', 'Setting delivery time with a parsed value of ' . $timeShift . ' minutes');
                     if (empty($timeShift) || $timeShift <= 0) {
                         $timeShift = 60;
@@ -1369,19 +1368,12 @@ class OrderService extends ContainerAware
         $this->getOrder()->setUser($user);
 
 
-
         $placeObject = $this->container->get('food.places')->getPlace($place);
         $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
 
         $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
         $enableDiscount = !$placeObject->getOnlyAlcohol();
-//        foreach ($itemCollection as $item) {
-//            if ($this->getCartService()->isAlcohol($item->getDishId())) {
-//                $enableDiscount = false;
-//                break;
-//            }
-//        }
 
         // jei PRE ORDER
         if (!empty($orderDate)) {
@@ -1389,9 +1381,7 @@ class OrderService extends ContainerAware
         } else if (empty($orderDate) && $selfDelivery) {
             // Lets fix pickup situation
             $miscService = $this->container->get('food.app.utils.misc');
-
             $timeShift = $miscService->parseTimeToMinutes($placeObject->getPickupTime());
-
             if (empty($timeShift) || $timeShift <= 0) {
                 $timeShift = 60;
             }
@@ -1422,14 +1412,11 @@ class OrderService extends ContainerAware
         }
 
         $this->getOrder()->setOrderExtra($orderExtra);
-        $deliveryPrice = 0;
-        if (!$selfDelivery) {
-            $deliveryPrice = $this->getCartService()->getDeliveryPrice(
-                $this->getOrder()->getPlace(),
-                $this->container->get('food.location')->getLocationFromSession(),
-                $this->getOrder()->getPlacePoint()
-            );
-        }
+        $deliveryPrice = $this->getCartService()->getDeliveryPrice(
+            $this->getOrder()->getPlace(),
+            $this->container->get('food.location')->getLocationFromSession(),
+            $this->getOrder()->getPlacePoint()
+        );
 
         // Pritaikom nuolaida
         $sumTotal = 0;
@@ -1490,7 +1477,6 @@ class OrderService extends ContainerAware
 
             $priceBeforeDiscount = $cartDish->getDishSizeId()->getPrice();
             $discountPercentForInsert = 0;
-
             $price = 0;
             if (!$cartDish->getIsFree()) {
                 $price = $cartDish->getDishSizeId()->getCurrentPrice();
@@ -1530,9 +1516,7 @@ class OrderService extends ContainerAware
                 ->setPriceBeforeDiscount($priceBeforeDiscount)
                 ->setPercentDiscount($discountPercentForInsert)
                 ->setDishName($cartDish->getDishId()->getName())
-                ->setNameToNav(mb_substr($cartDish->getDishId()->getNameToNav() . $cartDish->getDishSizeId()->getUnit()->getNameToNav(), 0, 32, 'UTF-8'))
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
-                ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
                 ->setIsFree($cartDish->getIsFree())
@@ -2280,9 +2264,9 @@ class OrderService extends ContainerAware
         }
 
         // Preorder tik navision siunciam i NAV info, o paprastus restoranus informuos cronas
-        //if ($order->getOrderStatus() == OrderService::$status_preorder && !$order->getPlace()->getNavision()) {
-        //    return;
-        //}
+        if ($order->getOrderStatus() == OrderService::$status_preorder && !$order->getPlace()->getNavision()) {
+            return;
+        }
 
         // Inform by email about create and if Nav - send it to Nav
         if (!$isReminder) {
@@ -4639,4 +4623,6 @@ class OrderService extends ContainerAware
             }
         }
     }
+
+
 }
