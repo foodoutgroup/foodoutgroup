@@ -23,6 +23,7 @@ use Food\OrderBundle\Entity\OrderLog;
 use Food\OrderBundle\Entity\OrderMailLog;
 use Food\OrderBundle\Entity\OrderStatusLog;
 use Food\OrderBundle\Entity\OrderToDriver;
+use Food\OrderBundle\Entity\OrderToRestaurant;
 use Food\OrderBundle\Entity\PaymentLog;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
@@ -1640,6 +1641,16 @@ class OrderService extends ContainerAware
             //Update the last update time ;)
             $this->order->setLastUpdated(new \DateTime("now"));
             $this->getEm()->persist($this->order);
+
+            if(!empty($this->order->getPlacePoint()->getSyncUrl())) {
+                $otr = new OrderToRestaurant();
+                $otr->setState(OrderService::$status_new);
+                $otr->setDateAdded(new \DateTime());
+                $otr->setTryCount(0);
+                $otr->setOrder($this->order);
+                $this->getEm()->persist($otr);
+            }
+
             $this->getEm()->flush();
 
             $this->markOrderForNav($this->order);
@@ -2864,6 +2875,17 @@ class OrderService extends ContainerAware
 
         $this->getEm()->persist($log);
         $this->getEm()->flush();
+
+        if(!empty($order->getPlacePoint()->getSyncUrl())
+            && !in_array($newStatus, [self::$status_preorder, self::$status_pre, self::$status_unapproved, self::$status_nav_problems, self::$status_partialy_completed])) {
+            $otr = new OrderToRestaurant();
+            $otr->setOrder($order);
+            $otr->setDateAdded(new \DateTime());
+            $otr->setTryCount(0);
+            $otr->setState($newStatus);
+            $this->getEm()->persist($otr);
+            $this->getEm()->flush();
+        }
     }
 
     public function sentToDriver($order)
