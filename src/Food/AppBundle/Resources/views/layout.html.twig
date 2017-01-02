@@ -179,6 +179,7 @@
             </ul>
             <div class="separator"></div>
             <div class="top-contact-block">
+                {#
                 {% if ("now"|date('d') == 31 or "now"|date('d') == 1) and site_country == 'LT' %}
                 <span class="work-time" style="text-align: right">
                     12.31 10:00-18:00<br/>
@@ -190,11 +191,14 @@
                     12.25-26 11:00-23:00
                 </span>
                 {% else %}
+                #}
                 <span class="work-time">
                     <span>{% trans %}general.top_contact.worktime_days{% endtrans %}</span>
                     <span>{% trans %}general.top_contact.worktime{% endtrans %}</span>
                 </span>
+                {#
                 {% endif %}
+                #}
                 <span class="phone"><a href="callto:{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}" title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>
             </div>
         </div>
