@@ -156,13 +156,7 @@ class OrdersController extends Controller
         $this->get('logger')->alert('Orders:getOrderDetailsByHashAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        $realResponse = new JsonResponse($response);
-        $responseHeaders = $realResponse->headers;
-        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
-        $responseHeaders->set('Access-Control-Allow-Origin', '*');
-        $responseHeaders->set('Access-Control-Allow-Methods', 'GET');
-
-        return $realResponse;
+        return new JsonResponse($response);
     }
 
     /**
@@ -198,13 +192,7 @@ class OrdersController extends Controller
         $this->get('logger')->alert('Orders:changeOrderStatusByHashAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        $realResponse = new JsonResponse($response);
-        $responseHeaders = $realResponse->headers;
-        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
-        $responseHeaders->set('Access-Control-Allow-Origin', '*');
-        $responseHeaders->set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-
-        return $realResponse;
+        return new JsonResponse($response);
     }
 
     public function getOrdersByPlacepointHashAction($hash, Request $request)
@@ -237,13 +225,7 @@ class OrdersController extends Controller
         $this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        $realResponse = new JsonResponse($response);
-        $responseHeaders = $realResponse->headers;
-        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
-        $responseHeaders->set('Access-Control-Allow-Origin', '*');
-        $responseHeaders->set('Access-Control-Allow-Methods', 'GET');
-
-        return $realResponse;
+        return new JsonResponse($response);
     }
 
     /**
