@@ -1712,6 +1712,13 @@ class OrderService extends ContainerAware
         return $this->order;
     }
 
+    public function getPlacepointByHash($hash)
+    {
+        $placePoint = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash]);
+
+        return $placePoint;
+    }
+
     public function getOrdersByPlacepointHash($hash)
     {
         $placePoint = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash]);
