@@ -133,8 +133,11 @@ class OrdersController extends Controller
 
         try {
             $order = $this->get('food.order')->getOrderByHash($hash);
-
-            $response = $this->get('food_api.order')->getOrderForResponseFull($order);
+            if (!empty($order)) {
+                $response = $this->get('food_api.order')->getOrderForResponseFull($order);
+            } else {
+                return new JsonResponse(null, 404);
+            }
         }  catch (ApiException $e) {
             $this->get('logger')->error('Orders:getOrderDetailsByHashAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrderDetailsByHashAction Trace1:' . $e->getTraceAsString());
@@ -210,8 +213,12 @@ class OrdersController extends Controller
         $this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Request: hash - ' . $hash, (array) $request);
 
         try {
-            $orders = $this->get('food.order')->getOrdersByPlacepointHash($hash);
-            $response = $this->get('food_api.order')->getOrdersForResponseFull($orders, $hash);
+            if (!empty($this->get('food.order')->getPlacepointByHash($hash))) {
+                $orders = $this->get('food.order')->getOrdersByPlacepointHash($hash);
+                $response = $this->get('food_api.order')->getOrdersForResponseFull($orders, $hash);
+            } else {
+                return new JsonResponse(null, 404);
+            }
         }  catch (ApiException $e) {
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace1:' . $e->getTraceAsString());
