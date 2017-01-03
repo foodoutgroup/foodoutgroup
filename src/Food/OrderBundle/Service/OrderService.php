@@ -1430,6 +1430,11 @@ class OrderService extends ContainerAware
         if($enableDiscount) {
             if (!empty($coupon) && $coupon instanceof Coupon) {
 
+                $order = $this->getOrder();
+                $order->setCoupon($coupon)
+                    ->setCouponCode($coupon->getCode());
+
+
                 $discountSize = $coupon->getDiscount();
 
                 if (!empty($discountSize)) {
