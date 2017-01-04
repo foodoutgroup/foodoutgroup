@@ -97,6 +97,11 @@ food_api_order_details_hash:
     defaults: { _controller: FoodApiBundle:Orders:getOrderDetailsByHash }
     methods: [GET]
 
+food_api_order_details_hash_status:
+    pattern: /ordersByHash/{hash}/status/{status}
+    defaults: { _controller: FoodApiBundle:Orders:orderChangeStatus }
+    methods: [POST]
+
 food_api_order_change_status_by_hash:
     pattern: /ordersByHash/{hash}/changeStatus
     defaults: { _controller: FoodApiBundle:Orders:changeOrderStatusByHash }

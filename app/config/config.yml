@@ -272,8 +272,8 @@ sonata_admin:
     title: Foodout
     title_logo: /bundles/foodapp/images/logo_food_small.png
     templates:
-      #layout: SonataAdminBundle::standard_layout.html.twig
-      layout: FoodAppBundle::admin_layout.html.twig
+      layout: SonataAdminBundle::standard_layout.html.twig
+#      layout: FoodAppBundle::admin_layout.html.twig
       ajax:   SonataAdminBundle::ajax_layout.html.twig
       dashboard: FoodAppBundle::dashboard.html.twig
 

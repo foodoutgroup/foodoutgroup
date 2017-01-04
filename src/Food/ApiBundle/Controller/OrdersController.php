@@ -614,4 +614,91 @@ class OrdersController extends Controller
         $logger->alert(var_export($params, true));
         $logger->alert('=========================================================');
     }
+
+    public function orderChangeStatusAction($hash, $status, Request $request)
+    {
+        $return = ['success' => false, 'message' => ''];
+        if ($request->isMethod('post')) {
+            $startTime = microtime(true);
+            $this->get('logger')->alert('Orders:orderChangeStatusAction Request: hash - ' . $hash, (array)$request);
+            $response = ['error' => $this->get('translator')->trans('general.error_happened')];
+
+            try {
+
+                $status = str_replace("-", "_", $status);
+
+                $order = $this->get('food.order')->getOrderByHash($hash);
+
+                $orderService = $this->container->get('food.order');
+                $orderService->setOrder($order);
+                if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $status) && !in_array($status, ['picked'])) {
+
+                    switch ($status) {
+                        case "canceled":
+                            $return['success'] = true;
+                            $orderService->statusCanceled('restaurant_api');
+                            break;
+                        case "accepted":
+                            $orderService->statusAccepted('restaurant_api');
+                            $return['success'] = true;
+                            break;
+                        case "finished":
+                            $orderService->statusFinished('restaurant_api');
+                            $return['success'] = true;
+                            break;
+                        case "completed":
+                            $orderService->statusCompleted('restaurant_api');
+                            $return['success'] = true;
+                            break;
+                        case "picked":
+                            $orderService->getOrder()->setOrderPicked(true);
+                            $return['success'] = true;
+                            break;
+                        case "delayed":
+                            $orderService->statusDelayed('restaurant_api', 'delay reason: ' . $request->get('reason'));
+                            $orderService->getOrder()->setDelayed(true);
+                            if (!empty($request)) {
+                                $orderService->getOrder()->setDelayReason($request->get('reason'));
+                                $orderService->getOrder()->setDelayDuration($request->get('duration'));
+                            }
+                            $orderService->saveDelay();
+                            $return['success'] = true;
+                            break;
+                        case "canceled_produced":
+                            $orderService->statusCanceled_produced("restaurant_api");
+                            $return['success'] = true;
+                            break;
+                        default:
+                            $return['message'] = $status.' was not found';
+                            break;
+                    }
+                }
+
+                $orderService->saveOrder();
+
+
+            } catch (ApiException $e) {
+                $this->get('logger')->error('Orders:orderChangeStatusAction Error1:' . $e->getMessage());
+                $this->get('logger')->error('Orders:orderChangeStatusAction Trace1:' . $e->getTraceAsString());
+                $return['message'] = $e->getMessage();
+            } catch (\Exception $e) {
+                $this->get('logger')->error('Orders:orderChangeStatusAction Error2:' . $e->getMessage());
+                $this->get('logger')->error('Orders:orderChangeStatusAction Trace2:' . $e->getTraceAsString());
+                $return['message'] = $e->getMessage();
+            }
+
+            $this->get('logger')->alert('Orders:changeOrderStatusByHashAction Response:' . print_r($response, true));
+            $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+
+        } else {
+            $return['message'] = 'Wrong request method';
+        }
+
+        $realResponse = new JsonResponse($return);
+        $responseHeaders = $realResponse->headers;
+        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
+        $responseHeaders->set('Access-Control-Allow-Origin', '*');
+        $responseHeaders->set('Access-Control-Allow-Methods', 'POST');
+
+    }
 }
