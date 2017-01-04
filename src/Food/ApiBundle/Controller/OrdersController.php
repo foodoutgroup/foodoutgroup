@@ -201,7 +201,8 @@ class OrdersController extends Controller
         $this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Request: hash - ' . $hash, (array) $request);
 
         try {
-            if (!empty($this->get('food.order')->getPlacepointByHash($hash))) {
+            $pp = $this->get('food.order')->getPlacepointByHash($hash);
+            if (!empty($pp)) {
                 $orders = $this->get('food.order')->getOrdersByPlacepointHash($hash);
                 $response = $this->get('food_api.order')->getOrdersForResponseFull($orders, $hash);
             } else {
