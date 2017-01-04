@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <title>{% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}</title>
+    {% stylesheets '@FoodAppBundle/Resources/public/styles/landing_b2b_client_lt_style.css'  %}
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"  />
+    {% endstylesheets %}
+</head>
+<body>
+<div class="container">
+    <div class="ta-c logo">
+        <a href="{{ path('food_lang_homepage') }}" style="display: inline-block"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/logo.png') }}" alt="{% trans %}general.page_name{% endtrans %}"></a>
+    </div>
+    <div class="main">
+        <div class="well">
+            <h2 class="ta-c">Padidinkite savo darbuotojų motyvaciją bei sutaupykite po 30+ min. jų darbo laiko kiekvieną savaitę!</h2>
+            <p>Sekite TOP įmonių pavyzdžiu – kurkite naujas komandos tradicijas: bandelių rytas, bendri pietūs, „picadieniai“ ar vakarienės dirbantiems viršvalandžius.</p>
+            <div class="row align-items pos-r">
+                <div class="bg-white col-half">
+                    <a href="http://www.benefitspro.com/2015/09/21/the-key-to-workplace-happiness-free-food" target="_blank" class="color-red">Tyrimais įrodyta*,</a> jog bendri komandos pietūs:
+                    <ul>
+                        <li>stiprina tarpusavio bendradarbiavimą;</li>
+                        <li>gerina mikroklimatą;</li>
+                        <li>įmonei sutaupo mažiausiai 30 min. darbuotojo laiko per savaitę (2 valandos per mėnesį!).</li>
+                    </ul>
+
+                    <span class="pos-a">* - Jack Craver, “The key to workplace happiness? Free food!”, 2015 </span>
+                </div>
+                <div class="bg-white col-half">
+                    Papildomos valandos Jums sutaupys:
+                    <ul>
+                        <li>ne mažiau 15 € nuo darbuotojo (jei darbuotojo atlyginimas lygus vidutiniam darbo užmokesčiui - 666 €);</li>
+                        <li>tai reiškia, jog pietūs darbuotojams Jums papildomai nekainuos!</li>
+                    </ul>
+                    Taip pat, Jūs:
+                    <ul>
+                        <li>didinsite komandos motyvaciją;</li>
+                        <li>pagerinsite savo įvertinimą komandos akyse.</li>
+                    </ul>
+                </div>
+            </div>
+            <h2 class="ta-c">Mus jau pasirinko:</h2>
+            <table class="partners">
+                <tbody>
+                <tr>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/a1.png') }}" alt="ABB"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/a2.png') }}" alt="UBER"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/a3.png') }}" alt="bitė"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/a4.png') }}" alt="Transcom"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/a5.png') }}" alt="pigu.lt"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/a6.png') }}" alt="LiDL"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/a7.png') }}" alt="Pixelmator"></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="clearfix">
+            <div class="well col-1">
+                <h3>B2C klientai</h3>
+                <ul>
+                    <li>Gali užsisakyti iš 200+ restoranų.</li>
+                    <li>Gauna specialius pasiūlymus ir išskirtines akcijas.</li>
+                    <li>Nemokama už pristatymą, kai užsisako už 29 &euro; ir daugiau.</li>
+                </ul>
+            </div>
+            <div class="well col-2">
+                <h3>B2B klientai</h3>
+                <ul>
+                    <li>Gauna visas B2C sąlygas.</li>
+                    <li>Gauna specialus pasiūlymus ir išskirtines akcijas skirtus tik B2B klientams.</li>
+                    <li>Gali vykdyti apmokėjimus mėnesio gale.</li>
+                    <li>Išleisti daugiau, gauna didesnes nuolaidas:</li>
+                </ul>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>Kliento išleidžiama suma per mėnesį</th>
+                        <th>iki 500 &euro;</th>
+                        <th>500 &euro; ir daugiau</th>
+                    </tr>
+                    <tr><td>Foodout nuolaidos dydis</td><td>5%</td><td>8%</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="well">
+            <h3>UAB Foodout - tai:</h3>
+            <ul>
+                <li>didžiausias virtualus restoranų tinklas, veikiantis Lietuvoje, Latvijoje, Estijoje ir Irane;</li>
+                <li>200+ restoranų vienoje vietoje – kiekvienas ras tai, kas patenkins jo skonį;</li>
+                <li>3 maisto užsakymo kanalai: telefonas, internetas, mobilioji aplikacija – užsisakyti maisto dar niekada nebuvo taip lengva!</li>
+                <li>maisto pristatymas per 1 val. arba atsiėmimas iš restorano per 20 min.</li>
+            </ul>
+            <table class="restaurants">
+                <tbody>
+                <tr>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/b1.png') }}" alt="Čili pica"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/b2.png') }}" alt="Jammi"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/b3.png') }}" alt="Can Can pica"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/b4.png') }}" alt="MANAMI"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/b5.png') }}" alt="Katpėdėlė"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/b6.png') }}" alt="La Crepe"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/b7.png') }}" alt="SOYA"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/b8.png') }}" alt="forest"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/b9.png') }}" alt="Talutti"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/b10.png') }}" alt="Crustum"></a></td>
+                    <td><a href="{{ path('food_lang_homepage') }}" target="_blank"><img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/b11.png') }}" alt="Fokus pica"></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="well col-center ta-c">
+            <div>Eglė Vasiliauskienė</div>
+            <div>Pardavimų projektų vadovė</div>
+            <div class="whs-nw">Tel.: +370 616 95403</div>
+            <div class="whs-nw"><a href="mailto:egle.v@foodout.lt">egle.v@foodout.lt</a></div>
+        </div>
+    </div>
+    <div class="ta-c slogan">
+        <img src="{{ asset('bundles/foodapp/images/landing/b2bclient_lt/foo.png') }}" alt="TAVO ALKIS - MŪSŲ MISIJA!">
+    </div>
+</div>
+</body>
+</html>
