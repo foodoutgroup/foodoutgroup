@@ -30,7 +30,7 @@ parameters:
     cloudfront_url: estonia.foodout.lt
     time_zone: "Europe/Tallinn"
     sms.sender: "Foodout.ee"
-    admin.emails: [valentas@foodout.lt]
+    admin.emails: [karolis@foodout.lt]
     admin.phones: [37061514333]
     order.notify_emails: []
     order.city_coordinators:
@@ -41,7 +41,7 @@ parameters:
         tallinn: []
     order.accept_notify_emails: []
     order.cancel_notify_emails: []
-    accounting_email: "valentas@foodout.lt"
+    accounting_email: "karolis@foodout.lt"
     b2b_invoice_email: ""
     payment.methods:
         - local
@@ -68,8 +68,8 @@ parameters:
     country_full: Estonia
     vat: 21
     title: "Foodout"
-    domain: "foodout.lt"
-    publicdomain: "foodout.lt"
+    domain: "foodout.ee"
+    publicdomain: "foodout.ee"
     google_analytics_uid: "UA-50355577-1"
     google.analytics.view_id: "85237075"
     nav_table_prefix: 'Čilija kabučių Centras'
