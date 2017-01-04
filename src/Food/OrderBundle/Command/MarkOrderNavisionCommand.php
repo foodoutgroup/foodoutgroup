@@ -84,6 +84,7 @@ class MarkOrderNavisionCommand extends ContainerAwareCommand
 
         $qb->select('o.id')
              ->from('FoodOrderBundle:Order', 'o')
+             ->orderBy('o.id')
              ->setParameters($params);
 
         $result = $qb->getQuery()
