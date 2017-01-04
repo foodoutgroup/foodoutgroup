@@ -192,7 +192,7 @@
             </trans-unit>
             <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
                 <source>general.sms.user.order_accepted</source>
-                <target>Sveiki. restourant_name apstiprina pasutijumu. Foodout.lv misija ir paedis un apmierinats klients! :) Sazinai: +371 67363663</target>
+                <target>Sveiki. restourant_name apstiprina pasūtījumu un Foodout.lv rupejas par zibenigu izpildi! :) Sazinai: +371 67363663</target>
             </trans-unit>
             <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
                 <source>general.sms.user.order_accepted_preorder</source>
@@ -208,7 +208,7 @@
             </trans-unit>
             <trans-unit id="general.sms.client.driver_picked_up" resname="general.sms.client.driver_picked_up">
                 <source>general.sms.client.driver_picked_up</source>
-                <target>Hei! Informejam, ka Tavs Foodout.lv pasutijums ir jau cela un driz bus klat! Lai labi garso! :)</target>
+                <target>Hei! Tavs Foodout.lv pasutijums jau ir cela un driz bus klat! :) Ielade Foodout mobilo aplikaciju un sanem labakos piedavajumus: http://bit.ly/2iJRMh9</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_created" resname="general.sms.client.order_created">
                 <source>general.sms.client.order_created</source>
