@@ -78,7 +78,13 @@ class ResetOrderImportDataCommand extends ContainerAwareCommand
                             break;
                     }
                     $this->em->persist($realOrder);
+
+                    $this->orderDataImportService->setImportObject($importData);
+                    $this->orderDataImportService->logChange($realOrder, $orderData['fieldname'], $orderData['new_value'], $orderData['old_value']);
+
                     $this->em->flush();
+
+
                 }
             }
 

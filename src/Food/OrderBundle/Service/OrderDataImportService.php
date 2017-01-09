@@ -221,10 +221,14 @@ class OrderDataImportService extends BaseService
         return $updateLog;
     }
 
-    private function logChange($realOrder, $fieldname, $oldValue, $newValue)
+    public function logChange($realOrder, $fieldname, $oldValue, $newValue)
     {
         $change = new OrderFieldChangelog();
-        $currentUser = $this->securityContext->getToken()->getUser();
+        if (!empty($this->securityContext->getToken())) {
+            $currentUser = $this->securityContext->getToken()->getUser();
+        } else {
+            $currentUser = $this->em->getRepository('FoodUserBundle:User')->find(1);
+        }
         $change->setUser($currentUser);
         $now = new \DateTime();
         $change->setDate($now);
@@ -260,5 +264,13 @@ class OrderDataImportService extends BaseService
             'total' => 14,
             'discount_sum' => 15,
         );
+    }
+
+    /**
+     * @param mixed $importObject
+     */
+    public function setImportObject($importObject)
+    {
+        $this->importObject = $importObject;
     }
 }
