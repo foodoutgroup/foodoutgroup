@@ -459,7 +459,7 @@ trait OrderDataForNavDecorator
 
     }
 
-    protected function getReplicationValueForSql()
+    public function getReplicationValueForSql()
     {
         return '(SELECT ISNULL(MAX(ReplicationCounter),0) FROM ' . $this->getOrderTableName() . ') + 1';
     }
