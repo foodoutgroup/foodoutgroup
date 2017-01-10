@@ -224,7 +224,8 @@ class OrderDataImportService extends BaseService
     public function logChange($realOrder, $fieldname, $oldValue, $newValue)
     {
         $change = new OrderFieldChangelog();
-        if (!empty($this->securityContext->getToken())) {
+        $token = $this->securityContext->getToken();
+        if (!empty($token)) {
             $currentUser = $this->securityContext->getToken()->getUser();
         } else {
             $currentUser = $this->em->getRepository('FoodUserBundle:User')->find(1);
