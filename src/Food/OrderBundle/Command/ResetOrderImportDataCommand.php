@@ -46,6 +46,7 @@ class ResetOrderImportDataCommand extends ContainerAwareCommand
         $this->em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $this->orderDataImportService = $this->getContainer()->get('food.order_data_import_service');
         $importData = $this->em->getRepository('FoodOrderBundle:OrderDataImport')->find($input->getArgument('import_id'));
+        $navService = $this->getContainer()->get('food.nav');
 
         if (!$importData) {
             throw new \Exception('import not found');
@@ -53,7 +54,9 @@ class ResetOrderImportDataCommand extends ContainerAwareCommand
 
         $dryRun = $input->getOption('dry-run');
         if ($dryRun) {
-            $output->writeln('Dry run - nothing will be marked');
+            $output->writeln('Dry run - nothing will be changed');
+        } else {
+            $conn = $navService->initSqlConn();
         }
 
         foreach (json_decode($importData->getInfodata(), true) as $ordersData) {
@@ -64,7 +67,7 @@ class ResetOrderImportDataCommand extends ContainerAwareCommand
                      */
                     $realOrder = $this->em->getRepository('FoodOrderBundle:Order')->find($orderData['order']);
 
-                    $orderAccData = $em->getRepository('FoodOrderBundle:OrderAccData')
+                    $orderAccData = $this->em->getRepository('FoodOrderBundle:OrderAccData')
                         ->findBy(['order_id' => $realOrder->getId()]);
 
                     $newValue = $orderData['old_value'];
@@ -96,10 +99,12 @@ class ResetOrderImportDataCommand extends ContainerAwareCommand
                         case 'discount_sum':
                             $realOrder->setDiscountSum($newValue);
                             if ($orderAccData) {
+                                $orderAccData = $orderAccData[0];
 
-                                $data->discountAmount = (double)$order->getDiscountSum();
-                                $data->discountAmountEUR = (double)$order->getDiscountSum();
-                                $data->discountPercent = (double)($order->getTotal() > 0.0 ? ($order->getDiscountSum() / $order->getTotal()) : 0.0);
+                                $data = new \stdClass;
+                                $data->discountAmount = (double)$realOrder->getDiscountSum();
+                                $data->discountAmountEUR = (double)$realOrder->getDiscountSum();
+                                $data->discountPercent = (double)($realOrder->getTotal() > 0.0 ? ($realOrder->getDiscountSum() / $realOrder->getTotal()) : 0.0);
 
                                 $orderAccData
                                     ->setDiscountAmount($data->discountAmount)
@@ -107,9 +112,9 @@ class ResetOrderImportDataCommand extends ContainerAwareCommand
                                     ->setDiscountPercent($data->discountPercent);
 
                                 $query = $this->generateNavQuery($orderAccData);
-                                $navService = $this->getContainer()->get('food.nav');
+
                                 if (!$dryRun) {
-                                    $navService->query($query);
+                                    $conn->query($query);
                                 } else {
                                     $output->writeln('Nav query: ' . $query);
                                 }
@@ -146,7 +151,7 @@ class ResetOrderImportDataCommand extends ContainerAwareCommand
         ];
         $values = [
             $orderAccData->getDiscountAmount(),
-            $orderAccData->setDiscountAmountEur(),
+            $orderAccData->getDiscountAmountEur(),
             $orderAccData->getDiscountPercent()
         ];
 
@@ -174,8 +179,8 @@ class ResetOrderImportDataCommand extends ContainerAwareCommand
 
         // create query
         $query = sprintf('UPDATE %s SET %s WHERE %s',
-            $this->getOrderTableName(),
-            implode(', ', $valuesForUpdate) . ', [ReplicationCounter] = ' . $this->getReplicationValueForSql(),
+            $navService->getOrderTable(),
+            implode(', ', $valuesForUpdate) . ', [ReplicationCounter] = ' . $navService->getReplicationValueForSql(),
             sprintf('[%s] = %s', 'Order ID', $orderAccData->getOrderId()));
 
         return $query;
