@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Food\DishesBundle\Entity\Place;
+use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -1357,5 +1358,58 @@ class OrderRepository extends EntityRepository
         ));
 
         return $query->getResult();
+    }
+
+    /**
+     * @param PlacePoint $placePoint
+     * @return Order[]
+     */
+    public function getOrdersByPlacepointFiltered(PlacePoint $placePoint)
+    {
+        if (date('G') < 6) {
+            $dateStart = date('Y-m-d H:i:s', strtotime('-1 day 06:00:00'));
+            $dateEnd = date('Y-m-d H:i:s', strtotime('06:00:00'));
+        } else {
+            $dateStart = date('Y-m-d H:i:s', strtotime('06:00:00'));
+            $dateEnd = date('Y-m-d H:i:s', strtotime('+1 day 06:00:00'));
+        }
+
+        $queryBuilder = $this->createQueryBuilder('o');
+        $orders = $queryBuilder
+            ->where('o.place_point = :placePoint')
+            ->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in('o.order_status',
+                            [
+                                OrderService::$status_new,
+                                OrderService::$status_accepted,
+                                OrderService::$status_assiged,
+                                OrderService::$status_delayed,
+                                OrderService::$status_forwarded,
+                            ]
+                        ),
+                        $queryBuilder->expr()->between('o.deliveryTime', ':deliveryDateFilterStart', ':deliveryDateFilterEnd')
+                    ),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in('o.order_status', [OrderService::$status_canceled]),
+                        $queryBuilder->expr()->gte('o.deliveryTime', ':canceledDeliveryDateFilter')
+                    ),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in('o.order_status', [OrderService::$status_preorder]),
+                        $queryBuilder->expr()->gte('o.deliveryTime', ':preorderDeliveryDateFilter')
+                    )
+                )
+            )
+            ->setParameter('placePoint', $placePoint->getId())
+            ->setParameter('deliveryDateFilterStart', $dateStart)
+            ->setParameter('deliveryDateFilterEnd', $dateEnd)
+            ->setParameter('canceledDeliveryDateFilter', date('Y-m-d H:i:s', strtotime('-6 hour')))
+            ->setParameter('preorderDeliveryDateFilter', date('Y-m-d H:i:s', strtotime('-72 hour')))
+            ->orderBy('o.deliveryTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $orders;
     }
 }
