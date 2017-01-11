@@ -862,6 +862,7 @@ class Order
             'details' => 'TODO', // TODO
             'orderStatus' => $this->getOrderStatus(),
             'orderDate' => $this->getOrderDate()->format("Y-m-d H:i:s"),
+            'deliveryDate' => $this->getDeliveryTime()->format("Y-m-d H:i"),
             'total' => $this->getTotal(),
             'vat' => $this->getVat(),
             'coupon_code' => $this->getCouponCode(),
