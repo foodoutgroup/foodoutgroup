@@ -1723,32 +1723,7 @@ class OrderService extends ContainerAware
     {
         $placePoint = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash]);
         if (!empty($placePoint)) {
-            $queryBuilder = $this->em->getRepository('FoodOrderBundle:Order')->createQueryBuilder('o');
-            $orders = $queryBuilder
-                ->where('o.place_point = :placePoint')
-                ->andWhere(
-                    $queryBuilder->expr()->orX(
-                        $queryBuilder->expr()->in('o.order_status',
-                            [
-                                'preorder',
-                                'new',
-                                'accepted',
-                                'assigned',
-                                'delayed',
-                                'forwarded',
-                            ]
-                        ),
-                        $queryBuilder->expr()->andX(
-                            $queryBuilder->expr()->in('o.order_status', ['canceled']),
-                            $queryBuilder->expr()->gte('o.deliveryTime', ':deliveryDateFilter')
-                        )
-                    )
-                )
-                ->setParameter('placePoint', $placePoint->getId())
-                ->setParameter('deliveryDateFilter', date('Y-m-d H:i:s', strtotime('-6 hour')))
-                ->orderBy('o.deliveryTime', 'DESC')
-                ->getQuery()
-                ->getResult();
+            $orders = $this->getEm()->getRepository('FoodOrderBundle:Order')->getOrdersByPlacepointFiltered($placePoint);
             return $orders;
         } else {
             throw new \Exception('Place point not found.');
