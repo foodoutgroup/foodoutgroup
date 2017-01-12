@@ -7,3 +7,5 @@ services:
   food.place_point_service:
     class: Food\PlacesBundle\Service\PlacePointService
     parent: food.base_service
+    calls:
+      - [setPlaceService, [@food.places]]
