@@ -963,7 +963,7 @@ class OrderService extends ContainerAware
 
         $this->createDiscountCode($order);
 
-        if ($this->getOrder()->getOrderFromNav() == false) {
+        if (!$this->getOrder()->getOrderFromNav()) {
             $this->container->get('food.mail')->addEmailForSend(
                 $order,
                 MailService::$typeCompleted,
@@ -1006,6 +1006,20 @@ class OrderService extends ContainerAware
         $this->createDiscountCode($order);
 
         $this->updateDriver();
+
+        // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
+        if ($order->getPlace()->getSendInvoice()
+            && !$order->getPlacePointSelfDelivery()
+            && $order->getDeliveryType() == OrderService::$deliveryDeliver
+        ) {
+            // Patikrinam ar sitam useriui reikia generuoti sf
+            if (!$order->getUser()->getNoInvoice()) {
+                $mustDoNavDelete = $this->setInvoiceDataForOrder();
+
+                // Suplanuojam sf siuntima klientui
+                $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
+            }
+        }
 
         return $this;
     }
