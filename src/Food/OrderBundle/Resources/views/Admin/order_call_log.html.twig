@@ -11,6 +11,7 @@
                     <th>{{ 'admin.general.type'|trans({}, 'SonataAdminBundle') }}</th>
                     <th>{{ 'admin.general.user'|trans({}, 'SonataAdminBundle') }}</th>
                 </tr>
+                {% if object is defined and object.orderCallLog  is defined %}
             {% for fieldInfo in object.orderCallLog %}
                 <tr>
                     <td>{{ fieldInfo.callDate|date("Y-m-d H:i:s") }}</td>
@@ -19,6 +20,7 @@
                     <td>{{ fieldInfo.user }}</td>
                 </tr>
             {% endfor %}
+                {% endif %}
             </table>
         </div>
     </div>

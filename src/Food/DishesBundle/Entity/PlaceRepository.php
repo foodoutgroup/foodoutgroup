@@ -374,7 +374,7 @@ class PlaceRepository extends EntityRepository
      * @param array|null $locationData
      * @param bool       $ignoreSelfDelivery
      *
-     * @return float|null
+     * @return PlacePoint|null
      */
     public function getPlacePointNearWithDistance($placeId, $locationData, $ignoreSelfDelivery = false, $ignoreWorkTime = false)
     {
@@ -489,6 +489,8 @@ class PlaceRepository extends EntityRepository
                       AND delivery=1
                     ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
 
+//                echo $subQuery;
+//                die;
                 $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
 
                 $stmt->execute();

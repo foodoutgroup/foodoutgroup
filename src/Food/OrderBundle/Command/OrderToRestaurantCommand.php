@@ -38,7 +38,7 @@ class OrderToRestaurantCommand extends ContainerAwareCommand
 
                 $request = [
                     'hash' => $orderToRestaurant->getOrder()->getOrderHash(),
-                    'state' => $orderToRestaurant->getState(),
+//                    'state' => $orderToRestaurant->getState(),
                     'date' => $orderToRestaurant->getDateAdded()->format("r"),
                 ];
 

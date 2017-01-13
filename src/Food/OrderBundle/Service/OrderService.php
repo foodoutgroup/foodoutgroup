@@ -2260,7 +2260,8 @@ class OrderService extends ContainerAware
 
         if(!empty($order->getPlacePoint()->getSyncUrl())) {
             $otr = new OrderToRestaurant();
-            $otr->setState($order->getOrderStatus());
+//            $otr->setState($order->getOrderStatus());
+            $otr->setState(OrderService::$status_new);
             $otr->setDateAdded(new \DateTime());
             $otr->setTryCount(0);
             $otr->setOrder($this->order);

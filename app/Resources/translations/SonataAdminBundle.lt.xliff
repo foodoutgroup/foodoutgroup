@@ -407,6 +407,10 @@
                 <source>admin.place.keep_notification</source>
                 <target>Keep notification</target>
             </trans-unit>
+            <trans-unit id="admin.place.coupon_check_url">
+                <source>admin.place.coupon_check_url</source>
+                <target>HTTP kuponų tikrinimo adresas</target>
+            </trans-unit>
             <trans-unit id="admin.place.registered">
                 <source>admin.place.registered</source>
                 <target>Registered</target>

@@ -426,6 +426,22 @@ class Place extends Uploadable implements Translatable
     protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
     protected $boxSize = ['w' => 130, 'h' => 86];
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="api_hash", type="string", length=255, nullable=true)
+     */
+    private $apiHash;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="coupon_url", type="string", length=255, nullable=true)
+     */
+    private $couponURL;
+
+
     /**
      * @Gedmo\Locale
      * Used locale to override Translation listener`s locale
@@ -2108,4 +2124,44 @@ class Place extends Uploadable implements Translatable
     {
         return $this->allowFreeDelivery;
     }
+
+    /**
+     * @return string
+     */
+    public function getCouponURL()
+    {
+        return $this->couponURL;
+    }
+
+    /**
+     * @param string $couponURL
+     * @return Place
+     */
+    public function setCouponURL($couponURL)
+    {
+        $this->couponURL = $couponURL;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiHash()
+    {
+        return $this->apiHash;
+    }
+
+    /**
+     * @param string $apiHash
+     */
+    public function setApiHash($apiHash)
+    {
+        $this->apiHash = $apiHash;
+
+        return $this;
+    }
+
+
+
+
 }

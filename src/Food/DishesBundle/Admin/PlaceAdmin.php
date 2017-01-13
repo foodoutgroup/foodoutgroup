@@ -104,6 +104,8 @@ class PlaceAdmin extends FoodAdmin
             ->add('disabledPaymentOnDelivery', 'checkbox', ['label' => 'admin.place.disabled_payment_on_delivery', 'required' => false])
             ->add('priority', null, ['label' => 'admin.place.priority', 'required' => true])
             ->add('file', 'file', $options)
+            ->add('apiHash', 'text', ['label' => 'admin.place.api_hash', 'required' => false])
+            ->add('couponURL', 'text', ['label' => 'admin.place.coupon_check_url', 'required' => false])
             /*
                 ->add('photos', 'sonata_type_collection',
                     array(
