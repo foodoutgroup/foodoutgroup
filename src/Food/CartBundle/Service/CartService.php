@@ -537,7 +537,7 @@ class CartService {
                 $total += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
             }
         }
-        return $total;
+        return $total < 0 ? ;
     }
 
     /**
