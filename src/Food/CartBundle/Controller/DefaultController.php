@@ -735,8 +735,8 @@ class DefaultController extends Controller
 
                 $otherPriceTotal = 0;
                 foreach ($list as $dish) {
-                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
                     if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
+                        $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
                         $otherPriceTotal += $sum;
                     }
                 }

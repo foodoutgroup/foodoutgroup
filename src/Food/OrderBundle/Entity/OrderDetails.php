@@ -43,13 +43,6 @@ class OrderDetails
     private $dish_name;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name_to_nav", type="string", length=32, nullable=true)
-     */
-    private $nameToNav;
-
-    /**
      * @ORM\Column(name="dish_unit_name", type="string", length=255)
      */
     private $dish_unit_name;
@@ -107,14 +100,14 @@ class OrderDetails
     public function setDishName($dishName)
     {
         $this->dish_name = $dishName;
-
+    
         return $this;
     }
 
     /**
      * Get dish_name
      *
-     * @return string
+     * @return string 
      */
     public function getDishName()
     {
@@ -130,14 +123,14 @@ class OrderDetails
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
-
+    
         return $this;
     }
 
     /**
      * Get quantity
      *
-     * @return integer
+     * @return integer 
      */
     public function getQuantity()
     {
@@ -153,14 +146,14 @@ class OrderDetails
     public function setPrice($price)
     {
         $this->price = $price;
-
+    
         return $this;
     }
 
     /**
      * Get price
      *
-     * @return float
+     * @return float 
      */
     public function getPrice()
     {
@@ -176,14 +169,14 @@ class OrderDetails
     public function setOrderId(\Food\OrderBundle\Entity\Order $orderId)
     {
         $this->order_id = $orderId;
-
+    
         return $this;
     }
 
     /**
      * Get order_id
      *
-     * @return \Food\OrderBundle\Entity\Order
+     * @return \Food\OrderBundle\Entity\Order 
      */
     public function getOrderId()
     {
@@ -199,7 +192,7 @@ class OrderDetails
     public function setDishId($dishId)
     {
         $this->dish_id = $dishId;
-
+    
         return $this;
     }
 
@@ -222,14 +215,14 @@ class OrderDetails
     public function setDishUnitId($dishUnitId)
     {
         $this->dish_unit_id = $dishUnitId;
-
+    
         return $this;
     }
 
     /**
      * Get dish_unit_id
      *
-     * @return integer
+     * @return integer 
      */
     public function getDishUnitId()
     {
@@ -245,14 +238,14 @@ class OrderDetails
     public function setDishUnitName($dishUnitName)
     {
         $this->dish_unit_name = $dishUnitName;
-
+    
         return $this;
     }
 
     /**
      * Get dish_unit_name
      *
-     * @return string
+     * @return string 
      */
     public function getDishUnitName()
     {
@@ -268,14 +261,14 @@ class OrderDetails
     public function setDishSizeCode($dishSizeCode)
     {
         $this->dish_size_code = $dishSizeCode;
-
+    
         return $this;
     }
 
     /**
      * Get dish_size_code
      *
-     * @return string
+     * @return string 
      */
     public function getDishSizeCode()
     {
@@ -285,7 +278,7 @@ class OrderDetails
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -298,7 +291,7 @@ class OrderDetails
     {
         $this->options = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Add options
      *
@@ -308,7 +301,7 @@ class OrderDetails
     public function addOption(\Food\OrderBundle\Entity\OrderDetailsOptions $options)
     {
         $this->options[] = $options;
-
+    
         return $this;
     }
 
@@ -341,7 +334,7 @@ class OrderDetails
     public function setOrigPrice($origPrice)
     {
         $this->origPrice = $origPrice;
-
+    
         return $this;
     }
 
@@ -364,14 +357,14 @@ class OrderDetails
     public function setPercentDiscount($percentDiscount)
     {
         $this->percentDiscount = $percentDiscount;
-
+    
         return $this;
     }
 
     /**
      * Get percentDiscount
      *
-     * @return integer
+     * @return integer 
      */
     public function getPercentDiscount()
     {
@@ -394,7 +387,7 @@ class OrderDetails
     /**
      * Get isFree
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getIsFree()
     {
@@ -419,27 +412,4 @@ class OrderDetails
     }
 
 
-
-    /**
-     * Set nameToNav
-     *
-     * @param string $nameToNav
-     * @return OrderDetails
-     */
-    public function setNameToNav($nameToNav)
-    {
-        $this->nameToNav = $nameToNav;
-    
-        return $this;
-    }
-
-    /**
-     * Get nameToNav
-     *
-     * @return string 
-     */
-    public function getNameToNav()
-    {
-        return $this->nameToNav;
-    }
 }

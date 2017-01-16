@@ -49,6 +49,25 @@ class PlacesService extends ContainerAware
             ;
     }
 
+
+//    /**
+//     * @param int $placeId
+//     *
+//     * @return \Food\DishesBundle\Entity\Place
+//     *
+//     * @throws \InvalidArgumentException
+//     */
+//    public function getPlace($placeCode)
+//    {
+//        if (empty($placeId)) {
+//            throw new \InvalidArgumentException('Cant search a place without and id. How can you find a house without address?');
+//        }
+//
+//        return $this->em()->getRepository('FoodDishesBundle:Place')
+//            ->find($placeId)
+//            ;
+//    }
+
     public function savePlace($place)
     {
         if (!($place instanceof Place)) {

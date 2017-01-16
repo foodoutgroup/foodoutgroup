@@ -673,7 +673,7 @@ class OrderService extends ContainerAware
 
             $orderService->saveOrder();
 
-            return array('status' => true);
+            return array('status' => true, "new_status" => $status);
         } else {
             $errorMessage = sprintf(
                 'Restoranas %s bande uzsakymui #%d pakeisti uzsakymo statusa is "%s" i "%s"',

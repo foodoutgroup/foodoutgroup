@@ -11,7 +11,7 @@ use Gedmo\Translatable\Translatable;
  * Dish
  *
  * @ORM\Table(name="dish_size")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\DishSizeRepository")
  */
 class DishSize
 {

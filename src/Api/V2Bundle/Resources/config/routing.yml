@@ -1,0 +1,38 @@
+api_v2_order_get:
+    path:     /order/{hash}
+    defaults: { _controller: ApiV2Bundle:Order:get }
+    methods: [GET]
+
+api_v2_order_create:
+    path:     /order/{hash}
+    defaults: { _controller: ApiV2Bundle:Order:create }
+    methods: [POST]
+
+api_v2_order_status_get:
+    path:     /order/{hash}/status
+    defaults: { _controller: ApiV2Bundle:Order:getStatus }
+    methods: [GET]
+
+api_v2_order_status_update:
+    path:     /order/{hash}/status
+    defaults: { _controller: ApiV2Bundle:Order:updateStatus }
+    methods: [POST]
+
+
+
+
+
+api_v2_restaurant_get_menu_category:
+    path: /restaurant/{placeHash}/menu/category
+    defaults: { _controller: ApiV2Bundle:Restaurant:getMenuCategory }
+    methods: [GET]
+
+api_v2_restaurant_get_menu:
+    path: /restaurant/{placeHash}/menu
+    defaults: { _controller: ApiV2Bundle:Restaurant:getMenu }
+    methods: [GET]
+
+api_v2_restaurant_loyalty:
+    path: /restaurant/{placeHash}/loyalty
+    defaults: { _controller: ApiV2Bundle:Restaurant:loyalty }
+    methods: [POST]
