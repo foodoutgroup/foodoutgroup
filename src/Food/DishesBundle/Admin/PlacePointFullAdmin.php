@@ -41,6 +41,7 @@ class PlacePointFullAdmin extends FoodAdmin
             ->add('allowCash', null, array('label' => 'admin.point.allow_cash', 'required' => false))
             ->add('allowCard', null, array('label' => 'admin.point.allow_card', 'required' => false))
             ->add('useExternalLogistics', null, array('label' => 'admin.point.use_external_logistics', 'required' => false))
+            ->add('syncUrl', null, array('label' => 'admin.point.sync_url', 'required' => false))
             ->with('admin.point.work_time')
             ->add('wd1', 'text', array('label' => 'admin.point.wd1'))
             ->add('wd2', 'text', array('label' => 'admin.point.wd2'))
