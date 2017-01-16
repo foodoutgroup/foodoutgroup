@@ -16,6 +16,7 @@ use Food\OrderBundle\Entity\OrderExtra;
 use Food\OrderBundle\Service\OrderService as FO;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
+use Symfony\Component\HttpFoundation\Request;
 
 class OrderService extends \Food\ApiBundle\Service\OrderService
 {
@@ -539,9 +540,12 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
      *
      * @return array
      */
-    public function changeOrderStatus(Order $order, $status, $request = null)
+    public function changeOrderStatus(Order $order, Request $request = null)
     {
         $orderService = $this->container->get('food.order');
+
+        $status = $request->get('status');
+
         if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $this->formToEntityStatus($status))) {
             switch($status) {
                 case 'confirm':
@@ -549,17 +553,29 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                     break;
 
                 case 'delay':
-                    $orderService->statusDelayed('restourant_mobile', 'delay reason: '.$request->get('delay_reason'));
+                    $orderService->statusDelayed('restourant_mobile', 'delay reason: '.$request->get('reason'));
                     $orderService->getOrder()->setDelayed(true);
-                    if (!empty($request)) {
-                        $orderService->getOrder()->setDelayReason($request->get('delay_reason'));
-                        $orderService->getOrder()->setDelayDuration($request->get('delay_duration'));
+
+                    $reason = $request->get('reason');
+                    $duration = $request->get('duration');
+                    if(empty($reason) || empty($duration)) {
+                        throw new ApiException('reason and duration is required');
                     }
+
+                    $orderService->getOrder()->setDelayReason($reason);
+                    $orderService->getOrder()->setDelayDuration($duration);
                     $orderService->saveDelay();
                     break;
 
                 case 'cancel':
+                    $reason = $request->get('reason');
+                    if(empty($reason)) {
+                        throw new ApiException('reason is required');
+                    }
+                    $orderService->getOrder()->setDelayReason($reason);
+
                     $orderService->statusCanceled('restourant_mobile');
+
                     break;
 
                 case 'finish':
@@ -568,6 +584,9 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
 
                 case 'completed':
                     $orderService->statusCompleted('restourant_mobile');
+                    break;
+                default:
+                    throw  new ApiException('status not found');
                     break;
             }
 
