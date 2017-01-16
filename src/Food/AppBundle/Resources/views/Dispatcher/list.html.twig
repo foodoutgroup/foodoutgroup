@@ -308,9 +308,9 @@
                         {% elseif order.paymentMethod == 'local.card'%}
                             {{ 'admin.dispatcher.payement.local_card'|trans({}, 'SonataAdminBundle') }}
                         {% elseif order.paymentMethod == 'postpaid'%}
-                            {{ 'admin.dispatcher.payement.postpaid'|trans({}, 'SonataAdminBundle') }}
+                            <strong>{{ 'admin.dispatcher.payement.postpaid'|trans({}, 'SonataAdminBundle') }}</strong>
                         {% else %}
-                            {{ 'admin.dispatcher.payement.bank_link'|trans({}, 'SonataAdminBundle') }}
+                            <strong>{{ 'admin.dispatcher.payement.bank_link'|trans({}, 'SonataAdminBundle') }}</strong>
                         {% endif %}
                     </td>
                     <td>

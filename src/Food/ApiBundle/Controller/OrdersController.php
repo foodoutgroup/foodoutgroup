@@ -133,8 +133,11 @@ class OrdersController extends Controller
 
         try {
             $order = $this->get('food.order')->getOrderByHash($hash);
-
-            $response = $this->get('food_api.order')->getOrderForResponseFull($order);
+            if (!empty($order)) {
+                $response = $this->get('food_api.order')->getOrderForResponseFull($order);
+            } else {
+                return new JsonResponse(null, 404);
+            }
         }  catch (ApiException $e) {
             $this->get('logger')->error('Orders:getOrderDetailsByHashAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrderDetailsByHashAction Trace1:' . $e->getTraceAsString());
@@ -153,13 +156,7 @@ class OrdersController extends Controller
         $this->get('logger')->alert('Orders:getOrderDetailsByHashAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        $realResponse = new JsonResponse($response);
-        $responseHeaders = $realResponse->headers;
-        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
-        $responseHeaders->set('Access-Control-Allow-Origin', '*');
-        $responseHeaders->set('Access-Control-Allow-Methods', 'GET');
-
-        return $realResponse;
+        return new JsonResponse($response);
     }
 
     /**
@@ -195,13 +192,7 @@ class OrdersController extends Controller
         $this->get('logger')->alert('Orders:changeOrderStatusByHashAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        $realResponse = new JsonResponse($response);
-        $responseHeaders = $realResponse->headers;
-        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
-        $responseHeaders->set('Access-Control-Allow-Origin', '*');
-        $responseHeaders->set('Access-Control-Allow-Methods', 'POST, OPTIONS');
-
-        return $realResponse;
+        return new JsonResponse($response);
     }
 
     public function getOrdersByPlacepointHashAction($hash, Request $request)
@@ -210,8 +201,13 @@ class OrdersController extends Controller
         $this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Request: hash - ' . $hash, (array) $request);
 
         try {
-            $orders = $this->get('food.order')->getOrdersByPlacepointHash($hash);
-            $response = $this->get('food_api.order')->getOrdersForResponseFull($orders, $hash);
+            $pp = $this->get('food.order')->getPlacepointByHash($hash);
+            if (!empty($pp)) {
+                $orders = $this->get('food.order')->getOrdersByPlacepointHash($hash);
+                $response = $this->get('food_api.order')->getOrdersForResponseFull($orders, $hash);
+            } else {
+                return new JsonResponse(null, 404);
+            }
         }  catch (ApiException $e) {
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace1:' . $e->getTraceAsString());
@@ -230,13 +226,7 @@ class OrdersController extends Controller
         $this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        $realResponse = new JsonResponse($response);
-        $responseHeaders = $realResponse->headers;
-        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
-        $responseHeaders->set('Access-Control-Allow-Origin', '*');
-        $responseHeaders->set('Access-Control-Allow-Methods', 'GET');
-
-        return $realResponse;
+        return new JsonResponse($response);
     }
 
     /**

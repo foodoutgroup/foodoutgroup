@@ -254,66 +254,8 @@ class PlaceAdmin extends FoodAdmin
      */
     private function _fixWorkTime(PlacePoint $object)
     {
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $placeService = $this->getContainer()->get('food.places');
-        foreach ($object->getWorkTimes() as $workTime) {
-            $em->remove($workTime);
-        }
-        $em->flush();
-
-        for ($i = 1; $i <= 7; $i++) {
-            $workTime = $object->{'getWd' . $i}();
-            $workTime = preg_replace('~\s*-\s*~', '-', $workTime);
-            $intervals = explode(' ', $workTime);
-            foreach ($intervals as $interval) {
-                if ($times = $placeService->parseIntervalToTimes($interval)) {
-                    list($startHour, $startMin, $endHour, $endMin) = $times;
-                } else {
-                    continue;
-                }
-
-                // if start time is later thant end time, then we should split it
-                if ($endHour < $startHour || $endHour == $startHour && $endMin < $startMin) {
-                    $ppwt = new PlacePointWorkTime();
-                    $ppwt->setPlacePoint($object)
-                        ->setWeekDay($i)
-                        ->setStartHour($startHour)
-                        ->setStartMin($startMin)
-                        ->setEndHour(24)
-                        ->setEndMin(0)
-                    ;
-
-                    $em->persist($ppwt);
-
-                    // 00:00 - 00:00 must be excluded
-                    if ($endHour != 0 || $endMin != 0) {
-                        $ppwt = new PlacePointWorkTime();
-                        $ppwt->setPlacePoint($object)
-                            ->setWeekDay($i < 7 ? $i + 1 : 1)
-                            ->setStartHour(0)
-                            ->setStartMin(0)
-                            ->setEndHour($endHour)
-                            ->setEndMin($endMin)
-                        ;
-
-                        $em->persist($ppwt);
-                    }
-                } else {
-                    $ppwt = new PlacePointWorkTime();
-                    $ppwt->setPlacePoint($object)
-                        ->setWeekDay($i)
-                        ->setStartHour($startHour)
-                        ->setStartMin($startMin)
-                        ->setEndHour($endHour)
-                        ->setEndMin($endMin)
-                    ;
-
-                    $em->persist($ppwt);
-                }
-            }
-        }
-
-        $em->flush();
+        $placePointService = $this->getContainer()->get('food.place_point_service');
+        $placePointService->updatePlacePointWorktime($object);
     }
 
     /**

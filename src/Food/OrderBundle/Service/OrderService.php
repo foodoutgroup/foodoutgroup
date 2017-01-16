@@ -962,7 +962,7 @@ class OrderService extends ContainerAware
 
         $this->createDiscountCode($order);
 
-        if ($this->getOrder()->getOrderFromNav() == false) {
+        if (!$this->getOrder()->getOrderFromNav()) {
             $this->container->get('food.mail')->addEmailForSend(
                 $order,
                 MailService::$typeCompleted,
@@ -1005,6 +1005,20 @@ class OrderService extends ContainerAware
         $this->createDiscountCode($order);
 
         $this->updateDriver();
+
+        // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
+        if ($order->getPlace()->getSendInvoice()
+            && !$order->getPlacePointSelfDelivery()
+            && $order->getDeliveryType() == OrderService::$deliveryDeliver
+        ) {
+            // Patikrinam ar sitam useriui reikia generuoti sf
+            if (!$order->getUser()->getNoInvoice()) {
+                $mustDoNavDelete = $this->setInvoiceDataForOrder();
+
+                // Suplanuojam sf siuntima klientui
+                $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
+            }
+        }
 
         return $this;
     }
@@ -1696,11 +1710,18 @@ class OrderService extends ContainerAware
         return $this->order;
     }
 
+    public function getPlacepointByHash($hash)
+    {
+        $placePoint = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash]);
+
+        return $placePoint;
+    }
+
     public function getOrdersByPlacepointHash($hash)
     {
         $placePoint = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash]);
         if (!empty($placePoint)) {
-            $orders = $this->em->getRepository('FoodOrderBundle:Order')->findBy(['place_point' => $placePoint]);
+            $orders = $this->getEm()->getRepository('FoodOrderBundle:Order')->getOrdersByPlacepointFiltered($placePoint);
             return $orders;
         } else {
             throw new \Exception('Place point not found.');

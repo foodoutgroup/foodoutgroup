@@ -65,8 +65,8 @@
                     {% set dishOptionsPrices = dish_service.getDishOptionsPrices(dish.dishId) %}
                     {% for option in dish.options %}
                         <div class="clearfix">
-                            <div class="extra" title="{{ option.dishOptionId.name }}">{{ option.dishOptionId.name }}</div>
-                            <div class="extra sum">
+                            <div class="extra" title="{{ option.dishOptionId.name }}">{{ dish.quantity }} {{ option.dishOptionId.name }}</div>
+                            <div class="extra sum">x
                                 {% if dish.dishId.showPublicPrice %}
                                     {{ currency_display|raw }}{{ '0'|number_format(2, ',', ' ') }}
                                     {% if currency_alternative %}

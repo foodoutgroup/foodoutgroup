@@ -51,6 +51,7 @@ class DriverAdmin extends FoodAdmin
                         'local' => $this->trans('admin.driver.type.local'),
                         'outsource' => $this->trans('admin.driver.type.outsource'),
                         'individual' => $this->trans('admin.driver.type.individual'),
+                        '00taxify' => 'Taxify',
                     )
                 )
             )

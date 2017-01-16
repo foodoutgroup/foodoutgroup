@@ -73,7 +73,8 @@
         "knplabs/knp-snappy-bundle": "dev-master",
         "aws/aws-sdk-php": "2.7.*@dev",
         "google/apiclient": "~1.1.0",
-        "phpoffice/phpexcel": "^1.8"
+        "phpoffice/phpexcel": "^1.8",
+        "nelmio/cors-bundle": "1.4.1"
     },
     "scripts": {
         "post-install-cmd": [
