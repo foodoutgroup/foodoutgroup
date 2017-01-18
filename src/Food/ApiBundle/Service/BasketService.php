@@ -230,7 +230,7 @@ class BasketService extends ContainerAware
             'total_price',
             array(
                 'amount' => $total,
-                'discount' => $discount,
+                'discount' => $discount < 0.005 ? 0 : $discount,
                 'currency' => $this->container->getParameter('currency_iso')
             )
         );
