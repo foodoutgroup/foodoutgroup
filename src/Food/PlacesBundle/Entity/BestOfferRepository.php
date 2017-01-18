@@ -44,10 +44,7 @@ class BestOfferRepository extends EntityRepository
         $qb = $this->createQueryBuilder('o')
             ->where('o.active = :activity');
 
-
-        $params = array(
-            'activity' => true,
-        );
+        $params = ['activity' => true];
 
         if ($forMobile) {
             $qb->andWhere('o.useUrl != :use_url');
@@ -55,9 +52,24 @@ class BestOfferRepository extends EntityRepository
         }
 
         if (!empty($city)) {
-            $qb->andWhere('(o.city IN (:city_filter) OR o.city IS NULL)');
-            $params['city_filter'] = $city;
+
+            $city = strtolower($city);
+
+            $city = str_replace('klaipeda', 'klaipėda', $city);
+            $city = str_replace('marijampole', 'marijampolė', $city);
+            $city = str_replace('siauliai', 'šiauliai', $city);
+            $city = str_replace('plunge', 'plungė', $city);
+            $city = str_replace('panevežys', 'panevezys', $city);
+            $city = str_replace('panevėzys', 'panevezys', $city);
+            $city = str_replace('panevezys', 'panevėžys', $city);
+            $city = ucfirst($city);
+
+            $qb->andWhere($qb->expr()->like('o.text', ':city_filter'));
+            $params['city_filter'] = '%'.$city.'%';
         }
+
+//        var_dump($params);
+//        die;
 
         return $qb->setParameters($params)
             ->getQuery()

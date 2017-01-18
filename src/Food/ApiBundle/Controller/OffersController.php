@@ -57,6 +57,8 @@ class OffersController extends Controller
             $this->get('logger')->error('Offers:getAction1 Trace:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            echo($e->getMessage());
+            die;
             $this->get('logger')->error('Offers:getAction2 Error:' . $e->getMessage());
             $this->get('logger')->error('Offers:getAction2 Trace:' . $e->getTraceAsString());
             return new JsonResponse(
