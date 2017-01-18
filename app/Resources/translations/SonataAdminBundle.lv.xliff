@@ -1367,6 +1367,10 @@
                 <source>admin.order.send_invoice</source>
                 <target>Send invoice</target>
             </trans-unit>
+            <trans-unit id="admin.order.generate_invoice">
+                <source>admin.order.generate_invoice</source>
+                <target>Generate invoice</target>
+            </trans-unit>
             <trans-unit id="admin.order.edit_send_invoice">
                 <source>admin.order.edit_send_invoice</source>
                 <target>Edit</target>

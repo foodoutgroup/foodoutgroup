@@ -1,8 +1,10 @@
 {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('EDIT', admin) or is_granted('ROLE_DISPATCHER') %}
-    {% if not object.user.noInvoice %}
-        <a class="btn btn-small" href="{{ admin.generateObjectUrl('sendInvoice', object) }}">
-            <i class="icon-envelope"></i>
+    <a class="btn btn-small" href="{{ admin.generateObjectUrl('sendInvoice', object) }}">
+        <i class="icon-envelope"></i>
+        {% if object.user.noInvoice %}
+            {% trans from 'SonataAdminBundle' %}admin.order.generate_invoice{% endtrans %}
+        {% else %}
             {% trans from 'SonataAdminBundle' %}admin.order.send_invoice{% endtrans %}
-        </a>
-    {% endif %}
+        {% endif %}
+    </a>
 {% endif %}

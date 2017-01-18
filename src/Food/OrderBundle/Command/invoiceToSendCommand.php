@@ -76,7 +76,9 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                         $invoiceService->storeUserInvoice($order);
 
                         $emails = array();
-                        if ($order->getPaymentMethod() != 'postpaid' && OrderService::$status_completed == $order->getOrderStatus()) {
+                        if ($order->getPaymentMethod() != 'postpaid'
+                            && OrderService::$status_completed == $order->getOrderStatus()
+                            && (!$order->getUser()->getNoInvoice() || $forcedEmail)) {
                             $emails = $invoiceService->sendUserInvoice($order, $forcedEmail);
                         }
 
