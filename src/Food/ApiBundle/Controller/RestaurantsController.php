@@ -2,6 +2,7 @@
 
 namespace Food\ApiBundle\Controller;
 
+use Food\ApiBundle\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
