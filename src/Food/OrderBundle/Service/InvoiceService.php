@@ -62,11 +62,6 @@ class InvoiceService extends ContainerAware
             return;
         }
 
-        // No Invoice sending for this user
-        if ($order->getUser()->getNoInvoice()) {
-            return;
-        }
-
         if (($order->getPlacePointSelfDelivery() || $order->getDeliveryType() == OrderService::$deliveryPickup) && !$skipChecks) {
             return;
         }
