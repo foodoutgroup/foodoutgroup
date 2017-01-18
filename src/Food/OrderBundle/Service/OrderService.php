@@ -592,6 +592,7 @@ class OrderService extends ContainerAware
 
             if (!$order->getOrderFromNav()) {
                 if (!$order->getPreorder()) {
+                    /*
                     $miscService = $this->container->get('food.app.utils.misc');
 
                     if ($order->getDeliveryType() == self::$deliveryPickup) {
@@ -609,6 +610,7 @@ class OrderService extends ContainerAware
                     $dt = new \DateTime('now');
                     $dt->modify('+' . $timeShift . ' minutes');
                     $order->setDeliveryTime($dt);
+                    */
                 }
                 $this->saveOrder();
                 $this->_notifyOnAccepted();
@@ -977,13 +979,10 @@ class OrderService extends ContainerAware
             && !$order->getPlacePointSelfDelivery()
             && $order->getDeliveryType() == OrderService::$deliveryDeliver
         ) {
-            // Patikrinam ar sitam useriui reikia generuoti sf
-            if (!$order->getUser()->getNoInvoice()) {
-                $mustDoNavDelete = $this->setInvoiceDataForOrder();
+            $mustDoNavDelete = $this->setInvoiceDataForOrder();
 
-                // Suplanuojam sf siuntima klientui
-                $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
-            }
+            // Suplanuojam sf siuntima klientui
+            $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
         }
 
         $this->updateDriver();
@@ -1012,13 +1011,10 @@ class OrderService extends ContainerAware
             && !$order->getPlacePointSelfDelivery()
             && $order->getDeliveryType() == OrderService::$deliveryDeliver
         ) {
-            // Patikrinam ar sitam useriui reikia generuoti sf
-            if (!$order->getUser()->getNoInvoice()) {
-                $mustDoNavDelete = $this->setInvoiceDataForOrder();
+            $mustDoNavDelete = $this->setInvoiceDataForOrder();
 
-                // Suplanuojam sf siuntima klientui
-                $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
-            }
+            // Suplanuojam sf siuntima klientui
+            $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
         }
 
         return $this;
