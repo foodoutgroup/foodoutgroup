@@ -2296,7 +2296,8 @@ class OrderService extends ContainerAware
     {
         $order = $this->getOrder();
 
-        if(!empty($order->getPlacePoint()->getSyncUrl())) {
+        $syncUrl = $order->getPlacePoint()->getSyncUrl();
+        if (!empty($syncUrl)) {
             $otr = new OrderToRestaurant();
 //            $otr->setState($order->getOrderStatus());
             $otr->setState(OrderService::$status_new);
