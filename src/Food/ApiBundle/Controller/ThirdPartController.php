@@ -1,0 +1,517 @@
+<?php
+
+namespace Food\ApiBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Food\ApiBundle\Common\JsonRequest;
+use Food\ApiBundle\Exceptions\ApiException;
+
+class ThirdPartController extends Controller
+{
+    /**
+     * @param $request
+     */
+    private function _theJudge(Request $request)
+    {
+        $miscUtils = $this->get('food.app.utils.misc');
+        // Check if user is not banned
+        $ip = $request->getClientIp();
+        // Dude is banned - hit him
+        if ($miscUtils->isIpBanned($ip)) {
+            $this->get('logger')->warning('GOT BAN: '.$ip);
+            die('{error: "Piktybinis", description: null}');
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getOrdersAction(Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getOrdersAction Request:', (array) $request);
+        $this->_theJudge($request);
+        try {
+            $requestJson = new JsonRequest($request);
+            $response = $this->get('food_api.order')->getPendingOrders($request, $requestJson);
+        }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:getOrdersAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrdersAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Orders:getOrdersAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrdersAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                ['error' => $this->get('translator')->trans('general.error_happened')],
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Orders:getOrdersAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function createOrderAction(Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:createOrderAction Request:', (array) $request);
+        $this->_theJudge($request);
+        try {
+            $requestJson = new JsonRequest($request);
+            $response = $this->get('food_api.order')->createOrder($request, $requestJson);
+        }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:createOrderAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:createOrderAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Orders:createOrderAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:createOrderAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                ['error' => $this->get('translator')->trans('general.error_happened')],
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Orders:createOrderAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
+    }
+
+
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getOrderDetailsByHashAction($hash, Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getOrderDetailsByHashAction Request: hash - ' . $hash, (array) $request);
+
+        try {
+            $order = $this->get('food.order')->getOrderByHash($hash);
+
+            $response = $this->get('food_api.order')->getOrderForResponseFull($order);
+        }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:getOrderDetailsByHashAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrderDetailsByHashAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Orders:getOrderDetailsByHashAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrderDetailsByHashAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                ['error' => $this->get('translator')->trans('general.error_happened')],
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Orders:getOrderDetailsByHashAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+
+        $realResponse = new JsonResponse($response);
+        $responseHeaders = $realResponse->headers;
+        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
+        $responseHeaders->set('Access-Control-Allow-Origin', '*');
+        $responseHeaders->set('Access-Control-Allow-Methods', 'GET');
+
+        return $realResponse;
+    }
+
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function changeOrderStatusByHashAction($hash, Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:changeOrderStatusByHashAction Request: hash - ' . $hash, (array) $request);
+
+        try {
+            $order = $this->get('food.order')->getOrderByHash($hash);
+            if (($request->isMethod('post') || $request->isMethod('post')) &&  $order->getOrderStatus() != "canceled") {
+                $response = $this->get('food_api.order')->changeOrderStatus($order, $request->get('status'), $request);
+            }
+        }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:changeOrderStatusByHashAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:changeOrderStatusByHashAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Orders:changeOrderStatusByHashAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:changeOrderStatusByHashAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                ['error' => $this->get('translator')->trans('general.error_happened')],
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Orders:changeOrderStatusByHashAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+
+        $realResponse = new JsonResponse($response);
+        $responseHeaders = $realResponse->headers;
+        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
+        $responseHeaders->set('Access-Control-Allow-Origin', '*');
+        $responseHeaders->set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+
+        return $realResponse;
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getCouponAction(Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getCouponAction Request: ', (array) $request);
+        $this->_theJudge($request);
+        try {
+            $place = null;
+            $now = date('Y-m-d H:i:s');
+            $requestJson = new JsonRequest($request);
+            $code = $requestJson->get('code');
+            $orderService = $this->get('food.order');
+            if ($basketId = $requestJson->get('basket_id')) {
+                $basket = $this->getDoctrine()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($basketId);
+                if (empty($basket)) {
+                    throw new ApiException(
+                        'Basket Not found',
+                        404,
+                        array(
+                            'error' => 'Basket Not found',
+                            'description' => $this->container->get('translator')->trans('api.orders.basket_does_not_exists')
+                        )
+                    );
+                }
+                $place = $basket->getPlaceId();
+            }
+            // uncomment after new APP release
+//            else {
+//                throw new ApiException(
+//                    'Update APP',
+//                    404,
+//                    array(
+//                        'error' => 'Update APP',
+//                        'description' => $this->get('translator')->trans('api.orders.update_app')
+//                    )
+//                );
+//            }
+
+            if (!empty($code)) {
+                $coupon = $orderService->getCouponByCode($code);
+                if (empty($coupon)) {
+                    throw new ApiException(
+                        'Coupon Not found',
+                        404,
+                        array(
+                            'error' => 'Coupon Not found',
+                            'description' => $this->container->get('translator')->trans('api.orders.coupon_does_not_exists')
+                        )
+                    );
+                }
+                if (!$coupon->isAllowedForApi()) {
+                    throw new ApiException(
+                        'Coupon for web',
+                        404,
+                        array(
+                            'error' => 'Coupon for web',
+                            'description' => $this->container->get('translator')->trans('general.coupon.only_web')
+                        )
+                    );
+                }
+                if ($place) {
+                    if (!$orderService->validateCouponForPlace($coupon, $place)
+                        || $coupon->getOnlyNav() && !$place->getNavision()
+                        || $coupon->getNoSelfDelivery() && $place->getSelfDelivery()) {
+                        throw new ApiException(
+                            'Coupon Wrong Place',
+                            404,
+                            array(
+                                'error' => 'Coupon Wrong Place',
+                                'description' => $this->get('translator')->trans('general.coupon.wrong_place')
+                            )
+                        );
+                    }
+                }
+                // online payment coupons disallowed in app until online payments will be made
+                if ($coupon->getOnlinePaymentsOnly()) {
+                    throw new ApiException(
+                        'Coupon Online Payments Only',
+                        404,
+                        array(
+                            'error' => 'Coupon Online Payments Only',
+                            'description' => $this->get('translator')->trans('general.coupon.only_web')
+                        )
+                    );
+                }
+                // Coupon is still valid Begin
+                if ($coupon->getEnableValidateDate()) {
+                    if ($coupon->getValidFrom()->format('Y-m-d H:i:s') > $now) {
+                        throw new ApiException(
+                            'Coupon Not Valid Yet',
+                            404,
+                            array(
+                                'error' => 'Coupon Not Valid Yet',
+                                'description' => $this->get('translator')->trans('api.orders.coupon_too_early')
+                            )
+                        );
+                    }
+                    if ($coupon->getValidTo()->format('Y-m-d H:i:s') < $now) {
+                        throw new ApiException(
+                            'Coupon Expired',
+                            404,
+                            array(
+                                'error' => 'Coupon Expired',
+                                'description' => $this->get('translator')->trans('api.orders.coupon_expired')
+                            )
+                        );
+                    }
+                }
+                // Coupon is still valid End
+
+                if ($coupon->getValidHourlyFrom() && $coupon->getValidHourlyFrom() > new \DateTime()) {
+                    throw new ApiException(
+                        'Coupon Not Valid Yet',
+                        404,
+                        array(
+                            'error' => 'Coupon Not Valid Yet',
+                            'description' => $this->get('translator')->trans('api.orders.coupon_too_early')
+                        )
+                    );
+                }
+                if ($coupon->getValidHourlyTo() && $coupon->getValidHourlyTo() < new \DateTime()) {
+                    throw new ApiException(
+                        'Coupon Expired',
+                        404,
+                        array(
+                            'error' => 'Coupon Expired',
+                            'description' => $this->get('translator')->trans('api.orders.coupon_expired')
+                        )
+                    );
+                }
+
+                $arr_places = array();
+                $places = $coupon->getPlaces();
+                if (!empty($places) && count($places) > 0) {
+                    foreach ($places as $place) {
+                        $arr_places[$place->getId()] = $place->getName();
+                    }
+                }
+
+                $response = [
+                    'id' => $coupon->getId(),
+                    'name' => $coupon->getName(),
+                    'code' => $coupon->getCode(),
+                    'discount' => $coupon->getDiscount(),
+                    'discount_sum' => $coupon->getDiscountSum() * 100,
+                    'free_delivery' => $coupon->getFreeDelivery(),
+                    'single_use' => $coupon->getSingleUse(),
+                    'no_self_delivery' => $coupon->getNoSelfDelivery(), // Only for non self delivery restaurants
+                    'enable_validate_date' => $coupon->getEnableValidateDate(),
+                    'valid_from' => ($coupon->getValidFrom() != null ? $coupon->getValidFrom()->format('Y-m-d H:i:s') : null),
+                    'valid_to' => ($coupon->getValidTo() != null ? $coupon->getValidTo()->format('Y-m-d H:i:s') : null),
+                    'places' => $arr_places,
+                ];
+            } else {
+                throw new ApiException(
+                    'Coupon Code Is Empty',
+                    404,
+                    array(
+                        'error' => 'Coupon Code Is Empty',
+                        'description' => $this->get('translator')->trans('api.orders.coupon_empty')
+                    )
+                );
+            }
+        }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:getOrderStatusAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrderStatusAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Orders:getOrderStatusAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrderStatusAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                ['error' => $this->get('translator')->trans('general.error_happened')],
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Orders:getOrderStatusAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        return new JsonResponse($response);
+    }
+
+    /**
+     * For debuging purpose only - log request data and action name for easy debug
+     *
+     * @param string $action
+     * @param array|Request $params
+     */
+    protected function logActionParams($action, $params)
+    {
+        $logger = $this->get('logger');
+
+        if ($params instanceof Request) {
+            $params = $params->request->all();
+        }
+
+        $logger->alert('=============================== '.$action.' =====================================');
+        $logger->alert('Request params:');
+        $logger->alert(var_export($params, true));
+        $logger->alert('=========================================================');
+    }
+
+    public function orderChangeStatusAction($hash, $status, Request $request)
+    {
+        $return = ['success' => false, 'message' => ''];
+        if ($request->isMethod('post')) {
+            $startTime = microtime(true);
+            $this->get('logger')->alert('Orders:orderChangeStatusAction Request: hash - ' . $hash, (array)$request);
+
+            try {
+
+                $status = str_replace("-", "_", $status);
+
+                $order = $this->get('food.order')->getOrderByHash($hash);
+
+                $orderService = $this->container->get('food.order');
+                $orderService->setOrder($order);
+                if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $status) && !in_array($status, ['picked'])) {
+
+                    switch ($status) {
+                        case "canceled":
+                            $return['success'] = true;
+                            $orderService->statusCanceled('restaurant_api');
+                            break;
+                        case "accepted":
+                            $orderService->statusAccepted('restaurant_api');
+                            $return['success'] = true;
+                            break;
+                        case "finished":
+                            $orderService->statusFinished('restaurant_api');
+                            $return['success'] = true;
+                            break;
+                        case "completed":
+                            $orderService->statusCompleted('restaurant_api');
+                            $return['success'] = true;
+                            break;
+                        case "picked":
+                            $orderService->getOrder()->setOrderPicked(true);
+                            $return['success'] = true;
+                            break;
+                        case "delayed":
+                            $orderService->statusDelayed('restaurant_api', 'delay reason: ' . $request->get('reason'));
+                            $orderService->getOrder()->setDelayed(true);
+                            if (!empty($request)) {
+                                $orderService->getOrder()->setDelayReason($request->get('reason'));
+                                $orderService->getOrder()->setDelayDuration($request->get('duration'));
+                            }
+                            $orderService->saveDelay();
+                            $return['success'] = true;
+                            break;
+                        case "canceled_produced":
+                            $orderService->statusCanceled_produced("restaurant_api");
+                            $return['success'] = true;
+                            break;
+                        default:
+                            $return['message'] = $status.' was not found';
+                            break;
+                    }
+                }
+
+                $orderService->saveOrder();
+
+
+            } catch (ApiException $e) {
+                $this->get('logger')->error('Orders:orderChangeStatusAction Error1:' . $e->getMessage());
+                $this->get('logger')->error('Orders:orderChangeStatusAction Trace1:' . $e->getTraceAsString());
+                $return['message'] = $e->getMessage();
+            } catch (\Exception $e) {
+                $this->get('logger')->error('Orders:orderChangeStatusAction Error2:' . $e->getMessage());
+                $this->get('logger')->error('Orders:orderChangeStatusAction Trace2:' . $e->getTraceAsString());
+                $return['message'] = $e->getMessage();
+            }
+
+            $this->get('logger')->alert('Orders:changeOrderStatusByHashAction Response:' . print_r($return, true));
+            $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+
+        } else {
+            $return['message'] = 'Wrong request method';
+        }
+
+        $realResponse = new JsonResponse($return);
+        $responseHeaders = $realResponse->headers;
+        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
+        $responseHeaders->set('Access-Control-Allow-Origin', '*');
+        $responseHeaders->set('Access-Control-Allow-Methods', 'POST');
+
+    }
+
+    public function orderSetDiscountAction($hash, Request $request)
+    {
+        $return = ['success' => false, 'message' => ''];
+        if ($request->isMethod('post')) {
+            $startTime = microtime(true);
+            $this->get('logger')->alert('Orders:orderSetDiscountAction Request: hash - ' . $hash, (array)$request);
+
+            $code = $request->get("code");
+
+            try {
+
+                $order = $this->get('food.order')->getOrderByHash($hash);
+
+                if(!empty($order->getPlace()->getCouponURL())) {
+
+                    $orderService = $this->container->get('food.order');
+                    $orderService->setOrder($order);
+
+                    $orderService->
+
+                    $orderService->saveOrder();
+                } else {
+                    // kuponas neturi i kur perduoti duomenu kad pasitikrinti
+                }
+
+
+            } catch (ApiException $e) {
+                $this->get('logger')->error('Orders:orderSetDiscountAction Error1:' . $e->getMessage());
+                $this->get('logger')->error('Orders:orderSetDiscountAction Trace1:' . $e->getTraceAsString());
+                $return['message'] = $e->getMessage();
+            } catch (\Exception $e) {
+                $this->get('logger')->error('Orders:orderSetDiscountAction Error2:' . $e->getMessage());
+                $this->get('logger')->error('Orders:orderSetDiscountAction Trace2:' . $e->getTraceAsString());
+                $return['message'] = $e->getMessage();
+            }
+
+            $this->get('logger')->alert('Orders:orderSetDiscountAction Response:' . print_r($return, true));
+            $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+
+        } else {
+            $return['message'] = 'Wrong request method';
+        }
+
+        $realResponse = new JsonResponse($return);
+        $responseHeaders = $realResponse->headers;
+        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
+        $responseHeaders->set('Access-Control-Allow-Origin', '*');
+        $responseHeaders->set('Access-Control-Allow-Methods', 'POST');
+    }
+}

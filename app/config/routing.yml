@@ -1,3 +1,11 @@
+api_base:
+    resource: "@ApiBaseBundle/Resources/config/routing.yml"
+    prefix:   /
+
+api_v2:
+    resource: "@ApiV2Bundle/Resources/config/routing.yml"
+    prefix:   /api/v2/
+
 food_monitoring:
     resource: "@FoodMonitoringBundle/Resources/config/routing.yml"
     prefix:   /

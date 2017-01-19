@@ -193,6 +193,12 @@ class PlacePoint
 
     /**
      * @var string
+     * @ORM\Column(name="sync_url", type="string",  nullable=true)
+     */
+    private $syncUrl;
+
+    /**
+     * @var string
      * @ORM\Column
      */
     private $wd1;
@@ -1132,6 +1138,27 @@ class PlacePoint
     {
         $this->work_times->removeElement($workTime);
     }
+
+    /**
+     * @return string
+     */
+    public function getSyncUrl()
+    {
+        return $this->syncUrl;
+    }
+
+    /**
+     * @param string $syncUrl
+     * @return PlacePoint
+     */
+    public function setSyncUrl($syncUrl)
+    {
+        $this->syncUrl = $syncUrl;
+
+        return $this;
+    }
+
+
 
     /**
      * @return string
