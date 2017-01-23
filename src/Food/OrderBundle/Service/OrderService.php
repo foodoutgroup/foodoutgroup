@@ -3729,18 +3729,20 @@ class OrderService extends ContainerAware
             )
             ;
             if (!$data['valid']) {
-                $formHasErrors = true;
                 if ($data['errcode']['code'] == "2" || $data['errcode']['code'] == "3") {
                     $formErrors[] = [
                         'message' => 'order.form.errors.problems_with_dish',
                         'text'    => $data['errcode']['problem_dish']
                     ];
+                    $formHasErrors = true;
                 } elseif ($data['errcode']['code'] == 8) {
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_work';
+                    $formHasErrors = true;
                 } elseif ($data['errcode']['code'] == 6) {
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_setted';
-                } elseif ($data['errcode']['code'] == 255) {
                     $formHasErrors = true;
+                } elseif ($data['errcode']['code'] == 255) {
+                    //~ $formHasErrors = true;
                     // $formErrors[] = 'order.form.errors.nav_empty_cart';
                 }
             }
