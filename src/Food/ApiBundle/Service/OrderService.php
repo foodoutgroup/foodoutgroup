@@ -645,11 +645,11 @@ class OrderService extends ContainerAware
         if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $this->formToEntityStatus($status))) {
             switch($status) {
                 case 'confirm':
-                    $orderService->statusAccepted('restourant_mobile');
+                    $orderService->statusAccepted('restourant_ng');
                     break;
 
                 case 'delay':
-                    $orderService->statusDelayed('restourant_mobile', 'delay reason: '.$request->get('delay_reason'));
+                    $orderService->statusDelayed('restourant_ng', 'delay reason: '.$request->get('delay_reason'));
                     $orderService->getOrder()->setDelayed(true);
                     if (!empty($request)) {
                         $orderService->getOrder()->setDelayReason($request->get('delay_reason'));
@@ -659,15 +659,15 @@ class OrderService extends ContainerAware
                     break;
 
                 case 'cancel':
-                    $orderService->statusCanceled('restourant_mobile');
+                    $orderService->statusCanceled('restourant_ng');
                     break;
 
                 case 'finish':
-                    $orderService->statusFinished('restourant_mobile');
+                    $orderService->statusFinished('restourant_ng');
                     break;
 
                 case 'completed':
-                    $orderService->statusCompleted('restourant_mobile');
+                    $orderService->statusCompleted('restourant_ng');
                     break;
             }
 
