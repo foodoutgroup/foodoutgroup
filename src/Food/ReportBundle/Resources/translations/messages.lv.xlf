@@ -298,6 +298,10 @@
                 <source>custom_report_type</source>
                 <target>For administration</target>
             </trans-unit>
+            <trans-unit id="admin.report.turnover">
+                <source>admin.report.turnover</source>
+                <target>Apgrozījums</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

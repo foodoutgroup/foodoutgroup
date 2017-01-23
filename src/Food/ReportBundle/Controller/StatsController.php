@@ -17,6 +17,7 @@ class StatsController extends Controller
             $orderCountGraph = $reportService->prepareOrderCountByDayGraph($dateFrom, $dateTo);
             $avgBasketGraph = $reportService->prepareAvgBasketByDayGraph($dateFrom, $dateTo);
             $smsCountGraph = $reportService->prepareSmsCountByDayGraph($dateFrom, $dateTo);
+            $turnoverGraph = $reportService->prepareTurnoverGraph($dateFrom, $dateTo);
 
             return $this->render(
                 'FoodReportBundle:Report:dasboard_stats.html.twig',
@@ -24,6 +25,7 @@ class StatsController extends Controller
                     'orderCountGraph' => $orderCountGraph,
                     'avgBasketGraph' => $avgBasketGraph,
                     'smsCountGraph' => $smsCountGraph,
+                    'turnoverGraph' => $turnoverGraph,
                 )
             );
         }

@@ -289,4 +289,68 @@ class ReportService extends ContainerAware
 
         return $formatedDriverData;
     }
+    /**
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     * @return Highchart
+     * @throws \InvalidArgumentException
+     */
+    public function prepareTurnoverGraph($dateFrom, $dateTo)
+    {
+        if (empty($dateFrom) || empty($dateTo)) {
+            throw new \InvalidArgumentException('You must specify dates from and to in order to get graph');
+        }
+
+        $translator = $this->container->get('translator');
+        $orderRepo = $this->getDoctrine()->getRepository('FoodOrderBundle:Order');
+
+        $totalData = $orderRepo->getTotalSumByDay($dateFrom, $dateTo);
+        $deliveryData = $orderRepo->getDeliverySumByDay($dateFrom, $dateTo);
+        $discountData = $orderRepo->getDiscountSumByDay($dateFrom, $dateTo);
+
+        $totalGraphData = $this->fillEmptyDays(
+            $this->remapDataForGraph($totalData, 'report_day', 'order_count'),
+            $dateFrom,
+            $dateTo
+        );
+        $deliveryGraphData = $this->fillEmptyDays(
+            $this->remapDataForGraph($deliveryData, 'report_day', 'order_count'),
+            $dateFrom,
+            $dateTo
+        );
+
+        $discountGraphData = $this->fillEmptyDays(
+            $this->remapDataForGraph($discountData, 'report_day', 'order_count'),
+            $dateFrom,
+            $dateTo
+        );
+
+        $series = array(
+            array(
+                "name" => $translator->trans('admin.report.total_sum_with_vat'),
+                "data" => array_values($totalGraphData),
+                'type' => 'spline',
+            ),
+            array(
+                "name" => $translator->trans('admin.report.delivery_sum'),
+                "data" => array_values($deliveryGraphData),
+                'type' => 'spline',
+            ),
+            array(
+                'name' => $translator->trans('admin.report.discount_sum'),
+                'data' => array_values($discountGraphData),
+                'type' => 'spline'
+            )
+        );
+
+        $ob = new Highchart();
+        $ob->chart->renderTo('turnover_chart');
+        $ob->title->text($translator->trans('admin.report.turnover'));
+        $ob->yAxis->title(array('text'  => $translator->trans('admin.report.amount')));
+        $ob->yAxis->floor(0);
+        $ob->xAxis->categories(array_keys($totalGraphData));
+        $ob->series($series);
+
+        return $ob;
+    }
 }
