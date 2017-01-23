@@ -23,7 +23,7 @@ class RestaurantController extends Controller
                 $dishCollection = [];
                 $dishCollection['name'] = $dish->getName();
                 $dishCollection['description'] = $dish->getDescription();
-                $dishCollection['image'] = $dish->getImageSetted();
+                $dishCollection['image'] = 'http://'.$this->container->getParameter('cloudfront_url').'/'.$dish->getWebPathThumb('type3');
 
                 $sizeCollection = [];
                 foreach ($dish->getSizes() as $size) {
@@ -83,7 +83,12 @@ class RestaurantController extends Controller
         } catch (ApiException $e) {
             $return['message'] = $e->getMessage();
         }
-        return new JsonResponse($return);
+//        $xml_data = new \SimpleXMLElement('<?xml version="1.0"?\>//<data></data>');
+//        $this->array_to_xml($return, $xml_data);
+//        header("Content-type: text/xml");
+//        echo $xml_data->asXML();
+//        die;
+        return  new JsonResponse($return);
     }
 
     public function loyaltyAction($placeHash, Request $request){
@@ -105,6 +110,21 @@ class RestaurantController extends Controller
         }
 
         return new JsonResponse($return);
+    }
+
+
+    function array_to_xml( $data, &$xml_data ) {
+        foreach( $data as $key => $value ) {
+            if( is_numeric($key) ){
+                $key = 'item'; //dealing with <0/>..<n/> issues
+            }
+            if( is_array($value) ) {
+                $subnode = $xml_data->addChild($key);
+                $this->array_to_xml($value, $subnode);
+            } else {
+                $xml_data->addChild("$key",htmlspecialchars("$value"));
+            }
+        }
     }
 
 }
