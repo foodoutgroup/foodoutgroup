@@ -1679,7 +1679,6 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
     padding-top: 7px;
     width: 65%;
     overflow-x: hidden;
-    white-space: nowrap;
     font-size: 11px;
 }
 .check-item .extra.sum {
@@ -2405,10 +2404,10 @@ div.coupon_form_popup {
     padding-left: 0px;
 }
 .check-item .extra {
-    width: 45%;
+    width: 70%;
 }
 .check-item .extra.sum{
-    width: 55%;
+    width: 30%;
 }
 .check-item .extra.sum .euro {
     font-size: 10px;
