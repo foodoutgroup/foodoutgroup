@@ -179,6 +179,10 @@
                 <source>admin.report.discount_sum</source>
                 <target>Nuolaidos suma</target>
             </trans-unit>
+            <trans-unit id="admin.report.turnover">
+                <source>admin.report.turnover</source>
+                <target>Apyvarta</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
