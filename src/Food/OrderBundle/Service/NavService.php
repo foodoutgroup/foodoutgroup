@@ -330,10 +330,10 @@ class NavService extends ContainerAware
 
     public function putTheOrderToTheNAV(Order $order)
     {
-        $dbgEmail = date("Y-m-d H:i:s") . "\n\n\n" . print_r($_SERVER, true) . "\n\n\n" . print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 0), true);
-        $logger = $this->getContainer()->get('logger');
-        $logger->alert("putTheOrderToTheNAV backtrace #" . $order->getId());
-        $logger->alert($dbgEmail);
+        //~ $dbgEmail = date("Y-m-d H:i:s") . "\n\n\n" . print_r($_SERVER, true) . "\n\n\n" . print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 0), true);
+        //~ $logger = $this->getContainer()->get('logger');
+        //~ $logger->alert("putTheOrderToTheNAV backtrace #" . $order->getId());
+        //~ $logger->alert($dbgEmail);
 
         $orderNewId = $this->getNavOrderId($order);
 
@@ -433,6 +433,8 @@ class NavService extends ContainerAware
         $logger->alert($query);
         $sqlSS = $this->initSqlConn()->query($query);
 
+        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_QUERY', $query);
+
         $this->_processLines($order, $orderNewId);
     }
 
@@ -482,8 +484,9 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#PREPAID');
-        $this->getContainer()->get('logger')->alert($query);
+        //~ $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#PREPAID');
+        //~ $this->getContainer()->get('logger')->alert($query);
+        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_PAYED_QUERY', $query);
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
@@ -519,14 +522,16 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#DELIVERY');
-        $this->getContainer()->get('logger')->alert($query);
+        //~ $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#DELIVERY');
+        //~ $this->getContainer()->get('logger')->alert($query);
+        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_DELIVERY_QUERY', $query);
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
     private function _processLine(OrderDetails $detail, $orderNewId, $key, $discountSum, &$discountSumLeft)
     {
         $this->container->get('doctrine')->getManager()->refresh($detail);
+        $order = $detail->getOrderId();
 
         //~ $desc = $detail->getDishName();
         //~ $unitDesc = $detail->getDishUnitName();
@@ -649,9 +654,10 @@ class NavService extends ContainerAware
         ];
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#' . $key);
-        $this->getContainer()->get('logger')->alert($query);
+        //~ $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#' . $key);
+        //~ $this->getContainer()->get('logger')->alert($query);
 
+        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_QUERY', $query);
         $sqlSS = $this->initSqlConn()->query($query);
 
         $okeyCounter = $key;
@@ -680,8 +686,9 @@ class NavService extends ContainerAware
                 ];
                 $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
                 $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-                $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query SUBQ]#' . $key . "-" . $okey);
-                $this->getContainer()->get('logger')->alert($query);
+                //~ $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query SUBQ]#' . $key . "-" . $okey);
+                //~ $this->getContainer()->get('logger')->alert($query);
+                $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_OPTIONS_QUERY', $query);
                 $sqlSS = $this->initSqlConn()->query($query);
             }
         }
