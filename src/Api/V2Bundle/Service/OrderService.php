@@ -549,11 +549,11 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $this->formToEntityStatus($status))) {
             switch($status) {
                 case 'confirm':
-                    $orderService->statusAccepted('restourant_mobile');
+                    $orderService->statusAccepted('api_v2');
                     break;
 
                 case 'delay':
-                    $orderService->statusDelayed('restourant_mobile', 'delay reason: '.$request->get('reason'));
+                    $orderService->statusDelayed('api_v2', 'delay reason: '.$request->get('reason'));
                     $orderService->getOrder()->setDelayed(true);
 
                     $reason = $request->get('reason');
@@ -574,16 +574,16 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                     }
                     $orderService->getOrder()->setDelayReason($reason);
 
-                    $orderService->statusCanceled('restourant_mobile');
+                    $orderService->statusCanceled('api_v2');
 
                     break;
 
                 case 'finish':
-                    $orderService->statusFinished('restourant_mobile');
+                    $orderService->statusFinished('api_v2');
                     break;
 
                 case 'completed':
-                    $orderService->statusCompleted('restourant_mobile');
+                    $orderService->statusCompleted('api_v2');
                     break;
                 default:
                     throw  new ApiException('status not found');
