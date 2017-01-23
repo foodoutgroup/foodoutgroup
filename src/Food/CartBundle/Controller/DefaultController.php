@@ -839,6 +839,19 @@ class DefaultController extends Controller
     }
 
     /**
+     * TODO dabar routas cart/success, bet renaminant kart i kasikelis, reiks ir sita parenamint i kasikelis/apmoketas
+     */
+    public function reverseAction($orderHash)
+    {
+        $order = $this->get('food.order')->getOrderByHash($orderHash);
+
+        return $this->render(
+            'FoodCartBundle:Default:reverse.html.twig',
+            ['order' => $order]
+        );
+    }
+
+    /**
      * TODO dabar routas cart/wait, bet renaminant kart i kasikelis, reiks ir sita parenamint i kasikelis/laukiama
      */
     public function waitAction($orderHash)
