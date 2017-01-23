@@ -68,9 +68,6 @@ class BestOfferRepository extends EntityRepository
             $params['city_filter'] = '%'.$city.'%';
         }
 
-//        var_dump($params);
-//        die;
-
         return $qb->setParameters($params)
             ->getQuery()
             ->getResult();
