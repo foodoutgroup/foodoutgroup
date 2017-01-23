@@ -429,11 +429,11 @@ class NavService extends ContainerAware
         ];
         $queryPart = $this->generateQueryPart($dataToPut);
         $query = 'INSERT INTO ' . $this->getHeaderTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        $logger->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#HEADER');
-        $logger->alert($query);
+        //~ $logger->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#HEADER');
+        //~ $logger->alert($query);
+        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_QUERY', null, $query);
         $sqlSS = $this->initSqlConn()->query($query);
 
-        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_QUERY', $query);
 
         $this->_processLines($order, $orderNewId);
     }
@@ -486,7 +486,7 @@ class NavService extends ContainerAware
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
         //~ $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#PREPAID');
         //~ $this->getContainer()->get('logger')->alert($query);
-        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_PAYED_QUERY', $query);
+        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_PAYED_QUERY', null, $query);
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
@@ -524,7 +524,7 @@ class NavService extends ContainerAware
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
         //~ $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#DELIVERY');
         //~ $this->getContainer()->get('logger')->alert($query);
-        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_DELIVERY_QUERY', $query);
+        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_DELIVERY_QUERY', null, $query);
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
@@ -657,7 +657,7 @@ class NavService extends ContainerAware
         //~ $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#' . $key);
         //~ $this->getContainer()->get('logger')->alert($query);
 
-        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_QUERY', $query);
+        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_QUERY', null, $query);
         $sqlSS = $this->initSqlConn()->query($query);
 
         $okeyCounter = $key;
@@ -688,7 +688,7 @@ class NavService extends ContainerAware
                 $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
                 //~ $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query SUBQ]#' . $key . "-" . $okey);
                 //~ $this->getContainer()->get('logger')->alert($query);
-                $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_OPTIONS_QUERY', $query);
+                $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_OPTIONS_QUERY', null, $query);
                 $sqlSS = $this->initSqlConn()->query($query);
             }
         }
