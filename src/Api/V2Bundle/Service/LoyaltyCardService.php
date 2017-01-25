@@ -19,9 +19,31 @@ class LoyaltyCardService extends ContainerAware
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS,  http_build_query(['code' => $code, 'type' => $type]));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            $server_output = curl_exec($ch);
+            $body = trim(curl_exec($ch));
 
-            $jr = json_decode($server_output, true);
+            if($body[0] == "<") {
+                $xml = simplexml_load_string($body, "SimpleXMLElement", LIBXML_NOCDATA);
+                $json = json_encode($xml);
+                $array = json_decode($json, true);
+
+                $itemFinal = [];
+                foreach ($array['items'] as $item) {
+                    $additionalFinal = [];
+                    if(isset($item['additional'])) {
+                        foreach ($item['additional'] as $additional) {
+                            $additionalFinal[] = $additional;
+                        }
+                    }
+                    $item['additional'] = $additionalFinal;
+                    $itemFinal[] = $item;
+
+                }
+                $array['items'] = $itemFinal;
+                $body = json_encode($array, true);
+            }
+
+
+            $jr = json_decode($body, true);
 
             if(is_array($jr) && isset($jr['success']) && (bool) $jr['success']) {
 

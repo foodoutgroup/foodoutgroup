@@ -3,6 +3,7 @@
 namespace Api\V2Bundle\Controller;
 
 use Api\BaseBundle\Exceptions\ApiException;
+use Api\BaseBundle\Helper\ResponseInterpreter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,6 +12,7 @@ class RestaurantController extends Controller
 {
 
     public function getMenuAction($placeHash, Request $request){
+
 
         try {
             $ps = $this->get('api.v2.place');
@@ -59,7 +61,7 @@ class RestaurantController extends Controller
             $return['message'] = $e->getMessage();
         }
 
-        return  new JsonResponse($return);
+        return new ResponseInterpreter($request, $return);
 
     }
 
@@ -83,12 +85,8 @@ class RestaurantController extends Controller
         } catch (ApiException $e) {
             $return['message'] = $e->getMessage();
         }
-//        $xml_data = new \SimpleXMLElement('<?xml version="1.0"?\>//<data></data>');
-//        $this->array_to_xml($return, $xml_data);
-//        header("Content-type: text/xml");
-//        echo $xml_data->asXML();
-//        die;
-        return  new JsonResponse($return);
+
+        return new ResponseInterpreter($request, $return);
     }
 
     public function loyaltyAction($placeHash, Request $request){
@@ -109,22 +107,8 @@ class RestaurantController extends Controller
             $return['message'] = $e->getMessage();
         }
 
-        return new JsonResponse($return);
+        return new ResponseInterpreter($request, $return);
     }
 
-
-    function array_to_xml( $data, &$xml_data ) {
-        foreach( $data as $key => $value ) {
-            if( is_numeric($key) ){
-                $key = 'item'; //dealing with <0/>..<n/> issues
-            }
-            if( is_array($value) ) {
-                $subnode = $xml_data->addChild($key);
-                $this->array_to_xml($value, $subnode);
-            } else {
-                $xml_data->addChild("$key",htmlspecialchars("$value"));
-            }
-        }
-    }
 
 }

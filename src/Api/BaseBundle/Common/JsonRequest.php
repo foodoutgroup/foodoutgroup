@@ -10,6 +10,30 @@ class JsonRequest
     public function __construct(Request $request)
     {
         $body = $request->getContent();
+
+        if($body[0] == "<") {
+            $xml = simplexml_load_string($body, "SimpleXMLElement", LIBXML_NOCDATA);
+            $json = json_encode($xml);
+            $array = json_decode($json, true);
+
+            $itemFinal = [];
+            foreach ($array['items'] as $item) {
+                $additionalFinal = [];
+                if(isset($item['additional'])) {
+                    foreach ($item['additional'] as $additional) {
+                        $additionalFinal[] = $additional;
+                    }
+                }
+                $item['additional'] = $additionalFinal;
+                $itemFinal[] = $item;
+
+            }
+            $array['items'] = $itemFinal;
+            $body = json_encode($array, true);
+        }
+
+
+
         if (!empty($body)) {
             $this->requestParams = json_decode($body, true);
         } else {
