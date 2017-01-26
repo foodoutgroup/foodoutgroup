@@ -3,6 +3,7 @@
 namespace Api\V2Bundle\Controller;
 
 use Api\BaseBundle\Common\JsonRequest;
+use Api\BaseBundle\Helper\ResponseInterpreter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,14 +37,13 @@ class OrderController extends Controller
         $this->get('logger')->alert('Orders:getOrderDetailsByHashAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        return new JsonResponse($response);
+        return new ResponseInterpreter($request, $response);
     }
 
     public function createAction($hash, Request $request){
 
         $return = ['success' => false];
         try {
-
             $requestJson = new JsonRequest($request);
             $place = $this->get('api.v2.place')->getPlaceByHash($hash);
             $return['hash'] = $this->get('api.v2.order')->createOrderFromRequest($place, $requestJson);
@@ -53,7 +53,7 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             $return['message'] = "System: ".$e->getMessage().' '. $e->getLine().' - '. $e->getFile();
         }
-        return new JsonResponse($return);
+        return new ResponseInterpreter($request, $return);
 
     }
 
@@ -134,7 +134,7 @@ class OrderController extends Controller
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
 
-        return new JsonResponse($return);
+        return new ResponseInterpreter($request, $return);
     }
 
     public function getStatusAction($hash, Request $request){
@@ -167,7 +167,7 @@ class OrderController extends Controller
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
 
-        return new JsonResponse($return);
+        return new ResponseInterpreter($request, $return);
 
     }
 

@@ -197,6 +197,12 @@ class PlacePoint
      */
     private $syncUrl;
 
+//    /**
+//     * @var string
+//     * @ORM\Column(name="sync_format", type="string",  nullable=true)
+//     */
+//    private $syncFormat;
+
     /**
      * @var string
      * @ORM\Column
@@ -1157,6 +1163,25 @@ class PlacePoint
 
         return $this;
     }
+
+//    /**
+//     * @return string
+//     */
+//    public function getSyncFormat()
+//    {
+//        return $this->syncFormat;
+//    }
+//
+//    /**
+//     * @param string $syncFormat
+//     * @return PlacePoint
+//     */
+//    public function setSyncFormat($syncFormat)
+//    {
+//        $this->syncFormat = $syncFormat;
+//
+//        return $this;
+//    }
 
 
 

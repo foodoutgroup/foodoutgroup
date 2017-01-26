@@ -676,6 +676,10 @@
                 <source>admin.point.sync_url</source>
                 <target>HTTP adresas siųsti užsakymams</target>
             </trans-unit>
+            <trans-unit id="admin.point.sync_format">
+                <source>admin.point.sync_format</source>
+                <target>Siunčiamų užsakymų formatas</target>
+            </trans-unit>
             <!-- Place reviews -->
             <trans-unit id="place-reviews-list">
                 <source>Place Reviews List</source>
