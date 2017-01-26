@@ -42,6 +42,7 @@ class RestaurantController extends Controller
                     $additionalCollection[] = [
                         'code' => $option->getCode(),
                         'name' => $option->getName(),
+                        'price' => $option->getPrice(),
                     ];
                 }
                 $dishCollection['additional'] = $additionalCollection;
