@@ -23,6 +23,7 @@ class RestaurantController extends Controller
             $collection = [];
             foreach ($place->getDishes() as $dish) {
                 $dishCollection = [];
+                $dishCollection['id'] = $dish->getId();
                 $dishCollection['name'] = $dish->getName();
                 $dishCollection['description'] = $dish->getDescription();
                 $dishCollection['image'] = 'http://'.$this->container->getParameter('cloudfront_url').'/'.$dish->getWebPathThumb('type3');
