@@ -813,7 +813,7 @@ class NavService extends ContainerAware
         // main variable that holds parameters for a Soap call
         $params = ['InvoiceNo'         => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
                    'OrderID'           => $o->getId()->val('0'),
-                   'OrderDate'         => $o->getOrderDate()->format('Y.m.d')->val('1754-01-01'),
+                   'OrderDate'         => $o->getDeliveryTime()->format('Y.m.d')->val('1754-01-01'),
                    'RestaurantID'      => $o->getPlace()->getId()->val('0'),
                    'RestaurantName'    => $o->getPlaceName()->val(''),
                    'DriverID'          => $driverId,
