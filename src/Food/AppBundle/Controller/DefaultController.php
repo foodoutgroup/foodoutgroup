@@ -197,9 +197,15 @@ class DefaultController extends Controller
 
     public function listBestOffersAction()
     {
+        $location = $this->get('food.location')->getLocationFromSession();
+        $city = null;
+        if (!empty($location['city'])) {
+            $city = $location['city'];
+        }
+
         $bestOfferViewOptions = array(
             'hideAllOffersLink' => true,
-            'best_offers' => $this->getDoctrine()->getRepository('FoodPlacesBundle:BestOffer')->getActiveOffers()
+            'best_offers' => $this->getDoctrine()->getRepository('FoodPlacesBundle:BestOffer')->getActiveOffers($city)
         );
 
         $options = array(

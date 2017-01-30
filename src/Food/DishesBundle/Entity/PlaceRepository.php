@@ -510,7 +510,7 @@ class PlaceRepository extends EntityRepository
     /**
      * @return Place[]
      */
-    public function getRecommendedForTitle($location = null)
+    public function getRecommendedForTitle($city = null)
     {
         $otherFilters = '';
         // 21:30 isjungiame alkoholiku rodyma :)
@@ -521,9 +521,9 @@ class PlaceRepository extends EntityRepository
 
         $join = '';
         $where = '';
-        if ($location && !empty($location['city'])) {
+        if ($city) {
             $join = ' INNER JOIN place_point pp ON pp.place = p.id ';
-            $where = ' AND pp.active = 1 AND pp.city = "'.$location['city'].'" AND pp.deleted_at IS NULL ';
+            $where = ' AND pp.active = 1 AND pp.city = "'.$city.'" AND pp.deleted_at IS NULL ';
         }
 
         $query = "SELECT p.id

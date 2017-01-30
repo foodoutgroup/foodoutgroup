@@ -173,7 +173,7 @@ class DefaultController extends Controller
         if (!empty($location['city'])) {
             $city = $location['city'];
         }
-        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getRecommendedForTitle($location);
+        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getRecommendedForTitle($city);
         return $this->render('FoodPlacesBundle:Default:recommended.html.twig', array('places' => $places, 'city' => $city));
     }
 
@@ -198,9 +198,14 @@ class DefaultController extends Controller
      */
     private function getBestOffers($amount)
     {
+        $location = $this->get('food.location')->getLocationFromSession();
+        $city = null;
+        if (!empty($location['city'])) {
+            $city = $location['city'];
+        }
         $items = $this->get('doctrine.orm.entity_manager')
                       ->getRepository('FoodPlacesBundle:BestOffer')
-                      ->getRandomBestOffers($amount);
+                      ->getRandomBestOffers($amount, $city);
 
         return $items;
     }
