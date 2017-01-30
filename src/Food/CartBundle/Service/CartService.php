@@ -405,10 +405,8 @@ class CartService {
     /**
      * @param \Food\CartBundle\Entity\Cart[] $cartItems
      * @return float|int
-     *
-     * TODO Pauliau, ar cia dar reikalingas place'as?
      */
-    public function getCartTotal($cartItems/*, $place*/)
+    public function getCartTotal($cartItems)
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {

@@ -1373,7 +1373,7 @@ class OrderService extends ContainerAware
      */
     public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null)
     {
-
+        // TODO Fix prices calculation
         $this->createOrder($place, $placePoint, false, $orderDate);
         $this->getOrder()->setDeliveryType(($selfDelivery ? 'pickup' : 'deliver'));
         $this->getOrder()->setLocale($locale);
@@ -1387,14 +1387,8 @@ class OrderService extends ContainerAware
         $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
         $enableDiscount = !$placeObject->getOnlyAlcohol();
-//        foreach ($itemCollection as $item) {
-//            if ($this->getCartService()->isAlcohol($item->getDishId())) {
-//                $enableDiscount = false;
-//                break;
-//            }
-//        }
 
-        // jei PRE ORDER
+        // PRE ORDER
         if (!empty($orderDate)) {
             $this->getOrder()->setOrderStatus(self::$status_preorder)->setPreorder(true);
         } else if (empty($orderDate) && $selfDelivery) {
@@ -1643,9 +1637,8 @@ class OrderService extends ContainerAware
                     $deliveryPrice = 0;
                 }
             }
+            $sumTotal += $deliveryPrice;
         }
-
-        $sumTotal += $deliveryPrice;
 
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
