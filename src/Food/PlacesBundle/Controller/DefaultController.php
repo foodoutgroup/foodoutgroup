@@ -168,8 +168,13 @@ class DefaultController extends Controller
 
     public function recommendedAction()
     {
-        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getRecommendedForTitle();
-        return $this->render('FoodPlacesBundle:Default:recommended.html.twig', array('places' => $places));
+        $location = $this->get('food.location')->getLocationFromSession();
+        $city = null;
+        if (!empty($location['city'])) {
+            $city = $location['city'];
+        }
+        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getRecommendedForTitle($location);
+        return $this->render('FoodPlacesBundle:Default:recommended.html.twig', array('places' => $places, 'city' => $city));
     }
 
     public function bestOffersAction()
