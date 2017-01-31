@@ -89,12 +89,6 @@
             </div>
         {% endfor %}
         <div class="check-bottom">
-            {% if applyDiscount %}
-                <div class="discount-sum clearfix">
-                    <div class="fl">{% trans %}cart.block.discount_sum{% endtrans %}:</div>
-                    <div class="fr">{{ currency_display|raw }}{{ discountSum|number_format(2, ',', ' ') }}</div>
-                </div>
-            {% endif %}
             <div class="total-sum cart clearfix">
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
                 <div class="fr"> {{ currency_display|raw }}{{ total_cart|number_format(2, ',', ' ') }}
@@ -116,13 +110,19 @@
                         </div>
                     {% endif %}
                 </div>
-                <div class="total-sum final clearfix">
-                    <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
-                    <div class="fr">{{ currency_display|raw }}{{ total_with_delivery|number_format(2, ',', ' ') }}
-                        {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(total_with_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>{% endif %}
-                    </div>
+            {% endif %}
+            {% if applyDiscount %}
+                <div class="discount-sum clearfix">
+                    <div class="fl">{% trans %}cart.block.discount_sum{% endtrans %}:</div>
+                    <div class="fr">{{ currency_display|raw }}{{ discountSum|number_format(2, ',', ' ') }}</div>
                 </div>
             {% endif %}
+            <div class="total-sum final clearfix">
+                <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
+                <div class="fr">{{ currency_display|raw }}{{ total_with_delivery|number_format(2, ',', ' ') }}
+                    {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(total_with_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>{% endif %}
+                </div>
+            </div>
         </div>
         {# Cart minimum sum #}
         {% if hide_delivery == false and ((discountInSum and total_cart + discountSum < cart_from_min) or (total_cart < cart_from_min)) and not noMinimumCart %}

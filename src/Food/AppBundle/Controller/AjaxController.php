@@ -232,6 +232,15 @@ class AjaxController extends Controller
         $coupon = $orderService->getCouponByCode($couponCode);
         $place = $this->container->get('food.places')->getPlace($placeId);
 
+        $enableDiscount = !$place->getOnlyAlcohol();
+        $list = $this->get('food.cart')->getCartDishes($place);
+        foreach ($list as $dish) {
+            if ($this->get('food.cart')->isAlcohol($dish->getDishId())) {
+                $enableDiscount = false;
+                break;
+            }
+        }
+
         if (!$coupon) {
             $cont['status'] = false;
             $cont['data']['error'] = $trans->trans('general.coupon.not_active');
@@ -243,6 +252,9 @@ class AjaxController extends Controller
             $cont['data']['error'] = $trans->trans(
                 'general.coupon.wrong_place'
             );
+        } else if (!$enableDiscount) {
+            $cont['status'] = false;
+            $cont['data']['error'] = $trans->trans('general.coupon.cannot_apply_for_alco');
         }
 
         // If everything is ok - do additional tests
