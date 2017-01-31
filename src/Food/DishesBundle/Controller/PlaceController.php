@@ -102,10 +102,21 @@ class PlaceController extends Controller
 
         $current_url = $request->getUri();
 
+        // only for LT and only for cili
+        $relatedPlace = null;
+        if ($this->container->getParameter('locale') == 'lt') {
+            if (in_array($place->getId(), [63, 85, 302, 333])) {
+                $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(142);
+            } elseif ($place->getId() == 142) {
+                $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(63);
+            }
+        }
+
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
             array(
                 'place' => $place,
+                'relatedPlace' => $relatedPlace,
                 'wasHere' => $wasHere,
                 'alreadyWrote' => $alreadyWrote,
                 'placeCategories' => $categoryList,

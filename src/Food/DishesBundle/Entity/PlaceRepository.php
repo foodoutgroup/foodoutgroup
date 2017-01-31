@@ -510,7 +510,7 @@ class PlaceRepository extends EntityRepository
     /**
      * @return Place[]
      */
-    public function getRecommendedForTitle()
+    public function getRecommendedForTitle($city = null)
     {
         $otherFilters = '';
         // 21:30 isjungiame alkoholiku rodyma :)
@@ -519,15 +519,26 @@ class PlaceRepository extends EntityRepository
             $otherFilters .= ' AND p.only_alcohol != 1';
         }
 
+        $join = '';
+        $where = '';
+        if ($city) {
+            $join = ' INNER JOIN place_point pp ON pp.place = p.id ';
+            $where = ' AND pp.active = 1 AND pp.city = "'.$city.'" AND pp.deleted_at IS NULL ';
+        }
+
         $query = "SELECT p.id
                 FROM place p
+                {$join}
                 WHERE
                     p.active = 1
-                    AND ((p.navision=1 AND p.recommended = 1) OR p.recommended = 1)
+                    AND p.recommended = 1
                     AND p.deleted_at IS NULL
                     {$otherFilters}
+                    {$where}
+                GROUP BY p.id
                 ORDER BY p.navision DESC, RAND()
                 LIMIT 5";
+
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $placesIds = $stmt->fetchAll();

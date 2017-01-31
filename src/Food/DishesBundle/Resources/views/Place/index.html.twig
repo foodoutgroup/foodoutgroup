@@ -169,17 +169,19 @@
                                     {% endif %}
 
                                     {% if site_country == 'LT' %}
-                                        {% if place.id == 63 %}
+                                        {% if place.id in [63, 85, 302, 333] %}
                                             {# Link to Cili Express #}
                                             <br />
                                             <a class="btn-walk" href="{{ path('food_cili_greita') }}">
                                                 <span><i class="icon-walk"></i><b>Eiti į Čili Take Away</b><i class="icon-arrow"></i></span>
+                                                <img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
                                             </a>
                                         {% elseif place.id == 142 %}
                                             {# Link to Cili #}
                                             <br />
-                                            <a class="btn-walk" href="{{ path('food_cili') }}">
+                                            <a class="btn-walk" href="{{ path('food_1822_cili') }}">
                                                 <span><i class="icon-walk"></i><b>Eiti į Čili Pica</b><i class="icon-arrow"></i></span>
+                                                <img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
                                             </a>
                                         {% endif %}
                                     {% endif %}

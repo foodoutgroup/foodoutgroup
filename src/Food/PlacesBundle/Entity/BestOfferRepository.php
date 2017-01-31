@@ -8,12 +8,17 @@ class BestOfferRepository extends EntityRepository
 {
     /**
      * @param int $amount
+     * @param string|null $city
      * @return BestOffer[]|array
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function getRandomBestOffers($amount)
+    public function getRandomBestOffers($amount, $city = null)
     {
-        $query = "SELECT id FROM best_offer WHERE active=1 ORDER BY RAND() LIMIT 5";
+        $where = '';
+        if ($city) {
+            $where = ' AND text LIKE "%'.$city.'%" ';
+        }
+        $query = "SELECT id FROM best_offer WHERE active=1 {$where} ORDER BY RAND() LIMIT 5";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $activeIds = array();
