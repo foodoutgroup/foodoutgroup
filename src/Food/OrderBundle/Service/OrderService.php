@@ -4138,7 +4138,9 @@ class OrderService extends ContainerAware
     {
         $this->codeGenerator($order);
 
-        $this->_freeDeliveryDiscount($order);
+        if($this->container->getParameter('free_delivery_discount_code_generation_enable')) {
+            $this->_freeDeliveryDiscount($order);
+        }
     }
 
     /**
@@ -4399,7 +4401,7 @@ class OrderService extends ContainerAware
             $stmt = $this->container->get('doctrine')->getConnection()->prepare($query);
             $stmt->execute();
             $result = $stmt->fetchColumn();
-            if ($result > 0 && $result % 3 == 0) {
+            if ($result > 0 && $result % $this->container->getParameter('free_delivery_discount_code_generation_after_completed_orders') == 0) {
                 $templateId = $this->container->getParameter('mailer_send_free_delivery_discount');
                 $theCode = "CM" . strrev($order->getId()) . ($order->getId() % 10);
                 $newCode = new Coupon;

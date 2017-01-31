@@ -104,6 +104,8 @@ parameters:
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: false
     show_making_time_deadline: false
+    free_delivery_discount_code_generation_enable: true
+    free_delivery_discount_code_generation_after_completed_orders: 3
 
 pirminis_gateway:
     datacash_url: 'https://mars.transaction.datacash.com/Transaction'

@@ -199,7 +199,9 @@
                 {#
                 {% endif %}
                 #}
+                {% if site_country != 'EE' %}
                 <span class="phone"><a href="callto:{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}" title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>
+                {% endif %}
             </div>
         </div>
     </div>
