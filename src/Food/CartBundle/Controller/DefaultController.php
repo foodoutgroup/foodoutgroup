@@ -548,34 +548,28 @@ class DefaultController extends Controller
      */
     public function sideBlockAction(Place $place, $renderView = false, $inCart = false, $order = null, $couponCode = null)
     {
+        // TODO fix prices calculation
+        $orderPriceService = $this->get('food.order_price_service');
+        $miscService = $this->get('food.app.utils.misc');
         $session = $this->get('session');
+
         $isCallcenter = $session->get('isCallcenter');
 
         $enableDiscount = !$place->getOnlyAlcohol();
-//                foreach ($list as $dish) {
-//                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
-//                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
-//                        $otherPriceTotal += $sum;
-//                    } else {
-//                        $enableDiscount = false;
-//                    }
-//                }
-
-
-
-        $list = $this->getCartService()->getCartDishes($place);
-        $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
-
 
         $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
         $cartFromMax = $this->get('food.places')->getMaxCartPrice($place->getId());
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
-        $miscService = $this->get('food.app.utils.misc');
+
         $enable_free_delivery_for_big_basket = $miscService->getParam('enable_free_delivery_for_big_basket');
+        $free_delivery_price = $miscService->getParam('free_delivery_price');
+
+        $deliveryTotal = $this->get('food.places')->getMinDeliveryPrice($place->getId());
+
         if ($enable_free_delivery_for_big_basket) {
             $enable_free_delivery_for_big_basket = $place->isAllowFreeDelivery();
         }
-        $free_delivery_price = $miscService->getParam('free_delivery_price');
+
         if ($enable_free_delivery_for_big_basket) {
             $placeMinimumFreeDeliveryPrice = $place->getMinimumFreeDeliveryPrice();
             if ($placeMinimumFreeDeliveryPrice) {
@@ -583,16 +577,19 @@ class DefaultController extends Controller
             }
         }
         $displayCartInterval = true;
-        $deliveryTotal = $this->get('food.places')->getMinDeliveryPrice($place->getId());
+
         $basketErrors = [
             'foodQuantityError'  => false,
             'drinkQuantityError' => false,
         ];
 
+        $list = $this->getCartService()->getCartDishes($place);
+
         $takeAway = ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup);
 
         if ($takeAway) {
             $displayCartInterval = false;
+            $deliveryTotal = 0;
         } else {
             $placePointMap = $this->container->get('session')->get('point_data');
 
@@ -657,6 +654,8 @@ class DefaultController extends Controller
             }
         }
 
+        $total_cart = $this->getCartService()->getCartTotal($list);
+        $priceBeforeDiscount = $total_cart;
 
         $noMinimumCart = false;
         $current_user = $this->container->get('security.context')->getToken()->getUser();
@@ -791,10 +790,21 @@ class DefaultController extends Controller
 
         $totalWIthDelivery = $freeDelivery ? $total_cart : ($total_cart + $deliveryTotal);
 
+        //$prices = $orderPriceService->getOrderPrices($place);
+        // total_cart
+        // delivery_price
+        // total_delivery
+        // discountSum
+        // total_with_delivery
+
+        // ??
+        // left_sum
+        // discountSum
+
         $params = [
             'list'  => $list,
             'place' => $place,
-            'total_cart' => sprintf('%.2f',$total_cart),
+            'total_cart' => sprintf('%.2f',$priceBeforeDiscount),
             'total_with_delivery' => $totalWIthDelivery,
             'total_delivery' => $deliveryTotal,
             'inCart' => (int)$inCart,

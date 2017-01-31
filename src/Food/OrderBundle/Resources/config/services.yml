@@ -137,3 +137,11 @@ services:
       arguments:
         - @security.context
         - @validator
+
+    food.order_price_service:
+      class: Food\OrderBundle\Service\OrderPriceService
+      parent: food.base_service
+      arguments:
+        - @food.cart
+        - @food.app.utils.misc
+
