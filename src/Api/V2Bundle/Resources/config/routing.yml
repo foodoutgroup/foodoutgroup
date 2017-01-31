@@ -21,7 +21,6 @@ api_v2_order_status_update:
 
 
 
-
 api_v2_restaurant_get_menu_category:
     path: /restaurant/{placeHash}/menu/category
     defaults: { _controller: ApiV2Bundle:Restaurant:getMenuCategory }
@@ -36,3 +35,17 @@ api_v2_restaurant_loyalty:
     path: /restaurant/{placeHash}/loyalty
     defaults: { _controller: ApiV2Bundle:Restaurant:loyalty }
     methods: [POST]
+
+
+
+
+api_v2_place:
+    path: /place/{placeHash}
+    defaults: { _controller: ApiV2Bundle:Place:get }
+    methods: [GET]
+
+
+api_v2_location_city:
+    path: /location/city/{providerHash}
+    defaults: { _controller: ApiV2Bundle:Location:getCity }
+    methods: [GET]
