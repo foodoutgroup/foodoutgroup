@@ -12,12 +12,12 @@ group:
         deleted: Grupė ištrinta
 
 # Security
-"Bad credentials": Neteisingas naudotojo vardas arba slaptažodis
+"Bad credentials": Vale kasutajanimi või parool
 
 security:
     login:
-        username: "Naudotojo vardas:"
-        password: "Slaptažodis:"
+        username: "Kasutajanimi:"
+        password: "Parool:"
         remember_me: Atsiminti
         submit: Prisijungti
 
@@ -33,9 +33,9 @@ profile:
 
 # Password change
 change_password:
-    submit: Keisti slaptažodį
+    submit: Muuda oma parooli
     flash:
-        success: Slaptažodis pakeistas
+        success: Salasõna muutunud
 
 # Registration
 registration:
@@ -62,8 +62,8 @@ resetting:
     request:
         invalid_username: Naudotojo vardas arba el. paštas "%username%" neegzistuoja.
         username: "Naudotojo vardas arba el. paštas:"
-        submit: Tęsti
-        email: El. paštas
+        submit: Jätkama
+        email: E-maili aadress
     reset:
         submit: Pakeisti slaptažodį
     flash:
@@ -88,21 +88,21 @@ layout:
 # Form field labels
 form:
     group_name: "Grupės vardas"
-    firstname: "Vardas"
-    lastname: "Pavardė"
+    firstname: "Eesnimi"
+    lastname: "Perekonnanimi"
     username: "Naudotojo vardas"
-    email: "El. paštas"
-    phone: "Telefono numeris"
-    city: Miestas
-    address: Adresas
-    current_password: "Dabartinis slaptažodis"
-    password: "Slaptažodis"
-    password_confirmation: "Pakartoti slaptažodį"
-    new_password: "Naujas slaptažodis"
-    new_password_confirmation: "Naujas slaptažodis (pakartoti)"
+    email: "E-maili aadress"
+    phone: "Telefoninumber"
+    city: Linn
+    address: Aadress
+    current_password: "Praegune parool"
+    password: "Parool"
+    password_confirmation: "Korda parool"
+    new_password: "Uus parool"
+    new_password_confirmation: "Uus parool (korda)"
     regenerate_password: "Automatiškai pergeneruoti slaptažodį kas savaite"
 
 
 general:
-    reset_password: Keisti slaptažodį
-    back_to_login: Grįžti į prisijungimo formą
+    reset_password: Muuda oma parooli
+    back_to_login: Tagasi sisäänkirjautumislomake
