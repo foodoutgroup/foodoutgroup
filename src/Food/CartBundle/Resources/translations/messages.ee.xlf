@@ -385,6 +385,10 @@ Vilnius</target>
                 <source>general.coupon.note_text</source>
                 <target>* Kodas negalioja akcijinėms prekėms bei alkoholiniams gėrimams (nuolaidos nesumuojamos). Tai netaikoma nuolaidų kuponams, kuriais galima padengti visą užsakymo sumą.</target>
             </trans-unit>
+            <trans-unit id="general.coupon.cannot_apply_for_alco" resname="general.coupon.cannot_apply_for_alco">
+                <source>general.coupon.cannot_apply_for_alco</source>
+                <target>The discount code does not apply for alcoholic beverages</target>
+            </trans-unit>
             <trans-unit id="cart.block.discount_sum" resname="cart.block.discount_sum">
                 <source>cart.block.discount_sum</source><target>Soodustus</target>
             </trans-unit>

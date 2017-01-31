@@ -556,6 +556,10 @@ class OrderService extends ContainerAware
             $productionTime = $order->getPlace()->getProductionTime();
         }
 
+        if($total_sum < 0) {
+            $total_sum = 0;
+        }
+
         $returner = [
             'order_id'    => $order->getId(),
             'order_hash'    => $order->getOrderHash(),
@@ -630,6 +634,13 @@ class OrderService extends ContainerAware
                 'name' => $driver->getName(),
             ];
         }
+
+        $returner['prices'] = [
+            'chart' => $order->getTotalBeforeDiscount(),
+            'delivery' => $order->getDeliveryPrice(),
+            'discount' => $order->getDiscountSum(),
+            'total' => $order->getTotal()
+        ];
 
         return $returner;
     }
