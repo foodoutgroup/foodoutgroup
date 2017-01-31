@@ -175,7 +175,7 @@ food_best_offers_lv_slash:
 
 food_slug:
     path:  /{slug}/
-    defaults: { _controller: FoodAppBu<span class="phone"><a href="callto:{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}" title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>ndle:Slug:process, slug: ~ }
+    defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
         slug : "^(?!admin|cart|1822|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|restourans|maina|mesto|monitoring|nagios|banned|banned-email|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Marijampole|Utena|Kedainiai|Plunge|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita|cilipica)[a-z0-9-\__\"„“\.\+]{4,}"
 
