@@ -139,6 +139,7 @@ class MessagesService
             $message->setRecipient($recipient);
         }
         if (!empty($text)) {
+            $text = str_replace(["\n", "\t", "\r"], '', $text);
             $message->setMessage($text);
         }
         if (!empty($order)) {
