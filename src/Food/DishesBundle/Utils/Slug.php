@@ -188,6 +188,14 @@ class Slug
         $context->generate($langId, $itemId, $itemText);
     }
 
+    public function generateForBlogPost($langId, $itemId, $itemText)
+    {
+        $strategy = new TextStrategy($this->container());
+        $strategy->setType(SlugEntity::TYPE_BLOG_POST);
+        $context = new SlugGenerator($strategy);
+        $context->generate($langId, $itemId, $itemText);
+    }
+
     /**
      * TODO Not working - fatal injuries can be caused
      */
