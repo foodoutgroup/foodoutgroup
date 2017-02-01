@@ -66,6 +66,7 @@ class AppKernel extends Kernel
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Api\V2Bundle\ApiV2Bundle(),
             new Api\BaseBundle\ApiBaseBundle(),
+            new Food\BlogBundle\FoodBlogBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

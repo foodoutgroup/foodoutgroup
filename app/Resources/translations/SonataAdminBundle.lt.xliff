@@ -3134,6 +3134,30 @@
                 <source>admin.general.user</source>
                 <target>Vartotojas</target>
             </trans-unit>
+            <trans-unit id="admin.blog_categories">
+                <source>admin.blog_categories</source>
+                <target>Blog categories</target>
+            </trans-unit>
+            <trans-unit id="admin.blog_posts">
+                <source>admin.blog_posts</source>
+                <target>Blog posts</target>
+            </trans-unit>
+            <trans-unit id="admin.language">
+                <source>admin.language</source>
+                <target>Kalba</target>
+            </trans-unit>
+            <trans-unit id="admin.seo_title">
+                <source>admin.seo_title</source>
+                <target>SEO title</target>
+            </trans-unit>
+            <trans-unit id="admin.seo_description">
+                <source>admin.seo_description</source>
+                <target>SEO description</target>
+            </trans-unit>
+            <trans-unit id="admin.category">
+                <source>admin.category</source>
+                <target>Kategorija</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
