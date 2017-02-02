@@ -829,7 +829,8 @@ class NavService extends ContainerAware
                    'DeliveryAmount'    => $o->getDeliveryType()->val('') == 'pickup'
                        ? '0.00'
                        : number_format($o->getDeliveryPrice()->val('0.0'), 2, '.', ''),
-                    'DiscountAmount'   => number_format($o->getDiscountSum()->val('0.0'), 2, '.', '')];
+                    'DiscountAmount'   => number_format($o->getDiscountSum()->val('0.0'), 2, '.', '') // doesn't works
+        ];
 
         // send a call to a web service, but beware of exceptions
         try {
@@ -841,6 +842,10 @@ class NavService extends ContainerAware
             if (!($r->return_value->val('') == 0)) {
                 throw new \SoapFault((string)$r->return_value->val(''),
                     'Soap call "FoodOutCreateInvoice" didn\'t return 0. Parameters used: ' . var_export($params, true));
+            }
+
+            if ($o->getDiscountSum() > 0) {
+                $this->updateNavInvoice($order, ['Discount Amount with VAT' => number_format($o->getDiscountSum()->val('0.0'), 2, '.', '')]);
             }
         } catch (\SoapFault $e) {
             if (preg_match('/The Foodout Invoice already exists\./', $e->getMessage())) {
