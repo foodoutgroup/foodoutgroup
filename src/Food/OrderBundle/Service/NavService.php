@@ -793,7 +793,8 @@ class NavService extends ContainerAware
         // some calculations beforehand
         $total = $o->getTotal()->val(0.0);
         $deliveryTotal = $o->getDeliveryPrice()->val(0.0);
-        $foodTotal = $total - $deliveryTotal;
+        $discountSum = $o->getDiscountSum()->val(0.0);
+        $foodTotal = $total - $deliveryTotal + $discountSum;
 
         // payment type and code preprocessing
         $driverId = $o->getDriver()->getId()->val('');
@@ -828,8 +829,8 @@ class NavService extends ContainerAware
                    'AlcoholAmount'     => number_format(0.0, 2, '.', ''),
                    'DeliveryAmount'    => $o->getDeliveryType()->val('') == 'pickup'
                        ? '0.00'
-                       : number_format($o->getDeliveryPrice()->val('0.0'), 2, '.', ''),
-                    'DiscountAmount'   => number_format($o->getDiscountSum()->val('0.0'), 2, '.', '') // doesn't works
+                       : number_format($deliveryTotal->val('0.0'), 2, '.', ''),
+                    'DiscountAmount'   => number_format($discountSum, 2, '.', '') // doesn't works
         ];
 
         // send a call to a web service, but beware of exceptions
@@ -845,7 +846,7 @@ class NavService extends ContainerAware
             }
 
             if ($o->getDiscountSum() > 0) {
-                $this->updateNavInvoice($order, ['Discount Amount with VAT' => number_format($o->getDiscountSum()->val('0.0'), 2, '.', '')]);
+                $this->updateNavInvoice($order, ['Discount Amount with VAT' => number_format($discountSum, 2, '.', '')]);
             }
         } catch (\SoapFault $e) {
             if (preg_match('/The Foodout Invoice already exists\./', $e->getMessage())) {
