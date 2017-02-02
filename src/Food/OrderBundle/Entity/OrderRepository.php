@@ -1387,6 +1387,7 @@ class OrderRepository extends EntityRepository
                                 OrderService::$status_assiged,
                                 OrderService::$status_delayed,
                                 OrderService::$status_forwarded,
+                                OrderService::$status_finished,
                             ]
                         ),
                         $queryBuilder->expr()->between('o.deliveryTime', ':deliveryDateFilterStart', ':deliveryDateFilterEnd')
