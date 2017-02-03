@@ -1630,7 +1630,7 @@ class OrderService extends ContainerAware
         }
 
         // jei ignoruoti pristatymo min krepseli bet yra pristatymas mokamas
-        if ($includeDelivery) {
+        //~ if ($includeDelivery) {
             if ($discountOverTotal > 0) {
                 $deliveryPrice = $deliveryPrice - $discountOverTotal;
                 if ($deliveryPrice < 0) {
@@ -1638,7 +1638,7 @@ class OrderService extends ContainerAware
                 }
             }
             $sumTotal += $deliveryPrice;
-        }
+        //~ }
 
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
