@@ -829,7 +829,7 @@ class NavService extends ContainerAware
                    'AlcoholAmount'     => number_format(0.0, 2, '.', ''),
                    'DeliveryAmount'    => $o->getDeliveryType()->val('') == 'pickup'
                        ? '0.00'
-                       : number_format($deliveryTotal->val('0.0'), 2, '.', ''),
+                       : number_format($deliveryTotal, 2, '.', ''),
                     'DiscountAmount'   => number_format($discountSum, 2, '.', '') // doesn't works
         ];
 
