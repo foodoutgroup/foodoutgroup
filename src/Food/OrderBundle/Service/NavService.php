@@ -845,7 +845,7 @@ class NavService extends ContainerAware
                     'Soap call "FoodOutCreateInvoice" didn\'t return 0. Parameters used: ' . var_export($params, true));
             }
 
-            if ($o->getDiscountSum() > 0) {
+            if ($o->getDiscountSum()->val(0.0) > 0) {
                 $this->updateNavInvoice($order, ['Discount Amount with VAT' => number_format($discountSum, 2, '.', '')]);
             }
         } catch (\SoapFault $e) {
