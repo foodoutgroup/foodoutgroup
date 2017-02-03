@@ -195,6 +195,43 @@ class OrdersController extends Controller
         return new JsonResponse($response);
     }
 
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateOrderByHashAction($hash, Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:changeOrderStatusByHashAction Request: hash - ' . $hash, (array) $request);
+
+        try {
+            $order = $this->get('food.order')->getOrderByHash($hash);
+
+            if ($request->request->has('order_status') && $order->getOrderStatus() != "canceled") {
+                $response = $this->get('food_api.order')->changeOrderStatus($order, $request->get('order_status'), $request);
+            }
+        }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:changeOrderStatusByHashAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:changeOrderStatusByHashAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Orders:changeOrderStatusByHashAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:changeOrderStatusByHashAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                ['error' => $this->get('translator')->trans('general.error_happened')],
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Orders:changeOrderStatusByHashAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+
+        return new JsonResponse($response);
+    }
+
     public function getOrdersByPlacepointHashAction($hash, Request $request)
     {
         $startTime = microtime(true);

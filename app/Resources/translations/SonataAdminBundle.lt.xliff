@@ -1019,6 +1019,14 @@
                 <source>admin.order.order_date</source>
                 <target>Užsakymo data</target>
             </trans-unit>
+            <trans-unit id="admin.order.food_prepare_time">
+                <source>admin.order.food_prepare_time</source>
+                <target>Pagaminti per (min.)</target>
+            </trans-unit>
+            <trans-unit id="admin.order.food_prepare_date">
+                <source>admin.order.food_prepare_date</source>
+                <target>Pagaminti iki</target>
+            </trans-unit>
             <trans-unit id="admin.order.delivery_time">
                 <source>admin.order.delivery_time</source>
                 <target>Pristatyti iki</target>
