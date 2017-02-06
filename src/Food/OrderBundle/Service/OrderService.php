@@ -2333,10 +2333,12 @@ class OrderService extends ContainerAware
         // Inform restourant about new order
 
         if ($isReminder) {
-            $orderConfirmRoute = 'http://' . $domain
-                . $this->container->get('router')
-                    ->generate('ordermobile', ['hash' => $order->getOrderHash()])
-            ;
+            $orderConfirmRoute = $this->container->get('router')
+                    ->generate('ordermobile', ['hash' => $order->getOrderHash()]);
+
+            if (strpos($orderConfirmRoute, 'http') === false) {
+                $orderConfirmRoute = 'http://' . $domain . $orderConfirmRoute;
+            }
 
             $orderSmsTextTranslation = $translator->trans('general.sms.order_reminder', [
                 'order_id' => $order->getId()
@@ -2345,10 +2347,12 @@ class OrderService extends ContainerAware
         } else {
             // Jei preorder - sms siuncia cronas ir nezino apie esama domena..
             if ($order->getPreorder()) {
-                $orderConfirmRoute = 'http://' . $domain
-                    . $this->container->get('router')
-                        ->generate('ordermobile', ['hash' => $order->getOrderHash()])
-                ;
+                $orderConfirmRoute = $this->container->get('router')
+                        ->generate('ordermobile', ['hash' => $order->getOrderHash()]);
+
+                if (strpos($orderConfirmRoute, 'http') === false) {
+                    $orderConfirmRoute = 'http://' . $domain . $orderConfirmRoute;
+                }
             } else {
                 $orderConfirmRoute = $this->container->get('router')
                     ->generate('ordermobile', ['hash' => $order->getOrderHash()], true)
