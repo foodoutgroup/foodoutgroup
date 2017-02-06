@@ -177,7 +177,7 @@ food_slug:
     path:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|1822|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|restourans|maina|mesto|monitoring|nagios|banned|banned-email|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Marijampole|Utena|Kedainiai|Plunge|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita|cilipica)[a-z0-9-\__\"„“\.\+]{4,}"
+        slug : "^(?!admin|cart|1822|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|restourans|maina|mesto|monitoring|nagios|banned|banned-email|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Marijampole|Utena|Kedainiai|Plunge|Palanga|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita|cilipica)[a-z0-9-\__\"„“\.\+]{4,}"
 
 food_order_nav_test1:
     path: /order/nav_test1
@@ -497,6 +497,10 @@ food_city_plunge:
     path: /Plunge
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Plunge}
 
+food_city_palanga:
+    path: /Palanga
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Palanga}
+
 food_city_riga:
     path: /Riga
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
@@ -544,6 +548,10 @@ food_city_kedainiai_slash:
 food_city_plunge_slash:
     path: /Plunge/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Plunge}
+
+food_city_palanga_slash:
+    path: /Palanga/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Palanga}
 
 food_city_riga_slash:
     path: /Riga/
@@ -610,6 +618,12 @@ food_city_kedainiai_slash_filter:
 food_city_plunge_slash_filter:
     path: /Plunge/{slug_filter}
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Plunge, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_palanga_slash_filter:
+    path: /Palanga/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Palanga, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
 
