@@ -660,15 +660,7 @@ class OrderService extends ContainerAware
             switch($status) {
                 case 'confirm':
                     $orderService->statusAccepted('restourant_ng');
-                    $foodPrepareTime = $request->get('food_prepare_time');
-                    $orderService->getOrder()->setFoodPrepareTime($foodPrepareTime);
-
-                    $foodPrepareDate = new \DateTime('now');
-                    $foodPrepareDate->modify("+" . $foodPrepareTime . " minutes");
-
-                    $orderService->getOrder()->setFoodPrepareDate($foodPrepareDate);
-
-                    $orderService->logOrder($order, 'food_prepare_time', 'Restaurant set food prepare time: ' . $foodPrepareTime);
+                    $orderService->setOrderPrepareTime($request->get('food_prepare_time'));
                     break;
 
                 case 'delay':
