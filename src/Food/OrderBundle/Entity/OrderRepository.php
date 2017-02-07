@@ -863,6 +863,30 @@ class OrderRepository extends EntityRepository
     /**
      * @return Order[]|array
      */
+    public function getUnpaidOrders()
+    {
+        $paymentStatus = OrderService::$paymentStatusWait;
+        $dateFrom = new \DateTime("-1 day");
+
+        $dateFrom = $dateFrom->format("Y-m-d H:i:s");
+
+        $query = "
+          SELECT
+            o.id
+          FROM orders o
+          WHERE
+            o.payment_status = '{$paymentStatus}'
+            AND o.delivery_time > '{$dateFrom}'
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * @return Order[]|array
+     */
     public function getUnclosedOrders()
     {
         $orderStatus = "'".OrderService::$status_accepted
