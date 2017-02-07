@@ -872,7 +872,7 @@ class OrderRepository extends EntityRepository
 
         $query = "
           SELECT
-            o.id
+            o.id, o.payment_method
           FROM orders o
           WHERE
             o.payment_status = '{$paymentStatus}'
