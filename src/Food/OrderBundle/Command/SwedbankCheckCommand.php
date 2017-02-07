@@ -37,7 +37,7 @@ class SwedbankCheckCommand extends ContainerAwareCommand
 
             foreach ($orders as $order) {
                 if ('swedbank-gateway' == $order['payment_method']) {
-                    $logs = $banklinkLogRepository->findByOrderId(477505);
+                    $logs = $banklinkLogRepository->findByOrderId($order['id']);
                     foreach ($logs as $log) {
                         $simpleXml = simplexml_load_string($log->getXml());
                         if (is_object($simpleXml->APMTxn->Purchase)) {
@@ -46,7 +46,9 @@ class SwedbankCheckCommand extends ContainerAwareCommand
                             if (!empty($DPGReferenceId) && !empty($TransactionId)) {
                                 $request = new Request(['DPGReferenceId' => $DPGReferenceId, 'TransactionId' => $TransactionId]);
 
-                                $url = 'http://' . $this->getContainer()->getParameter('domain') . 'payments/swedbank/gateway/success?_locale=lt&DPGReferenceId='.$DPGReferenceId.'&TransactionId='.$TransactionId;
+                                $url = 'http://' . $this->getContainer()->getParameter('domain') . '/payments/swedbank/gateway/success?_locale=lt&DPGReferenceId='.$DPGReferenceId.'&TransactionId='.$TransactionId;
+
+                                file_get_contents($url);
 
                                 $processedOrders++;
 
