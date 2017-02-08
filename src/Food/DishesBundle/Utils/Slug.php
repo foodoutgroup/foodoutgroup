@@ -97,6 +97,11 @@ class Slug
         }
     }
 
+    /**
+     * @param $slug
+     * @param $lang
+     * @return \Food\AppBundle\Entity\Slug
+     */
     public function getOneByName($slug, $lang)
     {
         $item = $this->repo('FoodAppBundle:Slug')->findOneBy(['name' => $slug, 'lang_id' => $lang ]);
@@ -185,6 +190,14 @@ class Slug
     public function generateForTexts($langId, $itemId, $itemText)
     {
         $context = new SlugGenerator(new TextStrategy($this->container()));
+        $context->generate($langId, $itemId, $itemText);
+    }
+
+    public function generateForBlogCategory($langId, $itemId, $itemText)
+    {
+        $strategy = new TextStrategy($this->container());
+        $strategy->setType(SlugEntity::TYPE_BLOG_CATEGORY);
+        $context = new SlugGenerator($strategy);
         $context->generate($langId, $itemId, $itemText);
     }
 

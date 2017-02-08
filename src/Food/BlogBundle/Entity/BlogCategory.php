@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * BlogCategory
  *
  * @ORM\Table(name="blog_category")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\BlogBundle\Entity\BlogCategoryRepository")
  */
 class BlogCategory
 {

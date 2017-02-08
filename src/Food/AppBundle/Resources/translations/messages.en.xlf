@@ -1550,6 +1550,10 @@
                 <source>general.restaurant_not_delivering_to_address_explained</source>
                 <target></target>
             </trans-unit>
+            <trans-unit id="general.news" resname="general.news">
+                <source>general.news</source>
+                <target>News</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

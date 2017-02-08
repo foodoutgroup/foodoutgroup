@@ -16,6 +16,7 @@ class Slug
     const TYPE_PLACE = 'place';
     const TYPE_FOOD_CATEGORY = 'food_category';
     const TYPE_TEXT = 'text';
+    const TYPE_BLOG_CATEGORY = 'blog_category';
     const TYPE_BLOG_POST = 'blog_post';
 
 
@@ -140,7 +141,9 @@ class Slug
             self::TYPE_KITCHEN,
             self::TYPE_FOOD_CATEGORY,
             self::TYPE_PLACE,
-            self::TYPE_TEXT
+            self::TYPE_TEXT,
+            self::TYPE_BLOG_CATEGORY,
+            self::TYPE_BLOG_POST
         ];
 
         if (!in_array($type, $allowedTypes)) {
