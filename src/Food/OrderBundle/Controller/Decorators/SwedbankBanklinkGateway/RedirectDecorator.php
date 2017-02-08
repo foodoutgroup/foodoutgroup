@@ -31,7 +31,7 @@ trait RedirectDecorator
                 break;
             case 'lv':
                 $options['service_type'] = 'LTV_BANK';
-                $options['comment'] = 'Foodout.lv pasūtījums #' . $order->getId();
+                $options['comment'] = 'Foodout.lv pasutijums #' . $order->getId();
                 break;
             case 'ee':
                 $options['service_type'] = 'EST_BANK';
