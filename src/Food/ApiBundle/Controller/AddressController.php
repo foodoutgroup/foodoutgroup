@@ -33,7 +33,7 @@ class AddressController extends Controller
             $this->get('logger')->error('Address:findAddressAction Trace:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -69,7 +69,7 @@ class AddressController extends Controller
             $this->get('logger')->error('Address:findStreetAction Trace:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );

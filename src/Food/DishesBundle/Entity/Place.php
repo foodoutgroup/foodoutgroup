@@ -374,6 +374,13 @@ class Place extends Uploadable implements Translatable
     private $dishesNumeration = true;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="show_phone", type="boolean", nullable=true, options={"default": true})
+     */
+    private $showPhone = true;
+
+    /**
      * @ORM\OneToMany(targetEntity="\Food\UserBundle\Entity\User", mappedBy="place")
      **/
     private $users;
@@ -425,6 +432,22 @@ class Place extends Uploadable implements Translatable
 
     protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
     protected $boxSize = ['w' => 130, 'h' => 86];
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="api_hash", type="string", length=255, nullable=true)
+     */
+    private $apiHash;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="coupon_url", type="string", length=255, nullable=true)
+     */
+    private $couponURL;
+
 
     /**
      * @Gedmo\Locale
@@ -1617,7 +1640,7 @@ class Place extends Uploadable implements Translatable
      */
     public function getOnlyAlcohol()
     {
-        return $this->onlyAlcohol;
+        return (bool) $this->onlyAlcohol;
     }
 
     /**
@@ -2007,14 +2030,14 @@ class Place extends Uploadable implements Translatable
     public function setAutoInform($autoInform)
     {
         $this->autoInform = $autoInform;
-    
+
         return $this;
     }
 
     /**
      * Get autoInform
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAutoInform()
     {
@@ -2030,14 +2053,14 @@ class Place extends Uploadable implements Translatable
     public function setDishesNumeration($dishesNumeration)
     {
         $this->dishesNumeration = $dishesNumeration;
-    
+
         return $this;
     }
 
     /**
      * Get dishesNumeration
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDishesNumeration()
     {
@@ -2085,14 +2108,14 @@ class Place extends Uploadable implements Translatable
     public function setProductionTime($productionTime)
     {
         $this->productionTime = $productionTime;
-    
+
         return $this;
     }
 
     /**
      * Get productionTime
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductionTime()
     {
@@ -2102,10 +2125,70 @@ class Place extends Uploadable implements Translatable
     /**
      * Get allowFreeDelivery
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAllowFreeDelivery()
     {
         return $this->allowFreeDelivery;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCouponURL()
+    {
+        return $this->couponURL;
+    }
+
+    /**
+     * @param string $couponURL
+     * @return Place
+     */
+    public function setCouponURL($couponURL)
+    {
+        $this->couponURL = $couponURL;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiHash()
+    {
+        return $this->apiHash;
+    }
+
+    /**
+     * @param string $apiHash
+     */
+    public function setApiHash($apiHash)
+    {
+        $this->apiHash = $apiHash;
+
+        return $this;
+    }
+
+    /**
+     * Get showPhone
+     *
+     * @return boolean
+     */
+    public function getShowPhone()
+    {
+        return $this->showPhone;
+    }
+
+    /**
+     * Set showPhone
+     *
+     * @param boolean $showPhone
+     * @return Place
+     */
+    public function setShowPhone($showPhone)
+    {
+        $this->showPhone = $showPhone;
+
+        return $this;
     }
 }

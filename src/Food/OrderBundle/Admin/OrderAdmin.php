@@ -281,6 +281,7 @@ class OrderAdmin extends FoodAdmin
             )
             ->add('vat', 'string', array('label' => 'admin.order.vat'))
             ->add('total', 'string', array('label' => 'admin.order.total'))
+            ->add('total_before_discount', 'string', array('label' => 'admin.order.total_before_discount'))
             ->add('deliveryPrice', 'string', array('label' => 'admin.order.delivery_price'))
             ->add('couponCode', 'string', array('label' => 'admin.order.coupon_code'))
             ->add('discountSize', 'string', array('label' => 'admin.order.discount_size'))
@@ -330,6 +331,12 @@ class OrderAdmin extends FoodAdmin
                 array(
                     'label' => 'admin.order.field_changelog',
                     'template' => 'FoodOrderBundle:Admin:order_field_changelog.html.twig'
+                )
+            )
+            ->add('order_call_log', 'sonata_type_collection',
+                array(
+                    'label' => 'admin.call_log',
+                    'template' => 'FoodOrderBundle:Admin:order_call_log.html.twig'
                 )
             )
         ;

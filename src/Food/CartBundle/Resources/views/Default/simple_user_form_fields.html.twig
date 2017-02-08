@@ -49,9 +49,11 @@
         <label>{% trans %}cart.checkout.delivery_date{% endtrans %}:</label>
         <select class="custom-select" name="pre_order_date" id="pre_order_date">
             {% for dayCounter in 0 .. (workingDaysCount-1) %}
+                {% if "+#{dayCounter} day"|date("Y-m-d") not in disabledPreorderDays %}
                 <option value="{{ "+#{dayCounter} day"|date("Y-m-d") }}" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "+#{dayCounter} day"|date("Y-m-d")) %}selected="selected"{% endif %}>
                     {{ "+#{dayCounter} day"|date()|localizeddate('none', 'none', locale, null, 'eeee, MMM d')|capitalize }} d.
                 </option>
+                {% endif %}
             {% endfor %}
             {#
             {% if workingHoursToday is not empty%}

@@ -134,6 +134,10 @@
                 <source>cart.checkout.cash_on_pickup</source>
                 <target>Grynais atsiėmimo metu</target>
             </trans-unit>
+            <trans-unit id="51401b79dc9570ffe18190d54b163468" resname="cart.checkout.cash_cc_on_pickup">
+                <source>cart.checkout.cash_cc_on_pickup</source>
+                <target>Grynais/kortele atsiėmimo metu</target>
+            </trans-unit>
             <trans-unit id="cart.checkout.corporate_pay" resname="cart.checkout.corporate_pay">
                 <source>cart.checkout.corporate_pay</source>
                 <target>Pavedimu mėnesio gale</target>
@@ -475,6 +479,10 @@ Vilnius]]></target>
             <trans-unit id="general.coupon.note_text" resname="general.coupon.note_text">
                 <source>general.coupon.note_text</source>
                 <target>* Kodas negalioja akcijinėms prekėms bei alkoholiniams gėrimams (nuolaidos nesumuojamos). Tai netaikoma nuolaidų kuponams, kuriais galima padengti visą užsakymo sumą.</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.cannot_apply_for_alco" resname="general.coupon.cannot_apply_for_alco">
+                <source>general.coupon.cannot_apply_for_alco</source>
+                <target>Atsiprašome, šis nuolaidos kodas negalimas alkoholiniams gėrimams</target>
             </trans-unit>
             <trans-unit id="cart.block.discount_sum" resname="cart.block.discount_sum">
                 <source>cart.block.discount_sum</source>

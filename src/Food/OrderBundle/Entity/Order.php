@@ -117,6 +117,12 @@ class Order
 
     /**
      * @var float
+     * @ORM\Column(name="total_before_discount", type="decimal", precision=8, scale=2, nullable=true)
+     */
+    private $totalBeforeDiscount;
+
+    /**
+     * @var float
      * @ORM\Column(name="delivery_price", type="float", nullable=true)
      */
     private $deliveryPrice;
@@ -464,6 +470,12 @@ class Order
      * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderFieldChangelog", mappedBy="order")
      **/
     private $orderFieldChangelog;
+
+    /**
+     * @var \Food\AppBundle\Entity\CallLog $orderFieldChangelog
+     * @ORM\OneToMany(targetEntity="\Food\AppBundle\Entity\CallLog", mappedBy="order_id")
+     **/
+    private $orderCallLog;
 
     /**
      * @return string
@@ -850,6 +862,7 @@ class Order
             'details' => 'TODO', // TODO
             'orderStatus' => $this->getOrderStatus(),
             'orderDate' => $this->getOrderDate()->format("Y-m-d H:i:s"),
+            'deliveryDate' => $this->getDeliveryTime()->format("Y-m-d H:i"),
             'total' => $this->getTotal(),
             'vat' => $this->getVat(),
             'coupon_code' => $this->getCouponCode(),
@@ -1447,6 +1460,7 @@ class Order
         $this->orderStatusLog = new \Doctrine\Common\Collections\ArrayCollection();
         $this->paymentLog = new \Doctrine\Common\Collections\ArrayCollection();
         $this->orderLog = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->orderCallLog = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -2425,5 +2439,92 @@ class Order
     public function setPaymentMethodCode($paymentMethodCode)
     {
         $this->paymentMethodCode = $paymentMethodCode;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalBeforeDiscount()
+    {
+        return $this->totalBeforeDiscount;
+    }
+
+    /**
+     * @param float $totalBeforeDiscount
+     */
+    public function setTotalBeforeDiscount($totalBeforeDiscount)
+    {
+        $this->totalBeforeDiscount = $totalBeforeDiscount;
+
+        return $this;
+    }
+
+
+
+
+    /**
+     * Get duringZavalas
+     *
+     * @return boolean 
+     */
+    public function getDuringZavalas()
+    {
+        return $this->duringZavalas;
+    }
+
+    /**
+     * Add orderFieldChangelog
+     *
+     * @param \Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog
+     * @return Order
+     */
+    public function addOrderFieldChangelog(\Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog)
+    {
+        $this->orderFieldChangelog[] = $orderFieldChangelog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove orderFieldChangelog
+     *
+     * @param \Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog
+     */
+    public function removeOrderFieldChangelog(\Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog)
+    {
+        $this->orderFieldChangelog->removeElement($orderFieldChangelog);
+    }
+
+    /**
+     * Add orderLog
+     *
+     * @param \Food\AppBundle\Entity\CallLog $orderCallLog
+     * @return Order
+     */
+    public function addOrderCallLog(\Food\AppBundle\Entity\CallLog $orderCallLog)
+    {
+        $this->orderCallLog[] = $orderCallLog;
+
+        return $this;
+    }
+
+    /**
+     * Remove orderLog
+     *
+     * @param \Food\AppBundle\Entity\CallLog $orderCallLog
+     */
+    public function removeOrderCallLog(\Food\AppBundle\Entity\CallLog $orderCallLog)
+    {
+        $this->orderCallLog->removeElement($orderCallLog);
+    }
+
+    /**
+     * Get orderLog
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrderCallLog()
+    {
+        return $this->orderCallLog;
     }
 }

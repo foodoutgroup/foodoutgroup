@@ -22,8 +22,8 @@ class OrdersByRestaurantAdmin extends SonataAdmin
         $list->add('filename', null, array('label' => 'admin.report.filename', 'template' => 'FoodReportBundle:Report/OrdersByRestaurant:download.html.twig'))
             ->add('type', 'choice',
                 array('choices' => array(
-                    1 => $this->trans('restaurant_report_type'),
-                    2 => $this->trans('custom_report_type'),
+                    1 => $this->trans('custom_report_type'),
+                    2 => $this->trans('restaurant_report_type'),
                 ), 'label' => 'admin.report.type'
             ))
             ->add('dateFrom', null, array('format' => 'Y-m-d', 'label' => 'admin.report.date_from'))
@@ -37,8 +37,7 @@ class OrdersByRestaurantAdmin extends SonataAdmin
     {
         parent::configureRoutes($collection);
 
-        $collection->add('download', $this->getRouterIdParameter() . '/download');
-        $collection->clearExcept(array('list', 'download'));
+        $collection->clearExcept(array('list'));
     }
 }
 

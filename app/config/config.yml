@@ -6,6 +6,7 @@ imports:
     - { resource: "@FoodDishesBundle/Resources/config/admin.yml" }
     - { resource: "@FoodSmsBundle/Resources/config/admin.yml" }
     - { resource: @A2lixTranslationFormBundle/Resources/config/gedmo.xml }
+    - { resource: "@FoodBlogBundle/Resources/config/services.yml" }
 
 parameters:
     #nav_table_prefix: "Čilija Skambučių Centras"
@@ -153,7 +154,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle, FoodPlacesBundle, CallCenterBundle, LexikTranslationBundle ]
+    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle, FoodPlacesBundle, CallCenterBundle, LexikTranslationBundle, FoodBlogBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -338,9 +339,12 @@ sonata_admin:
                       - sonata.admin.static
                       - sonata.admin.newsletter_subscribers
                       - sonata.admin.banned_ips
-                      - sonata.admin.street
+                      - sonata.admin.banned_email
+                      #~ - sonata.admin.street
                       - sonata.admin.unused_sf_numbers
                       - sonata.admin.seorecords
+                      - sonata.admin.blog_category
+                      - sonata.admin.blog_post
                   roles: [ ROLE_ADMIN ]
 #              admin.support:
 #                  items: ~
@@ -375,7 +379,7 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.users
                       - sonata.admin.banned_ips
-                      - sonata.admin.street
+                      #~ - sonata.admin.street
                       - sonata.admin.params
                       - sonata.admin.paramslog
                   roles: [ ROLE_EDITOR, ROLE_ADMIN ]
@@ -390,21 +394,22 @@ sonata_admin:
                       - sonata.admin.coupon_range
                       - sonata.admin.combo_discounts
                       - sonata.admin.restaurant_orders
-                      - sonata.admin.latency
-                      - sonata.admin.driver_latency
+                      #~ - sonata.admin.latency
+                      #~ - sonata.admin.driver_latency
                       - sonata.admin.restaurant_orders_report
                   roles: [ ROLE_MARKETING, ROLE_ADMIN ]
               admin.reports:
                   items: ~
                   item_adds:
                       - sonata.admin.restaurant_orders
-                      - sonata.admin.latency
-                      - sonata.admin.driver_latency
+                      #~ - sonata.admin.latency
+                      #~ - sonata.admin.driver_latency
                       - sonata.admin.driver_worktime
                       - sonata.admin.marketing_user
                       - sonata.admin.rfm
                       - sonata.admin.rfm_status
                       - sonata.admin.report.orders_by_restaurant
+                      - sonata.admin.call_log
                   roles: [ ROLE_ADMIN ]
               admin.restaurant:
                   items: ~
@@ -478,3 +483,11 @@ knp_snappy:
         enabled:    false
 #        binary:     /usr/local/bin/wkhtmltoimage
 #        options:    []
+
+nelmio_cors:
+    paths:
+        '^/api/v1/':
+            allow_origin: ['*']
+            allow_headers: ['*']
+            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+            max_age: 3600

@@ -405,10 +405,8 @@ class CartService {
     /**
      * @param \Food\CartBundle\Entity\Cart[] $cartItems
      * @return float|int
-     *
-     * TODO Pauliau, ar cia dar reikalingas place'as?
      */
-    public function getCartTotal($cartItems/*, $place*/)
+    public function getCartTotal($cartItems)
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {
@@ -634,10 +632,10 @@ class CartService {
     public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint)
     {
         $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData);
-        if (empty($deliveryTotal)) {
+        if (false === $deliveryTotal) {
             $deliveryTotal = $place->getDeliveryPrice();
         }
-        return $deliveryTotal;
+        return (float) $deliveryTotal;
     }
 
     /**
@@ -700,9 +698,9 @@ class CartService {
                     $this->_applyUnitBundles($bund, $dishUnits[$bund->getDishUnit()->getId()]);
                 }
             }
-            if ($bund->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_CATEGORY) {
-                $this->getContainer()->get('logger')->debug('OPT_COMBO_APPLY_CATEGORY not implemented');
-            }
+            //~ if ($bund->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_CATEGORY) {
+                //~ $this->getContainer()->get('logger')->debug('OPT_COMBO_APPLY_CATEGORY not implemented');
+            //~ }
         }
     }
 

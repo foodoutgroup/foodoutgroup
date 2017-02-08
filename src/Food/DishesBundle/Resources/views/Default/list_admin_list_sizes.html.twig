@@ -3,6 +3,7 @@
 {% block field%}
     <table>
         {% for child in object.sizes %}
+            {% if child.unit is not empty %}
             <tr>
                 <td style="padding: 1px;">{{ child.unit.name }}</td>
                 <td style="padding: 1px;">{{ child.price }}</td>
@@ -10,6 +11,7 @@
             <Tr>
                 <td colspan="2" style="padding: 1px;">{{ child.code }}</td>
             </Tr>
+            {% endif %}
         {% endfor %}
     </table>
 {% endblock %}

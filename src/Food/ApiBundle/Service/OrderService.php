@@ -3,6 +3,7 @@
 namespace Food\ApiBundle\Service;
 
 use Food\ApiBundle\Common\JsonRequest;
+use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\Coupon;
 use Food\UserBundle\Entity\User;
@@ -555,13 +556,22 @@ class OrderService extends ContainerAware
             $productionTime = $order->getPlace()->getProductionTime();
         }
 
+        if($total_sum < 0) {
+            $total_sum = 0;
+        }
+
         $returner = [
             'order_id'    => $order->getId(),
+            'order_hash'    => $order->getOrderHash(),
             'total_price' => [
                 //'amount' => $order->getTotal() * 100,
                 'amount'   => $total_sum,
                 'currency' => $this->container->getParameter('currency_iso')
             ],
+            'delivery_price' => $order->getDeliveryPrice(),
+            'place_point_self_delivery' => $order->getPlacePointSelfDelivery(),
+            'payment_method' => $this->container->get('translator')->trans('mobile.payment.'.$order->getPaymentMethod()),
+            'order_date' => $order->getOrderDate()->format('H:i'),
             'discount'    => $discount,
             'state'       => [
                 'title'       => $title,
@@ -574,6 +584,7 @@ class OrderService extends ContainerAware
             'details'     => [
                 'restaurant_id'    => $order->getPlace()->getId(),
                 'restaurant_title' => $order->getPlace()->getName(),
+                'restaurant_only_alcohol' => $order->getPlace()->getOnlyAlcohol(),
                 'production_time' => (!empty($productionTime) && $productionTime > 0 ? $productionTime : 30),
                 'payment_options'  => [
                     'cash'        => ($order->getPaymentMethod() == "local" ? true : false),
@@ -615,6 +626,7 @@ class OrderService extends ContainerAware
         $returner['service']['customer_firstname'] = $order->getOrderExtra()->getFirstname();
         $returner['service']['customer_lastname'] = $order->getOrderExtra()->getLastname();
         $returner['service']['customer_phone'] = $order->getOrderExtra()->getPhone();
+        $returner['status'] = $order->getOrderStatus();
         if ($driver = $order->getDriver()) {
             $returner['driver'] = [
                 'id' => $driver->getId(),
@@ -623,7 +635,120 @@ class OrderService extends ContainerAware
             ];
         }
 
+        $returner['prices'] = [
+            'chart' => $order->getTotalBeforeDiscount(),
+            'delivery' => $order->getDeliveryPrice(),
+            'discount' => $order->getDiscountSum(),
+            'total' => $order->getTotal()
+        ];
+
         return $returner;
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return array
+     */
+    public function changeOrderStatus(Order $order, $status, $request = null)
+    {
+        $orderService = $this->container->get('food.order');
+        if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $this->formToEntityStatus($status))) {
+            switch($status) {
+                case 'confirm':
+                    $orderService->statusAccepted('restourant_ng');
+                    break;
+
+                case 'delay':
+                    $orderService->statusDelayed('restourant_ng', 'delay reason: '.$request->get('delay_reason'));
+                    $orderService->getOrder()->setDelayed(true);
+                    if (!empty($request)) {
+                        $orderService->getOrder()->setDelayReason($request->get('delay_reason'));
+                        $orderService->getOrder()->setDelayDuration($request->get('delay_duration'));
+                    }
+                    $orderService->saveDelay();
+                    break;
+
+                case 'cancel':
+                    $orderService->statusCanceled('restourant_ng');
+                    break;
+
+                case 'finish':
+                    $orderService->statusFinished('restourant_ng');
+                    break;
+
+                case 'completed':
+                    $orderService->statusCompleted('restourant_ng');
+                    break;
+            }
+
+            $orderService->saveOrder();
+
+            return array('status' => true, "new_status" => $status);
+        } else {
+            $errorMessage = sprintf(
+                'Restoranas %s bande uzsakymui #%d pakeisti uzsakymo statusa is "%s" i "%s"',
+                $orderService->getOrder()->getPlaceName(),
+                $orderService->getOrder()->getId(),
+                $order->getOrderStatus(),
+                $this->formToEntityStatus($status)
+            );
+            $this->container->get('logger')->alert($errorMessage);
+        }
+    }
+
+    /**
+     * @param string$formStatus
+     * @return string
+     */
+    public function formToEntityStatus($formStatus)
+    {
+        $statusTable = array(
+            'confirm' => \Food\OrderBundle\Service\OrderService::$status_accepted,
+            'delay' => \Food\OrderBundle\Service\OrderService::$status_delayed,
+            'cancel' => \Food\OrderBundle\Service\OrderService::$status_canceled,
+            'finish' => \Food\OrderBundle\Service\OrderService::$status_finished,
+            'partialy_completed' => \Food\OrderBundle\Service\OrderService::$status_partialy_completed,
+            'completed' => \Food\OrderBundle\Service\OrderService::$status_completed,
+        );
+
+        if (!isset($statusTable[$formStatus])) {
+            return '';
+        }
+
+        return $statusTable[$formStatus];
+    }
+
+    /**
+     * @param Order[] $orders
+     * @return array
+     */
+    public function getOrdersForResponseFull($orders, $hash)
+    {
+        /**
+         * @var PlacePoint $placePoint
+         */
+        $placePoint = $this->container->get('doctrine.orm.entity_manager')
+            ->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash])
+        ;
+        if (!empty($placePoint)) {
+            $ordersData = [
+                'restaurant' => [
+                    'title' => $placePoint->getPlace()->getName(),
+                    'address' => $placePoint->getAddress(),
+                    'logo' => $placePoint->getPlace()->getWebPath()
+                ]
+            ];
+            /**
+             * @var Order[] $orders
+             */
+            foreach ($orders as $order) {
+                $ordersData['orders'][] = $order->__toArray();
+            }
+        } else {
+            throw new \Exception('Place point not found.');
+        }
+        return $ordersData;
     }
 
     /**
@@ -681,7 +806,7 @@ class OrderService extends ContainerAware
                         'option_id' => $option->getDishOptionId()->getId(),
                         'price' => [
                             'count' => $option->getQuantity(),
-                            'amount' => $option->getPrice(),
+                            'amount' => sprintf("%.0f", ($option->getQuantity() * $option->getPrice() * 100)),
                             'currency' => $currency,
                         ],
                         'title' => $option->getDishOptionName()

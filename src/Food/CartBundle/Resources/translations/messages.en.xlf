@@ -134,6 +134,10 @@
                 <source>cart.checkout.cash_on_pickup</source>
                 <target>Cash on pickup</target>
             </trans-unit>
+            <trans-unit id="51401b79dc9570ffe18190d54b163468" resname="cart.checkout.cash_cc_on_pickup">
+                <source>cart.checkout.cash_cc_on_pickup</source>
+                <target>Cash/credit card on pickup</target>
+            </trans-unit>
             <trans-unit id="cart.checkout.corporate_pay" resname="cart.checkout.corporate_pay">
                 <source>cart.checkout.corporate_pay</source>
                 <target>Bank transfer at the end of the month</target>

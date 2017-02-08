@@ -1,5 +1,5 @@
 <?php
-@ini_set('memory_limit', '512M');
+//~ @ini_set('memory_limit', '512M');
 // Ijungti kai reikia laikinai stabdyti svetaines veikima del kokiu nors priezasciu
 //require 'maintenance.php';
 

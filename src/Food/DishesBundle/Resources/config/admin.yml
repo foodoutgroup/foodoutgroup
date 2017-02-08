@@ -288,16 +288,16 @@ services:
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
 
-    sonata.admin.street:
-                class: Food\AppBundle\Admin\StreetAdmin
-                tags:
-                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.street" }
-                arguments:
-                    - ~
-                    - Food\AppBundle\Entity\Street
-                    - ~
-                calls:
-                    - [ setTranslationDomain, [SonataAdminBundle]]
+    #~ sonata.admin.street:
+                #~ class: Food\AppBundle\Admin\StreetAdmin
+                #~ tags:
+                    #~ - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.street" }
+                #~ arguments:
+                    #~ - ~
+                    #~ - Food\AppBundle\Entity\Street
+                    #~ - ~
+                #~ calls:
+                    #~ - [ setTranslationDomain, [SonataAdminBundle]]
 
     sonata.admin.company_discount_level:
                 class: Food\UserBundle\Admin\DiscountLevelAdmin
@@ -386,27 +386,27 @@ services:
                 calls:
                     - [ setTranslationDomain, [SonataAdminBundle]]
 
-    sonata.admin.latency:
-                class: Food\ReportBundle\Admin\LatencyAdmin
-                tags:
-                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.report.latency_report" }
-                arguments:
-                    - ~
-                    - Food\OrderBundle\Entity\Order
-                    - 'FoodReportBundle:LatencyAdmin'
-                calls:
-                    - [ setTranslationDomain, [SonataAdminBundle]]
+    #~ sonata.admin.latency:
+                #~ class: Food\ReportBundle\Admin\LatencyAdmin
+                #~ tags:
+                    #~ - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.report.latency_report" }
+                #~ arguments:
+                    #~ - ~
+                    #~ - Food\OrderBundle\Entity\Order
+                    #~ - 'FoodReportBundle:LatencyAdmin'
+                #~ calls:
+                    #~ - [ setTranslationDomain, [SonataAdminBundle]]
 
-    sonata.admin.driver_latency:
-                class: Food\ReportBundle\Admin\DriverLatencyAdmin
-                tags:
-                    - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.report.driver_latency_report" }
-                arguments:
-                    - ~
-                    - Food\OrderBundle\Entity\Order
-                    - 'FoodReportBundle:DriverLatencyAdmin'
-                calls:
-                    - [ setTranslationDomain, [SonataAdminBundle]]
+    #~ sonata.admin.driver_latency:
+                #~ class: Food\ReportBundle\Admin\DriverLatencyAdmin
+                #~ tags:
+                    #~ - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.report.driver_latency_report" }
+                #~ arguments:
+                    #~ - ~
+                    #~ - Food\OrderBundle\Entity\Order
+                    #~ - 'FoodReportBundle:DriverLatencyAdmin'
+                #~ calls:
+                    #~ - [ setTranslationDomain, [SonataAdminBundle]]
 
     sonata.admin.params:
                 class: Food\AppBundle\Admin\ParamAdmin

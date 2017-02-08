@@ -109,6 +109,7 @@ class NavSyncCommand extends ContainerAwareCommand
                             // Save modified order if not a dry run - dont move down logic - Optimistic lock exception prevents all orders being saved :(
                             if (!$dryRun) {
                                 $em->flush();
+                                $em->clear();
                             }
                         }
                     }
@@ -142,6 +143,7 @@ class NavSyncCommand extends ContainerAwareCommand
         } catch (\Exception $e) {
             $output->writeln('Error syncing orders with Nav');
             $output->writeln('Error: '.$e->getMessage());
+            $output->writeln('Error: '.$e->getTraceAsString());
             throw $e;
         }
     }

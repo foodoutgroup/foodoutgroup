@@ -12,6 +12,7 @@ use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Coupon;
 use Food\OrderBundle\Entity\CouponGenerator;
+use Food\OrderBundle\Entity\CouponRange;
 use Food\OrderBundle\Entity\CouponUser;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\OrderDeliveryLog;
@@ -22,6 +23,7 @@ use Food\OrderBundle\Entity\OrderLog;
 use Food\OrderBundle\Entity\OrderMailLog;
 use Food\OrderBundle\Entity\OrderStatusLog;
 use Food\OrderBundle\Entity\OrderToDriver;
+use Food\OrderBundle\Entity\OrderToRestaurant;
 use Food\OrderBundle\Entity\PaymentLog;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
@@ -590,6 +592,7 @@ class OrderService extends ContainerAware
 
             if (!$order->getOrderFromNav()) {
                 if (!$order->getPreorder()) {
+                    /*
                     $miscService = $this->container->get('food.app.utils.misc');
 
                     if ($order->getDeliveryType() == self::$deliveryPickup) {
@@ -599,6 +602,7 @@ class OrderService extends ContainerAware
                         $timeShift = $miscService->parseTimeToMinutes($placeService->getDeliveryTime($order->getPlace(), $order->getPlacePoint()));
                     }
 
+                    $this->logOrder($order, 'calculating_delivery_time', 'Old delivery time: ' . $order->getDeliveryTime()->format('Y-m-d H:i:s'));
                     $this->logOrder($order, 'calculating_delivery_time', 'Setting delivery time with a parsed value of ' . $timeShift . ' minutes');
                     if (empty($timeShift) || $timeShift <= 0) {
                         $timeShift = 60;
@@ -607,6 +611,7 @@ class OrderService extends ContainerAware
                     $dt = new \DateTime('now');
                     $dt->modify('+' . $timeShift . ' minutes');
                     $order->setDeliveryTime($dt);
+                    */
                 }
                 $this->saveOrder();
                 $this->_notifyOnAccepted();
@@ -961,7 +966,7 @@ class OrderService extends ContainerAware
 
         $this->createDiscountCode($order);
 
-        if ($this->getOrder()->getOrderFromNav() == false) {
+        if (!$this->getOrder()->getOrderFromNav()) {
             $this->container->get('food.mail')->addEmailForSend(
                 $order,
                 MailService::$typeCompleted,
@@ -975,13 +980,10 @@ class OrderService extends ContainerAware
             && !$order->getPlacePointSelfDelivery()
             && $order->getDeliveryType() == OrderService::$deliveryDeliver
         ) {
-            // Patikrinam ar sitam useriui reikia generuoti sf
-            if (!$order->getUser()->getNoInvoice()) {
-                $mustDoNavDelete = $this->setInvoiceDataForOrder();
+            $mustDoNavDelete = $this->setInvoiceDataForOrder();
 
-                // Suplanuojam sf siuntima klientui
-                $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
-            }
+            // Suplanuojam sf siuntima klientui
+            $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
         }
 
         $this->updateDriver();
@@ -1004,6 +1006,17 @@ class OrderService extends ContainerAware
         $this->createDiscountCode($order);
 
         $this->updateDriver();
+
+        // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
+        if ($order->getPlace()->getSendInvoice()
+            && !$order->getPlacePointSelfDelivery()
+            && $order->getDeliveryType() == OrderService::$deliveryDeliver
+        ) {
+            $mustDoNavDelete = $this->setInvoiceDataForOrder();
+
+            // Suplanuojam sf siuntima klientui
+            $this->container->get('food.invoice')->addInvoiceToSend($order, $mustDoNavDelete);
+        }
 
         return $this;
     }
@@ -1360,17 +1373,24 @@ class OrderService extends ContainerAware
      */
     public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null)
     {
+        // TODO Fix prices calculation
         $this->createOrder($place, $placePoint, false, $orderDate);
         $this->getOrder()->setDeliveryType(($selfDelivery ? 'pickup' : 'deliver'));
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
 
-        $placeObject = $this->container->get('food.places')->getPlace($place);
 
+
+        $placeObject = $this->container->get('food.places')->getPlace($place);
+        $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
+
+        $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
+        $itemCollection = $this->getCartService()->getCartDishes($placeObject);
+        $enableDiscount = !$placeObject->getOnlyAlcohol();
+
+        // PRE ORDER
         if (!empty($orderDate)) {
-            $this->getOrder()->setOrderStatus(self::$status_preorder)
-                ->setPreorder(true)
-            ;
+            $this->getOrder()->setOrderStatus(self::$status_preorder)->setPreorder(true);
         } else if (empty($orderDate) && $selfDelivery) {
             // Lets fix pickup situation
             $miscService = $this->container->get('food.app.utils.misc');
@@ -1382,12 +1402,10 @@ class OrderService extends ContainerAware
             }
 
             $deliveryTime = new \DateTime("now");
-            $deliveryTime->modify("+" . $timeShift . " minutes");
-            $this->getOrder()->setDeliveryTime($deliveryTime);
+            $this->getOrder()->setDeliveryTime($deliveryTime->modify("+" . $timeShift . " minutes"));
         }
 
         $this->saveOrder();
-
 
         // save extra order data to separate table
         $orderExtra = new OrderExtra();
@@ -1409,64 +1427,59 @@ class OrderService extends ContainerAware
         }
 
         $this->getOrder()->setOrderExtra($orderExtra);
-
-        $sumTotal = 0;
-
-        $preSum = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
-
-        $deliveryPrice = $this->getCartService()->getDeliveryPrice(
-            $this->getOrder()->getPlace(),
-            $this->container->get('food.location')->getLocationFromSession(),
-            $this->getOrder()->getPlacePoint()
-        )
-        ;
+        $deliveryPrice = 0;
+        if (!$selfDelivery) {
+            $deliveryPrice = $this->getCartService()->getDeliveryPrice(
+                $this->getOrder()->getPlace(),
+                $this->container->get('food.location')->getLocationFromSession(),
+                $this->getOrder()->getPlacePoint()
+            );
+        }
 
         // Pritaikom nuolaida
+        $sumTotal = 0;
         $discountPercent = 0;
         $discountSum = 0;
-        $self_delivery = $this->getOrder()->getPlace()->getSelfDelivery();
 
+        $selfDelivery = $this->getOrder()->getPlace()->getSelfDelivery();
         $includeDelivery = true;
-        if (!empty($coupon) && $coupon instanceof Coupon) {
-            $order = $this->getOrder();
-            $order->setCoupon($coupon)
-                ->setCouponCode($coupon->getCode())
-            ;
-
-            $discountSize = $coupon->getDiscount();
-
-            if (!empty($discountSize)) {
-                $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
-                $discountPercent = $discountSize;
-            } else {
-                $discountSum = $coupon->getDiscountSum();
-            }
-
-            $order->setDiscountSize($discountSize)
-                ->setDiscountSum($discountSum)
-            ;
-
-            if ($coupon->getFreeDelivery()) {
-                $deliveryPrice = 0;
-            }
 
 
-            if ($coupon->getIgnoreCartPrice() && !$coupon->getFreeDelivery()
-                || !$coupon->getIncludeDelivery()
-            ) {
-                $includeDelivery = false;
-            }
+        if($enableDiscount) {
+            if (!empty($coupon) && $coupon instanceof Coupon) {
 
-        } elseif ($user->getIsBussinesClient()) {
-            // Jeigu musu logistika, tada taikom fiksuota nuolaida
-            if ($self_delivery == 0) {
-                $discountSize = $this->container->get('food.user')->getDiscount($user);
-                $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
-                $discountPercent = $discountSize;
-                $this->getOrder()
-                    ->setDiscountSize($discountSize)
-                    ->setDiscountSum($discountSum)
-                ;
+                $order = $this->getOrder();
+                $order->setCoupon($coupon)
+                    ->setCouponCode($coupon->getCode());
+
+
+                $discountSize = $coupon->getDiscount();
+
+                if (!empty($discountSize)) {
+                    $discountSum = $this->getCartService()->getTotalDiscount($itemCollection, $discountSize);
+                    $discountPercent = $discountSize;
+                } else {
+                    $discountSum = $coupon->getDiscountSum();
+                }
+
+                $this->getOrder()->setDiscountSize($discountSize)->setDiscountSum($discountSum);
+
+                if ($coupon->getFreeDelivery()) {
+                    $deliveryPrice = 0;
+                }
+
+                if ($coupon->getIgnoreCartPrice() && !$coupon->getFreeDelivery() || !$coupon->getIncludeDelivery()) {
+                    $includeDelivery = false;
+                }
+
+            } elseif ($user->getIsBussinesClient()) {
+                // Jeigu musu logistika, tada taikom fiksuota nuolaida
+                if (!$selfDelivery) {
+                    $discountSize = $this->container->get('food.user')->getDiscount($user);
+                    $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+                    $discountPercent = $discountSize;
+                    $this->getOrder()->setDiscountSize($discountSize)->setDiscountSum($discountSum);
+                }
             }
         }
 
@@ -1474,32 +1487,29 @@ class OrderService extends ContainerAware
          * Na daugiau kintamuju jau nebesugalvojau :/
          */
         $discountOverTotal = 0;
-        if ($discountSum > $preSum) {
-            $discountOverTotal = $discountSum - $preSum;
-            $discountSum = $preSum;
+        if ($discountSum > $priceBeforeDiscount) {
+            $discountOverTotal = $discountSum - $priceBeforeDiscount;
+            $discountSum = $priceBeforeDiscount;
         }
         $discountSumLeft = $discountSum;
         $discountSumTotal = $discountSum;
         $discountUsed = 0;
-        $relationPart = $discountSum / $preSum;
-        foreach ($this->getCartService()->getCartDishes($placeObject) as $cartDish) {
-            $options = $this->getCartService()->getCartDishOptions($cartDish);
-            $price = $cartDish->getDishSizeId()->getCurrentPrice();
-            $origPrice = $cartDish->getDishSizeId()->getPrice();
+        $relationPart = $discountSum / $priceBeforeDiscount;
+
+        foreach ($itemCollection as $cartDish) {
+
+            $priceBeforeDiscount = $cartDish->getDishSizeId()->getPrice();
             $discountPercentForInsert = 0;
-            if ($cartDish->getIsFree()) {
-                $price = 0;
-                $origPrice = $cartDish->getDishSizeId()->getCurrentPrice();
-            } else {
-                if (!$this->getCartService()->isAlcohol($cartDish->getDishId())) {
-                    if ($origPrice == $price && $discountPercent > 0) {
-                        $price = round($origPrice * ((100 - $discountPercent) / 100), 2);
+
+            $price = 0;
+            if (!$cartDish->getIsFree()) {
+                $price = $cartDish->getDishSizeId()->getCurrentPrice();
+                if (!$this->getCartService()->isAlcohol($cartDish->getDishId()) && $enableDiscount) {
+                    if ($priceBeforeDiscount == $price && $discountPercent > 0) { // todo? :::................... $priceBeforeDiscount == $price
+                        $price = round($priceBeforeDiscount * ((100 - $discountPercent) / 100), 2);
                         $discountPercentForInsert = $discountPercent;
                     } elseif ($discountSumLeft > 0) {
-                        /**
-                         * Uz toki graba ash degsiu pragare.... :/
-                         */
-                        $priceForInsert = $price;
+
                         $discountPart = (float)round($price * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
                         if ($discountPart < $discountSumLeft) {
                             $discountSum = $discountPart;
@@ -1512,24 +1522,27 @@ class OrderService extends ContainerAware
                         }
                         $discountSum = (float)round($discountSum / $cartDish->getQuantity() * 100, 2) / 100;
                         $priceForInsert = $price - $discountSum;
-                        $discountSumLeft = $discountSumLeft - $discountSum;
-                        $discountUsed = $discountUsed + $discountSum;
+                        $discountSumLeft -= $discountSum;
+                        $discountUsed += $discountSum;
                         $price = $priceForInsert;
                     }
                 }
             }
 
-            $dish = new OrderDetails();
 
+            $dish = new OrderDetails();
             $dish->setDishId($cartDish->getDishId())
                 ->setOrderId($this->getOrder())
                 ->setQuantity($cartDish->getQuantity())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
                 ->setPrice($price)
-                ->setOrigPrice($origPrice)
+                ->setOrigPrice($priceBeforeDiscount)
+                ->setPriceBeforeDiscount($priceBeforeDiscount)
                 ->setPercentDiscount($discountPercentForInsert)
                 ->setDishName($cartDish->getDishId()->getName())
+                ->setNameToNav(mb_substr($cartDish->getDishId()->getNameToNav() . $cartDish->getDishSizeId()->getUnit()->getNameToNav(), 0, 32, 'UTF-8'))
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
+                ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
                 ->setIsFree($cartDish->getIsFree())
@@ -1539,20 +1552,44 @@ class OrderService extends ContainerAware
 
             $sumTotal += $cartDish->getQuantity() * $price;
 
-            $dishOptionPrices = $this->container->get('food.dishes')->getDishOptionsPrices($cartDish->getDishId());
-            foreach ($options as $opt) {
-                
-                if (isset($dishOptionPrices[$cartDish->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()])) {
-                    $dishOptionPrice = $dishOptionPrices[$cartDish->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()];
+            $optionCollection = $this->getCartService()->getCartDishOptions($cartDish);
+            $dishOptionPricesBeforeDiscount = $this->container->get('food.dishes')->getDishOptionsPrices($cartDish->getDishId());
+            foreach ($optionCollection as $opt) {
+
+                if (isset($dishOptionPricesBeforeDiscount[$cartDish->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()])) {
+                    $dishOptionPricesBeforeDiscount = $dishOptionPricesBeforeDiscount[$cartDish->getDishSizeId()->getId()][$opt->getDishOptionId()->getId()];
                 } else {
-                    $dishOptionPrice = $opt->getDishOptionId()->getPrice();
+                    $dishOptionPricesBeforeDiscount = $opt->getDishOptionId()->getPrice();
+                }
+
+                $dishOptionPrice = $dishOptionPricesBeforeDiscount;
+
+                if($enableDiscount && $discountSumLeft > 0) {
+
+                    $discountPart = (float)round($dishOptionPrice * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
+                    if ($discountPart < $discountSumLeft) {
+                        $discountSum = $discountPart;
+                    } else {
+                        if ($discountUsed + $discountPart > $discountSumTotal) {
+                            $discountSum = $discountSumTotal - $discountUsed;
+                        } else {
+                            $discountSum = $discountSumLeft;
+                        }
+                    }
+                    $discountSum = (float)round($discountSum / $cartDish->getQuantity() * 100, 2) / 100;
+                    $priceForInsert = $dishOptionPrice - $discountSum;
+                    $discountSumLeft -= $discountSum;
+                    $discountUsed += $discountSum;
+                    $dishOptionPrice = $priceForInsert;
                 }
 
                 $orderOpt = new OrderDetailsOptions();
                 $orderOpt->setDishOptionId($opt->getDishOptionId())
                     ->setDishOptionCode($opt->getDishOptionId()->getCode())
                     ->setDishOptionName($opt->getDishOptionId()->getName())
+                    ->setNameToNav($opt->getDishOptionId()->getNameToNav())
                     ->setPrice($dishOptionPrice)
+                    ->setPriceBeforeDiscount($dishOptionPricesBeforeDiscount)
                     ->setDishId($cartDish->getDishId())
                     ->setOrderId($this->getOrder())
                     ->setQuantity($cartDish->getQuantity())// @todo Kolkas paveldimas. Veliau taps valdomas kiekvienam topingui atskirai
@@ -1593,20 +1630,16 @@ class OrderService extends ContainerAware
         }
 
         // jei ignoruoti pristatymo min krepseli bet yra pristatymas mokamas
-        if ($includeDelivery) {
+        //~ if ($includeDelivery) {
             if ($discountOverTotal > 0) {
                 $deliveryPrice = $deliveryPrice - $discountOverTotal;
                 if ($deliveryPrice < 0) {
                     $deliveryPrice = 0;
                 }
             }
-        }
-
-        if (!$selfDelivery) {
             $sumTotal += $deliveryPrice;
-        } else {
-            $deliveryPrice = 0;
-        }
+        //~ }
+
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
         $this->saveOrder();
@@ -1632,6 +1665,7 @@ class OrderService extends ContainerAware
             //Update the last update time ;)
             $this->order->setLastUpdated(new \DateTime("now"));
             $this->getEm()->persist($this->order);
+
             $this->getEm()->flush();
 
             $this->markOrderForNav($this->order);
@@ -1681,6 +1715,24 @@ class OrderService extends ContainerAware
         $this->order = $order[0];
 
         return $this->order;
+    }
+
+    public function getPlacepointByHash($hash)
+    {
+        $placePoint = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash]);
+
+        return $placePoint;
+    }
+
+    public function getOrdersByPlacepointHash($hash)
+    {
+        $placePoint = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash]);
+        if (!empty($placePoint)) {
+            $orders = $this->getEm()->getRepository('FoodOrderBundle:Order')->getOrdersByPlacepointFiltered($placePoint);
+            return $orders;
+        } else {
+            throw new \Exception('Place point not found.');
+        }
     }
 
     /**
@@ -2237,6 +2289,17 @@ class OrderService extends ContainerAware
     {
         $order = $this->getOrder();
 
+        $syncUrl = $order->getPlacePoint()->getSyncUrl();
+        if (!empty($syncUrl)) {
+            $otr = new OrderToRestaurant();
+//            $otr->setState($order->getOrderStatus());
+            $otr->setState(OrderService::$status_new);
+            $otr->setDateAdded(new \DateTime());
+            $otr->setTryCount(0);
+            $otr->setOrder($this->order);
+            $this->getEm()->persist($otr);
+        }
+
         if (in_array(
             $order->getOrderStatus(),
             [OrderService::$status_pre, OrderService::$status_unapproved]
@@ -2245,9 +2308,9 @@ class OrderService extends ContainerAware
         }
 
         // Preorder tik navision siunciam i NAV info, o paprastus restoranus informuos cronas
-        if ($order->getOrderStatus() == OrderService::$status_preorder && !$order->getPlace()->getNavision()) {
-            return;
-        }
+        //if ($order->getOrderStatus() == OrderService::$status_preorder && !$order->getPlace()->getNavision()) {
+        //    return;
+        //}
 
         // Inform by email about create and if Nav - send it to Nav
         if (!$isReminder) {
@@ -2270,10 +2333,12 @@ class OrderService extends ContainerAware
         // Inform restourant about new order
 
         if ($isReminder) {
-            $orderConfirmRoute = 'http://' . $domain
-                . $this->container->get('router')
-                    ->generate('ordermobile', ['hash' => $order->getOrderHash()])
-            ;
+            $orderConfirmRoute = $this->container->get('router')
+                    ->generate('ordermobile', ['hash' => $order->getOrderHash()]);
+
+            if (strpos($orderConfirmRoute, 'http') === false) {
+                $orderConfirmRoute = 'http://' . $domain . $orderConfirmRoute;
+            }
 
             $orderSmsTextTranslation = $translator->trans('general.sms.order_reminder', [
                 'order_id' => $order->getId()
@@ -2282,10 +2347,12 @@ class OrderService extends ContainerAware
         } else {
             // Jei preorder - sms siuncia cronas ir nezino apie esama domena..
             if ($order->getPreorder()) {
-                $orderConfirmRoute = 'http://' . $domain
-                    . $this->container->get('router')
-                        ->generate('ordermobile', ['hash' => $order->getOrderHash()])
-                ;
+                $orderConfirmRoute = $this->container->get('router')
+                        ->generate('ordermobile', ['hash' => $order->getOrderHash()]);
+
+                if (strpos($orderConfirmRoute, 'http') === false) {
+                    $orderConfirmRoute = 'http://' . $domain . $orderConfirmRoute;
+                }
             } else {
                 $orderConfirmRoute = $this->container->get('router')
                     ->generate('ordermobile', ['hash' => $order->getOrderHash()], true)
@@ -2668,7 +2735,7 @@ class OrderService extends ContainerAware
             $this->logOrder($order, 'NAV_update_prices');
             $returner = $nav->updatePricesNAV($orderRenew);
             sleep(1);
-            $this->logOrder($order, 'NAV_update_prices_return', 'returner', $returner->return_value);
+            $this->logOrder($order, 'NAV_update_prices_return', 'returner', json_encode($returner));
             if ($returner->return_value == "TRUE") {
                 $this->logOrder($order, 'NAV_process_order');
                 $returner = $nav->processOrderNAV($orderRenew);
@@ -2845,6 +2912,17 @@ class OrderService extends ContainerAware
 
         $this->getEm()->persist($log);
         $this->getEm()->flush();
+
+//        if(!empty($order->getPlacePoint()->getSyncUrl())
+//            && !in_array($newStatus, [self::$status_preorder, self::$status_pre, self::$status_unapproved, self::$status_nav_problems, self::$status_partialy_completed])) {
+//            $otr = new OrderToRestaurant();
+//            $otr->setOrder($order);
+//            $otr->setDateAdded(new \DateTime());
+//            $otr->setTryCount(0);
+//            $otr->setState($newStatus);
+//            $this->getEm()->persist($otr);
+//            $this->getEm()->flush();
+//        }
     }
 
     public function sentToDriver($order)
@@ -3648,18 +3726,20 @@ class OrderService extends ContainerAware
             )
             ;
             if (!$data['valid']) {
-                $formHasErrors = true;
                 if ($data['errcode']['code'] == "2" || $data['errcode']['code'] == "3") {
                     $formErrors[] = [
                         'message' => 'order.form.errors.problems_with_dish',
                         'text'    => $data['errcode']['problem_dish']
                     ];
+                    $formHasErrors = true;
                 } elseif ($data['errcode']['code'] == 8) {
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_work';
+                    $formHasErrors = true;
                 } elseif ($data['errcode']['code'] == 6) {
                     $formErrors[] = 'order.form.errors.nav_restaurant_no_setted';
-                } elseif ($data['errcode']['code'] == 255) {
                     $formHasErrors = true;
+                } elseif ($data['errcode']['code'] == 255) {
+                    //~ $formHasErrors = true;
                     // $formErrors[] = 'order.form.errors.nav_empty_cart';
                 }
             }
@@ -4062,7 +4142,10 @@ class OrderService extends ContainerAware
     {
         $this->codeGenerator($order);
 
-        $this->_freeDeliveryDiscount($order);
+        $free_delivery_discount_code_generation_enable = $this->container->get('food.app.utils.misc')->getParam('free_delivery_discount_code_generation_enable');
+        if($free_delivery_discount_code_generation_enable) {
+            $this->_freeDeliveryDiscount($order);
+        }
     }
 
     /**
@@ -4323,7 +4406,8 @@ class OrderService extends ContainerAware
             $stmt = $this->container->get('doctrine')->getConnection()->prepare($query);
             $stmt->execute();
             $result = $stmt->fetchColumn();
-            if ($result > 0 && $result % 3 == 0) {
+            $free_delivery_discount_code_generation_after_completed_orders = $this->container->get('food.app.utils.misc')->getParam('free_delivery_discount_code_generation_after_completed_orders');
+            if ($result > 0 && $result % $free_delivery_discount_code_generation_after_completed_orders == 0) {
                 $templateId = $this->container->getParameter('mailer_send_free_delivery_discount');
                 $theCode = "CM" . strrev($order->getId()) . ($order->getId() % 10);
                 $newCode = new Coupon;

@@ -14,6 +14,22 @@
     </script>
 {% endblock %}
 {% block body %}
+    <style type="text/css">
+        form button.btn {
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        {% if order.orderStatus in ['canceled', 'canceled_produced'] %}
+        body {
+            background: #f2dbd4;
+        }
+        {% elseif order.preorder %}
+        body {
+            background: #d6ebf2;
+        }
+        {% endif %}
+    </style>
     <table class="table table-bordered table condensed" id="maintable">
         <thead>
         <tr>

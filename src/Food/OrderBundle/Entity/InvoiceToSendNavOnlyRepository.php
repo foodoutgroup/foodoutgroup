@@ -12,9 +12,13 @@ class InvoiceToSendNavOnlyRepository extends EntityRepository
     public function getInvoiceToSendNavOnly()
     {
         return $this->createQueryBuilder('i')
-                    ->where('i.status = :status')
-                    ->setParameters(['status' => 'unsent'])
-                    ->getQuery()
-                    ->getResult();
+            ->where('i.status = :status')
+            ->andWhere('i.dateAdded >= :date')
+            ->setParameters([
+                'status' => 'unsent',
+                'date' => new \DateTime('-7 day')
+            ])
+            ->getQuery()
+            ->getResult();
     }
 }

@@ -33,13 +33,13 @@ class ParamLog
 
     /**
      * @var string
-     * @ORM\Column(name="old_value", type="string", length=50)
+     * @ORM\Column(name="old_value", type="text")
      */
     private $oldValue;
 
     /**
      * @var string
-     * @ORM\Column(name="new_value", type="string", length=50)
+     * @ORM\Column(name="new_value", type="text")
      */
     private $newValue;
 

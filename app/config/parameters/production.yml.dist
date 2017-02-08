@@ -1,10 +1,10 @@
 parameters:
     database_driver: pdo_mysql
-    database_host: localhost
+    database_host: maindb
     database_port: 3306
     database_name: foodoutlt
     database_user: foodoutlt
-    database_password: U75RWShbY3n6c0G1
+    database_password: NWZv50Evwus004II
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
@@ -18,13 +18,13 @@ parameters:
 
     driver.send_to_external: true
     driver.city_filter: ["Vilnius"]
-    driver.socket_address: tcp://s2.foodout.lt:7778
+    driver.socket_address: tcp://cl1:7778
     driver.socket_hash: api
 
     locale: lt
     locales: ["lt", "en", "ru"]
-    available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Utena", "Plungė"]
-    available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda", "Siauliai", "Panevezys", "Alytus", "Utena", "Plunge"]
+    available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Marijampolė", "Utena", "Kėdainiai", "Plungė", "Palanga"]
+    available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda", "Siauliai", "Panevezys", "Alytus", "Marijampole", "Utena", "Kedainiai", "Plunge", "Palanga"]
     available_locales: ["lt", "en", "ru"]
     available_locales_routing: lt | en | ru
     cloudfront_url: foodout.lt
@@ -39,7 +39,7 @@ parameters:
         klaipėda: []
         ryga: [karolis.m@foodout.lt]
     order.accept_notify_emails: []
-    order.cancel_notify_emails: [pagalba@foodout.lt]
+    order.cancel_notify_emails: []
     accounting_email: "buhalterija@foodout.lt"
     b2b_invoice_email: ""
     payment.methods:

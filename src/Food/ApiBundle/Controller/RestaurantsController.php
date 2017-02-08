@@ -2,6 +2,7 @@
 
 namespace Food\ApiBundle\Controller;
 
+use Food\ApiBundle\Exceptions\ApiException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -112,7 +113,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getRestaurantsAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -201,7 +202,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getRestaurantsFilteredAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -296,7 +297,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getRestaurantAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -304,7 +305,13 @@ class RestaurantsController extends Controller
 
         $this->get('logger')->alert('Restaurants:getRestaurantAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        $realResponse = new JsonResponse($response);
+        $responseHeaders = $realResponse->headers;
+        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
+        $responseHeaders->set('Access-Control-Allow-Origin', '*');
+        $responseHeaders->set('Access-Control-Allow-Methods', 'GET');
+
+        return $realResponse;
     }
 
     /**
@@ -340,7 +347,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getMenuAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -376,7 +383,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getMenuItemAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -425,7 +432,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getMenuCategoriesAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );

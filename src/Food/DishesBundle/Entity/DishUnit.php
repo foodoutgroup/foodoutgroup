@@ -36,6 +36,14 @@ class DishUnit implements Translatable
      * @var string
      *
      * @Gedmo\Translatable
+     * @ORM\Column(name="name_to_nav", type="string", length=32, nullable=true)
+     */
+    private $nameToNav;
+
+    /**
+     * @var string
+     *
+     * @Gedmo\Translatable
      * @ORM\Column(name="short_name", type="string", length=45)
      */
     private $shortName;
@@ -142,7 +150,7 @@ class DishUnit implements Translatable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -158,14 +166,14 @@ class DishUnit implements Translatable
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -181,14 +189,14 @@ class DishUnit implements Translatable
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -204,14 +212,14 @@ class DishUnit implements Translatable
     public function setEditedAt($editedAt)
     {
         $this->editedAt = $editedAt;
-    
+
         return $this;
     }
 
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEditedAt()
     {
@@ -269,14 +277,14 @@ class DishUnit implements Translatable
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
     /**
      * Get createdBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -292,14 +300,14 @@ class DishUnit implements Translatable
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
         $this->editedBy = $editedBy;
-    
+
         return $this;
     }
 
     /**
      * Get editedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getEditedBy()
     {
@@ -315,14 +323,14 @@ class DishUnit implements Translatable
     public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
     {
         $this->place = $place;
-    
+
         return $this;
     }
 
     /**
      * Get place
      *
-     * @return \Food\DishesBundle\Entity\Place 
+     * @return \Food\DishesBundle\Entity\Place
      */
     public function getPlace()
     {
@@ -338,14 +346,14 @@ class DishUnit implements Translatable
     public function setUnitCategory(\Food\DishesBundle\Entity\DishUnitCategory $unitCategory = null)
     {
         $this->unitCategory = $unitCategory;
-    
+
         return $this;
     }
 
     /**
      * Get unitCategory
      *
-     * @return \Food\DishesBundle\Entity\DishUnitCategory 
+     * @return \Food\DishesBundle\Entity\DishUnitCategory
      */
     public function getUnitCategory()
     {
@@ -361,17 +369,40 @@ class DishUnit implements Translatable
     public function setShortName($shortName)
     {
         $this->shortName = $shortName;
-    
+
         return $this;
     }
 
     /**
      * Get shortName
      *
-     * @return string 
+     * @return string
      */
     public function getShortName()
     {
         return $this->shortName;
+    }
+
+    /**
+     * Set nameToNav
+     *
+     * @param string $nameToNav
+     * @return DishUnit
+     */
+    public function setNameToNav($nameToNav)
+    {
+        $this->nameToNav = $nameToNav;
+    
+        return $this;
+    }
+
+    /**
+     * Get nameToNav
+     *
+     * @return string 
+     */
+    public function getNameToNav()
+    {
+        return $this->nameToNav;
     }
 }

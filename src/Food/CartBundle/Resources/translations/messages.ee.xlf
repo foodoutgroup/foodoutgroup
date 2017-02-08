@@ -76,28 +76,28 @@
             </trans-unit>
             <trans-unit id="cart.checkout.order_now" resname="cart.checkout.order_now">
                 <source>cart.checkout.order_now</source>
-                <target>Užsakyti dabar</target>
+                <target>Broneeri nüüd</target>
             </trans-unit>
             <trans-unit id="cart.checkout.order_later" resname="cart.checkout.order_later">
                 <source>cart.checkout.order_later</source>
-                <target>Užsakyti vėlesniam laikui</target>
+                <target>Broneerige hiljem</target>
             </trans-unit>
             <trans-unit id="72ac47fdc9d8610d13cc86b4dd35e24f" resname="cart.checkout.phone_placeholder">
-                <source>cart.checkout.phone_placeholder</source><target>37060000000</target>
+                <source>cart.checkout.phone_placeholder</source><target>372 56 837 237</target>
             </trans-unit>
             <trans-unit id="bc8439664f3800919e17d58ad5eaff4b" resname="cart.checkout.delivery_comment">
                 <source>cart.checkout.delivery_comment</source><target>Lisateave</target>
             </trans-unit>
             <trans-unit id="cart.checkout.cart_rules" resname="cart.checkout.cart_rules">
-                <source>cart.checkout.cart_rules</source><target><![CDATA[Olen <a href="#rules" name="order_rules" class="fancy-box">taisyklėmis</a>]]></target>
+                <source>cart.checkout.cart_rules</source><target><![CDATA[Olen <a href="#rules" name="order_rules" class="fancy-box">reeglid</a>]]></target>
             </trans-unit>
             <trans-unit id="cart.checkout.newsletter_subscribe" resname="cart.checkout.newsletter_subscribe">
                 <source>cart.checkout.newsletter_subscribe</source>
-                <target><![CDATA[Sutinku gauti skaniausias Foodout.lt <a href="#privacy" name="newsletter_subscribe" class="fancy-box">naujienas</a>]]></target>
+                <target><![CDATA[Ma tahan saada kõige maitsvat Foodout.lt <a href="#privacy" name="newsletter_subscribe" class="fancy-box">uudised</a>]]></target>
             </trans-unit>
             <trans-unit id="58234b47f3f611cffbbd19bbaaa7dd73" resname="cart.checkout.delivery_comment_placeholder">
                 <source>cart.checkout.delivery_comment_placeholder</source>
-                <target>Įveskite laiptinės kodą, aukštą ir kitą kurjeriui naudingą informaciją...</target>
+                <target>Sisesta ukse koodi korrusel ja teine kuller kasulikku teavet ...</target>
             </trans-unit>
             <trans-unit id="dff708f5d1b6a869b2c01aca17e8d7b0" resname="cart.checkout.block_title_secure_payment">
                 <source>cart.checkout.block_title_secure_payment</source><target>Turvaline tasumine</target>
@@ -107,6 +107,10 @@
             </trans-unit>
             <trans-unit id="51401b79dc9570ffe18190d54b163467" resname="cart.checkout.cash_on_pickup">
                 <source>cart.checkout.cash_on_pickup</source><target>Sularahas, kohaletoimetamise ajal</target>
+            </trans-unit>
+            <trans-unit id="51401b79dc9570ffe18190d54b163468" resname="cart.checkout.cash_cc_on_pickup">
+                <source>cart.checkout.cash_cc_on_pickup</source>
+                <target>Sularahas, kohaletoimetamise ajal</target>
             </trans-unit>
             <trans-unit id="cart.checkout.corporate_pay" resname="cart.checkout.corporate_pay">
                 <source>cart.checkout.corporate_pay</source><target>Maksekorraldusega, kuu lõpus</target>
@@ -379,7 +383,11 @@ Vilnius</target>
             </trans-unit>
             <trans-unit id="general.coupon.note_text" resname="general.coupon.note_text">
                 <source>general.coupon.note_text</source>
-                <target>* Kodas negalioja akcijinėms prekėms bei alkoholiniams gėrimams (nuolaidos nesumuojamos). Tai netaikoma nuolaidų kuponams, kuriais galima padengti visą užsakymo sumą.</target>
+                <target>* Kood ei akcijinėms kaupade ja alkohoolsed joogid (soodustust ei saa kombineerida). See ei sooduskuponge, mida saab katta kogu broneeringu summa.</target>
+            </trans-unit>
+            <trans-unit id="general.coupon.cannot_apply_for_alco" resname="general.coupon.cannot_apply_for_alco">
+                <source>general.coupon.cannot_apply_for_alco</source>
+                <target>The discount code does not apply for alcoholic beverages</target>
             </trans-unit>
             <trans-unit id="cart.block.discount_sum" resname="cart.block.discount_sum">
                 <source>cart.block.discount_sum</source><target>Soodustus</target>

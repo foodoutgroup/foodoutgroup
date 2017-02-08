@@ -1,4 +1,10 @@
+api_base:
+    resource: "@ApiBaseBundle/Resources/config/routing.yml"
+    prefix:   /
 
+api_v2:
+    resource: "@ApiV2Bundle/Resources/config/routing.yml"
+    prefix:   /api/v2/
 
 food_monitoring:
     resource: "@FoodMonitoringBundle/Resources/config/routing.yml"
@@ -135,6 +141,10 @@ banned:
     path: /banned/
     defaults: { _controller: FoodAppBundle:Default:banned}
 
+banned_email:
+    path: /banned-email/
+    defaults: { _controller: FoodAppBundle:Default:bannedEmail}
+
 logistics_order_status:
     path: /logistics/status-update/
     defaults: { _controller: FoodOrderBundle:Logistics:orderStatus}
@@ -146,22 +156,27 @@ logistics_driver_assign:
 ordermobile:
     path: /o/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }
+    schemes:  [http]
 
 order_support_mobile:
     path: /o-spr/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobileAdmin, hash: ~, action: ~ }
+    schemes:  [http]
 
 drivermobile:
     path: /d/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobileDriver, hash: ~, action: ~ }
+    schemes:  [http]
 
 driver_mobile_invoice:
     path: /invoice/driver/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:driverInvoice, hash: ~, action: ~ }
+    schemes:  [http]
 
 restaurant_mobile_invoice:
     path: /invoice/restaurant/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:restaurantInvoice, hash: ~, action: ~ }
+    schemes:  [http]
 
 local_biller_accept:
     # path: /payments/local/accept/

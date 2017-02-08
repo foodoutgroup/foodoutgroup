@@ -3,6 +3,7 @@
 namespace Food\OrderBundle\Entity;
 use Doctrine\ORM\EntityRepository;
 use Food\DishesBundle\Entity\Place;
+use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -227,6 +228,7 @@ class OrderRepository extends EntityRepository
         $filter = array(
             'daily_grouped_report' =>  true,
             'order_date_between' => array('from' => $dateFrom, 'to' => $dateTo),
+            'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
         $orders = $this->getOrdersByFilter($filter, 'list');
@@ -906,6 +908,37 @@ class OrderRepository extends EntityRepository
     }
 
     /**
+     * @return Order[]|array
+     */
+    public function getUnclosedSelfDeliveryOrders()
+    {
+        $orderStatus = "'".OrderService::$status_accepted
+            ."', '".OrderService::$status_assiged
+            ."', '".OrderService::$status_finished
+            ."', '".OrderService::$status_delayed."'";
+        $paymentStatus = OrderService::$paymentStatusComplete;
+
+        $dateFilter = new \DateTime("-120 minute");
+        $dateFilter = $dateFilter->format("Y-m-d H:i:s");
+
+        $query = "
+          SELECT
+            o.id,
+            o.delivery_time
+          FROM orders o
+          WHERE
+            o.order_status IN ({$orderStatus})
+            AND o.payment_status = '{$paymentStatus}'
+            AND o.place_point_self_delivery = TRUE
+            AND o.delivery_time < '{$dateFilter}'
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
      * @return array
      */
     public function getPreOrders()
@@ -1325,5 +1358,164 @@ class OrderRepository extends EntityRepository
         ));
 
         return $query->getResult();
+    }
+
+    /**
+     * @param PlacePoint $placePoint
+     * @return Order[]
+     */
+    public function getOrdersByPlacepointFiltered(PlacePoint $placePoint)
+    {
+        if (date('G') < 6) {
+            $dateStart = date('Y-m-d H:i:s', strtotime('-1 day 06:00:00'));
+            $dateEnd = date('Y-m-d H:i:s', strtotime('06:00:00'));
+        } else {
+            $dateStart = date('Y-m-d H:i:s', strtotime('06:00:00'));
+            $dateEnd = date('Y-m-d H:i:s', strtotime('+1 day 06:00:00'));
+        }
+
+        $queryBuilder = $this->createQueryBuilder('o');
+        $orders = $queryBuilder
+            ->where('o.place_point = :placePoint')
+            ->andWhere(
+                $queryBuilder->expr()->orX(
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in('o.order_status',
+                            [
+                                OrderService::$status_new,
+                                OrderService::$status_accepted,
+                                OrderService::$status_assiged,
+                                OrderService::$status_delayed,
+                                OrderService::$status_forwarded,
+                                OrderService::$status_finished,
+                            ]
+                        ),
+                        $queryBuilder->expr()->between('o.deliveryTime', ':deliveryDateFilterStart', ':deliveryDateFilterEnd')
+                    ),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in('o.order_status', [OrderService::$status_canceled]),
+                        $queryBuilder->expr()->gte('o.deliveryTime', ':canceledDeliveryDateFilter')
+                    ),
+                    $queryBuilder->expr()->andX(
+                        $queryBuilder->expr()->in('o.order_status', [OrderService::$status_preorder]),
+                        $queryBuilder->expr()->gte('o.deliveryTime', ':preorderDeliveryDateFilter')
+                    )
+                )
+            )
+            ->setParameter('placePoint', $placePoint->getId())
+            ->setParameter('deliveryDateFilterStart', $dateStart)
+            ->setParameter('deliveryDateFilterEnd', $dateEnd)
+            ->setParameter('canceledDeliveryDateFilter', date('Y-m-d H:i:s', strtotime('-6 hour')))
+            ->setParameter('preorderDeliveryDateFilter', date('Y-m-d H:i:s', strtotime('-72 hour')))
+            ->orderBy('o.deliveryTime', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $orders;
+    }
+
+    /**
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     * @param string $orderStatus
+     * @return array
+     */
+    public function getTotalSumByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
+    {
+        if (empty($orderStatus)) {
+            $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+        } else {
+            $orderStatus = "'".$orderStatus."'";
+        }
+
+        $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
+
+        $query = "
+          SELECT
+            DATE_FORMAT(o.order_date, '%y-%m-%d') AS report_day,
+            SUM(o.total) AS order_count
+          FROM orders o
+          WHERE
+            o.order_status IN ({$orderStatus})
+            AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
+            ".($mobile ? 'AND mobile=1':'')."
+          GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
+          ORDER BY DATE_FORMAT(o.order_date, '%y-%m-%d') ASC
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     * @param string $orderStatus
+     * @return array
+     */
+    public function getDeliverySumByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
+    {
+        if (empty($orderStatus)) {
+            $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+        } else {
+            $orderStatus = "'".$orderStatus."'";
+        }
+
+        $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
+
+        $query = "
+          SELECT
+            DATE_FORMAT(o.order_date, '%y-%m-%d') AS report_day,
+            SUM(o.delivery_price) AS order_count
+          FROM orders o
+          WHERE
+            o.order_status IN ({$orderStatus})
+            AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
+            ".($mobile ? 'AND mobile=1':'')."
+          GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
+          ORDER BY DATE_FORMAT(o.order_date, '%y-%m-%d') ASC
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * @param \DateTime $dateFrom
+     * @param \DateTime $dateTo
+     * @param string $orderStatus
+     * @return array
+     */
+    public function getDiscountSumByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
+    {
+        if (empty($orderStatus)) {
+            $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+        } else {
+            $orderStatus = "'".$orderStatus."'";
+        }
+
+        $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
+        $dateTo = $dateTo->format("Y-m-d 23:59:59");
+
+        $query = "
+          SELECT
+            DATE_FORMAT(o.order_date, '%y-%m-%d') AS report_day,
+            SUM(o.discount_sum) AS order_count
+          FROM orders o
+          WHERE
+            o.order_status IN ({$orderStatus})
+            AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
+            ".($mobile ? 'AND mobile=1':'')."
+          GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
+          ORDER BY DATE_FORMAT(o.order_date, '%y-%m-%d') ASC
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 }

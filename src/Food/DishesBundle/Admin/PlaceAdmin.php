@@ -58,7 +58,7 @@ class PlaceAdmin extends FoodAdmin
                     'translatable_class' => 'Food\DishesBundle\Entity\Place',
                     'fields'             => [
                         'slogan'       => ['label' => 'admin.place.slogan', 'required' => false,],
-                        'description'  => ['label' => 'admin.place.description', 'required' => true,],
+                        'description'  => ['label' => 'admin.place.description', 'required' => false,],
                         'alcoholRules' => $alcoholRules,
                     ]
                 ])
@@ -97,6 +97,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('minimumFreeDeliveryPrice', null, ['label' => 'admin.place.minimum_free_delivery_price'])
             ->add('dishesNumeration', 'checkbox', ['label' => 'admin.place.dishes_numeration', 'required' => false])
             ->add('autoInform', 'checkbox', ['label' => 'admin.place.auto_inform', 'required' => false])
+            ->add('showPhone', 'checkbox', ['label' => 'admin.place.show_phone', 'required' => false])
             ->add('selfDelivery', 'checkbox', ['label' => 'admin.place.self_delivery', 'required' => false])
             ->add('minimalOnSelfDel', 'checkbox', ['label' => 'admin.place.minimal_on_self_delivery', 'required' => false])
             ->add('cardOnDelivery', 'checkbox', ['label' => 'admin.place.card_on_delivery', 'required' => false])
@@ -104,6 +105,8 @@ class PlaceAdmin extends FoodAdmin
             ->add('disabledPaymentOnDelivery', 'checkbox', ['label' => 'admin.place.disabled_payment_on_delivery', 'required' => false])
             ->add('priority', null, ['label' => 'admin.place.priority', 'required' => true])
             ->add('file', 'file', $options)
+            ->add('apiHash', 'text', ['label' => 'admin.place.api_hash', 'required' => false])
+            ->add('couponURL', 'text', ['label' => 'admin.place.coupon_check_url', 'required' => false])
             /*
                 ->add('photos', 'sonata_type_collection',
                     array(
@@ -241,6 +244,11 @@ class PlaceAdmin extends FoodAdmin
             if (empty($createdBy)) {
                 $point->setCreatedBy($user);
             }
+            $hash = $point->getHash();
+            if (empty($hash)) {
+                $hash = $this->getContainer()->get('food.place_point_service')->generatePlacePointHash($point);
+                $point->setHash($hash);
+            }
         }
     }
 
@@ -249,66 +257,8 @@ class PlaceAdmin extends FoodAdmin
      */
     private function _fixWorkTime(PlacePoint $object)
     {
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $placeService = $this->getContainer()->get('food.places');
-        foreach ($object->getWorkTimes() as $workTime) {
-            $em->remove($workTime);
-        }
-        $em->flush();
-
-        for ($i = 1; $i <= 7; $i++) {
-            $workTime = $object->{'getWd' . $i}();
-            $workTime = preg_replace('~\s*-\s*~', '-', $workTime);
-            $intervals = explode(' ', $workTime);
-            foreach ($intervals as $interval) {
-                if ($times = $placeService->parseIntervalToTimes($interval)) {
-                    list($startHour, $startMin, $endHour, $endMin) = $times;
-                } else {
-                    continue;
-                }
-
-                // if start time is later thant end time, then we should split it
-                if ($endHour < $startHour || $endHour == $startHour && $endMin < $startMin) {
-                    $ppwt = new PlacePointWorkTime();
-                    $ppwt->setPlacePoint($object)
-                        ->setWeekDay($i)
-                        ->setStartHour($startHour)
-                        ->setStartMin($startMin)
-                        ->setEndHour(24)
-                        ->setEndMin(0)
-                    ;
-
-                    $em->persist($ppwt);
-
-                    // 00:00 - 00:00 must be excluded
-                    if ($endHour != 0 || $endMin != 0) {
-                        $ppwt = new PlacePointWorkTime();
-                        $ppwt->setPlacePoint($object)
-                            ->setWeekDay($i < 7 ? $i + 1 : 1)
-                            ->setStartHour(0)
-                            ->setStartMin(0)
-                            ->setEndHour($endHour)
-                            ->setEndMin($endMin)
-                        ;
-
-                        $em->persist($ppwt);
-                    }
-                } else {
-                    $ppwt = new PlacePointWorkTime();
-                    $ppwt->setPlacePoint($object)
-                        ->setWeekDay($i)
-                        ->setStartHour($startHour)
-                        ->setStartMin($startMin)
-                        ->setEndHour($endHour)
-                        ->setEndMin($endMin)
-                    ;
-
-                    $em->persist($ppwt);
-                }
-            }
-        }
-
-        $em->flush();
+        $placePointService = $this->getContainer()->get('food.place_point_service');
+        $placePointService->updatePlacePointWorktime($object);
     }
 
     /**

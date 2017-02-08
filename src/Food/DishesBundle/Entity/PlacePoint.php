@@ -193,6 +193,18 @@ class PlacePoint
 
     /**
      * @var string
+     * @ORM\Column(name="sync_url", type="string",  nullable=true)
+     */
+    private $syncUrl;
+
+//    /**
+//     * @var string
+//     * @ORM\Column(name="sync_format", type="string",  nullable=true)
+//     */
+//    private $syncFormat;
+
+    /**
+     * @var string
      * @ORM\Column
      */
     private $wd1;
@@ -319,6 +331,12 @@ class PlacePoint
      * @ORM\Column(name="no_replication", type="boolean", nullable=true)
      */
     private $noReplication = false;
+
+    /**
+     * @var string
+     * @ORM\Column(name="hash", type="string", length=256, nullable=true)
+     */
+    private $hash;
 
     public function getElement()
     {
@@ -1130,6 +1148,46 @@ class PlacePoint
     /**
      * @return string
      */
+    public function getSyncUrl()
+    {
+        return $this->syncUrl;
+    }
+
+    /**
+     * @param string $syncUrl
+     * @return PlacePoint
+     */
+    public function setSyncUrl($syncUrl)
+    {
+        $this->syncUrl = $syncUrl;
+
+        return $this;
+    }
+
+//    /**
+//     * @return string
+//     */
+//    public function getSyncFormat()
+//    {
+//        return $this->syncFormat;
+//    }
+//
+//    /**
+//     * @param string $syncFormat
+//     * @return PlacePoint
+//     */
+//    public function setSyncFormat($syncFormat)
+//    {
+//        $this->syncFormat = $syncFormat;
+//
+//        return $this;
+//    }
+
+
+
+    /**
+     * @return string
+     */
     public function getWd1()
     {
         return $this->wd1;
@@ -1429,5 +1487,21 @@ class PlacePoint
     public function setAdditionalInfo($additional_info)
     {
         $this->additional_info = $additional_info;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @param string $hash
+     */
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
     }
 }

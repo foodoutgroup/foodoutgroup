@@ -64,6 +64,10 @@ class AppKernel extends Kernel
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Food\CallCenterBundle\CallCenterBundle(),
             new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
+            new Nelmio\CorsBundle\NelmioCorsBundle(),
+            new Api\V2Bundle\ApiV2Bundle(),
+            new Api\BaseBundle\ApiBaseBundle(),
+            new Food\BlogBundle\FoodBlogBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

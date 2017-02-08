@@ -274,7 +274,7 @@
                                     <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
                                     <select class="custom-select" disabled="true">
                                         {% for city in available_cities %}
-                                            <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e'})) %}selected{% else %}{% if userAddress and userAddress.city is defined and (userAddress.city == city or userAddress.city == city|replace({'ė':'e'})) %}selected{% endif %}{% endif %}>{{ city }}</option>
+                                            <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e'})) %}selected{% elseif location.city is not defined and userAddress and userAddress.city is defined and (userAddress.city == city or userAddress.city == city|replace({'ė':'e'})) %}selected{% endif %}>{{ city }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -295,8 +295,8 @@
                                     <select class="custom-select" name="place_point">
                                         {% for point in places_service.getPublicPoints(place) %}
                                             {% if point.pickUp %}
-                                                <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
-                                        {% endif %}
+                                                <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}{% if point.additionalInfo %} ({{ point.additionalInfo }}) {% endif %}</option>
+                                            {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -332,7 +332,7 @@
                                 </label>
                                 {% endif %}
                                 {% if not place.disabledPaymentOnDelivery %}
-                                    <label class="custom-radio">{% if takeAway %}{% trans %}cart.checkout.cash_on_pickup{% endtrans %}{% else %}{% trans %}cart.checkout.cash_on_delivery{% endtrans %}{% endif %}
+                                    <label class="custom-radio">{% if takeAway %}{% if place.cardOnDelivery %}{% trans %}cart.checkout.cash_cc_on_pickup{% endtrans %}{% else %}{% trans %}cart.checkout.cash_on_pickup{% endtrans %}{% endif %}{% else %}{% trans %}cart.checkout.cash_on_delivery{% endtrans %}{% endif %}
                                         <input type="radio" name="payment-type" value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local') or (dataToLoad is empty) %} checked="checked"{% endif %}>
                                     </label>
                                     {% if takeAway != true and place.cardOnDelivery %}

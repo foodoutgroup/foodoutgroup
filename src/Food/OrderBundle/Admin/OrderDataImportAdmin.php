@@ -35,8 +35,9 @@ class OrderDataImportAdmin extends FoodAdmin
     public function configureListFields(ListMapper $list)
     {
         parent::configureListFields($list);
+        $list->add('id');
         $list->add('date', 'date', []);
-        $list->add('user', 'user', []);
+        $list->add('username', 'user', []);
         $list->add('infodata', 'infodata', []);
         $list->add('ordersChanged', 'sonata_type_list', array('admin_code' => 'sonata.admin.order', 'route' => array( 'name' => 'show') ));
 

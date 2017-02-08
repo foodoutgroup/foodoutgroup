@@ -5,6 +5,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Food\OrderBundle\Service\OrderService;
 
 class InvoiceToSendCommand extends ContainerAwareCommand
 {
@@ -60,7 +61,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                 $dryRun = true;
             }
 
-            foreach($orders as $orderToSend) {
+            foreach ($orders as $orderToSend) {
                 try {
                     $sendingMessage = 'Sending Invoice for order '.$orderToSend->getOrder()->getId();
                     $output->writeln($sendingMessage);
@@ -75,7 +76,9 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                         $invoiceService->storeUserInvoice($order);
 
                         $emails = array();
-                        if ($order->getPaymentMethod() != 'postpaid') {
+                        if ($order->getPaymentMethod() != 'postpaid'
+                            && OrderService::$status_completed == $order->getOrderStatus()
+                            && (!$order->getUser()->getNoInvoice() || $forcedEmail)) {
                             $emails = $invoiceService->sendUserInvoice($order, $forcedEmail);
                         }
 

@@ -374,7 +374,7 @@ class PlaceRepository extends EntityRepository
      * @param array|null $locationData
      * @param bool       $ignoreSelfDelivery
      *
-     * @return float|null
+     * @return PlacePoint|null
      */
     public function getPlacePointNearWithDistance($placeId, $locationData, $ignoreSelfDelivery = false, $ignoreWorkTime = false)
     {
@@ -489,6 +489,8 @@ class PlaceRepository extends EntityRepository
                       AND delivery=1
                     ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
 
+//                echo $subQuery;
+//                die;
                 $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
 
                 $stmt->execute();
@@ -508,7 +510,7 @@ class PlaceRepository extends EntityRepository
     /**
      * @return Place[]
      */
-    public function getRecommendedForTitle()
+    public function getRecommendedForTitle($city = null)
     {
         $otherFilters = '';
         // 21:30 isjungiame alkoholiku rodyma :)
@@ -517,15 +519,26 @@ class PlaceRepository extends EntityRepository
             $otherFilters .= ' AND p.only_alcohol != 1';
         }
 
+        $join = '';
+        $where = '';
+        if ($city) {
+            $join = ' INNER JOIN place_point pp ON pp.place = p.id ';
+            $where = ' AND pp.active = 1 AND pp.city = "'.$city.'" AND pp.deleted_at IS NULL ';
+        }
+
         $query = "SELECT p.id
                 FROM place p
+                {$join}
                 WHERE
                     p.active = 1
-                    AND ((p.navision=1 AND p.recommended = 1) OR p.recommended = 1)
+                    AND p.recommended = 1
                     AND p.deleted_at IS NULL
                     {$otherFilters}
+                    {$where}
+                GROUP BY p.id
                 ORDER BY p.navision DESC, RAND()
                 LIMIT 5";
+
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $placesIds = $stmt->fetchAll();

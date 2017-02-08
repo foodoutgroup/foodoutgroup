@@ -2,6 +2,7 @@
 
 namespace Food\OrderBundle\Entity;
 
+use Food\UserBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Food\OrderBundle\FoodOrderBundle;
 
@@ -30,7 +31,7 @@ class OrderDataImport
      * @ORM\Column(name="date", type="datetime")
      */
     private $date;
-    
+
     private $file;
 
     /**
@@ -51,7 +52,7 @@ class OrderDataImport
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -67,14 +68,14 @@ class OrderDataImport
     public function setDate($date)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -90,18 +91,29 @@ class OrderDataImport
     public function setUser(\Food\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function getUsername()
+    {
+        $username = '*deleted*';
+        $user = $this->getUser();
+        if ($user instanceof User) {
+            $username = (string)$user;
+        }
+
+        return $username;
     }
 
     /**

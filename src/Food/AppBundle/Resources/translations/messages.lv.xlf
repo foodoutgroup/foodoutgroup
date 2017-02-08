@@ -192,7 +192,7 @@
             </trans-unit>
             <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
                 <source>general.sms.user.order_accepted</source>
-                <target>Sveiki. restourant_name apstiprina pasutijumu. Foodout.lv misija ir paedis un apmierinats klients! :) Sazinai: +371 67363663</target>
+                <target>Sveiki. restourant_name apstiprina pasūtījumu un Foodout.lv rupejas par zibenigu izpildi! :) Sazinai: +371 67363663</target>
             </trans-unit>
             <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
                 <source>general.sms.user.order_accepted_preorder</source>
@@ -208,7 +208,7 @@
             </trans-unit>
             <trans-unit id="general.sms.client.driver_picked_up" resname="general.sms.client.driver_picked_up">
                 <source>general.sms.client.driver_picked_up</source>
-                <target>Hei! Informejam, ka Tavs Foodout.lv pasutijums ir jau cela un driz bus klat! Lai labi garso! :)</target>
+                <target>Hei! Tavs Foodout.lv pasutijums jau ir cela un driz bus klat! :) Ielade Foodout mobilo aplikaciju un sanem labakos piedavajumus: http://bit.ly/2iJRMh9</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_created" resname="general.sms.client.order_created">
                 <source>general.sms.client.order_created</source>
@@ -822,6 +822,10 @@
                 <source>general.ip_banned</source>
                 <target>Jūsu IP adrese ir bloķēta</target>
             </trans-unit>
+            <trans-unit id="general.email_banned" resname="general.email_banned">
+                <source>general.email_banned</source>
+                <target>Jūsu email ir bloķēta</target>
+            </trans-unit>
             <trans-unit id="620c7ce4e5b0c3f1f527813491a9152f" resname="general.ip_banned_info">
                 <source>general.ip_banned_info</source>
                 <target><![CDATA[Atvainojamies! Taču Jūsu IP adrese (%ip%) ir bloķēta.<br />IP adreses tiek bloķētas, ja: apmeklētājs veido nepatiesus pasūtījumus; apmelo, aizskar vai ar citām tīšām darbībām traucē citiem apmeklētājiem vai restorāna darbam.<br /><br />Administrācijas norādītais iemesls: "%reason%".<br /><br />Ja uzskatāt, ka tas ir noticis kļūdas dēļ – sazinieties ar mums <strong><a href="mailto:info@foodout.lv">info@foodout.lv</a></strong> vai pa tālruni <strong>+371 67363663</strong>]]></target>
@@ -857,6 +861,10 @@
             <trans-unit id="1794a5ac72303f545a21a31292d40981" resname="general.cart.success">
                 <source>general.cart.success</source>
                 <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
+            </trans-unit>
+            <trans-unit id="general.cart.reverse" resname="general.cart.reverse">
+                <source>general.cart.reverse</source>
+                <target>REVERSE</target>
             </trans-unit>
             <trans-unit id="general.cart.success_pre" resname="general.cart.success_pre">
                 <source>general.cart.success_pre</source>
@@ -1312,7 +1320,7 @@
             </trans-unit>
             <trans-unit id="general.base_page_description" resname="general.base_page_description">
                 <source>general.base_page_description</source>
-                <target>Foodout.lv - līderis ēdienu piegādē Latvijā! Vairāk nekā 55 restorānu ēdienu piedāvājums vienuviet. Apskati ēdienkarti, izvēlies to, kas garšo, un pasūti jau tagad! Plaša izvēle - Ātra piegāde!</target>
+                <target>Foodout.lv - līderis ēdienu piegādē Latvijā! Vairāk nekā 75 restorānu ēdienu piedāvājums vienuviet. Apskati ēdienkarti, izvēlies to, kas garšo, un pasūti jau tagad! Plaša izvēle - Ātra piegāde!</target>
             </trans-unit>
             <trans-unit id="general.restaurant_page_title" resname="general.restaurant_page_title">
                 <source>general.restaurant_page_title</source>

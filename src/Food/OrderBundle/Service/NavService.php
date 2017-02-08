@@ -330,10 +330,10 @@ class NavService extends ContainerAware
 
     public function putTheOrderToTheNAV(Order $order)
     {
-        $dbgEmail = date("Y-m-d H:i:s") . "\n\n\n" . print_r($_SERVER, true) . "\n\n\n" . print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 0), true);
-        $logger = $this->getContainer()->get('logger');
-        $logger->alert("putTheOrderToTheNAV backtrace #" . $order->getId());
-        $logger->alert($dbgEmail);
+        //~ $dbgEmail = date("Y-m-d H:i:s") . "\n\n\n" . print_r($_SERVER, true) . "\n\n\n" . print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 0), true);
+        //~ $logger = $this->getContainer()->get('logger');
+        //~ $logger->alert("putTheOrderToTheNAV backtrace #" . $order->getId());
+        //~ $logger->alert($dbgEmail);
 
         $orderNewId = $this->getNavOrderId($order);
 
@@ -429,9 +429,11 @@ class NavService extends ContainerAware
         ];
         $queryPart = $this->generateQueryPart($dataToPut);
         $query = 'INSERT INTO ' . $this->getHeaderTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        $logger->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#HEADER');
-        $logger->alert($query);
+        //~ $logger->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#HEADER');
+        //~ $logger->alert($query);
+        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_QUERY', null, $query);
         $sqlSS = $this->initSqlConn()->query($query);
+
 
         $this->_processLines($order, $orderNewId);
     }
@@ -482,8 +484,9 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#PREPAID');
-        $this->getContainer()->get('logger')->alert($query);
+        //~ $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#PREPAID');
+        //~ $this->getContainer()->get('logger')->alert($query);
+        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_PAYED_QUERY', null, $query);
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
@@ -519,44 +522,46 @@ class NavService extends ContainerAware
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
 
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#DELIVERY');
-        $this->getContainer()->get('logger')->alert($query);
+        //~ $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#DELIVERY');
+        //~ $this->getContainer()->get('logger')->alert($query);
+        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_DELIVERY_QUERY', null, $query);
         $sqlSS = $this->initSqlConn()->query($query);
     }
 
     private function _processLine(OrderDetails $detail, $orderNewId, $key, $discountSum, &$discountSumLeft)
     {
         $this->container->get('doctrine')->getManager()->refresh($detail);
+        $order = $detail->getOrderId();
 
-        $desc = $detail->getDishName();
-        $unitDesc = $detail->getDishUnitName();
+        //~ $desc = $detail->getDishName();
+        //~ $unitDesc = $detail->getDishUnitName();
 
-        $desc = str_replace(["'", '"', ',', '(', ')'], '', $desc);
-        $desc = str_replace(['ė', 'e', 'Ę', 'Ė'], 'e', $desc);
-        $desc = str_replace(['ą', 'Ą'], 'a', $desc);
-        $desc = str_replace(['č', 'Č'], 'c', $desc);
-        $desc = str_replace(['į', 'Į'], 'i', $desc);
-        $desc = str_replace(['š', 'Š'], 's', $desc);
-        $desc = str_replace(['ų', 'ū', 'Ų', 'Ū'], 'u', $desc);
-        $desc = strtolower($desc);
+        //~ $desc = str_replace(["'", '"', ',', '(', ')'], '', $desc);
+        //~ $desc = str_replace(['ė', 'e', 'Ę', 'Ė'], 'e', $desc);
+        //~ $desc = str_replace(['ą', 'Ą'], 'a', $desc);
+        //~ $desc = str_replace(['č', 'Č'], 'c', $desc);
+        //~ $desc = str_replace(['į', 'Į'], 'i', $desc);
+        //~ $desc = str_replace(['š', 'Š'], 's', $desc);
+        //~ $desc = str_replace(['ų', 'ū', 'Ų', 'Ū'], 'u', $desc);
+        //~ $desc = strtolower($desc);
 
-        $unitDesc = str_replace(["'", '"', ',', '(', ')'], '', $unitDesc);
-        $unitDesc = str_replace(['ė', 'e', 'Ę', 'Ė'], 'e', $unitDesc);
-        $unitDesc = str_replace(['ą', 'Ą'], 'a', $unitDesc);
-        $unitDesc = str_replace(['č', 'Č'], 'c', $unitDesc);
-        $unitDesc = str_replace(['į', 'Į'], 'i', $unitDesc);
-        $unitDesc = str_replace(['š', 'Š'], 's', $unitDesc);
-        $unitDesc = str_replace(['ų', 'ū', 'Ų', 'Ū'], 'u', $unitDesc);
-        $unitDesc = strtolower($unitDesc);
+        //~ $unitDesc = str_replace(["'", '"', ',', '(', ')'], '', $unitDesc);
+        //~ $unitDesc = str_replace(['ė', 'e', 'Ę', 'Ė'], 'e', $unitDesc);
+        //~ $unitDesc = str_replace(['ą', 'Ą'], 'a', $unitDesc);
+        //~ $unitDesc = str_replace(['č', 'Č'], 'c', $unitDesc);
+        //~ $unitDesc = str_replace(['į', 'Į'], 'i', $unitDesc);
+        //~ $unitDesc = str_replace(['š', 'Š'], 's', $unitDesc);
+        //~ $unitDesc = str_replace(['ų', 'ū', 'Ų', 'Ū'], 'u', $unitDesc);
+        //~ $unitDesc = strtolower($unitDesc);
 
-        $desc = str_replace("makaronai", "makar", $desc);
-        $desc = str_replace("lasisomis", "lasis", $desc);
+        //~ $desc = str_replace("makaronai", "makar", $desc);
+        //~ $desc = str_replace("lasisomis", "lasis", $desc);
 
-        $desc = "'" . substr($desc, 0, 29) . " " . $unitDesc . "'";
-        $desc = str_replace(" pica", "", $desc);
-        $desc = str_replace("Apkepti", "apk", $desc);
-        $desc = str_replace("blyneliai", "blynel", $desc);
-        $desc = str_replace(" Porcija", "", $desc);
+        //~ $desc = "'" . substr($desc, 0, 29) . " " . $unitDesc . "'";
+        //~ $desc = str_replace(" pica", "", $desc);
+        //~ $desc = str_replace("Apkepti", "apk", $desc);
+        //~ $desc = str_replace("blyneliai", "blynel", $desc);
+        //~ $desc = str_replace(" Porcija", "", $desc);
 
         $code = $detail->getDishSizeCode();
         $optionIdUsed = -1;
@@ -578,6 +583,8 @@ class NavService extends ContainerAware
             if ($data) {
                 $desc = "'" . $data->getDescription() . "'";
             }
+        } else {
+            $desc = "'" . $detail->getNameToNav() . "'";
         }
 
         $priceForInsert = $detail->getOrigPrice();
@@ -647,9 +654,10 @@ class NavService extends ContainerAware
         ];
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-        $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#' . $key);
-        $this->getContainer()->get('logger')->alert($query);
+        //~ $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query]-#' . $key);
+        //~ $this->getContainer()->get('logger')->alert($query);
 
+        $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_QUERY', null, $query);
         $sqlSS = $this->initSqlConn()->query($query);
 
         $okeyCounter = $key;
@@ -657,7 +665,7 @@ class NavService extends ContainerAware
             if ($okey != $optionIdUsed) {
                 $okeyCounter++;
                 $code = $opt->getDishOptionCode();
-                $desc = $opt->getDishOptionName();
+                $desc = $opt->getNameToNav();
                 if ($opt->getDishOptionId()->getInfocode()) {
                     $desc = $opt->getDishOptionId()->getSubCode();
                 }
@@ -678,8 +686,9 @@ class NavService extends ContainerAware
                 ];
                 $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
                 $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
-                $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query SUBQ]#' . $key . "-" . $okey);
-                $this->getContainer()->get('logger')->alert($query);
+                //~ $this->getContainer()->get('logger')->alert('#' . ($orderNewId - $this->_orderIdModifier) . ' [SQL Line Query SUBQ]#' . $key . "-" . $okey);
+                //~ $this->getContainer()->get('logger')->alert($query);
+                $this->container->get('food.order')->logOrder($order, 'NAV_INSERT_LINE_OPTIONS_QUERY', null, $query);
                 $sqlSS = $this->initSqlConn()->query($query);
             }
         }
@@ -784,7 +793,8 @@ class NavService extends ContainerAware
         // some calculations beforehand
         $total = $o->getTotal()->val(0.0);
         $deliveryTotal = $o->getDeliveryPrice()->val(0.0);
-        $foodTotal = $total - $deliveryTotal;
+        $discountSum = $o->getDiscountSum()->val(0.0);
+        $foodTotal = $total - $deliveryTotal + $discountSum;
 
         // payment type and code preprocessing
         $driverId = $o->getDriver()->getId()->val('');
@@ -804,7 +814,7 @@ class NavService extends ContainerAware
         // main variable that holds parameters for a Soap call
         $params = ['InvoiceNo'         => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
                    'OrderID'           => $o->getId()->val('0'),
-                   'OrderDate'         => $o->getOrderDate()->format('Y.m.d')->val('1754-01-01'),
+                   'OrderDate'         => $o->getDeliveryTime()->format('Y.m.d')->val('1754-01-01'),
                    'RestaurantID'      => $o->getPlace()->getId()->val('0'),
                    'RestaurantName'    => $o->getPlaceName()->val(''),
                    'DriverID'          => $driverId,
@@ -819,7 +829,9 @@ class NavService extends ContainerAware
                    'AlcoholAmount'     => number_format(0.0, 2, '.', ''),
                    'DeliveryAmount'    => $o->getDeliveryType()->val('') == 'pickup'
                        ? '0.00'
-                       : number_format($o->getDeliveryPrice()->val('0.0'), 2, '.', '')];
+                       : number_format($deliveryTotal, 2, '.', ''),
+                    'DiscountAmount'   => number_format($discountSum, 2, '.', '') // doesn't works
+        ];
 
         // send a call to a web service, but beware of exceptions
         try {
@@ -831,6 +843,10 @@ class NavService extends ContainerAware
             if (!($r->return_value->val('') == 0)) {
                 throw new \SoapFault((string)$r->return_value->val(''),
                     'Soap call "FoodOutCreateInvoice" didn\'t return 0. Parameters used: ' . var_export($params, true));
+            }
+
+            if ($o->getDiscountSum()->val(0.0) > 0) {
+                $this->updateNavInvoice($order, ['Discount Amount with VAT' => number_format($discountSum, 2, '.', '')]);
             }
         } catch (\SoapFault $e) {
             if (preg_match('/The Foodout Invoice already exists\./', $e->getMessage())) {
@@ -896,7 +912,7 @@ class NavService extends ContainerAware
                 'ParentLineNo' => 0,
                 'EntryType'    => 0,
                 'ItemNo'       => $code,
-                'Description'  => mb_substr($cart->getDishId()->getName(), 0, 30, 'utf-8'),
+                'Description'  => mb_substr($cart->getDishId()->getNameToNav(), 0, 30, 'utf-8'),
                 'Quantity'     => $cart->getQuantity(),
                 'Price'        => $cart->getDishSizeId()->getPrice(),
                 'Amount'       => $cart->getDishSizeId()->getPrice() * $cart->getQuantity()
@@ -917,7 +933,7 @@ class NavService extends ContainerAware
                         $optionCode = $option->getDishOptionId()->getCode();
                         $description = $option->getDishOptionId()->getSubCode();
                     } else {
-                        $description = $option->getDishOptionId()->getName();
+                        $description = $option->getDishOptionId()->getNameToNav();
                     }
                     $lineNo = $lineNo + 1;
                     if ($option->getDishOptionId()->getFirstLevel()) {
@@ -948,8 +964,8 @@ class NavService extends ContainerAware
                 }
             }
         }
-        $this->container->get('logger')->debug('CILI NVB VALIDATE LINES');
-        $this->container->get('logger')->debug(print_r($requestData, true));
+        //~ $this->container->get('logger')->debug('CILI NVB VALIDATE LINES');
+        //~ $this->container->get('logger')->debug(print_r($requestData, true));
         // this is more like anomaly than a rule
         if (empty($requestData['Lines'])) {
             $returner = [
@@ -966,8 +982,8 @@ class NavService extends ContainerAware
         }
 
         ob_start();
-        $this->container->get('logger')->debug('CILI NVB VALIDATE REQUEST');
-        $this->container->get('logger')->debug(print_r($requestData, true));
+        //~ $this->container->get('logger')->debug('CILI NVB VALIDATE REQUEST');
+        //~ $this->container->get('logger')->debug(print_r($requestData, true));
         $response = $this->getWSConnection()->FoodOutValidateOrder(
             [
                 'params' => $requestData,
@@ -975,8 +991,8 @@ class NavService extends ContainerAware
             ]
         )
         ;
-        $this->container->get('logger')->debug('CILI NVB VALIDATE RESPONSE');
-        $this->container->get('logger')->debug(print_r($response, true));
+        //~ $this->container->get('logger')->debug('CILI NVB VALIDATE RESPONSE');
+        //~ $this->container->get('logger')->debug(print_r($response, true));
         ob_end_clean();
 
         $prbDish = "";
@@ -1388,6 +1404,7 @@ class NavService extends ContainerAware
      */
     public function syncDisDescription($date = null)
     {
+        return; //temp disable
         $result = $this->initSqlConn()->query('SELECT [No_], [Description], [Search Description] FROM ' . $this->getItemsTable() . " WHERE LEN([No_]) > 3 AND [No_] LIKE 'DIS%'");
         if ($result === false) {
             throw new \InvalidArgumentException('Wow Such fail.. Many problems... Such no results?');

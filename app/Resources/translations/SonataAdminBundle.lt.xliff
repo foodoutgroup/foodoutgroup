@@ -202,6 +202,10 @@
                 <source>admin.dish.group</source>
                 <target>Grupė</target>
             </trans-unit>
+            <trans-unit id="admin.dish.nameToNav">
+                <source>admin.dish.nameToNav</source>
+                <target>Navision name</target>
+            </trans-unit>
             <trans-unit id="admin.dish.time_from">
                 <source>admin.dish.time_from</source>
                 <target>Patiekalo laikas nuo</target>
@@ -407,6 +411,10 @@
                 <source>admin.place.keep_notification</source>
                 <target>Keep notification</target>
             </trans-unit>
+            <trans-unit id="admin.place.coupon_check_url">
+                <source>admin.place.coupon_check_url</source>
+                <target>HTTP kuponų tikrinimo adresas</target>
+            </trans-unit>
             <trans-unit id="admin.place.registered">
                 <source>admin.place.registered</source>
                 <target>Registered</target>
@@ -454,6 +462,10 @@
             <trans-unit id="admin.place.auto_inform">
                 <source>admin.place.auto_inform</source>
                 <target>Automatinis informavimas</target>
+            </trans-unit>
+            <trans-unit id="admin.place.show_phone">
+                <source>admin.place.show_phone</source>
+                <target>Rodyti telefoną prie restorano informacijos</target>
             </trans-unit>
             <trans-unit id="admin.place.self_delivery">
                 <source>admin.place.self_delivery</source>
@@ -542,6 +554,10 @@
             <trans-unit id="admin.place.internal_code" resname="admin.place.internal_code">
                 <source>admin.place.internal_code</source>
                 <target>Padalinio kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.place.hash" resname="admin.place.hash">
+                <source>admin.place.hash</source>
+                <target>Padalinio HASH kodas</target>
             </trans-unit>
             <!-- Place points -->
             <trans-unit id="place-point-list">
@@ -655,6 +671,14 @@
             <trans-unit id="admin.point.use_external_logistics">
                 <source>admin.point.use_external_logistics</source>
                 <target>Siųsti į Metrikas (logistika)</target>
+            </trans-unit>
+            <trans-unit id="admin.point.sync_url">
+                <source>admin.point.sync_url</source>
+                <target>HTTP adresas siųsti užsakymams</target>
+            </trans-unit>
+            <trans-unit id="admin.point.sync_format">
+                <source>admin.point.sync_format</source>
+                <target>Siunčiamų užsakymų formatas</target>
             </trans-unit>
             <!-- Place reviews -->
             <trans-unit id="place-reviews-list">
@@ -1362,6 +1386,10 @@
             <trans-unit id="admin.order.send_invoice">
                 <source>admin.order.send_invoice</source>
                 <target>Siųsti SF</target>
+            </trans-unit>
+            <trans-unit id="admin.order.generate_invoice">
+                <source>admin.order.generate_invoice</source>
+                <target>Generuoti SF</target>
             </trans-unit>
             <trans-unit id="admin.order.edit_send_invoice">
                 <source>admin.order.edit_send_invoice</source>
@@ -3046,6 +3074,90 @@
                  <source>admin.report.documents_generated_preview_in_history</source>
                  <target>Dokumentai sugeneruoti, peržiūrėkite istorijoje</target>
              </trans-unit>
+             <trans-unit id="admin.order.details.full_price_discount_price_disc">
+                 <source>admin.order.details.full_price_discount_price_disc</source>
+                 <target>Kainų skirtumas</target>
+             </trans-unit>
+             <trans-unit id="admin.order.details.price_before_discount">
+                 <source>admin.order.details.price_before_discount</source>
+                 <target>Kaina be nuolaidos</target>
+             </trans-unit>
+             <trans-unit id="admin.order.total_before_discount">
+                 <source>admin.order.total_before_discount</source>
+                 <target>Viso be nuolaidos (Su PVM)</target>
+             </trans-unit>
+            <trans-unit id="admin.banned_email">
+                <source>admin.banned_email</source>
+                <target>Blokuoti el. pašto adresai</target>
+            </trans-unit>
+            <trans-unit id="Banned Email List">
+                <source>Banned Email List</source>
+                <target>Blokuoti el. pašto adresai</target>
+            </trans-unit>
+            <trans-unit id="admin.general.email">
+                <source>admin.general.email</source>
+                <target>El. paštas</target>
+            </trans-unit>
+            <trans-unit id="admin.general.reason">
+                <source>admin.general.reason</source>
+                <target>Priežastis</target>
+            </trans-unit>
+            <trans-unit id="admin.general.active">
+                <source>admin.general.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.general.id">
+                <source>admin.general.id</source>
+                <target>ID</target>
+            </trans-unit>
+            <trans-unit id="admin.call_log">
+                <source>admin.call_log</source>
+                <target>Skambučių istorija</target>
+            </trans-unit>
+            <trans-unit id="admin.general.order">
+                <source>admin.general.order</source>
+                <target>Užsakymas</target>
+            </trans-unit>
+            <trans-unit id="admin.general.date">
+                <source>admin.general.date</source>
+                <target>Data</target>
+            </trans-unit>
+            <trans-unit id="admin.general.phone_number">
+                <source>admin.general.phone_number</source>
+                <target>Tel. nr.</target>
+            </trans-unit>
+            <trans-unit id="admin.general.type">
+                <source>admin.general.type</source>
+                <target>Tipas</target>
+            </trans-unit>
+            <trans-unit id="admin.general.user">
+                <source>admin.general.user</source>
+                <target>Vartotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.blog_categories">
+                <source>admin.blog_categories</source>
+                <target>Blog categories</target>
+            </trans-unit>
+            <trans-unit id="admin.blog_posts">
+                <source>admin.blog_posts</source>
+                <target>Blog posts</target>
+            </trans-unit>
+            <trans-unit id="admin.language">
+                <source>admin.language</source>
+                <target>Kalba</target>
+            </trans-unit>
+            <trans-unit id="admin.seo_title">
+                <source>admin.seo_title</source>
+                <target>SEO title</target>
+            </trans-unit>
+            <trans-unit id="admin.seo_description">
+                <source>admin.seo_description</source>
+                <target>SEO description</target>
+            </trans-unit>
+            <trans-unit id="admin.category">
+                <source>admin.category</source>
+                <target>Kategorija</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

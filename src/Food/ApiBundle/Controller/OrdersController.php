@@ -46,7 +46,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:getOrdersAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -78,7 +78,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:createOrderAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -110,7 +110,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:createOrderPreAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -133,8 +133,11 @@ class OrdersController extends Controller
 
         try {
             $order = $this->get('food.order')->getOrderByHash($hash);
-
-            $response = $this->get('food_api.order')->getOrderForResponseFull($order);
+            if (!empty($order)) {
+                $response = $this->get('food_api.order')->getOrderForResponseFull($order);
+            } else {
+                return new JsonResponse(null, 404);
+            }
         }  catch (ApiException $e) {
             $this->get('logger')->error('Orders:getOrderDetailsByHashAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrderDetailsByHashAction Trace1:' . $e->getTraceAsString());
@@ -144,7 +147,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:getOrderDetailsByHashAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -152,6 +155,77 @@ class OrdersController extends Controller
 
         $this->get('logger')->alert('Orders:getOrderDetailsByHashAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @param int $id
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function changeOrderStatusByHashAction($hash, Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:changeOrderStatusByHashAction Request: hash - ' . $hash, (array) $request);
+
+        try {
+            $order = $this->get('food.order')->getOrderByHash($hash);
+            if (($request->isMethod('post') || $request->isMethod('post')) &&  $order->getOrderStatus() != "canceled") {
+                $response = $this->get('food_api.order')->changeOrderStatus($order, $request->get('status'), $request);
+            }
+        }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:changeOrderStatusByHashAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:changeOrderStatusByHashAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Orders:changeOrderStatusByHashAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:changeOrderStatusByHashAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                ['error' => $this->get('translator')->trans('general.error_happened')],
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Orders:changeOrderStatusByHashAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+
+        return new JsonResponse($response);
+    }
+
+    public function getOrdersByPlacepointHashAction($hash, Request $request)
+    {
+        $startTime = microtime(true);
+        $this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Request: hash - ' . $hash, (array) $request);
+
+        try {
+            $pp = $this->get('food.order')->getPlacepointByHash($hash);
+            if (!empty($pp)) {
+                $orders = $this->get('food.order')->getOrdersByPlacepointHash($hash);
+                $response = $this->get('food_api.order')->getOrdersForResponseFull($orders, $hash);
+            } else {
+                return new JsonResponse(null, 404);
+            }
+        }  catch (ApiException $e) {
+            $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                ['error' => $this->get('translator')->trans('general.error_happened')],
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        $this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+
         return new JsonResponse($response);
     }
 
@@ -207,7 +281,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:getOrderDetailsAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -260,7 +334,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:confirmOrderAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -314,7 +388,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:getOrderStatusAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -500,7 +574,7 @@ class OrdersController extends Controller
             $this->get('logger')->error('Orders:getOrderStatusAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );

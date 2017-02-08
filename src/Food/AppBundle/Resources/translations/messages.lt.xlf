@@ -192,24 +192,12 @@
             </trans-unit>
             <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
                 <source>general.sms.user.order_accepted</source>
-                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime per ~delivery_time.! Tavo alkis - musu misija!</target>
+                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime per ~delivery_time.! Isbandyk Foodout mob.programele: http://bit.ly/2fIHtWc</target>
             </trans-unit>
-            <!--<trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
-                <source>general.sms.user.order_accepted</source>
-                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista turetume pristatyti per delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
-            </trans-unit>-->
             <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
                 <source>general.sms.user.order_accepted_preorder</source>
-                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime ~pre_delivery_time.! Tavo alkis - musu misija!</target>
+                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime ~pre_delivery_time.! Isbandyk Foodout mob.programele: http://bit.ly/2fIHtWc</target>
             </trans-unit>
-            <!--<trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
-                <source>general.sms.user.order_accepted_preorder</source>
-                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista turetume pristatyti pre_delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
-            </trans-unit>-->
-            <!--<trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
-                <source>general.sms.user.order_accepted_pickup</source>
-                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista galesite atsiimti po delivery_time! Jei turite dar klausimu susisiekite telefonu +37069855544!</target>
-            </trans-unit>-->
             <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
                 <source>general.sms.user.order_accepted_pickup</source>
                 <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Atsiimti galesite po ~delivery_time.! Tavo alkis - musu misija!</target>
@@ -218,17 +206,13 @@
                 <source>general.sms.user.order_accepted_pickup_preorder</source>
                 <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Atsiimti galesite ~pre_delivery_time.! Tavo alkis - musu misija!</target>
             </trans-unit>
-            <!--<trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
-                <source>general.sms.user.order_accepted_pickup_preorder</source>
-                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista galesite atsiimti pre_delivery_time! Jei turite dar klausimu susisiekite telefonu +37069855544!</target>
-            </trans-unit>-->
             <trans-unit id="general.sms.client.driver_picked_up" resname="general.sms.client.driver_picked_up">
                 <source>general.sms.client.driver_picked_up</source>
-                <target>Psst, Tavo uzsakymas jau foodoutmobilyje! Maista pristatysime  netrukus! Ar jauti, kaip tavo alkis dreba is baimes? ;)</target>
+                <target>Psst, Tavo uzsakymas jau vezamas! Uzsisakyk maista patogiau – atsisiusk mob.programele: http://bit.ly/2f3YgRH</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_created" resname="general.sms.client.order_created">
                 <source>general.sms.client.order_created</source>
-                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Pradedame Tavo alkio numalsinimo misija!</target>
+                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Numalsink alki greiciau - uzsisakyk per mob.programele: http://bit.ly/2glLO66</target>
             </trans-unit>
             <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
                 <source>general.sms.client.restourant_cancel</source>
@@ -850,6 +834,10 @@
                 <source>general.ip_banned</source>
                 <target>Jūsų IP adresas užblokuotas</target>
             </trans-unit>
+            <trans-unit id="general.email_banned" resname="general.email_banned">
+                <source>general.email_banned</source>
+                <target>Jūsų el. pašto adresas užblokuotas</target>
+            </trans-unit>
             <trans-unit id="general.ip_banned_info" resname="general.ip_banned_info">
                 <source>general.ip_banned_info</source>
                 <target><![CDATA[Atsiprašome, tačiau Jūsų IP adresas (%ip%) yra užblokuotas.<br />IP adresai blokuojami, jei: lankytojas kuria melagingus užsakymus; smeižia, įžeidžia ar kita tyčine veikla trikdo kitų lankytojų ar restoranų darbą.<br /><br />Administracijos nurodyta priežastis: "%reason%".<br /><br />Jeigu manote, jog tai įvyko per klaidą - susisiekite su mumis <strong><a href="mailto:info@foodout.lt">info@foodout.lt</a></strong> arba telefonu <strong>+370 698 55544</strong>]]></target>
@@ -901,6 +889,10 @@
             <trans-unit id="general.cart.success" resname="general.cart.success">
                 <source>general.cart.success</source>
                 <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 698 55544</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
+            </trans-unit>
+            <trans-unit id="general.cart.reverse" resname="general.cart.reverse">
+                <source>general.cart.reverse</source>
+                <target>REVERSE</target>
             </trans-unit>
             <trans-unit id="general.cart.success_pre" resname="general.cart.success_pre">
                 <source>general.cart.success_pre</source>
@@ -1301,9 +1293,17 @@
                 <source>places.in_alytus</source>
                 <target>Alytuje</target>
             </trans-unit>
+            <trans-unit id="places.in_marijampole" resname="places.in_marijampole">
+                <source>places.in_marijampole</source>
+                <target>Marijampolėje</target>
+            </trans-unit>
             <trans-unit id="places.in_utena" resname="places.in_utena">
                 <source>places.in_utena</source>
                 <target>Utenoje</target>
+            </trans-unit>
+            <trans-unit id="places.in_kedainiai" resname="places.in_kedainiai">
+                <source>places.in_kedainiai</source>
+                <target>Kėdainiuose</target>
             </trans-unit>
             <trans-unit id="places.in_plunge" resname="places.in_plunge">
                 <source>places.in_plunge</source>

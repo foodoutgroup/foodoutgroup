@@ -46,6 +46,13 @@ class OrderDetailsOptions
     private $dish_option_name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="name_to_nav", type="string", length=32, nullable=true)
+     */
+    private $nameToNav;
+
+    /**
      * @ORM\Column(name="dish_option_code", type="string", length=255, nullable=true)
      */
     private $dish_option_code;
@@ -60,6 +67,10 @@ class OrderDetailsOptions
      */
     private $price;
 
+    /**
+     * @ORM\Column(name="price_before_discount", type="decimal", precision=8, scale=2, nullable=true)
+     */
+    private $priceBeforeDiscount;
 
     /**
      * Set dish_option_name
@@ -70,14 +81,14 @@ class OrderDetailsOptions
     public function setDishOptionName($dishOptionName)
     {
         $this->dish_option_name = $dishOptionName;
-    
+
         return $this;
     }
 
     /**
      * Get dish_option_name
      *
-     * @return string 
+     * @return string
      */
     public function getDishOptionName()
     {
@@ -93,14 +104,14 @@ class OrderDetailsOptions
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
-    
+
         return $this;
     }
 
     /**
      * Get quantity
      *
-     * @return integer 
+     * @return integer
      */
     public function getQuantity()
     {
@@ -116,14 +127,14 @@ class OrderDetailsOptions
     public function setPrice($price)
     {
         $this->price = $price;
-    
+
         return $this;
     }
 
     /**
      * Get price
      *
-     * @return float 
+     * @return float
      */
     public function getPrice()
     {
@@ -139,14 +150,14 @@ class OrderDetailsOptions
     public function setOrderId(\Food\OrderBundle\Entity\Order $orderId)
     {
         $this->order_id = $orderId;
-    
+
         return $this;
     }
 
     /**
      * Get order_id
      *
-     * @return \Food\OrderBundle\Entity\Order 
+     * @return \Food\OrderBundle\Entity\Order
      */
     public function getOrderId()
     {
@@ -162,7 +173,7 @@ class OrderDetailsOptions
     public function setDishOptionId($dishOptionId)
     {
         $this->dish_option_id = $dishOptionId;
-    
+
         return $this;
     }
 
@@ -185,14 +196,14 @@ class OrderDetailsOptions
     public function setDishId(\Food\DishesBundle\Entity\Dish $dishId)
     {
         $this->dish_id = $dishId;
-    
+
         return $this;
     }
 
     /**
      * Get dish_id
      *
-     * @return \Food\DishesBundle\Entity\Dish 
+     * @return \Food\DishesBundle\Entity\Dish
      */
     public function getDishId()
     {
@@ -208,14 +219,14 @@ class OrderDetailsOptions
     public function setDishOptionCode($dishOptionCode)
     {
         $this->dish_option_code = $dishOptionCode;
-    
+
         return $this;
     }
 
     /**
      * Get dish_option_code
      *
-     * @return string 
+     * @return string
      */
     public function getDishOptionCode()
     {
@@ -231,7 +242,7 @@ class OrderDetailsOptions
     public function setOrderDetail(\Food\OrderBundle\Entity\OrderDetails $orderDetail)
     {
         $this->order_detail = $orderDetail;
-    
+
         return $this;
     }
 
@@ -243,5 +254,47 @@ class OrderDetailsOptions
     public function getOrderDetail()
     {
         return $this->order_detail;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPriceBeforeDiscount()
+    {
+        return $this->priceBeforeDiscount;
+    }
+
+    /**
+     * @param mixed $priceBeforeDiscount
+     */
+    public function setPriceBeforeDiscount($priceBeforeDiscount)
+    {
+        $this->priceBeforeDiscount = $priceBeforeDiscount;
+        return $this;
+    }
+
+
+
+    /**
+     * Set nameToNav
+     *
+     * @param string $nameToNav
+     * @return OrderDetailsOptions
+     */
+    public function setNameToNav($nameToNav)
+    {
+        $this->nameToNav = $nameToNav;
+    
+        return $this;
+    }
+
+    /**
+     * Get nameToNav
+     *
+     * @return string 
+     */
+    public function getNameToNav()
+    {
+        return $this->nameToNav;
     }
 }

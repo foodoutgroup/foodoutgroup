@@ -87,6 +87,10 @@
                 <source>admin.report.order_date</source>
                 <target>Užsakymo data</target>
             </trans-unit>
+            <trans-unit id="admin.report.order_delivery_date">
+                <source>admin.report.order_delivery_date</source>
+                <target>Užsakymo pristatymo data</target>
+            </trans-unit>
             <trans-unit id="admin.report.foodout_sf_number">
                 <source>admin.report.foodout_sf_number</source>
                 <target>Foodout SF numeris</target>
@@ -174,6 +178,10 @@
             <trans-unit id="admin.report.discount_sum">
                 <source>admin.report.discount_sum</source>
                 <target>Nuolaidos suma</target>
+            </trans-unit>
+            <trans-unit id="admin.report.turnover">
+                <source>admin.report.turnover</source>
+                <target>Apyvarta</target>
             </trans-unit>
         </body>
     </file>

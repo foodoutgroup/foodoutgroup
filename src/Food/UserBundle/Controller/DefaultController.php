@@ -152,14 +152,16 @@ class DefaultController extends Controller
             // Store UserAddress Begin
             $gs = $this->get('food.googlegis');
             $locationInfo = $gs->groupData($form_address, $form_city);
-            $orderService->createAddressMagic(
-                $user,
-                $locationInfo['city'],
-                $locationInfo['address_orig'],
-                (string)$locationInfo['lat'],
-                (string)$locationInfo['lng'],
-                ''
-            );
+            if (!$locationInfo['not_found']) {
+                $orderService->createAddressMagic(
+                    $user,
+                    $locationInfo['city'],
+                    $locationInfo['address_orig'],
+                    (string)$locationInfo['lat'],
+                    (string)$locationInfo['lng'],
+                    ''
+                );
+            }
             // Store UserAddress End
         }
 
@@ -184,7 +186,8 @@ class DefaultController extends Controller
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
-            'user' => $user
+            'user' => $user,
+            'discount' => $this->get('food.user')->getDiscount($this->user())
         ];
     }
 

@@ -49,6 +49,25 @@ class PlacesService extends ContainerAware
             ;
     }
 
+
+//    /**
+//     * @param int $placeId
+//     *
+//     * @return \Food\DishesBundle\Entity\Place
+//     *
+//     * @throws \InvalidArgumentException
+//     */
+//    public function getPlace($placeCode)
+//    {
+//        if (empty($placeId)) {
+//            throw new \InvalidArgumentException('Cant search a place without and id. How can you find a house without address?');
+//        }
+//
+//        return $this->em()->getRepository('FoodDishesBundle:Place')
+//            ->find($placeId)
+//            ;
+//    }
+
     public function savePlace($place)
     {
         if (!($place instanceof Place)) {
@@ -833,6 +852,31 @@ class PlacesService extends ContainerAware
                     return $this->container->get('food.dishes.utils.slug')->getSlugByItem($place->getId(), 'place');
                 }
             }
+        }
+        return null;
+    }
+
+    /**
+     * @param $placeId
+     * @return null|string
+     */
+    public function getCitiesByPlace($placeId)
+    {
+        $citiesArr = [];
+        $current_place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find((int) $placeId);
+        if (!empty($current_place)) {
+            $name = $current_place->getName();
+            $repo = $this->em()->getRepository('FoodDishesBundle:PlacePoint');
+            $placePoints = $repo->getCitiesByPlaceName($name);
+
+            foreach ($placePoints as $placePoint) {
+                $place = $placePoint->getPlace();
+                $city = $placePoint->getCity();
+                if ($place->getActive()) {
+                    $citiesArr[] = $city;
+                }
+            }
+            return array_unique($citiesArr);
         }
         return null;
     }

@@ -61,6 +61,19 @@
                     }
                     return false;
                 });
+
+                var region_select = $('#region_select');
+                if (region_select.length) {
+                    $.get("{{ path('food_cities_by_place', { 'placeId': place.getId }) }}").done(function(data) {
+                        if (data && data.cities && data.status == 'success') {
+                            region_select.empty();
+                            region_select.append("<option label='' value=''></option>");
+                            $.each(data.cities, function (key, value) {
+                                region_select.append($("<option></option>").val(value).attr('label', value).html(value));
+                            });
+                        }
+                    });
+                }
             });
         </script>
         <div style="display:none;">
@@ -156,17 +169,19 @@
                                     {% endif %}
 
                                     {% if site_country == 'LT' %}
-                                        {% if place.id == 63 %}
+                                        {% if place.id in [63, 85, 302, 333] %}
                                             {# Link to Cili Express #}
                                             <br />
                                             <a class="btn-walk" href="{{ path('food_cili_greita') }}">
                                                 <span><i class="icon-walk"></i><b>Eiti į Čili Take Away</b><i class="icon-arrow"></i></span>
+                                                <img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
                                             </a>
                                         {% elseif place.id == 142 %}
                                             {# Link to Cili #}
                                             <br />
-                                            <a class="btn-walk" href="{{ path('food_cili') }}">
+                                            <a class="btn-walk" href="{{ path('food_1822_cili') }}">
                                                 <span><i class="icon-walk"></i><b>Eiti į Čili Pica</b><i class="icon-arrow"></i></span>
+                                                <img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
                                             </a>
                                         {% endif %}
                                     {% endif %}
@@ -318,11 +333,13 @@
                                         <div class="location-work-hours clearfix">
                                             <div class="lefter" id="restaurant-map-location" style="height: 300px;width: 300px;"></div>
                                             <div class="righter">
+                                                {% if place.showPhone %}
                                                 <div class="pp_phone_holder" style="display:none;">
                                                     <h3>{% trans %}places.phone{% endtrans %}:</h3>
                                                     <a class="pp_phone_link"><i class="phone_ico"></i><b></b></a>
                                                     <br />
                                                 </div>
+                                                {% endif %}
                                                 <h3>{% trans %}places.work_hours{% endtrans %}:</h3>
                                                 <table class="work-times">
                                                     <tr>

@@ -19,6 +19,9 @@ class DishOptionAdmin extends FoodAdmin
                 'translatable_class' => 'Food\DishesBundle\Entity\DishOption',
                 'fields' => array(
                     'name' => array('label' => 'label.name'),
+                    'nameToNav' => array(
+                        'label' => 'Navision name'
+                    ),
                     'description' => array('label' => 'label.description', 'required' => false),
                 ),
             )

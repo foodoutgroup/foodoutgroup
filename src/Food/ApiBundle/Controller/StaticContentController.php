@@ -55,7 +55,7 @@ class StaticContentController extends Controller
             $this->get('logger')->error('StaticContent:processAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                $this->get('translator')->trans('general.error_happened'),
+                ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
