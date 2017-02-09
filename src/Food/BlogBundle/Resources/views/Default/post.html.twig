@@ -13,7 +13,7 @@
                 <div class="static-page blog-post">
                     <h1>{{ blogPost }}</h1>
                     <strong><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(blogPost.category.id, 'blog_category') }) }}">{{ blogPost.category }}</a></strong>
-                    <p>{{ blogPost.createdBy }}, {{ blogPost.createdAt|date('Y-m-d') }}</p>
+                    <p>{{ blogPost.createdBy.fullName }}, {{ blogPost.createdAt|date('Y-m-d') }}</p>
                     <div class="static-page-content">
                         {{ blogPost.content|raw }}
                     </div>
