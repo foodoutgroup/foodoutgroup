@@ -34,6 +34,7 @@ class SlugController extends Controller
         unset($params[0]);
         $slugRow = $this->util->getOneByName($slug, $request->getLocale());
 
+
         if (!is_null($slugRow) && !$slugRow->isActive()) {
             $slugRow = $this->repository->findOneBy([
                 'item_id' => $slugRow->getItemId(),

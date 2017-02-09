@@ -20,6 +20,16 @@ class Slug
     const TYPE_CITY = 'city';
     const TYPE_BLOG_POST = 'blog_post';
 
+    public static $typeCollection = [
+        self::TYPE_KITCHEN,
+        self::TYPE_PLACE,
+        self::TYPE_FOOD_CATEGORY,
+        self::TYPE_TEXT,
+        self::TYPE_PAGE,
+        self::TYPE_CITY,
+        self::TYPE_BLOG_POST,
+    ];
+
 
     /**
      * @var integer $id

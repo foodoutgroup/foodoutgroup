@@ -196,6 +196,19 @@ class Slug
         $context->generate($langId, $itemId, $itemText);
     }
 
+    public function generateSlug($langId, $itemId, $itemText, $type = SlugEntity::TYPE_PAGE)
+    {
+
+        if(!in_array($type, SlugEntity::$typeCollection)) {
+            throw new \Exception('Slug type was not found');
+        }
+
+        $strategy = new TextStrategy($this->container());
+        $strategy->setType($type);
+        $context = new SlugGenerator($strategy);
+        $context->generate($langId, $itemId, $itemText);
+    }
+
     /**
      * TODO Not working - fatal injuries can be caused
      */

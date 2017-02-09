@@ -3,9 +3,13 @@ namespace Food\AppBundle\Service;
 
 use Aws\CloudFront\Exception\Exception;
 use Doctrine\ORM\EntityManager;
+use Food\DishesBundle\Utils\Slug\SlugGenerator;
+use Food\DishesBundle\Utils\Slug\TextStrategy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Router;
+use \Food\AppBundle\Entity\Slug as SlugEntity;
+
 
 class SlugService {
 
@@ -15,55 +19,56 @@ class SlugService {
     private $repository;
     private $request;
     private $router;
+    private $container;
 
     public function __construct(EntityManager $entityManager, ContainerInterface $container,  Router $router, $localeCollection, $defaultLocale)
     {
         $this->em = $entityManager;
         $this->request = $container->get('request');
+        $this->container = $container;
         $this->router = $router;
         $this->localeCollection = $localeCollection;
         $this->defaultLocale = $defaultLocale;
         $this->repository = $this->em->getRepository('FoodAppBundle:Slug');
     }
 
-    public function generate($object) {
+    public function generate($object, $slug, $type = SlugEntity::TYPE_PAGE)
+    {
+
+        if(!in_array($type, SlugEntity::$typeCollection)) {
+            throw new \Exception('Slug type was not found');
+        }
 
         if(method_exists($object, 'getTranslations')) {
-            $textForSlug = [];
-            $dataCollection = $object->getTranslations();
-
-            if(method_exists($object, 'getSlug')) {
-                $textForSlug[$this->defaultLocale] = $object->getSlug();
-            }
-
-            var_dump(count($dataCollection));
-
-            var_dump($dataCollection);
-
-            if ($dataCollection) {
-                foreach ($dataCollection as $item) {
-
-                    echo "==============================";
-//                    if($item->getField() == 'slug') {
-//                        var_dump($item->getContent());
-//                    }
-//
-//                    if (method_exists($item, 'getSlug')) {
-//                        $textForSlug[$item->getLocale()] = $item->getSlug();
-//                    }
-                }
-            }
-
-            var_dump($textForSlug);
-            die;
-
-//            $textForSlug = [];
-//            foreach ($this->localeCollection as $locale) {
-//                $textForSlug[$locale] = $slug;
-//            }
-
+            throw new \Exception('getTranslations method required');
         }
+
+        $locales = $this->container->getParameter('available_locales');
+
+        $textsForSlugs = [];
+        foreach($object->getTranslations()->getValues() as $row) {
+            if ($row->getField() == "name") {
+                $textsForSlugs[$row->getLocale()] = $row->getContent();
+            }
+        }
+        foreach ($locales as $loc) {
+            if (!isset($textsForSlugs[$loc])) {
+                $textsForSlugs[$loc] = $origName;
+            }
+        }
+
+        $languages = $this->getContainer()->get('food.app.utils.language')->getAll();
+        $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
+        foreach ($languages as $loc) {
+            $slugUtelyte->generateForFoodCategory($loc, $object->getId(), $textsForSlugs[$loc]);
+        }
+
+        $strategy = new TextStrategy($this->container);
+        $strategy->setType($type);
+        $context = new SlugGenerator($strategy);
+        $context->generate($langId, $itemId, $itemText);
     }
+
 
     public function exist($slug) {
         return $this->repository->exist($slug);

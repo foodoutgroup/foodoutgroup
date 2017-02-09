@@ -6,7 +6,7 @@ services:
 
     validate.slug:
         class: Food\AppBundle\Validator\Constraints\SlugValidator
-        arguments: [@doctrine.orm.entity_manager, %available_locales%]
+        arguments: [@doctrine.orm.entity_manager, %available_locales%, %kernel.default_locale%]
         tags:
           - { name: validator.constraint_validator, alias: validate.slug }
 

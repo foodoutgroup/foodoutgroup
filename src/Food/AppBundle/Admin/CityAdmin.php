@@ -2,9 +2,11 @@
 namespace Food\AppBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\AppBundle\Entity\City;
 use Food\AppBundle\Validator\Constraints\Slug;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use \Food\AppBundle\Entity\Slug as SlugEntity;
 
 class CityAdmin extends FoodAdmin
 {
@@ -22,15 +24,17 @@ class CityAdmin extends FoodAdmin
                     'delete' => array(),
                 ),
                 'label' => 'admin.actions'
-            ))
-        ;
+            ));
     }
+
+
 
     function configureFormFields(FormMapper $form)
     {
 
         $form->add('translations', 'a2lix_translations_gedmo', [
             'translatable_class' => 'Food\AppBundle\Entity\City',
+                'cascade_validation'=>true,
                 'fields' => [
                     'title' => [],
                     'meta_title' => ['required' => false],
@@ -49,32 +53,49 @@ class CityAdmin extends FoodAdmin
         ;
 
     }
+//
+//    /**
+//     * @param City $object
+//     */
+//    public function preUpdate($object)
+//    {
+//        $this->logCity($object);
+//        parent::preUpdate($object);
+//    }
+//
+//    /**
+//     * @param \Food\AppBundle\Entity\City $object
+//     * @return void
+//     */
+//    private function logCity($object)
+//    {
+//        $miscUtils = $this->getContainer()->get('food.app.utils.misc');
+//        $original = $this->getContainer()->get('doctrine.orm.entity_manager')
+//            ->getRepository('FoodAppBundle:City')->find($object->getId());
+//        $original = $this->getContainer()->get('doctrine.orm.entity_manager')
+//            ->getUnitOfWork()->getOriginalEntityData($original);
+//        $miscUtils->logCityChange($object, $original);
+//    }
 
-    /**
-     * Log editing before inserting to database
-     * @inheritdoc
-     *
-     * @param \Food\AppBundle\Entity\City $object
-     * @return mixed|void
-     */
-    public function preUpdate($object)
+    function postPersist($object)
     {
-//        $this->getContainer()->get('food.slug_service')->generate($object);
-        $this->logCity($object);
-        parent::preUpdate($object);
+        $this->slug($object);
+        parent::postPersist($object);
+    }
+
+    function postUpdate($object)
+    {
+        $this->slug($object);
+        parent::postUpdate($object);
     }
 
     /**
-     * @param \Food\AppBundle\Entity\City $object
-     * @return void
+     * @param City $object
      */
-    private function logCity($object)
+    private function slug($object)
     {
-        $miscUtils = $this->getContainer()->get('food.app.utils.misc');
-        $original = $this->getContainer()->get('doctrine.orm.entity_manager')
-            ->getRepository('FoodAppBundle:City')->find($object->getId());
-        $original = $this->getContainer()->get('doctrine.orm.entity_manager')
-            ->getUnitOfWork()->getOriginalEntityData($original);
-        $miscUtils->logCityChange($object, $original);
+        $slugService = $this->getContainer()->get('slug');
+        $slugService->generate($object, $object->getSlug(), SlugEntity::TYPE_CITY);
     }
+
 }

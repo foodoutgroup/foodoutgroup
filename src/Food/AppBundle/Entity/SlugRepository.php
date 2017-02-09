@@ -28,6 +28,11 @@ class SlugRepository extends EntityRepository
         return $this->findOneBy(['item_id' => (int) $id, 'type' => $type, 'name' => $slug]);
     }
 
+    public function getBySlugAndLocale($slug, $locale)
+    {
+        return $this->findOneBy(['name' => $slug, 'lang_id' => $locale]);
+    }
+
     public function getBySlug($slug)
     {
         return $this->findOneBy(['name' => $slug]);

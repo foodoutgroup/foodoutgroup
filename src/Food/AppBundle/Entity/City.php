@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 use Food\AppBundle\Validator\Constraints as AppAssert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * City
