@@ -26,6 +26,7 @@ class DefaultController extends Controller
         'Kedainiai' => 'places.in_kedainiai',
         'Plungė' => 'places.in_plunge',
         'Plunge' => 'places.in_plunge',
+        'Palanga' => 'places.in_palanga',
         'Riga' => 'places.in_riga',
         'Rīga' => 'places.in_riga',
         'Tallinn' => 'places.in_tallinn',

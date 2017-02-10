@@ -1309,6 +1309,10 @@
                 <source>places.in_plunge</source>
                 <target>Plungėje</target>
             </trans-unit>
+            <trans-unit id="places.in_palanga" resname="places.in_palanga">
+                <source>places.in_palanga</source>
+                <target>Palangoje</target>
+            </trans-unit>
             <trans-unit id="food.game.firstname" resname="food.game.firstname">
                 <source>food.game.firstname</source>
                 <target>Vardas</target>

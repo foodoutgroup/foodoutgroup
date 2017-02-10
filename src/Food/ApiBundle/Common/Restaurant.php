@@ -222,7 +222,7 @@ class Restaurant extends ContainerAware
                 'payment_options',
                 [
                     'cash'        => ($place->getDisabledPaymentOnDelivery() ? false : true),
-                    'credit_card' => ($place->getCardOnDelivery() && !$place->getDisabledPaymentOnDelivery() ? true : false)
+                    'credit_card' => ($place->getCardOnDelivery() && !$place->getDisabledPaymentOnDelivery() ? true : false),
                 ]
             )
             ->set(
