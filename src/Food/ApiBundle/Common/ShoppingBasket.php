@@ -15,8 +15,10 @@ class ShoppingBasket extends ContainerAware{
         'expires' => null, // unixtimestamp
         'payment_options' => array(
             'cash' => false,
-            'credit_card' => false
+            'credit_card' => false,
         ),
+        'payment' => ["name" => "[#cash#]", "code" => "cash", "payment" => null, "current" => true],
+        'payment_method' => [],
         'total_price' => array(
             'amount' => 0,
             'discount' => 0,
