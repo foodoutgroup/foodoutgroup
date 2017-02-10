@@ -215,9 +215,14 @@ class BasketService extends ContainerAware
             'payment_options',
             array(
                 'cash' => true,
-                'credit_card' => $basketInfo->getPlaceId()->getCardOnDelivery()
+                'credit_card' => $basketInfo->getPlaceId()->getCardOnDelivery(),
+                'online' => true,
             )
         );
+        $basket->set('banks', array(
+            ['name' => 'seb', 'code' => 'sebas'],
+            ['name' => 'swed', 'code' => 'swedas'],
+        ));
         $basket->set('expires', (date("U") + (3600 * 24 * 7)));
 
         $total = $this->container->get('food.cart')->getCartTotalApi($cartItems, $basketInfo->getPlaceId()) * 100;
