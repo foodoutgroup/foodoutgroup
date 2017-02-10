@@ -115,7 +115,7 @@ class UsersController extends Controller
                     )
                 );
             }
-
+            $existingUser = false;
             // User exists???
             if (!empty($facebook_id)) {
                 $existingUser = $um->findUserBy(array('facebook_id' => $facebook_id));

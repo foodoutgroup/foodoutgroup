@@ -215,7 +215,8 @@ class BasketService extends ContainerAware
             'payment_options',
             array(
                 'cash' => true,
-                'credit_card' => $basketInfo->getPlaceId()->getCardOnDelivery()
+                'credit_card' => $basketInfo->getPlaceId()->getCardOnDelivery(),
+                'online' => true,
             )
         );
         $basket->set('expires', (date("U") + (3600 * 24 * 7)));
