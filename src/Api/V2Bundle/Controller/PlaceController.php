@@ -11,11 +11,10 @@ class PlaceController extends Controller
 {
 
     public function getAction($placeHash, Request $request){
+        $return = ['success' => false];
 
         try {
             $ps = $this->get('api.v2.place');
-
-            $return = ['success' => false];
             $place = $ps->getPlaceByHash($placeHash);
 
             $return['place'] = [

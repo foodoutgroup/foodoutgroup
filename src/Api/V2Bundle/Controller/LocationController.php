@@ -32,6 +32,8 @@ class LocationController extends Controller
                     $qb = $repository->createQueryBuilder('pp')
                         ->innerJoin('FoodDishesBundle:Place', 'p', 'WITH','p.id = pp.place')
                         ->where('pp.city = :city')
+                        ->andWhere('pp.active = 1')
+                        ->andWhere('p.deletedAt IS NULL')
                         ->andWhere('p.id IN (:ids)')
                         ->andWhere('p.apiHash IS NOT NULL');
 
