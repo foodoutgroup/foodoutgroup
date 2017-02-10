@@ -130,16 +130,6 @@ class Restaurant extends ContainerAware
             ];
         }
 
-        $bankCollection = [];
-        $bankCollection[] = [
-            'name' => 'Seb',
-            'code' => 'sebas'
-        ];
-        $bankCollection[] = [
-            'name' => 'Swed',
-            'code' => 'swedas'
-        ];
-
         $photos = [];
         foreach ($place->getPhotos() as $photo) {
             if ($photo->getActive()) {
@@ -228,14 +218,13 @@ class Restaurant extends ContainerAware
             ->set('tags', [])// @todo FILL IT !!
             ->set('photo_urls', $photos)
             ->set('thumbnail_url', $place->getWebPath())
-            ->set('payment_options',
+            ->set(
+                'payment_options',
                 [
                     'cash'        => ($place->getDisabledPaymentOnDelivery() ? false : true),
                     'credit_card' => ($place->getCardOnDelivery() && !$place->getDisabledPaymentOnDelivery() ? true : false),
-                    'online' => true
                 ]
             )
-            ->set('banks', $bankCollection)
             ->set(
                 'services',
                 [
