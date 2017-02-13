@@ -192,22 +192,37 @@ class DispatcherAdminController extends Controller
             case $orderService::$status_new:
                 $orderStatuses = [
                     $orderService::$status_accepted,
-                    $orderService::$status_canceled,
+                    $orderService::$status_canceled
                 ];
+                if (!$order->getPlace()->getNavision()) {
+                    $orderStatuses[] = $orderService::$status_forwarded;
+                }
                 break;
 
             case $orderService::$status_accepted:
             case $orderService::$status_finished:
             case $orderService::$status_delayed:
                 $orderStatuses = $orderService::getOrderStatuses();
-                $index = array_search('assigned', $orderStatuses);
+                $index = array_search($orderService::$status_assiged, $orderStatuses);
                 if (isset($orderStatuses[$index])) {
                     unset($orderStatuses[$index]);
+                }
+                if ($order->getPlace()->getNavision()) {
+                    $index = array_search($orderService::$status_forwarded, $orderStatuses);
+                    if (isset($orderStatuses[$index])) {
+                        unset($orderStatuses[$index]);
+                    }
                 }
                 break;
 
             default:
                 $orderStatuses = $orderService::getOrderStatuses();
+                if ($order->getPlace()->getNavision()) {
+                    $index = array_search($orderService::$status_forwarded, $orderStatuses);
+                    if (isset($orderStatuses[$index])) {
+                        unset($orderStatuses[$index]);
+                    }
+                }
                 break;
         }
 
@@ -218,7 +233,8 @@ class DispatcherAdminController extends Controller
                 'currentStatus'        => $order->getOrderStatus(),
                 'delayDurations'       => $delayDurations,
                 'currentDelayDuration' => $order->getDelayDuration(),
-                'cancelReasons'        => $this->_getCancelReasons()
+                'cancelReasons'        => $this->_getCancelReasons(),
+                'pp_list'              => $orderService->getPPList()
             ]
         );
     }
@@ -249,36 +265,41 @@ class DispatcherAdminController extends Controller
         }
     }
 
+    /**
+     * @TODO refactor!!!
+     */
     public function setOrderStatusAction($orderId, $status, $delayDuration = false, Request $request)
     {
         $cancelReason = $request->get('cancelReason');
         $cancelReasonComment = $request->get('cancelReasonComment');
 
         $orderService = $this->get('food.order');
-        $setOrderStatus = function ($orderId, $status, $delayDuration, $cancelReason, $cancelReasonComment) use (&$orderService) {
+        $setOrderStatus = function ($orderId, $status, $delayDuration, $cancelReason, $cancelReasonComment, $request) use (&$orderService) {
+            $em = $orderService->getEm();
             $orderService->getOrderById($orderId);
             $oldStatus = $orderService->getOrder()->getOrderStatus();
             $method = 'status' . ucfirst($status);
+            $order = $orderService->getOrder();
             if (method_exists($orderService, $method)) {
                 $orderService->$method('dispatcher');
-                $orderDelayed = $orderService->getOrder()->getDelayed();
+                $orderDelayed = $order->getDelayed();
                 if ($method == 'statusDelayed' && !empty($delayDuration)) {
                     $orderService->statusDelayed('dispatcher', 'delay duration: ' . $delayDuration);
-                    $orderService->getOrder()->setDelayed(true);
-                    $orderService->getOrder()->setDelayReason('Delayed');
-                    $orderService->getOrder()->setDelayDuration($delayDuration);
+                    $order->setDelayed(true);
+                    $order->setDelayReason('Delayed');
+                    $order->setDelayDuration($delayDuration);
                     $orderService->saveDelay();
                 } else if ($orderDelayed) {
-                    $orderService->getOrder()->setDelayed(false);
-                    $orderService->getOrder()->setDelayReason(null);
-                    $orderService->getOrder()->setDelayDuration(null);
+                    $order->setDelayed(false);
+                    $order->setDelayReason(null);
+                    $order->setDelayDuration(null);
                 }
                 if ($method == 'statusCanceled') {
                     if (OrderService::$status_canceled != $oldStatus) {
                         $orderService->informPlaceCancelAction();
                     }
 
-                    $orderExtra = $orderService->getOrder()
+                    $orderExtra = $order
                         ->getOrderExtra()
                     ;
                     $orderExtra->setCancelReason($cancelReason)
@@ -287,13 +308,11 @@ class DispatcherAdminController extends Controller
                     $orderService->getEm()->persist($orderExtra);
 
                     $orderService->informAdminAboutCancelation();
-                }
-
-                if ($method == 'statusCanceled_produced') {
+                } elseif ($method == 'statusCanceled_produced') {
                     if (OrderService::$status_canceled_produced != $oldStatus) {
                         $orderService->informPlaceCancelAction();
                     }
-                    $orderExtra = $orderService->getOrder()
+                    $orderExtra = $order
                         ->getOrderExtra()
                     ;
                     $orderExtra->setCancelReason($cancelReason)
@@ -302,16 +321,37 @@ class DispatcherAdminController extends Controller
                     $orderService->getEm()->persist($orderExtra);
 
                     $orderService->informAdminAboutCancelation();
+                } elseif ($method == 'statusForwarded') {
+                    $newPP = $request->get('forwardedPPList');
+                    $reason = $request->get('forwardedReasonComment');
+
+                    $pp = $em->getRepository('FoodDishesBundle:PlacePoint')->find($newPP);
+
+                    $message = $order->getPlacePointAddress() . ' -> ' . $pp->getAddress();
+
+                    $orderService->logOrder($order, 'change_placepoint', $message);
+                    $orderService->logOrder($order, 'change_placepoint_reason', $reason);
+
+                    $order->setPlacePoint($pp)
+                        ->setPlacePointAddress($pp->getAddress())
+                        ->setDriver(null)
+                        ->setPlaceInformed(false);
+
+                    if ($order->getOrderStatus() != $orderService::$status_preorder) {
+                        $orderService->statusNew();
+
+                        $orderService->informPlace();
+                    }
                 }
             }
             $orderService->saveOrder();
         };
 
         try {
-            $setOrderStatus($orderId, $status, $delayDuration, $cancelReason, $cancelReasonComment);
+            $setOrderStatus($orderId, $status, $delayDuration, $cancelReason, $cancelReasonComment, $request);
         } catch (OptimisticLockException $e) {
             // Retry
-            $setOrderStatus($orderId, $status, $delayDuration, $cancelReason, $cancelReasonComment);
+            $setOrderStatus($orderId, $status, $delayDuration, $cancelReason, $cancelReasonComment, $request);
         } catch (\Exception $e) {
             // TODO normalus error return ir ispiesimas popupe
             $this->get('logger')->error('Error happened setting status: ' . $e->getMessage());

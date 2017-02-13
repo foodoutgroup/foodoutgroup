@@ -2115,6 +2115,14 @@
                 <source>admin.dispatcher.cancel_reason_comment_placeholder</source>
                 <target>Enter the comment</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.forwarded_comment_placeholder">
+                <source>admin.dispatcher.forwarded_comment_placeholder</source>
+                <target>Enter the comment</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.forwarded_pp_list">
+                <source>admin.dispatcher.forwarded_pp_list</source>
+                <target>Place point</target>
+            </trans-unit>
             <!-- Status historis -->
             <trans-unit id="admin.order.log.date">
                 <source>admin.order.log.date</source>

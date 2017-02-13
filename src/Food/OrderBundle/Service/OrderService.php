@@ -926,7 +926,7 @@ class OrderService extends ContainerAware
      */
     public function statusForwarded($source = null, $statusMessage = null)
     {
-        $this->chageOrderStatus(self::$status_forwarded, $source, $statusMessage);
+        //~ $this->chageOrderStatus(self::$status_forwarded, $source, $statusMessage);
 
         $this->updateDriver();
 
@@ -4687,5 +4687,17 @@ class OrderService extends ContainerAware
                 $om->flush();
             }
         }
+    }
+
+    public function getPPList()
+    {
+        $em = $this->container->get('doctrine')->getManager();
+        $order = $this->getOrder();
+        $ppList = $em->getRepository('FoodDishesBundle:PlacePoint')->findBy([
+            'place' => $order->getPlace()->getId(),
+            'city' => $order->getPlacePointCity()
+        ]);
+
+        return $ppList;
     }
 }
