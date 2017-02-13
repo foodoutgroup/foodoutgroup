@@ -35,6 +35,14 @@ class OrderDataImportService extends BaseService
      */
     public function importData($uploadedFile, $importObject = null)
     {
+        $this->importDataFromFile($uploadedFile->getRealPath(), $importObject);
+    }
+
+    /**
+    * @param string $filePath
+    */
+    public function importDataFromFile($filePath, $importObject = null)
+    {
         if ($importObject) {
             $this->importObject = $importObject;
         }
@@ -43,7 +51,7 @@ class OrderDataImportService extends BaseService
             'orders' => array(),
         );
         $headers = array();
-        $objPHPExcel = PHPExcel_IOFactory::load($uploadedFile->getRealPath());
+        $objPHPExcel = PHPExcel_IOFactory::load($filePath);
         foreach ($objPHPExcel->getAllSheets() as $sheet) {
             $excelOrders = $sheet->toArray();
             if (!$headers) {
