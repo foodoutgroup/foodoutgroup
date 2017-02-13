@@ -589,6 +589,7 @@ class OrderService extends ContainerAware
                 'payment_options'  => [
                     'cash'        => ($order->getPaymentMethod() == "local" ? true : false),
                     'credit_card' => ($order->getPaymentMethod() == "local.card" ? true : false),
+                    'online' => true, //todo cia reik kazka daryt su situ
                 ],
                 'items'            => $this->_getItemsForResponse($order)
             ],
