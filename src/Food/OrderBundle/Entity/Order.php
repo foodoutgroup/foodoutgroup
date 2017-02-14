@@ -478,6 +478,18 @@ class Order
     private $orderCallLog;
 
     /**
+     * @var int
+     * @ORM\Column(name="food_prepare_time", type="integer", nullable=true)
+     */
+    private $foodPrepareTime;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="food_prepare_date", type="datetime", nullable=true)
+     */
+    private $foodPrepareDate;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -2526,5 +2538,37 @@ class Order
     public function getOrderCallLog()
     {
         return $this->orderCallLog;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFoodPrepareTime()
+    {
+        return $this->foodPrepareTime;
+    }
+
+    /**
+     * @param int $foodPrepareTime
+     */
+    public function setFoodPrepareTime($foodPrepareTime)
+    {
+        $this->foodPrepareTime = $foodPrepareTime;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getFoodPrepareDate()
+    {
+        return $this->foodPrepareDate;
+    }
+
+    /**
+     * @param \DateTime $foodPrepareDate
+     */
+    public function setFoodPrepareDate($foodPrepareDate)
+    {
+        $this->foodPrepareDate = $foodPrepareDate;
     }
 }

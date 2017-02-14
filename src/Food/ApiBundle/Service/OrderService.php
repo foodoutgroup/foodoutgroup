@@ -11,6 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Food\OrderBundle\Service\OrderService as FO;
 use Food\ApiBundle\Exceptions\ApiException;
+use Symfony\Component\Validator\Constraints\Date;
 
 class OrderService extends ContainerAware
 {
@@ -648,6 +649,8 @@ class OrderService extends ContainerAware
 
     /**
      * @param Order $order
+     * @param string $status
+     * @param Request $request
      *
      * @return array
      */
@@ -658,6 +661,7 @@ class OrderService extends ContainerAware
             switch($status) {
                 case 'confirm':
                     $orderService->statusAccepted('restourant_ng');
+                    $orderService->setOrderPrepareTime($request->get('food_prepare_time'));
                     break;
 
                 case 'delay':

@@ -39,6 +39,8 @@ class OrderDataImportAdmin extends FoodAdmin
         $list->add('date', 'date', []);
         $list->add('username', 'user', []);
         $list->add('infodata', 'infodata', []);
+        $list->add('filename');
+        $list->add('is_imported', 'boolean');
         $list->add('ordersChanged', 'sonata_type_list', array('admin_code' => 'sonata.admin.order', 'route' => array( 'name' => 'show') ));
 
     }
@@ -48,16 +50,20 @@ class OrderDataImportAdmin extends FoodAdmin
      */
     public function prePersist($object)
     {
+        if (!$this->getContainer()->get('filesystem')->exists(OrderDataImport::SERVER_PATH_TO_FILE_FOLDER)) {
+            $this->getContainer()->get('filesystem')->mkdir(OrderDataImport::SERVER_PATH_TO_FILE_FOLDER);
+        }
         parent::prePersist($object);
         $now = new \DateTime();
         $object->setDate($now);
 
         $object->setUser($this->getUser());
-
+        /*
         $changeLog = $this->getContainer()->get('food.order_data_import_service')->importData($object->getFile(), $object);
         $object->setInfodata(json_encode($changeLog['infodata']));
         foreach ($changeLog['orders'] as $order) {
             $object->getOrdersChanged()->add($this->getContainer()->get('doctrine')->getRepository('FoodOrderBundle:Order')->find($order));
         }
+        */
     }
 }

@@ -250,6 +250,18 @@
                 <source>mobile.order_confirm</source>
                 <target>Patvirtinti užsakymą</target>
             </trans-unit>
+            <trans-unit id="mobile.order_confirm_prepareTime" resname="mobile.order_confirm_prepareTime">
+                <source>mobile.order_confirm_prepareTime</source>
+                <target>Pagaminimo laikas %time% min.</target>
+            </trans-unit>
+            <trans-unit id="mobile.order_confirm_prepareTimeOther" resname="mobile.order_confirm_prepareTimeOther">
+                <source>mobile.order_confirm_prepareTimeOther</source>
+                <target>Kitas pagaminimo laikas</target>
+            </trans-unit>
+            <trans-unit id="mobile.order_confirm_enterPrepareTime" resname="mobile.order_confirm_enterPrepareTime">
+                <source>mobile.order_confirm_enterPrepareTime</source>
+                <target>Įveskite pagaminimo laiką minutėmis (pvz. 40)</target>
+            </trans-unit>
             <trans-unit id="7ebe276de073f58e9744cb5e46760b88" resname="mobile.order_delay">
                 <source>mobile.order_delay</source>
                 <target>Atidėti užsakymą</target>
@@ -1537,6 +1549,10 @@
             <trans-unit id="general.restaurant_not_delivering_to_address_explained">
                 <source>general.restaurant_not_delivering_to_address_explained</source>
                 <target>Restoranas, iš kurio pristatoma jūsų nurodytu adresu, šiuo metu nedirba. Restorano darbo laiką rasite rastorano puslapyje "Kaip rasti restoraną".</target>
+            </trans-unit>
+            <trans-unit id="general.news" resname="general.news">
+                <source>general.news</source>
+                <target>Naujienos</target>
             </trans-unit>
         </body>
     </file>
