@@ -170,6 +170,10 @@
             <trans-unit id="places.review_choice" resname="places.review_choice">
                 <source>places.review_choice</source><target>Arvustus|Arvustused|Arvustusi</target>
             </trans-unit>
+            <trans-unit id="general.no_place_reviews" resname="general.no_place_reviews">
+                <source>general.no_place_reviews</source>
+                <target>Ei ülevaateid</target>
+            </trans-unit>
             <trans-unit id="c246f90396fd5c888eb71087fbb61789" resname="places.watch_menu">
                 <source>places.watch_menu</source><target>Menüü vaatamine</target>
             </trans-unit>
