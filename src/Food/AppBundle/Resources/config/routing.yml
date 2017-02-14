@@ -173,6 +173,18 @@ food_best_offers_lv_slash:
   path: /akcijas/
   defaults: { _controller: FoodAppBundle:Default:listBestOffers}
 
+food_blog_main_page_lt:
+  path: /naujienos/
+  defaults: { _controller: FoodBlogBundle:Default:index }
+
+food_blog_main_page_lv:
+  path: /naujienos/
+  defaults: { _controller: FoodBlogBundle:Default:index }
+
+food_blog_main_page_ee:
+  path: /naujienos/
+  defaults: { _controller: FoodBlogBundle:Default:index }
+
 food_slug:
     path:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }

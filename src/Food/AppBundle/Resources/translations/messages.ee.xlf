@@ -1264,6 +1264,10 @@
                 <source>places.in_tallinn</source>
                 <target>Tallinn</target>
             </trans-unit>
+            <trans-unit id="general.news" resname="general.news">
+                <source>general.news</source>
+                <target>Uudised</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

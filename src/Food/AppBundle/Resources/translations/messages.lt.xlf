@@ -1538,6 +1538,10 @@
                 <source>general.restaurant_not_delivering_to_address_explained</source>
                 <target>Restoranas, iš kurio pristatoma jūsų nurodytu adresu, šiuo metu nedirba. Restorano darbo laiką rasite rastorano puslapyje "Kaip rasti restoraną".</target>
             </trans-unit>
+            <trans-unit id="general.news" resname="general.news">
+                <source>general.news</source>
+                <target>Naujienos</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
