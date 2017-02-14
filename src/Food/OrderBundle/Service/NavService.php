@@ -394,7 +394,7 @@ class NavService extends ContainerAware
             $comment .= ". SKAIDRA NAUDA";
 //            $comment.=". Mokesiu grynais";
         } else {
-
+            $comment .= ". ".$order->getPaymentMethod();
         }
 
         $dataToPut = [
