@@ -246,6 +246,18 @@
                 <source>mobile.order_confirm</source>
                 <target>Apstiprināt pasūtījumu</target>
             </trans-unit>
+            <trans-unit id="mobile.order_confirm_prepareTime" resname="mobile.order_confirm_prepareTime">
+                <source>mobile.order_confirm_prepareTime</source>
+                <target>Pirmo reizi %time% min.</target>
+            </trans-unit>
+            <trans-unit id="mobile.order_confirm_prepareTimeOther" resname="mobile.order_confirm_prepareTimeOther">
+                <source>mobile.order_confirm_prepareTimeOther</source>
+                <target>Pirmo reizi (cits)</target>
+            </trans-unit>
+            <trans-unit id="mobile.order_confirm_enterPrepareTime" resname="mobile.order_confirm_enterPrepareTime">
+                <source>mobile.order_confirm_enterPrepareTime</source>
+                <target>Ievadiet citu sagatavot laiku (piemērs. 40)</target>
+            </trans-unit>
             <trans-unit id="7ebe276de073f58e9744cb5e46760b88" resname="mobile.order_delay">
                 <source>mobile.order_delay</source>
                 <target>Atlikt pasūtījumu</target>

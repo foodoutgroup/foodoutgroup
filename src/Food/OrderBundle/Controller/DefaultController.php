@@ -34,7 +34,9 @@ class DefaultController extends Controller
                 switch($formStatus) {
                     case 'confirm':
                         $orderService->statusAccepted('restourant_mobile');
-                    break;
+
+                        $orderService->setOrderPrepareTime($request->get('food_prepare_time'));
+                        break;
 
                     case 'delay':
                         $orderService->statusDelayed('restourant_mobile', 'delay reason: '.$request->get('delay_reason'));

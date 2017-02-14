@@ -259,6 +259,8 @@ class OrderAdmin extends FoodAdmin
         $showMapper
             ->add('id', null, array('label' => 'admin.order.id', 'editable' => false))
             ->add('order_date', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.order_date'))
+            ->add('food_prepare_time', null, array('label' => 'admin.order.food_prepare_time'))
+            ->add('food_prepare_date', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.food_prepare_date'))
             ->add('delivery_time', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.order.delivery_time'))
             ->add('place_name', 'string', array('label' => 'admin.order.place_name', 'editable' => false,))
             ->add('place_point_address', 'string', array('label' => 'admin.order.place_point'))
