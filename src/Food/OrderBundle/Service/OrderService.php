@@ -495,6 +495,54 @@ class OrderService extends ContainerAware
      */
     public function statusNewPreorder($source = null, $statusMessage = null)
     {
+        $smsService = $this->container->get('food.messages');
+
+        $sender = $this->container->getParameter('sms.sender');
+
+        $translation = 'general.sms.user.order_accepted';
+        // Preorder message differs
+        if ($order->getPreorder()) {
+            $translation = 'general.sms.user.order_accepted_preorder';
+        }
+
+        if ($order->getDeliveryType() == self::$deliveryPickup) {
+            $translation = 'general.sms.user.order_accepted_pickup';
+
+            if ($order->getPreorder()) {
+                $translation = 'general.sms.user.order_accepted_pickup_preorder';
+            }
+        }
+
+        $placeName = $this->container->get('food.app.utils.language')
+            ->removeChars('lt', $order->getPlaceName(), false, false)
+        ;
+        $placeName = ucfirst($placeName);
+        // Hack for too long restaurant names in LT :) Sorry mates, had to do this for whale :D
+        // Add others if needed
+        if ($placeName == 'Cili GREITA (tik issinesimui)') {
+            $placeName = 'Cili GREITA';
+        }
+
+        $place = $order->getPlace();
+
+        $text = $this->container->get('translator')
+            ->trans(
+                $translation,
+                [
+                    'order_id'          => $order->getId(),
+                    'restourant_name'   => $placeName,
+                    'delivery_time'     => ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
+                    'pre_delivery_time' => ($order->getDeliveryTime()->format('m-d H:i')),
+//                                'restourant_phone' => $order->getPlacePoint()->getPhone()
+                ],
+                null,
+                $order->getLocale()
+            )
+        ;
+
+        $message = $smsService->createMessage($sender, $recipient, $text, $order);
+        $smsService->saveMessage($message);
+
         $this->chageOrderStatus(self::$status_preorder, $source, $statusMessage);
 
         return $this;
@@ -2910,6 +2958,11 @@ class OrderService extends ContainerAware
             ->setMessage($message)
         ;
 
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        if ($user instanceof User) {
+            $log->setUser($user);
+        }
+
         $this->getEm()->persist($log);
         $this->getEm()->flush();
 
@@ -4559,36 +4612,56 @@ class OrderService extends ContainerAware
             throw new \InvalidArgumentException('No order is set');
         }
 
-        $sendMessage = true;
-        if (in_array($this->getLocale(), array())) {
-            $sendMessage = false;
-        }
+        $recipient = $this->getOrder()->getOrderExtra()->getPhone();
+        if (!empty($recipient)) {
+            $smsService = $this->container->get('food.messages');
+            $sender = $this->container->getParameter('sms.sender');
 
-        if ($sendMessage) {
-            $recipient = $this->getOrder()->getOrderExtra()->getPhone();
+            switch($this->getLocale()) {
+                case 'lt':
+                        $keyword = 'general.sms.client.order_created';
+                        if ($this->getOrder()->getPreorder()) {
+                            $keyword .= '_preorder';
+                        }
+                        if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
+                            $keyword .= '_pickup';
+                        }
+                        $text = $this->container->get('translator')
+                            ->trans(
+                                $keyword,
+                                [
+                                    'order_id' => $this->getOrder()->getId(),
+                                ],
+                                null,
+                                $this->getOrder()->getLocale()
+                            );
 
-            // SMS siunciam tik preorder // nutartis 2016-11-15 mng meet
-            // SMS siunciam tik tuo atveju jei orderis ne is callcentro
-            if ($this->getOrder()->getOrderFromNav() == false && $this->getOrder()->getPreorder()) {
-                if (!empty($recipient)) {
-                    $smsService = $this->container->get('food.messages');
-                    $sender = $this->container->getParameter('sms.sender');
+                        $message = $smsService->createMessage($sender, $recipient, $text, $this->getOrder());
+                        $smsService->saveMessage($message);
+                    }
+                default:
+                    if (!$this->getOrder()->getOrderFromNav() && $this->getOrder()->getPreorder()) {
 
-                    $text = $this->container->get('translator')
-                        ->trans(
-                            'general.sms.client.order_created',
-                            [
-                                'order_id' => $this->getOrder()->getId(),
-                            ],
-                            null,
-                            $this->getOrder()->getLocale()
-                        );
+                        $text = $this->container->get('translator')
+                            ->trans(
+                                'general.sms.client.order_created_preorder',
+                                [
+                                    'order_id' => $this->getOrder()->getId(),
+                                ],
+                                null,
+                                $this->getOrder()->getLocale()
+                            );
 
-                    $message = $smsService->createMessage($sender, $recipient, $text, $this->getOrder());
-                    $smsService->saveMessage($message);
-                }
+                        $message = $smsService->createMessage($sender, $recipient, $text, $this->getOrder());
+                        $smsService->saveMessage($message);
+                    }
             }
         }
+
+
+        // SMS siunciam tik preorder // nutartis 2016-11-15 mng meet
+        // SMS siunciam tik tuo atveju jei orderis ne is callcentro
+
     }
 
     /**

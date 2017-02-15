@@ -213,4 +213,27 @@ class OrderStatusLog
     {
         return $this->source;
     }
+
+    /**
+     * Set user
+     *
+     * @param \Food\UserBundle\Entity\User $user
+     * @return OrderStatusLog
+     */
+    public function setUser(\Food\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }
