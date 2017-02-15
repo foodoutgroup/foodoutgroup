@@ -192,7 +192,7 @@
             </trans-unit>
             <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
                 <source>general.sms.user.order_accepted</source>
-                <target>Sveiki. restourant_name apstiprina pasūtījumu un Foodout.lv rupejas par zibenigu izpildi! :) Sazinai: +371 67363663</target>
+                <target>Sveiki. restourant_name apstiprina pasutijumu un Foodout.lv rupejas par zibenigu izpildi! :) Sazinai: +371 67363663</target>
             </trans-unit>
             <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
                 <source>general.sms.user.order_accepted_preorder</source>
