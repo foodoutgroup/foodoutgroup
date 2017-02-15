@@ -20,7 +20,7 @@ class OrderFieldChangelog
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Food\OrderBundle\Entity\Order")
+     * @ORM\ManyToOne(targetEntity="Food\OrderBundle\Entity\Order", inversedBy="orderFieldChangelog")
      * @ORM\JoinColumn(referencedColumnName="id")
      **/
     private $order;
@@ -70,7 +70,7 @@ class OrderFieldChangelog
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -86,14 +86,14 @@ class OrderFieldChangelog
     public function setDate($date)
     {
         $this->date = $date;
-    
+
         return $this;
     }
 
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -109,14 +109,14 @@ class OrderFieldChangelog
     public function setOldValue($oldValue)
     {
         $this->oldValue = $oldValue;
-    
+
         return $this;
     }
 
     /**
      * Get oldValue
      *
-     * @return string 
+     * @return string
      */
     public function getOldValue()
     {
@@ -132,14 +132,14 @@ class OrderFieldChangelog
     public function setNewValue($newValue)
     {
         $this->newValue = $newValue;
-    
+
         return $this;
     }
 
     /**
      * Get newValue
      *
-     * @return string 
+     * @return string
      */
     public function getNewValue()
     {
@@ -155,14 +155,14 @@ class OrderFieldChangelog
     public function setOrder(\Food\OrderBundle\Entity\Order $order = null)
     {
         $this->order = $order;
-    
+
         return $this;
     }
 
     /**
      * Get order
      *
-     * @return \Food\OrderBundle\Entity\Order 
+     * @return \Food\OrderBundle\Entity\Order
      */
     public function getOrder()
     {
@@ -178,14 +178,14 @@ class OrderFieldChangelog
     public function setUser(\Food\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getUser()
     {

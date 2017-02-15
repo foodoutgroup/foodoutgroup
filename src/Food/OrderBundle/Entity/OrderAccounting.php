@@ -20,7 +20,7 @@ class OrderAccounting
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Order", inversedBy="accounting")
+     * @ORM\ManyToOne(targetEntity="Order")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      */
     private $order;
@@ -59,7 +59,7 @@ class OrderAccounting
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -75,14 +75,14 @@ class OrderAccounting
     public function setCategory($category)
     {
         $this->category = $category;
-    
+
         return $this;
     }
 
     /**
      * Get category
      *
-     * @return string 
+     * @return string
      */
     public function getCategory()
     {
@@ -98,14 +98,14 @@ class OrderAccounting
     public function setDriver($driver)
     {
         $this->driver = $driver;
-    
+
         return $this;
     }
 
     /**
      * Get driver
      *
-     * @return string 
+     * @return string
      */
     public function getDriver()
     {
@@ -121,14 +121,14 @@ class OrderAccounting
     public function setPaymentType($paymentType)
     {
         $this->paymentType = $paymentType;
-    
+
         return $this;
     }
 
     /**
      * Get paymentType
      *
-     * @return string 
+     * @return string
      */
     public function getPaymentType()
     {
@@ -144,14 +144,14 @@ class OrderAccounting
     public function setVat($vat)
     {
         $this->vat = $vat;
-    
+
         return $this;
     }
 
     /**
      * Get vat
      *
-     * @return integer 
+     * @return integer
      */
     public function getVat()
     {
@@ -167,14 +167,14 @@ class OrderAccounting
     public function setSum($sum)
     {
         $this->sum = $sum;
-    
+
         return $this;
     }
 
     /**
      * Get sum
      *
-     * @return float 
+     * @return float
      */
     public function getSum()
     {
@@ -190,14 +190,14 @@ class OrderAccounting
     public function setOrder(\Food\OrderBundle\Entity\Order $order = null)
     {
         $this->order = $order;
-    
+
         return $this;
     }
 
     /**
      * Get order
      *
-     * @return \Food\OrderBundle\Entity\Order 
+     * @return \Food\OrderBundle\Entity\Order
      */
     public function getOrder()
     {

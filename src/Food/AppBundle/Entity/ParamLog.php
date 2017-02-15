@@ -44,7 +44,7 @@ class ParamLog
     private $newValue;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="paramLog")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $user;
@@ -73,14 +73,14 @@ class ParamLog
     public function setEventDate($eventDate)
     {
         $this->event_date = $eventDate;
-    
+
         return $this;
     }
 
     /**
      * Get event_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEventDate()
     {
@@ -96,14 +96,14 @@ class ParamLog
     public function setOldValue($oldValue)
     {
         $this->oldValue = $oldValue;
-    
+
         return $this;
     }
 
     /**
      * Get oldValue
      *
-     * @return string 
+     * @return string
      */
     public function getOldValue()
     {
@@ -119,14 +119,14 @@ class ParamLog
     public function setNewValue($newValue)
     {
         $this->newValue = $newValue;
-    
+
         return $this;
     }
 
     /**
      * Get newValue
      *
-     * @return string 
+     * @return string
      */
     public function getNewValue()
     {
@@ -142,14 +142,14 @@ class ParamLog
     public function setParam(\Food\AppBundle\Entity\Param $param = null)
     {
         $this->param = $param;
-    
+
         return $this;
     }
 
     /**
      * Get param
      *
-     * @return \Food\AppBundle\Entity\Param 
+     * @return \Food\AppBundle\Entity\Param
      */
     public function getParam()
     {
@@ -165,14 +165,14 @@ class ParamLog
     public function setUser(\Food\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getUser()
     {

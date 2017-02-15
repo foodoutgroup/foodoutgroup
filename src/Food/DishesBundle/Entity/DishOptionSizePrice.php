@@ -22,7 +22,7 @@ class DishOptionSizePrice {
 
     /**
      * @var \Food\DishesBundle\Entity\DishOption
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishOption", inversedBy="sizesPrices")
      */
     private $dish_option;
 
