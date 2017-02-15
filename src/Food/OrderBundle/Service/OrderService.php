@@ -4619,26 +4619,26 @@ class OrderService extends ContainerAware
 
             switch($this->getLocale()) {
                 case 'lt':
-                        $keyword = 'general.sms.client.order_created';
-                        if ($this->getOrder()->getPreorder()) {
-                            $keyword .= '_preorder';
-                        }
-                        if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
-                            $keyword .= '_pickup';
-                        }
-                        $text = $this->container->get('translator')
-                            ->trans(
-                                $keyword,
-                                [
-                                    'order_id' => $this->getOrder()->getId(),
-                                ],
-                                null,
-                                $this->getOrder()->getLocale()
-                            );
-
-                        $message = $smsService->createMessage($sender, $recipient, $text, $this->getOrder());
-                        $smsService->saveMessage($message);
+                    $keyword = 'general.sms.client.order_created';
+                    if ($this->getOrder()->getPreorder()) {
+                        $keyword .= '_preorder';
                     }
+                    if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
+                        $keyword .= '_pickup';
+                    }
+                    $text = $this->container->get('translator')
+                        ->trans(
+                            $keyword,
+                            [
+                                'order_id' => $this->getOrder()->getId(),
+                            ],
+                            null,
+                            $this->getOrder()->getLocale()
+                        );
+
+                    $message = $smsService->createMessage($sender, $recipient, $text, $this->getOrder());
+                    $smsService->saveMessage($message);
+                    break;
                 default:
                     if (!$this->getOrder()->getOrderFromNav() && $this->getOrder()->getPreorder()) {
 
