@@ -265,6 +265,10 @@
             <trans-unit id="ebbc16fb3a732d7abe363ef2463397f9" resname="mobile.order_cancel">
                 <source>mobile.order_cancel</source><target>Tellimuse tühistamine</target>
             </trans-unit>
+             <trans-unit id="mobile.to_cancel_order_please_call" resname="mobile.to_cancel_order_please_call">
+                <source>mobile.to_cancel_order_please_call</source>
+                <target><![CDATA[To cancel order please call <a href="callto:%phone%">%phone%</a>]]></target>
+            </trans-unit>
             <trans-unit id="e9af7214246747e3648fdc0ec367494c" resname="general.places">
                 <source>general.places</source><target>Restoranid</target>
             </trans-unit>

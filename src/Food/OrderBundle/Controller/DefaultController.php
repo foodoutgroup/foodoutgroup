@@ -75,7 +75,14 @@ class DefaultController extends Controller
                 $this->get('logger')->alert($errorMessage);
             }
         }
-        return $this->render('FoodOrderBundle:Default:mobile.html.twig', array('order' => $order));
+        $placepointPrepareTimes = $this->get('food.app.utils.misc')->getParam('placepoint_prepare_times');
+        $placepointPrepareTimes = explode(',', $placepointPrepareTimes);
+        $dispatcherPhone = $this->container->getParameter('dispatcher_contact_phone');
+        return $this->render('FoodOrderBundle:Default:mobile.html.twig', array(
+            'order' => $order,
+            'dispatcherPhone' => $dispatcherPhone,
+            'placepointPrepareTimes' => $placepointPrepareTimes
+        ));
     }
 
     /**
