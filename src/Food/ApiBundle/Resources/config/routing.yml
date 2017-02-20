@@ -254,3 +254,8 @@ food_api_driver_working_state_order:
     pattern: /driver/workingState/{id}/{state}
     defaults: { _controller: FoodApiBundle:Driver:workingState}
     methods: [GET]
+
+food_api_global_parameters:
+    path: /global-parameters/{appType}
+    defaults: { _controller: FoodApiBundle:Default:getGlobalParameters }
+    methods: [GET]
