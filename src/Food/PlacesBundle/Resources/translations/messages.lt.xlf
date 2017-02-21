@@ -336,7 +336,11 @@
             </trans-unit>
             <trans-unit id="food.city.palanga.description">
                 <source>food.city.palanga.description</source>
-                <target>Užsisakykite maisto į namus palangoje. Atvešime per 1h.</target>
+                <target>Užsisakykite maisto į namus Palangoje. Atvešime per 1h.</target>
+            </trans-unit>
+            <trans-unit id="food.city.mazeikiai.description">
+                <source>food.city.palanga.description</source>
+                <target>Užsisakykite maisto į namus Mažeikiuose. Atvešime per 1h.</target>
             </trans-unit>
             <trans-unit id="food.order_food_in_home">
                 <source>food.order_food_in_home</source>

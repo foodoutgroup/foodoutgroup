@@ -1257,6 +1257,10 @@
                 <source>places.in_palanga</source>
                 <target>Palangoje</target>
             </trans-unit>
+            <trans-unit id="places.in_mazeikiai" resname="places.in_mazeikiai">
+                <source>places.in_mazeikiai</source>
+                <target>Mažeikiuose</target>
+            </trans-unit>
             <trans-unit id="food.game.firstname" resname="food.game.firstname">
                 <source>food.game.firstname</source>
                 <target>Vardas</target>
