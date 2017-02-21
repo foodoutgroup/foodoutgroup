@@ -63,7 +63,7 @@ class Order
     private $order_date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="order")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $user;
@@ -2477,7 +2477,7 @@ class Order
     /**
      * Get duringZavalas
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDuringZavalas()
     {
@@ -2493,7 +2493,7 @@ class Order
     public function addOrderFieldChangelog(\Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog)
     {
         $this->orderFieldChangelog[] = $orderFieldChangelog;
-    
+
         return $this;
     }
 

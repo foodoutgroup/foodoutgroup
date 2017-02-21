@@ -13,7 +13,7 @@ class OrderDetailsOptions
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="OrderDetails")
+     * @ORM\ManyToOne(targetEntity="OrderDetails", inversedBy="options")
      * @ORM\JoinColumn(name="order_detail", referencedColumnName="id")
      * @ORM\Id
      */
@@ -284,14 +284,14 @@ class OrderDetailsOptions
     public function setNameToNav($nameToNav)
     {
         $this->nameToNav = $nameToNav;
-    
+
         return $this;
     }
 
     /**
      * Get nameToNav
      *
-     * @return string 
+     * @return string
      */
     public function getNameToNav()
     {
