@@ -20,7 +20,7 @@ class OrderDeliveryLog
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderStatusLog")
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderDeliveryLog")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      */
     private $order;
@@ -51,7 +51,7 @@ class OrderDeliveryLog
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -67,14 +67,14 @@ class OrderDeliveryLog
     public function setEventDate($eventDate)
     {
         $this->event_date = $eventDate;
-    
+
         return $this;
     }
 
     /**
      * Get event_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEventDate()
     {
@@ -91,14 +91,14 @@ class OrderDeliveryLog
     public function setEvent($event)
     {
         $this->event = $event;
-    
+
         return $this;
     }
 
     /**
      * Get event
      *
-     * @return string 
+     * @return string
      */
     public function getEvent()
     {
@@ -114,14 +114,14 @@ class OrderDeliveryLog
     public function setOrder(\Food\OrderBundle\Entity\Order $order = null)
     {
         $this->order = $order;
-    
+
         return $this;
     }
 
     /**
      * Get order
      *
-     * @return \Food\OrderBundle\Entity\Order 
+     * @return \Food\OrderBundle\Entity\Order
      */
     public function getOrder()
     {
@@ -151,14 +151,14 @@ class OrderDeliveryLog
     public function setSinceLast($sinceLast)
     {
         $this->since_last = $sinceLast;
-    
+
         return $this;
     }
 
     /**
      * Get since_last
      *
-     * @return integer 
+     * @return integer
      */
     public function getSinceLast()
     {

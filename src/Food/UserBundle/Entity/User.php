@@ -34,6 +34,12 @@ class User extends BaseUser
     private $place;
 
     /**
+     * @var \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
+     * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\OrderStatusLog", mappedBy="user")
+     **/
+    private $orderStatusLog;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="facebook_id", type="string", length=255, nullable=true)
@@ -281,7 +287,7 @@ class User extends BaseUser
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -319,7 +325,7 @@ class User extends BaseUser
     public function setPlace(Place $place = null)
     {
         $this->place = $place;
-    
+
         return $this;
     }
 
@@ -342,14 +348,14 @@ class User extends BaseUser
     public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
-    
+
         return $this;
     }
 
     /**
      * Get firstname
      *
-     * @return string 
+     * @return string
      */
     public function getFirstname()
     {
@@ -365,14 +371,14 @@ class User extends BaseUser
     public function setLastname($lastname)
     {
         $this->lastname = $lastname;
-    
+
         return $this;
     }
 
     /**
      * Get lastname
      *
-     * @return string 
+     * @return string
      */
     public function getLastname()
     {
@@ -388,7 +394,7 @@ class User extends BaseUser
     public function addAddress(UserAddress $address)
     {
         $this->address[] = $address;
-    
+
         return $this;
     }
 
@@ -441,7 +447,7 @@ class User extends BaseUser
     public function addAddres(UserAddress $address)
     {
         $this->address[] = $address;
-    
+
         return $this;
     }
 
@@ -464,14 +470,14 @@ class User extends BaseUser
     public function setPhone($phone)
     {
         $this->phone = $phone;
-    
+
         return $this;
     }
 
     /**
      * Get phone
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -497,14 +503,14 @@ class User extends BaseUser
     public function setFullyRegistered($fullyRegistered)
     {
         $this->fully_registered = $fullyRegistered;
-    
+
         return $this;
     }
 
     /**
      * Get fully_registered
      *
-     * @return integer 
+     * @return integer
      */
     public function getFullyRegistered()
     {
@@ -520,14 +526,14 @@ class User extends BaseUser
     public function setApiToken($apiToken)
     {
         $this->apiToken = $apiToken;
-    
+
         return $this;
     }
 
     /**
      * Get apiToken
      *
-     * @return string 
+     * @return string
      */
     public function getApiToken()
     {
@@ -543,14 +549,14 @@ class User extends BaseUser
     public function setApiTokenValidity($apiTokenValidity)
     {
         $this->apiTokenValidity = $apiTokenValidity;
-    
+
         return $this;
     }
 
     /**
      * Get apiTokenValidity
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getApiTokenValidity()
     {
@@ -574,14 +580,14 @@ class User extends BaseUser
     public function setBirthday($birthday)
     {
         $this->birthday = $birthday;
-    
+
         return $this;
     }
 
     /**
      * Get birthday
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getBirthday()
     {
@@ -619,14 +625,14 @@ class User extends BaseUser
             $this->setCreatedAt(new \DateTime());
         }
         $this->isBussinesClient = $isBussinesClient;
-    
+
         return $this;
     }
 
     /**
      * Get isBussinesClient
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsBussinesClient()
     {
@@ -642,14 +648,14 @@ class User extends BaseUser
     public function setCompanyName($companyName)
     {
         $this->companyName = $companyName;
-    
+
         return $this;
     }
 
     /**
      * Get companyName
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyName()
     {
@@ -665,14 +671,14 @@ class User extends BaseUser
     public function setCompanyCode($companyCode)
     {
         $this->companyCode = $companyCode;
-    
+
         return $this;
     }
 
     /**
      * Get companyCode
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyCode()
     {
@@ -688,14 +694,14 @@ class User extends BaseUser
     public function setVatCode($vatCode)
     {
         $this->vatCode = $vatCode;
-    
+
         return $this;
     }
 
     /**
      * Get vatCode
      *
-     * @return string 
+     * @return string
      */
     public function getVatCode()
     {
@@ -711,14 +717,14 @@ class User extends BaseUser
     public function setCompanyAddress($companyAddress)
     {
         $this->company_address = $companyAddress;
-    
+
         return $this;
     }
 
     /**
      * Get company_address
      *
-     * @return string 
+     * @return string
      */
     public function getCompanyAddress()
     {
@@ -734,7 +740,7 @@ class User extends BaseUser
     public function addDivisionCode(\Food\UserBundle\Entity\UserDivisionCode $divisionCodes)
     {
         $this->divisionCodes[] = $divisionCodes;
-    
+
         return $this;
     }
 
@@ -767,14 +773,14 @@ class User extends BaseUser
     public function setFacebookId($facebookId)
     {
         $this->facebook_id = $facebookId;
-    
+
         return $this;
     }
 
     /**
      * Get facebook_id
      *
-     * @return string 
+     * @return string
      */
     public function getFacebookId()
     {
@@ -836,14 +842,14 @@ class User extends BaseUser
     public function setCheckingAccount($checkingAccount)
     {
         $this->checkingAccount = $checkingAccount;
-    
+
         return $this;
     }
 
     /**
      * Get checkingAccount
      *
-     * @return string 
+     * @return string
      */
     public function getCheckingAccount()
     {
@@ -859,14 +865,14 @@ class User extends BaseUser
     public function setWorkersCount($workersCount)
     {
         $this->workersCount = $workersCount;
-    
+
         return $this;
     }
 
     /**
      * Get workersCount
      *
-     * @return integer 
+     * @return integer
      */
     public function getWorkersCount()
     {
@@ -882,14 +888,14 @@ class User extends BaseUser
     public function setDirectorFirstName($directorFirstName)
     {
         $this->directorFirstName = $directorFirstName;
-    
+
         return $this;
     }
 
     /**
      * Get directorFirstName
      *
-     * @return string 
+     * @return string
      */
     public function getDirectorFirstName()
     {
@@ -905,14 +911,14 @@ class User extends BaseUser
     public function setDirectorLastName($directorLastName)
     {
         $this->directorLastName = $directorLastName;
-    
+
         return $this;
     }
 
     /**
      * Get directorLastName
      *
-     * @return string 
+     * @return string
      */
     public function getDirectorLastName()
     {
@@ -928,14 +934,14 @@ class User extends BaseUser
     public function setDiscount($discount)
     {
         $this->discount = $discount;
-    
+
         return $this;
     }
 
     /**
      * Get discount
      *
-     * @return string 
+     * @return string
      */
     public function getDiscount()
     {
@@ -951,14 +957,14 @@ class User extends BaseUser
     public function setAllowDelayPayment($allowDelayPayment)
     {
         $this->allowDelayPayment = $allowDelayPayment;
-    
+
         return $this;
     }
 
     /**
      * Get allowDelayPayment
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAllowDelayPayment()
     {
@@ -974,14 +980,14 @@ class User extends BaseUser
     public function setRequiredDivision($requiredDivision)
     {
         $this->requiredDivision = $requiredDivision;
-    
+
         return $this;
     }
 
     /**
      * Get requiredDivision
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getRequiredDivision()
     {
@@ -997,14 +1003,14 @@ class User extends BaseUser
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -1020,14 +1026,14 @@ class User extends BaseUser
     public function setGroup($group)
     {
         $this->group = $group;
-    
+
         return $this;
     }
 
     /**
      * Get group
      *
-     * @return string 
+     * @return string
      */
     public function getGroup()
     {
@@ -1060,7 +1066,7 @@ class User extends BaseUser
     /**
      * Get regeneratePassword
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getRegeneratePassword()
     {
@@ -1096,7 +1102,7 @@ class User extends BaseUser
     public function addParamLog(\Food\AppBundle\Entity\ParamLog $paramLog)
     {
         $this->paramLog[] = $paramLog;
-    
+
         return $this;
     }
 
@@ -1113,7 +1119,7 @@ class User extends BaseUser
     /**
      * Get paramLog
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getParamLog()
     {

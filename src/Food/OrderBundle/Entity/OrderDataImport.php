@@ -40,7 +40,7 @@ class OrderDataImport
     private $infodata;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Food\OrderBundle\Entity\Order", inversedBy="orders")
+     * @ORM\ManyToMany(targetEntity="Food\OrderBundle\Entity\Order")
      */
     private $ordersChanged;
 

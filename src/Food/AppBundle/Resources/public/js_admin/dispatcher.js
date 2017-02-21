@@ -140,7 +140,6 @@ var Dispatcher = {
         statusButtons[Dispatcher.getTranslation('button_change')] = function () {
             var newStatus = $(this).find('.order_status:checked').val();
             var delayDuration = (newStatus == 'delayed' ? $(this).find('select#delay_duration').val() : null);
-console.log('=====', newStatus, '=====');
             if (newStatus == 'canceled') {
                 var reason_comment = $(this).find('#cancel_reason_comment').val();
                 if (reason_comment.trim() == '') {
