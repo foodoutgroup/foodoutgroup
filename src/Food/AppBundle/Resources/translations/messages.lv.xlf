@@ -190,20 +190,20 @@
                 <source>general.subscribed_newsletter</source>
                 <target>Jūs esat reģistrējušies jaunumu saņemšanai</target>
             </trans-unit>
-            <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
-                <source>general.sms.user.order_accepted</source>
+            <trans-unit id="general.sms.client.order_accepted" resname="general.sms.client.order_accepted">
+                <source>general.sms.client.order_accepted</source>
                 <target>Sveiki. restourant_name apstiprina pasutijumu un Foodout.lv rupejas par zibenigu izpildi! :) Sazinai: +371 67363663</target>
             </trans-unit>
-            <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
-                <source>general.sms.user.order_accepted_preorder</source>
-                <target>Sveiki! restourant_name jau steidzas pie Jums! Planotais piegades laiks ir pre_delivery_time! Sazinai: +371 67363663</target>
-            </trans-unit>
-            <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
+            <trans-unit id="general.sms.client.order_accepted_pickup" resname="general.sms.client.order_accepted_pickup">
                 <source>general.sms.user.order_accepted_pickup</source>
                 <target>Sveiki. restourant_name apstiprina lidznemsanas pasutijumu. :) Sazinai: +371 67363663</target>
             </trans-unit>
-            <trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
-                <source>general.sms.user.order_accepted_pickup_preorder</source>
+            <trans-unit id="general.sms.client.order_accepted_preorder" resname="general.sms.client.order_accepted_preorder">
+                <source>general.sms.client.order_accepted_preorder</source>
+                <target>Sveiki! restourant_name jau steidzas pie Jums! Planotais piegades laiks ir pre_delivery_time! Sazinai: +371 67363663</target>
+            </trans-unit>
+            <trans-unit id="general.sms.client.order_accepted_preorder_pickup" resname="general.sms.client.order_accepted_preorder_pickup">
+                <source>general.sms.client.order_accepted_preorder_pickup</source>
                 <target>Sveiki! restourant_name apstiprinaja Jusu pasutijumu. Edienu varat sanemt pre_delivery_time! Ja Jums rodas jautajumi, sazinieties pa talruni +37167363663!</target>
             </trans-unit>
             <trans-unit id="general.sms.client.driver_picked_up" resname="general.sms.client.driver_picked_up">
@@ -212,6 +212,18 @@
             </trans-unit>
             <trans-unit id="general.sms.client.order_created" resname="general.sms.client.order_created">
                 <source>general.sms.client.order_created</source>
+                <target>Sveiki. Foodout.lv sanema Tavu pasutijumu. Sazinasimies ar restoranu par pasutijuma gatavosanu. Foodout.lv +37167363663</target>
+            </trans-unit>
+            <trans-unit id="general.sms.client.order_created_pickup" resname="general.sms.client.order_created_pickup">
+                <source>general.sms.client.order_created_pickup</source>
+                <target>Sveiki. Foodout.lv sanema Tavu pasutijumu. Sazinasimies ar restoranu par pasutijuma gatavosanu. Foodout.lv +37167363663</target>
+            </trans-unit>
+            <trans-unit id="general.sms.client.order_created_preorder" resname="general.sms.client.order_created_preorder">
+                <source>general.sms.client.order_created_preorder</source>
+                <target>Sveiki. Foodout.lv sanema Tavu pasutijumu. Sazinasimies ar restoranu par pasutijuma gatavosanu. Foodout.lv +37167363663</target>
+            </trans-unit>
+            <trans-unit id="general.sms.client.order_created_preorder_pickup" resname="general.sms.client.order_created_preorder">
+                <source>general.sms.client.order_created_preorder</source>
                 <target>Sveiki. Foodout.lv sanema Tavu pasutijumu. Sazinasimies ar restoranu par pasutijuma gatavosanu. Foodout.lv +37167363663</target>
             </trans-unit>
             <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
@@ -422,12 +434,12 @@
                 <source>general.sms.driver_assigned_order</source>
                 <target>Jauns pasutijums no restaurant_title, pickup_restaurant_address uz restaurant_address, piegadat lidz deliver_time </target>
             </trans-unit>
-            <trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
-                <source>general.sms.user_order_delayed</source>
+            <trans-unit id="general.sms.client.order_delayed" resname="general.sms.client.order_delayed">
+                <source>general.sms.client.order_delayed</source>
                 <target>Atvaino! Restorans ir noslogots, tapec pasutijuma piegade kavesies un bus velak ka planots. Ja negaidisi - zvani +371 67363663</target>
             </trans-unit>
-            <trans-unit id="e7bd53e2c7fa9e93ede0c7b307426c5a" resname="general.sms.user_order_delayed_pickup">
-                <source>general.sms.user_order_delayed_pickup</source>
+            <trans-unit id="general.sms.client.order_delayed_pickup" resname="general.sms.client.order_delayed_pickup">
+                <source>general.sms.client.order_delayed_pickup</source>
                 <target>Atvainojamies! Tacu lielass pasutijumu plusmas del Jusu pasutijums tiek atlikts uz delay_time min. un tiks sagatavots pec delivery_min min. Ja nepiekritat gaidit – sazinieties pa talr. +37167363663</target>
             </trans-unit>
             <trans-unit id="8036a67ebc0bbfebb10242dfaabceaf3" resname="general.email.user_delayed_subject">
