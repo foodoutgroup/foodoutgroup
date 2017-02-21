@@ -59,7 +59,7 @@ parameters:
     invoice.series: FOE
     show_best_offers: true
     show_game: true
-    show_apps_download: true
+    show_apps_download: false
     show_is_social: true
     show_delfi_banner: false
     track_conversions: true

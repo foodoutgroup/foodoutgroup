@@ -258,6 +258,18 @@
                 <source>mobile.order_confirm</source>
                 <target>Apstiprināt pasūtījumu</target>
             </trans-unit>
+            <trans-unit id="mobile.order_confirm_prepareTime" resname="mobile.order_confirm_prepareTime">
+                <source>mobile.order_confirm_prepareTime</source>
+                <target>Pirmo reizi %time% min.</target>
+            </trans-unit>
+            <trans-unit id="mobile.order_confirm_prepareTimeOther" resname="mobile.order_confirm_prepareTimeOther">
+                <source>mobile.order_confirm_prepareTimeOther</source>
+                <target>Pirmo reizi (cits)</target>
+            </trans-unit>
+            <trans-unit id="mobile.order_confirm_enterPrepareTime" resname="mobile.order_confirm_enterPrepareTime">
+                <source>mobile.order_confirm_enterPrepareTime</source>
+                <target>Ievadiet citu sagatavot laiku (piemērs. 40)</target>
+            </trans-unit>
             <trans-unit id="7ebe276de073f58e9744cb5e46760b88" resname="mobile.order_delay">
                 <source>mobile.order_delay</source>
                 <target>Atlikt pasūtījumu</target>
@@ -281,6 +293,10 @@
             <trans-unit id="ebbc16fb3a732d7abe363ef2463397f9" resname="mobile.order_cancel">
                 <source>mobile.order_cancel</source>
                 <target>Atcelt pasūtījumu</target>
+            </trans-unit>
+             <trans-unit id="mobile.to_cancel_order_please_call" resname="mobile.to_cancel_order_please_call">
+                <source>mobile.to_cancel_order_please_call</source>
+                <target><![CDATA[To cancel order please call <a href="callto:%phone%">%phone%</a>]]></target>
             </trans-unit>
             <trans-unit id="e9af7214246747e3648fdc0ec367494c" resname="general.places">
                 <source>general.places</source>
@@ -1473,6 +1489,10 @@
             <trans-unit id="general.restaurant_not_delivering_to_address_explained">
                 <source>general.restaurant_not_delivering_to_address_explained</source>
                 <target>Restorāns, kas veic piegādēs uz norādīto adresi, šobrīd ir slēgts</target>
+            </trans-unit>
+            <trans-unit id="general.news" resname="general.news">
+                <source>general.news</source>
+                <target>Jaunumi</target>
             </trans-unit>
         </body>
     </file>

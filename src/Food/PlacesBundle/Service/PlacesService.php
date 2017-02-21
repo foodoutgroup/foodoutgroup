@@ -234,7 +234,7 @@ class PlacesService extends ContainerAware
     {
         $em = $this->em();
         $con = $em->getConnection();
-        $rating = $con->fetchColumn("SELECT AVG( rate ) FROM  place_reviews WHERE place_id = " . $place->getId());
+        $rating = $con->fetchColumn("SELECT AVG( rate ) FROM place_reviews WHERE active = '1' AND place_id = " . $place->getId());
 
         return $rating;
     }

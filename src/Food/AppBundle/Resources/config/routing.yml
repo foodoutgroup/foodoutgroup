@@ -173,11 +173,23 @@ food_best_offers_lv_slash:
   path: /akcijas/
   defaults: { _controller: FoodAppBundle:Default:listBestOffers}
 
+food_blog_main_page_lt:
+  path: /naujienos/
+  defaults: { _controller: FoodBlogBundle:Default:index }
+
+food_blog_main_page_lv:
+  path: /naujienos/
+  defaults: { _controller: FoodBlogBundle:Default:index }
+
+food_blog_main_page_ee:
+  path: /naujienos/
+  defaults: { _controller: FoodBlogBundle:Default:index }
+
 food_slug:
     path:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|1822|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|maina|mesto|monitoring|nagios|banned|banned-email|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Marijampole|Utena|Kedainiai|Plunge|Palanga|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita|cilipica)[a-z0-9-\__\"„“\.\+]{4,}"
+        slug : "^(?!admin|cart|1822|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|restourans|maina|mesto|monitoring|nagios|banned|banned-email|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Marijampole|Utena|Kedainiai|Plunge|Palanga|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita|cilipica)[a-z0-9-\__\"„“\.\+]{4,}"
 
 food_order_nav_test1:
     path: /order/nav_test1

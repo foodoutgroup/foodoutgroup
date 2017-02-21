@@ -4040,7 +4040,10 @@ class OrderService extends ContainerAware
     {
         $this->codeGenerator($order);
 
-        $this->_freeDeliveryDiscount($order);
+        $free_delivery_discount_code_generation_enable = $this->container->get('food.app.utils.misc')->getParam('free_delivery_discount_code_generation_enable');
+        if($free_delivery_discount_code_generation_enable) {
+            $this->_freeDeliveryDiscount($order);
+        }
     }
 
     /**
@@ -4301,7 +4304,8 @@ class OrderService extends ContainerAware
             $stmt = $this->container->get('doctrine')->getConnection()->prepare($query);
             $stmt->execute();
             $result = $stmt->fetchColumn();
-            if ($result > 0 && $result % 3 == 0) {
+            $free_delivery_discount_code_generation_after_completed_orders = $this->container->get('food.app.utils.misc')->getParam('free_delivery_discount_code_generation_after_completed_orders');
+            if ($result > 0 && $result % $free_delivery_discount_code_generation_after_completed_orders == 0) {
                 $templateId = $this->container->getParameter('mailer_send_free_delivery_discount');
                 $theCode = "CM" . strrev($order->getId()) . ($order->getId() % 10);
                 $newCode = new Coupon;
@@ -4755,6 +4759,19 @@ class OrderService extends ContainerAware
                 $om->flush();
             }
         }
+    }
+
+
+    public function setOrderPrepareTime($foodPrepareTime)
+    {
+        $this->getOrder()->setFoodPrepareTime($foodPrepareTime);
+
+        $foodPrepareDate = new \DateTime('now');
+        $foodPrepareDate->modify("+" . $foodPrepareTime . " minutes");
+
+        $this->getOrder()->setFoodPrepareDate($foodPrepareDate);
+
+        $this->logOrder($this->getOrder(), 'food_prepare_time', 'Restaurant set food prepare time: ' . $foodPrepareTime);
     }
 
     public function getPPList()

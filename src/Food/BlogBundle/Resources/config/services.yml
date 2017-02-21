@@ -1,0 +1,26 @@
+services:
+    sonata.admin.blog_category:
+        class: Food\BlogBundle\Admin\BlogCategoryAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.blog_categories" }
+        arguments:
+            - ~
+            - Food\BlogBundle\Entity\BlogCategory
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.blog_post:
+        class: Food\BlogBundle\Admin\BlogPostAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.blog_posts" }
+        arguments:
+            - ~
+            - Food\BlogBundle\Entity\BlogPost
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+    food.blog_service:
+        class: Food\BlogBundle\Service\BlogService
+        parent: food.base_service

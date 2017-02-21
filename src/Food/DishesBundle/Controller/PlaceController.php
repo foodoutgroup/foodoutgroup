@@ -112,10 +112,14 @@ class PlaceController extends Controller
             }
         }
 
+        $placeReviews = $this->get('doctrine')->getRepository('FoodDishesBundle:PlaceReviews')
+            ->getActiveReviewsByPlace($place);
+
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
             array(
                 'place' => $place,
+                'placeReviews' => $placeReviews,
                 'relatedPlace' => $relatedPlace,
                 'wasHere' => $wasHere,
                 'alreadyWrote' => $alreadyWrote,
