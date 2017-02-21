@@ -220,7 +220,7 @@
             </trans-unit>
             <trans-unit id="mobile.order_confirm_prepareTimeOther" resname="mobile.order_confirm_prepareTimeOther">
                 <source>mobile.order_confirm_prepareTimeOther</source>
-                <target>Kitas pagaminimo laikas</target>
+                <target>Kita</target>
             </trans-unit>
             <trans-unit id="mobile.order_confirm_enterPrepareTime" resname="mobile.order_confirm_enterPrepareTime">
                 <source>mobile.order_confirm_enterPrepareTime</source>
@@ -248,7 +248,11 @@
             </trans-unit>
             <trans-unit id="ebbc16fb3a732d7abe363ef2463397f9" resname="mobile.order_cancel">
                 <source>mobile.order_cancel</source>
-                <target>Atšaukti užsakymą</target>
+                <target>Atšaukti</target>
+            </trans-unit>
+             <trans-unit id="mobile.to_cancel_order_please_call" resname="mobile.to_cancel_order_please_call">
+                <source>mobile.to_cancel_order_please_call</source>
+                <target><![CDATA[Norėdami atšaukti šį užsakymą skambinkite <a href="callto:%phone%">%phone%</a>]]></target>
             </trans-unit>
             <trans-unit id="e9af7214246747e3648fdc0ec367494c" resname="general.places">
                 <source>general.places</source>
