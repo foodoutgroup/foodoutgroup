@@ -2852,8 +2852,11 @@ class OrderService extends ContainerAware
             ->setMessage($message)
         ;
 
-        $user = $this->container->get('security.context')->getToken()->getUser();
-        if ($user instanceof User) {
+        $token = $this->container->get('security.context')->getToken();
+        if (is_object($token)) {
+            $user = $this->container->get('security.context')->getToken()->getUser();
+        }
+        if (!empty($user) && $user instanceof User) {
             $log->setUser($user);
         }
 
