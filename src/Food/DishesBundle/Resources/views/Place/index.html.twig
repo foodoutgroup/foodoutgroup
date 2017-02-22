@@ -138,9 +138,7 @@
                                 <div class="menu-lefter" id="catmnu">
                                     {% if placeCategories|length > 10 %}
                                         <div class="dropdown">
-                                            <button id="dLabel" class="button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {% trans %}places.food_categories{% endtrans %}
-                                                <span class="caret"></span>
+                                            <button id="dLabel" class="button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans %}places.food_categories{% endtrans %}<span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu scrollable-menu menu" aria-labelledby="dLabel">
                                                 {% for category in placeCategories %}
