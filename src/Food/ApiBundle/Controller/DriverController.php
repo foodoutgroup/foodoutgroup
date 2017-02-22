@@ -5,6 +5,7 @@ namespace Food\ApiBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Food\ApiBundle\Exceptions\ApiException;
 
 class DriverController extends Controller
 {
