@@ -1548,7 +1548,7 @@
             <!-- order completed -->
             <trans-unit id="general.sms.client.order_completed">
                 <source>general.sms.client.order_completed</source>
-                <target>Aciu, kas esi kartu. Numalsink alki greiciau - uzsisakyk per mob. programele: https://bit.ly/2glLO66</target>
+                <target>Aciu, kad esi kartu. Numalsink alki greiciau - uzsisakyk per mob. programele: https://bit.ly/2glLO66</target>
             </trans-unit>
 
 <!--
