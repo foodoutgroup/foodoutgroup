@@ -2998,6 +2998,10 @@
                 <source>admin.call_log</source>
                 <target>Call log</target>
             </trans-unit>
+            <trans-unit id="admin.error_log">
+                <source>admin.error_log</source>
+                <target>Error log</target>
+            </trans-unit>
             <trans-unit id="admin.general.order">
                 <source>admin.general.order</source>
                 <target>Order</target>
@@ -3041,6 +3045,10 @@
             <trans-unit id="admin.category">
                 <source>admin.category</source>
                 <target>Category</target>
+            </trans-unit>
+            <trans-unit id="admin.error.source">
+                <source>admin.error.source</source>
+                <target>Source</target>
             </trans-unit>
         </body>
     </file>

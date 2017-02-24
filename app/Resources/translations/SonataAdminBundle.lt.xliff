@@ -3130,6 +3130,10 @@
                 <source>admin.call_log</source>
                 <target>Skambučių istorija</target>
             </trans-unit>
+            <trans-unit id="admin.error_log">
+                <source>admin.error_log</source>
+                <target>Error log</target>
+            </trans-unit>
             <trans-unit id="admin.general.order">
                 <source>admin.general.order</source>
                 <target>Užsakymas</target>
@@ -3173,6 +3177,10 @@
             <trans-unit id="admin.category">
                 <source>admin.category</source>
                 <target>Kategorija</target>
+            </trans-unit>
+            <trans-unit id="admin.error.source">
+                <source>admin.error.source</source>
+                <target>Šaltinis</target>
             </trans-unit>
         </body>
     </file>
