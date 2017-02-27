@@ -1,0 +1,7 @@
+sandbox_return:
+    path: /return
+    defaults: { _controller: FoodOrderBundle:Sandbox:return }
+
+sandbox_choose:
+    path: /choose
+    defaults: { _controller: FoodOrderBundle:Sandbox:choose }
