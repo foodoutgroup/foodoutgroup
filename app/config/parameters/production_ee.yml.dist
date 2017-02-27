@@ -16,10 +16,10 @@ parameters:
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
 
-    driver.send_to_external: false
-    driver.city_filter: []
+    driver.send_to_external: true
+    driver.city_filter: ["Tallinn"]
     driver.socket_address: tcp://s2.foodout.lt:7778
-    driver.socket_hash: api
+    driver.socket_hash: apiee
 
     locale: ee
     locales: ["ee", "en"]
@@ -41,7 +41,7 @@ parameters:
         tallinn: []
     order.accept_notify_emails: []
     order.cancel_notify_emails: []
-    accounting_email: "karolis@foodout.lt"
+    accounting_email: ""
     b2b_invoice_email: ""
     payment.methods:
         - local
@@ -68,8 +68,8 @@ parameters:
     country_full: Estonia
     vat: 21
     title: "Foodout"
-    domain: "foodout.ee"
-    publicdomain: "foodout.ee"
+    domain: "estonia.foodout.lt"
+    publicdomain: "estonia.foodout.lt"
     google_analytics_uid: "UA-50355577-1"
     google.analytics.view_id: "85237075"
     nav_table_prefix: 'Čilija kabučių Centras'
