@@ -41,6 +41,11 @@ services:
         class: Food\OrderBundle\Service\Banklink\Nordea
         arguments: ["%nordea.banklink.mac%", @router, @form.factory]
 
+    food.sandbox_biller:
+        class: Food\OrderBundle\Service\SandboxBiller
+        calls:
+            - [setContainer, ["@service_container"]]
+
     food.order:
         class: Food\OrderBundle\Service\OrderService
         arguments: []

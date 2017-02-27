@@ -223,11 +223,28 @@ class BasketService extends ContainerAware
 
         /** NEW */
 
-        $basket->set('payment', []);
-        $basket->set('payment_method', [
-            ["name" => "[#cash#]", "code" => "local", "url" => null],
-            ["name" => "[#credit.card#]", "code" => "local.card", "url" => null]
-        ]);
+
+        $paymentMethodCollection = [];
+        $firstPayment = null;
+        $paymentData = $this->container->getParameter('payment');
+
+        for($i = 0; $i<count($paymentData['method']); $i++) {
+
+            $payment =  [
+                'name' => $paymentData['title'][$i],
+                'code' => $paymentData['method'][$i],
+                'url' => null,
+            ];
+
+            if($firstPayment == null) {
+                $firstPayment = $payment;
+            }
+
+            $paymentMethodCollection[] = $payment;
+        }
+
+        $basket->set('payment', $firstPayment);
+        $basket->set('payment_method', $paymentMethodCollection);
 
         $total = $this->container->get('food.cart')->getCartTotalApi($cartItems, $basketInfo->getPlaceId()) * 100;
         $discount = 0;

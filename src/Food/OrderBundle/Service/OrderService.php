@@ -77,11 +77,13 @@ class OrderService extends ContainerAware
         'swedbank-gateway'             => 'food.swedbank_gateway_biller',
         'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller',
         'seb-banklink'                 => 'food.seb_banklink_biller',
-        'nordea-banklink'              => 'food.nordea_banklink_biller'
+        'nordea-banklink'              => 'food.nordea_banklink_biller',
+        'sandbox' => 'food.sandbox_biller',
+
     ];
 
     private $onlinePayments = [
-        'paysera', 'swedbank-gateway', 'swedbank-credit-card-gateway', 'seb-banklink', 'nordea-banklink'
+        'paysera', 'swedbank-gateway', 'swedbank-credit-card-gateway', 'seb-banklink', 'nordea-banklink', 'sandbox'
     ];
 
     public static $deliveryTrans = [

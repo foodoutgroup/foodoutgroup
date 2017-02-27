@@ -490,7 +490,7 @@ class UsersController extends Controller
             return new JsonResponse(
                 ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
-                array('error' => 'server error', 'description' => null)
+                array('error' => 'server error'. $e->getMessage(), 'description' => null)
             );
         }
 
@@ -640,12 +640,19 @@ class UsersController extends Controller
             $password = $this->getRequestParam('password', 'new-user');
             $phone = $this->getRequestParam('phone');
             $facebook_id = $this->getRequestParam('facebook_id');
+            $facebook_email = $this->getRequestParam('facebook_email');
 
             $um = $this->getUserManager();
             $user = $um->findUserByUsername($username);
+
+            if(!$user && $facebook_email != null) {
+                $user = $um->findUserByEmail($facebook_email);
+            }
+
             if(!$user){
                 $user = $um->findUserBy(array('facebook_id' => $facebook_id));
             }
+
             if(!$user){
                 $user = $um->findUserByEmail($username);
             }
