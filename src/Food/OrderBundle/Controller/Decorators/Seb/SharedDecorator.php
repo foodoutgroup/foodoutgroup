@@ -11,17 +11,21 @@ trait SharedDecorator
 {
     protected function getOptions($order)
     {
-        return ['snd_id' => 'EM0489',
-                'curr' => 'EUR',
-                'acc' => 'LT197044060007974514',
-                'name' => 'UAB Foodout.lt',
-                'lang' => 'LIT',
+        $config = $this->container->getParameter('seb');
+        $trans = $this->container->get('translator');
+        return ['snd_id' => $config['VK_SND_ID'],
+                'curr' => $config['curr'],
+                'acc' => $config['VK_ACC'],
+                'name' => $config['name'],
+                'lang' => $config['lang'],
                 'stamp' => $order->getId(),
                 'amount' => sprintf('%.2f', $order->getTotal()),
                 // 'amount' => sprintf('%.2f', 1.0),
                 'ref' => $order->getId(),
-                'msg' => 'Foodout.lt uzsakymas #' . $order->getId(),
-                'return_url' => $this->getReturnUrl()];
+                'msg' => $trans->trans('cart.checkout.main_title') . ' #' .  $order->getId(),
+                'return_url' => $this->getReturnUrl(),
+                'datetime' => date('Y-m-dTH:i:sO')
+        ];
     }
 
     protected function getReturnUrl()
