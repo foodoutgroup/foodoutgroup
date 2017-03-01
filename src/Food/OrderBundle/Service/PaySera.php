@@ -177,6 +177,7 @@ class PaySera extends ContainerAware implements BillingInterface {
             'accepturl' => $acceptUrl,
             'cancelurl' => $cancelUrl,
             'callbackurl' => $callbackUrl,
+            'p_email' => $order->getOrderExtra()->getEmail(),
             'test' => $this->getTest(),
             'time_limit' => date('Y-m-d H:i:s', strtotime('+1 hour')),
         );
