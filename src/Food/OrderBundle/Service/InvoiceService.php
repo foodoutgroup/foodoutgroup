@@ -304,11 +304,8 @@ class InvoiceService extends ContainerAware
         $logger = $this->container->get('logger');
 
         $fileName = $this->getInvoiceFilename($order);
-        if ($this->container->getParameter('locale') == 'lv') {
-            $file = 'https://s3-eu-west-1.amazonaws.com/foodout-lv-invoice/pdf/'.$fileName;
-        } else {
-            $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
-        }
+
+        $file = $this->getFilename($fileName);
 
         $variables = array(
             'uzsakymo_data' => $order->getOrderDate()->format("Y-m-d H:i"),
@@ -395,11 +392,7 @@ class InvoiceService extends ContainerAware
         $logger = $this->container->get('logger');
 
         $fileName = $this->getInvoiceFilename($order);
-        if ($this->container->getParameter('locale') == 'lv') {
-            $file = 'https://s3-eu-west-1.amazonaws.com/foodout-lv-invoice/pdf/'.$fileName;
-        } else {
-            $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
-        }
+        $file = $this->getFilename($fileName);
 
         $variables = array(
             'uzsakymo_data' => $order->getOrderDate()->format("Y-m"),
@@ -511,5 +504,22 @@ class InvoiceService extends ContainerAware
 
             return $this->getUnusedSfNumber(true);
         }
+    }
+
+    public function getFilename($fileName)
+    {
+        switch ($this->container->getParameter('locale')) {
+            case 'lv':
+                $file = 'https://s3-eu-west-1.amazonaws.com/foodout-lv-invoice/pdf/'.$fileName;
+                break;
+            case 'ee':
+                $file = 'https://s3-eu-west-1.amazonaws.com/foodout-ee-invoice/pdf/'.$fileName;
+                break;
+            case 'lt':
+                $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
+                break;
+        }
+
+        return $file;
     }
 }
