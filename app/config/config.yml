@@ -95,8 +95,9 @@ framework:
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
+        handler_id: session.handler.memcached
         name: skaniSesija2014PerkamPicasUrmu
-        save_path: %kernel.root_dir%/var/sessions
+        #~ save_path: %kernel.root_dir%/var/sessions
     fragments:       ~
     http_method_override: true
 
@@ -142,7 +143,6 @@ twig:
         notifications: "@food.app.utils.notifications"
         misc_utils: "@food.app.utils.misc"
         user_service: "@food.user"
-
 
 
 # Assetic Configuration
@@ -245,11 +245,23 @@ services:
         - { name: twig.extension }
 
   kernel.listener.command_dispatch:
-      class: Food\AppBundle\EventListener\ConsoleExceptionListener
-      arguments:
-          logger: "@logger"
-      tags:
-          - { name: kernel.event_listener, event: console.exception }
+    class: Food\AppBundle\EventListener\ConsoleExceptionListener
+    arguments:
+        logger: "@logger"
+    tags:
+        - { name: kernel.event_listener, event: console.exception }
+
+  session.memcached:
+    class: Memcached
+    arguments:
+        persistent_id: %session_memcached_prefix%
+    calls:
+        - [ addServer, [ %session_memcached_host%, %session_memcached_port% ]]
+
+  session.handler.memcached:
+    class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler
+    arguments: [@session.memcached, { prefix: %session_memcached_prefix%, expiretime: %session_memcached_expire% }]
+
 
 sonata_doctrine_orm_admin:
     templates:
