@@ -121,6 +121,11 @@ parameters:
         name: "UAB Foodout.lt"
         curr: "EUR"
 
+    session_memcached_host:     cl2
+    session_memcached_port:     11211
+    session_memcached_prefix:   foodoutlt
+    session_memcached_expire:   3600
+
 pirminis_gateway:
     datacash_url: 'https://mars.transaction.datacash.com/Transaction'
     swedbank:
