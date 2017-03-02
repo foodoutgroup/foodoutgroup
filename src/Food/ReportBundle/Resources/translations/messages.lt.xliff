@@ -127,7 +127,7 @@
                 <source>admin.report.comissions_2</source>
                 <target>Komisiniai 2%</target>
             </trans-unit>
-<trans-unit id="admin.report.order_id">
+            <trans-unit id="admin.report.order_id">
                 <source>admin.report.order_id</source>
                 <target>Užsakymo ID</target>
             </trans-unit>
