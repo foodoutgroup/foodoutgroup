@@ -122,7 +122,7 @@ parameters:
         name: "mychef"
         curr: "EUR"
 
-    session_memcached_host:     cl2
+    session_memcached_host:     memcached
     session_memcached_port:     11211
     session_memcached_prefix:   foodoutee
     session_memcached_expire:   3600
