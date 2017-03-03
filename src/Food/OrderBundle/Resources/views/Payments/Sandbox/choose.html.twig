@@ -1,0 +1,10 @@
+
+<form method="post" action="{{ RedirectURL }}" style="display: block; margin-top: 50%;">
+    <input type="hidden" name="ResNum" value="{{ ResNum }}" />
+    <input type="hidden" name="Amount" value="{{ Amount}}" />
+    <center>
+        <h2>Ar tikrai norite apmokėti {{ Amount}} &euro;?</h2><br/>
+        <button type="submit" style="color: green; font-size: 20px; margin-right: 10px; padding: 10px;" name="status" value="accept">Apmokėti</button>
+        <button type="submit" style="color: red; font-size: 20px;  padding: 10px;" name="status" value="fail">Atšaukti</button>
+    </center>
+</form>

@@ -460,7 +460,18 @@ class OrderService extends ContainerAware
         $paymentMethod = (isset($serviceVar['payment_option']) ? $serviceVar['payment_option'] : 'cash');
         $customerComment = (!empty($serviceVar['address']) ? $serviceVar['address']['comments'] : "");
 
-        $os->setPaymentMethod(($paymentMethod == 'cash' ? 'local' : 'local.card'));
+        // overwrite old functionality
+        switch ($paymentMethod) {
+            case "cash":
+                $paymentMethod = "local";
+                break;
+            case "credit_card":
+                $paymentMethod = "local.card";
+                break;
+        }
+
+
+        $os->setPaymentMethod($paymentMethod);
 
         if ($serviceVar['type'] == "pickup") {
             $os->setDeliveryType($os::$deliveryPickup);
@@ -561,6 +572,33 @@ class OrderService extends ContainerAware
             $total_sum = 0;
         }
 
+        $selectedPayment = [
+            "name" => "[#cash#]",
+            "code" => "local",
+            "url" => null
+        ];
+
+        $paymentData = $this->container->getParameter('payment');
+
+        if(in_array($order->getPaymentMethod(), $paymentData['method'])){
+            $selectedPayment['name'] = $paymentData['title'][array_search($order->getPaymentMethod(), $paymentData['method'])];
+            $selectedPayment['code'] = $order->getPaymentMethod();
+
+            if($order->getPaymentMethod() != "local" || $order->getPaymentMethod() != "local.card") {
+
+                try {
+                    $orderService = $this->container->get('food.order');
+                    $paymentService = $orderService->getPaymentSystemByMethod($order->getPaymentMethod());
+                    $paymentService->setOrder($order);
+//                    $paymentService->setLocale($return)
+                    $selectedPayment['url'] = $paymentService->bill();
+                } catch (\Exception $e) {
+                    $this->container->get('logger')->addDebug("tata".$e->getMessage());
+                }
+            }
+
+        }
+
         $returner = [
             'order_id'    => $order->getId(),
             'order_hash'    => $order->getOrderHash(),
@@ -590,8 +628,8 @@ class OrderService extends ContainerAware
                 'payment_options'  => [
                     'cash'        => ($order->getPaymentMethod() == "local" ? true : false),
                     'credit_card' => ($order->getPaymentMethod() == "local.card" ? true : false),
-                    'online' => true, //todo cia reik kazka daryt su situ
                 ],
+                'payment' => $selectedPayment,
                 'items'            => $this->_getItemsForResponse($order)
             ],
             'service'     => $this->_getServiceForResponse($order)

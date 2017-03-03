@@ -45,6 +45,31 @@ parameters:
     order.cancel_notify_emails: []
     accounting_email: "buhalterija@foodout.lt"
     b2b_invoice_email: ""
+    payment:
+           method:
+             - local
+             - local.card
+             - swedbank-gateway
+             - swedbank-credit-card-gateway
+             - seb-banklink
+             - paysera
+             - paysera
+             - paysera
+             - paysera
+             - paysera
+             - paysera
+           title:
+             - '[#cash#]'
+             - '[#credit.card#]'
+             - 'Swedbank'
+             - 'Swedbank kreditinė'
+             - 'SEB bankas'
+             - 'Medicinos bankas'
+             - 'DNB bankas'
+             - 'Citadele bankas'
+             - 'Nordea bankas'
+             - 'Danske bankas'
+             - 'Paysera'
     payment.methods:
         - local
         - local.card

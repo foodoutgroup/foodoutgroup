@@ -95,6 +95,9 @@ class BasketController extends Controller
             $this->get('logger')->error('getBasketAction Error:' . $e->getMessage());
             $this->get('logger')->error('getBasketAction Trace:' . $e->getTraceAsString());
 
+var_dump( $e->getMessage());
+            die;
+
             return new JsonResponse(
                 ['error' => $this->get('translator')->trans('general.error_happened')],
                 500,
