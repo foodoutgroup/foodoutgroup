@@ -42,12 +42,40 @@ class LocationController extends Controller
                     $result = $query->execute();
                     $place = (count($result) >= 1 ? $result[0]->getPlace() : null);
 
-                    if($place != null && $place->getActive()) {
-                        $cityCollection[] = [
-                            'city' => $city,
-                            'hash' => $place->getApiHash(),
-                        ];
+                    $dataArray = [];
+                    foreach ($result as $placePoint) {
+
+                        $place = $placePoint->getPlace();
+
+                            $dataArray['city'] = $city;
+                            $dataArray['hash'] = $place->getApiHash();
+                            $dataArray['points'][] = [
+                                'id' => $placePoint->getId(),
+                                'address' => $placePoint->getAddress(),
+                                'work_hour' => [
+                                    $placePoint->getWd1(),
+                                    $placePoint->getWd2(),
+                                    $placePoint->getWd3(),
+                                    $placePoint->getWd4(),
+                                    $placePoint->getWd5(),
+                                    $placePoint->getWd6(),
+                                    $placePoint->getWd7(),
+                                ]
+                            ];
                     }
+
+                    $cityCollection[] = $dataArray;
+//                    var_dump($dataArray);
+//                    die;
+//
+//                    $dataArray = [];
+//
+//                    if($place != null && $place->getActive()) {
+//                        $cityCollection[] = [
+//                            'city' => $city,
+//                            'hash' => $place->getApiHash(),
+//                        ];
+//                    }
                 }
 
                 $response['success'] = true;
