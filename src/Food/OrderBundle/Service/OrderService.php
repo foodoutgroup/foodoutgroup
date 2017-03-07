@@ -4665,8 +4665,10 @@ class OrderService extends ContainerAware
                     )
                 ;
 
-                $message = $smsService->createMessage($sender, $recipient, $text, $order);
-                $smsService->saveMessage($message);
+                if (!empty($text)) {
+                    $message = $smsService->createMessage($sender, $recipient, $text, $order);
+                    $smsService->saveMessage($message);
+                }
             }
 
         }
