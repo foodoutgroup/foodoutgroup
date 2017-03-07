@@ -580,11 +580,11 @@ class OrderService extends ContainerAware
 
         $paymentData = $this->container->getParameter('payment');
 
-        if(in_array($order->getPaymentMethod(), $paymentData['method'])){
+        if($order->getPaymentStatus() != FO::$paymentStatusComplete && in_array($order->getPaymentMethod(), $paymentData['method'])){
             $selectedPayment['name'] = $paymentData['title'][array_search($order->getPaymentMethod(), $paymentData['method'])];
             $selectedPayment['code'] = $order->getPaymentMethod();
 
-            if($order->getPaymentMethod() != "local" || $order->getPaymentMethod() != "local.card") {
+            if($order->getPaymentMethod() != "local" && $order->getPaymentMethod() != "local.card") {
 
                 try {
                     $orderService = $this->container->get('food.order');
