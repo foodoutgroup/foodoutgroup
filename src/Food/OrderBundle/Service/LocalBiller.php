@@ -64,6 +64,14 @@ class LocalBiller extends ContainerAware implements BillingInterface
             throw new \InvalidArgumentException('Sorry, You gave me someting, but not order :(');
         }
 
+        $router = $this->container->get('router');
+        if ($order->getPaymentStatus() == 'complete') {
+            $logger->critical('Trying to set complete on complete order');
+            $logger->critical(print_r(debug_backtrace(2), true));
+            return $router->generate('food_cart_success', ['orderHash' => $order->getOrderHash()]);
+
+        }
+
         $orderService = $this->container->get('food.order');
         $placeService = $this->container->get('food.places');
         $orderService->setOrder($order);
@@ -99,8 +107,6 @@ class LocalBiller extends ContainerAware implements BillingInterface
                 $orderService->informPlace();
             }
         }
-
-        $router = $this->container->get('router');
 
         return $router->generate('food_cart_success', ['orderHash' => $order->getOrderHash()]);
     }
