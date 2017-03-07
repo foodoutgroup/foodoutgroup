@@ -65,6 +65,10 @@ trait ReturnDecorator
             } else {
                 $view = 'FoodCartBundle:Default:payment_success.html.twig';
 
+                if($order->getMobile()) {
+                    $view = 'FoodApiBundle:Default:payment_success.html.twig';
+                }
+
                 return $this->render($view, ['order' => $order]);
             }
             // is order payment accepted and is currently processing?
@@ -127,19 +131,20 @@ trait ReturnDecorator
             }
             // did we get error from the bank? :(
         } elseif ($gateway->is_error('swedbank', $request)) {
-            $view = 'FoodOrderBundle:Payments:' .
-                'swedbank_gateway/error.html.twig';
+            $view = 'FoodOrderBundle:Payments:' . 'swedbank_gateway/error.html.twig';
 
             return $this->render($view, ['order' => $order]);
             // was there a communication error with/in bank?
         } elseif ($gateway->communication_error('swedbank', $request)) {
-            $view = 'FoodOrderBundle:Payments:' .
-                'swedbank_gateway/communication_error.html.twig';
+            $view = 'FoodOrderBundle:Payments:' . 'swedbank_gateway/communication_error.html.twig';
 
             return $this->render($view, ['order' => $order]);
         } else {
-            $view = 'FoodOrderBundle:Payments:' .
-                'swedbank_gateway/something_wrong.html.twig';
+            $view = 'FoodOrderBundle:Payments:' . 'swedbank_gateway/something_wrong.html.twig';
+        }
+
+        if($order->getMobile()) {
+            $view = 'FoodApiBundle:Default:payment_fail.html.twig';
         }
 
         return $this->render($view, ['order' => $order]);

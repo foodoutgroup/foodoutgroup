@@ -29,6 +29,7 @@ class PlaceController extends Controller
                 ]
             ];
 
+//            $place->getDelivery
 
             $return['success'] = true;
         } catch (ApiException $e) {

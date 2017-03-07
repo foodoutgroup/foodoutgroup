@@ -215,10 +215,36 @@ class BasketService extends ContainerAware
             'payment_options',
             array(
                 'cash' => true,
-                'credit_card' => $basketInfo->getPlaceId()->getCardOnDelivery()
+                'credit_card' => $basketInfo->getPlaceId()->getCardOnDelivery(),
             )
         );
+
         $basket->set('expires', (date("U") + (3600 * 24 * 7)));
+
+        /** NEW */
+
+
+        $paymentMethodCollection = [];
+        $firstPayment = null;
+        $paymentData = $this->container->getParameter('payment');
+
+        for($i = 0; $i<count($paymentData['method']); $i++) {
+
+            $payment =  [
+                'name' => $paymentData['title'][$i],
+                'code' => $paymentData['method'][$i],
+                'url' => null,
+            ];
+
+            if($firstPayment == null) {
+                $firstPayment = $payment;
+            }
+
+            $paymentMethodCollection[] = $payment;
+        }
+
+        $basket->set('payment', $firstPayment);
+        $basket->set('payment_method', $paymentMethodCollection);
 
         $total = $this->container->get('food.cart')->getCartTotalApi($cartItems, $basketInfo->getPlaceId()) * 100;
         $discount = 0;

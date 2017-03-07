@@ -42,6 +42,10 @@ trait ReturnDecorator
             return [$view, []];
         }
 
+        if($order->getMobile()) {
+            $view = 'FoodApiBundle:Default:payment_fail.html.twig';
+        }
+
         // banklink log
         $this->logBanklink($dispatcher, $request, $order);
 
@@ -76,7 +80,9 @@ trait ReturnDecorator
             } elseif (SebService::SUCCESS_SERVICE == $service) {
                 // template
                 $view = 'FoodCartBundle:Default:payment_success.html.twig';
-
+                if($order->getMobile()) {
+                    $view = 'FoodApiBundle:Default:payment_success.html.twig';
+                }
                 // success
                 $this->logPaidAndFinish('SEB banklink billed payment',
                     $orderService,
