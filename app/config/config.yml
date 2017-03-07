@@ -143,7 +143,7 @@ twig:
         notifications: "@food.app.utils.notifications"
         misc_utils: "@food.app.utils.misc"
         user_service: "@food.user"
-        image_manager_service: "@food.image_manager_service"
+#        image_manager_service: "@food.image_manager_service"
 
 # Assetic Configuration
 assetic:

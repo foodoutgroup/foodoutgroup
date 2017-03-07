@@ -37,15 +37,31 @@ class RestaurantController extends Controller
                     ];
                 }
                 $dishCollection['size'] = $sizeCollection;
-
                 $additionalCollection = [];
-                foreach ($dish->getOptions() as $option) {
-                    $additionalCollection[] = [
-                        'code' => $option->getCode(),
-                        'name' => $option->getName(),
-                        'price' => $option->getPrice(),
-                    ];
+
+                switch ($request->get("version", 0)) {
+                    case 2:
+                        foreach ($dish->getOptions() as $option) {
+                            $additionalCollection[] = [
+                                'group' => $option->getGroupName(),
+                                'single' => $option->getSingleSelect(),
+                                'code' => $option->getCode(),
+                                'name' => $option->getName(),
+                                'price' => $option->getPrice(),
+                            ];
+                        }
+                        break;
+                    default:
+                        foreach ($dish->getOptions() as $option) {
+                            $additionalCollection[] = [
+                                'code' => $option->getCode(),
+                                'name' => $option->getName(),
+                                'price' => $option->getPrice(),
+                            ];
+                        }
+                        break;
                 }
+
                 $dishCollection['additional'] = $additionalCollection;
 
                 $categoryCollection = [];
