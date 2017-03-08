@@ -100,6 +100,7 @@ parameters:
         decimal_separator: ','
         thousands_separator: ' '
     show_invoice_option: true
+    show_invoice_sum_words: false
     place_slug_manual: false
     alcohol_allowed: true
     place_with_neighbourhood: false
