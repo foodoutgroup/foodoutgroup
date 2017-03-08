@@ -118,6 +118,10 @@
                 <source>order.invoice.foodout_bank_code</source>
                 <target>UNLALV2X</target>
             </trans-unit>
+            <trans-unit id="order.invoice.bank_account_title" resname="order.invoice.bank_account_title">
+                <source>order.invoice.bank_account_title</source>
+                <target>A/s</target>
+            </trans-unit>
             <trans-unit id="d7de6172e11f7455acc83d9eb33ded7a" resname="order.invoice.foodout_bank_account">
                 <source>order.invoice.foodout_bank_account</source>
                 <target>LV94UNLA0050023573360</target>
