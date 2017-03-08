@@ -1647,6 +1647,9 @@ h1 a,h2 a,h3 a,h4 a,h5 a,h6 a { color: #55422e;}
 .partial-work.partial-work-lv {
     background-image: url('/bundles/foodapp/images/tag-not-working_lv.png');
 }
+.partial-work.partial-work-ee {
+    background-image: url('/bundles/foodapp/images/tag-not-working_ee.png');
+}
 .time-popup.time-popup2 {
     left: 30px;
 }
