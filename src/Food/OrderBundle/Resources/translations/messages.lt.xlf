@@ -42,6 +42,10 @@
                 <source>order.invoice.bank_code</source>
                 <target>Banko kodas</target>
             </trans-unit>
+            <trans-unit id="order.invoice.bank_account_title" resname="order.invoice.bank_account_title">
+                <source>order.invoice.bank_account_title</source>
+                <target>A/s</target>
+            </trans-unit>
             <trans-unit id="order.invoice.line_num" resname="order.invoice.line_num">
                 <source>order.invoice.line_num</source>
                 <target>Eil. Nr.</target>
