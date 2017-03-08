@@ -147,9 +147,11 @@
         {% if currency_alternative %}<td class="sum_col" style="border-top: 1px solid black;">{{  misc_utils.getLitas(order.total)|number_format(2, ',', ' ') }}{{ display_currency_alternative }}</td>{% endif %}
     </tr>
 </table>
+{% if show_invoice_sum_words %}
 <br />
 <br />
 <div>{% trans %}order.invoice.sum_words{% endtrans %}: {{ misc_utils.priceToText(order.total)|capitalize }}</div>
+{% endif %}
 <br />
 <br />
 <br />
