@@ -210,7 +210,6 @@ class DishAdmin extends FoodAdmin
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
-                    'delete' => array(),
                 ),
                 'label' => 'admin.actions'
             ))
