@@ -40,14 +40,14 @@
                         {# NAH non of it works :) #}
                         {% if place.pp_count == 1 %}
                             <span class="tag">
-                                <img src="/bundles/foodapp/images/tag-not-working{% if locale == 'lv' %}_lv{% endif %}.png">
+                                <img src="/bundles/foodapp/images/tag-not-working{% if locale == 'lv' %}_lv{% elseif locale == 'ee' %}_ee{% endif %}.png">
                                 <div class="time-popup">{{ order_service.getTodayWork(place.point) }}
                                     <div class="nip"></div>
                                 </div>
                             </span>
                         {% else %}
                             <span class="tag">
-                                <img src="/bundles/foodapp/images/tag-not-working{% if locale == 'lv' %}_lv{% endif %}.png">
+                                <img src="/bundles/foodapp/images/tag-not-working{% if locale == 'lv' %}_lv{% elseif locale == 'ee' %}_ee{% endif %}.png">
                                 <div class="time-popup">{{ order_service.notWorkingPlacesPoints(place.place)|raw }}
                                     <div class="nip"></div>
                                 </div>
