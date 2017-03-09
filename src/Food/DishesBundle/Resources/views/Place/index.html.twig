@@ -113,7 +113,7 @@
             <div class="page-path clearfix">
                 <a href="{{ path('food_homepage') }}">{% trans %}places.home{% endtrans %}</a>
                 {% if breadcrumbData.city is not empty %}
-                    <a href="{{ breadcrumbData.city_url }}">{{ breadcrumbData.city }}</a>
+                    <a href="{{ breadcrumbData.city_url }}">{{ city_breadcrumb }}</a>
                     {% if breadcrumbData.kitchen is not empty %}
                         <a href="{{ breadcrumbData.kitchen_url }}">{{ breadcrumbData.kitchen }}</a>
                     {% endif %}
