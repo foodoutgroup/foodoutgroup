@@ -2,6 +2,7 @@
 
 namespace Food\PlacesBundle\Controller;
 
+use Food\AppBundle\Utils\Misc;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,7 +74,8 @@ class DefaultController extends Controller
 
     public function indexCityAction($city, $slug_filter = false, Request $request)
     {
-        $city = ucfirst($city);
+        $util = new Misc($this->container);
+        $cityBreadcrumb = $util->getCityBreadcrumbs($city);
         $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", $city);
         $availableCitiesSlugs = $this->container->getParameter('available_cities_slugs');
         $availableCitiesSlugs = array_map("mb_strtolower", $availableCitiesSlugs);
@@ -107,6 +109,7 @@ class DefaultController extends Controller
             $metaDescription = $this->get('translator')->trans('food.city.' . $city_name . '.description');
         }
 
+
         return $this->render(
             'FoodPlacesBundle:Default:city.html.twig',
             array(
@@ -123,6 +126,7 @@ class DefaultController extends Controller
                 'current_url' => $current_url,
                 'meta_title' => $metaTitle,
                 'meta_description' => $metaDescription,
+                'city_breadcrumb' => $cityBreadcrumb
             )
         );
     }
