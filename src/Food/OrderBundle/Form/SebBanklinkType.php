@@ -31,7 +31,7 @@ class SebBanklinkType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('VK_SERVICE', 'hidden', ['data' => '1011'])
+            ->add('VK_SERVICE', 'hidden', ['data' => $this->options['service']])
             ->add('VK_VERSION', 'hidden', ['data' => '008'])
             ->add('VK_SND_ID', 'hidden', ['data' => $this->options['snd_id']])
             ->add('VK_STAMP', 'hidden', ['data' => $this->options['stamp']])
