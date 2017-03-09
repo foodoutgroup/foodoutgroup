@@ -74,6 +74,13 @@ class ErrorLog
      */
     private $description;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="debug", type="text")
+     */
+    private $debug;
+
 
     /**
      * Get id
@@ -86,7 +93,22 @@ class ErrorLog
     }
 
     /**
-     * @return \DateTime
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return ErrorLog
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
      */
     public function getCreatedAt()
     {
@@ -94,31 +116,22 @@ class ErrorLog
     }
 
     /**
-     * @param \DateTime $createdAt
+     * Set ip
+     *
+     * @param string $ip
+     * @return ErrorLog
      */
-    public function setCreatedAt($createdAt)
+    public function setIp($ip)
     {
-        $this->createdAt = $createdAt;
+        $this->ip = $ip;
+    
+        return $this;
     }
 
     /**
-     * @return \Food\UserBundle\Entity\User
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * @param \Food\UserBundle\Entity\User $createdBy
-     */
-    public function setCreatedBy($createdBy)
-    {
-        $this->createdBy = $createdBy;
-    }
-
-    /**
-     * @return string
+     * Get ip
+     *
+     * @return string 
      */
     public function getIp()
     {
@@ -126,47 +139,22 @@ class ErrorLog
     }
 
     /**
-     * @param string $ip
+     * Set url
+     *
+     * @param string $url
+     * @return ErrorLog
      */
-    public function setIp($ip)
+    public function setUrl($url)
     {
-        $this->ip = $ip;
+        $this->url = $url;
+    
+        return $this;
     }
 
     /**
-     * @return mixed
-     */
-    public function getCart()
-    {
-        return $this->cart;
-    }
-
-    /**
-     * @param mixed $cart
-     */
-    public function setCart($cart)
-    {
-        $this->cart = $cart;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPlace()
-    {
-        return $this->place;
-    }
-
-    /**
-     * @param mixed $place
-     */
-    public function setPlace($place)
-    {
-        $this->place = $place;
-    }
-
-    /**
-     * @return string
+     * Get url
+     *
+     * @return string 
      */
     public function getUrl()
     {
@@ -174,15 +162,22 @@ class ErrorLog
     }
 
     /**
-     * @param string $url
+     * Set source
+     *
+     * @param string $source
+     * @return ErrorLog
      */
-    public function setUrl($url)
+    public function setSource($source)
     {
-        $this->url = $url;
+        $this->source = $source;
+    
+        return $this;
     }
 
     /**
-     * @return string
+     * Get source
+     *
+     * @return string 
      */
     public function getSource()
     {
@@ -190,15 +185,22 @@ class ErrorLog
     }
 
     /**
-     * @param string $source
+     * Set description
+     *
+     * @param string $description
+     * @return ErrorLog
      */
-    public function setSource($source)
+    public function setDescription($description)
     {
-        $this->source = $source;
+        $this->description = $description;
+    
+        return $this;
     }
 
     /**
-     * @return string
+     * Get description
+     *
+     * @return string 
      */
     public function getDescription()
     {
@@ -206,12 +208,94 @@ class ErrorLog
     }
 
     /**
-     * @param string $description
+     * Set debug
+     *
+     * @param string $debug
+     * @return ErrorLog
      */
-    public function setDescription($description)
+    public function setDebug($debug)
     {
-        $this->description = $description;
+        $this->debug = $debug;
+    
+        return $this;
     }
 
+    /**
+     * Get debug
+     *
+     * @return string 
+     */
+    public function getDebug()
+    {
+        return $this->debug;
+    }
 
+    /**
+     * Set createdBy
+     *
+     * @param \Food\UserBundle\Entity\User $createdBy
+     * @return ErrorLog
+     */
+    public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
+    {
+        $this->createdBy = $createdBy;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdBy
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * Set cart
+     *
+     * @param \Food\CartBundle\Entity\Cart $cart
+     * @return ErrorLog
+     */
+    public function setCart(\Food\CartBundle\Entity\Cart $cart = null)
+    {
+        $this->cart = $cart;
+    
+        return $this;
+    }
+
+    /**
+     * Get cart
+     *
+     * @return \Food\CartBundle\Entity\Cart 
+     */
+    public function getCart()
+    {
+        return $this->cart;
+    }
+
+    /**
+     * Set place
+     *
+     * @param \Food\DishesBundle\Entity\Place $place
+     * @return ErrorLog
+     */
+    public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
+    {
+        $this->place = $place;
+    
+        return $this;
+    }
+
+    /**
+     * Get place
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlace()
+    {
+        return $this->place;
+    }
 }

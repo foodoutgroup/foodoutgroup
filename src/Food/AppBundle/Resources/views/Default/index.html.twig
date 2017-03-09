@@ -10,7 +10,7 @@
             var waitIntervals = null;
             var currentTime = null;
             var closeBtnTxt = '{% trans %}general.close_btn{% endtrans %}';
-
+            var currentUrl  = window.location.href;
 
             function getCrds() {
                 if (addrXhr != null) {
@@ -21,7 +21,9 @@
                     url: '{{ path('food_ajax', {'action': 'find-address'}) }}',
                     data:  {
                         city: $('#index_city').val(),
-                        address: $('#index_address').val() + ' ' + $('#index_house').val()
+                        address: $('#index_address').val() + ' ' + $('#index_house').val(),
+                        currentUrl: currentUrl,
+
                     },
                     success:  function(resp){
                         if (resp.data.success == 1) {
@@ -40,13 +42,15 @@
                                 }
                             };
                             $("<div>"+resp.data.message+"</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
+                        console.log(resp.data.message);
                         }
                     }
                 });
             }
 
             $('#index_submit').click(function(e){
-                if ($('#index_city').val() !="" && $('#index_city').val() != null && $('#index_address').val()=="") {
+
+        if ($('#index_city').val() !="" && $('#index_city').val() != null && $('#index_address').val()=="") {
                     var url = '{{ path('food_lang_homepage') }}' + $('#index_city option:selected').data('cityurl');
                     window.location.href = url;
                 } else {

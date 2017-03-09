@@ -7,7 +7,7 @@ use Food\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Food\AppBundle\Entity\ErrorLog;
 
 class AjaxController extends Controller
 {
@@ -30,14 +30,14 @@ class AjaxController extends Controller
                 $this->_ajaxFindStreetHouse($response, $request->get('city'), $request->get('street'), $request->get('house'));
                 break;
             case 'find-address':
-                $this->_ajaxActFindAddress($response, $request->get('city'), $request->get('address'), $request);
+                $this->_ajaxActFindAddress($response, $request->get('city'), $request->get('address'), $request->get('currentUrl'), $request);
                 break;
             case 'find-address-and-recount':
-                $this->_ajaxActFindAddress($response, $request->get('city'), $request->get('address'), $request);
+                $this->_ajaxActFindAddress($response, $request->get('city'), $request->get('address'), $request->headers->get('referer'), $request);
                 $this->_isPlaceInRadius($response, intval($request->get('place')));
                 break;
             case 'check-coupon':
-                $this->_ajaxCheckCoupon($response, $request->get('place_id'), $request->get('coupon_code'));
+                $this->_ajaxCheckCoupon($response, $request->get('place_id'), $request->get('coupon_code'),$request->get('currentUrl'),$request);
                 break;
             default:
                 $response->setContent(json_encode([
@@ -51,19 +51,19 @@ class AjaxController extends Controller
 
     /**
      * @param Response $response
-     * @param string   $city
-     * @param string   $address
-     * @param Request  $request
+     * @param string $city
+     * @param string $address
+     * @param Request $request
      */
-    private function _ajaxActFindAddress(Response $response, $city, $address, Request $request)
+    private function _ajaxActFindAddress(Response $response, $city, $address, $currentUrl,Request $request)
     {
         $locationInfo = $this->get('food.googlegis')->groupData($address, $city);
 
         $respData = [
             'success' => 0,
             'message' => $this->get('translator')->trans('index.address_not_found'),
-            'adr'     => 0,
-            'str'     => 0
+            'adr' => 0,
+            'str' => 0
         ];
         if ((!$locationInfo['not_found'] || $locationInfo['street_found']) && $locationInfo['lng'] > 20 && $locationInfo['lat'] > 50) {
             $respData['success'] = 1;
@@ -87,11 +87,33 @@ class AjaxController extends Controller
             $response->setContent(json_encode([
                 'data' => [
                     'success' => 1,
-                    'adr'     => 1,
-                    'str'     => 0
+                    'adr' => 1,
+                    'str' => 0
                 ]
             ]));
         } else {
+
+            if(isset($respData['message']) && !empty($respData['message'])) {
+
+                $user = $this->getUser();
+                $userIp = ($this->container->get('request')->getClientIp());
+                $error = new ErrorLog();
+
+                $error->setIp($userIp);
+                $error->setCart(null);
+                $error->setCreatedBy($user);
+                $error->setPlace(null);
+                $error->setCreatedAt(new \DateTime('now'));
+                $error->setUrl($currentUrl);
+                $error->setSource('adress_change_find');
+                $error->setDescription($respData['message']);
+                $error->setDebug(serialize($request));
+
+                $em = $this->container->get('doctrine')->getManager();
+                $em->persist($error);
+                $em->flush();
+
+            }
             $response->setContent(json_encode([
                 'data' => $respData
             ]));
@@ -193,7 +215,7 @@ class AjaxController extends Controller
 
     /**
      * @param Response $response
-     * @param integer  $placeId
+     * @param integer $placeId
      *
      * @todo dieve atleisk uz mano kaltes del json_encode - reik swiceri pakeisti kad contentas encodinamas priesh pati
      *     response grazinima
@@ -205,8 +227,7 @@ class AjaxController extends Controller
         $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
             $placeId,
             $this->get('food.googlegis')->getLocationFromSession()
-        )
-        ;
+        );
 
         $this->get('food.places')->saveRelationPlaceToPointSingle($placeId, $pointId);
         $cont->data->{'nodelivery'} = (!empty($pointId) ? 0 : 1);
@@ -216,15 +237,15 @@ class AjaxController extends Controller
 
     /**
      * @param Response $response
-     * @param int      $placeId
-     * @param string   $couponCode
+     * @param int $placeId
+     * @param string $couponCode
      */
-    private function _ajaxCheckCoupon(Response $response, $placeId, $couponCode)
+    private function _ajaxCheckCoupon(Response $response, $placeId, $couponCode,$currentUrl,$request)
     {
         $trans = $this->get('translator');
         $cont = [
             'status' => true,
-            'data'   => []
+            'data' => []
         ];
 
         $orderService = $this->get('food.order');
@@ -318,6 +339,31 @@ class AjaxController extends Controller
             $cont['data'] = $coupon->__toArray();
         }
 
+        if(isset($cont['data']['error']) && !empty($cont['data']['error'])){
+            $sessionId = $this->container->get('food.cart')->getSessionId();
+            $user = $this->getUser();
+            $userIp = ($this->container->get('request')->getClientIp());
+            $error = new ErrorLog();
+
+            $em = $this->container->get('doctrine')->getManager();
+            $place = $em->getRepository("FoodDishesBundle:Place")->find($placeId);
+            $cart = $em->getRepository("FoodCartBundle:Cart")->findOneBy(['session'=>$sessionId]);
+            $debugCode['code'] = $couponCode;
+
+            $error->setIp($userIp);
+            $error->setCart($cart);
+            $error->setCreatedBy($user);
+            $error->setPlace($place);
+            $error->setCreatedAt(new \DateTime('now'));
+            $error->setUrl($currentUrl);
+            $error->setSource('checkout_coupon_page');
+            $error->setDescription($cont['data']['error']);
+            $error->setDebug(serialize($request));
+
+            $em->persist($error);
+            $em->flush();
+
+        }
 
         $response->setContent(json_encode($cont));
     }

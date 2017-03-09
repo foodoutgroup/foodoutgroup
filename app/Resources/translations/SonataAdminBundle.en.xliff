@@ -3499,6 +3499,34 @@
                 <source>admin.error.source</source>
                 <target>Source</target>
             </trans-unit>
+            <trans-unit id="admin.error.cart_session">
+                 <source>admin.error.cart_session</source>
+                 <target>Cart session</target>
+            </trans-unit>
+            <trans-unit id="admin.error.description">
+                 <source>admin.error.description</source>
+                 <target>Description</target>
+            </trans-unit>
+            <trans-unit id="admin.error.place">
+                 <source>admin.error.place</source>
+                 <target>Place</target>
+            </trans-unit>
+            <trans-unit id="admin.error.ip">
+                  <source>admin.error.ip</source>
+                  <target>Ip</target>
+            </trans-unit>
+            <trans-unit id="admin.error.url">
+                  <source>admin.error.url</source>
+                  <target>Url</target>
+            </trans-unit>
+            <trans-unit id="admin.error.user">
+                  <source>admin.error.user</source>
+                  <target>User</target>
+            </trans-unit>
+            <trans-unit id="admin.error.debug">
+                  <source>admin.error.debug</source>
+                  <target>Debug</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

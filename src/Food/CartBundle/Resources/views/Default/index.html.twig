@@ -84,12 +84,17 @@
         $('.coupon_form_popup .button-submit').bind('click', function() {
             var couponField = $('input#coupon_code_popup');
             var popupInner = $(this).closest('.coupon_inner');
+            var currentUrl  = window.location.href;
             popupInner.mask();
 
             $.ajax({
                 type: 'GET',
                 url: '{{ path('food_ajax', {'action': 'check-coupon'}) }}',
-                data:  { place_id: '{{ place.id }}', coupon_code: couponField.val()},
+                data:  {
+                            place_id: '{{ place.id }}',
+                            coupon_code: couponField.val(),
+                            currentUrl: currentUrl
+                        },
                 success:  function(resp){
                     if (resp.status == 1) {
                         var takeAway = 0;

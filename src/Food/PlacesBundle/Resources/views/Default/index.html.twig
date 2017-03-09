@@ -201,7 +201,9 @@
 
                     data_callback = function() {
                         return { city: $('.city-row select').val(),
-                                 address: $('.address-row input').val() };
+                                 address: $('.address-row input').val(),
+                                 currentUrl:window.location.href,
+                        };
                     }
 
                     change_location($('#places-change-address'),
