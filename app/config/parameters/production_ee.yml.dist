@@ -116,6 +116,10 @@ parameters:
     seb:
         banklink.private_key: "/srv/gluster/banklinks/ee/seb/private.key"
         banklink.bank_key: "/srv/gluster/banklinks/ee/seb/bank.key"
+        REDIRECT_SERVICE: 1011
+        SUCCESS_SERVICE: 1111
+        WAITING_SERVICE: 1211
+        FAILURE_SERVICE: 1911
         VK_SND_ID: "jtepart"
         VK_ACC: "EE881010000006537224"
         entrypoint: "https://www.seb.ee/cgi-bin/unet3.sh/un3min.r"
