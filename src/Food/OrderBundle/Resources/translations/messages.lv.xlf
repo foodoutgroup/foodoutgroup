@@ -2,6 +2,10 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
     <file source-language="lv" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="order.bank.title" resname="order.bank.title">
+                <source>order.bank.title</source>
+                <target>Pasutījums</target>
+            </trans-unit>
             <trans-unit id="0b30c54b7ab2126c255b519b8fb03554" resname="email.dishes.options">
                 <source>email.dishes.options</source>
                 <target>Piedevas</target>
