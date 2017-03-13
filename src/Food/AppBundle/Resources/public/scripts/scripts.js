@@ -339,7 +339,12 @@ change_location = function(element,
     */
 }
 
+
+
+
+
 initStreetSearch = function(){
+
     var streetsUrl = Routing.generate('food_ajax', { '_locale': 'lt', 'action' : 'find-street' });
     var streets = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),

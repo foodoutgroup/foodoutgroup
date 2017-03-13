@@ -148,3 +148,14 @@ services:
       parent: food.base_service
       calls:
         - [ setSecurityContext, [@security.context]]
+
+    sonata.admin.error_log:
+      class: Food\AppBundle\Admin\ErrorLogAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.error_log" }
+      arguments:
+        - ~
+        - Food\AppBundle\Entity\ErrorLog
+        - ~
+      calls:
+        - [ setTranslationDomain, [SonataAdminBundle]]
