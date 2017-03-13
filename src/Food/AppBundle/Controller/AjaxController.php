@@ -100,7 +100,7 @@ class AjaxController extends Controller
                 $error = new ErrorLog();
 
                 $error->setIp($userIp);
-                $error->setCart(null);
+                //~ $error->setCart(null);
                 $error->setCreatedBy($user);
                 $error->setPlace(null);
                 $error->setCreatedAt(new \DateTime('now'));
@@ -347,11 +347,11 @@ class AjaxController extends Controller
 
             $em = $this->container->get('doctrine')->getManager();
             $place = $em->getRepository("FoodDishesBundle:Place")->find($placeId);
-            $cart = $em->getRepository("FoodCartBundle:Cart")->findOneBy(['session'=>$sessionId]);
+            //~ $cart = $em->getRepository("FoodCartBundle:Cart")->findOneBy(['session'=>$sessionId]);
             $debugCode['code'] = $couponCode;
 
             $error->setIp($userIp);
-            $error->setCart($cart);
+            //~ $error->setCart($cart);
             $error->setCreatedBy($user);
             $error->setPlace($place);
             $error->setCreatedAt(new \DateTime('now'));

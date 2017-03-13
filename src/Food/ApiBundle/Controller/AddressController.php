@@ -48,7 +48,7 @@ class AddressController extends Controller
             $error = new ErrorLog();
 
             $error->setIp($userIp);
-            $error->setCart(null);
+            //~ $error->setCart(null);
             $error->setCreatedBy($user);
             $error->setPlace(null);
             $error->setCreatedAt(new \DateTime('now'));
