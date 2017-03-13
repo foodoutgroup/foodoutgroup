@@ -2,11 +2,15 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
     <file source-language="lt" datatype="plaintext" original="file.ext">
         <body>
+            <trans-unit id="order.bank.title" resname="order.bank.title">
+                <source>order.bank.title</source>
+                <target>Tellimus</target>
+            </trans-unit>
             <trans-unit id="email.dishes.options" resname="email.dishes.options">
                 <source>email.dishes.options</source><target>Lisad</target>
             </trans-unit>
             <trans-unit id="order.invoice.invoice_title" resname="order.invoice.invoice_title">
-                <source>order.invoice.invoice_title</source><target>KM-ARVE</target>
+                <source>order.invoice.invoice_title</source><target>Kviitung</target>
             </trans-unit>
             <trans-unit id="order.invoice.series" resname="order.invoice.series">
                 <source>order.invoice.series</source><target>Seeria</target>
@@ -75,25 +79,28 @@
                 <source>order.invoice.invoice_receiver</source><target>Arve võttis vastu</target>
             </trans-unit>
             <trans-unit id="order.invoice.foodout_company_name" resname="order.invoice.foodout_company_name">
-                <source>order.invoice.foodout_company_name</source><target>UAB FOODOUT.LT</target>
+                <source>order.invoice.foodout_company_name</source><target>JTEpartners OÜ / MyChef.ee</target>
             </trans-unit>
             <trans-unit id="order.invoice.foodout_address" resname="order.invoice.foodout_address">
-                <source>order.invoice.foodout_address</source><target>Laisvės pr. 77C-58, 06155 Vilnius</target>
+                <source>order.invoice.foodout_address</source><target>Pärnu mnt 160A Tallinn 11317 Harju maakond</target>
             </trans-unit>
             <trans-unit id="order.invoice.foodout_company_code" resname="order.invoice.foodout_company_code">
-                <source>order.invoice.foodout_company_code</source><target>303134580</target>
+                <source>order.invoice.foodout_company_code</source><target>12123819</target>
             </trans-unit>
             <trans-unit id="order.invoice.foodout_vat_code" resname="order.invoice.foodout_vat_code">
-                <source>order.invoice.foodout_vat_code</source><target>LT100008038519</target>
+                <source>order.invoice.foodout_vat_code</source><target>EE101473109</target>
             </trans-unit>
             <trans-unit id="order.invoice.foodout_bank" resname="order.invoice.foodout_bank">
-                <source>order.invoice.foodout_bank</source><target>Swedbank AB</target>
+                <source>order.invoice.foodout_bank</source><target>SEB</target>
             </trans-unit>
             <trans-unit id="order.invoice.foodout_bank_code" resname="order.invoice.foodout_bank_code">
-                <source>order.invoice.foodout_bank_code</source><target>73000</target>
+                <source>order.invoice.foodout_bank_code</source><target>EEUHEE2X</target>
+            </trans-unit>
+            <trans-unit id="order.invoice.bank_account_title" resname="order.invoice.bank_account_title">
+                <source>order.invoice.bank_account_title</source><target>IBAN</target>
             </trans-unit>
             <trans-unit id="order.invoice.foodout_bank_account" resname="order.invoice.foodout_bank_account">
-                <source>order.invoice.foodout_bank_account</source><target>LT92 7300 0101 3664 5307</target>
+                <source>order.invoice.foodout_bank_account</source><target>EE751010220196920220</target>
             </trans-unit>
             <trans-unit id="daily_report.metric" resname="daily_report.metric">
                 <source>daily_report.metric</source><target>Mõõdikud</target>

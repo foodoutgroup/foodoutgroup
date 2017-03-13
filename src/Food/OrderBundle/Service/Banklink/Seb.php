@@ -6,62 +6,80 @@ use Food\OrderBundle\Service\Banklink\AbstractBanklink;
 
 class Seb extends AbstractBanklink
 {
-    const REDIRECT_SERVICE = 1001;
-    const SUCCESS_SERVICE = 1101;
-    const WAITING_SERVICE = 1201;
-    const FAILURE_SERVICE = 1901;
+    private $container;
 
-    private $fields = [
-        self::REDIRECT_SERVICE => ['VK_SERVICE',
-                                   'VK_VERSION',
-                                   'VK_SND_ID',
-                                   'VK_STAMP',
-                                   'VK_AMOUNT',
-                                   'VK_CURR',
-                                   'VK_ACC',
-                                   'VK_NAME',
-                                   'VK_REF',
-                                   'VK_MSG'],
-        self::SUCCESS_SERVICE => ['VK_SERVICE',
-                                  'VK_VERSION',
-                                  'VK_SND_ID',
-                                  'VK_REC_ID',
-                                  'VK_STAMP',
-                                  'VK_T_NO',
-                                  'VK_AMOUNT',
-                                  'VK_CURR',
-                                  'VK_ACC',
-                                  'VK_REC_NAME',
-                                  'VK_SND_ACC',
-                                  'VK_SND_NAME',
-                                  'VK_REF',
-                                  'VK_MSG',
-                                  'VK_T_DATE'],
-        self::FAILURE_SERVICE => ['VK_SERVICE',
-                                  'VK_VERSION',
-                                  'VK_SND_ID',
-                                  'VK_REC_ID',
-                                  'VK_STAMP',
-                                  'VK_REF',
-                                  'VK_MSG'],
-        self::WAITING_SERVICE => ['VK_SERVICE',
-                                  'VK_VERSION',
-                                  'VK_SND_ID',
-                                  'VK_REC_ID',
-                                  'VK_STAMP',
-                                  'VK_AMOUNT',
-                                  'VK_CURR',
-                                  'VK_ACC',
-                                  'VK_REC_NAME',
-                                  'VK_SND_ACC',
-                                  'VK_SND_NAME',
-                                  'VK_REF',
-                                  'VK_MSG']
-    ];
+    private $fields = [];
+
+    public function setContainer($container)
+    {
+        $this->container = $container;
+
+        $this->initFields();
+    }
+
+    private function initFields()
+    {
+        $config = $this->container->getParameter('seb');
+
+        $this->fields[$config['REDIRECT_SERVICE']] = [
+            'VK_SERVICE',
+            'VK_VERSION',
+            'VK_SND_ID',
+            'VK_STAMP',
+            'VK_AMOUNT',
+            'VK_CURR',
+            'VK_ACC',
+            'VK_NAME',
+            'VK_REF',
+            'VK_MSG'
+        ];
+        $this->fields[$config['SUCCESS_SERVICE']] = [
+            'VK_SERVICE',
+            'VK_VERSION',
+            'VK_SND_ID',
+            'VK_REC_ID',
+            'VK_STAMP',
+            'VK_T_NO',
+            'VK_AMOUNT',
+            'VK_CURR',
+            'VK_ACC',
+            'VK_REC_NAME',
+            'VK_SND_ACC',
+            'VK_SND_NAME',
+            'VK_REF',
+            'VK_MSG',
+            'VK_T_DATE'
+        ];
+        $this->fields[$config['FAILURE_SERVICE']] = [
+            'VK_SERVICE',
+            'VK_VERSION',
+            'VK_SND_ID',
+            'VK_REC_ID',
+            'VK_STAMP',
+            'VK_REF',
+            'VK_MSG'
+        ];
+        $this->fields[$config['WAITING_SERVICE']] = [
+            'VK_SERVICE',
+            'VK_VERSION',
+            'VK_SND_ID',
+            'VK_REC_ID',
+            'VK_STAMP',
+            'VK_AMOUNT',
+            'VK_CURR',
+            'VK_ACC',
+            'VK_REC_NAME',
+            'VK_SND_ACC',
+            'VK_SND_NAME',
+            'VK_REF',
+            'VK_MSG'
+        ];
+    }
 
     public function getBankUrl()
     {
-        return 'https://e.seb.lt/banklink/in';
+        $config = $this->container->getParameter('seb');
+        return $config['entrypoint'];
     }
 
     public function mac($data = array(), $vkService = 0)

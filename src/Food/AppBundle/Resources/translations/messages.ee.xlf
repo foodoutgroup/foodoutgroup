@@ -172,51 +172,6 @@
             <trans-unit id="7aaffcb3d756c2cd540c10c6feafacfa" resname="general.subscribed_newsletter">
                 <source>general.subscribed_newsletter</source><target>Olete uudiskirja tellinud</target>
             </trans-unit>
-            <trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
-                <source>general.sms.user.order_accepted</source><target>Tere! restourant_name kinnitas teie tellimuse. Toit peaks kohale jõudma delivery_time jooksul. Küsimuste korral helistage numbrile +370 6100 4970.</target>
-            </trans-unit>
-            <!--<trans-unit id="48795bf520b10c831dc07db11fe29a91" resname="general.sms.user.order_accepted">
-                <source>general.sms.user.order_accepted</source><target>Tere! restourant_name kinnitas teie tellimuse. Toit peaks kohale jõudma delivery_time jooksul. Küsimuste korral helistage numbrile +370 6100 4970.</target>
-            </trans-unit>-->
-            <trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
-                <source>general.sms.user.order_accepted_preorder</source>
-                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Pristatysime ~pre_delivery_time.! Tavo alkis - musu misija!</target>
-            </trans-unit>
-            <!--<trans-unit id="general.sms.user.order_accepted_preorder" resname="general.sms.user.order_accepted_preorder">
-                <source>general.sms.user.order_accepted_preorder</source>
-                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista turetume pristatyti pre_delivery_time! Jei turite klausimu susisiekite telefonu +37069855544!</target>
-            </trans-unit>-->
-            <!--<trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
-                <source>general.sms.user.order_accepted_pickup</source><target>Tere! restourant_name kinnitas teie tellimuse. Toidu saab kätte delivery_time pärast! Küsimuste korral helistage numbrile +370 6100 4970.</target>
-            </trans-unit>-->
-            <trans-unit id="47a18117dfd39726c562b025f05ace20" resname="general.sms.user.order_accepted_pickup">
-                <source>general.sms.user.order_accepted_pickup</source><target>Tere! restourant_name kinnitas teie tellimuse. Toidu saab kätte delivery_time pärast! Küsimuste korral helistage numbrile +370 6100 4970.</target>
-            </trans-unit>
-            <trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
-                <source>general.sms.user.order_accepted_pickup_preorder</source>
-                <target>restourant_name patvirtino Tavo uzsakyma nr. order_id. Atsiimti galesite ~pre_delivery_time.! Tavo alkis - musu misija!</target>
-            </trans-unit>
-            <!--<trans-unit id="general.sms.user.order_accepted_pickup_preorder" resname="general.sms.user.order_accepted_pickup_preorder">
-                <source>general.sms.user.order_accepted_pickup_preorder</source>
-                <target>Sveiki, restourant_name patvirtino jusu uzsakyma nr. order_id! Maista galesite atsiimti pre_delivery_time! Jei turite dar klausimu susisiekite telefonu +37069855544!</target>
-            </trans-unit>-->
-            <trans-unit id="general.sms.client.driver_picked_up" resname="general.sms.client.driver_picked_up">
-                <source>general.sms.client.driver_picked_up</source>
-                <target>Psst, Tavo uzsakymas jau foodoutmobilyje! Maista pristatysime  netrukus! Ar jauti, kaip tavo alkis dreba is baimes? ;)</target>
-            </trans-unit>
-            <trans-unit id="general.sms.client.order_created" resname="general.sms.client.order_created">
-                <source>general.sms.client.order_created</source>
-                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Pradedame Tavo alkio numalsinimo misija!</target>
-            </trans-unit>
-            <trans-unit id="50d35b705293e6641630ea0457d40520" resname="general.sms.client.restourant_cancel">
-                <source>general.sms.client.restourant_cancel</source><target>Kahjuks restoran tühistas teie tellimuse.</target>
-            </trans-unit>
-            <trans-unit id="30dc3f60ca025a053ed3728a342c566a" resname="general.sms.client.restourant_cancel_banklink">
-                <source>general.sms.client.restourant_cancel_banklink</source><target>Kahjuks restoran tühistas teie tellimuse. Raha tagastatakse teie pangakontole.</target>
-            </trans-unit>
-            <trans-unit id="general.sms.order_to_be_late" resname="general.sms.order_to_be_late">
-                <source>general.sms.order_to_be_late</source><target>Anname teada, et teie tellimus on juba teel. Toome selle kohale delivery_in min jooksul. Küsimuste korral helistage numbrile +370 6100 4970.</target>
-            </trans-unit>
             <trans-unit id="74fbe91702c1ee04724c55bde63e654f" resname="general.email.new_order">
                 <source>general.email.new_order</source><target>uus tellimus</target>
             </trans-unit>
@@ -365,36 +320,9 @@
                 <source>general.company</source>
                 <target>äriklientidele</target>
             </trans-unit>
-            <trans-unit id="e44e8ff9e4e47e49c926d67bf0112966" resname="general.sms.new_order">
-                <source>general.sms.new_order</source><target>Uus tellimus: </target>
-            </trans-unit>
-            <trans-unit id="general.sms.canceled_order" resname="general.sms.canceled_order">
-                <source>general.sms.canceled_order</source><target>Tellimus #%order_number% on tühistatud: </target>
-            </trans-unit>
-            <trans-unit id="general.sms.order_reminder" resname="general.sms.order_reminder">
-                <source>general.sms.order_reminder</source><target>Tuletame meelde, et teil on kinnitamata tellimus: </target>
-            </trans-unit>
-            <trans-unit id="ddd5593d67b30b671c0533a616aa5398" resname="general.sms.new_order_in_mail">
-                <source>general.sms.new_order_in_mail</source><target>Palun kontrollige oma meilikasti. Te saite uue tellimuse</target>
-            </trans-unit>
             <trans-unit id="general.email.partialy_completed" resname="general.email.partialy_completed">
                 <source>general.email.partialy_completed</source><target>Kohale on toodud mittetäielik tellimus</target>
             </trans-unit>
-            <trans-unit id="3d6f52993727876649fad3f9e2d5c687" resname="general.sms.driver_assigned_order">
-                <source>general.sms.driver_assigned_order</source><target>Uus tellimus: restaurant_title (restaurant_address), kuni deliver_time </target>
-            </trans-unit>
-            <trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
-                <source>general.sms.user_order_delayed</source><target>Suure hulga tellimuste tõttu on teie tellimus kahjuks edasi lükatud delay_time min ja see tuuakse kohale delivery_min min jooksul. Kui te pole nõus ootama, helistage numbrile +370 6100 4970.</target>
-            </trans-unit>
-            <trans-unit id="e7bd53e2c7fa9e93ede0c7b307426c5a" resname="general.sms.user_order_delayed_pickup">
-                <source>general.sms.user_order_delayed_pickup</source><target>Suure hulga tellimuste tõttu on teie tellimus kahjuks edasi lükatud delay_time min ja see saab valmis delivery_min min jooksul. Kui te pole nõus ootama, helistage numbrile +370 6100 4970.</target>
-            </trans-unit>
-            <!--<trans-unit id="28ecbd185a859ae613493c195207e5e0" resname="general.sms.user_order_delayed">
-                <source>general.sms.user_order_delayed</source><target>Suure hulga tellimuste tõttu on teie tellimus kahjuks edasi lükatud delay_time min ja see tuuakse kohale delivery_min min jooksul. Kui te pole nõus ootama, helistage numbrile +370 6100 4970.</target>
-            </trans-unit>
-            <trans-unit id="e7bd53e2c7fa9e93ede0c7b307426c5a" resname="general.sms.user_order_delayed_pickup">
-                <source>general.sms.user_order_delayed_pickup</source><target>Suure hulga tellimuste tõttu on teie tellimus kahjuks edasi lükatud delay_time min ja see saab valmis delivery_min min jooksul. Kui te pole nõus ootama, helistage numbrile +370 6100 4970.</target>
-            </trans-unit>-->
             <trans-unit id="8036a67ebc0bbfebb10242dfaabceaf3" resname="general.email.user_delayed_subject">
                 <source>general.email.user_delayed_subject</source><target>kohaletoomise aeg on muutunud</target>
             </trans-unit>
@@ -1283,6 +1211,100 @@
             <trans-unit id="general.news" resname="general.news">
                 <source>general.news</source>
                 <target>Uudised</target>
+            </trans-unit>
+
+            <!--
+                =====> sms <=====
+            -->
+
+            <!-- order created -->
+            <trans-unit id="general.sms.client.order_created" resname="general.sms.client.order_created">
+                <source>general.sms.client.order_created</source>
+                <target>Teie tellimus order_id ID on kinnitatud. Kuller jouab orienteeruvalt delivery_time aja parast!</target>
+            </trans-unit>
+            <trans-unit id="general.sms.client.order_created_pickup" resname="general.sms.client.order_created_pickup">
+                <source>general.sms.client.order_created_pickup</source>
+                <target>Teie tellimus on kinnitatud. Voite sellele jarele minna pre_delivery_time minuti parast!</target>
+            </trans-unit>
+            <trans-unit id="general.sms.client.order_created_preorder" resname="general.sms.client.order_created_preorder">
+                <source>general.sms.client.order_created_preorder</source>
+                <target>Hei! Teie tellimus order_id on kinnitatud. Jouame Teie juurde umbes ~pre_delivery_time minuti parast!</target>
+            </trans-unit>
+            <trans-unit id="general.sms.client.order_created_preorder_pickup" resname="general.sms.client.order_created_preorder_pickup">
+                <source>general.sms.client.order_created_preorder_pickup</source>
+                <target>Teie tellimus on kinnitatud. Voite sellele jarele minna pre_delivery_time minuti parast!</target>
+            </trans-unit>
+
+            <!-- order accepted -->
+<!--
+            <trans-unit id="general.sms.client.order_accepted" resname="general.sms.client.order_accepted">
+                <source>general.sms.client.order_accepted</source>
+                <target></target>
+            </trans-unit>
+-->
+<!--
+            <trans-unit id="general.sms.client.order_accepted_pickup" resname="general.sms.client.order_accepted_pickup">
+                <source>general.sms.client.order_accepted_pickup</source>
+                <target></target>
+            </trans-unit>
+-->
+            <trans-unit id="general.sms.client.order_accepted_preorder" resname="general.sms.client.order_accepted_preorder">
+                <source>general.sms.client.order_accepted_preorder</source>
+                <target>restourant_name kinnitas Teie tellimuse order_id. Toimetame tellimuse Teieni ca. ~pre_delivery_time minuti parast!</target>
+            </trans-unit>
+            <trans-unit id="general.sms.client.order_accepted_preorder_pickup" resname="general.sms.client.order_accepted_preorder_pickup">
+                <source>general.sms.client.order_accepted_preorder_pickup</source>
+                <target>restaurant_name Kinnitas Teie tellimuse order_id. Voite sellele jarele minna ~pre_delivery_time minuti parast!</target>
+            </trans-unit>
+
+            <!-- order delayed -->
+            <trans-unit id="general.sms.client.order_delayed" resname="general.sms.client.order_delayed">
+                <source>general.sms.client.order_delayed</source>
+                <target>Kiierd ajad restoranis/liikluses, kuller hilineb order_id minutit. Vabandust</target>
+            </trans-unit>
+            <trans-unit id="general.sms.client.order_delayed_pickup" resname="general.sms.client.order_delayed_pickup">
+                <source>general.sms.client.order_delayed_pickup</source>
+                <target>Restorani ooteaeg pikenenud order_id minutit, vabandame</target>
+            </trans-unit>
+
+            <!-- order completed -->
+            <trans-unit id="general.sms.client.order_completed">
+                <source>general.sms.client.order_completed</source>
+                <target></target>
+            </trans-unit>
+
+<!--
+            <trans-unit id="general.sms.client.driver_picked_up" resname="general.sms.client.driver_picked_up">
+                <source>general.sms.client.driver_picked_up</source>
+                <target>Psst, Tavo uzsakymas jau vezamas! Uzsisakyk maista patogiau – atsisiusk mob.programele: http://bit.ly/2f3YgRH</target>
+            </trans-unit>
+-->
+<!--
+            <trans-unit id="general.sms.order_to_be_late" resname="general.sms.order_to_be_late">
+                <source>general.sms.order_to_be_late</source>
+                <target>Informuojame, Jusu uzsakymas nr. order_id jau kelyje. Pristatysime ji per delivery_in min. Turite klausimu, skambinkite +37069855544.</target>
+            </trans-unit>
+-->
+            <!-- inform place -->
+            <trans-unit id="general.sms.new_order" resname="general.sms.new_order">
+                <source>general.sms.new_order</source>
+                <target>Naujas uzsakymas nr. order_id: </target>
+            </trans-unit>
+            <trans-unit id="general.sms.order_reminder" resname="general.sms.order_reminder">
+                <source>general.sms.order_reminder</source>
+                <target>Primename, kad turite nepatvirtinta uzsakyma nr. order_id: </target>
+            </trans-unit>
+
+            <!-- informPlaceCancelAction -->
+            <trans-unit id="general.sms.canceled_order" resname="general.sms.canceled_order">
+                <source>general.sms.canceled_order</source>
+                <target>Uzsakymas nr. order_id atsauktas: </target>
+            </trans-unit>
+
+            <!-- statusAssigned -->
+            <trans-unit id="general.sms.driver_assigned_order" resname="general.sms.driver_assigned_order">
+                <source>general.sms.driver_assigned_order</source>
+                <target>Naujas uzsakymas nr. order_id is: restaurant_title i restaurant_address, iki deliver_time </target>
             </trans-unit>
         </body>
     </file>

@@ -35,7 +35,6 @@
         "beberlei/DoctrineExtensions": "dev-master",
         "twig/extensions": "1.1.*",
         "symfony/assetic-bundle": "2.3.*",
-        "symfony/icu": "1.1.*",
         "symfony/swiftmailer-bundle": "2.3.*",
         "symfony/monolog-bundle": "2.6.*",
         "sensio/distribution-bundle": "2.3.*",
@@ -50,7 +49,7 @@
         "sonata-project/exporter" : "1.*@dev",
         "sonata-project/jquery-bundle" : "1.8.*",
         "sonata-project/cache-bundle": "2.2.*@dev",
-        "sonata-project/intl-bundle": "2.2.*@dev",
+        "sonata-project/intl-bundle": "2.3.*@dev",
         "sonata-project/core-bundle": "2.2.*@dev",
         "sonata-project/admin-bundle": "2.2.*@dev",
         "sonata-project/doctrine-orm-admin-bundle": "2.2.*@dev",
@@ -74,7 +73,8 @@
         "aws/aws-sdk-php": "2.7.*@dev",
         "google/apiclient": "~1.1.0",
         "phpoffice/phpexcel": "^1.8",
-        "nelmio/cors-bundle": "1.4.1"
+        "nelmio/cors-bundle": "1.4.1",
+        "symfony/intl": "^2.8"
     },
     "scripts": {
         "post-install-cmd": [

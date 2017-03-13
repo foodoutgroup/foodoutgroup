@@ -189,7 +189,6 @@ class PlaceAdmin extends FoodAdmin
             ->add('_action', 'actions', [
                 'actions' => [
                     'edit'   => [],
-                    'delete' => [],
                 ],
                 'label'   => 'admin.actions'
             ])

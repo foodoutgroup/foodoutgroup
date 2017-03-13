@@ -35,11 +35,18 @@ services:
 
     food.seb_banklink:
         class: Food\OrderBundle\Service\Banklink\Seb
-        arguments: ["%seb.banklink.private_key%", "%seb.banklink.bank_key%"]
+        arguments: ["%seb%"]
+        calls:
+            - [setContainer, ["@service_container"]]
 
     food.nordea_banklink:
         class: Food\OrderBundle\Service\Banklink\Nordea
         arguments: ["%nordea.banklink.mac%", @router, @form.factory]
+
+    food.sandbox_biller:
+        class: Food\OrderBundle\Service\SandboxBiller
+        calls:
+            - [setContainer, ["@service_container"]]
 
     food.order:
         class: Food\OrderBundle\Service\OrderService

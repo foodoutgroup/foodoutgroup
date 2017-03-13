@@ -77,12 +77,13 @@ class OrderService extends ContainerAware
         'paysera' => 'food.paysera_biller',
         'swedbank-gateway' => 'food.swedbank_gateway_biller',
         'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller',
-        'seb-banklink' => 'food.seb_banklink_biller',
-        'nordea-banklink' => 'food.nordea_banklink_biller'
+        'seb-banklink'                 => 'food.seb_banklink_biller',
+        'nordea-banklink'              => 'food.nordea_banklink_biller',
+        'sandbox' => 'food.sandbox_biller',
     ];
 
     private $onlinePayments = [
-        'paysera', 'swedbank-gateway', 'swedbank-credit-card-gateway', 'seb-banklink', 'nordea-banklink'
+        'paysera', 'swedbank-gateway', 'swedbank-credit-card-gateway', 'seb-banklink', 'nordea-banklink', 'sandbox'
     ];
 
     public static $deliveryTrans = [
@@ -4551,45 +4552,38 @@ class OrderService extends ContainerAware
             $smsService = $this->container->get('food.messages');
             $sender = $this->container->getParameter('sms.sender');
 
-            $sendSms = false;
-
-            if ($order->getPreorder()) {
-                $sendSms = true;
+            $keyword = 'general.sms.client.order_delayed';
+            if ($order->getDeliveryType() == self::$deliveryPickup) {
+                $keyword .= '_pickup';
             }
 
-            if ($sendSms) {
-                $keyword = 'general.sms.client.order_delayed';
-                if ($order->getDeliveryType() == self::$deliveryPickup) {
-                    $keyword .= '_pickup';
-                }
+            $text = $this->container->get('translator')
+                ->trans(
+                    $keyword,
+                    [
+                        'order_id'   => $order->getId(),
+                        'delay_time' => $diffInMinutes
+                    ],
+                    null,
+                    $order->getLocale()
+                )
+            ;
 
-                $text = $this->container->get('translator')
-                    ->trans(
-                        $keyword,
-                        [
-                            'order_id' => $order->getId(),
-                            'delay_time' => $diffInMinutes
-                        ],
-                        null,
-                        $order->getLocale()
-                    );
+            $userEmail = $order->getOrderExtra()->getEmail();
+            $message = $smsService->createMessage($sender, $recipient, $text, $order);
+            $smsService->saveMessage($message);
 
-                $userEmail = $order->getOrderExtra()->getEmail();
-                $message = $smsService->createMessage($sender, $recipient, $text, $order);
-                $smsService->saveMessage($message);
+            // And an email
+            $mailer = $this->container->get('mailer');
 
-                // And an email
-                $mailer = $this->container->get('mailer');
+            $message = \Swift_Message::newInstance()
+                ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
+                ->setFrom('info@' . $domain)
+            ;
 
-                $message = \Swift_Message::newInstance()
-                    ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
-                    ->setFrom('info@' . $domain);
-
-                $message->addTo($userEmail);
-                $message->setBody($text);
-                $mailer->send($message);
-            }
-
+            $message->addTo($userEmail);
+            $message->setBody($text);
+            $mailer->send($message);
         }
     }
 
@@ -4665,8 +4659,10 @@ class OrderService extends ContainerAware
                         $order->getLocale()
                     );
 
-                $message = $smsService->createMessage($sender, $recipient, $text, $order);
-                $smsService->saveMessage($message);
+                if (!empty($text)) {
+                    $message = $smsService->createMessage($sender, $recipient, $text, $order);
+                    $smsService->saveMessage($message);
+                }
             }
 
         }

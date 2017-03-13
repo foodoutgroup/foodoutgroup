@@ -8,6 +8,7 @@ use Food\OrderBundle\Service\OrderService;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\AppBundle\Traits;
 use Symfony\Component\HttpFoundation\Request;
+use Food\AppBundle\Utils\Language;
 
 class PlacesService extends ContainerAware
 {
@@ -757,6 +758,14 @@ class PlacesService extends ContainerAware
     public function isPlaceDeliversToCity(Place $place, $city)
     {
         $cities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
+
+        $locale = $this->container->getParameter('locale');
+
+        foreach($cities as $key => $value){
+            $util = new Language($this->container);
+            $cityReformat = $util->removeChars($locale,$value,false);
+            $cities[$key] = $cityReformat;
+        }
 
         return in_array($city, $cities);
     }

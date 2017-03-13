@@ -369,6 +369,15 @@
                                         </label>
                                     </div>
                                 </div>
+                                {% elseif locale == 'ee' %}
+                                <div class="for_hiding">
+                                    <div class="select-bank clearfix">
+                                        <label class="custom-radio">
+                                            <img alt="SEB" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-seb.png">
+                                            <input type="radio" name="payment-type" value="seb-banklink"{% if order is not null and order.paymentMethod == 'seb-banklink' %} checked="checked"{% endif %}/>
+                                        </label>
+                                    </div>
+                                </div>
                                 {% else %}
                                 <div class="for_hiding">
                                     <div class="select-payment clearfix">
@@ -410,6 +419,14 @@
                                         </label>
                                         <label class="custom-radio">
                                             <img alt="DNB" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-dnb.png">
+                                            <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                        </label>
+                                        <label class="custom-radio">
+                                            <img alt="Citadelė" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-cit.png">
+                                            <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                        </label>
+                                        <label class="custom-radio">
+                                            <img alt="Paysera" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-psr.png">
                                             <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
                                         </label>
                                     </div>

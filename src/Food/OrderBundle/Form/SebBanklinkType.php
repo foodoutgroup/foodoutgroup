@@ -31,7 +31,7 @@ class SebBanklinkType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('VK_SERVICE', 'hidden', ['data' => '1001'])
+            ->add('VK_SERVICE', 'hidden', ['data' => $this->options['service']])
             ->add('VK_VERSION', 'hidden', ['data' => '008'])
             ->add('VK_SND_ID', 'hidden', ['data' => $this->options['snd_id']])
             ->add('VK_STAMP', 'hidden', ['data' => $this->options['stamp']])
@@ -44,7 +44,8 @@ class SebBanklinkType extends AbstractType
             ->add('VK_MAC', 'hidden')
             ->add('VK_RETURN', 'hidden', ['data' => $this->options['return_url']])
             ->add('VK_LANG', 'hidden', ['data' => $this->options['lang']])
-            ->add('VK_CHARSET', 'hidden', ['data' => 'utf-8']);
+            ->add('VK_CHARSET', 'hidden', ['data' => 'utf-8'])
+            ->add('VK_DATETIME', 'hidden', ['data' => $this->options['datetime']]);
     }
 
     public function getName()

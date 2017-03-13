@@ -16,10 +16,10 @@ parameters:
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
 
-    driver.send_to_external: false
-    driver.city_filter: []
+    driver.send_to_external: true
+    driver.city_filter: ["Tallinn"]
     driver.socket_address: tcp://s2.foodout.lt:7778
-    driver.socket_hash: api
+    driver.socket_hash: apiee
 
     locale: ee
     locales: ["ee", "en"]
@@ -41,7 +41,7 @@ parameters:
         tallinn: []
     order.accept_notify_emails: []
     order.cancel_notify_emails: []
-    accounting_email: "karolis@foodout.lt"
+    accounting_email: ""
     b2b_invoice_email: ""
     payment.methods:
         - local
@@ -68,8 +68,8 @@ parameters:
     country_full: Estonia
     vat: 21
     title: "Foodout"
-    domain: "foodout.ee"
-    publicdomain: "foodout.ee"
+    domain: "estonia.foodout.lt"
+    publicdomain: "estonia.foodout.lt"
     google_analytics_uid: "UA-50355577-1"
     google.analytics.view_id: "85237075"
     nav_table_prefix: 'Čilija kabučių Centras'
@@ -100,6 +100,7 @@ parameters:
         decimal_separator: ','
         thousands_separator: ' '
     show_invoice_option: true
+    show_invoice_sum_words: false
     place_slug_manual: false
     alcohol_allowed: true
     place_with_neighbourhood: false
@@ -110,6 +111,26 @@ parameters:
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: false
+
+    # seb banklink
+    seb:
+        banklink.private_key: "/srv/gluster/banklinks/ee/seb/private.key"
+        banklink.bank_key: "/srv/gluster/banklinks/ee/seb/bank.key"
+        REDIRECT_SERVICE: 1011
+        SUCCESS_SERVICE: 1111
+        WAITING_SERVICE: 1211
+        FAILURE_SERVICE: 1911
+        VK_SND_ID: "jtepart"
+        VK_ACC: "EE881010000006537224"
+        entrypoint: "https://www.seb.ee/cgi-bin/unet3.sh/un3min.r"
+        lang: "EST"
+        name: "mychef"
+        curr: "EUR"
+
+    session_memcached_host:     memcached
+    session_memcached_port:     11211
+    session_memcached_prefix:   foodoutee
+    session_memcached_expire:   3600
 
 pirminis_gateway:
     datacash_url: 'https://mars.transaction.datacash.com/Transaction'

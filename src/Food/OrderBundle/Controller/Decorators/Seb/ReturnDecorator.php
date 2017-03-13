@@ -15,6 +15,7 @@ trait ReturnDecorator
 
         // services
         $orderService = $this->container->get('food.order');
+        $config = $this->container->getParameter('seb');
         $seb = $this->container->get('food.seb_banklink');
         $dispatcher = $this->container->get('event_dispatcher');
         $cartService = $this->get('food.cart');
@@ -42,6 +43,10 @@ trait ReturnDecorator
             return [$view, []];
         }
 
+        if($order->getMobile()) {
+            $view = 'FoodApiBundle:Default:payment_fail.html.twig';
+        }
+
         // banklink log
         $this->logBanklink($dispatcher, $request, $order);
 
@@ -58,7 +63,7 @@ trait ReturnDecorator
         }
 
         if ($verified) {
-            if (SebService::WAITING_SERVICE == $service) {
+            if ($config['WAITING_SERVICE'] == $service) {
                 // template
                 $view = 'FoodOrderBundle:Payments:' .
                     'seb_banklink/waiting.html.twig';
@@ -68,15 +73,17 @@ trait ReturnDecorator
                     $orderService,
                     $order,
                     $cartService);
-            } elseif (SebService::FAILURE_SERVICE == $service) {
+            } elseif ($config['FAILURE_SERVICE'] == $service) {
                 // failure
                 $this->logFailureAndFinish('SEB banklink canceled payment',
                     $orderService,
                     $order);
-            } elseif (SebService::SUCCESS_SERVICE == $service) {
+            } elseif ($config['SUCCESS_SERVICE'] == $service) {
                 // template
                 $view = 'FoodCartBundle:Default:payment_success.html.twig';
-
+                if($order->getMobile()) {
+                    $view = 'FoodApiBundle:Default:payment_success.html.twig';
+                }
                 // success
                 $this->logPaidAndFinish('SEB banklink billed payment',
                     $orderService,

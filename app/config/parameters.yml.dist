@@ -45,6 +45,31 @@ parameters:
     order.cancel_notify_emails: []
     accounting_email: "buhalterija@foodout.lt"
     b2b_invoice_email: ""
+    payment:
+           method:
+             - local
+             - local.card
+             - swedbank-gateway
+             - swedbank-credit-card-gateway
+             - seb-banklink
+             - paysera
+             - paysera
+             - paysera
+             - paysera
+             - paysera
+             - paysera
+           title:
+             - '[#cash#]'
+             - '[#credit.card#]'
+             - 'Swedbank'
+             - 'Swedbank kreditinė'
+             - 'SEB bankas'
+             - 'Medicinos bankas'
+             - 'DNB bankas'
+             - 'Citadele bankas'
+             - 'Nordea bankas'
+             - 'Danske bankas'
+             - 'Paysera'
     payment.methods:
         - local
         - local.card
@@ -102,6 +127,7 @@ parameters:
         decimal_separator: ','
         thousands_separator: ' '
     show_invoice_option: true
+    show_invoice_sum_words: true
     place_slug_manual: false
     alcohol_allowed: true
     place_with_neighbourhood: false
@@ -112,6 +138,26 @@ parameters:
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: false
+
+    # seb banklink
+    seb:
+        banklink.private_key: "/srv/gluster/banklinks/seb/private.key"
+        banklink.bank_key: "/srv/gluster/banklinks/seb/bank.key"
+        REDIRECT_SERVICE: 1001
+        SUCCESS_SERVICE: 1101
+        WAITING_SERVICE: 1201
+        FAILURE_SERVICE: 1901
+        VK_SND_ID: "EM0489"
+        VK_ACC: "LT197044060007974514"
+        entrypoint: "https://e.seb.lt/banklink/in"
+        lang: "LIT"
+        name: "UAB Foodout.lt"
+        curr: "EUR"
+
+    session_memcached_host:     localhost
+    session_memcached_port:     11211
+    session_memcached_prefix:   test
+    session_memcached_expire:   3600
 
 pirminis_gateway:
     datacash_url: 'https://mars.transaction.datacash.com/Transaction'
