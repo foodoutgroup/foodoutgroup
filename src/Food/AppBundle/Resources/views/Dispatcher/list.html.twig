@@ -407,7 +407,7 @@
                     {% endif %}
                     {% if type == 'nav_problems' %}
                     <td>
-                        {% if order.order_status == 'nav_problems' %}
+                        {% if order.orderStatus == 'nav_problems' %}
                             {{ 'admin.dispatcher.nav_problems_type'|trans({}, 'SonataAdminBundle') }}
                         {% else %}
                             {{ 'admin.dispatcher.payment_wait_problem'|trans({}, 'SonataAdminBundle') }}
