@@ -45,7 +45,7 @@ class ErrorLog
      * @ORM\ManyToOne(targetEntity="\Food\CartBundle\Entity\Cart")
      * @ORM\JoinColumn(name="cart_session", referencedColumnName="session")
      */
-    private $cart;
+    //~ private $cart;
 
     /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
@@ -85,7 +85,7 @@ class ErrorLog
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -101,14 +101,14 @@ class ErrorLog
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -124,14 +124,14 @@ class ErrorLog
     public function setIp($ip)
     {
         $this->ip = $ip;
-    
+
         return $this;
     }
 
     /**
      * Get ip
      *
-     * @return string 
+     * @return string
      */
     public function getIp()
     {
@@ -147,14 +147,14 @@ class ErrorLog
     public function setUrl($url)
     {
         $this->url = $url;
-    
+
         return $this;
     }
 
     /**
      * Get url
      *
-     * @return string 
+     * @return string
      */
     public function getUrl()
     {
@@ -170,14 +170,14 @@ class ErrorLog
     public function setSource($source)
     {
         $this->source = $source;
-    
+
         return $this;
     }
 
     /**
      * Get source
      *
-     * @return string 
+     * @return string
      */
     public function getSource()
     {
@@ -193,14 +193,14 @@ class ErrorLog
     public function setDescription($description)
     {
         $this->description = $description;
-    
+
         return $this;
     }
 
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -216,14 +216,14 @@ class ErrorLog
     public function setDebug($debug)
     {
         $this->debug = $debug;
-    
+
         return $this;
     }
 
     /**
      * Get debug
      *
-     * @return string 
+     * @return string
      */
     public function getDebug()
     {
@@ -239,14 +239,14 @@ class ErrorLog
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
     /**
      * Get createdBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -262,14 +262,14 @@ class ErrorLog
     public function setCart(\Food\CartBundle\Entity\Cart $cart = null)
     {
         $this->cart = $cart;
-    
+
         return $this;
     }
 
     /**
      * Get cart
      *
-     * @return \Food\CartBundle\Entity\Cart 
+     * @return \Food\CartBundle\Entity\Cart
      */
     public function getCart()
     {
@@ -285,14 +285,14 @@ class ErrorLog
     public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
     {
         $this->place = $place;
-    
+
         return $this;
     }
 
     /**
      * Get place
      *
-     * @return \Food\DishesBundle\Entity\Place 
+     * @return \Food\DishesBundle\Entity\Place
      */
     public function getPlace()
     {

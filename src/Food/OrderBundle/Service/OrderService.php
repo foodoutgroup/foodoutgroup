@@ -3704,7 +3704,7 @@ class OrderService extends ContainerAware
             $em = $this->container->get('doctrine')->getManager();
             $cart = $em->getRepository("FoodCartBundle:Cart")->findOneBy(['session' => $sessionId]);
             $error->setIp($userIp);
-            $error->setCart($cart);
+            //~ $error->setCart($cart);
             $error->setCreatedBy($user);
             $error->setPlace($place);
             $error->setCreatedAt(new \DateTime('now'));
