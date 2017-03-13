@@ -4548,47 +4548,38 @@ class OrderService extends ContainerAware
             $smsService = $this->container->get('food.messages');
             $sender = $this->container->getParameter('sms.sender');
 
-            $sendSms = false;
-
-            if ($order->getPreorder()) {
-                $sendSms = true;
+            $keyword = 'general.sms.client.order_delayed';
+            if ($order->getDeliveryType() == self::$deliveryPickup) {
+                $keyword .= '_pickup';
             }
 
-            if ($sendSms) {
-                $keyword = 'general.sms.client.order_delayed';
-                if ($order->getDeliveryType() == self::$deliveryPickup) {
-                    $keyword .= '_pickup';
-                }
+            $text = $this->container->get('translator')
+                ->trans(
+                    $keyword,
+                    [
+                        'order_id'   => $order->getId(),
+                        'delay_time' => $diffInMinutes
+                    ],
+                    null,
+                    $order->getLocale()
+                )
+            ;
 
-                $text = $this->container->get('translator')
-                    ->trans(
-                        $keyword,
-                        [
-                            'order_id'   => $order->getId(),
-                            'delay_time' => $diffInMinutes
-                        ],
-                        null,
-                        $order->getLocale()
-                    )
-                ;
+            $userEmail = $order->getOrderExtra()->getEmail();
+            $message = $smsService->createMessage($sender, $recipient, $text, $order);
+            $smsService->saveMessage($message);
 
-                $userEmail = $order->getOrderExtra()->getEmail();
-                $message = $smsService->createMessage($sender, $recipient, $text, $order);
-                $smsService->saveMessage($message);
+            // And an email
+            $mailer = $this->container->get('mailer');
 
-                // And an email
-                $mailer = $this->container->get('mailer');
+            $message = \Swift_Message::newInstance()
+                ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
+                ->setFrom('info@' . $domain)
+            ;
 
-                $message = \Swift_Message::newInstance()
-                    ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
-                    ->setFrom('info@' . $domain)
-                ;
-
-                $message->addTo($userEmail);
-                $message->setBody($text);
-                $mailer->send($message);
-            }
-
+            $message->addTo($userEmail);
+            $message->setBody($text);
+            $mailer->send($message);
         }
     }
 
