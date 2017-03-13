@@ -5,6 +5,8 @@ namespace Food\ApiBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Food\AppBundle\Entity\ErrorLog;
+use Food\UserBundle\Entity\User;
 
 class AddressController extends Controller
 {
@@ -26,6 +28,7 @@ class AddressController extends Controller
                     $city, $street, $houseNumber
                 );
             } else {
+
                 $response = [];
             }
         } catch (\Exception $e) {
@@ -38,6 +41,27 @@ class AddressController extends Controller
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+        if(empty($response)){
+            $user = $this->getUser();
+            $userIp = ($this->container->get('request')->getClientIp());
+            $error = new ErrorLog();
+
+            $error->setIp($userIp);
+            $error->setCart(null);
+            $error->setCreatedBy($user);
+            $error->setPlace(null);
+            $error->setCreatedAt(new \DateTime('now'));
+            $error->setUrl($request->getUri());
+            $error->setSource('api_adress_change_find');
+            $error->setDescription('api_null_request');
+            $error->setDebug(serialize($request));
+
+            $em = $this->container->get('doctrine')->getManager();
+            $em->persist($error);
+            $em->flush();
+        }
+
 
         $this->get('logger')->alert('Address:findAddressAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');

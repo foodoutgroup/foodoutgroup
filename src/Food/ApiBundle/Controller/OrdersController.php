@@ -86,6 +86,7 @@ class OrdersController extends Controller
 
         $this->get('logger')->alert('Orders:createOrderAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+
         return new JsonResponse($response);
     }
 
