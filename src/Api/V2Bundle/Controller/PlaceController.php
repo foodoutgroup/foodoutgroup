@@ -40,4 +40,30 @@ class PlaceController extends Controller
 
     }
 
+    public function getPlaceAvailableAction($placeHash, Request $request) {
+
+
+        $city = $request->get("city", "");
+        $address = $request->get("address", "");
+
+        $return = ['success' => false];
+        try {
+            $ps = $this->get('api.v2.place');
+            $place = $ps->getPlaceByHash($placeHash);
+            $locationData  = $ps->getLocationData($city, $address, true);
+
+            //
+
+//            $ps->getByAddress($address);
+
+            $return['location'] = $ps->getPlacesByLocation($place, $locationData);
+
+        } catch (ApiException $e) {
+            $return['message'] = $e->getMessage();
+        }
+        return  new JsonResponse($return);
+
+    }
+
+
 }
