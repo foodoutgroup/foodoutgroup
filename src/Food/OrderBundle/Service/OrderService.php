@@ -3690,9 +3690,9 @@ class OrderService extends ContainerAware
             $translator = $this->container->get('translator');
             $translator->trans('order.form.errors.customeraddr');
 
-            foreach ($formErrors as $key => $error) {
-                $formErrors[$key] = $translator->trans($error);
-            }
+            //~ foreach ($formErrors as $key => $error) {
+                //~ $formErrors[$key] = $translator->trans($error);
+            //~ }
 
 
             $sessionId = $this->container->get('food.cart')->getSessionId();
@@ -3710,7 +3710,7 @@ class OrderService extends ContainerAware
             $error->setCreatedAt(new \DateTime('now'));
             $error->setUrl($request->headers->get('referer'));
             $error->setSource('checkout_coupon_page');
-            $error->setDescription(implode(',', $formErrors));
+            //~ $error->setDescription(implode(',', $formErrors));
             $error->setDebug(serialize($request) .'<br><br>'. serialize($debugCartInfo));
 
             $em->persist($error);
