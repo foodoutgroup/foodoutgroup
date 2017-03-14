@@ -74,7 +74,7 @@ trait SharedDecorator
     {
         $event = new BanklinkEvent();
         $event->setOrderId($order ? $order->getId() : 0);
-        $event->setQuery(var_export($request->query->all(), true));
+        $event->setQuery($request->get('VK_SERVICE'));
         $event->setRequest(var_export($request->request->all(), true));
 
         $dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE, $event);
