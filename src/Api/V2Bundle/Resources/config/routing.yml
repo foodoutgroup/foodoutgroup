@@ -44,6 +44,11 @@ api_v2_place:
     defaults: { _controller: ApiV2Bundle:Place:get }
     methods: [GET]
 
+api_v2_place_available:
+    path: /place/available/{placeHash}
+    defaults: { _controller: ApiV2Bundle:Place:getPlaceAvailable }
+    methods: [POST]
+
 
 api_v2_location_city:
     path: /location/city/{providerHash}
