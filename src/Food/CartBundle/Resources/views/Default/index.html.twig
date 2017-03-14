@@ -403,7 +403,7 @@
                                         </label>
                                         <label class="custom-radio">
                                             <img alt="SEB" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-seb.png">
-                                            <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}/>
+                                            <input type="radio" name="payment-type" value="seb-banklink"{% if order is not null and order.paymentMethod == 'seb-banklink' %} checked="checked"{% endif %}/>
                                         </label>
                                         <label class="custom-radio">
                                             <img alt="Danske Bank" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-db.png">
