@@ -145,14 +145,12 @@ class StaticContentAdmin extends FoodAdmin
                 $textsForSlugs[$row->getLocale()] = $row->getContent();
             }
         }
+
+        $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
         foreach ($locales as $loc) {
             if (!isset($textsForSlugs[$loc])) {
                 $textsForSlugs[$loc] = $origName;
             }
-        }
-
-
-        foreach ($languages as $loc) {
             $slugUtelyte->generateForTexts($loc, $object->getId(), $textsForSlugs[$loc]);
         }
     }
