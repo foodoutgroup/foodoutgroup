@@ -19,6 +19,7 @@ class Slug
     const TYPE_PAGE = 'page';
     const TYPE_CITY = 'city';
     const TYPE_BLOG_POST = 'blog_post';
+    const TYPE_DISH = 'dish';
 
     public static $typeCollection = [
         self::TYPE_KITCHEN,
@@ -28,6 +29,7 @@ class Slug
         self::TYPE_PAGE,
         self::TYPE_CITY,
         self::TYPE_BLOG_POST,
+        self::TYPE_DISH
     ];
 
 
@@ -148,14 +150,8 @@ class Slug
      */
     public function setType($type)
     {
-        $allowedTypes = [
-            self::TYPE_KITCHEN,
-            self::TYPE_FOOD_CATEGORY,
-            self::TYPE_PLACE,
-            self::TYPE_TEXT
-        ];
 
-        if (!in_array($type, $allowedTypes)) {
+        if (!in_array($type, self::$typeCollection)) {
             throw new \InvalidArgumentException('Invalid $type value.');
         }
 

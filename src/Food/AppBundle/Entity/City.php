@@ -19,6 +19,12 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 class City implements \JsonSerializable
 {
     /**
+     * @ORM\ManyToMany(targetEntity="Food\PlacesBundle\Entity\BestOffer", mappedBy="offerCity")
+     */
+
+    private $bestOffers;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -334,4 +340,57 @@ class City implements \JsonSerializable
 
 
 
+
+    /**
+     * Get zavalasOn
+     *
+     * @return boolean 
+     */
+    public function getZavalasOn()
+    {
+        return $this->zavalasOn;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Add bestOffers
+     *
+     * @param \Food\PlacesBundle\Entity\BestOffer $bestOffers
+     * @return City
+     */
+    public function addBestOffer(\Food\PlacesBundle\Entity\BestOffer $bestOffers)
+    {
+        $this->bestOffers[] = $bestOffers;
+    
+        return $this;
+    }
+
+    /**
+     * Remove bestOffers
+     *
+     * @param \Food\PlacesBundle\Entity\BestOffer $bestOffers
+     */
+    public function removeBestOffer(\Food\PlacesBundle\Entity\BestOffer $bestOffers)
+    {
+        $this->bestOffers->removeElement($bestOffers);
+    }
+
+    /**
+     * Get bestOffers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBestOffers()
+    {
+        return $this->bestOffers;
+    }
 }

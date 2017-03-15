@@ -84,5 +84,23 @@ class CityService extends BaseService
         return $this->em->getRepository('FoodAppBundle:City')->findOneBy(['slug' => $slug]);
     }
 
+    public function getRandomBestOffers($cityId){
+
+        $bestOfferIds = $this->em->getRepository('FoodAppBundle:City')->getBestOffersByCity($cityId);
+
+        foreach ($bestOfferIds as $item){
+            $tmpOfferIds[] = $item['id'];
+        }
+
+        shuffle($tmpOfferIds);
+
+        $bestOfferIds = array_slice($tmpOfferIds,0,5);
+
+        $bestOffers = $this->em->getRepository('FoodPlacesBundle:BestOffer')->getBestOffersByIds($bestOfferIds);
+
+        return $bestOffers;
+
+    }
+
 
 }

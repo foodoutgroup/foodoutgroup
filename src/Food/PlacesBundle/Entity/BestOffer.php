@@ -20,6 +20,12 @@ use Gedmo\Translatable\Translatable;
  */
 class BestOffer extends Uploadable
 {
+    /**
+     * @ORM\ManyToMany(targetEntity="Food\AppBundle\Entity\City", inversedBy="bestOffers")
+     * @ORM\JoinTable(name="best_offer_city")
+     */
+    private $offerCity;
+
     // megabytes
     protected $maxFileSize = 1.9;
 
@@ -44,13 +50,6 @@ class BestOffer extends Uploadable
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
-
-    /**
-     * @var string
-     * @Gedmo\Translatable
-     * @ORM\Column(name="city", type="string", length=128, nullable=true)
-     */
-    private $city;
 
     /**
      * @var \Food\DishesBundle\Entity\Place
@@ -282,29 +281,6 @@ class BestOffer extends Uploadable
         return $this->getTitle();
     }
 
-    /**
-     * Set city
-     *
-     * @param string $city
-     * @return BestOffer
-     */
-    public function setCity($city)
-    {
-        $this->city = $city;
-    
-        return $this;
-    }
-
-    /**
-     * Get city
-     *
-     * @return string 
-     */
-    public function getCity()
-    {
-        return $this->city;
-    }
-
     public function isFileSizeValid(ExecutionContextInterface $context)
     {
         if ($this->getFile() && $this->getFile()->getSize() > round($this->maxFileSize * 1024 * 1024)) {
@@ -399,4 +375,37 @@ class BestOffer extends Uploadable
         return $this->translations;
     }
 
+
+    /**
+     * Add offerCity
+     *
+     * @param \Food\AppBundle\Entity\City $offerCity
+     * @return BestOffer
+     */
+    public function addOfferCity(\Food\AppBundle\Entity\City $offerCity)
+    {
+        $this->offerCity[] = $offerCity;
+    
+        return $this;
+    }
+
+    /**
+     * Remove offerCity
+     *
+     * @param \Food\AppBundle\Entity\City $offerCity
+     */
+    public function removeOfferCity(\Food\AppBundle\Entity\City $offerCity)
+    {
+        $this->offerCity->removeElement($offerCity);
+    }
+
+    /**
+     * Get offerCity
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOfferCity()
+    {
+        return $this->offerCity;
+    }
 }

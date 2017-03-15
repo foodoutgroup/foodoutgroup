@@ -92,10 +92,12 @@ class CityAdmin extends FoodAdmin
     /**
      * @param City $object
      */
+
+
     private function slug($object)
     {
         $slugService = $this->getContainer()->get('slug');
-        $slugService->generate($object, $object->getSlug(), SlugEntity::TYPE_CITY);
+        $slugService->generate($object, 'slug', SlugEntity::TYPE_CITY);
     }
 
 }

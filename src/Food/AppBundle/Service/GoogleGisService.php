@@ -208,7 +208,7 @@ class GoogleGisService extends ContainerAware
         return $returner;
     }
 
-    public function setCityOnlyToSession($city)
+    public function setCityOnlyToSession($city,$id = false)
     {
         $returner = $this->getLocationFromSession();
 
@@ -216,9 +216,10 @@ class GoogleGisService extends ContainerAware
             $returner['not_found'] = true;
             $returner['street_found'] = false;
             $returner['address_found'] = false;
-            $returner['city'] = $city;
+            $returner['city'] = $city->getTitle();
             $returner['address'] = $returner['city'];
             $returner['city_only'] = true;
+            $returner['city_id'] = $id;
             $this->setLocationToSession($returner);
         }
 

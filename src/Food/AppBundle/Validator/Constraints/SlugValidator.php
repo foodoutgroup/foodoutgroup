@@ -42,11 +42,18 @@ class SlugValidator extends ConstraintValidator
 
 
         if (preg_match($this->regex, $value, $matches)) {
+
+
+
             /**
              * @var $route Slug
              */
             $locale = $this->getLocale();
+
+
+
             $route = $this->repository->getBySlugAndLocale($value, $locale);
+
             if($route) {
                 if( ($route->getType() != $constraint->type) || ($this->itemId && $route->getId() != $this->itemId)) {
                     $this->context->addViolation($constraint->message['exist'],[]);

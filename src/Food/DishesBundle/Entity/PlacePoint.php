@@ -338,6 +338,16 @@ class PlacePoint
      */
     private $hash;
 
+    /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     **/
+    private $cityId;
+
+
+
     public function getElement()
     {
         return '';
@@ -1503,5 +1513,28 @@ class PlacePoint
     public function setHash($hash)
     {
         $this->hash = $hash;
+    }
+
+    /**
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return PlacePoint
+     */
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
+    {
+        $this->cityId = $cityId;
+    
+        return $this;
+    }
+
+    /**
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City 
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
     }
 }

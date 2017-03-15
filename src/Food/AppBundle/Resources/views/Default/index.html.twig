@@ -51,9 +51,10 @@
 
 
                 if ($('#index_city').val().length > 0 && $('#index_address').val().length > 0) {
+
                     window.location.href = $('#index_city option:selected').data('cityurl');
                 } else {
-                    getCrds();
+                     getCrds();
                 }
                 e.stopPropagation();
                 e.preventDefault();

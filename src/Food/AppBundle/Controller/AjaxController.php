@@ -88,9 +88,11 @@ class AjaxController extends Controller
         if (!$locationInfo['street_found']) {
             $respData['str'] = 1;
         }
+
+
         if (!empty($respData) && $respData['success'] == 1 && $respData['adr'] == 1) {
             $session = $request->getSession();
-            $session->set('locationData', ['address' => $address, 'city' => $city->getId()]);
+            $session->set('locationData', ['address' => $address, 'city' => $city->getId(),'city_ids'=>'1']);
         }
 
         // Only City Selected
@@ -184,6 +186,13 @@ class AjaxController extends Controller
         $street = htmlentities(addslashes(strip_tags($street)));
         $city = htmlentities(addslashes(strip_tags($city)));
 
+        $cityService = $this->get('food.city_service');
+
+        if(!$city = $cityService->getCityById($city)){
+            $city = $cityService->getDefaultCity();
+        }
+
+
         // query
         $sql = 'SELECT DISTINCT(number_from)
                 FROM nav_streets
@@ -193,7 +202,7 @@ class AjaxController extends Controller
 
         // get streets
         $stmt = $conn->prepare($sql);
-        $stmt->bindValue(1, $city);
+        $stmt->bindValue(1, $city->getTitle());
         $stmt->bindValue(2, $street);
         $stmt->bindValue(3, "$house%");
         $stmt->execute();

@@ -2,6 +2,7 @@
 
 namespace Food\PlacesBundle\Controller;
 
+use Food\AppBundle\Service\CityService;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,15 +11,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
-       public function indexAction($recommended = false, $zaval = false)
-       {
-        $locData =  $this->get('food.location')->getLocationFromSession();
+    public function indexAction($recommended = false, $zaval = false)
+    {
+        $locData = $this->get('food.location')->getLocationFromSession();
         $placeService = $this->get('food.places');
         $cityService = $this->get('food.city_service');
 
 
-        if(!$city = $cityService->getCityById($locData['city'])) {
-            if(!$city = $cityService->getDefaultCity()){
+        if (!$city = $cityService->getCityById($locData['city'])) {
+            if (!$city = $cityService->getDefaultCity()) {
                 throw new NotFoundHttpException('City was not found');
             }
         }
@@ -45,14 +46,14 @@ class DefaultController extends Controller
         $request = $this->get('request');
 
         $cityService = $this->get('food.city_service');
-        if(!$city = $cityService->getCityById($id)) {
-            if(!$city = $cityService->getDefaultCity()){
+        if (!$city = $cityService->getCityById($id)) {
+            if (!$city = $cityService->getDefaultCity()) {
                 throw new NotFoundHttpException('City was not found');
             }
         }
 
-        $this->get('food.googlegis')->setCityOnlyToSession($city->getTitle());
-        $locData =  $this->get('food.googlegis')->getLocationFromSession();
+        $this->get('food.googlegis')->setCityOnlyToSession($city);
+        $locData = $this->get('food.googlegis')->getLocationFromSession();
         $placeService = $this->get('food.places');
         $selectedKitchensNames = $placeService->getKitchensFromSlug($params, $request, true);
         $current_url = $request->getUri();
@@ -94,7 +95,7 @@ class DefaultController extends Controller
         }
 
         if ($deliveryType = $request->get('delivery_type', false)) {
-            switch($deliveryType) {
+            switch ($deliveryType) {
                 // @TODO: delivery !== deliver
                 case 'delivery':
                     $this->container->get('session')->set('delivery_type', OrderService::$deliveryDeliver);
@@ -107,13 +108,13 @@ class DefaultController extends Controller
 
         $places = $this->get('food.places')->getPlacesForList($recommended, $request, $slug_filter, $zaval);
 
-        $locData =  $this->get('food.googlegis')->getLocationFromSession();
+        $locData = $this->get('food.googlegis')->getLocationFromSession();
 
         return $this->render(
             'FoodPlacesBundle:Default:list.html.twig',
             array(
                 'places' => $places,
-                'recommended' => ($recommended ? 1:0),
+                'recommended' => ($recommended ? 1 : 0),
                 'location' => $locData,
                 'location_show' => (empty($locData) ? false : true),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver)
@@ -129,13 +130,14 @@ class DefaultController extends Controller
             $city = $location['city'];
         }
         $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getRecommendedForTitle($city);
+
         return $this->render('FoodPlacesBundle:Default:recommended.html.twig', array('places' => $places, 'city' => $city));
     }
 
     public function bestOffersAction()
     {
         return $this->render('FoodPlacesBundle:Default:best_offers.html.twig', [
-            'best_offers' => $this->getBestOffers(5)
+            'best_offers' => $this->getBestOffers()
         ]);
     }
 
@@ -148,16 +150,31 @@ class DefaultController extends Controller
      * @param integer $amount
      * @return array
      */
-    private function getBestOffers($amount)
+    private function getBestOffers()
     {
+
+        $cityService = $this->get('food.city_service');
+
+        //        $location = $this->get('food.location')->getLocationFromSession();
+//        $city = null;
+//        if (!empty($location['city'])) {
+//            $city = $location['city'];
+//        }
+//        $items = $this->get('doctrine.orm.entity_manager')
+//                      ->getRepository('FoodPlacesBundle:BestOffer')
+//                      ->getRandomBestOffers($amount, $city);
+//
+//        return $items;
+
+
         $location = $this->get('food.location')->getLocationFromSession();
+
         $city = null;
         if (!empty($location['city'])) {
-            $city = $location['city'];
+            $city = $location['city_id'];
         }
-        $items = $this->get('doctrine.orm.entity_manager')
-                      ->getRepository('FoodPlacesBundle:BestOffer')
-                      ->getRandomBestOffers($amount, $city);
+
+        $items = $cityService->getRandomBestOffers($city);
 
         return $items;
     }

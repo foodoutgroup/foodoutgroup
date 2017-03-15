@@ -32,41 +32,48 @@ class SlugService {
         $this->repository = $this->em->getRepository('FoodAppBundle:Slug');
     }
 
-    public function generate($object, $slug, $type = SlugEntity::TYPE_PAGE)
+    public function generate($object, $slugField = 'slug', $type = SlugEntity::TYPE_PAGE)
     {
 
         if(!in_array($type, SlugEntity::$typeCollection)) {
             throw new \Exception('Slug type was not found');
         }
 
-        if(method_exists($object, 'getTranslations')) {
+        if(!method_exists($object, 'getTranslations')) {
             throw new \Exception('getTranslations method required');
         }
 
         $locales = $this->container->getParameter('available_locales');
+        $defaultLocale = $this->container->getParameter('locale');
 
         $textsForSlugs = [];
+        $origName = null;
+
+        $method = 'get'.ucfirst($slugField);
+        if(method_exists($object, $method)) {
+            $textsForSlugs[$defaultLocale] = $object->{$method}();
+            $origName = $textsForSlugs[$defaultLocale];
+        }
+
         foreach($object->getTranslations()->getValues() as $row) {
-            if ($row->getField() == "name") {
+            if ($row->getField() == $slugField) {
                 $textsForSlugs[$row->getLocale()] = $row->getContent();
             }
         }
+
         foreach ($locales as $loc) {
             if (!isset($textsForSlugs[$loc])) {
                 $textsForSlugs[$loc] = $origName;
             }
         }
 
-        $languages = $this->getContainer()->get('food.app.utils.language')->getAll();
-        $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
-        foreach ($languages as $loc) {
-            $slugUtelyte->generateForFoodCategory($loc, $object->getId(), $textsForSlugs[$loc]);
-        }
 
-        $strategy = new TextStrategy($this->container);
-        $strategy->setType($type);
-        $context = new SlugGenerator($strategy);
-        $context->generate($langId, $itemId, $itemText);
+        foreach ($locales as $loc) {
+            $strategy = new TextStrategy($this->container);
+            $strategy->setType($type);
+            $context = new SlugGenerator($strategy);
+            $context->generate($loc, $object->getId(), $textsForSlugs[$loc]);
+        }
     }
 
 

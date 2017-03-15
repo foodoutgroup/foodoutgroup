@@ -8,6 +8,9 @@ use Gedmo\Translatable\Translatable;
 use Food\AppBundle\Entity\Uploadable;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Food\AppBundle\Validator\Constraints as AppAssert;
+
 
 /**
  * Dish
@@ -232,6 +235,14 @@ class Dish extends Uploadable implements Translatable
      * @ORM\Column(name="use_date_interval", type="boolean")
      */
     private $useDateInterval = false;
+
+    /**
+     * @var string
+     * @Gedmo\Translatable
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true, unique=true)
+     * @Assert\Regex(pattern="/^[A-Za-z\d-_]+$/", message="invalid.slug")
+     */
+    private $slug;
 
     protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
     protected $multipleThumbs = true;
@@ -1074,5 +1085,28 @@ class Dish extends Uploadable implements Translatable
     public function getNameToNav()
     {
         return $this->nameToNav;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Dish
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

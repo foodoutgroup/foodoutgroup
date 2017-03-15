@@ -13,6 +13,8 @@ use Sonata\AdminBundle\Validator\ErrorElement;
 use Food\DishesBundle\Entity\Place;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Food\AppBundle\Validator\Constraints\Slug;
+use \Food\AppBundle\Entity\Slug as SlugEntity;
 
 class DishAdmin extends FoodAdmin
 {
@@ -21,7 +23,7 @@ class DishAdmin extends FoodAdmin
      *
      * @var array
      */
-    protected $datagridValues = array (
+    protected $datagridValues = array(
         '_page' => 1, // Display the first page (default = 1)
         '_sort_order' => 'ASC', // Descendant ordering (default = 'ASC')
         '_sort_by' => 'id' // name of the ordered field (default = the model id field, if any)
@@ -29,7 +31,7 @@ class DishAdmin extends FoodAdmin
 
     protected $formOptions = array(
         'cascade_validation' => true
-     );
+    );
 
     /**
      * @return string
@@ -67,16 +69,14 @@ class DishAdmin extends FoodAdmin
                  */
                 $categoryQuery = $em->createQueryBuilder('c')
                     ->select('c')
-                    ->from('Food\DishesBundle\Entity\FoodCategory', 'c')
-                ;
+                    ->from('Food\DishesBundle\Entity\FoodCategory', 'c');
 
                 /**
                  * @var QueryBuilder
                  */
                 $optionsQuery = $em->createQueryBuilder('o')
                     ->select('o')
-                    ->from('Food\DishesBundle\Entity\DishOption', 'o')
-                ;
+                    ->from('Food\DishesBundle\Entity\DishOption', 'o');
 
                 $categoryQuery->where('c.active = 1');
                 $optionsQuery->where('o.hidden = 0');
@@ -90,7 +90,7 @@ class DishAdmin extends FoodAdmin
 
                 $form->add('categories', null, array('query_builder' => $categoryQuery, 'required' => true, 'multiple' => true,))
                     ->add('options', null, array('query_builder' => $optionsQuery, 'expanded' => true, 'multiple' => true, 'required' => false));
-        });
+            });
 
         $formMapper->add(
             'translations',
@@ -107,6 +107,9 @@ class DishAdmin extends FoodAdmin
                     'description' => array(
                         'label' => 'label.description'
                     ),
+                    'slug' => [
+                        'constraints' => new Slug('dish', $formMapper),
+                    ]
                 )
             ));
 
@@ -137,11 +140,11 @@ class DishAdmin extends FoodAdmin
             ->add('timeTo', null, array('label' => 'admin.dish.time_to', 'required' => false,))
             ->add('file', 'file', $options)
             ->add('sizes', 'sonata_type_collection', array(
-                    'required' => true,
-                    'by_reference' => false,
-                    'label' => 'admin.dishes.sizes',
+                'required' => true,
+                'by_reference' => false,
+                'label' => 'admin.dishes.sizes',
 //                    'btn_add' => $this->getContainer()->get('translator')->trans('link_action_create_override', array(), 'SonataAdminBundle')
-                ), array(
+            ), array(
                     'edit' => 'inline',
                     'inline' => 'table'
                 )
@@ -154,7 +157,7 @@ class DishAdmin extends FoodAdmin
                 'sonata_type_model',
                 array(
                     //'query_builder' => $optionsQuery,
-                    'choices' =>  array(),
+                    'choices' => array(),
                     'btn_add' => false,
                     'expanded' => true,
                     'multiple' => true,
@@ -178,8 +181,7 @@ class DishAdmin extends FoodAdmin
                     'edit' => 'inline',
                     'inline' => 'table',
                 )
-            )
-        ;
+            );
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
@@ -213,8 +215,7 @@ class DishAdmin extends FoodAdmin
                     'delete' => array(),
                 ),
                 'label' => 'admin.actions'
-            ))
-        ;
+            ));
 
         $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
             ->setPlaceFilterEnabled(true);
@@ -236,6 +237,8 @@ class DishAdmin extends FoodAdmin
 
             $object->setPlace($place);
         }
+        $this->slug($object);
+
         parent::prePersist($object);
         $this->fixRelations($object);
         $this->saveFile($object);
@@ -250,6 +253,9 @@ class DishAdmin extends FoodAdmin
         $object->setEditedAt(new \DateTime());
         $this->fixRelations($object);
         $this->saveFile($object);
+        $this->slug($object);
+        parent::preUpdate($object);
+
     }
 
     /**
@@ -314,5 +320,12 @@ class DishAdmin extends FoodAdmin
             }
         }
     }
+
+    private function slug($object)
+    {
+        $slugService = $this->getContainer()->get('slug');
+        $slugService->generate($object, 'slug', SlugEntity::TYPE_DISH);
+    }
+
 
 }

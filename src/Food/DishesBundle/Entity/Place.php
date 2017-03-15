@@ -9,6 +9,8 @@ use Food\AppBundle\Entity\Uploadable;
 use Gedmo\Translatable\Translatable;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Food\AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Client
@@ -460,6 +462,14 @@ class Place extends Uploadable implements Translatable
      * @ORM\OneToMany(targetEntity="PlaceLocalized", mappedBy="object", cascade={"persist", "remove"})
      **/
     private $translations;
+
+    /**
+     * @var string
+     * @Gedmo\Translatable
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true, unique=true)
+     * @Assert\Regex(pattern="/^[A-Za-z\d-_]+$/", message="invalid.slug")
+     */
+    private $slug;
 
     /**
      * Returns place name
@@ -2190,5 +2200,28 @@ class Place extends Uploadable implements Translatable
         $this->showPhone = $showPhone;
 
         return $this;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Place
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

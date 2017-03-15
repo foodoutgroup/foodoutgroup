@@ -182,3 +182,16 @@ services:
       parent: food.base_service
       calls:
         - [ setSecurityContext, [@security.context]]
+    app.form.type.gender:
+        class: Food\AppBundle\Form\Type\CityType
+        arguments:
+            - '%available_cities%'
+        tags:
+            - { name: form.type, alias: app_city }
+    app.form.type.offer:
+
+        class: Food\AppBundle\Form\Type\BestOfferType
+        arguments:
+            - '%available_cities%'
+        tags:
+            - { name: form.type, alias: offer_city }

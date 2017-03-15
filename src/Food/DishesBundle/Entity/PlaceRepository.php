@@ -526,6 +526,8 @@ class PlaceRepository extends EntityRepository
             $where = ' AND pp.active = 1 AND pp.city = "'.$city.'" AND pp.deleted_at IS NULL ';
         }
 
+
+
         $query = "SELECT p.id
                 FROM place p
                 {$join}
@@ -539,6 +541,9 @@ class PlaceRepository extends EntityRepository
                 ORDER BY p.navision DESC, RAND()
                 LIMIT 5";
 
+
+
+
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $placesIds = $stmt->fetchAll();
@@ -549,6 +554,8 @@ class PlaceRepository extends EntityRepository
         }
 
         return $places;
+
+
     }
 
     public function getMinDeliveryPrice($placeId)
