@@ -35,6 +35,8 @@ class SlugController extends Controller
         $slugRow = $this->util->getOneByName($slug, $request->getLocale());
 
 
+
+
         if (!is_null($slugRow) && !$slugRow->isActive()) {
             $slugRow = $this->repository->findOneBy([
                 'item_id' => $slugRow->getItemId(),
@@ -52,6 +54,8 @@ class SlugController extends Controller
         if($slugRow != null) {
             $dataOptions = ['id' => $slugRow->getItemId(), 'slug' => $slugRow->getName(), 'params' => $params];
         }
+
+
         switch(($slugRow == null && $slug != null) ? null : $slugRow->getType()) {
 
             case Slug::TYPE_CITY:

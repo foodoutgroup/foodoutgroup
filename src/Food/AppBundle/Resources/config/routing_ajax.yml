@@ -1,6 +1,6 @@
 food_ajax_dish:
     path: /dish/add/{dish}
-    defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~}
+    defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~ ,  _locale: %kernel.default_locale% }
 
 food_ajax_edit_dish:
     path: /dish/edit/{dish}/{cartId}

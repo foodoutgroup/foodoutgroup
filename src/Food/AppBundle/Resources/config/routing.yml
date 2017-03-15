@@ -42,6 +42,10 @@ food_cart:
     prefix:   /{_locale}/cart
     defaults: { _locale: %kernel.default_locale%}
 
+food_ajax_import:
+    resource: "@FoodAppBundle/Resources/config/routing_ajax.yml"
+    prefix:   /ajax
+
 food_ajax_import_locale:
     resource: "@FoodAppBundle/Resources/config/routing_ajax.yml"
     prefix:   /{_locale}/ajax
@@ -49,9 +53,6 @@ food_ajax_import_locale:
     requirements:
       _locale:  "[a-z]{2}"
 
-food_ajax_import:
-    resource: "@FoodAppBundle/Resources/config/routing_ajax.yml"
-    prefix:   /ajax
 
 food_places:
     path: /places

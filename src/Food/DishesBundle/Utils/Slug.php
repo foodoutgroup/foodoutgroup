@@ -99,6 +99,9 @@ class Slug
 
     public function getOneByName($slug, $lang)
     {
+
+
+
         $item = $this->repo('FoodAppBundle:Slug')->findOneBy(['name' => $slug, 'lang_id' => $lang ]);
         return $item;
     }
