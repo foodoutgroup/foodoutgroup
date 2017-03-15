@@ -48,15 +48,13 @@ class PlaceController extends Controller
 
         $return = ['success' => false];
         try {
+
             $ps = $this->get('api.v2.place');
             $place = $ps->getPlaceByHash($placeHash);
             $locationData  = $ps->getLocationData($city, $address, true);
 
-            //
-
-//            $ps->getByAddress($address);
-
-            $return['location'] = $ps->getPlacesByLocation($place, $locationData);
+            $return['location'] = $locationData;
+            $return['placepoint'] = $ps->getPlacesByLocation($place, $locationData);
 
         } catch (ApiException $e) {
             $return['message'] = $e->getMessage();

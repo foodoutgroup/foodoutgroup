@@ -23,7 +23,7 @@ class PlaceService extends PlacesService
         return $place;
     }
 
-    public function getLocationData($city, $address, $flag = true)
+    public function getLocationData($city, $address)
     {
         $response = [
             'found' => false,
@@ -39,9 +39,7 @@ class PlaceService extends PlacesService
         $location = $gis->getPlaceData($addressString);
 
         if(count($location->results) >= 1) {
-            $locationData = $location->results[0]->geometry->location;
             $addressParser = $gis->parseDataFromLocation($location, $addressString);
-
             if(isset($addressParser['lat']) && isset($addressParser['lng'])) {
                 $response['lat'] = $addressParser['lat'];
                 $response['lng'] = $addressParser['lng'];
