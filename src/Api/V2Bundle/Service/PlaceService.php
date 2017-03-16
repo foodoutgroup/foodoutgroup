@@ -31,21 +31,34 @@ class PlaceService extends PlacesService
             'lng' => 0,
             'street' => false,
             'house' => false,
-
         ];
 
-        $addressString = $address." ,".$city." Lithuania";
+        $addressString = $address." ,".$city." Lithuania"; // todo change lithuania to configuration :)
         $gis = $this->container->get('food.googlegis');
         $location = $gis->getPlaceData($addressString);
 
-        if(count($location->results) >= 1) {
+        if(count($location->results) >= 1 && strlen($city) >= 3) {
+
+            try {
+                $baseRegion = $location->results[0]->geometry->location;
+                $response['lat'] = $baseRegion->lat;
+                $response['lng'] = $baseRegion->lng;
+                $response['found'] = true;
+            } catch (\Exception $e) {
+                $response['found'] = false;
+            }
+
             $addressParser = $gis->parseDataFromLocation($location, $addressString);
+
             if(isset($addressParser['lat']) && isset($addressParser['lng'])) {
                 $response['lat'] = $addressParser['lat'];
                 $response['lng'] = $addressParser['lng'];
             }
 
-            $response['found'] = !$addressParser['not_found'];
+            if(!$response['found']) {
+                $response['found'] = !$addressParser['not_found'];
+            }
+
             $response['street'] = $addressParser['street_found'];
             $response['house'] = $addressParser['address_found'];
         }
