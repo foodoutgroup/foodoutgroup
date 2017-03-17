@@ -1593,6 +1593,7 @@ class OrderService extends ContainerAware
         } else {
             //Update the last update time ;)
             $this->order->setLastUpdated(new \DateTime("now"));
+            $this->container->get('logger')->alert('Order version before persist: ' . $this->order->getVersion());
             $this->getEm()->persist($this->order);
 
             $this->getEm()->flush();
@@ -1629,19 +1630,13 @@ class OrderService extends ContainerAware
     public function getOrderByHash($hash)
     {
         $em = $this->container->get('doctrine')->getManager();
-        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->findBy(['order_hash' => $hash], null, 1);
+        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->findOneBy(['order_hash' => $hash]);
 
         if (!$order) {
             return false;
         }
 
-        if (count($order) > 1) {
-            throw new \Exception('More then one order found. How the hell? Hash: ' . $hash);
-        }
-
-        // TODO negrazu, bet laikina :(
-        // Nieko nera labiau amzino, nei tai, kas laikina..
-        $this->order = $order[0];
+        $this->order = $order;
 
         return $this->order;
     }
