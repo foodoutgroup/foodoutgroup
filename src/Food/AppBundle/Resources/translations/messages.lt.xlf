@@ -1498,19 +1498,19 @@
             <!-- order created -->
             <trans-unit id="general.sms.client.order_created" resname="general.sms.client.order_created">
                 <source>general.sms.client.order_created</source>
-                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Pristatysime per ~delivery_time.!</target>
+                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Pristatysime per ~delivery_time!</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_created_pickup" resname="general.sms.client.order_created_pickup">
                 <source>general.sms.client.order_created_pickup</source>
-                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Atsiimti galesite ~pre_delivery_time.!</target>
+                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Atsiimti galesite ~pre_delivery_time!</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_created_preorder" resname="general.sms.client.order_created_preorder">
                 <source>general.sms.client.order_created_preorder</source>
-                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Pristatysime ~pre_delivery_time.!</target>
+                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Pristatysime ~pre_delivery_time!</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_created_preorder_pickup" resname="general.sms.client.order_created_preorder_pickup">
                 <source>general.sms.client.order_created_preorder_pickup</source>
-                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Atsiimti galesite ~pre_delivery_time.!</target>
+                <target>Labas! Tavo uzsakymas nr. order_id priimtas. Atsiimti galesite ~pre_delivery_time!</target>
             </trans-unit>
 
             <!-- order accepted -->
