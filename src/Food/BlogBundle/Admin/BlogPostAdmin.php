@@ -13,7 +13,7 @@ class BlogPostAdmin extends FoodAdmin
     {
         $list
             ->addIdentifier('title', 'string', array('label' => 'admin.static.title'))
-            ->add('language', 'choice', array('label' => 'admin.language', 'required' => false, 'choices' => $this->getLanguageChoice()))
+            ->add('language', 'choice', array('label' => 'admin.language', 'choices' => $this->getLanguageChoice()))
             ->add('order_no', 'integer', array('label' => 'admin.static.order_no_short', 'editable' => true))
             ->add('active', null, array('label' => 'admin.static.active', 'editable' => true))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
@@ -30,7 +30,7 @@ class BlogPostAdmin extends FoodAdmin
     {
         $form
             ->add('title', null, array('label' => 'admin.static.title', 'required' => true))
-            ->add('language', 'choice', array('label' => 'admin.language', 'required' => false, 'choices' => $this->getLanguageChoice()))
+            ->add('language', 'choice', array('label' => 'admin.language', 'required' => true, 'choices' => $this->getLanguageChoice()))
             ->add('seo_title', null, array('label' => 'admin.seo_title', 'required' => false))
             ->add('seo_description', null, array('label' => 'admin.seo_description', 'required' => false))
             ->add('order_no', 'integer', array('label' => 'admin.static.order_no'))

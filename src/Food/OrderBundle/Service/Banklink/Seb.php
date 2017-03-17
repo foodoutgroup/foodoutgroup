@@ -6,10 +6,12 @@ use Food\OrderBundle\Service\Banklink\AbstractBanklink;
 
 class Seb extends AbstractBanklink
 {
-    const REDIRECT_SERVICE = 1001;
-    const SUCCESS_SERVICE = 1101;
-    const WAITING_SERVICE = 1201;
-    const FAILURE_SERVICE = 1901;
+    const REDIRECT_SERVICE = 1011;
+    const SUCCESS_SERVICE = 1111;
+    const WAITING_SERVICE = 1211;
+    const FAILURE_SERVICE = 1911;
+
+    private $container;
 
     private $fields = [
         self::REDIRECT_SERVICE => ['VK_SERVICE',
@@ -59,9 +61,15 @@ class Seb extends AbstractBanklink
                                   'VK_MSG']
     ];
 
+    public function setContainer($container)
+    {
+        $this->container = $container;
+    }
+
     public function getBankUrl()
     {
-        return 'https://e.seb.lt/banklink/in';
+        $config = $this->container->getParameter('seb');
+        return $config['entrypoint'];
     }
 
     public function mac($data = array(), $vkService = 0)

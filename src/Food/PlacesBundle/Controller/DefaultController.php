@@ -69,6 +69,7 @@ class DefaultController extends Controller
             $metaDescription = '';
         }
 
+
         return $this->render(
             'FoodPlacesBundle:Default:city.html.twig',
             array(

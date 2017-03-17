@@ -87,7 +87,13 @@ class SlugController extends Controller
 //                    'FoodDishesBundle:Place:index',
 //                    ['id' => $place->getId(), 'slug' => $placeSlug, 'categoryId' => $slugRow->getItemId()]
 //                );
-
+                break;
+            case Slug::TYPE_BLOG_CATEGORY:
+                return $this->forward('FoodBlogBundle:Default:categoryIndex', ['id' => $slugRow->getItemId()]);
+                break;
+            case Slug::TYPE_BLOG_POST:
+                return $this->forward('FoodBlogBundle:Default:postIndex', ['id' => $slugRow->getItemId()]);
+                break;
             default:
                 $this->pageNotFound404($slug);
                 break;

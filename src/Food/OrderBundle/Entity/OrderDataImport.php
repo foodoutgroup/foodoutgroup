@@ -5,13 +5,17 @@ namespace Food\OrderBundle\Entity;
 use Food\UserBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Food\OrderBundle\FoodOrderBundle;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Table(name="order_data_import")
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity
  */
 class OrderDataImport
 {
+    const SERVER_PATH_TO_FILE_FOLDER = 'uploads/order_data_import';
+
     /**
      * @var integer
      *
@@ -32,17 +36,31 @@ class OrderDataImport
      */
     private $date;
 
+    /**
+     * Unmapped property to handle file uploads
+     */
     private $file;
 
     /**
-     * @ORM\Column(name="infodata", type="text")
+     * @ORM\Column(name="filename", type="string");
+     */
+    private $filename;
+
+    /**
+     * @ORM\Column(name="infodata", type="text", nullable=true)
      */
     private $infodata;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Food\OrderBundle\Entity\Order", inversedBy="orders")
+     * @ORM\ManyToMany(targetEntity="Food\OrderBundle\Entity\Order")
      */
     private $ordersChanged;
+
+    /**
+     * @var string
+     * @ORM\Column(name="is_imported", type="boolean", nullable=true)
+     */
+    private $isImported = null;
 
     public function __construct()
     {
@@ -119,22 +137,6 @@ class OrderDataImport
     /**
      * @return mixed
      */
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    /**
-     * @param mixed $file
-     */
-    public function setFile($file)
-    {
-        $this->file = $file;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getInfodata()
     {
         return $this->infodata;
@@ -175,5 +177,90 @@ class OrderDataImport
      */
     public function removeOrdersChanged($ordersChanged) {
         $this->ordersChanged->removeElement($ordersChanged);
+    }
+
+    /**
+     * @return string
+     */
+    public function getIsImported()
+    {
+        return $this->isImported;
+    }
+
+    /**
+     * @param string $isImported
+     */
+    public function setIsImported($isImported)
+    {
+        $this->isImported = $isImported;
+    }
+
+    /**
+     * Sets file.
+     *
+     * @param UploadedFile $file
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * Get file.
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Manages the copying of the file to the relevant place on the server
+     */
+    public function upload()
+    {
+        // the file property can be empty if the field is not required
+        if (null === $this->getFile()) {
+            return;
+        }
+
+        // we use the original file name here but you should
+        // sanitize it at least to avoid any security issues
+
+        // move takes the target directory and target filename as params
+        $this->getFile()->move(
+            OrderDataImport::SERVER_PATH_TO_FILE_FOLDER,
+            $this->getFile()->getClientOriginalName()
+        );
+
+        // set the path property to the filename where you've saved the file
+        $this->filename = $this->getFile()->getClientOriginalName();
+
+        // clean up the file property as you won't need it anymore
+        $this->setFile(null);
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function lifecycleFileUpload() {
+        $this->upload();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFilename()
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @param mixed $filename
+     */
+    public function setFilename($filename)
+    {
+        $this->filename = $filename;
     }
 }

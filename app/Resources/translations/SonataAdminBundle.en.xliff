@@ -1304,6 +1304,14 @@
                 <source>admin.order.order_date</source>
                 <target>Order date</target>
             </trans-unit>
+            <trans-unit id="admin.order.food_prepare_time">
+                <source>admin.order.food_prepare_time</source>
+                <target>Prepare in (min.)</target>
+            </trans-unit>
+            <trans-unit id="admin.order.food_prepare_date">
+                <source>admin.order.food_prepare_date</source>
+                <target>Prepare until</target>
+            </trans-unit>
             <trans-unit id="admin.order.delivery_time">
                 <source>admin.order.delivery_time</source>
                 <target>Deliver till</target>
@@ -2114,6 +2122,14 @@
             <trans-unit id="admin.dispatcher.cancel_reason_comment_placeholder">
                 <source>admin.dispatcher.cancel_reason_comment_placeholder</source>
                 <target>Enter the comment</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.forwarded_comment_placeholder">
+                <source>admin.dispatcher.forwarded_comment_placeholder</source>
+                <target>Enter the comment</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.forwarded_pp_list">
+                <source>admin.dispatcher.forwarded_pp_list</source>
+                <target>Place point</target>
             </trans-unit>
             <!-- Status historis -->
             <trans-unit id="admin.order.log.date">

@@ -222,6 +222,10 @@
                 <source>places.review_choice</source>
                 <target>Atsiliepimas|Atsiliepimai|Atsiliepimų</target>
             </trans-unit>
+            <trans-unit id="general.no_place_reviews" resname="general.no_place_reviews">
+                <source>general.no_place_reviews</source>
+                <target>Atsiliepimų nėra</target>
+            </trans-unit>
             <trans-unit id="c246f90396fd5c888eb71087fbb61789" resname="places.watch_menu">
                 <source>places.watch_menu</source>
                 <target>Žiūrėti meniu</target>
@@ -329,6 +333,14 @@
             <trans-unit id="food.city.plunge.description">
                 <source>food.city.plunge.description</source>
                 <target>Užsisakykite maisto į namus Plungėje. Atvešime per 1h. Populiariausi restoranai: Charlie pizza.</target>
+            </trans-unit>
+            <trans-unit id="food.city.palanga.description">
+                <source>food.city.palanga.description</source>
+                <target>Užsisakykite maisto į namus Palangoje. Atvešime per 1h.</target>
+            </trans-unit>
+            <trans-unit id="food.city.mazeikiai.description">
+                <source>food.city.palanga.description</source>
+                <target>Užsisakykite maisto į namus Mažeikiuose. Atvešime per 1h.</target>
             </trans-unit>
             <trans-unit id="food.order_food_in_home">
                 <source>food.order_food_in_home</source>

@@ -35,6 +35,7 @@ class BestOfferRepository extends EntityRepository
             $city = str_replace('panevežys', 'panevezys', $city);
             $city = str_replace('panevėzys', 'panevezys', $city);
             $city = str_replace('panevezys', 'panevėžys', $city);
+            $city = str_replace('mažeikiai', 'mazeikiai', $city);
             $city = ucfirst($city);
 
             $qb->andWhere($qb->expr()->like('o.text', ':city_filter'));

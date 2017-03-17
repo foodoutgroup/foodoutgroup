@@ -217,6 +217,10 @@ nordea_banklink:
     resource: "@FoodOrderBundle/Resources/config/nordea_routing.yml"
     prefix: /payments/nordea/banklink
 
+sandbox_routes:
+    resource: "@FoodOrderBundle/Resources/config/sandbox_routing.yml"
+    prefix: /payments/sandbox
+
 # Custom report
 custom_report:
     resource: "@FoodReportBundle/Resources/config/routing.yml"

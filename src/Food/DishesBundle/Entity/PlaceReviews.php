@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Place
  *
  * @ORM\Table(name="place_reviews", indexes={@ORM\Index(name="deleted_at_idx", columns={"deleted_at"}),@ORM\Index(name="place_reviews_idx", columns={"place_id","deleted_at"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\PlaceReviewsRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class PlaceReviews
@@ -94,6 +94,13 @@ class PlaceReviews
      * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
      */
     private $deletedBy;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active = false;
 
     function __construct()
     {
@@ -349,5 +356,21 @@ class PlaceReviews
     public function getDummy()
     {
         return $this->dummy;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param boolean $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
     }
 }

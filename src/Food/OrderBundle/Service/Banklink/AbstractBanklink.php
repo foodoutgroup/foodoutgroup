@@ -10,10 +10,10 @@ abstract class AbstractBanklink
     private $privateKey;
     private $bankKey;
 
-    public function __construct($privateKeyPath, $bankKeyPath)
+    public function __construct($config)
     {
-        $this->privateKey = file_get_contents($privateKeyPath);
-        $this->bankKey = file_get_contents($bankKeyPath);
+        $this->privateKey = file_get_contents($config['banklink.private_key']);
+        $this->bankKey = file_get_contents($config['banklink.bank_key']);
     }
 
     public function getPrivateKey()

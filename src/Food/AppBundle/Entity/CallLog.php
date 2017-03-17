@@ -27,7 +27,7 @@ class CallLog
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Food\OrderBundle\Entity\Order", inversedBy="details")
+     * @ORM\ManyToOne(targetEntity="Food\OrderBundle\Entity\Order", inversedBy="orderCallLog")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=true)
      */
     private $order_id;

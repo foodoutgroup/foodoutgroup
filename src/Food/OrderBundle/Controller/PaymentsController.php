@@ -83,8 +83,14 @@ class PaymentsController extends Controller
 
 
         $this->get('food.cart')->clearCart($order->getPlace());
+        if($order->getMobile()) {
+            $response = new RedirectResponse("appScheme://success");
+        } else {
+                $response = new RedirectResponse($this->generateUrl('food_cart_success', ['orderHash' => $order->getOrderHash()]));
+        }
 
-        return new RedirectResponse($this->generateUrl('food_cart_success', ['orderHash' => $order->getOrderHash()]));
+        return $response;
+
     }
 
     public function payseraCancelAction($hash, Request $request)
@@ -132,13 +138,19 @@ class PaymentsController extends Controller
             }
         }
 
-        return new RedirectResponse(
-            $this->generateUrl(
-                'food_cart',
-                ['placeId' => $order->getPlace()->getId()]
-            )
-            . '?hash=' . $order->getOrderHash()
-        );
+        if($order->getMobile()) {
+            $response = new RedirectResponse("appScheme://fail");
+        } else {
+            $response = new RedirectResponse(
+                $this->generateUrl(
+                    'food_cart',
+                    ['placeId' => $order->getPlace()->getId()]
+                )
+                . '?hash=' . $order->getOrderHash()
+            );
+        }
+
+        return $response;
     }
 
     public function payseraCallbackAction(Request $request)

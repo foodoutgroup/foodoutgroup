@@ -64,6 +64,7 @@ class PlaceReviewsAdmin extends FoodAdmin
 
         $formMapper
             ->add('review', 'textarea', array('label' => 'admin.place.review'))
+            ->add('active', 'checkbox', array('label' => 'admin.static.active', 'required' => false))
         ;
     }
 
@@ -106,6 +107,7 @@ class PlaceReviewsAdmin extends FoodAdmin
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
             ->add('editedBy', 'entity', array('label' => 'admin.edited_by'))
+            ->add('active', null, array('label' => 'admin.static.active', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
@@ -198,7 +200,9 @@ class PlaceReviewsAdmin extends FoodAdmin
 
         $rating = $placeService->calculateAverageRating($place);
         $place->setAverageRating($rating);
-        $place->setReviewCount(count($place->getReviews()));
+        $reviews = $this->getContainer()->get('doctrine')->getRepository('FoodDishesBundle:PlaceReviews')
+            ->getActiveReviewsByPlace($place);
+        $place->setReviewCount(count($reviews));
         $placeService->savePlace($place);
     }
 

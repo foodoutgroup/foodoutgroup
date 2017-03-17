@@ -54,7 +54,7 @@ class ComboDiscount
     /**
      * @var \Food\DishesBundle\Entity\Place
      *
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="combo")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      */
     private $place;
@@ -63,7 +63,7 @@ class ComboDiscount
     /**
      * @var \Food\DishesBundle\Entity\FoodCategory
      *
-     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\FoodCategory", inversedBy="combo")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\FoodCategory")
      * @ORM\JoinColumn(name="dish_category", referencedColumnName="id", nullable=true)
      */
     private $dishCategory;
@@ -182,7 +182,7 @@ class ComboDiscount
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -205,7 +205,7 @@ class ComboDiscount
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -228,7 +228,7 @@ class ComboDiscount
     /**
      * Get active
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActive()
     {
@@ -251,7 +251,7 @@ class ComboDiscount
     /**
      * Get discountType
      *
-     * @return string 
+     * @return string
      */
     public function getDiscountType()
     {
@@ -274,7 +274,7 @@ class ComboDiscount
     /**
      * Get discountSize
      *
-     * @return integer 
+     * @return integer
      */
     public function getDiscountSize()
     {
@@ -297,7 +297,7 @@ class ComboDiscount
     /**
      * Get amount
      *
-     * @return integer 
+     * @return integer
      */
     public function getAmount()
     {
@@ -320,7 +320,7 @@ class ComboDiscount
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -343,7 +343,7 @@ class ComboDiscount
     /**
      * Get editedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEditedAt()
     {
@@ -366,7 +366,7 @@ class ComboDiscount
     /**
      * Get deletedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeletedAt()
     {
@@ -389,7 +389,7 @@ class ComboDiscount
     /**
      * Get place
      *
-     * @return \Food\DishesBundle\Entity\Place 
+     * @return \Food\DishesBundle\Entity\Place
      */
     public function getPlace()
     {
@@ -412,7 +412,7 @@ class ComboDiscount
     /**
      * Get dishCategory
      *
-     * @return \Food\DishesBundle\Entity\FoodCategory 
+     * @return \Food\DishesBundle\Entity\FoodCategory
      */
     public function getDishCategory()
     {
@@ -435,7 +435,7 @@ class ComboDiscount
     /**
      * Get dishUnit
      *
-     * @return \Food\DishesBundle\Entity\DishUnit 
+     * @return \Food\DishesBundle\Entity\DishUnit
      */
     public function getDishUnit()
     {
@@ -458,7 +458,7 @@ class ComboDiscount
     /**
      * Get createdBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -481,7 +481,7 @@ class ComboDiscount
     /**
      * Get editedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getEditedBy()
     {
@@ -504,7 +504,7 @@ class ComboDiscount
     /**
      * Get deletedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getDeletedBy()
     {
@@ -527,7 +527,7 @@ class ComboDiscount
     /**
      * Get applyBy
      *
-     * @return string 
+     * @return string
      */
     public function getApplyBy()
     {

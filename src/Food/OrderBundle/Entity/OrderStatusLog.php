@@ -26,6 +26,12 @@ class OrderStatusLog
     private $order;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Food\UserBundle\Entity\User", inversedBy="orderStatusLog")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $user;
+
+    /**
      * @var \DateTime
      * @ORM\Column(name="event_date", type="datetime")
      */
@@ -63,7 +69,7 @@ class OrderStatusLog
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -79,14 +85,14 @@ class OrderStatusLog
     public function setEventDate($eventDate)
     {
         $this->event_date = $eventDate;
-    
+
         return $this;
     }
 
     /**
      * Get event_date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEventDate()
     {
@@ -102,14 +108,14 @@ class OrderStatusLog
     public function setOldStatus($oldStatus)
     {
         $this->oldStatus = $oldStatus;
-    
+
         return $this;
     }
 
     /**
      * Get oldStatus
      *
-     * @return string 
+     * @return string
      */
     public function getOldStatus()
     {
@@ -125,14 +131,14 @@ class OrderStatusLog
     public function setMessage($message)
     {
         $this->message = $message;
-    
+
         return $this;
     }
 
     /**
      * Get message
      *
-     * @return string 
+     * @return string
      */
     public function getMessage()
     {
@@ -148,14 +154,14 @@ class OrderStatusLog
     public function setOrder(\Food\OrderBundle\Entity\Order $order = null)
     {
         $this->order = $order;
-    
+
         return $this;
     }
 
     /**
      * Get order
      *
-     * @return \Food\OrderBundle\Entity\Order 
+     * @return \Food\OrderBundle\Entity\Order
      */
     public function getOrder()
     {
@@ -171,14 +177,14 @@ class OrderStatusLog
     public function setNewStatus($newStatus)
     {
         $this->newStatus = $newStatus;
-    
+
         return $this;
     }
 
     /**
      * Get newStatus
      *
-     * @return string 
+     * @return string
      */
     public function getNewStatus()
     {
@@ -194,17 +200,40 @@ class OrderStatusLog
     public function setSource($source)
     {
         $this->source = $source;
-    
+
         return $this;
     }
 
     /**
      * Get source
      *
-     * @return string 
+     * @return string
      */
     public function getSource()
     {
         return $this->source;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Food\UserBundle\Entity\User $user
+     * @return OrderStatusLog
+     */
+    public function setUser(\Food\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Food\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

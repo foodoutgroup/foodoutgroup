@@ -22,7 +22,7 @@ class CityLog
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="City", inversedBy="cityLog")
+     * @ORM\ManyToOne(targetEntity="City")
      * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
      */
     private $city;
@@ -58,7 +58,7 @@ class CityLog
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -74,14 +74,14 @@ class CityLog
     public function setCity($city)
     {
         $this->city = $city;
-    
+
         return $this;
     }
 
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -97,14 +97,14 @@ class CityLog
     public function setEventDate($eventDate)
     {
         $this->eventDate = $eventDate;
-    
+
         return $this;
     }
 
     /**
      * Get eventDate
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getEventDate()
     {
@@ -120,14 +120,14 @@ class CityLog
     public function setOldValue($oldValue)
     {
         $this->oldValue = $oldValue;
-    
+
         return $this;
     }
 
     /**
      * Get oldValue
      *
-     * @return string 
+     * @return string
      */
     public function getOldValue()
     {
@@ -143,14 +143,14 @@ class CityLog
     public function setNewValue($newValue)
     {
         $this->newValue = $newValue;
-    
+
         return $this;
     }
 
     /**
      * Get newValue
      *
-     * @return string 
+     * @return string
      */
     public function getNewValue()
     {

@@ -177,6 +177,9 @@
                 <th class="self_delivery">{{ 'admin.dispatcher.client_phone'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
                 <th class="order_date">{{ 'admin.dispatcher.order_date'|trans({}, 'SonataAdminBundle') }}</th>
+            {% if type != 'canceled' and type != 'unapproved' %}
+                <th class="order_date">{{ 'admin.order.food_prepare_date'|trans({}, 'SonataAdminBundle') }}</th>
+            {% endif %}
             {% if type != 'canceled' %}
                 <th class="order_date">{{ 'admin.dispatcher.delivery_time'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
@@ -277,6 +280,15 @@
                     </td>
                 {% endif %}
                     <td class="order_date" title="{{ order.orderDate|date("Y-m-d") }}">{{ order.orderDate|date("H:i") }}</td>
+
+                {% if type != 'canceled' and type != 'unapproved' %}
+                    <td class="order_date">
+                        {% if order.foodPrepareDate %}
+                        {{ order.foodPrepareDate|date("H:i") }}
+                        {% endif %}
+                    </td>
+                {% endif %}
+
                 {% if type != 'canceled' %}
                     <td class="order_date" title="{{ order.deliveryTime|date("Y-m-d") }}">{{ order.deliveryTime|date("H:i") }}</td>
                 {% endif %}

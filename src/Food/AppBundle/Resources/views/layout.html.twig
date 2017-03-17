@@ -156,6 +156,23 @@
     {% elseif site_country == 'LV' %}
         &#123;&#35; Revive Ads init for foodout.lv &#35;&#125;
     {% endif %}#}
+    <script type="text/javascript">
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', '{{ google_analytics_uid }}', 'auto', {'allowLinker': true });
+        ga('require', 'displayfeatures');
+        ga('require', 'linker');
+        ga('send', 'pageview');
+        ga('require', 'ec');
+        {# ga('linker:autoLink', ['{{ publicdomain }}', '1000receptu.lt']); #}
+        var dimensionValue = new Date().getTime() + '.' + Math.random().toString(36).substring(5);
+        ga('set', 'dimension1', dimensionValue);
+
+        {% block ga_js_code %}{% endblock %}
+    </script>
 </head>
 <body>
 {{ notifications.init|raw }}
@@ -241,23 +258,6 @@
     {% block jscode %}{% endblock %}
 </script>
 <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', '{{ google_analytics_uid }}', 'auto', {'allowLinker': true });
-    ga('require', 'displayfeatures');
-    ga('require', 'linker');
-    ga('send', 'pageview');
-    ga('require', 'ec');
-    {# ga('linker:autoLink', ['{{ publicdomain }}', '1000receptu.lt']); #}
-    var dimensionValue = new Date().getTime() + '.' + Math.random().toString(36).substring(5);
-    ga('set', 'dimension1', dimensionValue);
-
-    {% block ga_js_code %}{% endblock %}
-
-
     {#
         {% render(controller('FoodAppBundle:Default:showVideo')) %}
     #}

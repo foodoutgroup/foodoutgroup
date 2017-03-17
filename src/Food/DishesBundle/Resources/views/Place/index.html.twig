@@ -113,7 +113,7 @@
             <div class="page-path clearfix">
                 <a href="{{ slug.toHomepage() }}">{% trans %}places.home{% endtrans %}</a>
                 {% if breadcrumbData.city is not empty %}
-                    <a href="{{ breadcrumbData.city_url }}">{{ breadcrumbData.city }}</a>
+                    <a href="{{ breadcrumbData.city_url }}">{{ city_breadcrumb }}</a>
                     {% if breadcrumbData.kitchen is not empty %}
                         <a href="{{ breadcrumbData.kitchen_url }}">{{ breadcrumbData.kitchen }}</a>
                     {% endif %}
@@ -130,7 +130,7 @@
                         <div id="detailed-restaurant" class="detailed-resturant">
                         <ul>
                             <li><a href="#detailed-restaurant-menu">{% trans %}places.menu{% endtrans %}</a></li>
-                            {#<li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>#}
+                            <li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>
                             <li class="last restaurant-info-tab"><a itemprop="menu" href="{{ current_url }}#detailed-restaurant-info">{% trans %}places.information{% endtrans %}</a></li>
                         </ul>
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
@@ -138,9 +138,7 @@
                                 <div class="menu-lefter" id="catmnu">
                                     {% if placeCategories|length > 10 %}
                                         <div class="dropdown">
-                                            <button id="dLabel" class="button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {% trans %}places.food_categories{% endtrans %}
-                                                <span class="caret"></span>
+                                            <button id="dLabel" class="button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans %}places.food_categories{% endtrans %}<span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu scrollable-menu menu" aria-labelledby="dLabel">
                                                 {% for category in placeCategories %}
@@ -243,18 +241,22 @@
                             </div>
                         </div>
                         {# Atsiliepimai #}
-                        {#<div id="detailed-restaurant-review" class="detailed-restaurant-review">
+                        <div id="detailed-restaurant-review" class="detailed-restaurant-review">
                             <div class="review-title clearfix">
-                                &#123;&#35; TODO temporary reviews are not shown &#35;&#125;
-                                &#123;&#35;<h3>{{ place.reviewCount }} {% transchoice place.reviews.count %}places.review_choice{% endtranschoice %}</h3>&#35;&#125;
+                                {% if placeReviews %}
+                                <h3>{{ placeReviews|length }} {% transchoice placeReviews|length %}places.review_choice{% endtranschoice %}</h3>
+                                {% else %}
+                                <h3>{% trans %}general.no_place_reviews{% endtrans %}</h3>
+                                {% endif %}
+                                {#
                                 {% if (wasHere and not alreadyWrote) or not app.user %}
                                     <a href="{% if app.user %}#place-review-popup{% else %}#login-register-popup{% endif %}" class="fancy-box">{% trans %}places.add_review{% endtrans %}</a>
                                 {% endif %}
                                 {{ include('FoodDishesBundle:Place:review-popup.html.twig') }}
+                                #}
                             </div>
                             <div class="review-list">
-                                &#123;&#35; TODO temporary reviews are not shown &#35;&#125;
-                                &#123;&#35;{% for review in place.reviews %}
+                                {% for review in placeReviews %}
                                 <div class="review-item clearfix">
                                     <div class="review-person"><img src="/bundles/foodapp/images/person.png">
                                         <p class="name">{{ review.createdBy.getFirstname }}</p>
@@ -271,10 +273,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                {% endfor %}&#35;&#125;
+                                {% endfor %}
                             </div>
-                            &#123;&#35;<div class="paginator clearfix"><a href="#" class="prev"></a><a href="#" class="active">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">5</a><a href="#">6</a><a href="#" class="next"></a></div>&#35;&#125;
-                        </div>#}
+                        </div>
                         {# Restorano informacija #}
                         <div id="detailed-restaurant-info" class="detailed-restaurant-info">
                             <h3>{% trans %}places.about_place{% endtrans %}</h3>

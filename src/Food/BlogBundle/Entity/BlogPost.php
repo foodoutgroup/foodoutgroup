@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * BlogPost
  *
  * @ORM\Table(name="blog_post")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Food\BlogBundle\Entity\BlogPostRepository")
  */
 class BlogPost
 {
@@ -44,7 +44,7 @@ class BlogPost
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="string", length=255)
+     * @ORM\Column(name="content", type="text")
      */
     private $content;
 

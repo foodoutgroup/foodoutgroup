@@ -63,7 +63,7 @@ class Order
     private $order_date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User", inversedBy="order")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      **/
     private $user;
@@ -476,6 +476,18 @@ class Order
      * @ORM\OneToMany(targetEntity="\Food\AppBundle\Entity\CallLog", mappedBy="order_id")
      **/
     private $orderCallLog;
+
+    /**
+     * @var int
+     * @ORM\Column(name="food_prepare_time", type="integer", nullable=true)
+     */
+    private $foodPrepareTime;
+
+    /**
+     * @var \DateTime
+     * @ORM\Column(name="food_prepare_date", type="datetime", nullable=true)
+     */
+    private $foodPrepareDate;
 
     /**
      * @return string
@@ -2465,7 +2477,7 @@ class Order
     /**
      * Get duringZavalas
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getDuringZavalas()
     {
@@ -2481,7 +2493,7 @@ class Order
     public function addOrderFieldChangelog(\Food\OrderBundle\Entity\OrderFieldChangelog $orderFieldChangelog)
     {
         $this->orderFieldChangelog[] = $orderFieldChangelog;
-    
+
         return $this;
     }
 
@@ -2526,5 +2538,37 @@ class Order
     public function getOrderCallLog()
     {
         return $this->orderCallLog;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFoodPrepareTime()
+    {
+        return $this->foodPrepareTime;
+    }
+
+    /**
+     * @param int $foodPrepareTime
+     */
+    public function setFoodPrepareTime($foodPrepareTime)
+    {
+        $this->foodPrepareTime = $foodPrepareTime;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getFoodPrepareDate()
+    {
+        return $this->foodPrepareDate;
+    }
+
+    /**
+     * @param \DateTime $foodPrepareDate
+     */
+    public function setFoodPrepareDate($foodPrepareDate)
+    {
+        $this->foodPrepareDate = $foodPrepareDate;
     }
 }

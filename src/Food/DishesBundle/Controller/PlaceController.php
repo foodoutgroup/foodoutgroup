@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlaceReviews;
 use Food\UserBundle\Entity\User;
+use Food\AppBundle\Utils\Misc;
 
 class PlaceController extends Controller
 {
@@ -76,14 +77,23 @@ class PlaceController extends Controller
         // todo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! $placeCities neranda
 
         if (!isset($locationData['city'])) {
+
+
+        if (!isset($locationData['city'])) {
+            $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
             $locationData['city'] = $placeCities[0];
         }
+
         if (isset($locationData['city'])) {
             if (!$this->get('food.places')->isPlaceDeliversToCity($place, $locationData['city'])) {
                 $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
                 $locationData['city'] = $placeCities[0];
+
             }
+
+
             $cityInfo = $this->get('food.city_service')->getCityInfo($locationData['city']);
+
             if (!empty($cityInfo)) {
                 $breadcrumbData = array_merge($breadcrumbData, $cityInfo);
             }
@@ -109,10 +119,18 @@ class PlaceController extends Controller
             }
         }
 
+        $placeReviews = $this->get('doctrine')->getRepository('FoodDishesBundle:PlaceReviews')
+            ->getActiveReviewsByPlace($place);
+
+
+        $util = new Misc($this->container);
+        $cityBreadcrumb = $util->getCityBreadcrumbs($locationData['city']);
+
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
             array(
                 'place' => $place,
+                'placeReviews' => $placeReviews,
                 'relatedPlace' => $relatedPlace,
                 'wasHere' => $wasHere,
                 'alreadyWrote' => $alreadyWrote,
@@ -126,6 +144,7 @@ class PlaceController extends Controller
                 'breadcrumbData' => $breadcrumbData,
                 'current_url' => $current_url,
                 'oldFriendIsHere' => $oldFriendIsHere,
+                'city_breadcrumb' => $cityBreadcrumb
             )
         );
     }
