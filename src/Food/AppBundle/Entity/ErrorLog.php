@@ -56,14 +56,14 @@ class ErrorLog
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="text")
+     * @ORM\Column(name="url", type="text", nullable=true)
      */
     private $url;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="source", type="string", length=255)
+     * @ORM\Column(name="source", type="string", length=255, nullable=true)
      */
     private $source;
 
@@ -77,7 +77,7 @@ class ErrorLog
     /**
      * @var string
      *
-     * @ORM\Column(name="debug", type="text")
+     * @ORM\Column(name="debug", type="text", nullable=true)
      */
     private $debug;
 
