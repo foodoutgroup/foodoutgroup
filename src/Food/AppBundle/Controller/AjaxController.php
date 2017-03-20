@@ -65,17 +65,15 @@ class AjaxController extends Controller
         }
 
 
-        $locationInfo = $this->get('food.googlegis')->groupData($address, $city->getTitle());
+        $locationInfo = $this->get('food.googlegis')->groupData($address, $city->getTitle(),$city->getId());
 
         $respData = [
             'success' => 0,
             'message' => $this->get('translator')->trans('index.address_not_found'),
-            'adr'     => 0,
+            'adr'     => 1,
             'str'     => 0,
             'url'    => $this->get('slug')->getUrl($city->getId(), 'city'),
         ];
-
-
 
 
         if ((!$locationInfo['not_found'] || $locationInfo['street_found']) && $locationInfo['lng'] > 20 && $locationInfo['lat'] > 50) {
@@ -95,10 +93,16 @@ class AjaxController extends Controller
             $session->set('locationData', ['address' => $address, 'city' => $city->getId(),'city_ids'=>'1']);
         }
 
+
+
+
+
         // Only City Selected
         $city_only = $request->get('city_only');
         if ($city && empty($address) && !empty($city_only)) {
-            $this->get('food.googlegis')->setCityOnlyToSession($city->getId());
+            $this->get('food.googlegis')->setCityOnlyToSession($city,$city->getId());
+
+
             $response->setContent(json_encode([
                 'data' => [
                     'success' => 1,
@@ -108,9 +112,13 @@ class AjaxController extends Controller
                 ]
             ]));
         } else {
+
             $response->setContent(json_encode([
                 'data' => $respData
             ]));
+
+
+
         }
     }
 

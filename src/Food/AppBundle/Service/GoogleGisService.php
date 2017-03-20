@@ -73,8 +73,7 @@ class GoogleGisService extends ContainerAware
                         'requestAddress' => $address,
                         'requestCountry' => $this->container->getParameter('country_full')
                     ]
-                )
-            ;
+                );
         }
 
         if (empty($geoCache)) {
@@ -99,11 +98,10 @@ class GoogleGisService extends ContainerAware
             $this->container->getParameter('google.maps_geocode'),
             [
                 'address' => $address . ', ' . $this->container->getParameter('country_full'),
-                'sensor'  => 'true',
-                'key'     => $this->container->getParameter('google.maps_server_api')
+                'sensor' => 'true',
+                'key' => $this->container->getParameter('google.maps_server_api')
             ]
-        )
-        ;
+        );
 
         $geoCache = new GeoCache();
         $geoCache->setRequestAddress($address)
@@ -111,8 +109,7 @@ class GoogleGisService extends ContainerAware
             ->setRequestData($address . ', ' . $this->container->getParameter('country_full'))
             ->setRequestDate(new \DateTime("now"))
             ->setRessponseBody($resp->body)
-            ->setCounter(1)
-        ;
+            ->setCounter(1);
 
         $em = $this->container->get('doctrine')->getManager();
         $em->persist($geoCache);
@@ -127,8 +124,10 @@ class GoogleGisService extends ContainerAware
      *
      * @return array
      */
-    public function groupData($address, $city)
+    public function groupData($address, $city, $id = false)
     {
+
+
         $location = $this->getPlaceData($address . ', ' . $city);
         $returner = $this->parseDataFromLocation($location, $address);
 
@@ -144,7 +143,11 @@ class GoogleGisService extends ContainerAware
 
         if (!empty($returner['city'])) {
             $returner['city'] = $city;
+            if ($id) {
+                $returner['city_id'] = $id;
+            }
         }
+
 
         $this->setLocationToSession($returner);
 
@@ -208,7 +211,7 @@ class GoogleGisService extends ContainerAware
         return $returner;
     }
 
-    public function setCityOnlyToSession($city,$id = false)
+    public function setCityOnlyToSession($city, $id = false)
     {
         $returner = $this->getLocationFromSession();
 
@@ -276,10 +279,9 @@ class GoogleGisService extends ContainerAware
             $this->container->getParameter('google.maps_geocode'),
             [
                 'latlng' => $lat . ',' . $lng,
-                'key'    => $this->container->getParameter('google.maps_server_api')
+                'key' => $this->container->getParameter('google.maps_server_api')
             ]
-        )
-        ;
+        );
         $data = json_decode($resp->body);
         $matchIsFound = null;
         foreach ($data->results as $rezRow) {
@@ -312,11 +314,10 @@ class GoogleGisService extends ContainerAware
             $this->container->getParameter('google.maps_geocode'),
             [
                 'address' => $street . " " . $houseNumber . " " . $city . ', ' . $this->container->getParameter('country_full'),
-                'sensor'  => 'true',
-                'key'     => $this->container->getParameter('google.maps_server_api')
+                'sensor' => 'true',
+                'key' => $this->container->getParameter('google.maps_server_api')
             ]
-        )
-        ;
+        );
 
         $data = json_decode($resp->body);
         $matchIsFound = null;

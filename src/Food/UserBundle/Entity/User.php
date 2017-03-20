@@ -215,6 +215,12 @@ class User extends BaseUser
      **/
     private $paramLog;
 
+    /**
+     * @var string
+     * @ORM\Column(name="locale", type="string", length=24, nullable=true)
+     */
+    private $locale;
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
@@ -1124,5 +1130,61 @@ class User extends BaseUser
     public function getParamLog()
     {
         return $this->paramLog;
+    }
+
+    /**
+     * Add orderStatusLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
+     * @return User
+     */
+    public function addOrderStatusLog(\Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog)
+    {
+        $this->orderStatusLog[] = $orderStatusLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove orderStatusLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
+     */
+    public function removeOrderStatusLog(\Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog)
+    {
+        $this->orderStatusLog->removeElement($orderStatusLog);
+    }
+
+    /**
+     * Get orderStatusLog
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrderStatusLog()
+    {
+        return $this->orderStatusLog;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return User
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string 
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
 }

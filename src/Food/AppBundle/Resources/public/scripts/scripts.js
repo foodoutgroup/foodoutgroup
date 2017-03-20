@@ -93,6 +93,7 @@ bind_registration_form = function() {
 
         callback = function(response) {
             if (response.length > 0) {
+
                 $('.registration_form_wrapper:visible').html(response);
                 form.unmask();
 
@@ -228,8 +229,6 @@ bind_password_resetting_form = function() {
             }
         };
 
-        $.post(url, data, callback, data_type);
-
         return false;
     });
 }
@@ -339,31 +338,31 @@ change_location = function(element,
     */
 }
 
-// initStreetSearch = function(){
-//     var streetsUrl = Routing.generate('food_ajax', { '_locale': 'en', 'action' : 'find-street' });
-//     var streets = new Bloodhound({
-//         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-//         queryTokenizer: Bloodhound.tokenizers.whitespace,
-//         remote: {
-//             url: '?city=%CITY&street=%QUERY',
-//             replace: function(url, query) {
-//                 url = url.replace('%CITY', $('#index_city').val());
-//                 url = url.replace('%QUERY', query);
-//                 return streetsUrl + url;
-//             }
-//         }
-//     });
-//
-//     streets.initialize();
-//
-//     $('#index_address').typeahead(null, {
-//         name: 'streets',
-//         displayKey: 'value',
-//         source: streets.ttAdapter()
-//     });
-// }
+initStreetSearch = function(){
+    var streetsUrl = Routing.generate('food_ajax', { '_locale': $('html').attr('lang'), 'action' : 'find-street' });
+    var streets = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: '?city=%CITY&street=%QUERY',
+            replace: function(url, query) {
+                url = url.replace('%CITY', $('#index_city').val());
+                url = url.replace('%QUERY', query);
+                return streetsUrl + url;
+            }
+        }
+    });
+
+    streets.initialize();
+
+    $('#index_address').typeahead(null, {
+        name: 'streets',
+        displayKey: 'value',
+        source: streets.ttAdapter()
+    });
+}
 initStreetHouseSearch = function(){
-    var streetsUrl = Routing.generate('food_ajax', { '_locale': 'en', 'action' : 'find-street-house' });
+    var streetsUrl = Routing.generate('food_ajax', { '_locale': $('html').attr('lang'), 'action' : 'find-street-house' });
     var streets = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,

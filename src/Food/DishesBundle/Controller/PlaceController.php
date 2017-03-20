@@ -18,8 +18,14 @@ class PlaceController extends Controller
     public function indexAction($id, $slug, Request $request, $oldFriendIsHere = false)
     {
 
+
+
+
         $session = $this->get('session');
+
+
         $isCallcenter = $session->get('isCallcenter');
+
         if ($isCallcenter) {
             $session->set('isCallcenter', false);
         }
@@ -29,9 +35,14 @@ class PlaceController extends Controller
             return $this->redirect($this->get('slug')->toHomepage(), 307);
         }
 
+
+
         if (!empty($city)) {
             $this->get('food.googlegis')->setCityOnlyToSession($city);
         }
+
+
+
 
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
 
@@ -52,13 +63,13 @@ class PlaceController extends Controller
         if ($cookies->has('restaurant_menu_layout')) {
             $listType = $cookies->get('restaurant_menu_layout');
         }
-/**
-        if (!empty($categoryId)) {
-            $activeCategory = $categoryRepo->find($categoryId);
-        } else {
-            $activeCategory = $categoryList[0];
-        }
-*/
+        /**
+         * if (!empty($categoryId)) {
+         * $activeCategory = $categoryRepo->find($categoryId);
+         * } else {
+         * $activeCategory = $categoryList[0];
+         * }
+         */
         $wasHere = $this->wasHere($place, $this->user());
         $alreadyWrote = $this->alreadyWrote($place, $this->user());
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
@@ -70,83 +81,85 @@ class PlaceController extends Controller
             'kitchen_url' => ''
         );
 
-        $locationData =  $this->get('food.googlegis')->getLocationFromSession();
+        $locationData = $this->get('food.googlegis')->getLocationFromSession();
 
         $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
 
         // todo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! $placeCities neranda
 
-        if (!isset($locationData['city'])) {
 
 
-        if (!isset($locationData['city'])) {
-            $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
-            $locationData['city'] = $placeCities[0];
-        }
 
-        if (isset($locationData['city'])) {
-            if (!$this->get('food.places')->isPlaceDeliversToCity($place, $locationData['city'])) {
+
+            if (!isset($locationData['city'])) {
                 $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
                 $locationData['city'] = $placeCities[0];
-
             }
 
+            if (isset($locationData['city'])) {
+                if (!$this->get('food.places')->isPlaceDeliversToCity($place, $locationData['city'])) {
+                    $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
+                    $locationData['city'] = $placeCities[0];
 
-            $cityInfo = $this->get('food.city_service')->getCityInfo($locationData['city']);
+                }
 
-            if (!empty($cityInfo)) {
-                $breadcrumbData = array_merge($breadcrumbData, $cityInfo);
+
+                $cityInfo = $this->get('food.city_service')->getCityInfo($locationData['city']);
+
+                if (!empty($cityInfo)) {
+                    $breadcrumbData = array_merge($breadcrumbData, $cityInfo);
+                }
+
+                $kitchens = $place->getKitchens();
+                if (!empty($kitchens) && $kitchens->count() > 0) {
+                    $kitchen = $kitchens->first();
+                    $breadcrumbData['kitchen'] = $kitchen->getName();
+                    $kitchenSlug = $this->get('food.dishes.utils.slug')->getSlugByItem($kitchen->getId(), 'kitchen');
+                    $breadcrumbData['kitchen_url'] = $kitchenSlug;
+                }
             }
 
-            $kitchens = $place->getKitchens();
-            if(!empty($kitchens) && $kitchens->count() > 0) {
-                $kitchen = $kitchens->first();
-                $breadcrumbData['kitchen'] = $kitchen->getName();
-                $kitchenSlug = $this->get('food.dishes.utils.slug')->getSlugByItem($kitchen->getId(), 'kitchen');
-                $breadcrumbData['kitchen_url'] = $kitchenSlug;
+            $current_url = $request->getUri();
+
+            // only for LT and only for cili
+            $relatedPlace = null;
+            if ($this->container->getParameter('locale') == 'lt') {
+                if (in_array($place->getId(), [63, 85, 302, 333])) {
+                    $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(142);
+                } elseif ($place->getId() == 142) {
+                    $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(63);
+                }
             }
-        }
 
-        $current_url = $request->getUri();
-
-        // only for LT and only for cili
-        $relatedPlace = null;
-        if ($this->container->getParameter('locale') == 'lt') {
-            if (in_array($place->getId(), [63, 85, 302, 333])) {
-                $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(142);
-            } elseif ($place->getId() == 142) {
-                $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(63);
-            }
-        }
-
-        $placeReviews = $this->get('doctrine')->getRepository('FoodDishesBundle:PlaceReviews')
-            ->getActiveReviewsByPlace($place);
+            $placeReviews = $this->get('doctrine')->getRepository('FoodDishesBundle:PlaceReviews')
+                ->getActiveReviewsByPlace($place);
 
 
-        $util = new Misc($this->container);
-        $cityBreadcrumb = $util->getCityBreadcrumbs($locationData['city']);
+            $util = new Misc($this->container);
+            $cityBreadcrumb = $util->getCityBreadcrumbs($locationData['city']);
 
-        return $this->render(
-            'FoodDishesBundle:Place:index.html.twig',
-            array(
-                'place' => $place,
-                'placeReviews' => $placeReviews,
-                'relatedPlace' => $relatedPlace,
-                'wasHere' => $wasHere,
-                'alreadyWrote' => $alreadyWrote,
-                'placeCategories' => $categoryList,
-                'dishService' => $dishService,
-                // 'selectedCategory' => $activeCategory,
-                'placePoints' => $placePoints,
-                'placePointsAll' => $placePointsAll,
-                'listType' => $listType,
-                'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
-                'breadcrumbData' => $breadcrumbData,
-                'current_url' => $current_url,
-                'oldFriendIsHere' => $oldFriendIsHere,
-                'city_breadcrumb' => $cityBreadcrumb
-            )
-        );
+            return $this->render(
+                'FoodDishesBundle:Place:index.html.twig',
+                array(
+                    'place' => $place,
+                    'placeReviews' => $placeReviews,
+                    'relatedPlace' => $relatedPlace,
+                    'wasHere' => $wasHere,
+                    'alreadyWrote' => $alreadyWrote,
+                    'placeCategories' => $categoryList,
+                    'dishService' => $dishService,
+                    // 'selectedCategory' => $activeCategory,
+                    'placePoints' => $placePoints,
+                    'placePointsAll' => $placePointsAll,
+                    'listType' => $listType,
+                    'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
+                    'breadcrumbData' => $breadcrumbData,
+                    'current_url' => $current_url,
+                    'oldFriendIsHere' => $oldFriendIsHere,
+                    'city_breadcrumb' => $cityBreadcrumb
+                )
+            );
+
     }
 
     public function filtersListAction()
@@ -199,7 +212,7 @@ class PlaceController extends Controller
     {
 
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
-        if($place) {
+        if ($place) {
             return $this->redirect($this->get('slug')->toHomepage(), 307);
         }
 
@@ -211,9 +224,9 @@ class PlaceController extends Controller
 
         // apply data from submitted data to symfony form
         $form->handleRequest($request);
-        $score = (int) $request->request->get('score');
+        $score = (int)$request->request->get('score');
         $formVar = $request->request->get('form');
-        $reviewText = (string) $formVar['review'];
+        $reviewText = (string)$formVar['review'];
 
         if ($form->isValid() && $score >= 1 && $score <= 5 && !empty($reviewText)) {
             $em = $this->getDoctrine()->getManager();
@@ -233,7 +246,7 @@ class PlaceController extends Controller
 
             return new JsonResponse(['success' => true]);
         } else {
-           $translator = $this->get('translator');
+            $translator = $this->get('translator');
 
             if (empty($reviewText)) {
                 $errors[] = $translator->trans('places.reviews.empty_review');
@@ -248,7 +261,7 @@ class PlaceController extends Controller
 
     private function getUserOrderCount(Place $place = null, User $user = null)
     {
-        $count = (int) $this
+        $count = (int)$this
             ->getDoctrine()
             ->getManager()
             ->createQueryBuilder()
@@ -267,8 +280,7 @@ class PlaceController extends Controller
                 ]
             )
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         return $count;
     }
@@ -282,7 +294,7 @@ class PlaceController extends Controller
 
     private function alreadyWrote(Place $place = null, User $user = null)
     {
-        $reviews = (int) $this
+        $reviews = (int)$this
             ->getDoctrine()
             ->getManager()
             ->createQueryBuilder()
@@ -292,8 +304,7 @@ class PlaceController extends Controller
             ->andWhere('pr.createdBy = :user')
             ->setParameters(['place' => $place, 'user' => $user])
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         $orders = $this->getUserOrderCount($place, $user);
 
@@ -319,8 +330,7 @@ class PlaceController extends Controller
         return $this
             ->createFormBuilder($review, ['csrf_protection' => false])
             ->add('review', 'textarea', ['required' => true, 'label' => 'general.review'])
-            ->getForm()
-        ;
+            ->getForm();
     }
 
     private function defaultReview(Place $place = null, User $user = null)
@@ -329,13 +339,13 @@ class PlaceController extends Controller
         $review
             ->setPlace($place)
             ->setCreatedBy($user)
-            ->setCreatedAt(new \DateTime())
-        ;
+            ->setCreatedAt(new \DateTime());
 
         return $review;
     }
 
-    public function getPlaceUrlByCityAction($placeId, Request $request) {
+    public function getPlaceUrlByCityAction($placeId, Request $request)
+    {
         $placeService = $this->get('food.places');
         $domain = $this->container->getParameter('domain');
 
@@ -360,7 +370,8 @@ class PlaceController extends Controller
         return $response;
     }
 
-    public function getCitiesByPlaceAction($placeId, Request $request) {
+    public function getCitiesByPlaceAction($placeId, Request $request)
+    {
         $placeService = $this->get('food.places');
         $found_data = ['status' => 'fail', 'cities' => null];
 

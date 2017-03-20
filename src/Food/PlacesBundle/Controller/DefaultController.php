@@ -14,6 +14,7 @@ class DefaultController extends Controller
     public function indexAction($recommended = false, $zaval = false)
     {
         $locData = $this->get('food.location')->getLocationFromSession();
+
         $placeService = $this->get('food.places');
         $cityService = $this->get('food.city_service');
 
@@ -42,7 +43,6 @@ class DefaultController extends Controller
 
     public function indexCityAction($id, $slug, $params = [])
     {
-
         $request = $this->get('request');
 
         $cityService = $this->get('food.city_service');
@@ -52,12 +52,11 @@ class DefaultController extends Controller
             }
         }
 
-        $this->get('food.googlegis')->setCityOnlyToSession($city);
+        $this->get('food.googlegis')->setCityOnlyToSession($city,$id);
         $locData = $this->get('food.googlegis')->getLocationFromSession();
         $placeService = $this->get('food.places');
         $selectedKitchensNames = $placeService->getKitchensFromSlug($params, $request, true);
         $current_url = $request->getUri();
-
 
         $selectedKitchensIds = $placeService->getKitchensFromSlug($params, $request);
         if (!empty($selectedKitchensIds)) {

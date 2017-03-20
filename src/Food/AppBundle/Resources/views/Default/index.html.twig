@@ -17,7 +17,7 @@
                 }
                 addrXhr = $.ajax({
                     type: 'GET',
-                    url: '{{ path('food_ajax', {'action': 'find-address'}) }}',
+                    url: '{{path('food_ajax', {'action': 'find-address'}) }}',
                     data:  {
                         city: $('#index_city').val(),
                         address: $('#index_address').val() + ' ' + $('#index_house').val()

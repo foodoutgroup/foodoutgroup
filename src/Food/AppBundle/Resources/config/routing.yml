@@ -31,11 +31,11 @@ food_order_cnt:
 
 food_admin:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
-    prefix: /admin
+    prefix: /{_locale}/admin
 
 food_admin_init:
     resource: '@FoodAppBundle/Resources/config/routing_admin.yml'
-    prefix: /admin
+    prefix: /{_locale}/admin
 
 food_cart:
     resource: "@FoodCartBundle/Resources/config/routing.yml"
@@ -51,8 +51,7 @@ food_ajax_import_locale:
     prefix:   /{_locale}/ajax
     defaults: { _locale: %kernel.default_locale% }
     requirements:
-      _locale:  "[a-z]{2}"
-
+#      _locale:  "[a-z]{2}"
 
 food_places:
     path: /places
@@ -96,12 +95,12 @@ food_slug_lang:
     path:  /{_locale}/{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale% }
     requirements:
-        slug : "^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$"
+        slug : "^(?!admin|cart|login|logout|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$"
         _locale: "^[a-z]{2}"
 
 food_slug:
-    path:  /{slug}/
-    defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
+    path:  /{_locale}/{slug}/
+    defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale%  }
     requirements:
         slug : "^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+){4,}"
 

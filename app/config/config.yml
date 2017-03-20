@@ -95,9 +95,9 @@ framework:
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
-        handler_id: session.handler.memcached
+#        handler_id: session.handler.memcached
         name: skaniSesija2014PerkamPicasUrmu
-        #~ save_path: %kernel.root_dir%/var/sessions
+        save_path: %kernel.root_dir%/var/sessions
     fragments:       ~
     http_method_override: true
 
@@ -128,7 +128,7 @@ twig:
         google_maps_api: "%google.maps_api%"
         cloudfront_url: "%cloudfront_url%"
         invoice_series: "%invoice.series%"
-        show_invoice_sum_words: "%show_invoice_sum_words%"
+#        show_invoice_sum_words: "%show_invoice_sum_words%"
         dispatcher_bell: "%dispatcher_bell%"
         static_page_privacy_policy: "%static_page_privacy_policy%"
         static_page_b2b_rules: "%static_page_b2b_rules%"
@@ -237,12 +237,24 @@ fos_user:
         type: food_user_registration
 
 services:
+
+  request_listener:
+    class: Food\AppBundle\EventListener\RequestListener
+    arguments: [ @service_container ]
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+
+
   gedmo.listener.softdeleteable:
     class: Gedmo\SoftDeleteable\SoftDeleteableListener
     tags:
         - { name: doctrine.event_subscriber, connection: default }
     calls:
         - [ setAnnotationReader, [ @annotation_reader ] ]
+
+  authentication_handler:
+    class: Food\UserBundle\Handler\AuthenticationHandler
 
   twig.extension.intl:
     class: Twig_Extensions_Extension_Intl
@@ -263,11 +275,11 @@ services:
     #~ arguments:
         #~ persistent_id: %session_memcached_prefix%
     calls:
-        - [ addServer, [ %session_memcached_host%, %session_memcached_port% ]]
+#        - [ addServer, [ %session_memcached_host%, %session_memcached_port% ]]
 
-  session.handler.memcached:
-    class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler
-    arguments: [@session.memcached, { prefix: %session_memcached_prefix%, expiretime: %session_memcached_expire% }]
+#  session.handler.memcached:
+#    class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler
+#    arguments: [@session.memcached, { prefix: %session_memcached_prefix%, expiretime: %session_memcached_expire% }]
 
 
 sonata_doctrine_orm_admin:

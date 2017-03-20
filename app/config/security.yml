@@ -28,17 +28,18 @@ security:
           logout:
               path:           /%locale%/admin/logout
               target:         /%locale%/admin/
+
           anonymous:    true
       # -> end custom configuration
 
       # defaut login area for standard users
       main:
-          pattern:      .*
+          pattern: ^/
           form_login:
               provider:       fos_userbundle
-              login_path:     /login
+              login_path:     fos_user_security_login
               use_forward:    false
-              check_path:     /login_check
+              check_path:     fos_user_security_check
               failure_path:   null
               failure_handler: food_user.authentication_handler
               success_handler: food_user.authentication_handler
@@ -48,8 +49,9 @@ security:
               path:     /
               domain:   ~ # Defaults to the current domain from $_SERVER
           logout:
-              path: /logout
+              path: fos_user_security_logout
               target: /
+              success_handler: authentication_handler
           anonymous:    true
 #        main:
 #            pattern: ^/
@@ -66,6 +68,7 @@ security:
 
     access_control:
         # URL of FOSUserBundle which need to be available to anonymous users
+
         - { path: ^/_wdt, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/_profiler, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -93,3 +96,4 @@ security:
 #        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/admin/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+

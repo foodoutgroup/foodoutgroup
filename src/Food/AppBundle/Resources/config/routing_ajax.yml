@@ -12,7 +12,7 @@ food_ajax_remove_dish:
 
 food_ajax:
     path: /{action}/
-    defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
+    defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~ , _locale: %kernel.default_locale%}
     options:
         expose: true
 

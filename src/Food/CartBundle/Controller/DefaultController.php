@@ -191,6 +191,7 @@ class DefaultController extends Controller
 
     public function indexAction($placeId, $takeAway = null, Request $request)
     {
+
         // for now this is relevant for callcenter functionality
         $isCallcenter = $request->isXmlHttpRequest();
 

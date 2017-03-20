@@ -168,7 +168,7 @@ bind_coupon_submit_button = function(place_id,
 
         couponField = $('input#coupon_code_popup');
         popupInner = $('.coupon_inner');
-        
+
         popupInner.mask();
 
         options = {
@@ -181,7 +181,7 @@ bind_coupon_submit_button = function(place_id,
 
         $.ajax(options);
     };
-    
+
     $(subject).bind('click', callback);
 }
 
