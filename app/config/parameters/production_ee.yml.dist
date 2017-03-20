@@ -43,15 +43,13 @@ parameters:
     order.cancel_notify_emails: []
     accounting_email: ""
     b2b_invoice_email: ""
-    payment.methods:
-        - local
-        - local.card
-    #    - postpaid
-    #    - paysera
-    #    - swedbank-gateway
-    #   - swedbank-credit-card-gateway
-    #   - seb-banklink
-    #   - nordea-banklink
+    payment:
+           method:
+             - local
+             - local.card
+           title:
+             - '[#cash#]'
+             - '[#credit.card#]'
     currency_display: '&euro;'
     currency_iso: EUR
     display_currency_alternative:  Lt
