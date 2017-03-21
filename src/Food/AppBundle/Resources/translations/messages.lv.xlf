@@ -220,7 +220,7 @@
             </trans-unit>
             <trans-unit id="mobile.order_confirm_prepareTimeOther" resname="mobile.order_confirm_prepareTimeOther">
                 <source>mobile.order_confirm_prepareTimeOther</source>
-                <target>Pirmo reizi (cits)</target>
+                <target>Cits</target>
             </trans-unit>
             <trans-unit id="mobile.order_confirm_enterPrepareTime" resname="mobile.order_confirm_enterPrepareTime">
                 <source>mobile.order_confirm_enterPrepareTime</source>
