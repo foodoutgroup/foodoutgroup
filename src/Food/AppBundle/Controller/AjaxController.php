@@ -68,6 +68,24 @@ class AjaxController extends Controller
         if ((!$locationInfo['not_found'] || $locationInfo['street_found']) && $locationInfo['lng'] > 20 && $locationInfo['lat'] > 50) {
             $respData['success'] = 1;
             unset($respData['message']);
+        } else {
+            $user = $this->getUser();
+            $userIp = ($this->container->get('request')->getClientIp());
+            $error = new ErrorLog();
+
+            $error->setIp($userIp);
+            //~ $error->setCart(null);
+            $error->setCreatedBy($user);
+            $error->setPlace(null);
+            $error->setCreatedAt(new \DateTime('now'));
+            $error->setUrl($currentUrl);
+            $error->setSource('adress_change_find');
+            $error->setDescription(implode(', ', [$respData['message'], $city, $address]));
+            $error->setDebug(serialize($request));
+
+            $em = $this->container->get('doctrine')->getManager();
+            $em->persist($error);
+            $em->flush();
         }
         if (!$locationInfo['not_found']) {
             $respData['adr'] = 1;
@@ -92,28 +110,6 @@ class AjaxController extends Controller
                 ]
             ]));
         } else {
-
-            if(isset($respData['message']) && !empty($respData['message'])) {
-
-                $user = $this->getUser();
-                $userIp = ($this->container->get('request')->getClientIp());
-                $error = new ErrorLog();
-
-                $error->setIp($userIp);
-                //~ $error->setCart(null);
-                $error->setCreatedBy($user);
-                $error->setPlace(null);
-                $error->setCreatedAt(new \DateTime('now'));
-                $error->setUrl($currentUrl);
-                $error->setSource('adress_change_find');
-                $error->setDescription($respData['message']);
-                $error->setDebug(serialize($request));
-
-                $em = $this->container->get('doctrine')->getManager();
-                $em->persist($error);
-                $em->flush();
-
-            }
             $response->setContent(json_encode([
                 'data' => $respData
             ]));
