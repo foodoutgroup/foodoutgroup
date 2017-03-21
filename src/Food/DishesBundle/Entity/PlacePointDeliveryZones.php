@@ -135,6 +135,13 @@ class PlacePointDeliveryZones
     private $activeOnZaval = true;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="adminFee", type="decimal", nullable=true)
+     */
+    private $adminFee;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -524,5 +531,21 @@ class PlacePointDeliveryZones
     public function getActiveOnZaval()
     {
         return $this->activeOnZaval;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAdminFee()
+    {
+        return $this->adminFee;
+    }
+
+    /**
+     * @param float $adminFee
+     */
+    public function setAdminFee($adminFee)
+    {
+        $this->adminFee = $adminFee;
     }
 }
