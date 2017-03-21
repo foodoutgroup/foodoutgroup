@@ -23,7 +23,7 @@ class Language
             'us' => 'au',
             'ys' => 'y',
         ),
-    ) ;
+    );
 
     /**
      * @var array
@@ -42,23 +42,23 @@ class Language
         ),
         'en' => array(),
         'ru' => array(
-            'ґ'=>'g','ё'=>'e','є'=>'e','ї'=>'i','і'=>'i',
-            'а'=>'a', 'б'=>'b', 'в'=>'v',
-            'г'=>'g', 'д'=>'d', 'е'=>'e', 'ё'=>'e',
-            'ж'=>'zh', 'з'=>'z', 'и'=>'i', 'й'=>'i',
-            'к'=>'k', 'л'=>'l', 'м'=>'m', 'н'=>'n',
-            'о'=>'o', 'п'=>'p', 'р'=>'r', 'с'=>'s',
-            'т'=>'t', 'у'=>'u', 'ф'=>'f', 'х'=>'h',
-            'ц'=>'c', 'ч'=>'ch', 'ш'=>'sh', 'щ'=>'sch',
-            'ы'=>'y', 'э'=>'e', 'ю'=>'u', 'я'=>'ya', 'é'=>'e',
-            'ь'=>'', 'ъ' => '',
+            'ґ' => 'g', 'ё' => 'e', 'є' => 'e', 'ї' => 'i', 'і' => 'i',
+            'а' => 'a', 'б' => 'b', 'в' => 'v',
+            'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'e',
+            'ж' => 'zh', 'з' => 'z', 'и' => 'i', 'й' => 'i',
+            'к' => 'k', 'л' => 'l', 'м' => 'm', 'н' => 'n',
+            'о' => 'o', 'п' => 'p', 'р' => 'r', 'с' => 's',
+            'т' => 't', 'у' => 'u', 'ф' => 'f', 'х' => 'h',
+            'ц' => 'c', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'sch',
+            'ы' => 'y', 'э' => 'e', 'ю' => 'u', 'я' => 'ya', 'é' => 'e',
+            'ь' => '', 'ъ' => '',
         ),
-        'lv' => array ( /* Latvian */
+        'lv' => array( /* Latvian */
             'ā' => 'a', 'č' => 'c', 'ē' => 'e', 'ģ' => 'g', 'ī' => 'i', 'ķ' => 'k', 'ļ' => 'l', 'ņ' => 'n',
             'š' => 's', 'ū' => 'u', 'ž' => 'z', 'Ā' => 'A', 'Č' => 'C', 'Ē' => 'E', 'Ģ' => 'G', 'Ī' => 'i',
             'Ķ' => 'k', 'Ļ' => 'L', 'Ņ' => 'N', 'Š' => 'S', 'Ū' => 'u', 'Ž' => 'Z'
         ),
-        'ee' => array (
+        'ee' => array(
             'Š' => 'S', 'Ž' => 'Z', 'Õ' => 'O', 'Ä' => 'A', 'Ö' => 'O', 'Ü' => 'U',
             'š' => 's', 'ž' => 'z', 'õ' => 'o', 'ä' => 'a', 'ö' => 'o', 'ü' => 'u'
         )
@@ -81,16 +81,16 @@ class Language
         ),
         'en' => array(),
         'ru' => array(
-            'А'=>'A','Б'=>'B','В'=>'V','Г'=>'G','Д'=>'D',
-            'Е'=>'E', 'Ж'=>'Zh', 'З'=>'Z',
-            'И'=>'I', 'Й'=>'Y', 'К'=>'K', 'Л'=>'L',
-            'М'=>'M', 'Н'=>'N', 'О'=>'O', 'П'=>'P',
-            'Р'=>'R', 'С'=>'S', 'Т'=>'T', 'У'=>'U',
-            'Ф'=>'F', 'Х'=>'H', 'Ц'=>'Ts', 'Ч'=>'Ch',
-            'Ш'=>'Sh', 'Щ'=>'Sht', 'Ъ'=>'A', 'Ь'=>'Y',
-            'Ю'=>'Yu', 'Я'=>'Ya',
+            'А' => 'A', 'Б' => 'B', 'В' => 'V', 'Г' => 'G', 'Д' => 'D',
+            'Е' => 'E', 'Ж' => 'Zh', 'З' => 'Z',
+            'И' => 'I', 'Й' => 'Y', 'К' => 'K', 'Л' => 'L',
+            'М' => 'M', 'Н' => 'N', 'О' => 'O', 'П' => 'P',
+            'Р' => 'R', 'С' => 'S', 'Т' => 'T', 'У' => 'U',
+            'Ф' => 'F', 'Х' => 'H', 'Ц' => 'Ts', 'Ч' => 'Ch',
+            'Ш' => 'Sh', 'Щ' => 'Sht', 'Ъ' => 'A', 'Ь' => 'Y',
+            'Ю' => 'Yu', 'Я' => 'Ya',
         ),
-        'lv' => array ( /* Latvian */
+        'lv' => array( /* Latvian */
             'ā' => 'a', 'č' => 'c', 'ē' => 'e', 'ģ' => 'g', 'ī' => 'i', 'ķ' => 'k', 'ļ' => 'l', 'ņ' => 'n',
             'š' => 's', 'ū' => 'u', 'ž' => 'z', 'Ā' => 'A', 'Č' => 'C', 'Ē' => 'E', 'Ģ' => 'G', 'Ī' => 'i',
             'Ķ' => 'k', 'Ļ' => 'L', 'Ņ' => 'N', 'Š' => 'S', 'Ū' => 'u', 'Ž' => 'Z'
@@ -135,7 +135,7 @@ class Language
      * @throws \Exception
      * @return string
      */
-    public function removeChars($lang, $text, $toLower = true, $removeSpecialChars=true)
+    public function removeChars($lang, $text, $toLower = true, $removeSpecialChars = true)
     {
         if (!in_array($lang, array('lt', 'ru', 'en', 'lv', 'ee'))) {
             throw new \Exception('Undefined language');
@@ -152,6 +152,8 @@ class Language
             $text = strtr($text, $this->specialCharReplacements);
         }
         return $text;
+
+
     }
 
     /**
@@ -170,15 +172,15 @@ class Language
      *
      * @return string
      */
-    public function getName ($name, $lang = null)
+    public function getName($name, $lang = null)
     {
-        $names = explode( ' ', $this->cleanName($name, $lang) ) ;
-        $namesConv = array() ;
-        foreach ( $names as $v ) {
-            $namesConv[] = $this->getTransformedName($v, $lang) ;
+        $names = explode(' ', $this->cleanName($name, $lang));
+        $namesConv = array();
+        foreach ($names as $v) {
+            $namesConv[] = $this->getTransformedName($v, $lang);
         }
 
-        return count($namesConv) ? implode(' ', $namesConv) : $name ;
+        return count($namesConv) ? implode(' ', $namesConv) : $name;
     }
 
     /**
@@ -188,7 +190,7 @@ class Language
      *
      * @return string
      */
-    protected function cleanName ($name, $lang = null)
+    protected function cleanName($name, $lang = null)
     {
         switch ($lang) {
             case 'lt':
@@ -203,11 +205,11 @@ class Language
         if (!empty($countryPreg)) {
             $name = mb_eregi_replace($countryPreg, ' ', $name);
         }
-        $name = mb_eregi_replace('\s+', ' ', $name) ;
-        $name = trim($name) ;
-        $name = mb_convert_case($name, MB_CASE_TITLE, "UTF-8") ;
+        $name = mb_eregi_replace('\s+', ' ', $name);
+        $name = trim($name);
+        $name = mb_convert_case($name, MB_CASE_TITLE, "UTF-8");
 
-        return $name ;
+        return $name;
     }
 
     /**
@@ -217,20 +219,38 @@ class Language
      *
      * @return string
      */
-    protected function getTransformedName ($name, $lang = null)
+    protected function getTransformedName($name, $lang = null)
     {
-        $return = $name ;
+        $return = $name;
 
         if (isset($this->nameInflection[$lang])) {
-            foreach ( $this->nameInflection[$lang] as $from=>$to ) {
-                if ( mb_substr( $return, -mb_strlen($from) ) == $from ) {
-                    $return = mb_substr( $return, 0, -mb_strlen($from) ) ;
-                    $return .= $to ;
-                    break ;
+            foreach ($this->nameInflection[$lang] as $from => $to) {
+                if (mb_substr($return, -mb_strlen($from)) == $from) {
+                    $return = mb_substr($return, 0, -mb_strlen($from));
+                    $return .= $to;
+                    break;
                 }
             }
         }
 
-        return $return ;
+        return $return;
+    }
+
+    public function getAllCharTranslations($text)
+    {
+        $allLang = $this->countryCharReplacements;
+        $tmpLangArr = array();
+
+        foreach ($allLang as $lang) {
+            $tmpLangArr = array_merge($tmpLangArr, $lang);
+        }
+
+        $text = strtr(mb_strtolower($text, 'utf-8'), $tmpLangArr);
+        $text = strtr($text, $tmpLangArr);
+        $text = strtr($text, $tmpLangArr);
+        $text = strtr($text, $tmpLangArr);
+
+        return $text;
+
     }
 }

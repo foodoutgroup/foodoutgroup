@@ -23,10 +23,11 @@ class FoodCategoryAdmin extends FoodAdmin
             array(
                 'translatable_class' => 'Food\DishesBundle\Entity\FoodCategory',
                 'fields' => array(
-                    'name' => array('label' => 'label.name'),
+                    'name' => array('label' => 'label.name', 'attr'=>['class'=>'slug_title']),
 
                     'slug' => [
                         'constraints' => new Slug('food_category', $formMapper),
+                        'attr'=>['class'=>'slug']
                     ]
                 )
 

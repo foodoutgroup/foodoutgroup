@@ -39,6 +39,10 @@ class AjaxController extends Controller
             case 'check-coupon':
                 $this->_ajaxCheckCoupon($response, $request->get('place_id'), $request->get('coupon_code'));
                 break;
+            case 'change-slug-letters':
+                $this->_changeSlugLetters($response,$request->get('text'));
+                break;
+
             default:
                 $response->setContent(json_encode([
                     'message' => 'Method not found :)',
@@ -352,4 +356,15 @@ class AjaxController extends Controller
 
         $response->setContent(json_encode($cont));
     }
+
+    private function _changeSlugLetters(Response $response,$text){
+
+        $langUtils = $this->get('food.app.utils.language');
+        $trasformedText = $langUtils->getAllCharTranslations($text);
+
+
+
+        $response->setContent(json_encode($trasformedText));
+    }
+
 }

@@ -99,7 +99,8 @@ class DishAdmin extends FoodAdmin
                 'translatable_class' => 'Food\DishesBundle\Entity\Dish',
                 'fields' => array(
                     'name' => array(
-                        'label' => 'label.name'
+                        'label' => 'label.name',
+                        'attr'=>['class'=>'slug_title']
                     ),
                     'nameToNav' => array(
                         'label' => 'Navision name'
@@ -109,6 +110,7 @@ class DishAdmin extends FoodAdmin
                     ),
                     'slug' => [
                         'constraints' => new Slug('dish', $formMapper),
+                        'attr'=>['class'=>'slug']
                     ]
                 )
             ));
