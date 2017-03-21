@@ -67,10 +67,13 @@ class PlaceService extends PlacesService
     }
 
 
-    public function getPlacesByLocation(Place $place, $locationData) {
+    public function getPlacesByLocation(Place $place, $locationData, $version = 1) {
 
         $placeId = $place->getId();
         $ignoreSelfDelivery = false;
+
+        $placeService = $this->container->get('food.places');
+
             $response = [];
             $cacheKey = $placeId . serialize($locationData) . (int)$ignoreSelfDelivery;
             if (!isset(self::$_getNearCache[$cacheKey])) {
@@ -127,7 +130,10 @@ class PlaceService extends PlacesService
                                 'delivery' => (boolean)$item['delivery'],
                                 'deliveryPrice' => $this->getPlacePointDeliveryPrice($item['id'], $item['distance']),
                                 'minCart' => $this->getPlacePointMinCartPrice($item['id'], $item['distance']),
+                                'pickupTime' => $place->getPickupTime(),
+                                'deliveryTime' => $placeService->getDeliveryTime($place),
                             ];
+
                          }
 
                     }
