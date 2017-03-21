@@ -3,6 +3,7 @@
 namespace Api\V2Bundle\Controller;
 
 use Api\BaseBundle\Exceptions\ApiException;
+use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -16,67 +17,42 @@ class LocationController extends Controller
     public function getCityAction($providerHash)
     {
         $response = ['success' => false];
-
+        $foundCity = [];
         switch ($providerHash) {
             case "3MezrzQPc8gCdXDtpsQETj1qD57iISrd53xMR01UfpIYZU0hxgXioN2QY3GBZo8P": // todo: kazkaip pakeisti cia special for cili
 
                 $cityCollection = [];
-                $placeGroupIDs = [63,85, 105,142,333,302,160];
-                $cityConfigCollection = $this->container->getParameter('available_cities');
+                $placeGroupIDs = [63, 143, 85, 105,142,333,302,160];
 
-                foreach ($cityConfigCollection as $city) {
+                $repository = $this->getDoctrine()
+                    ->getRepository('FoodDishesBundle:PlacePoint');
 
-                    $repository = $this->getDoctrine()
-                        ->getRepository('FoodDishesBundle:PlacePoint');
+                $qb = $repository->createQueryBuilder('pp')
+                    ->join('FoodDishesBundle:Place', 'p', Join::WITH,'p.id = pp.place')
+                    ->where('pp.active = 1')
+                    ->groupBy('pp.city')
+                    ->andWhere('p.deletedAt IS NULL')
+                    ->andWhere('p.id IN (:ids)')
+                    ->andWhere('p.apiHash IS NOT NULL');
 
-                    $qb = $repository->createQueryBuilder('pp')
-                        ->innerJoin('FoodDishesBundle:Place', 'p', 'WITH','p.id = pp.place')
-                        ->where('pp.city = :city')
-                        ->andWhere('pp.active = 1')
-                        ->andWhere('p.deletedAt IS NULL')
-                        ->andWhere('p.id IN (:ids)')
-                        ->andWhere('p.apiHash IS NOT NULL');
+                $query = $qb->getQuery()->setParameters(['ids' => $placeGroupIDs]);
 
-                    $query = $qb->getQuery()->setParameters(['city' => $city, 'ids' => implode(",",$placeGroupIDs)]);
+                $result = $query->execute();
 
-                    $result = $query->execute();
-                    $place = (count($result) >= 1 ? $result[0]->getPlace() : null);
+                foreach ($result as $placePoint) {
 
-                    $dataArray = [];
-                    foreach ($result as $placePoint) {
-
-                        $place = $placePoint->getPlace();
-
-                            $dataArray['city'] = $city;
-                            $dataArray['hash'] = $place->getApiHash();
-                            $dataArray['points'][] = [
-                                'id' => $placePoint->getId(),
-                                'address' => $placePoint->getAddress(),
-                                'work_hour' => [
-                                    $placePoint->getWd1(),
-                                    $placePoint->getWd2(),
-                                    $placePoint->getWd3(),
-                                    $placePoint->getWd4(),
-                                    $placePoint->getWd5(),
-                                    $placePoint->getWd6(),
-                                    $placePoint->getWd7(),
-                                ]
-                            ];
+                    if(in_array($placePoint->getCity(), $foundCity)) {
+                       continue;
                     }
 
-                    $cityCollection[] = $dataArray;
-//                    var_dump($dataArray);
-//                    die;
-//
-//                    $dataArray = [];
-//
-//                    if($place != null && $place->getActive()) {
-//                        $cityCollection[] = [
-//                            'city' => $city,
-//                            'hash' => $place->getApiHash(),
-//                        ];
-//                    }
-                }
+                    $foundCity[] = $placePoint->getCity();
+                    $place = $placePoint->getPlace();
+                    $cityCollection[] = [
+                            'city' => $placePoint->getCity(),
+                            'hash' => $place->getApiHash(),
+
+                        ];
+                    }
 
                 $response['success'] = true;
                 $response['collection'] = $cityCollection;
