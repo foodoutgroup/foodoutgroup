@@ -6,6 +6,8 @@ use Food\AppBundle\Filter\PlaceFilter;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Food\AppBundle\Validator\Constraints\Slug;
+use \Food\AppBundle\Entity\Slug as SlugEntity;
 
 class FoodCategoryAdmin extends FoodAdmin
 {
@@ -22,7 +24,13 @@ class FoodCategoryAdmin extends FoodAdmin
                 'translatable_class' => 'Food\DishesBundle\Entity\FoodCategory',
                 'fields' => array(
                     'name' => array('label' => 'label.name'),
+
+                    'slug' => [
+                        'constraints' => new Slug('food_category', $formMapper),
+                    ]
                 )
+
+
             ));
         if ($this->isAdmin()) {
             $formMapper
@@ -33,8 +41,7 @@ class FoodCategoryAdmin extends FoodAdmin
             ->add('textsOnly', null, array('required' => false, 'label' => 'admin.food_category.texts_only'))
             ->add('drinks', 'checkbox', array('required' => false, 'label' => 'admin.food_category.drinks'))
             ->add('alcohol', 'checkbox', array('required' => false, 'label' => 'admin.food_category.alcohol'))
-            ->add('active', 'checkbox', array('required' => false, 'label' => 'admin.active'))
-        ;
+            ->add('active', 'checkbox', array('required' => false, 'label' => 'admin.active'));
     }
 
     /**
@@ -54,8 +61,7 @@ class FoodCategoryAdmin extends FoodAdmin
             $datagridMapper->add('place');
         }
 
-        $datagridMapper->add('active', null, array('label' => 'admin.places.list.active'))
-        ;
+        $datagridMapper->add('active', null, array('label' => 'admin.places.list.active'));
     }
 
     /**
@@ -70,7 +76,7 @@ class FoodCategoryAdmin extends FoodAdmin
             ->add('drinks', null, array('label' => 'admin.food_category.drinks'))
             ->add('alcohol', null, array('label' => 'admin.food_category.alcohol'))
             ->add('active', null, array('label' => 'admin.places.list.active', 'editable' => true))
-            ->add('lineup', '', array('required' => false, 'label' => 'admin.food_category.lineup','editable' => true))
+            ->add('lineup', '', array('required' => false, 'label' => 'admin.food_category.lineup', 'editable' => true))
 //            ->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('editedAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.edited_at'))
@@ -80,8 +86,7 @@ class FoodCategoryAdmin extends FoodAdmin
                     'delete' => array(),
                 ),
                 'label' => 'admin.actions'
-            ))
-        ;
+            ));
 
         $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
             ->setPlaceFilterEnabled(true);
@@ -100,50 +105,20 @@ class FoodCategoryAdmin extends FoodAdmin
 
             $object->setPlace($place);
         }
+        $this->slug($object);
         parent::prePersist($object);
     }
 
-    /**
-     * @param \Food\DishesBundle\Entity\FoodCategory $object
-     * @return mixed|void
-     */
-    public function postPersist($object)
+    public function preUpdate($object)
     {
-        $this->fixSlugs($object);
+        $this->slug($object);
+        parent::preUpdate($object);
+
     }
 
-    /**
-     * @param \Food\DishesBundle\Entity\FoodCategory $object
-     * @return mixed|void
-     */
-    public function postUpdate($object)
+    private function slug($object)
     {
-        $this->fixSlugs($object);
-    }
-
-    /**
-     * @param \Food\DishesBundle\Entity\FoodCategory $object
-     */
-    private function fixSlugs($object)
-    {
-        $origName = $object->getOrigName($this->modelManager->getEntityManager('FoodDishesBundle:FoodCategory'));
-        $locales = $this->getContainer()->getParameter('available_locales');
-        $textsForSlugs = array();
-        foreach($object->getTranslations()->getValues() as $row) {
-            if ($row->getField() == "name") {
-                $textsForSlugs[$row->getLocale()] = $row->getContent();
-            }
-        }
-        foreach ($locales as $loc) {
-            if (!isset($textsForSlugs[$loc])) {
-                $textsForSlugs[$loc] = $origName;
-            }
-        }
-
-        $languages = $this->getContainer()->get('food.app.utils.language')->getAll();
-        $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
-        foreach ($languages as $loc) {
-            $slugUtelyte->generateForFoodCategory($loc, $object->getId(), $textsForSlugs[$loc]);
-        }
+        $slugService = $this->getContainer()->get('slug');
+        $slugService->generate($object, 'slug', SlugEntity::TYPE_FOOD_CATEGORY);
     }
 }
