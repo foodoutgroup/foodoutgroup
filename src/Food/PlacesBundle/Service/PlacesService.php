@@ -761,6 +761,9 @@ class PlacesService extends ContainerAware
 
         $locale = $this->container->getParameter('locale');
 
+        $util = new Language($this->container);
+        $city = $util->removeChars($locale,$city,false);
+
         foreach($cities as $key => $value){
             $util = new Language($this->container);
             $cityReformat = $util->removeChars($locale,$value,false);
