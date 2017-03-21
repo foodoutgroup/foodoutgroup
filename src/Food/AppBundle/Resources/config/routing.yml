@@ -173,6 +173,14 @@ food_best_offers_lv_slash:
   path: /akcijas/
   defaults: { _controller: FoodAppBundle:Default:listBestOffers}
 
+food_best_offers_ee:
+  path: /valjamuuk
+  defaults: { _controller: FoodAppBundle:Default:listBestOffers}
+
+food_best_offers_ee_slash:
+  path: /valjamuuk/
+  defaults: { _controller: FoodAppBundle:Default:listBestOffers}
+
 food_blog_main_page_lt:
   path: /naujienos/
   defaults: { _controller: FoodBlogBundle:Default:index }
@@ -189,7 +197,7 @@ food_slug:
     path:  /{slug}/
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~ }
     requirements:
-        slug : "^(?!admin|cart|1822|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|restourans|maina|mesto|monitoring|nagios|banned|banned-email|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Marijampole|Utena|Kedainiai|Plunge|Palanga|Mazeikiai|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita|cilipica)[a-z0-9-\__\"„“\.\+]{4,}"
+        slug : "^(?!admin|cart|1822|test|invoice|payments|callcenter|newsletter|ajax|js|routing|places|vietos|vietas|restoranai|restorani|restourans|maina|mesto|monitoring|nagios|banned|banned-email|logistics|order|sitemap|registracija_speli|registracija_zaidimui|Kaunas|Vilnius|Klaipeda|Siauliai|Panevezys|Alytus|Marijampole|Utena|Kedainiai|Plunge|Palanga|Mazeikiai|Riga|Tallinn|aplikacijos|susipazinkime|ciligreita|cilipica)[a-z0-9-\__\"„“\.\+]{3,}"
 
 food_order_nav_test1:
     path: /order/nav_test1
@@ -521,10 +529,6 @@ food_city_riga:
     path: /Riga
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
 
-food_city_tallinn:
-    path: /Tallinn
-    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Tallinn}
-
 food_city_vilnius_slash:
     path: /Vilnius/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius}
@@ -580,6 +584,102 @@ food_city_riga_slash:
 food_city_tallinn_slash:
     path: /Tallinn/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Tallinn}
+
+food_city_haabersti:
+    path: /Haabersti
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Haabersti}
+
+food_city_haabersti_slash:
+    path: /Haabersti/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Haabersti}
+
+food_city_jarvekula:
+    path: /Jarvekula
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Jarvekula}
+
+food_city_jarvekula_slash:
+    path: /Jarvekula/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Jarvekula}
+
+food_city_kesklinn:
+    path: /Kesklinn
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kesklinn}
+
+food_city_kesklinn_slash:
+    path: /Kesklinn/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kesklinn}
+
+food_city_kristiine:
+    path: /Kristiine
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kristiine}
+
+food_city_kristiine_slash:
+    path: /Kristiine/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Kristiine}
+
+food_city_lasnamae:
+    path: /Lasnamae
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Lasnamae}
+
+food_city_lasnamae_slash:
+    path: /Lasnamae/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Lasnamae}
+
+food_city_mustamae:
+    path: /Mustamae
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Mustamae}
+
+food_city_mustamae_slash:
+    path: /Mustamae/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Mustamae}
+
+food_city_nomme:
+    path: /Nomme
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Nomme}
+
+food_city_nomme_slash:
+    path: /Nomme/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Nomme}
+
+food_city_oismae:
+    path: /Oismae
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Oismae}
+
+food_city_oismae_slash:
+    path: /Oismae/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Oismae}
+
+food_city_peetri:
+    path: /Peetri
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Peetri}
+
+food_city_peetri_slash:
+    path: /Peetri/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Peetri}
+
+food_city_pirita:
+    path: /Pirita
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Pirita}
+
+food_city_pirita_slash:
+    path: /Pirita/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Pirita}
+
+food_city_pohja-tallinn:
+    path: /Pohja-Tallinn
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Pohja-Tallinn}
+
+food_city_pohja-tallinn_slash:
+    path: /Pohja-Tallinn/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Pohja-Tallinn}
+
+food_city_viimsi:
+    path: /Viimsi
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Viimsi}
+
+food_city_viimsi_slash:
+    path: /Viimsi/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Viimsi}
 
 food_city_vilnius_slash_filter:
     path: /Vilnius/{slug_filter}
