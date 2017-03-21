@@ -55,7 +55,7 @@ class PlaceController extends Controller
 
             $return['location'] = $locationData;
             $return['placepoint'] = $ps->getPlacesByLocation($place, $locationData, $request->get("version", 1));
-
+            $return['success'] = true;
         } catch (ApiException $e) {
             $return['message'] = $e->getMessage();
         }
