@@ -11,7 +11,8 @@ use Symfony\Component\Routing\Router;
 use \Food\AppBundle\Entity\Slug as SlugEntity;
 
 
-class SlugService {
+class SlugService
+{
 
     private $em;
     private $localeCollection;
@@ -21,7 +22,7 @@ class SlugService {
     private $router;
     private $container;
 
-    public function __construct(EntityManager $entityManager, ContainerInterface $container,  Router $router, $localeCollection, $defaultLocale)
+    public function __construct(EntityManager $entityManager, ContainerInterface $container, Router $router, $localeCollection, $defaultLocale)
     {
         $this->em = $entityManager;
         $this->request = $container->get('request');
@@ -35,11 +36,11 @@ class SlugService {
     public function generate($object, $slugField = 'slug', $type = SlugEntity::TYPE_PAGE)
     {
 
-        if(!in_array($type, SlugEntity::$typeCollection)) {
+        if (!in_array($type, SlugEntity::$typeCollection)) {
             throw new \Exception('Slug type was not found');
         }
 
-        if(!method_exists($object, 'getTranslations')) {
+        if (!method_exists($object, 'getTranslations')) {
             throw new \Exception('getTranslations method required');
         }
 
@@ -49,13 +50,13 @@ class SlugService {
         $textsForSlugs = [];
         $origName = null;
 
-        $method = 'get'.ucfirst($slugField);
-        if(method_exists($object, $method)) {
+        $method = 'get' . ucfirst($slugField);
+        if (method_exists($object, $method)) {
             $textsForSlugs[$defaultLocale] = $object->{$method}();
             $origName = $textsForSlugs[$defaultLocale];
         }
 
-        foreach($object->getTranslations()->getValues() as $row) {
+        foreach ($object->getTranslations()->getValues() as $row) {
             if ($row->getField() == $slugField) {
                 $textsForSlugs[$row->getLocale()] = $row->getContent();
             }
@@ -77,7 +78,8 @@ class SlugService {
     }
 
 
-    public function exist($slug) {
+    public function exist($slug)
+    {
         return $this->repository->exist($slug);
     }
 
@@ -97,7 +99,7 @@ class SlugService {
         }
     }
 
-    public function getUrl($itemId, $type)
+    public function getUrl($itemId, $type, $reqLocale = false)
     {
         $locale = $this->getLocale();
         $slug = 'food_slug';
@@ -106,17 +108,24 @@ class SlugService {
         $params = ['slug' => $urlSlug];
 
         $url = 'error';
-        if($locale != $this->defaultLocale) {
+
+
+        if ($locale != $this->defaultLocale) {
             $slug = 'food_slug_lang';
             $params['_locale'] = $locale;
-            $url = $locale."/".$url;
+            $url = $locale . "/" . $url;
         }
 
         preg_match('/^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$/', $urlSlug, $matches);
 
-        if($urlSlug && (isset($matches[0]) && count($matches[0]))) {
-            $url = $this->router->generate($slug, $params);
+        if ($urlSlug && (isset($matches[0]) && count($matches[0]))) {
+            if ($reqLocale) {
+                $url = $urlSlug;
+            } else {
+                $url = $this->router->generate($slug, $params);
+            }
         }
+
         return $url;
     }
 
@@ -127,7 +136,7 @@ class SlugService {
 
         if ($locale != $this->defaultLocale) {
             $params['_locale'] = $locale;
-            $route = ($route_locale == null ? $route.'_locale' : $route_locale);
+            $route = ($route_locale == null ? $route . '_locale' : $route_locale);
         }
 
         return $this->router->generate($route, $params);
@@ -139,7 +148,7 @@ class SlugService {
 
         if ($locale != $this->defaultLocale) {
             $params['_locale'] = $locale;
-            $route = ($route_locale == null ? $route.'_locale' : $route_locale);
+            $route = ($route_locale == null ? $route . '_locale' : $route_locale);
         }
 
         return $this->router->generate($route, $params);
@@ -164,6 +173,5 @@ class SlugService {
         }
         return strtolower($locale);
     }
-
 
 }

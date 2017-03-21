@@ -101,6 +101,9 @@ class KitchenController extends Controller
         $placeCountArr = array();
         $list = $this->get('food.places')->getPlacesForList($recommended, $request);
 
+
+
+
         foreach ($list as $placeRow) {
             foreach ($placeRow['place']->getKitchens() as $kitchen) {
                 $kitchen_id = $kitchen->getId();

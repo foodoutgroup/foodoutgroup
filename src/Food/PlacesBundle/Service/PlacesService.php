@@ -324,6 +324,7 @@ class PlacesService extends ContainerAware
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
+
         if ($zaval) {
             $deliveryType = '';
         } else {

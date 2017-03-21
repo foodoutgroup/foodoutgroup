@@ -58,12 +58,12 @@ food_places:
     defaults: { _controller: FoodPlacesBundle:Default:index }
 
 food_places_filter:
-    path: /places/filter/
-    defaults: { _controller: FoodPlacesBundle:Default:list }
+    path: /{_locale}/places/filter/
+    defaults: { _controller: FoodPlacesBundle:Default:list, _locale: %kernel.default_locale% }
 
 food_kitchens_filter:
-    path: /kitchens/filter/
-    defaults: { _controller: FoodDishesBundle:Kitchen:kitchenlist }
+    path: /{_locale}/kitchens/filter/
+    defaults: { _controller: FoodDishesBundle:Kitchen:kitchenlist, _locale: %kernel.default_locale% }
     options:
         expose: true
 
