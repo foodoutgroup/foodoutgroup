@@ -758,14 +758,11 @@ class PlacesService extends ContainerAware
     public function isPlaceDeliversToCity(Place $place, $city)
     {
         $cities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
-
         $locale = $this->container->getParameter('locale');
-
-        $util = new Language($this->container);
+        $util = $this->container->get('food.app.utils.language');
         $city = $util->removeChars($locale,$city,false);
 
         foreach($cities as $key => $value){
-            $util = new Language($this->container);
             $cityReformat = $util->removeChars($locale,$value,false);
             $cities[$key] = $cityReformat;
         }
