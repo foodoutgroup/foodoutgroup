@@ -1383,6 +1383,10 @@
                 <source>admin.order.ismobile_full</source>
                 <target>Mobile</target>
             </trans-unit>
+            <trans-unit id="admin.order.source">
+                <source>admin.order.source</source>
+                <target>Šaltinis</target>
+            </trans-unit>
             <trans-unit id="admin.order.order_from_nav">
                 <source>admin.order.order_from_nav</source>
                 <target>Iš NAV</target>
