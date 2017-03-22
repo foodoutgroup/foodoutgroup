@@ -1446,19 +1446,19 @@
             <!-- order created -->
             <trans-unit id="general.sms.client.order_created" resname="general.sms.client.order_created">
                 <source>general.sms.client.order_created</source>
-                <target>Sveiki. Foodout.lv sanema Tavu pasutijumu Nr. order_id. Rupesimies par ta piegadi ~delivery_time laika! :)</target>
+                <target>Sveiki. Foodout.lv sanema Tavu pasutijumu Nr. order_id. Rupesimies par ta piegadi delivery_time laika! :)</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_created_pickup" resname="general.sms.client.order_created_pickup">
                 <source>general.sms.client.order_created_pickup</source>
-                <target>Sveiki. restaurant_name sanema Tavu pasutijumu. Panemt to varesi ~pre_delivery_time! :)</target>
+                <target>Sveiki. restaurant_name sanema Tavu pasutijumu. Panemt to varesi pre_delivery_time! :)</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_created_preorder" resname="general.sms.client.order_created_preorder">
                 <source>general.sms.client.order_created_preorder</source>
-                <target>Sveiki. Pasutijums Nr. order_id ir pienemts. Tas tiks piegadats ~pre_delivery_time! Tavs Foodout.lv :)</target>
+                <target>Sveiki. Pasutijums Nr. order_id ir pienemts. Tas tiks piegadats pre_delivery_time! Tavs Foodout.lv :)</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_created_preorder_pickup" resname="general.sms.client.order_created_preorder_pickup">
                 <source>general.sms.client.order_created_preorder_pickup</source>
-                <target>Sveiki. restaurant_name sanema Tavu pasutijumu. Panemt to varesi ~pre_delivery_time! :)</target>
+                <target>Sveiki. restaurant_name sanema Tavu pasutijumu. Panemt to varesi pre_delivery_time! :)</target>
             </trans-unit>
 
             <!-- order accepted -->
@@ -1476,11 +1476,11 @@
 -->
             <trans-unit id="general.sms.client.order_accepted_preorder" resname="general.sms.client.order_accepted_preorder">
                 <source>general.sms.client.order_accepted_preorder</source>
-                <target>Sveiki. restaurant_name sanema Tavu pasutijumu. Tas tiks piegadats ~pre_delivery_time! Tavs Foodout.lv :)</target>
+                <target>Sveiki. restaurant_name sanema Tavu pasutijumu. Tas tiks piegadats pre_delivery_time! Tavs Foodout.lv :)</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_accepted_preorder_pickup" resname="general.sms.client.order_accepted_preorder_pickup">
                 <source>general.sms.client.order_accepted_preorder_pickup</source>
-                <target>Sveiki. Savu pasutijumu varesi sanemt ~pre_delivery_time! Tavs Foodout.lv</target>
+                <target>Sveiki. Savu pasutijumu varesi sanemt pre_delivery_time! Tavs Foodout.lv</target>
             </trans-unit>
 
             <!-- order delayed -->
