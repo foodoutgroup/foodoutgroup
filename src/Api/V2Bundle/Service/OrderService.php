@@ -26,10 +26,12 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
      */
     public function createOrderFromRequest(Place $place, JsonRequest $json)
     {
+
         $em = $this->container->get('doctrine')->getManager();
         $doctrine = $this->container->get('doctrine');
-        $deliveryType = ($json->has('type') && $json->get('type', 'deliver') == 'pickup' ? 'pickup' : 'deliver');
 
+
+        $deliveryType = ($json->has('type') && $json->get('type', 'deliver') == 'pickup' ? 'pickup' : 'deliver');
         $os = $this->container->get('food.order');
 
         if (!$json->has('address') && $deliveryType == 'delivery') {
@@ -55,27 +57,26 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
 
         $order = new Order();
 
-
         $location = false;
         if ($deliveryType == "pickup" && $json->has('placepoint')) {
-            $placePoint = $this->container->get("api.v2.place")->getPlacePointByHash($json->get('placepoint'));
+            $placePoint = $this->container->get("api.v2.place")->getPlacePoint($json->get('placepoint'));
+            $order->setPaymentMethod("local");
         } else {
             $address = $json->get('address', []);
             if (!isset($address['city']) || !isset($address['street']) || !isset($address['house_number'])) {
                 throw new ApiException('Address  must have city, street and house_number parameters (flat_number - optional)'); // todo
             }
-
+            $order->setPaymentMethod("local.card");
             $addressBuffer = $address['street'] . ' ' . $address['house_number'] . (!empty($address['flat_number']) ? '-' . $address['flat_number'] . '' : '');
             $location = $this->container->get('food.googlegis')->groupData($addressBuffer, $address['city']);
             $id = $doctrine->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance($place->getId(), $location, false, true);
             $placePoint = $doctrine->getRepository('FoodDishesBundle:PlacePoint')->find($id);
 
         }
-
+        $order->setSource("APIv2");
         $order->setPlace($place);
         $order->setPlaceName($place->getName());
         $order->setPlacePointSelfDelivery($place->getSelfDelivery());
-
         $order->setPlacePoint($placePoint);
         $order->setPlacePointCity($placePoint->getCity());
         $order->setPlacePointAddress($placePoint->getAddress());
@@ -535,75 +536,75 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         return $returner;
     }
 
-    /**
-     * @param Order $order
-     *
-     * @return array
-     */
-    public function changeOrderStatus(Order $order, Request $request = null)
-    {
-        $orderService = $this->container->get('food.order');
-
-        $status = $request->get('status');
-
-        if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $this->formToEntityStatus($status))) {
-            switch($status) {
-                case 'confirm':
-                    $orderService->statusAccepted('api_v2');
-                    break;
-
-                case 'delay':
-                    $orderService->statusDelayed('api_v2', 'delay reason: '.$request->get('reason'));
-                    $orderService->getOrder()->setDelayed(true);
-
-                    $reason = $request->get('reason');
-                    $duration = $request->get('duration');
-                    if(empty($reason) || empty($duration)) {
-                        throw new ApiException('reason and duration is required');
-                    }
-
-                    $orderService->getOrder()->setDelayReason($reason);
-                    $orderService->getOrder()->setDelayDuration($duration);
-                    $orderService->saveDelay();
-                    break;
-
-                case 'cancel':
-                    $reason = $request->get('reason');
-                    if(empty($reason)) {
-                        throw new ApiException('reason is required');
-                    }
-                    $orderService->getOrder()->setDelayReason($reason);
-
-                    $orderService->statusCanceled('api_v2');
-
-                    break;
-
-                case 'finish':
-                    $orderService->statusFinished('api_v2');
-                    break;
-
-                case 'completed':
-                    $orderService->statusCompleted('api_v2');
-                    break;
-                default:
-                    throw  new ApiException('status not found');
-                    break;
-            }
-
-            $orderService->saveOrder();
-
-            return array('status' => true, "new_status" => $status);
-        } else {
-            $errorMessage = sprintf(
-                'Restoranas %s bande uzsakymui #%d pakeisti uzsakymo statusa is "%s" i "%s"',
-                $orderService->getOrder()->getPlaceName(),
-                $orderService->getOrder()->getId(),
-                $order->getOrderStatus(),
-                $this->formToEntityStatus($status)
-            );
-            $this->container->get('logger')->alert($errorMessage);
-        }
-    }
+//    /**
+//     * @param Order $order
+//     *
+//     * @return array
+//     */
+//    public function changeOrderStatus(Order $order, Request $request = null)
+//    {
+//        $orderService = $this->container->get('food.order');
+//
+//        $status = $request->get('status');
+//
+//        if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $this->formToEntityStatus($status))) {
+//            switch($status) {
+//                case 'confirm':
+//                    $orderService->statusAccepted('api_v2');
+//                    break;
+//
+//                case 'delay':
+//                    $orderService->statusDelayed('api_v2', 'delay reason: '.$request->get('reason'));
+//                    $orderService->getOrder()->setDelayed(true);
+//
+//                    $reason = $request->get('reason');
+//                    $duration = $request->get('duration');
+//                    if(empty($reason) || empty($duration)) {
+//                        throw new ApiException('reason and duration is required');
+//                    }
+//
+//                    $orderService->getOrder()->setDelayReason($reason);
+//                    $orderService->getOrder()->setDelayDuration($duration);
+//                    $orderService->saveDelay();
+//                    break;
+//
+//                case 'cancel':
+//                    $reason = $request->get('reason');
+//                    if(empty($reason)) {
+//                        throw new ApiException('reason is required');
+//                    }
+//                    $orderService->getOrder()->setDelayReason($reason);
+//
+//                    $orderService->statusCanceled('api_v2');
+//
+//                    break;
+//
+//                case 'finish':
+//                    $orderService->statusFinished('api_v2');
+//                    break;
+//
+//                case 'completed':
+//                    $orderService->statusCompleted('api_v2');
+//                    break;
+//                default:
+//                    throw  new ApiException('status not found');
+//                    break;
+//            }
+//
+//            $orderService->saveOrder();
+//
+//            return array('status' => true, "new_status" => $status);
+//        } else {
+//            $errorMessage = sprintf(
+//                'Restoranas %s bande uzsakymui #%d pakeisti uzsakymo statusa is "%s" i "%s"',
+//                $orderService->getOrder()->getPlaceName(),
+//                $orderService->getOrder()->getId(),
+//                $order->getOrderStatus(),
+//                $this->formToEntityStatus($status)
+//            );
+//            $this->container->get('logger')->alert($errorMessage);
+//        }
+//    }
 
     /**
      * @param string$formStatus

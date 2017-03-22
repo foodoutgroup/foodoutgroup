@@ -7,7 +7,7 @@ services:
     api.v2.order:
             class: Api\V2Bundle\Service\OrderService
             calls:
-                - [setContainer, [@service_container]]
+               - [setContainer, [@service_container]]
 
     api.v2.place:
             class: Api\V2Bundle\Service\PlaceService

@@ -212,6 +212,7 @@ class OrderAdmin extends FoodAdmin
             ->add('order_status', 'string', array('label' => 'admin.order.order_status_short'))
             ->add('paymentMethod', 'string', array('label' => 'admin.order.payment_method_short'))
             ->add('paymentStatus', 'string', array('label' => 'admin.order.payment_status'))
+            ->add('source', null, array('label' => 'admin.order.source'))
             ->add('mobile', null, array('label' => 'admin.order.ismobile'))
             ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
             ->add('_action', 'actions', array(
