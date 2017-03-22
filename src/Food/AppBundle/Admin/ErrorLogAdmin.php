@@ -10,6 +10,12 @@ use Sonata\AdminBundle\Route\RouteCollection;
 class ErrorLogAdmin extends FoodAdmin
 {
 
+    protected $datagridValues = array(
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'id',
+    );
+
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter
@@ -41,19 +47,29 @@ class ErrorLogAdmin extends FoodAdmin
             ->add('description', 'string', array('label' => 'admin.error.description'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('created_by', 'string', array('label' => 'admin.error.user'))
-            ->add('cart.session', 'string', array('label' => 'admin.error.cart_session'))
+            ->add('cart', 'string', array('label' => 'admin.error.cart_session'))
             ->add('place.name', 'string', array('label' => 'admin.error.place'))
             ->add('ip', 'string', array('label' => 'admin.error.ip'))
             ->add('url', 'string', array('label' => 'admin.error.url'))
-            ->add('debug', 'string', array('label' => 'admin.error.debug'))
-        ;
+            ->add('debug', 'string', array('label' => 'admin.error.debug'));
 
 
     }
 
+    public function getExportFields()
+    {
+
+
+        $exportFields = parent::getExportFields();
+        $exportFields["created_by"] = 'created_by';
+        $exportFields["place"] = 'place';
+        $exportFields["cart"] = 'cart';
+
+        return $exportFields;
+    }
 
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->clearExcept(array('list', 'show'));
+        $collection->clearExcept(array('list', 'show', 'export'));
     }
 }
