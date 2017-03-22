@@ -490,6 +490,12 @@ class Order
     private $foodPrepareDate;
 
     /**
+     * @var String
+     * @ORM\Column(name="source", type="string", length=20, nullable=true)
+     */
+    private $source = 'Foodout';
+
+    /**
      * @return string
      */
     public function __toString()
@@ -2571,4 +2577,24 @@ class Order
     {
         $this->foodPrepareDate = $foodPrepareDate;
     }
+
+    /**
+     * @return String
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param String $source
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
+        return $this;
+    }
+
+
+
 }

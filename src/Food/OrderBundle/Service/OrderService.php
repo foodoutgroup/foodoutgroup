@@ -1812,6 +1812,7 @@ class OrderService extends ContainerAware
     public function setMobileOrder($isMobile = true)
     {
         $order = $this->getOrder();
+        $order->setSource("APIv1");
         $order->setMobile($isMobile);
     }
 

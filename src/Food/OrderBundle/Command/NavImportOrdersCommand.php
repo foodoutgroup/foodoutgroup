@@ -214,6 +214,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             ->setLastUpdated(new \DateTime('now'))
                             ->setNavDeliveryOrder($orderId)
                             ->setOrderFromNav(true)
+                            ->setSource("NAV")
                             ->setPaymentMethod($paymentMethod)
                             ->setPaymentStatus(OrderService::$paymentStatusComplete)
                             ->setOrderStatus(OrderService::$status_new)
