@@ -220,11 +220,11 @@
             </trans-unit>
             <trans-unit id="mobile.order_confirm_prepareTimeOther" resname="mobile.order_confirm_prepareTimeOther">
                 <source>mobile.order_confirm_prepareTimeOther</source>
-                <target>Cits</target>
+                <target>Cits laiks</target>
             </trans-unit>
             <trans-unit id="mobile.order_confirm_enterPrepareTime" resname="mobile.order_confirm_enterPrepareTime">
                 <source>mobile.order_confirm_enterPrepareTime</source>
-                <target>Ievadiet citu sagatavot laiku (piemērs. 40)</target>
+                <target>Ievadiet citu pagatavošanas laiku (piemērs 40)</target>
             </trans-unit>
             <trans-unit id="7ebe276de073f58e9744cb5e46760b88" resname="mobile.order_delay">
                 <source>mobile.order_delay</source>
@@ -252,7 +252,7 @@
             </trans-unit>
              <trans-unit id="mobile.to_cancel_order_please_call" resname="mobile.to_cancel_order_please_call">
                 <source>mobile.to_cancel_order_please_call</source>
-                <target><![CDATA[To cancel order please call <a href="callto:%phone%">%phone%</a>]]></target>
+                <target><![CDATA[Lai dzēstu pasūtījumu obligāti jāzvana Foodout <a href="callto:%phone%">%phone%</a>]]></target>
             </trans-unit>
             <trans-unit id="e9af7214246747e3648fdc0ec367494c" resname="general.places">
                 <source>general.places</source>
