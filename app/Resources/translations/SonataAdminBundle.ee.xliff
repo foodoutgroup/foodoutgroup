@@ -453,7 +453,7 @@
             </trans-unit>
             <trans-unit id="admin.place.use_admin_fee">
                 <source>admin.place.use_admin_fee</source>
-                <target>Use admin fee</target>
+                <target>Don't use admin fee</target>
             </trans-unit>
             <trans-unit id="admin.place.cart_minimum">
                 <source>admin.place.cart_minimum</source>

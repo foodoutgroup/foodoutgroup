@@ -156,8 +156,9 @@ class OrderService extends ContainerAware
         $basket = $em->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($request->get('basket_id'));
 
         $place = $basket->getPlaceId();
-        $adminFee = $place->getAdminFee();
-        $useAdminFee = $this->container->get('food.places')->useAdminFee($place);
+        $placeService = $this->container->get('food.places');
+        $adminFee = $placeService->getAdminFee($place);
+        $useAdminFee = $placeService->useAdminFee($place);
         if ($useAdminFee && !$adminFee) {
             $adminFee = 0;
         }

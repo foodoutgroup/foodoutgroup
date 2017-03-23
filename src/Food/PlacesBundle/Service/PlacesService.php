@@ -7,6 +7,7 @@ use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\AppBundle\Traits;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Food\AppBundle\Utils\Language;
 
@@ -450,14 +451,26 @@ class PlacesService extends ContainerAware
 
     public function useAdminFee(Place $place)
     {
-        $useFee = (bool) $this->container->get('food.app.utils.misc')->getParam('useAdminFeeGlobally'); //Globally set to use fee?
-
-        if (!$useFee) {
-           // $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($place->getId());
-            return $place->isUseAdminFee();
+        $dontUseFee = !$place->isUseAdminFee();
+        if ($dontUseFee === false)
+        {
+            return false;
+        }
+        else{
+            return (bool) $this->container->get('food.app.utils.misc')->getParam('use_admin_fee_globally'); //Globally set to use fee?
         }
 
-        return (bool)$useFee;
+        return (bool)$dontUseFee;
+    }
+
+    public function getAdminFee(Place $place)
+    {
+        $feeSize = $place->getAdminFee();
+        if (!$feeSize)
+        {
+            return $this->container->get('food.app.utils.misc')->getParam('admin_fee_size');
+        }
+        return $feeSize;
     }
 
     public function getMinCartPrice($placeId)
