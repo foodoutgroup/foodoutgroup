@@ -1348,6 +1348,10 @@
                 <source>admin.order.delivery_address</source>
                 <target>Order. address</target>
             </trans-unit>
+            <trans-unit id="admin.order.locale">
+                <source>admin.order.locale</source>
+                <target>Order. language</target>
+            </trans-unit>
             <trans-unit id="admin.order.user_ip">
                 <source>admin.order.user_ip</source>
                 <target>Order IP</target>
