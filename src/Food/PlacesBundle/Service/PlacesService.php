@@ -147,8 +147,7 @@ class PlacesService extends ContainerAware
                     'city'    => 'DESC',
                     'address' => 'ASC'
                 ]
-            )
-            ;
+            );
     }
 
     /**

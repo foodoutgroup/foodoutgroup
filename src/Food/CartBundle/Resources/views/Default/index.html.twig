@@ -295,7 +295,7 @@
                                     <select class="custom-select" name="place_point">
                                         {% for point in places_service.getPublicPoints(place) %}
                                             {% if point.pickUp %}
-                                                <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}{% if point.additionalInfo %} ({{ point.additionalInfo }}) {% endif %}</option>
+                                                <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.cityId.title }}, {{ point.address }}{% if point.additionalInfo %} ({{ point.additionalInfo }}) {% endif %}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>
