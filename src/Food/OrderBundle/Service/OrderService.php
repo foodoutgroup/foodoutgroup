@@ -1570,7 +1570,7 @@ class OrderService extends ContainerAware
         }
         //~ }
 
-        $useAdminFee = $this->container->get('food.places')->useAdminFee($placeObject->getId());
+        $useAdminFee = $this->container->get('food.places')->useAdminFee($placeObject);
         $adminFee    = $placeObject->getAdminFee();
         $cartFromMin = $this->container->get('food.places')->getMinCartPrice($this->getOrder()->getPlace()->getId());
         if ($useAdminFee && !$adminFee) {
@@ -3270,7 +3270,7 @@ class OrderService extends ContainerAware
         $dishesService = $this->container->get('food.dishes');
         $debugCartInfo = array();
 
-        $useAdminFee = $this->container->get('food.places')->useAdminFee($place->getId());
+        $useAdminFee = $this->container->get('food.places')->useAdminFee($place);
 
         $loggedIn = true;
         $phonePass = false;

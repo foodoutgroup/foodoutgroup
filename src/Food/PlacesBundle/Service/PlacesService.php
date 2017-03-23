@@ -448,12 +448,12 @@ class PlacesService extends ContainerAware
         return $sum;
     }
 
-    public function useAdminFee($placeId)
+    public function useAdminFee(Place $place)
     {
         $useFee = (bool) $this->container->get('food.app.utils.misc')->getParam('useAdminFeeGlobally'); //Globally set to use fee?
 
-        if (empty($useFee)) {
-            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+        if (!$useFee) {
+           // $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($place->getId());
             return $place->isUseAdminFee();
         }
 

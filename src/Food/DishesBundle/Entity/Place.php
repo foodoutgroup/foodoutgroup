@@ -466,14 +466,14 @@ class Place extends Uploadable implements Translatable
      *
      * @ORM\Column(name="adminFee", type="decimal",scale=2)
      */
-    private $adminFee = 0;
+    private $adminFee;
 
     /**
      * @var bool
      *
      * @ORM\Column(name="useAdminFee", type="boolean", nullable=true, options={"default": false})
      */
-    private $useAdminFee = false;
+    private $useAdminFee;
 
     /**
      * Returns place name
@@ -2207,7 +2207,7 @@ class Place extends Uploadable implements Translatable
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getAdminFee()
     {

@@ -559,7 +559,7 @@ class DefaultController extends Controller
 
         $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
         $cartFromMax = $this->get('food.places')->getMaxCartPrice($place->getId());
-        $useAdminFee = $this->get('food.places')->useAdminFee($place->getId());
+        $useAdminFee = $this->get('food.places')->useAdminFee($place);
         $adminFee    = $place->getAdminFee();
 
         if ($useAdminFee && !$adminFee) {
