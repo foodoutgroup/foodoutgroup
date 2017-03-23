@@ -229,7 +229,7 @@ class OrderAdmin extends FoodAdmin
                 'label' => 'admin.actions'
             ))
         ;
-
+        // hot fix master
         $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
             ->setPlaceFilterEnabled(true);
     }
