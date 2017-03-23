@@ -794,6 +794,10 @@
                 <source>admin.users.bussines_client</source>
                 <target>Bussines client</target>
             </trans-unit>
+            <trans-unit id="admin.users.locale">
+                <source>admin.users.locale</source>
+                <target>User language</target>
+            </trans-unit>
             <trans-unit id="admin.users.division_codes">
                 <source>admin.users.division_codes</source>
                 <target>Division codes</target>

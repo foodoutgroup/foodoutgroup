@@ -78,6 +78,7 @@ class UserAdmin extends SonataUserAdmin {
             ->remove('gplusUid')
             ->remove('gplusName')
             ->with('Business')
+            ->add('locale', null, array('label' => 'admin.users.locale'))
             ->add('isBussinesClient', null, array('label' => 'admin.users.bussines_client'))
             ->add('companyName', null, array('label' => 'admin.users.company_name'))
             ->add('companyCode', null, array('label' => 'admin.users.company_code'))
