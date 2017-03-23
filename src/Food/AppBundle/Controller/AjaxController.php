@@ -94,7 +94,7 @@ class AjaxController extends Controller
 
         if (!empty($respData) && $respData['success'] == 1 && $respData['adr'] == 1) {
             $session = $request->getSession();
-            $session->set('locationData', ['address' => $address, 'city' => $city->getId(),'city_ids'=>'1']);
+            $session->set('locationData', ['address' => $address, 'city' => $city->getId()]);
         }
 
 
