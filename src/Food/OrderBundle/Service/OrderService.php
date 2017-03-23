@@ -4445,9 +4445,12 @@ class OrderService extends ContainerAware
             $sender = $this->container->getParameter('sms.sender');
 
             $keyword = 'general.sms.client.order_created';
+            // general.sms.client.order_created_preorder
             if ($this->getOrder()->getPreorder()) {
                 $keyword .= '_preorder';
             }
+            // general.sms.client.order_created_pickup
+            // general.sms.client.order_created_preorder_pickup
             if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
                 $keyword .= '_pickup';
             }
@@ -4460,6 +4463,7 @@ class OrderService extends ContainerAware
                     $keyword,
                     [
                         'order_id' => $order->getId(),
+                        'restaurant_name' => $order->getPlaceName(),
                         'delivery_time' => ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
                         'pre_delivery_time' => ($order->getDeliveryTime()->format('m-d H:i')),
                     ],
