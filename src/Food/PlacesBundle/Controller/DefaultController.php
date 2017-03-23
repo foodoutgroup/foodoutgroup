@@ -59,6 +59,7 @@ class DefaultController extends Controller
         $current_url = $request->getUri();
 
         $selectedKitchensIds = $placeService->getKitchensFromSlug($params, $request);
+
         if (!empty($selectedKitchensIds)) {
             $kitchen = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen')->find($selectedKitchensIds[0]);
             $metaTitle = $kitchen->getMetaTitle();

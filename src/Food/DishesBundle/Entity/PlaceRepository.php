@@ -15,9 +15,9 @@ class PlaceRepository extends EntityRepository
     private static $_citiesCache = [];
 
     /**
-     * @param array      $kitchens
-     * @param array      $filters
-     * @param bool       $recommended
+     * @param array $kitchens
+     * @param array $filters
+     * @param bool $recommended
      * @param array|null $locationData
      * @param Container $container
      *
@@ -93,6 +93,7 @@ class PlaceRepository extends EntityRepository
                 $cityWhere = ' AND pps.city = \'' . $city . '\'';
             }
             $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id $cityWhere GROUP BY pps.place";
+
         } else {
             if ($container) {
                 $zaval = $container->get('food.zavalas_service')->isZavalasTurnedOnGlobal();
@@ -179,12 +180,12 @@ class PlaceRepository extends EntityRepository
                 $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
                 $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id";
             } else {
-                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='" . $city . "' AND ppc.place = p.id";
-                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city='" . $city . "' " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id";
+                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.id = ".$locationData['city_id']." AND ppc.place = p.id";
+                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city_id = ".$locationData['city_id']."" . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id";
             }
         } else {
-            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='" . $city . "' AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city='" . $city . "' " . $placeFilter . $otherFilters . " AND pp.id = (" . $subQuery . ") " . $kitchensQuery . " ORDER BY p.priority DESC, RAND()";
+            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id AND ppc.city_id = ".$locationData['city_id'].".";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND AND pp.id = ".$locationData['city_id']."" . $placeFilter . $otherFilters . " AND pp.id = (" . $subQuery . ") " . $kitchensQuery . " ORDER BY p.priority DESC, RAND()";
         }
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -210,8 +211,8 @@ class PlaceRepository extends EntityRepository
                         AND pps.id = ppwt.place_point
                         AND pps.active=1
                         AND pps.deleted_at is NULL
-                        AND pps.city='" . $city . "'
                         AND pps.place = " . $place['place']->getId() . "
+                        AND pps.city_id = " . $locationData['city_id'] . "
                         AND ppwt.week_day = " . $wd . "
                         AND (
                         (start_hour = 0 OR start_hour < ' . $dh . ' OR
@@ -235,6 +236,7 @@ class PlaceRepository extends EntityRepository
                 $stmt = $this->getEntityManager()->getConnection()->prepare($placePointQuery);
                 $stmt->execute();
                 $placesPInfo = $stmt->fetchColumn(0);
+
                 if ($placesPInfo) {
                     $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placesPInfo);
                 } else {
@@ -245,6 +247,7 @@ class PlaceRepository extends EntityRepository
             }
 
         }
+
 
         return $places;
     }
@@ -370,9 +373,9 @@ class PlaceRepository extends EntityRepository
     }
 
     /**
-     * @param int        $placeId
+     * @param int $placeId
      * @param array|null $locationData
-     * @param bool       $ignoreSelfDelivery
+     * @param bool $ignoreSelfDelivery
      *
      * @return PlacePoint|null
      */
@@ -435,9 +438,9 @@ class PlaceRepository extends EntityRepository
     }
 
     /**
-     * @param int        $placeId
+     * @param int $placeId
      * @param array|null $locationData
-     * @param bool       $ignoreSelfDelivery
+     * @param bool $ignoreSelfDelivery
      *
      * @return int|null
      *
@@ -523,9 +526,8 @@ class PlaceRepository extends EntityRepository
         $where = '';
         if ($city) {
             $join = ' INNER JOIN place_point pp ON pp.place = p.id ';
-            $where = ' AND pp.active = 1 AND pp.city = "'.$city.'" AND pp.deleted_at IS NULL ';
+            $where = ' AND pp.active = 1 AND pp.city = "' . $city . '" AND pp.deleted_at IS NULL ';
         }
-
 
 
         $query = "SELECT p.id
@@ -540,8 +542,6 @@ class PlaceRepository extends EntityRepository
                 GROUP BY p.id
                 ORDER BY p.navision DESC, RAND()
                 LIMIT 5";
-
-
 
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
