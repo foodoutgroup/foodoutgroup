@@ -447,6 +447,14 @@
                 <source>admin.place.cart_food_limit</source>
                 <target>Food cart limit</target>
             </trans-unit>
+           <trans-unit id="admin.place.admin_fee">
+                <source>admin.place.admin_fee</source>
+                <target>Admin fee</target>
+            </trans-unit>
+            <trans-unit id="admin.place.use_admin_fee">
+                <source>admin.place.use_admin_fee</source>
+                <target>Use admin fee</target>
+            </trans-unit>
             <trans-unit id="admin.place.cart_minimum">
                 <source>admin.place.cart_minimum</source>
                 <target>Min. cart</target>
@@ -1174,6 +1182,10 @@
             <trans-unit id="admin.order.discount_sum">
                 <source>admin.order.discount_sum</source>
                 <target>Discount sum</target>
+            </trans-unit>
+            <trans-unit id="admin.order.admin_fee">
+                <source>admin.order.admin_fee</source>
+                <target>Admin fee</target>
             </trans-unit>
             <trans-unit id="admin.order.sf_line">
                 <source>admin.order.sf_line</source>

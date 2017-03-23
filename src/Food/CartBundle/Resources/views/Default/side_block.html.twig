@@ -117,6 +117,12 @@
                     <div class="fr">{{ currency_display|raw }}{{ discountSum|number_format(2, ',', ' ') }}</div>
                 </div>
             {% endif %}
+            {% if useAdminFee == true and hide_delivery == false and ((discountInSum and total_cart + discountSum < cart_from_min) or (total_cart < cart_from_min)) and not noMinimumCart %}
+                <div class="fee-sum clearfix">
+                    <div class="fl">{% trans %}cart.block.admin_fee{% endtrans %}:</div>
+                    <div class="fr">{{ currency_display|raw }}{{ adminFee|number_format(2, ',', ' ') }}</div>
+                </div>
+            {% endif %}
             <div class="total-sum final clearfix">
                 <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
                 <div class="fr">{{ currency_display|raw }}{{ total_with_delivery|number_format(2, ',', ' ') }}

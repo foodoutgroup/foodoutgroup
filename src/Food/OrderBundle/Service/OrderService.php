@@ -1318,6 +1318,7 @@ class OrderService extends ContainerAware
         $placeObject = $this->container->get('food.places')->getPlace($place);
         $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
 
+
         $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
         $enableDiscount = !$placeObject->getOnlyAlcohol();
@@ -1567,11 +1568,27 @@ class OrderService extends ContainerAware
                 $deliveryPrice = 0;
             }
         }
-        $sumTotal += $deliveryPrice;
         //~ }
+
+        $useAdminFee = $this->container->get('food.places')->useAdminFee($placeObject);
+        $adminFee    = $placeObject->getAdminFee();
+        $cartFromMin = $this->container->get('food.places')->getMinCartPrice($this->getOrder()->getPlace()->getId());
+        if ($useAdminFee && !$adminFee) {
+            $adminFee = 0;
+        }
+
+        if ($useAdminFee && $priceBeforeDiscount < $cartFromMin)
+        {
+            $sumTotal += $adminFee;
+
+        }
+
+        $sumTotal += $deliveryPrice;
+
 
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
+        $this->getOrder()->setAdminFee($adminFee);
         $this->saveOrder();
     }
 
@@ -3254,6 +3271,7 @@ class OrderService extends ContainerAware
         $dishesService = $this->container->get('food.dishes');
         $debugCartInfo = array();
 
+        $useAdminFee = $this->container->get('food.places')->useAdminFee($place);
 
         $loggedIn = true;
         $phonePass = false;
@@ -3380,6 +3398,11 @@ class OrderService extends ContainerAware
             }
         }
 
+        if ($coupon)
+        {
+            $useAdminFee = false;
+        }
+
         if ($coupon && $coupon->getIgnoreCartPrice()) {
             $noMinimumCart = true;
         }
@@ -3427,7 +3450,7 @@ class OrderService extends ContainerAware
                     $pointRecord
                 );
 
-                if ($total_cart < $cartMinimum && $noMinimumCart == false) {
+                if ($total_cart < $cartMinimum && $noMinimumCart == false && !$useAdminFee) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
             }

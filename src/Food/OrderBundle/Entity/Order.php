@@ -115,6 +115,13 @@ class Order
      */
     private $total;
 
+
+    /**
+     * @var decimal
+     * @ORM\Column(name="adminFee", type="decimal", precision=8, scale=2, nullable=true)
+     */
+    private $adminFee;
+
     /**
      * @var float
      * @ORM\Column(name="total_before_discount", type="decimal", precision=8, scale=2, nullable=true)
@@ -488,12 +495,6 @@ class Order
      * @ORM\Column(name="food_prepare_date", type="datetime", nullable=true)
      */
     private $foodPrepareDate;
-
-    /**
-     * @var String
-     * @ORM\Column(name="source", type="string", length=20, nullable=true)
-     */
-    private $source = 'Foodout';
 
     /**
      * @return string
@@ -2595,6 +2596,19 @@ class Order
         return $this;
     }
 
+    /**
+     * @return decimal
+     */
+    public function getAdminFee()
+    {
+        return $this->adminFee;
+    }
 
-
+    /**
+     * @param decimal $adminFee
+     */
+    public function setAdminFee($adminFee)
+    {
+        $this->adminFee = $adminFee;
+    }
 }
