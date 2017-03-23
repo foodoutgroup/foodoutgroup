@@ -464,14 +464,14 @@ class Place extends Uploadable implements Translatable
     /**
      * @var float
      *
-     * @ORM\Column(name="adminFee", type="decimal",scale=2)
+     * @ORM\Column(name="admin_fee", type="decimal",scale=2, nullable=true)
      */
     private $adminFee;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="useAdminFee", type="boolean", nullable=true, options={"default": false})
+     * @ORM\Column(name="use_admin_fee", type="boolean", nullable=true, options={"default": false})
      */
     private $useAdminFee;
 

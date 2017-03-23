@@ -1569,9 +1569,9 @@ class OrderService extends ContainerAware
             }
         }
         //~ }
-
-        $useAdminFee = $this->container->get('food.places')->useAdminFee($placeObject);
-        $adminFee    = $placeObject->getAdminFee();
+        $placesService = $this->container->get('food.places');
+        $useAdminFee = $placesService->useAdminFee($placeObject);
+        $adminFee    = $placesService->getAdminFee($placeObject);
         $cartFromMin = $this->container->get('food.places')->getMinCartPrice($this->getOrder()->getPlace()->getId());
         if ($useAdminFee && !$adminFee) {
             $adminFee = 0;

@@ -209,8 +209,8 @@ class Restaurant extends ContainerAware
         $restaurantDesc = $place->getDescription();
         $restaurantDesc = str_replace(['„', '“'], '"', $restaurantDesc);
 
-        $useAdminFee = $this->container->get('food.places')->useAdminFee($place);
-        $adminFee    = (bool) $place->getAdminFee();
+        $useAdminFee = $placeService->useAdminFee($place);
+        $adminFee    = $placeService->getAdminFee($place);
 
 
         $this
