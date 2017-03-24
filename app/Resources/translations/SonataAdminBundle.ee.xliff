@@ -1185,7 +1185,7 @@
             </trans-unit>
             <trans-unit id="admin.order.admin_fee">
                 <source>admin.order.admin_fee</source>
-                <target>Admin fee</target>
+                <target>Adminstreerimistasu</target>
             </trans-unit>
             <trans-unit id="admin.order.sf_line">
                 <source>admin.order.sf_line</source>
