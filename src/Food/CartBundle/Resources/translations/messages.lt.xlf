@@ -490,7 +490,7 @@ Vilnius]]></target>
             </trans-unit>
             <trans-unit id="cart.block.admin_fee" resname="cart.block.admin_fee">
                 <source>cart.block.discount_sum</source>
-                <target>Mokestis</target>
+                <target>Administracinis mokestis</target>
             </trans-unit>
             <trans-unit id="cart.checkout.phone.prefill_phone_lt" resname="cart.checkout.phone.prefill_phone">
                 <source>cart.checkout.phone.prefill_phone</source>
