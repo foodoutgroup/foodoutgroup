@@ -77,6 +77,9 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
             $order->setDeliveryPrice($dp);
 
         }
+
+        $deliveryTotal = $deliveryPrice = $order->getDeliveryPrice();
+
         $order->setSource("APIv2");
         $order->setPlace($place);
         $order->setPlaceName($place->getName());
@@ -108,7 +111,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         }
 
         $order->setDeliveryTime($deliveryTime);
-//        $order->setDeliveryPrice($cp['price']); // todo
+        $order->setDeliveryPrice($deliveryTotal); // todo
         $order->setVat($this->container->getParameter('vat'));
         $order->setOrderHash(
             $os->generateOrderHash($order)
@@ -302,7 +305,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         $discountSumTotal = 0;
         $discountUsed = 0;
         $sumTotal = 0;
-        $deliveryPrice = 0; // todo get delivery price :)
+//        $deiveryPrice = 0; // todo get delivery price :)
         if ($discount) {
             $discountPercent = $discount['discount'];
             $discountSumLeft = $discountSumTotal = $this->getDiscountTotal($productCollection, $discountPercent);
@@ -413,13 +416,6 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                     ->setOrderDetail($dish);
                 $em->persist($orderOpt);
                 $sumTotal += $opt['count'] * $dishOptionPrice;
-            }
-        }
-        $deliveryTotal = 0;
-        if ($deliveryType == "delivery") {
-            $deliveryTotal = $doctrine->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $location);
-            if (false === $deliveryTotal) {
-                $deliveryTotal = $place->getDeliveryPrice();
             }
         }
 
