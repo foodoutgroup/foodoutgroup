@@ -372,7 +372,9 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                 ->setDishSizeCode($dishSize->getCode())
                 ->setIsFree(false);
             $em->persist($dish);
+            $em->persist($order);
 
+            $em->flush();
             $sumTotal += $product['count'] * $price;
 
             $dishOptionPricesBeforeDiscount = $this->container->get('food.dishes')->getDishOptionsPrices($dishSize->getDish());
