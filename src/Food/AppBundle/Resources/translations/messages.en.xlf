@@ -1241,6 +1241,10 @@
                 <source>cart.didnt_reach_min_cart</source>
                 <target>Cart does not reach minimum amount</target>
             </trans-unit>
+            <trans-unit id="cart.didnt_reach_min_cart_add_admin_fee" resname="cart.didnt_reach_min_cart_add_admin_fee">
+                <source>cart.didnt_reach_min_cart_add_admin_fee</source>
+                <target>Cart does not reach minimum amount, we'll add admin fee</target>
+            </trans-unit>
             <trans-unit id="cart.go_back_to_place" resname="cart.go_back_to_place">
                 <source>cart.go_back_to_place</source>
                 <target>Add dishes</target>
