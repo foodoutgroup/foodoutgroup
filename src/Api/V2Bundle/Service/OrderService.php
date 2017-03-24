@@ -56,21 +56,25 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         }
 
         $order = new Order();
-
         $location = false;
         if ($deliveryType == "pickup" && $json->has('placepoint')) {
             $placePoint = $this->container->get("api.v2.place")->getPlacePoint($json->get('placepoint'));
             $order->setPaymentMethod("local");
+            $order->setDeliveryPrice(0);
+
         } else {
             $address = $json->get('address', []);
             if (!isset($address['city']) || !isset($address['street']) || !isset($address['house_number'])) {
                 throw new ApiException('Address  must have city, street and house_number parameters (flat_number - optional)'); // todo
             }
+
             $order->setPaymentMethod("local.card");
             $addressBuffer = $address['street'] . ' ' . $address['house_number'] . (!empty($address['flat_number']) ? '-' . $address['flat_number'] . '' : '');
             $location = $this->container->get('food.googlegis')->groupData($addressBuffer, $address['city']);
             $id = $doctrine->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance($place->getId(), $location, false, true);
             $placePoint = $doctrine->getRepository('FoodDishesBundle:PlacePoint')->find($id);
+            $dp = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getDeliveryPriceForPlacePoint($place, $placePoint, $location);
+            $order->setDeliveryPrice($dp);
 
         }
         $order->setSource("APIv2");
@@ -80,7 +84,9 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         $order->setPlacePoint($placePoint);
         $order->setPlacePointCity($placePoint->getCity());
         $order->setPlacePointAddress($placePoint->getAddress());
-
+        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($placePoint->getCity())) {
+            $order->setDuringZavalas(true);
+        }
         $order->setOrderDate(new \DateTime("now"));
 
         $orderDate = ($json->has('preorder') ? $json->get("preorder") : null);
@@ -101,9 +107,8 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
             $deliveryTime = new \DateTime($orderDate);
         }
 
-
         $order->setDeliveryTime($deliveryTime);
-        $order->setDeliveryPrice($place->getDeliveryPrice());
+//        $order->setDeliveryPrice($cp['price']); // todo
         $order->setVat($this->container->getParameter('vat'));
         $order->setOrderHash(
             $os->generateOrderHash($order)
