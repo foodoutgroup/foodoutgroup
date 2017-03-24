@@ -243,6 +243,7 @@ class BasketService extends ContainerAware
             $paymentMethodCollection[] = $payment;
         }
 
+
         $basket->set('payment', $firstPayment);
         $basket->set('payment_method', $paymentMethodCollection);
 

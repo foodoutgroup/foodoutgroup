@@ -154,7 +154,14 @@ class OrderService extends ContainerAware
         }
 
         $basket = $em->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($request->get('basket_id'));
+
         $place = $basket->getPlaceId();
+        $placeService = $this->container->get('food.places');
+        $adminFee = $placeService->getAdminFee($place);
+        $useAdminFee = $placeService->useAdminFee($place);
+        if ($useAdminFee && !$adminFee) {
+            $adminFee = 0;
+        }
 
         if (!$basket) {
             throw new ApiException(
@@ -310,9 +317,19 @@ class OrderService extends ContainerAware
             $discountSize = $coupon->getDiscount();
             if (!empty($discountSize)) {
                 $total_cart -= $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($place), $discountSize);
+                $useAdminFee = false;
             } elseif (!$coupon->getFullOrderCovers()) {
                 $total_cart -= $coupon->getDiscountSum();
+                $useAdminFee = false;
             }
+
+//            var_dump($total_cart);echo 'Naujas:';
+//
+//            if ($useAdminFee && $total_cart < $place->getCartMinimum()) {
+//                $total_cart += $adminFee;
+//            }
+//
+//            var_dump($total_cart);die();
 
             if ($user->getIsBussinesClient() && $coupon->getB2b() == Coupon::B2B_NO) {
                 throw new ApiException(
@@ -348,9 +365,10 @@ class OrderService extends ContainerAware
             }
         }
 
+
         if ($serviceVar['type'] != "pickup") {
             $placeService = $this->container->get('food.places');
-            if ($total_cart < $placeService->getMinCartPrice($place->getId())) {
+            if (!$useAdminFee  && $total_cart < $placeService->getMinCartPrice($place->getId())) { //Jei yra admin fee - cart'o minimumo netaikom
                 throw new ApiException(
                     'Order Too Small',
                     400,
@@ -446,6 +464,8 @@ class OrderService extends ContainerAware
             }
         }
 
+
+
         $os->createOrderFromCart(
             $basket->getPlaceId()->getId(),
             $requestOrig->getLocale(),
@@ -536,7 +556,7 @@ class OrderService extends ContainerAware
 
         if (!empty($list)) {
             $total_sum = (($this->getCartService()->getCartTotal($list) * 100));
-            $total_sum = $total_sum + ($order->getDeliveryPrice() * 100);
+            $total_sum = $total_sum + ($order->getDeliveryPrice() * 100) + ($order->getAdminFee()*100);
         } else {
             $order_total = ($order->getTotal() * 100);
             if ($order_total > 0) {
@@ -607,7 +627,8 @@ class OrderService extends ContainerAware
                 'amount'   => $total_sum,
                 'currency' => $this->container->getParameter('currency_iso')
             ],
-            'delivery_price' => $order->getDeliveryPrice(),
+            'delivery_price' => $order->getDeliveryPrice(), //Kode cia ne *100?
+            'admin_fee' => $order->getAdminFee() * 100,
             'place_point_self_delivery' => $order->getPlacePointSelfDelivery(),
             'payment_method' => $this->container->get('translator')->trans('mobile.payment.'.$order->getPaymentMethod()),
             'order_date' => $order->getOrderDate()->format('H:i'),

@@ -144,6 +144,10 @@ class PlaceService extends PlacesService
             return self::$_getNearCache[$cacheKey];
     }
 
+    public function getPlacePoint($id) {
+        return $this->container->get('food.places')->getPlacePointData($id);
+    }
+
     public function getPlacePointMinCartPrice($placeId, $distance)
     {
         $deliveryPrice = "SELECT cart_size FROM `place_point_delivery_zones` WHERE place_point=" . (int)$placeId . " AND active=1 AND distance >= " . (float)$distance . " ORDER BY distance ASC LIMIT 1";

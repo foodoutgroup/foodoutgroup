@@ -447,6 +447,14 @@
                 <source>admin.place.cart_food_limit</source>
                 <target>Food cart limit</target>
             </trans-unit>
+           <trans-unit id="admin.place.admin_fee">
+                <source>admin.place.admin_fee</source>
+                <target>Admin fee</target>
+            </trans-unit>
+            <trans-unit id="admin.place.use_admin_fee">
+                <source>admin.place.use_admin_fee</source>
+                <target>Don't use admin fee</target>
+            </trans-unit>
             <trans-unit id="admin.place.cart_minimum">
                 <source>admin.place.cart_minimum</source>
                 <target>Min. cart</target>
@@ -1175,6 +1183,10 @@
                 <source>admin.order.discount_sum</source>
                 <target>Discount sum</target>
             </trans-unit>
+            <trans-unit id="admin.order.admin_fee">
+                <source>admin.order.admin_fee</source>
+                <target>Adminstreerimistasu</target>
+            </trans-unit>
             <trans-unit id="admin.order.sf_line">
                 <source>admin.order.sf_line</source>
                 <target>Invoice</target>
@@ -1366,6 +1378,10 @@
             <trans-unit id="admin.order.ismobile_full">
                 <source>admin.order.ismobile_full</source>
                 <target>Mobile</target>
+            </trans-unit>
+            <trans-unit id="admin.order.source">
+                <source>admin.order.source</source>
+                <target>Source</target>
             </trans-unit>
             <trans-unit id="admin.order.order_from_nav">
                 <source>admin.order.order_from_nav</source>

@@ -115,6 +115,13 @@ class Order
      */
     private $total;
 
+
+    /**
+     * @var decimal
+     * @ORM\Column(name="adminFee", type="decimal", precision=8, scale=2, nullable=true)
+     */
+    private $adminFee;
+
     /**
      * @var float
      * @ORM\Column(name="total_before_discount", type="decimal", precision=8, scale=2, nullable=true)
@@ -2570,5 +2577,38 @@ class Order
     public function setFoodPrepareDate($foodPrepareDate)
     {
         $this->foodPrepareDate = $foodPrepareDate;
+    }
+
+    /**
+     * @return String
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param String $source
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
+        return $this;
+    }
+
+    /**
+     * @return decimal
+     */
+    public function getAdminFee()
+    {
+        return $this->adminFee;
+    }
+
+    /**
+     * @param decimal $adminFee
+     */
+    public function setAdminFee($adminFee)
+    {
+        $this->adminFee = $adminFee;
     }
 }

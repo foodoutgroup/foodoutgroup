@@ -1318,6 +1318,7 @@ class OrderService extends ContainerAware
         $placeObject = $this->container->get('food.places')->getPlace($place);
         $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
 
+
         $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
         $enableDiscount = !$placeObject->getOnlyAlcohol();
@@ -1567,11 +1568,27 @@ class OrderService extends ContainerAware
                 $deliveryPrice = 0;
             }
         }
-        $sumTotal += $deliveryPrice;
         //~ }
+        $placesService = $this->container->get('food.places');
+        $useAdminFee = $placesService->useAdminFee($placeObject);
+        $adminFee    = $placesService->getAdminFee($placeObject);
+        $cartFromMin = $this->container->get('food.places')->getMinCartPrice($this->getOrder()->getPlace()->getId());
+        if ($useAdminFee && !$adminFee) {
+            $adminFee = 0;
+        }
+
+        if ($useAdminFee && $priceBeforeDiscount < $cartFromMin)
+        {
+            $sumTotal += $adminFee;
+
+        }
+
+        $sumTotal += $deliveryPrice;
+
 
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
+        $this->getOrder()->setAdminFee($adminFee);
         $this->saveOrder();
     }
 
@@ -1812,6 +1829,7 @@ class OrderService extends ContainerAware
     public function setMobileOrder($isMobile = true)
     {
         $order = $this->getOrder();
+        $order->setSource("APIv1");
         $order->setMobile($isMobile);
     }
 
@@ -3253,6 +3271,7 @@ class OrderService extends ContainerAware
         $dishesService = $this->container->get('food.dishes');
         $debugCartInfo = array();
 
+        $useAdminFee = $this->container->get('food.places')->useAdminFee($place);
 
         $loggedIn = true;
         $phonePass = false;
@@ -3379,6 +3398,11 @@ class OrderService extends ContainerAware
             }
         }
 
+        if ($coupon)
+        {
+            $useAdminFee = false;
+        }
+
         if ($coupon && $coupon->getIgnoreCartPrice()) {
             $noMinimumCart = true;
         }
@@ -3426,7 +3450,7 @@ class OrderService extends ContainerAware
                     $pointRecord
                 );
 
-                if ($total_cart < $cartMinimum && $noMinimumCart == false) {
+                if ($total_cart < $cartMinimum && $noMinimumCart == false && !$useAdminFee) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
             }
@@ -4444,9 +4468,12 @@ class OrderService extends ContainerAware
             $sender = $this->container->getParameter('sms.sender');
 
             $keyword = 'general.sms.client.order_created';
+            // general.sms.client.order_created_preorder
             if ($this->getOrder()->getPreorder()) {
                 $keyword .= '_preorder';
             }
+            // general.sms.client.order_created_pickup
+            // general.sms.client.order_created_preorder_pickup
             if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
                 $keyword .= '_pickup';
             }
@@ -4459,6 +4486,7 @@ class OrderService extends ContainerAware
                     $keyword,
                     [
                         'order_id' => $order->getId(),
+                        'restaurant_name' => $order->getPlaceName(),
                         'delivery_time' => ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
                         'pre_delivery_time' => ($order->getDeliveryTime()->format('m-d H:i')),
                     ],
