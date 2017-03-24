@@ -225,6 +225,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
             $product['object'] = $prod;
             $product['count'] = (int)$item['count'];
             $product['additional'] = [];
+
             if (isset($item['additional'])) {
                 foreach ($item['additional'] as $additional) {
                     if (!isset($additional['code']) || !isset($additional['count'])) {
@@ -239,6 +240,11 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                     if (!$option) {
                         throw new ApiException('Dish option with code ' . $item['code'] . ' was not found');
                     }
+
+                    $product['additional'][] = [
+                        'object' => $option,
+                        'count' => $item['count']
+                    ];
 
                 }
             } else {
