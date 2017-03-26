@@ -126,6 +126,18 @@
                 <source>admin.dispatcher.delayed</source>
                 <target>Atidėta</target>
             </trans-unit>
+            <trans-unit id="admin.point.phone_send" resname="admin.point.phone_send">
+                <source>admin.point.phone_send</source>
+                <target>Siųsti užsakymus šiuo tel. nr.?</target>
+            </trans-unit>
+            <trans-unit id="admin.point.email_send" resname="admin.point.email_send">
+                <source>admin.point.email_send</source>
+                <target>Siųsti užsakymus šiuo el. paštu?</target>
+            </trans-unit>
+            <trans-unit id="admin.place.api_hash" resname="admin.place.api_hash">
+                <source>admin.place.api_hash</source>
+                <target>Restorano API kodas (WL)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
