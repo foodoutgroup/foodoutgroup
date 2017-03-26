@@ -52,11 +52,25 @@ class PlacePoint
     private $phone;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="phone_send", type="boolean", options={"default": true})
+     */
+    private $phoneSend;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="alt_phone1", type="string", length=20, nullable=true)
      */
     private $altPhone1;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="alt_phone1_send", type="boolean", options={"default": true})
+     */
+    private $altPhone1Send;
 
     /**
      * @var string
@@ -66,11 +80,25 @@ class PlacePoint
     private $altPhone2;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="alt_phone2_send", type="boolean", options={"default": true})
+     */
+    private $altPhone2Send;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=128, nullable=true)
      */
     private $email;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="email_send", type="boolean", options={"default": true})
+     */
+    private $emailSend;
 
     /**
      * @var string
@@ -80,11 +108,25 @@ class PlacePoint
     private $altEmail1;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="alt_email1_send", type="boolean", options={"default": true})
+     */
+    private $altEmail1Send;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="alt_email2", type="string", length=128, nullable=true)
      */
     private $altEmail2;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="alt_email2_send", type="boolean", options={"default": true})
+     */
+    private $altEmail2Send;
 
     /**
      * @var string
@@ -1459,14 +1501,14 @@ class PlacePoint
     public function setProductionTime($productionTime)
     {
         $this->productionTime = $productionTime;
-    
+
         return $this;
     }
 
     /**
      * Get productionTime
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductionTime()
     {
@@ -1503,5 +1545,143 @@ class PlacePoint
     public function setHash($hash)
     {
         $this->hash = $hash;
+    }
+
+    /**
+     * Set phoneSend
+     *
+     * @param boolean $phoneSend
+     * @return PlacePoint
+     */
+    public function setPhoneSend($phoneSend)
+    {
+        $this->phoneSend = $phoneSend;
+    
+        return $this;
+    }
+
+    /**
+     * Get phoneSend
+     *
+     * @return boolean 
+     */
+    public function getPhoneSend()
+    {
+        return $this->phoneSend;
+    }
+
+    /**
+     * Set altPhone1Send
+     *
+     * @param boolean $altPhone1Send
+     * @return PlacePoint
+     */
+    public function setAltPhone1Send($altPhone1Send)
+    {
+        $this->altPhone1Send = $altPhone1Send;
+    
+        return $this;
+    }
+
+    /**
+     * Get altPhone1Send
+     *
+     * @return boolean 
+     */
+    public function getAltPhone1Send()
+    {
+        return $this->altPhone1Send;
+    }
+
+    /**
+     * Set altPhone2Send
+     *
+     * @param boolean $altPhone2Send
+     * @return PlacePoint
+     */
+    public function setAltPhone2Send($altPhone2Send)
+    {
+        $this->altPhone2Send = $altPhone2Send;
+    
+        return $this;
+    }
+
+    /**
+     * Get altPhone2Send
+     *
+     * @return boolean 
+     */
+    public function getAltPhone2Send()
+    {
+        return $this->altPhone2Send;
+    }
+
+    /**
+     * Set emailSend
+     *
+     * @param boolean $emailSend
+     * @return PlacePoint
+     */
+    public function setEmailSend($emailSend)
+    {
+        $this->emailSend = $emailSend;
+    
+        return $this;
+    }
+
+    /**
+     * Get emailSend
+     *
+     * @return boolean 
+     */
+    public function getEmailSend()
+    {
+        return $this->emailSend;
+    }
+
+    /**
+     * Set altEmail1Send
+     *
+     * @param boolean $altEmail1Send
+     * @return PlacePoint
+     */
+    public function setAltEmail1Send($altEmail1Send)
+    {
+        $this->altEmail1Send = $altEmail1Send;
+    
+        return $this;
+    }
+
+    /**
+     * Get altEmail1Send
+     *
+     * @return boolean 
+     */
+    public function getAltEmail1Send()
+    {
+        return $this->altEmail1Send;
+    }
+
+    /**
+     * Set altEmail2Send
+     *
+     * @param boolean $altEmail2Send
+     * @return PlacePoint
+     */
+    public function setAltEmail2Send($altEmail2Send)
+    {
+        $this->altEmail2Send = $altEmail2Send;
+    
+        return $this;
+    }
+
+    /**
+     * Get altEmail2Send
+     *
+     * @return boolean 
+     */
+    public function getAltEmail2Send()
+    {
+        return $this->altEmail2Send;
     }
 }
