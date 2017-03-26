@@ -2305,7 +2305,7 @@ class OrderService extends ContainerAware
         $messageText = $orderSmsTextTranslation . ' ' . $orderConfirmRoute;
 
         // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
-        if (!empty($placePointEmail)) {
+        if (!empty($placePointEmail) && $placePoint->getEmailSend()) {
             $logger->alert('--- Place asks for email, so we have sent an email about new order to: ' . $placePointEmail);
             $emailMessageText = $messageText;
             $emailMessageText .= "\n" . $orderTextTranslation . ': '
@@ -2319,15 +2319,17 @@ class OrderService extends ContainerAware
 
             $message->addTo($placePointEmail);
 
-            if (!empty($placePointAltEmail1)) {
+            if (!empty($placePointAltEmail1) && $placePoint->getAltEmail1Send()) {
                 $message->addCc($placePointAltEmail1);
             }
-            if (!empty($placePointAltEmail2)) {
+            if (!empty($placePointAltEmail2) && $placePoint->getAltEmail2Send()) {
                 $message->addCc($placePointAltEmail2);
             }
 
             $message->setBody($emailMessageText);
             $mailer->send($message);
+        } else {
+            $this->logOrder($order, 'no_email_send', 'No active emails');
         }
 
         $smsSenderNumber = $this->container->getParameter('sms.sender');
@@ -2336,11 +2338,16 @@ class OrderService extends ContainerAware
         if (!$order->getPlace()->getNavision()) {
             $messagesToSend = [];
 
-            $orderMessageRecipients = [
-                $placePoint->getPhone(),
-                $placePoint->getAltPhone1(),
-                $placePoint->getAltPhone2(),
-            ];
+            $orderMessageRecipients = [];
+            if ($placePoint->getPhoneSend()) {
+                $orderMessageRecipients[] = $placePoint->getPhone();
+            }
+            if ($placePoint->getAltPhone1Send()) {
+                $orderMessageRecipients[] = $placePoint->getAltPhone1();
+            }
+            if ($placePoint->getAltPhone2Send()) {
+                $orderMessageRecipients[] = $placePoint->getAltPhone2();
+            }
 
             foreach ($orderMessageRecipients as $nr => $phone) {
                 // Siunciam sms'a jei jis ne landline
@@ -2360,7 +2367,11 @@ class OrderService extends ContainerAware
             }
 
             //send multiple messages
-            $messagingService->addMultipleMessagesToSend($messagesToSend);
+            if (!empty($orderMessageRecipients)) {
+                $messagingService->addMultipleMessagesToSend($messagesToSend);
+            } else {
+                $this->logOrder($order, 'no_sms_send', 'No active phones');
+            }
         }
 
         if (!$order->getOrderFromNav()) {
