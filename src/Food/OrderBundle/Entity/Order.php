@@ -497,6 +497,12 @@ class Order
     private $foodPrepareDate;
 
     /**
+     * @var string
+     * @ORM\Column(name="source", type="string", length=20, nullable=true)
+     */
+    private $source;
+
+    /**
      * @return string
      */
     public function __toString()
