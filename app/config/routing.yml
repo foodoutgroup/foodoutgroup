@@ -29,23 +29,30 @@ banned:
 banned_email:
     path: /banned-email/
     defaults: { _controller: FoodAppBundle:Default:bannedEmail}
+#
+#logistics_order_status:
+#    path: /logistics/status-update/
+#    defaults: { _controller: FoodOrderBundle:Logistics:orderStatus}
+#
+#logistics_driver_assign:
+#    path: /logistics/driver-assign/
+#    defaults: { _controller: FoodOrderBundle:Logistics:driverAssign}
 
-logistics_order_status:
-    path: /logistics/status-update/
-    defaults: { _controller: FoodOrderBundle:Logistics:orderStatus}
 
-logistics_driver_assign:
-    path: /logistics/driver-assign/
-    defaults: { _controller: FoodOrderBundle:Logistics:driverAssign}
+
+#order_support_mobile:
+#    path: /o-spr/{hash}/
+#    defaults: { _controller: FoodOrderBundle:Default:mobileAdmin, hash: ~, action: ~ }
+#    schemes:  [http]
 
 ordermobile:
     path: /o/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }
     schemes:  [http]
 
-order_support_mobile:
-    path: /o-spr/{hash}/
-    defaults: { _controller: FoodOrderBundle:Default:mobileAdmin, hash: ~, action: ~ }
+restaurant_mobile_invoice:
+    path: /o/i/{hash}/
+    defaults: { _controller: FoodOrderBundle:Default:restaurantInvoice, hash: ~, action: ~ }
     schemes:  [http]
 
 drivermobile:
@@ -54,26 +61,22 @@ drivermobile:
     schemes:  [http]
 
 driver_mobile_invoice:
-    path: /invoice/driver/{hash}/
+    path: /d/i/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:driverInvoice, hash: ~, action: ~ }
     schemes:  [http]
 
-restaurant_mobile_invoice:
-    path: /invoice/restaurant/{hash}/
-    defaults: { _controller: FoodOrderBundle:Default:restaurantInvoice, hash: ~, action: ~ }
-    schemes:  [http]
 
 
-# Custom report
+# Payments
 payments:
     resource: "@FoodOrderBundle/Resources/config/routing_payment.yml"
     prefix: /payments/
     defaults: { _locale: %kernel.default_locale% }
 
-# Custom report
-custom_report:
-    resource: "@FoodReportBundle/Resources/config/routing.yml"
-    prefix: /custom/report
+## Custom report
+#custom_report:
+#    resource: "@FoodReportBundle/Resources/config/routing.yml"
+#    prefix: /custom/report
 
 
 admin_routing:
@@ -89,9 +92,9 @@ food_sitemap:
     requirements:
       _method:  GET
 
-food_nagios:
-    pattern:  /nagios/
-    defaults: { _controller: FoodAppBundle:Monitoring:nagios }
+#food_nagios:
+#    pattern:  /nagios/
+#    defaults: { _controller: FoodAppBundle:Monitoring:nagios }
 
 fos_user_register:
     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"

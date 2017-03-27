@@ -17,6 +17,8 @@ class SlugController extends Controller
     public function processAction(Request $request, $slug)
     {
 
+
+
         if ($this->get('food.app.utils.misc')->isIpBanned($request->getClientIp())) {
             return $this->redirect($this->generateUrl('banned'), 302);
         }
@@ -30,6 +32,7 @@ class SlugController extends Controller
         }
 
         $params = explode("/", $slug);
+
         $slug = $params[0];
         unset($params[0]);
         $slugRow = $this->util->getOneByName($slug, $request->getLocale());

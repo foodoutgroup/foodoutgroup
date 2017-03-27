@@ -1,39 +1,24 @@
-
 food_ajax:
     resource: "@FoodAppBundle/Resources/config/routing_ajax.yml"
     prefix:   /ajax/{_locale}
     defaults: { _locale: %kernel.default_locale% }
     requirements:
       _locale:  "[a-z]{2}"
-#
-#food_slug_lang_:
-#    path:  /{_locale}/{slug}
-#    defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale% }
-#    requirements:
-#        slug : "^(?!admin|cart|login|logout|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$"
-#        _locale: "^[a-z]{2}"
+
 
 
 food_slug_lang:
     path:  /{_locale}/{slug}
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale% }
     requirements:
-        slug : "^(?!admin|cart|login|logout|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$"
+        slug : "^(?!admin|cart|login|logout|invoice|payments|newsletter|ajax|js|routing|banned)([\pL0-9-\/\__\"„“\.\+]+)"
         _locale: "^[a-z]{2}"
-
-#food_slug_:
-#    path:  /{slug}
-#    defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale%  }
-#    requirements:
-#        slug : "^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+){4,}"
-#
-
 
 food_slug:
     path:  /{slug}
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale%  }
     requirements:
-        slug : "^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+){4,}"
+        slug : "^(?!admin|cart|login|logout|invoice|payments|newsletter|ajax|js|routing|banned)([\pL0-9-\/\__\"„“\.\+]+)"
 
 
 
