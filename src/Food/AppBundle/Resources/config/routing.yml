@@ -11,14 +11,14 @@ food_slug_lang:
     path:  /{_locale}/{slug}
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale% }
     requirements:
-        slug : "^(?!admin|cart|login|logout|invoice|payments|newsletter|ajax|js|routing|banned)([\pL0-9-\/\__\"„“\.\+]+)"
+        slug : %slug_regex%
         _locale: "^[a-z]{2}"
 
 food_slug:
     path:  /{slug}
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale%  }
     requirements:
-        slug : "^(?!admin|cart|login|logout|invoice|payments|newsletter|ajax|js|routing|banned)([\pL0-9-\/\__\"„“\.\+]+)"
+        slug : %slug_regex%
 
 
 

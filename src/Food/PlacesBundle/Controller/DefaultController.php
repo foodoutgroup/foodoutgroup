@@ -2,6 +2,7 @@
 
 namespace Food\PlacesBundle\Controller;
 
+use Food\AppBundle\Entity\Slug;
 use Food\AppBundle\Service\CityService;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -52,11 +53,13 @@ class DefaultController extends Controller
             }
         }
 
+        $metaTitle = '';
+        $metaDescription = '';
+
         $this->get('food.googlegis')->setCityOnlyToSession($city,$id);
         $locData = $this->get('food.googlegis')->getLocationFromSession();
         $placeService = $this->get('food.places');
         $selectedKitchensNames = $placeService->getKitchensFromSlug($params, $request, true);
-        $current_url = $request->getUri();
 
         $selectedKitchensIds = $placeService->getKitchensFromSlug($params, $request);
 
@@ -64,9 +67,6 @@ class DefaultController extends Controller
             $kitchen = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen')->find($selectedKitchensIds[0]);
             $metaTitle = $kitchen->getMetaTitle();
             $metaDescription = $kitchen->getMetaDescription();
-        } else {
-            $metaTitle = '';
-            $metaDescription = '';
         }
 
 
@@ -80,11 +80,11 @@ class DefaultController extends Controller
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
                 'slug_filter' => implode("/", $params),
                 'selected_kitchens_names' => $selectedKitchensNames,
-                'current_url' => $current_url,
                 'meta_title' => $metaTitle,
                 'meta_description' => $metaDescription,
                 'city' => $city,
-                'cityUrl' => $this->generateUrl('food_slug', ['slug' => $city->getSlug()]),
+                'current_url' => $request->getUri(),
+                'current_url_path' => $this->get('slug')->getUrl($id, Slug::TYPE_CITY),
             )
         );
     }

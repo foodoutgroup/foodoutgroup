@@ -5,9 +5,8 @@
 
 {% block breadcrumb %}
     <a href="{{ path('food_lang_homepage') }}">{% trans %}general.profile.home{% endtrans %}</a>
-    <a href="{{ cityUrl }}"> {{ city.getTitle() }}</a>
-    {#todo:fix this god damn link#}
-    {#<a href="{{ cityUrl }}"> {{ city_breadcrumb }}</a>#}
+    <a href="{{ current_url_path }}"> {{ city.getTitle() }}</a>
+
     {% if selected_kitchens_names is not empty%}
         <a href="{{ current_url }}"> {{ selected_kitchens_names|first }}</a>
     {% endif %}
