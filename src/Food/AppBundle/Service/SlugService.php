@@ -108,8 +108,6 @@ class SlugService
         $params = ['slug' => $urlSlug];
 
         $url = 'error';
-
-
         if ($locale != $this->defaultLocale) {
             $slug = 'food_slug_lang';
             $params['_locale'] = $locale;
@@ -142,6 +140,13 @@ class SlugService
         return $this->router->generate($route, $params);
     }
 
+    public function ajaxURL($route, $params = []) {
+
+        $locale = $this->getLocale();
+        $params['_locale'] = $locale;
+        return $this->router->generate($route, $params);
+    }
+
     public function generatePath($route, $route_locale = null, $params = [])
     {
         $locale = $this->getLocale();
@@ -161,7 +166,7 @@ class SlugService
         if ($locale != $this->defaultLocale) {
             $params['_locale'] = $locale;
         }
-        return $this->router->generate('food_homepage', $params);
+        return $this->router->generate('food_lang_homepage', $params);
 
     }
 

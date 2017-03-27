@@ -1,0 +1,7 @@
+food_api:
+    resource: "@FoodApiBundle/Resources/config/routing.yml"
+    prefix:   /v1/
+
+api_v2:
+    resource: "@ApiV2Bundle/Resources/config/routing.yml"
+    prefix:   /v2/

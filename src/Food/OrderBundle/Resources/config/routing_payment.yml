@@ -1,0 +1,42 @@
+local_biller_accept:
+    # path: /payments/local/accept/
+    path: /{_locale}/payments/local/accept/
+    defaults: { _controller: FoodOrderBundle:Payments:localAccept }
+
+paysera_accept:
+    # path: /payments/paysera/accept/
+    path: /{_locale}/paysera/accept/
+    defaults: { _controller: FoodOrderBundle:Payments:payseraAccept }
+
+paysera_cancel:
+    # path: /payments/paysera/cancel/{hash}/
+    path: /{_locale}/paysera/cancel/{hash}/
+    defaults: { _controller: FoodOrderBundle:Payments:payseraCancel, hash: ~ }
+
+paysera_callback:
+    path: /paysera/callback
+    defaults: { _controller: FoodOrderBundle:Payments:payseraCallback}
+
+# Swedbank banklink banklink
+swedbank_banklink_gateway:
+    resource: "@FoodOrderBundle/Resources/config/swedbank_banklink_gateway_routing.yml"
+    prefix: /swedbank/gateway
+
+# Swedbank credit card gateway
+swedbank_credit_card_gateway:
+    resource: "@FoodOrderBundle/Resources/config/swedbank_credit_card_gateway_routing.yml"
+    prefix: /swedbank/ccgateway
+
+# SEB banklink
+seb_banklink:
+    resource: "@FoodOrderBundle/Resources/config/seb_routing.yml"
+    prefix: /seb/banklink
+
+# NORDEA banklink
+nordea_banklink:
+    resource: "@FoodOrderBundle/Resources/config/nordea_routing.yml"
+    prefix: /nordea/banklink
+
+sandbox_routes:
+    resource: "@FoodOrderBundle/Resources/config/sandbox_routing.yml"
+    prefix: /sandbox

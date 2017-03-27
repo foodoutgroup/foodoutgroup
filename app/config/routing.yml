@@ -1,60 +1,12 @@
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
 api_base:
     resource: "@ApiBaseBundle/Resources/config/routing.yml"
-    prefix:   /
-
-api_v2:
-    resource: "@ApiV2Bundle/Resources/config/routing.yml"
-    prefix:   /api/v2/
-
-food_monitoring:
-    resource: "@FoodMonitoringBundle/Resources/config/routing.yml"
-    prefix:   /
-
-food_api:
-    resource: "@FoodApiBundle/Resources/config/routing.yml"
-    prefix:   /api/v1/
-
-food_sms:
-    resource: "@FoodSmsBundle/Resources/config/routing.yml"
-    prefix:   /
-
-food_places:
-    resource: "@FoodPlacesBundle/Controller/"
-    type:     annotation
-    prefix:   /
+    prefix:   /api
 
 food_user:
     resource: "@FoodUserBundle/Controller/DefaultController.php"
-    type:     annotation
-    prefix:   /
-
-food_user_reset_password:
-    resource: "@FoodUserBundle/Controller/ResetPasswordController.php"
-    type: annotation
-    prefix: /resetting
-
-food_order:
-    resource: "@FoodOrderBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-food_cart:
-    resource: "@FoodCartBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-food_app:
-    resource: "@FoodAppBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-food_dishes:
-    resource: "@FoodDishesBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-food_call_center:
-    resource: "@CallCenterBundle/Controller/"
     type:     annotation
     prefix:   /
 
@@ -64,81 +16,11 @@ fos_user_security:
     defaults : {_locale: %kernel.default_locale%}
 
 
-soanata_user:
-    resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
-    # prefix: /admin
-    prefix: /{_locale}/admin
-    requirements:
-        _locale:  "[a-z]{2}"
-
-admin:
-    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
-    # prefix: /admin
-    prefix: /{_locale}/admin
-    requirements:
-        _locale:  "[a-z]{2}"
-
-_sonata_admin:
-    resource: .
-    type: sonata_admin
-    # prefix: /admin
-    prefix: /{_locale}/admin
-    requirements:
-        _locale:  "[a-z]{2}"
-
-food_homepage:
+food_lang_homepage:
     pattern: /{_locale}
     defaults: { _controller: FoodAppBundle:Default:index, _locale: %kernel.default_locale%}
-
-
-food_cili_slash:
-    path: /cilipica/
-    defaults:
-        _controller: FrameworkBundle:Redirect:urlRedirect
-        path: /lt/cili-pica
-        permanent: true
-
-food_cili:
-    path: /cilipica
-    defaults:
-        _controller: FrameworkBundle:Redirect:urlRedirect
-        path: /lt/cili-pica
-        permanent: true
-
-food_cili_express:
-    path: /ciliexpress
-    defaults:
-        _controller: FrameworkBundle:Redirect:urlRedirect
-        path: /lt/ciliexpress
-        permanent: true
-
-food_cili_greita:
-    path: /ciligreita
-    defaults:
-        _controller: FrameworkBundle:Redirect:urlRedirect
-        path: /lt/cili-greita
-        permanent: true
-
-food_cili_express_slash:
-    path: /ciliexpress/
-    defaults:
-        _controller: FrameworkBundle:Redirect:urlRedirect
-        path: /lt/ciliexpress
-        permanent: true
-
-adminroot:
-    path: /admin/
-    defaults:
-        _controller: FrameworkBundle:Redirect:redirect
-        route: sonata_admin_dashboard
-        permanent: true
-
-# temp hack for sonata dumb error
-sonata_user_profile_show:
-    pattern:  /admin/food/user/1/show
-    defaults: { _controller: SonataUserBundle:ProfileFOSUser1:show }
     requirements:
-        _method: GET
+      _locale:  "[a-z]{2}"
 
 banned:
     path: /banned/
@@ -181,53 +63,24 @@ restaurant_mobile_invoice:
     defaults: { _controller: FoodOrderBundle:Default:restaurantInvoice, hash: ~, action: ~ }
     schemes:  [http]
 
-local_biller_accept:
-    # path: /payments/local/accept/
-    path: /{_locale}/payments/local/accept/
-    defaults: { _controller: FoodOrderBundle:Payments:localAccept }
 
-paysera_accept:
-    # path: /payments/paysera/accept/
-    path: /{_locale}/payments/paysera/accept/
-    defaults: { _controller: FoodOrderBundle:Payments:payseraAccept }
-
-paysera_cancel:
-    # path: /payments/paysera/cancel/{hash}/
-    path: /{_locale}/payments/paysera/cancel/{hash}/
-    defaults: { _controller: FoodOrderBundle:Payments:payseraCancel, hash: ~ }
-
-paysera_callback:
-    path: /payments/paysera/callback
-    defaults: { _controller: FoodOrderBundle:Payments:payseraCallback}
-
-# Swedbank banklink banklink
-swedbank_banklink_gateway:
-    resource: "@FoodOrderBundle/Resources/config/swedbank_banklink_gateway_routing.yml"
-    prefix: /payments/swedbank/gateway
-
-# Swedbank credit card gateway
-swedbank_credit_card_gateway:
-    resource: "@FoodOrderBundle/Resources/config/swedbank_credit_card_gateway_routing.yml"
-    prefix: /payments/swedbank/ccgateway
-
-# SEB banklink
-seb_banklink:
-    resource: "@FoodOrderBundle/Resources/config/seb_routing.yml"
-    prefix: /payments/seb/banklink
-
-# NORDEA banklink
-nordea_banklink:
-    resource: "@FoodOrderBundle/Resources/config/nordea_routing.yml"
-    prefix: /payments/nordea/banklink
-
-sandbox_routes:
-    resource: "@FoodOrderBundle/Resources/config/sandbox_routing.yml"
-    prefix: /payments/sandbox
+# Custom report
+payments:
+    resource: "@FoodOrderBundle/Resources/config/routing_payment.yml"
+    prefix: /payments/
+    defaults: { _locale: %kernel.default_locale% }
 
 # Custom report
 custom_report:
     resource: "@FoodReportBundle/Resources/config/routing.yml"
     prefix: /custom/report
+
+
+admin_routing:
+    resource: "@FoodAppBundle/Resources/config/routing_admin.yml"
+    prefix: /admin/{_locale}
+    defaults:
+          _locale: %kernel.default_locale%
 
 # other
 food_sitemap:
@@ -252,12 +105,57 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /{_locale}/change-password
 
+food_user_reset_password:
+    resource: "@FoodUserBundle/Controller/ResetPasswordController.php"
+    type: annotation
+    prefix: /resetting
+
 lexik_translation_edition:
     resource: "@LexikTranslationBundle/Resources/config/routing.yml"
     prefix:   /trans
 
-food_app_1:
+
+food_monitoring:
+    resource: "@FoodMonitoringBundle/Resources/config/routing.yml"
+    prefix:   /
+
+food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
+
 #    prefix:   /{_locale}/
 #    requirements:
 #        _locale:  "[a-z]{2}"
+
+#food_sms:
+#    resource: "@FoodSmsBundle/Resources/config/routing.yml"
+#    prefix:   /
+#
+#food_places:
+#    resource: "@FoodPlacesBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+#
+#food_order:
+#    resource: "@FoodOrderBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+#
+#food_cart:
+#    resource: "@FoodCartBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+#
+#food_app:
+#    resource: "@FoodAppBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+#
+#food_dishes:
+#    resource: "@FoodDishesBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+#
+#food_call_center:
+#    resource: "@CallCenterBundle/Controller/"
+#    type:     annotation
+#    prefix:   /

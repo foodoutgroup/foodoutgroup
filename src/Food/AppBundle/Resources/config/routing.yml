@@ -1,3 +1,50 @@
+
+food_ajax:
+    resource: "@FoodAppBundle/Resources/config/routing_ajax.yml"
+    prefix:   /ajax/{_locale}
+    defaults: { _locale: %kernel.default_locale% }
+    requirements:
+      _locale:  "[a-z]{2}"
+#
+#food_slug_lang_:
+#    path:  /{_locale}/{slug}
+#    defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale% }
+#    requirements:
+#        slug : "^(?!admin|cart|login|logout|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$"
+#        _locale: "^[a-z]{2}"
+
+
+food_slug_lang:
+    path:  /{_locale}/{slug}
+    defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale% }
+    requirements:
+        slug : "^(?!admin|cart|login|logout|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$"
+        _locale: "^[a-z]{2}"
+
+#food_slug_:
+#    path:  /{slug}
+#    defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale%  }
+#    requirements:
+#        slug : "^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+){4,}"
+#
+
+
+food_slug:
+    path:  /{slug}
+    defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale%  }
+    requirements:
+        slug : "^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+){4,}"
+
+
+
+food_newsletter_subscribe:
+    path: /newsletter/subscription/
+    defaults: { _controller: FoodAppBundle:Default:newsletterSubscription}
+
+food_newsletter_subscribe_locale:
+    path: /{_locale}/newsletter/subscription/
+    defaults: { _controller: FoodAppBundle:Default:newsletterSubscription, _locale: %kernel.default_locale% }
+
 food_order_tracking:
     path: /track/{hash}/
     defaults: { _controller: FoodAppBundle:OrderTracking:index, hash: ~ }
@@ -7,10 +54,6 @@ food_order_status_check:
     defaults: { _controller: FoodAppBundle:OrderTracking:orderStatusCheck }
     options:
         expose: true
-
-food_lang_homepage:
-    path: /{_locale}
-    defaults: { _controller: FoodAppBundle:Default:index, _locale: %kernel.default_locale% }
 
 food_review_create:
     path: /place/review/{id}
@@ -22,141 +65,6 @@ food_test_init:
     resource: "@FoodAppBundle/Resources/config/routing_test.yml"
     prefix: /test
 
-fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
-
 food_order_cnt:
     resource: "@FoodOrderBundle/Resources/config/routing.yml"
     prefix: /order
-
-food_admin:
-    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
-    prefix: /{_locale}/admin
-
-food_admin_init:
-    resource: '@FoodAppBundle/Resources/config/routing_admin.yml'
-    prefix: /{_locale}/admin
-
-food_cart:
-    resource: "@FoodCartBundle/Resources/config/routing.yml"
-    prefix:   /{_locale}/cart
-    defaults: { _locale: %kernel.default_locale%}
-
-food_ajax_import:
-    resource: "@FoodAppBundle/Resources/config/routing_ajax.yml"
-    prefix:   /ajax
-
-food_ajax_import_locale:
-    resource: "@FoodAppBundle/Resources/config/routing_ajax.yml"
-    prefix:   /{_locale}/ajax
-    defaults: { _locale: %kernel.default_locale% }
-    requirements:
-#      _locale:  "[a-z]{2}"
-
-food_places:
-    path: /places
-    defaults: { _controller: FoodPlacesBundle:Default:index }
-
-food_places_filter:
-    path: /{_locale}/places/filter/
-    defaults: { _controller: FoodPlacesBundle:Default:list, _locale: %kernel.default_locale% }
-
-food_kitchens_filter:
-    path: /{_locale}/kitchens/filter/
-    defaults: { _controller: FoodDishesBundle:Kitchen:kitchenlist, _locale: %kernel.default_locale% }
-    options:
-        expose: true
-
-food_places_filter_locale:
-    path: /{_locale}/places/filter/
-    defaults: { _controller: FoodPlacesBundle:Default:list, _locale: %kernel.default_locale% }
-    requirements:
-        _locale:  "[a-z]{2}"
-
-food_kitchens_filter_locale:
-    path: /{_locale}/kitchens/filter/
-    defaults: { _controller: FoodDishesBundle:Kitchen:kitchenlist,_locale: %kernel.default_locale% }
-    options:
-        expose: true
-    requirements:
-        _locale:  "[a-z]{2}"
-
-
-food_newsletter_subscribe:
-    path: /newsletter/subscription/
-    defaults: { _controller: FoodAppBundle:Default:newsletterSubscription}
-
-food_newsletter_subscribe_locale:
-    path: /{_locale}/newsletter/subscription/
-    defaults: { _controller: FoodAppBundle:Default:newsletterSubscription, _locale: %kernel.default_locale% }
-
-
-food_slug_lang:
-    path:  /{_locale}/{slug}/
-    defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale% }
-    requirements:
-        slug : "^(?!admin|cart|login|logout|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$"
-        _locale: "^[a-z]{2}"
-
-food_slug:
-    path:  /{_locale}/{slug}/
-    defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale%  }
-    requirements:
-        slug : "^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+){4,}"
-
-#static:
-#    path:     /static/{id}
-#    defaults: { _controller: FoodAppBundle:Static:index }
-#    methods:  [GET]
-
-
-
-# 1822
-food_1822:
-    path: /1822
-    defaults:
-        _controller: FrameworkBundle:Redirect:redirect
-        route: food_1822_cili_slash
-        permanent: true
-food_1822_slash:
-    path: /1822/
-    defaults:
-        _controller: FrameworkBundle:Redirect:redirect
-        route: food_1822_cili_slash
-        permanent: true
-food_1822_cili:
-    path: /1822/cili-pica
-    defaults:
-        _controller: FrameworkBundle:Redirect:redirect
-        route: food_1822_cili_slash
-        permanent: true
-
-food_1822_cili_kaimas:
-    path: /1822/cili-kaimas
-    defaults:
-        _controller: FrameworkBundle:Redirect:redirect
-        route: food_1822_cili_kaimas_slash
-        permanent: true
-food_1822_soya:
-    path: /1822/soya
-    defaults:
-        _controller: FrameworkBundle:Redirect:redirect
-        route: food_1822_soya_slash
-        permanent: true
-food_1822_cili_slash:
-    path: /1822/cili-pica/
-    defaults: { _controller: FoodDishesBundle:Place:index, id: 63, slug: 'cili-pica', categoryId: '', oldFriendIsHere: 1 }
-food_1822_cili_kaimas_slash:
-    path: /1822/cili-kaimas/
-    defaults: { _controller: FoodDishesBundle:Place:index, id: 67, slug: 'cili-kaimas-kaunas', categoryId: '', oldFriendIsHere: 1 }
-food_1822_soya_slash:
-    path: /1822/soya/
-    defaults: { _controller: FoodDishesBundle:Place:index, id: 70, slug: 'soya', categoryId: '', oldFriendIsHere: 1 }
-
-food_place_url_by_city:
-    path: /getPlaceUrlByCity/{placeId}
-    defaults: { _controller: FoodDishesBundle:Place:getPlaceUrlByCity }
-
-food_cities_by_place:
-    path: /getCitiesByPlace/{placeId}
-    defaults: { _controller: FoodDishesBundle:Place:getCitiesByPlace }

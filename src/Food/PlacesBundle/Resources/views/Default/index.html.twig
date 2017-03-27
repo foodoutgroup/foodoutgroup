@@ -23,6 +23,9 @@
 
 {% block jscode %}
     $(document).ready(function() {
+
+
+
         $(".content-lefter").on('ifChecked', '.filters-list input', function(event) {
             $(this).attr('checked', true);
             submitKitchens();
@@ -58,7 +61,6 @@
         });
 
         function submitKitchens() {
-
             var $filters = $(".filters-list input:checked");
 
             var params = {kitchens: '', filters: ''};
@@ -81,7 +83,7 @@
 
             var kitchenParams = { 'recommended': '{{ recommended }}', 'delivery_type': params['delivery_type'], 'selected_kitchens': selectedKitchens, 'selected_kitchens_slugs': selectedKitchensSlugs};
 
-            $.get('{{ path('food_kitchens_filter') }}', kitchenParams, function(resp) {
+            $.get('{{ slug.ajaxURL('food_kitchens_filter') }}', kitchenParams, function(resp) {
                 var $container = $('.content-lefter');
                 $container.find('.filter-title').remove();
                 $container.find('.filters-list').remove();
@@ -134,7 +136,7 @@
             }
 
             $('.content-righter').mask();
-            $.post('{{ slug.generateUrl('food_places_filter') }}', params, function(resp) {
+            $.post('{{ slug.ajaxURL('food_places_filter') }}', params, function(resp) {
                 var $container = $('.content-righter');
                 $container.find('.restaurants-list').remove();
                 $container.unmask();
@@ -208,7 +210,7 @@
                     change_location($('#places-change-address'), click_callback, data_callback,
                                     '{% trans %}cart.checkout.address_change_change{% endtrans %}',
                                     '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
-                                    '{{ url('food_ajax', {'action': 'find-address'}) }}');
+                                    '{{ slug.ajaxURL('food_ajax', {'action': 'find-address'}) }}');
 
                     return false;
                 })

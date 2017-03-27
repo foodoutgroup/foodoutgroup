@@ -17,6 +17,9 @@ class RequestListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest()->getLocale();
+
+//        var_dump($request);
+
         $availableLocales = $this->container->getParameter('locales');
 
         if (!in_array($request, $availableLocales)) {

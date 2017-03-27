@@ -1,3 +1,7 @@
+food_cart:
+    resource: "@FoodCartBundle/Resources/config/routing.yml"
+    prefix:   /cart
+
 food_ajax_dish:
     path: /dish/add/{dish}
     defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~ ,  _locale: %kernel.default_locale% }
@@ -12,7 +16,7 @@ food_ajax_remove_dish:
 
 food_ajax:
     path: /{action}/
-    defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~ , _locale: %kernel.default_locale%}
+    defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
     options:
         expose: true
 
@@ -23,3 +27,25 @@ food_place_point_data:
 food_place_menu_layout:
     path: /save-menu-layout/{layout}
     defaults: { _controller: FoodDishesBundle:FoodCategory:restaurantMenuLayout, layout: ~}
+
+food_places:
+    path: /places
+    defaults: { _controller: FoodPlacesBundle:Default:index }
+
+food_places_filter:
+    path: /places/filter/
+    defaults: { _controller: FoodPlacesBundle:Default:list }
+
+food_kitchens_filter:
+    path: /kitchens/filter/
+    defaults: { _controller: FoodDishesBundle:Kitchen:kitchenlist }
+    options:
+        expose: true
+
+food_place_url_by_city:
+    path: /getPlaceUrlByCity/{placeId}
+    defaults: { _controller: FoodDishesBundle:Place:getPlaceUrlByCity }
+
+food_cities_by_place:
+    path: /getCitiesByPlace/{placeId}
+    defaults: { _controller: FoodDishesBundle:Place:getCitiesByPlace }
