@@ -90,10 +90,9 @@
                     {% set groupName = "" %}
                     {% set optCounter = 0 %}
                     {% for option in dish.options %}
-                        {% if groupName != option.groupName and optCounter != 0 %}
-                            {#
-                                <br clear="all" />
-                            #}
+                        {% if misc_utils.getParam('extra_group') and groupName != option.groupName and optCounter != 0 %}
+                            <br clear="all" />
+                            <h3>{{ option.groupName }}</h3>
                         {% endif %}
 
                         {% set groupName = option.groupName %}
