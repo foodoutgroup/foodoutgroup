@@ -17,7 +17,6 @@ class SlugController extends Controller
     public function processAction(Request $request, $slug)
     {
 
-
         if ($this->get('food.app.utils.misc')->isIpBanned($request->getClientIp())) {
             return $this->redirect($this->generateUrl('banned'), 302);
         }
