@@ -38,7 +38,7 @@ food_places_filter:
 
 food_kitchens_filter:
     path: /kitchens/filter/
-    defaults: { _controller: FoodDishesBundle:Kitchen:kitchenlist }
+    defaults: { _controller: FoodDishesBundle:Kitchen:list }
     options:
         expose: true
 

@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
-    public function indexAction($recommended = false, $zaval = false)
+    public function indexAction($recommended = false, $rush_hour = false)
     {
         $locData = $this->get('food.location')->getLocationFromSession();
 
@@ -28,7 +28,7 @@ class DefaultController extends Controller
         return $this->render(
             'FoodPlacesBundle:Default:index.html.twig', [
                 'recommended' => $recommended,
-                'zaval' => $zaval,
+                'rush_hour' => $rush_hour,
                 'location' => $locData,
                 'default_city' => 'Vilnius',
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
@@ -74,7 +74,7 @@ class DefaultController extends Controller
             'FoodPlacesBundle:Default:city.html.twig',
             array(
                 'recommended' => false,
-                'zaval' => false,
+                'rush_hour' => false,
                 'location' => $locData,
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
@@ -89,7 +89,7 @@ class DefaultController extends Controller
         );
     }
 
-    public function listAction($recommended = false, $slug_filter = false, $zaval = false, Request $request)
+    public function listAction($recommended = false, $slug_filter = false, $rush_hour = false, Request $request)
     {
         if ($recommendedFromRequest = $request->get('recommended', null) !== null) {
             $recommended = (bool)$recommendedFromRequest;
@@ -107,7 +107,7 @@ class DefaultController extends Controller
             }
         }
 
-        $places = $this->get('food.places')->getPlacesForList($recommended, $request, $slug_filter, $zaval);
+        $places = $this->get('food.places')->getPlacesForList($recommended, $request, $slug_filter, $rush_hour);
 
         $locData = $this->get('food.googlegis')->getLocationFromSession();
 

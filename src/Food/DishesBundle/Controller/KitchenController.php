@@ -22,7 +22,7 @@ class KitchenController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function kitchenlistAction($recommended = false, $slug_filter = false, Request $request, $zaval = false, $city = null)
+    public function listAction($recommended = false, $slug_filter = false, Request $request, $rush_hour = false, $city = null)
     {
 
         if ($recommendedFromRequest = $request->get('recommended', null) !== null) {
@@ -44,7 +44,7 @@ class KitchenController extends Controller
             }
         }
 
-        if ($zaval) {
+        if ($rush_hour) {
             $this->container->get('session')->set('delivery_type', '');
         }
 
@@ -63,11 +63,6 @@ class KitchenController extends Controller
         }
 
         $list = $this->getKitchens($recommended, $request);
-
-        $currentCity = $this->get('food.location')->getLocationFromSession();
-        $currentCity = $this->get('food.city_service')->getCityInfo($currentCity['city']);
-
-
 
         return $this->render(
             'FoodDishesBundle:Kitchen:list_items.html.twig',

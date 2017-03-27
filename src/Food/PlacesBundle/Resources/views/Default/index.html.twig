@@ -179,7 +179,7 @@
             <span class="place-counter"></span>
             <a href="#" id="places-change-location-link">{% trans %}places.change_address{% endtrans %}</a>
         </h2>
-        {% if recommended==0 and ( location == null or (location.not_found and location.street_found)) %}
+        {% if ( location == null or (location.not_found and location.street_found)) %}
             <div class="alert alert2 alert-warning alert_not_detailed_search"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
         {% endif %}
     </div>
@@ -217,17 +217,18 @@
             });
         // ]]>
     </script>
-    <div class="restaurants-list-top-filters"{% if zaval %} style="display:none;"{% endif %}>
-        <div class="delivery-type-filter">
-            <div class="label">{% trans %}places.filter_by_delivery{% endtrans %}:</div>
-            <a href="#" data-type="delivery" {% if delivery_type_filter == 'deliver' %}class="selected"{% endif %}>{% trans %}places.filter_delivery{% endtrans %}</a>
-            <a href="#" data-type="pickup" {% if delivery_type_filter == 'pickup' %}class="selected"{% endif %}>{% trans %}places.filter_pickup{% endtrans %}</a>
+    {% if not rush_hour %}
+        <div class="restaurants-list-top-filters">
+            <div class="delivery-type-filter">
+                <div class="label">{% trans %}places.filter_by_delivery{% endtrans %}:</div>
+                <a href="#" data-type="delivery" {% if delivery_type_filter == 'deliver' %}class="selected"{% endif %}>{% trans %}places.filter_delivery{% endtrans %}</a>
+                <a href="#" data-type="pickup" {% if delivery_type_filter == 'pickup' %}class="selected"{% endif %}>{% trans %}places.filter_pickup{% endtrans %}</a>
+            </div>
         </div>
-    </div>
+    {% endif %}
     <div class="clearfix">
         <div class="content-lefter">
-            {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended, 'slug_filter': slug_filter, 'zaval': zaval, 'city' : city})) }}
-            {{ render(controller('FoodDishesBundle:Place:filtersList')) }}
+            {{ render(controller('FoodDishesBundle:Kitchen:list', {'recommended': recommended, 'slug_filter': slug_filter, 'rush_hour': rush_hour, 'city' : city})) }}
             <div class="banners">
                 {% if site_country == 'LT' %}
                     <div>
@@ -269,30 +270,7 @@
             </div>
         </div>
         <div class="content-righter">
-            {#<div class="restaurants-list-controls clearfix">
-                &#123;&#35;<form class="list-search-form fl">&#35;&#125;
-                    &#123;&#35;<input type="text" placeholder="{% trans %}places.search_placeholder{% endtrans %}">&#35;&#125;
-                    &#123;&#35;<input type="submit" value="">&#35;&#125;
-                &#123;&#35;</form>&#35;&#125;
-                <div class="list-top-filters clearfix fr">
-                    <div class="delivery-type-filter">
-                        <div class="label">{% trans %}places.filter_by_delivery{% endtrans %}:</div>
-                        <a href="#" data-type="delivery_and_pickup" {% if delivery_type_filer == 'delivery_and_pickup' %}class="selected"{% endif %}>{% trans %}places.filter_delivery_and_pickup{% endtrans %}</a>
-                        <a href="#" data-type="delivery" {% if delivery_type_filer == 'delivery' %}class="selected"{% endif %}>{% trans %}places.filter_delivery{% endtrans %}</a>
-                        <a href="#" data-type="pickup" {% if delivery_type_filer == 'pickup' %}class="selected"{% endif %}>{% trans %}places.filter_pickup{% endtrans %}</a>
-                    </div>
-                    <div class="label">{% trans %}places.order_by{% endtrans %}:</div>
-                    <a href="#">{% trans %}places.sort_by_relevance{% endtrans %}</a>
-                    <a href="#" class="selected">{% trans %}places.sort_by_rating{% endtrans %}</a>
-                    <a href="#">{% trans %}places.sort_by_delivery_price{% endtrans %}</a>
-                    <a href="#">{% trans %}places.sort_by_distance{% endtrans %}</a>
-                </div>
-            </div>#}
-            {% if zaval %}
-                {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended, 'slug_filter': [], 'zaval': true})) }}
-            {% else %}
-                {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended, 'slug_filter': slug_filter})) }}
-            {% endif %}
+            {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended, 'slug_filter': [], 'rush_hour': rush_hour})) }}
         </div>
     </div>
 

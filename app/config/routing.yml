@@ -118,9 +118,9 @@ lexik_translation_edition:
     prefix:   /trans
 
 
-food_monitoring:
-    resource: "@FoodMonitoringBundle/Resources/config/routing.yml"
-    prefix:   /
+#food_monitoring:
+#    resource: "@FoodMonitoringBundle/Resources/config/routing.yml"
+#    prefix:   /
 
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
