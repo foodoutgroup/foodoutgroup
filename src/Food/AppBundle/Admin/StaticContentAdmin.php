@@ -25,13 +25,12 @@ class StaticContentAdmin extends FoodAdmin
             array(
                 'translatable_class' => 'Food\AppBundle\Entity\StaticContent',
                 'fields' => array(
-                    'title' => array('label' => 'admin.static.title','attr'=>['class'=>'slug_title']),
+                    'title' => array('label' => 'admin.static.title','attr'=>['data-slugify'=>'title']),
                     'content' => array('label' => 'admin.static.content', 'attr' => ['class' => 'ckeditor_custom']),
                     'seo_title' => array('label' => 'admin.static.seo_title', 'required' => false,),
                     'seo_description' => array('label' => 'admin.static.seo_description', 'required' => false,),
                     'slug' => [
                         'constraints' => new Slug('static', $formMapper),
-                        'attr'=>['class'=>'slug']
                     ]
                 )
             ))

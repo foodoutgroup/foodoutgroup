@@ -30,10 +30,11 @@ class CityRepository extends EntityRepository
             $result->andWhere('c.id = :id');
             $params['id'] = $id;
         }
-        $result->setParameters($params)
-            ->setMaxResults(5);
 
+        $result->setParameters($params);
         $return = $result->getQuery()->getResult();
+
+        $return = array_slice($return,0,5);
 
         return $return;
 

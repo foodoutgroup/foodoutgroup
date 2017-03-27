@@ -52,7 +52,7 @@ class PlaceAdmin extends FoodAdmin
         }
 
         $formMapper
-            ->add('name', 'text', ['label' => 'admin.place.name','attr'=>['class'=>'slug_title']])
+            ->add('name', 'text', ['label' => 'admin.place.name', 'attr'=>['data-slugify'=>'name']])
             ->add(
                 'translations',
                 'a2lix_translations_gedmo',
@@ -65,11 +65,9 @@ class PlaceAdmin extends FoodAdmin
                         'alcoholRules' => $alcoholRules,
                         'slug' => [
                             'constraints' => new Slug('place', $formMapper),
-                            'attr'=>['class'=>'slug']
                         ]
                     ]
-                ])
-        ;
+                ]);
 
         if ($this->getContainer()->getParameter('place_slug_manual')) {
             $formMapper->add('slug', null, ['required' => true]);
