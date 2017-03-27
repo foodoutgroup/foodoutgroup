@@ -1,4 +1,5 @@
 <?php
+
 namespace Food\DishesBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
@@ -15,7 +16,7 @@ class KitchenAdmin extends FoodAdmin
      *
      * @var array
      */
-    protected $datagridValues = array (
+    protected $datagridValues = array(
         '_page' => 1, // Display the first page (default = 1)
         '_sort_order' => 'ASC', // Descendant ordering (default = 'ASC')
         '_sort_by' => 'id' // name of the ordered field (default = the model id field, if any)
@@ -37,22 +38,20 @@ class KitchenAdmin extends FoodAdmin
             array(
                 'translatable_class' => 'Food\DishesBundle\Entity\Kitchen',
                 'fields' => array(
-                    'name' => array('label' => 'label.name','attr'=>['class'=>'slug_title']),
+                    'name' => array('label' => 'label.name', 'attr' => ['data-slugify' => 'name']),
                     'alias' => array('label' => 'label.alias', 'required' => false),
-                    'metaDescription'  => ['label' => 'admin.meta_description', 'required' => false],
-                    'metaTitle'  => ['label' => 'admin.meta_title', 'required' => false],
+                    'metaDescription' => ['label' => 'admin.meta_description', 'required' => false],
+                    'metaTitle' => ['label' => 'admin.meta_title', 'required' => false],
                     'slug' => [
                         'constraints' => new Slug('kitchen', $formMapper),
-                        'attr'=>['class'=>'slug']
                     ]
-                    )
+                )
             ))
             //->add('file', 'file', $options)
             ->add('visible', 'checkbox', array(
                 'required' => false,
                 'label' => 'admin.visible'
-            ))
-        ;
+            ));
     }
 
     // Fields to be shown on filter forms
@@ -109,8 +108,7 @@ class KitchenAdmin extends FoodAdmin
                     'delete' => array(),
                 ),
                 'label' => 'admin.actions'
-            ))
-        ;
+            ));
     }
 
     /**
@@ -166,7 +164,6 @@ class KitchenAdmin extends FoodAdmin
      *
      * @param \Food\DishesBundle\Entity\Kitchen $object
      */
-
 
 
     //    private function fixSlugs($object)
