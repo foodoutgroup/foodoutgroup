@@ -1153,6 +1153,10 @@
                 <source>cart.didnt_reach_min_cart</source>
                 <target>Grozā nav minimālās summas</target>
             </trans-unit>
+            <trans-unit id="cart.didnt_reach_min_cart_add_admin_fee" resname="cart.didnt_reach_min_cart_add_admin_fee">
+                <source>cart.didnt_reach_min_cart_add_admin_fee</source>
+                <target>Ja minimālais restorāna pasūtījuma grozs nav sasniegts, tiek piemērota administrēšanas maksa</target>
+            </trans-unit>
             <trans-unit id="cart.go_back_to_place" resname="cart.go_back_to_place">
                 <source>cart.go_back_to_place</source>
                 <target>Pievienot ēdienus</target>

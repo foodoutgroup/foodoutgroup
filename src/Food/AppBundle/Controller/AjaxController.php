@@ -97,6 +97,13 @@ class AjaxController extends Controller
             $session = $request->getSession();
             $session->set('locationData', ['address' => $address, 'city' => $city]);
         }
+        $em = $this->container->get('doctrine')->getManager();
+        $cart = $em->getRepository("FoodCartBundle:Cart")->findOneBy(['session' => $request->getSession()->getId()]);
+        if (!empty($cart)){
+            $cartSession = $cart->getSession();
+        }else{
+            $cartSession = null;
+        }
 
         // Only City Selected
         $city_only = $request->get('city_only');
@@ -110,6 +117,28 @@ class AjaxController extends Controller
                 ]
             ]));
         } else {
+
+            if (isset($respData['message']) && !empty($respData['message'])) {
+
+                $user = $this->getUser();
+                $userIp = ($this->container->get('request')->getClientIp());
+                $error = new ErrorLog();
+
+                $error->setIp($userIp);
+                $error->setCart($cartSession);
+                $error->setCreatedBy($user);
+                $error->setPlace(null);
+                $error->setCreatedAt(new \DateTime('now'));
+                $error->setUrl($currentUrl);
+                $error->setSource('adress_change_find');
+                $error->setDescription($respData['message']);
+                $error->setDebug(serialize($request));
+
+                $em = $this->container->get('doctrine')->getManager();
+                $em->persist($error);
+                $em->flush();
+
+            }
             $response->setContent(json_encode([
                 'data' => $respData
             ]));

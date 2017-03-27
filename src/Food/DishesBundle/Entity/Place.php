@@ -462,6 +462,20 @@ class Place extends Uploadable implements Translatable
     private $translations;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="admin_fee", type="decimal",scale=2, nullable=true)
+     */
+    private $adminFee;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="use_admin_fee", type="boolean", nullable=true, options={"default": false})
+     */
+    private $useAdminFee;
+
+    /**
      * Returns place name
      *
      * @return string
@@ -2190,5 +2204,37 @@ class Place extends Uploadable implements Translatable
         $this->showPhone = $showPhone;
 
         return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAdminFee()
+    {
+        return $this->adminFee;
+    }
+
+    /**
+     * @param int $adminFeeForPlace
+     */
+    public function setAdminFee($adminFee)
+    {
+        $this->adminFee = $adminFee;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseAdminFee()
+    {
+        return $this->useAdminFee;
+    }
+
+    /**
+     * @param bool $useAdminFee
+     */
+    public function setUseAdminFee($useAdminFee)
+    {
+        $this->useAdminFee = $useAdminFee;
     }
 }

@@ -42,12 +42,6 @@ class ErrorLog
     private $ip;
 
     /**
-     * @ORM\ManyToOne(targetEntity="\Food\CartBundle\Entity\Cart")
-     * @ORM\JoinColumn(name="cart_session", referencedColumnName="session")
-     */
-    //~ private $cart;
-
-    /**
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place")
      * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
      */
@@ -56,28 +50,35 @@ class ErrorLog
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="text", nullable=true)
+     * @ORM\Column(name="url", type="text")
      */
     private $url;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="source", type="string", length=255, nullable=true)
+     * @ORM\Column(name="source", type="string", length=255)
      */
     private $source;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", nullable=true)
+     * @ORM\Column(name="description", type="text")
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="debug", type="text", nullable=true)
+     * @ORM\Column(name="cart_session", type="text", nullable=true)
+     */
+    private $cart = null;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="debug", type="text")
      */
     private $debug;
 
@@ -254,29 +255,6 @@ class ErrorLog
     }
 
     /**
-     * Set cart
-     *
-     * @param \Food\CartBundle\Entity\Cart $cart
-     * @return ErrorLog
-     */
-    public function setCart(\Food\CartBundle\Entity\Cart $cart = null)
-    {
-        $this->cart = $cart;
-
-        return $this;
-    }
-
-    /**
-     * Get cart
-     *
-     * @return \Food\CartBundle\Entity\Cart
-     */
-    public function getCart()
-    {
-        return $this->cart;
-    }
-
-    /**
      * Set place
      *
      * @param \Food\DishesBundle\Entity\Place $place
@@ -297,5 +275,28 @@ class ErrorLog
     public function getPlace()
     {
         return $this->place;
+    }
+
+    /**
+     * Set cart
+     *
+     * @param string $cart
+     * @return ErrorLog
+     */
+    public function setCart($cart)
+    {
+        $this->cart = $cart;
+
+        return $this;
+    }
+
+    /**
+     * Get cart
+     *
+     * @return string
+     */
+    public function getCart()
+    {
+        return $this->cart;
     }
 }

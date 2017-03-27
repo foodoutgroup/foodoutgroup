@@ -287,7 +287,7 @@ class RestaurantsController extends Controller
                     $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null, true, $this->get('food.googlegis')->getLocationFromSession());
                 }
             }
-            $response = $restaurant->data;
+            $response =  $restaurant->data;
         } catch (ApiException $e) {
             $this->get('logger')->error('Restaurants:getRestaurantAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Restaurants:getRestaurantAction Trace1:' . $e->getTraceAsString());

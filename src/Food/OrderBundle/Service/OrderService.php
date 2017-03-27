@@ -1318,6 +1318,7 @@ class OrderService extends ContainerAware
         $placeObject = $this->container->get('food.places')->getPlace($place);
         $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
 
+
         $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
         $enableDiscount = !$placeObject->getOnlyAlcohol();
@@ -1567,11 +1568,27 @@ class OrderService extends ContainerAware
                 $deliveryPrice = 0;
             }
         }
-        $sumTotal += $deliveryPrice;
         //~ }
+        $placesService = $this->container->get('food.places');
+        $useAdminFee = $placesService->useAdminFee($placeObject);
+        $adminFee    = $placesService->getAdminFee($placeObject);
+        $cartFromMin = $this->container->get('food.places')->getMinCartPrice($this->getOrder()->getPlace()->getId());
+        if ($useAdminFee && !$adminFee) {
+            $adminFee = 0;
+        }
+
+        if ($useAdminFee && $priceBeforeDiscount < $cartFromMin)
+        {
+            $sumTotal += $adminFee;
+
+        }
+
+        $sumTotal += $deliveryPrice;
+
 
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
+        $this->getOrder()->setAdminFee($adminFee);
         $this->saveOrder();
     }
 
@@ -2288,7 +2305,7 @@ class OrderService extends ContainerAware
         $messageText = $orderSmsTextTranslation . ' ' . $orderConfirmRoute;
 
         // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
-        if (!empty($placePointEmail)) {
+        if (!empty($placePointEmail) && $placePoint->getEmailSend()) {
             $logger->alert('--- Place asks for email, so we have sent an email about new order to: ' . $placePointEmail);
             $emailMessageText = $messageText;
             $emailMessageText .= "\n" . $orderTextTranslation . ': '
@@ -2302,15 +2319,17 @@ class OrderService extends ContainerAware
 
             $message->addTo($placePointEmail);
 
-            if (!empty($placePointAltEmail1)) {
+            if (!empty($placePointAltEmail1) && $placePoint->getAltEmail1Send()) {
                 $message->addCc($placePointAltEmail1);
             }
-            if (!empty($placePointAltEmail2)) {
+            if (!empty($placePointAltEmail2) && $placePoint->getAltEmail2Send()) {
                 $message->addCc($placePointAltEmail2);
             }
 
             $message->setBody($emailMessageText);
             $mailer->send($message);
+        } else {
+            $this->logOrder($order, 'no_email_send', 'No active emails');
         }
 
         $smsSenderNumber = $this->container->getParameter('sms.sender');
@@ -2319,11 +2338,16 @@ class OrderService extends ContainerAware
         if (!$order->getPlace()->getNavision()) {
             $messagesToSend = [];
 
-            $orderMessageRecipients = [
-                $placePoint->getPhone(),
-                $placePoint->getAltPhone1(),
-                $placePoint->getAltPhone2(),
-            ];
+            $orderMessageRecipients = [];
+            if ($placePoint->getPhoneSend()) {
+                $orderMessageRecipients[] = $placePoint->getPhone();
+            }
+            if ($placePoint->getAltPhone1Send()) {
+                $orderMessageRecipients[] = $placePoint->getAltPhone1();
+            }
+            if ($placePoint->getAltPhone2Send()) {
+                $orderMessageRecipients[] = $placePoint->getAltPhone2();
+            }
 
             foreach ($orderMessageRecipients as $nr => $phone) {
                 // Siunciam sms'a jei jis ne landline
@@ -2343,7 +2367,11 @@ class OrderService extends ContainerAware
             }
 
             //send multiple messages
-            $messagingService->addMultipleMessagesToSend($messagesToSend);
+            if (!empty($orderMessageRecipients)) {
+                $messagingService->addMultipleMessagesToSend($messagesToSend);
+            } else {
+                $this->logOrder($order, 'no_sms_send', 'No active phones');
+            }
         }
 
         if (!$order->getOrderFromNav()) {
@@ -3254,6 +3282,7 @@ class OrderService extends ContainerAware
         $dishesService = $this->container->get('food.dishes');
         $debugCartInfo = array();
 
+        $useAdminFee = $this->container->get('food.places')->useAdminFee($place);
 
         $loggedIn = true;
         $phonePass = false;
@@ -3380,6 +3409,11 @@ class OrderService extends ContainerAware
             }
         }
 
+        if ($coupon)
+        {
+            $useAdminFee = false;
+        }
+
         if ($coupon && $coupon->getIgnoreCartPrice()) {
             $noMinimumCart = true;
         }
@@ -3427,7 +3461,7 @@ class OrderService extends ContainerAware
                     $pointRecord
                 );
 
-                if ($total_cart < $cartMinimum && $noMinimumCart == false) {
+                if ($total_cart < $cartMinimum && $noMinimumCart == false && !$useAdminFee) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
             }

@@ -195,6 +195,8 @@ class OrderAdmin extends FoodAdmin
         return true;
     }
 
+    // hotfix develop
+
     /**
      * @param ListMapper $listMapper
      *
@@ -289,6 +291,7 @@ class OrderAdmin extends FoodAdmin
             ->add('couponCode', 'string', array('label' => 'admin.order.coupon_code'))
             ->add('discountSize', 'string', array('label' => 'admin.order.discount_size'))
             ->add('discountSum', 'string', array('label' => 'admin.order.discount_sum'))
+            ->add('adminFee', 'string', array('label' => 'admin.order.admin_fee'))
             ->add('sfLine', 'string', array('label' => 'admin.order.sf_line'))
             ->add('comment', 'string', array('label' => 'admin.order.comment'))
             ->add('place_comment', 'string', array('label' => 'admin.order.place_comment'))
