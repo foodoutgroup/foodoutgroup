@@ -36,3 +36,7 @@ _sonata_admin:
     prefix: /
     requirements:
         _locale:  "[a-z]{2}"
+
+food_admin_settings:
+   path: /settings
+   defaults: { _controller: FoodAppBundle:Admin/Settings:index }

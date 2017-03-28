@@ -186,18 +186,21 @@
             </a>
 
             {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
-            {% set page = pageService.getByParam('page.help') %}
-            {% if page %}
-            <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
-                <li><a href="{{ slug.getUrl(page.getId(), 'page')}}"><span> {{ page.getTitle() }}</span></a></li>
-            </ul>
+            {% set pageH = pageService.getByParam('page_help') %}
+            {% if pageH %}
+                <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
+                    <li><a href="{{ slug.getUrl(pageH.getId(), 'page')}}"><span> {{ pageH.getTitle() }}</span></a></li>
+                </ul>
             {% endif %}
-            <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
-                <li class="login-ico">
-                    {% render(controller('FoodUserBundle:Default:loginButton')) %}
-                </li>
-            </ul>
+            {% if not slug.isBanned() %}
+                <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
+                    <li class="login-ico">
+                        {% render(controller('FoodUserBundle:Default:loginButton')) %}
+                    </li>
+                </ul>
+
             <div class="separator"></div>
+            {% endif %}
             <div class="top-contact-block">
                 {#
                 {% if ("now"|date('d') == 31 or "now"|date('d') == 1) and site_country == 'LT' %}

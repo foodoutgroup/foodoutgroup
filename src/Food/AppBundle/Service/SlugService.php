@@ -3,6 +3,7 @@ namespace Food\AppBundle\Service;
 
 use Aws\CloudFront\Exception\Exception;
 use Doctrine\ORM\EntityManager;
+use Food\AppBundle\Entity\Slug;
 use Food\DishesBundle\Utils\Slug\SlugGenerator;
 use Food\DishesBundle\Utils\Slug\TextStrategy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,6 +22,9 @@ class SlugService
     private $request;
     private $router;
     private $container;
+    private $misc;
+
+    private $isBanned;
 
     public function __construct(EntityManager $entityManager, ContainerInterface $container, Router $router, $localeCollection, $defaultLocale)
     {
@@ -31,6 +35,9 @@ class SlugService
         $this->localeCollection = $localeCollection;
         $this->defaultLocale = $defaultLocale;
         $this->repository = $this->em->getRepository('FoodAppBundle:Slug');
+        $this->misc = $this->container->get('food.app.utils.misc');
+
+        $this->isBanned = $this->misc->isIpBanned($this->container->get('request')->getClientIp());
     }
 
     public function generate($object, $slugField = 'slug', $type = SlugEntity::TYPE_PAGE)
@@ -177,6 +184,16 @@ class SlugService
             $locale = $this->defaultLocale;
         }
         return strtolower($locale);
+    }
+
+
+    public function isBanned() {
+        return $this->isBanned;
+    }
+
+    public function bannedUrl(){
+        $bannedPageId = $this->misc->getParam('page_banned');
+        return $this->getUrl($bannedPageId, Slug::TYPE_PAGE);
     }
 
 }

@@ -14,16 +14,15 @@ class SlugController extends Controller
     private $repository;
     private $util;
     private $request;
+    private $slug;
+
     public function processAction(Request $request, $slug)
     {
 
-        if ($this->get('food.app.utils.misc')->isIpBanned($request->getClientIp())) {
-            return $this->redirect($this->generateUrl('banned'), 302);
-        }
         $this->request = $request;
         $this->repository = $this->getDoctrine()->getRepository('FoodAppBundle:Slug');
         $this->util = $this->get('food.dishes.utils.slug');
-
+        $this->slug = $this->get('slug');
 
         if(substr($slug, -1) == '/') {
             $slug = substr($slug, 0, -1);
@@ -35,7 +34,12 @@ class SlugController extends Controller
         unset($params[0]);
         $slugRow = $this->util->getOneByName($slug, $request->getLocale());
 
-
+        if ($this->slug->isBanned()) {
+            $banned_page = $this->get('food.static')->getPage($this->get('food.app.utils.misc')->getParam('banned_page', true));
+            if($banned_page->getSlug() != $slug) {
+                return $this->redirect($this->slug->bannedUrl(), 302);
+            }
+        }
 
 
         if (!is_null($slugRow) && !$slugRow->isActive()) {

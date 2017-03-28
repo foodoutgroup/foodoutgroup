@@ -33,6 +33,7 @@
         });
     });
 </script>
+{% if not slug.isBanned() %}
 <div class="clearfix newsletter-outer-block">
     <div class="newsletter-block">
         <div class="newsletter-block-inner clearfix">
@@ -48,3 +49,4 @@
         </div>
     </div>
 </div>
+{% endif %}

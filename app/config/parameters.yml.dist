@@ -1,4 +1,5 @@
 parameters:
+    slug_regex: "^(?!admin|cart|login|logout|invoice|payments|newsletter|ajax|js|routing|banned)([\pL0-9-\/\__\"„“\.\+]+)"
     locale: lt
     locales: [lt, en, ru]
 

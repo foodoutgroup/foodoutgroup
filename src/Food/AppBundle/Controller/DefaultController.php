@@ -22,7 +22,7 @@ class DefaultController extends Controller
         $ip = $request->getClientIp();
         // Dude is banned - hit him
         if ($miscUtils->isIpBanned($ip)) {
-            return $this->redirect($this->generateUrl('banned'), 302);
+            return $this->redirect($this->get('slug')->bannedUrl(), 302);
         }
 
         $formDefaults = array(
