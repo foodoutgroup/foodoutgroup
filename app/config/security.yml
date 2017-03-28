@@ -19,7 +19,7 @@ security:
       admin:
           pattern:      /admin(.*)
           form_login:
-              default_target_path: /admin/%locale%
+              default_target_path: sonata_admin_dashboard
               provider:       fos_userbundle
               csrf_provider:  form.csrf_provider
               login_path:     sonata_user_admin_security_login
@@ -86,7 +86,7 @@ security:
         # Secured part of the site
         # This config requires being logged for the whole site and having the admin role for the admin part.
         # Change these rules to adapt them to your needs
-        - { path: ^/[a-z][a-z]/admin, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_MODERATOR, ROLE_SUPPORT, ROLE_DISPATCHER, ROLE_MARKETING, ROLE_EDITOR] }
+        - { path: ^/admin/[a-z][a-z]/, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_MODERATOR, ROLE_SUPPORT, ROLE_DISPATCHER, ROLE_MARKETING, ROLE_EDITOR] }
         - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 #        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
