@@ -1,34 +1,17 @@
-adminroot:
+admin_dashboard_redirect:
     path: /
     defaults:
         _controller: FrameworkBundle:Redirect:redirect
         route: sonata_admin_dashboard
         permanent: true
 
-# temp hack for sonata dumb error
-sonata_user_profile_show:
-    pattern:  /food/user/1/show
-    defaults: { _controller: SonataUserBundle:ProfileFOSUser1:show }
-    requirements:
-        _method: GET
-
-food_admin:
-    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
-    prefix: /
-
 soanata_user:
     resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
-    # prefix: /admin
     prefix: /
-    requirements:
-        _locale:  "[a-z]{2}"
 
-admin:
+admin_routes:
     resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
-    # prefix: /admin
     prefix: /
-    requirements:
-        _locale:  "[a-z]{2}"
 
 _sonata_admin:
     resource: .

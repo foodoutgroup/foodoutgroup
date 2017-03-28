@@ -17,14 +17,14 @@ fos_user_security:
 
 
 food_lang_homepage:
-    pattern: /{_locale}
+    path: /{_locale}
     defaults: { _controller: FoodAppBundle:Default:index, _locale: %kernel.default_locale%}
     requirements:
       _locale:  "[a-z]{2}"
 
-banned:
-    path: /banned/
-    defaults: { _controller: FoodAppBundle:Default:banned}
+#banned:
+#    path: /banned/
+#    defaults: { _controller: FoodAppBundle:Default:banned}
 
 banned_email:
     path: /banned-email/
@@ -73,11 +73,13 @@ payments:
     prefix: /payments/
     defaults: { _locale: %kernel.default_locale% }
 
-## Custom report
-#custom_report:
-#    resource: "@FoodReportBundle/Resources/config/routing.yml"
-#    prefix: /custom/report
 
+admin_redirect:
+    path: /admin
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /admin/%locale%
+        permanent: true
 
 admin_routing:
     resource: "@FoodAppBundle/Resources/config/routing_admin.yml"

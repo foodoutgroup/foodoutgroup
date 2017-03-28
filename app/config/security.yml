@@ -17,17 +17,17 @@ security:
 
     firewalls:
       admin:
-          pattern:      /admin(.*)|/callcenter(.*)
+          pattern:      /admin(.*)
           form_login:
               provider:       fos_userbundle
               csrf_provider:  form.csrf_provider
-              login_path:     /%locale%/admin/login
+              login_path:     sonata_user_admin_security_login
               use_forward:    false
-              check_path:     /%locale%/admin/login_check
+              check_path:     sonata_user_admin_security_check
               failure_path:   null
           logout:
-              path:           /%locale%/admin/logout
-              target:         /%locale%/admin/
+              path:           sonata_user_admin_security_logout
+              target:         sonata_user_admin_security_login
 
           anonymous:    true
       # -> end custom configuration
