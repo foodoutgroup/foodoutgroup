@@ -1572,23 +1572,23 @@ class OrderService extends ContainerAware
         $placesService = $this->container->get('food.places');
         $useAdminFee = $placesService->useAdminFee($placeObject);
         $adminFee    = $placesService->getAdminFee($placeObject);
-        $cartFromMin = $this->container->get('food.places')->getMinCartPrice($this->getOrder()->getPlace()->getId());
+        $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
         if ($useAdminFee && !$adminFee) {
             $adminFee = 0;
         }
 
-        if ($useAdminFee && $priceBeforeDiscount < $cartFromMin)
+        if ($useAdminFee && $sumTotal < $cartFromMin)
         {
             $sumTotal += $adminFee;
-
         }
 
         $sumTotal += $deliveryPrice;
 
-
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
-        $this->getOrder()->setAdminFee($adminFee);
+        if ($useAdminFee) {
+            $this->getOrder()->setAdminFee($adminFee);
+        }
         $this->saveOrder();
     }
 

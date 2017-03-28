@@ -556,11 +556,11 @@ class DefaultController extends Controller
         $isCallcenter = $session->get('isCallcenter');
 
         $enableDiscount = !$place->getOnlyAlcohol();
-
-        $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
-        $cartFromMax = $this->get('food.places')->getMaxCartPrice($place->getId());
-        $useAdminFee = $this->get('food.places')->useAdminFee($place);
-        $adminFee    = $this->get('food.places')->getAdminFee($place);
+        $placeServ = $this->get('food.places');
+        $cartFromMin = $placeServ->getMinCartPrice($place->getId());
+        $cartFromMax = $placeServ->getMaxCartPrice($place->getId());
+        $useAdminFee = $placeServ->useAdminFee($place);
+        $adminFee    = $placeServ->getAdminFee($place);
 
         if ($useAdminFee && !$adminFee) {
             $adminFee = 0;
