@@ -1,0 +1,39 @@
+{% block groupped_checkbox_widget %}
+     {% if expanded %}
+        <div {{ block('widget_container_attributes') }} id='groupped-container' class="row-fluid ">
+            {% set columnWidth = 12 / choices|length %}
+            {% for group_label, group in choices %}
+                {% if group is iterable %}
+                    <div class="span{{ columnWidth }} groupCheck">
+                        <label><b><input type="checkbox" class="" id="{{ group_label }}"/> {{ group_label|trans }}</b></label>
+                            {% for key, choice in group %}
+                                <div class="row-fluid" data-parent="{{ group_label }}">
+                                    <div class="span1"> {{ form_widget(form[key]) }} </div>
+                                    <div class="span11">{{ form_label(form[key]) }}</div>
+                                </div>
+                            {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+         <script type="text/javascript">
+             $(".groupCheck").find('input:first').on('change',function(){
+                 var children = $(this).parents('div.groupCheck').find('.span1').find('input');
+                 if($(this).is(':checked'))
+                 {
+                     children.prop('disabled',false).prop('checked',true);
+                 }
+                 else
+                 {
+                     children.prop('disabled',true).prop('checked',false);
+                 }
+             }).trigger('change');
+         </script>
+
+
+     {% else %}
+        {{ form_widget(form) }}
+     {% endif %}
+{% endblock %}
+
