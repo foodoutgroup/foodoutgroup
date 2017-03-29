@@ -118,12 +118,20 @@ class Driver
     private $deletedBy;
 
     /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     **/
+    private $cityId;
+
+    /**
      * @return string
      */
     public function __toString()
     {
         if ($this->getId()) {
-            return $this->getName().'-'.$this->getCity().'-'.$this->getId();
+            return $this->getName().'-'.$this->getCityId()->getTitle().'-'.$this->getId();
         }
 
         return '';
@@ -482,5 +490,28 @@ class Driver
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return Driver
+     */
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
+    {
+        $this->cityId = $cityId;
+    
+        return $this;
+    }
+
+    /**
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City 
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
     }
 }

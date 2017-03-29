@@ -42,7 +42,7 @@ class OffersController extends Controller
 
                 $response[] = [
                     'title' => $misterOffer->getTitle(),
-                    'city' => $misterOffer->getCity(),
+                    'city' => $misterOffer->getCityId()->getTitle(),
                     'place' => $placeId,
                     'active' => $misterOffer->getActive(),
                     'text' => $misterOffer->getText(),

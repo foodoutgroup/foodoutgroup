@@ -44,7 +44,7 @@ trait OrderDataForNavDecorator
             $this->cleanChars($user->getLastname()->val('')));
         $data->isDelivered = in_array($order->getOrderStatus()->val(''), [$orderService::$status_completed, $orderService::$status_canceled_produced]) ? 'yes' : 'no';
         $data->deliveryAddress = $this->cleanChars($address->getAddress()->val(''));
-        $data->city = $address->getCity()->val('');
+        $data->city = $address->getCityId()->getTitle()->val('');
         $data->country = '';
         $data->paymentType = $order->getPaymentMethod()->val('');
         $data->foodAmount = (double)$foodTotal;
@@ -110,7 +110,7 @@ trait OrderDataForNavDecorator
         $data->clientName = $orderAccData->getClientName();
         $data->isDelivered = $orderAccData->getIsDelivered() ? 'yes' : 'no';
         $data->deliveryAddress = $orderAccData->getDeliveryAddress();
-        $data->city = $orderAccData->getCity();
+        $data->city = $orderAccData->getCityId()->getTitle();
         $data->country = $orderAccData->getCountry();
         $data->paymentType = $orderAccData->getPaymentType();
         $data->foodAmount = (double)$orderAccData->getFoodAmount();

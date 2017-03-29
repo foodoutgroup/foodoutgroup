@@ -59,7 +59,7 @@ class AddressController extends Controller
                     foreach ($streets as $street) {
                         $response[] = array(
                             'street' => $street->getStreet(),
-                            'city' => $street->getCity(),
+                            'city' => $street->getCityId()->getTitle(),
                         );
                     }
                 }

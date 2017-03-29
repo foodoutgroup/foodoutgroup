@@ -120,10 +120,10 @@ class DefaultController extends Controller
         $user = $this->user();
         $address = $this->address($user);
 
-        $citiesConfig = $this->container->getParameter('available_cities');
+        $citiesConfig = $this->getDoctrine()->getRepository('FoodAppBundle:City')->findBy(['active' => 1]);
         $cities = array();
         foreach ($citiesConfig as $city) {
-            $cities[$city] = $city;
+            $cities[$city->getId()] = $city->getTitle();
         }
 
 
@@ -136,13 +136,14 @@ class DefaultController extends Controller
 
         // address validation
         if ($form->get('address')->isValid()) {
-            $form_city = $form->get('address')->get('city')->getData();
+            $form_city = $form->get('address')->get('city_id')->getData();
             $form_address = $form->get('address')->get('address')->getData();
 
+            $form_city = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($form_city);
+
             $address
-                ->setCity($form_city)
-                ->setAddress($form_address)
-            ;
+                ->setCityId($form_city)
+                ->setAddress($form_address);
 
             if (!$user->getDefaultAddress()) {
                 $em->persist($address);
@@ -159,7 +160,8 @@ class DefaultController extends Controller
                     $locationInfo['address_orig'],
                     (string)$locationInfo['lat'],
                     (string)$locationInfo['lng'],
-                    ''
+                    '',
+                    $form_city
                 );
             }
             // Store UserAddress End
@@ -210,10 +212,11 @@ class DefaultController extends Controller
         $user = $this->user();
         $address = $this->address($user);
 
-        $citiesConfig = $this->container->getParameter('available_cities');
+
+        $citiesConfig = $this->getDoctrine()->getRepository('FoodAppBundle:City')->findBy(['active' => 1]);
         $cities = array();
         foreach ($citiesConfig as $city) {
-            $cities[$city] = $city;
+            $cities[$city->getId()] = $city->getTitle();
         }
 
 
@@ -283,8 +286,7 @@ class DefaultController extends Controller
         $address
             ->setUser($user)
             ->setLat(0)
-            ->setLon(0)
-        ;
+            ->setLon(0);
 
         return $address;
     }
@@ -311,7 +313,7 @@ class DefaultController extends Controller
 
         foreach ($form->all() as $element) {
             $array = $element->getName() != 'plainPassword' ? $element->getErrors() : $element->get('first')->getErrors();
-            $callback = function($carry, $item) {
+            $callback = function ($carry, $item) {
                 $carry[] = $item->getMessage();
                 return $carry;
             };

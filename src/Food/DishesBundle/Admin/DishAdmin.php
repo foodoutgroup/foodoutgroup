@@ -100,7 +100,6 @@ class DishAdmin extends FoodAdmin
                 'fields' => array(
                     'name' => array(
                         'label' => 'label.name',
-                        'attr'=>['data-slugify'=>'name']
                     ),
                     'nameToNav' => array(
                         'label' => 'Navision name'
@@ -110,7 +109,7 @@ class DishAdmin extends FoodAdmin
                     ),
                     'slug' => [
                         'constraints' => new Slug('dish', $formMapper),
-
+                        'attr'=>['data-slugify'=>'name']
                     ]
                 )
             ));

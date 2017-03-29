@@ -33,13 +33,13 @@ class ZavalasService extends BaseService
         return $zavalasStatus;
     }
 
-    public function isZavalasTurnedOnByCity($city)
+    public function isZavalasTurnedOnByCity($cityId)
     {
         $zavalasStatus = false;
 
         if ($this->isZavalasTurnedOnGlobal()) {
             $activeCities = $this->em->getRepository("FoodAppBundle:City")->findBy(array(
-                'title' => $city,
+                'id' => $cityId,
                 'zavalasOn' => true
             ));
             if (count($activeCities)) {
@@ -63,7 +63,7 @@ class ZavalasService extends BaseService
 
         $locationData = $this->locationService->getLocationFromSession();
 
-        if ($this->isZavalasTurnedOnByCity($locationData['city']) && $this->placesService->isPlaceDeliversToCity($place, $locationData['city'])) {
+        if ($this->isZavalasTurnedOnByCity($locationData['city_id']) && $this->placesService->isPlaceDeliversToCity($place, $locationData['city_id'])) {
             $city = $locationData['city'];
         } else {
             $placeCities = $this->em->getRepository('FoodDishesBundle:Place')->getCities($place);

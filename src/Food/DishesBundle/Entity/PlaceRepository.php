@@ -78,11 +78,11 @@ class PlaceRepository extends EntityRepository
         $lat = null;
         $lon = null;
         if (!empty($locationData) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
-            $city = (!empty($locationData['city']) ? $locationData['city'] : null);
+            $city = (!empty($locationData['city_id']) ? $locationData['city_id'] : null);
             $lat = str_replace(",", ".", $locationData['lat']);
             $lon = str_replace(",", ".", $locationData['lng']);
         } elseif (!empty($locationData) && !empty($locationData['city']) && isset($locationData['city_only']) && $locationData['city_only'] === true) {
-            $city = $locationData['city'];
+            $city = $locationData['city_id'];
         }
 
         $zaval = 0;
@@ -90,7 +90,7 @@ class PlaceRepository extends EntityRepository
         if ($pickup) {
             $cityWhere = '';
             if (!empty($city)) {
-                $cityWhere = ' AND pps.city = \'' . $city . '\'';
+                $cityWhere = ' AND pps.city_id = \'' . $city . '\'';
             }
             $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id $cityWhere GROUP BY pps.place";
 
@@ -633,12 +633,11 @@ class PlaceRepository extends EntityRepository
             self::$_citiesCache[$place->getId()] = [];
             foreach ($place->getPoints() as $placePoint) {
 
-                if ($placePoint->getActive() && !in_array($placePoint->getCity(), self::$_citiesCache[$place->getId()])) {
-                    self::$_citiesCache[$place->getId()][] = $placePoint->getCity();
+                if ($placePoint->getActive() && !in_array($placePoint->getCityId(), self::$_citiesCache[$place->getId()])) {
+                    self::$_citiesCache[$place->getId()][] = $placePoint->getCityId();
                 }
             }
         }
-
         return self::$_citiesCache[$place->getId()];
     }
 }

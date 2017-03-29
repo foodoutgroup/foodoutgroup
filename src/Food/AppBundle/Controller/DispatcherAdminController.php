@@ -401,7 +401,7 @@ class DispatcherAdminController extends Controller
         $drivers = $logisticsService->getDrivers(
             $placePoint->getLat(),
             $placePoint->getLon(),
-            $placePoint->getCity()
+            $placePoint->getCityId()->getTitle()
         );
 
 

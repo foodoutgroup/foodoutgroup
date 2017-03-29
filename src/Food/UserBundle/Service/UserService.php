@@ -137,7 +137,7 @@ class UserService extends ContainerAware
             $address = $orderExtra->getOrder()->getAddressId();
             if (count($addresses) < 3 && $address && !in_array($address->getId(), $addresses)) {
                 $addresses[] = $address->getId();
-                $info['address'][] = $address->getAddress() . ', ' . $address->getCity();
+                $info['address'][] = $address->getAddress() . ', ' . $address->getCityId();
             }
         }
     }

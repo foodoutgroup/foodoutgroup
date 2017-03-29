@@ -5,6 +5,7 @@ namespace Food\UserBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
 
 class UserAddressFormType extends AbstractType
 {
@@ -32,19 +33,24 @@ class UserAddressFormType extends AbstractType
     {
         $builder
             ->add(
-                'city',
-                'choice',
+                'city_id',
+                'entity',
                 [
+                    'class' => 'FoodAppBundle:City',
                     'label' => 'form.city',
                     'translation_domain' => 'FOSUserBundle',
-                    'choices' => $this->availableCities,
                     'required' => true,
                     'empty_value' => '-',
-                    'attr' => ['class' => 'custom-select']
+                    'attr' => ['class' => 'custom-select'],
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('u')
+                            ->where('u.active = :active')
+                            ->setParameter('active',1)
+                            ->orderBy('u.title', 'ASC');
+                    },
                 ]
             )
-            ->add('address', null, ['label' => 'form.address', 'translation_domain' => 'FOSUserBundle', 'required' => false])
-        ;
+            ->add('address', null, ['label' => 'form.address', 'translation_domain' => 'FOSUserBundle', 'required' => false]);
     }
 
     /**

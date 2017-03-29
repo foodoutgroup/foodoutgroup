@@ -149,7 +149,7 @@ food_app:
 #    resource: "@FoodCartBundle/Controller/"
 #    type:     annotation
 #    prefix:   /
-#
+
 #food_app:
 #    resource: "@FoodAppBundle/Controller/"
 #    type:     annotation
@@ -164,3 +164,7 @@ food_app:
 #    resource: "@CallCenterBundle/Controller/"
 #    type:     annotation
 #    prefix:   /
+
+food_cart:
+    resource: "@FoodCartBundle/Resources/config/routing.yml"
+    prefix:   /cart

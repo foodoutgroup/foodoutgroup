@@ -7,9 +7,9 @@ use Doctrine\ORM\EntityRepository;
 class CityRepository extends EntityRepository
 {
 
-    public function getZavalasTimeByTitle($cityTitle)
+    public function getZavalasTimeByTitle($cityId)
     {
-        return $this->findOneBy(array('title' => $cityTitle))->getZavalasTime();
+        return $this->findOneBy(array('city_id' => $cityId))->getZavalasTime();
     }
 
     public function getActive()
@@ -39,6 +39,11 @@ class CityRepository extends EntityRepository
         return $return;
 
 
+    }
+
+    public function getActiveById($id)
+    {
+        return $this->findBy(['active' => 1,'id'=>$id]);
     }
 
 }

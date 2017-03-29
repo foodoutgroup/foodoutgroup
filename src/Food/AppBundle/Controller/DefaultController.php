@@ -26,7 +26,7 @@ class DefaultController extends Controller
         }
 
         $formDefaults = array(
-            'city' => '',
+            'city_id' => '',
             'address' => '',
             'house' => '',
             'flat' => '',
@@ -36,16 +36,19 @@ class DefaultController extends Controller
 
         if ($user instanceof User) {
             $defaultUserAddress = $user->getCurrentDefaultAddress();
+
             if (!empty($defaultUserAddress)) {
                 $addressData = $miscUtils->parseAddress($defaultUserAddress->getAddress());
-
                 $formDefaults = array(
-                    'city' => $defaultUserAddress->getCity(),
+                    'city_id' => $defaultUserAddress->getCityId()->getId(),
                     'address' => $addressData['street'],
                     'house' => $addressData['house'],
-                    'flat' => $addressData['flat']
+                    'flat' => $addressData['flat'],
+
                 );
+
             }
+
         }
 
         // Lets check session for last used address and use it
@@ -58,8 +61,10 @@ class DefaultController extends Controller
                 'city' => $sessionLocation['city'],
                 'address' => $addressData['street'],
                 'house' => $addressData['house'],
-                'flat' => $addressData['flat']
+                'flat' => $addressData['flat'],
+                'city_id' => $sessionLocation['city_id']
             );
+
         }
 
         $cityCollection = $this->get("food.city_service")->getActiveCity();
@@ -135,7 +140,7 @@ class DefaultController extends Controller
         $staticPages = $this->get('food.static')->getActivePages(30, true);
 
         $cities = $this->get('food.city_service')->getActiveCity();
-        var_dump($cities);
+
 
         $citiesKitchens = array();
         foreach ($cities as $city) {

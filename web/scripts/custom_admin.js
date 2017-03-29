@@ -1,16 +1,16 @@
 $(document).ready(function () {
-    $("input[data-slugify]").focusout(function () {
-        slugGenerator($("input[data-slugify]"));
+    var inElement = $("input[name$='[" + $("input[data-slugify]").attr('data-slugify') + "]'");
+    var outElement = $("input[data-slugify]");
+    $("input[name$='[" + $("input[data-slugify]").attr('data-slugify') + "]'").focusout(function () {
+        slugGenerator(outElement, inElement);
     });
 });
 
 
-function slugGenerator(inputs) {
-    inputs = $("input[name$='[" + inputs.attr('data-slugify') + "]'");
-    var outputs = '';
-    var op = null;
-    var out = null;
+function slugGenerator(outputs, inputs) {
 
+    var op;
+    var out;
 
     if (inputs.length == 1) {
         op = inputs;
@@ -20,7 +20,6 @@ function slugGenerator(inputs) {
             out = removeDiacritics(op.val())
         }
 
-        outputs = $("input[name$='[slug]");
         outputs.each(function () {
 
             if ($(this).is(":visible")) {
@@ -41,8 +40,6 @@ function slugGenerator(inputs) {
 
             out = removeDiacritics(op.val())
         }
-
-        outputs = $("input[name$='[slug]");
 
         outputs.each(function () {
 
