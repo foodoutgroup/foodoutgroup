@@ -103,6 +103,13 @@ class City implements \JsonSerializable
      */
     private $locale;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
     public function __construct()
     {
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
@@ -392,5 +399,21 @@ class City implements \JsonSerializable
     public function getBestOffers()
     {
         return $this->bestOffers;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param null|string $deletedAt
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
     }
 }
