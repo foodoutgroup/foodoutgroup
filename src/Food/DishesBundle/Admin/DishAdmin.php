@@ -108,7 +108,7 @@ class DishAdmin extends FoodAdmin
                         'label' => 'label.description'
                     ),
                     'slug' => [
-                        'constraints' => new Slug('dish', $formMapper),
+                        'constraints' => new Slug(SlugEntity::TYPE_DISH, $formMapper),
                         'attr'=>['data-slugify'=>'name']
                     ]
                 )

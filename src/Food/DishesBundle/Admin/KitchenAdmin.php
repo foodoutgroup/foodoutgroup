@@ -43,7 +43,7 @@ class KitchenAdmin extends FoodAdmin
                     'metaDescription' => ['label' => 'admin.meta_description', 'required' => false],
                     'metaTitle' => ['label' => 'admin.meta_title', 'required' => false],
                     'slug' => [
-                        'constraints' => new Slug('kitchen', $formMapper),
+                        'constraints' => new Slug(SlugEntity::TYPE_KITCHEN, $formMapper),
                         'attr' => ['data-slugify' => 'name']
                     ]
                 )
