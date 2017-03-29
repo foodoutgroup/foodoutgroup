@@ -18,6 +18,7 @@ class SettingsController extends CoreController
 
     private $keywordMapCollection = [
         'page_banned',
+        'page_email_banned',
         'page_help',
     ];
 
@@ -71,6 +72,14 @@ class SettingsController extends CoreController
 
         $form->add('page_banned', 'choice', [
             'label' => 'Banned page',
+            'choices' => $pageCollection,
+            'attr' => [
+                'style' => 'margin-bottom:10px',
+            ]
+        ]);
+
+        $form->add('page_email_banned', 'choice', [
+            'label' => 'Banned email page',
             'choices' => $pageCollection
         ]);
 

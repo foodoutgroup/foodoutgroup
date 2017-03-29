@@ -2,7 +2,7 @@
 namespace Food\AppBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
-use Food\AppBundle\Entity\Driver;
+
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;

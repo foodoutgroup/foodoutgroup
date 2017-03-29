@@ -2,6 +2,7 @@
 
 namespace Food\CartBundle\Controller;
 
+use Food\AppBundle\Entity\Slug;
 use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Admin\DishSizeAdmin;
 use Food\DishesBundle\Entity\Place;
@@ -397,7 +398,7 @@ class DefaultController extends Controller
                 $blockedEmails = $this->getDoctrine()
                     ->getRepository('FoodAppBundle:BannedEmail')->findByEmail($userEmail);
                 if (!empty($blockedEmails) || !$user->isAccountNonLocked() || !$user->isEnabled()) {
-                    return $this->redirect($this->generateUrl('banned_email'));
+                    return $this->redirect($this->get('slug')->urlFromParam('page_email_banned', Slug::TYPE_PAGE));
                 }
 
                 $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);

@@ -5,7 +5,7 @@ namespace Food\ApiBundle\Common;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Service\OrderService;
-use Symfony\Component\Config\Definition\Exception\Exception;
+
 use Symfony\Component\DependencyInjection\ContainerAware;
 
 class Restaurant extends ContainerAware

@@ -21,7 +21,6 @@ food_slug:
         slug : %slug_regex%
 
 
-
 food_newsletter_subscribe:
     path: /newsletter/subscription/
     defaults: { _controller: FoodAppBundle:Default:newsletterSubscription}

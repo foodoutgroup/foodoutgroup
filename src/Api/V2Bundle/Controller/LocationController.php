@@ -2,7 +2,7 @@
 
 namespace Api\V2Bundle\Controller;
 
-use Api\BaseBundle\Exceptions\ApiException;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

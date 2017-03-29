@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Food\ApiBundle\Common\JsonRequest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+
 use Food\ApiBundle\Exceptions\ApiException;
 
 class BasketController extends Controller
@@ -55,7 +55,7 @@ class BasketController extends Controller
         $this->get('logger')->alert('updateBasketAction Request: id - '. $id, (array) $request);
         try{
             $requestJson = new JsonRequest($request);
-            return new JsonResponse($this->get('food_api.basket')->updateBasketFromRequest($id, $requestJson));
+            $response = $this->get('food_api.basket')->updateBasketFromRequest($id, $requestJson);
         }  catch (ApiException $e) {
             $this->get('logger')->error('updateBasketAction Error:' . $e->getMessage());
             $this->get('logger')->error('updateBasketAction Trace:' . $e->getTraceAsString());
@@ -94,9 +94,6 @@ class BasketController extends Controller
         } catch (\Exception $e) {
             $this->get('logger')->error('getBasketAction Error:' . $e->getMessage());
             $this->get('logger')->error('getBasketAction Trace:' . $e->getTraceAsString());
-
-var_dump( $e->getMessage());
-            die;
 
             return new JsonResponse(
                 ['error' => $this->get('translator')->trans('general.error_happened')],
@@ -260,10 +257,6 @@ var_dump( $e->getMessage());
                 case '}':
                     $level--;
 
-                case ']':
-                    $pre = $ret;
-                    $pre .= str_repeat($ind, $level);
-                    break;
 
             }
 

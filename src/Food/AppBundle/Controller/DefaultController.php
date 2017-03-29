@@ -2,15 +2,12 @@
 
 namespace Food\AppBundle\Controller;
 
+use Food\AppBundle\Entity\Slug;
 use Food\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Pirminis\Gateway\Swedbank\FullHps\Request as FullHpsRequest;
-use Pirminis\Gateway\Swedbank\FullHps\Response as FullHpsResponse;
-use Pirminis\Gateway\Swedbank\FullHps\Request\Parameters;
-use Pirminis\Gateway\Swedbank\Banklink\Sender;
-use Pirminis\Gateway\Swedbank\FullHps\TransactionQuery\Request as FullHpsTransRequest;
 
 class DefaultController extends Controller
 {
@@ -22,7 +19,7 @@ class DefaultController extends Controller
         $ip = $request->getClientIp();
         // Dude is banned - hit him
         if ($miscUtils->isIpBanned($ip)) {
-            return $this->redirect($this->get('slug')->bannedUrl(), 302);
+            return $this->redirect($this->get('slug')->urlFromParam('page_banned', Slug::TYPE_PAGE), 302);
         }
 
         $formDefaults = array(
@@ -46,9 +43,7 @@ class DefaultController extends Controller
                     'flat' => $addressData['flat'],
 
                 );
-
             }
-
         }
 
         // Lets check session for last used address and use it
@@ -64,7 +59,6 @@ class DefaultController extends Controller
                 'flat' => $addressData['flat'],
                 'city_id' => $sessionLocation['city_id']
             );
-
         }
 
         $cityCollection = $this->get("food.city_service")->getActiveCity();
@@ -94,20 +88,6 @@ class DefaultController extends Controller
         );
     }
 
-    public function bannedAction(Request $request)
-    {
-        $ip = $request->getClientIp();
-
-        $repository = $this->getDoctrine()->getRepository('FoodAppBundle:BannedIp');
-        $ipInfo = $repository->findOneBy(array('ip' => $ip));
-
-        return $this->render('FoodAppBundle:Default:banned.html.twig', ['ipInfo' => $ipInfo]);
-    }
-
-    public function bannedEmailAction(Request $request)
-    {
-        return $this->render('FoodAppBundle:Default:banned_email.html.twig');
-    }
 
     /**
      * Thank for subscription to newsletter
@@ -126,7 +106,7 @@ class DefaultController extends Controller
         }
     }
 
-    public function sitemapAction()
+    public function siteMapAction()
     {
 
         /*
@@ -163,47 +143,4 @@ class DefaultController extends Controller
         );
     }
 
-    public function showVideoAction(Request $request)
-    {
-        return new Response();
-        $cookies = $request->cookies;
-        $cookie = $cookies->get('i_saw_video');
-        if(empty($cookie) || $cookie!=1) {
-            return $this->render(
-                'FoodAppBundle:Default:videopopup.js.twig',
-                array(
-                    'video' => $this->container->getParameter('yt_video')
-                )
-            );
-        } else {
-            return new Response();
-        }
-    }
-
-    public function listBestOffersAction()
-    {
-        $location = $this->get('food.location')->getLocationFromSession();
-        $city = null;
-        if (!empty($location['city'])) {
-            $city = $location['city'];
-        }
-
-        $bestOfferViewOptions = array(
-            'hideAllOffersLink' => true,
-            'best_offers' => $this->getDoctrine()->getRepository('FoodPlacesBundle:BestOffer')->getActiveOffers($city)
-        );
-
-        $options = array(
-            'staticPage' => array(
-                'title' => $this->get('translator')->trans('index.all_best_offers'),
-                'seoTitle' => '',
-                'seoDescription' => '',
-                'id' => 'all-best-offers',
-                'content' => $this->container->get('templating')
-                    ->render('FoodPlacesBundle:Default:all_best_offers.html.twig', $bestOfferViewOptions),
-            )
-        );
-
-        return $this->render('FoodAppBundle:Static:index.html.twig', $options);
-    }
 }

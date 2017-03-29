@@ -5,7 +5,7 @@ namespace Food\AppBundle\Tests\Utils;
 use Food\AppBundle\Entity\BannedIp;
 use Food\AppBundle\Test\WebTestCase;
 use Food\AppBundle\Utils\Misc;
-use Food\UserBundle\Entity\User;
+
 
 class MiscTest extends WebTestCase
 {

@@ -15,35 +15,11 @@ fos_user_security:
     prefix: /{_locale}
     defaults : {_locale: %kernel.default_locale%}
 
-
 food_lang_homepage:
     path: /{_locale}
     defaults: { _controller: FoodAppBundle:Default:index, _locale: %kernel.default_locale%}
     requirements:
       _locale:  "[a-z]{2}"
-
-#banned:
-#    path: /banned/
-#    defaults: { _controller: FoodAppBundle:Default:banned}
-
-banned_email:
-    path: /banned-email/
-    defaults: { _controller: FoodAppBundle:Default:bannedEmail}
-#
-#logistics_order_status:
-#    path: /logistics/status-update/
-#    defaults: { _controller: FoodOrderBundle:Logistics:orderStatus}
-#
-#logistics_driver_assign:
-#    path: /logistics/driver-assign/
-#    defaults: { _controller: FoodOrderBundle:Logistics:driverAssign}
-
-
-
-#order_support_mobile:
-#    path: /o-spr/{hash}/
-#    defaults: { _controller: FoodOrderBundle:Default:mobileAdmin, hash: ~, action: ~ }
-#    schemes:  [http]
 
 ordermobile:
     path: /o/{hash}/
@@ -118,11 +94,6 @@ food_user_reset_password:
 lexik_translation_edition:
     resource: "@LexikTranslationBundle/Resources/config/routing.yml"
     prefix:   /trans
-
-
-#food_monitoring:
-#    resource: "@FoodMonitoringBundle/Resources/config/routing.yml"
-#    prefix:   /
 
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
