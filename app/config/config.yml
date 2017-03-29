@@ -103,6 +103,9 @@ framework:
 
 # Twig Configuration
 twig:
+    form:
+        resources:
+            - 'FoodAppBundle:Form:fields.html.twig'
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
@@ -371,6 +374,7 @@ sonata_admin:
                       - sonata.admin.seorecords
                       - sonata.admin.blog_category
                       - sonata.admin.blog_post
+#                      - sonata.admin.import_export
                   roles: [ ROLE_ADMIN ]
 #              admin.support:
 #                  items: ~
