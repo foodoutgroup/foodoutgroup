@@ -1,7 +1,7 @@
 <?php
 namespace Food\AppBundle\Service;
 
-use Aws\CloudFront\Exception\Exception;
+
 use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Entity\Slug;
 use Food\DishesBundle\Utils\Slug\SlugGenerator;
@@ -191,9 +191,19 @@ class SlugService
         return $this->isBanned;
     }
 
+    public function urlFromParam($name, $type)
+    {
+        $contentId = $bannedEmailPageId = $this->misc->getParam($name);
+        return $this->getUrl($contentId, $type);
+    }
+
+    /**
+     * @deprecated from 2017-03-29
+     */
     public function bannedUrl(){
         $bannedPageId = $this->misc->getParam('page_banned');
         return $this->getUrl($bannedPageId, Slug::TYPE_PAGE);
     }
+
 
 }

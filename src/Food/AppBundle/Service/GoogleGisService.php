@@ -4,7 +4,7 @@ namespace Food\AppBundle\Service;
 use Food\AppBundle\Entity\GeoCache;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Curl;
-use Symfony\Component\Form\Tests\Extension\Validator\Type\BaseValidatorExtensionTest;
+
 
 class GoogleGisService extends ContainerAware
 {

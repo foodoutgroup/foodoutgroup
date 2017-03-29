@@ -25,7 +25,7 @@ class StaticContentController extends Controller
         // Dude is banned - hit him
         if ($this->get('food.app.utils.misc')->isIpBanned($ip)) {
             $this->get('logger')->alert('StaticContent:processAction Request:', (array) $request);
-            return $this->redirect($this->get('slug')->bannedUrl(), 302);
+            return $this->redirect($this->get('slug')->urlFromParam('page_banned', Slug::TYPE_PAGE), 302);
         }
 
         try {

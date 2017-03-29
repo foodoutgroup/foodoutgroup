@@ -4,7 +4,7 @@ namespace Food\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Food\OrderBundle\Entity\Order;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * Food\AppBundle\Entity\EmailToSend
