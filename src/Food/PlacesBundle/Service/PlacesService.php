@@ -5,6 +5,7 @@ use Food\DishesBundle\Entity\Kitchen;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Service\OrderService;
+use Food\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\AppBundle\Traits;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -451,6 +452,13 @@ class PlacesService extends ContainerAware
 
     public function useAdminFee(Place $place)
     {
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        if (is_object($user)){
+            if ($user->getIsBussinesClient() ) {
+                return false;
+            }
+        }
+
         $dontUseFee = !$place->isUseAdminFee();
         if ($dontUseFee === false)
         {

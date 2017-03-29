@@ -1318,6 +1318,8 @@ class OrderService extends ContainerAware
         $placeObject = $this->container->get('food.places')->getPlace($place);
         $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
 
+        $placesService = $this->container->get('food.places');
+        $useAdminFee = $placesService->useAdminFee($placeObject);
 
         $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
@@ -1405,6 +1407,7 @@ class OrderService extends ContainerAware
                     $includeDelivery = false;
                 }
 
+                $useAdminFee = false;
             } elseif ($user->getIsBussinesClient()) {
                 // Jeigu musu logistika, tada taikom fiksuota nuolaida
                 if (!$selfDelivery) {
@@ -1413,6 +1416,7 @@ class OrderService extends ContainerAware
                     $discountPercent = $discountSize;
                     $this->getOrder()->setDiscountSize($discountSize)->setDiscountSum($discountSum);
                 }
+                $useAdminFee = false;
             }
         }
 
@@ -1569,8 +1573,8 @@ class OrderService extends ContainerAware
             }
         }
         //~ }
-        $placesService = $this->container->get('food.places');
-        $useAdminFee = $placesService->useAdminFee($placeObject);
+
+
         $adminFee    = $placesService->getAdminFee($placeObject);
         $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
         if ($useAdminFee && !$adminFee) {
