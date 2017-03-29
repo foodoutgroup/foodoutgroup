@@ -2,7 +2,6 @@
 
 namespace Food\AppBundle\Controller;
 
-use Food\AppBundle\Entity\Slug;
 use Food\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -106,7 +105,7 @@ class DefaultController extends Controller
         }
     }
 
-    public function siteMapAction()
+    public function sitemapAction()
     {
 
         /*
@@ -143,4 +142,47 @@ class DefaultController extends Controller
         );
     }
 
+    public function showVideoAction(Request $request)
+    {
+        return new Response();
+        $cookies = $request->cookies;
+        $cookie = $cookies->get('i_saw_video');
+        if(empty($cookie) || $cookie!=1) {
+            return $this->render(
+                'FoodAppBundle:Default:videopopup.js.twig',
+                array(
+                    'video' => $this->container->getParameter('yt_video')
+                )
+            );
+        } else {
+            return new Response();
+        }
+    }
+
+    public function listBestOffersAction()
+    {
+        $location = $this->get('food.location')->getLocationFromSession();
+        $city = null;
+        if (!empty($location['city'])) {
+            $city = $location['city'];
+        }
+
+        $bestOfferViewOptions = array(
+            'hideAllOffersLink' => true,
+            'best_offers' => $this->getDoctrine()->getRepository('FoodPlacesBundle:BestOffer')->getActiveOffers($city)
+        );
+
+        $options = array(
+            'staticPage' => array(
+                'title' => $this->get('translator')->trans('index.all_best_offers'),
+                'seoTitle' => '',
+                'seoDescription' => '',
+                'id' => 'all-best-offers',
+                'content' => $this->container->get('templating')
+                    ->render('FoodPlacesBundle:Default:all_best_offers.html.twig', $bestOfferViewOptions),
+            )
+        );
+
+        return $this->render('FoodAppBundle:Static:index.html.twig', $options);
+    }
 }
