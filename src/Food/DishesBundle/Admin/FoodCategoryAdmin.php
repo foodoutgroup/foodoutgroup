@@ -25,7 +25,7 @@ class FoodCategoryAdmin extends FoodAdmin
                 'fields' => array(
                     'name' => array('label' => 'label.name'),
                     'slug' => [
-                        'constraints' => new Slug('food_category', $formMapper),
+                        'constraints' => new Slug(SlugEntity::TYPE_FOOD_CATEGORY, $formMapper),
                         'attr'=>['data-slugify'=>'name']
                     ]
                 )

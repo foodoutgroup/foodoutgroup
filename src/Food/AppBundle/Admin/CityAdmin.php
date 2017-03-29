@@ -40,7 +40,7 @@ class CityAdmin extends FoodAdmin
                     'meta_title' => ['required' => false],
                     'meta_description' => ['required' => false],
                     'slug' => [
-                        'constraints' => new Slug('city', $form),
+                        'constraints' => new Slug(SlugEntity::TYPE_CITY, $form),
                         'attr'=>['data-slugify'=>'title']
                         ]
                 ]

@@ -64,7 +64,7 @@ class PlaceAdmin extends FoodAdmin
                         'description'  => ['label' => 'admin.place.description', 'required' => false],
                         'alcoholRules' => $alcoholRules,
                         'slug' => [
-                            'constraints' => new Slug('place', $formMapper),
+                            'constraints' => new Slug(SlugEntity::TYPE_PLACE, $formMapper),
                             'attr'=>['data-slugify'=>'name']
                         ]
                     ]
