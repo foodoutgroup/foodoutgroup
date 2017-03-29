@@ -113,3 +113,13 @@ food_admin_get_place_unit_categories:
     defaults: {_controller: FoodDishesBundle:DishUnitAdmin:getUnitCategoryOptionsFromPlace}
     options:
         expose: true
+
+
+food_admin_import_export:
+    path: /import_export/
+    defaults: { _controller: FoodAppBundle:Admin/ImportExport:index }
+
+
+lexik_translation_edition:
+    resource: "@LexikTranslationBundle/Resources/config/routing.yml"
+    prefix:   /translations

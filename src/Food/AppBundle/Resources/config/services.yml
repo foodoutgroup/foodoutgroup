@@ -177,6 +177,18 @@ services:
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]
 
+#    sonata.admin.import_export_controller:
+#      class: Food\AppBundle\Controller\Admin\ImportExportController
+#      arguments:
+#        - ~
+#        - Food\AppBundle\Entity\CallLog
+#        - ~
+#      tags:
+#        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.call_log" }
+##      calls:
+##        - [ setTranslationDomain, [SonataAdminBundle]]
+
+
     food.dispatcher_service:
       class: Food\AppBundle\Service\DispatcherService
       parent: food.base_service
@@ -195,3 +207,18 @@ services:
             - '%available_cities%'
         tags:
             - { name: form.type, alias: offer_city }
+    app.form.type.groupped_checkbox:
+        class: Food\AppBundle\Form\Type\GrouppedCheckboxType
+        tags:
+            - { name: form.type, alias: groupped_checkbox }
+
+    food.import_export_service:
+        class: Food\AppBundle\Service\ImportExportService
+        parent: food.base_service
+        arguments:
+          - @router
+          - @food.app.utils.language
+          - @service_container
+        calls:
+          - [setLocale, [%locale%]]
+          - [setFieldMap]
