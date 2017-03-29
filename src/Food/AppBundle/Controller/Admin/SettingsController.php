@@ -20,6 +20,7 @@ class SettingsController extends CoreController
         'page_banned',
         'page_email_banned',
         'page_help',
+        'page_best_offer'
     ];
 
     public function indexAction(Request $request)
@@ -85,6 +86,11 @@ class SettingsController extends CoreController
 
         $form->add('page_help', 'choice', [
             'label' => 'Help page',
+            'choices' => $pageCollection
+        ]);
+
+        $form->add('page_best_offer', 'choice', [
+            'label' => 'Best offer page',
             'choices' => $pageCollection
         ]);
 

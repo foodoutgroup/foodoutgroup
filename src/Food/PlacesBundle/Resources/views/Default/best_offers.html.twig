@@ -21,10 +21,10 @@
             </div>
         {% endfor %}
     </div>
-    {% set page = pageService.getByParam('page.best_offer') %}
-    {% if page %}
+    {% set pageBF = pageService.getByParam('page_best_offer') %}
+    {% if pageBF %}
         <div class="all-best-offers-link clearfix text-center">
-            <a class="cupon-name" href="{{ slug.getUrl(page.getId(), 'page') }}">{{ page.getTitle() }}</a>
+            <a class="cupon-name" href="{{ slug.getUrl(pageBF.getId(), 'page') }}">{{ pageBF.getTitle() }}</a>
         </div>
     {% endif %}
 {% endif %}

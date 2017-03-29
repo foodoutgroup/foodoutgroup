@@ -1,6 +1,7 @@
 <?php
 namespace Food\PlacesBundle\Service;
 
+use Food\AppBundle\Entity\City;
 use Food\DishesBundle\Entity\Kitchen;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
@@ -815,7 +816,7 @@ class PlacesService extends ContainerAware
      * @param $city
      * @return Kitchen[]
      */
-    public function getKitchensByCity($city)
+    public function getKitchensByCity(City $city)
     {
         $kitchensList = array();
         $places = $this->getPlacesByCity($city);
@@ -832,7 +833,7 @@ class PlacesService extends ContainerAware
     /**
      * @return Place[]
      */
-    public function getPlacesByCity($city)
+    public function getPlacesByCity(City $city)
     {
         $places = array();
         $placePoints = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findBy(array('city' => $city));

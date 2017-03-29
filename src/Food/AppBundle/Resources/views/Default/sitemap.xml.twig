@@ -15,12 +15,12 @@
         {#<changefreq>daily</changefreq>#}
     {#</url>#}
     {#{% endfor %}#}
-    {#{% for city in cities %}#}
-        {#<url>#}
-            {#<loc>http://{{ domain }}{{ path('food_city_' ~ city|lower) }}</loc>#}
-            {#<changefreq>daily</changefreq>#}
-        {#</url>#}
-    {#{% endfor %}#}
+    {% for city in cities %}
+        <url>
+            <loc>http://{{ domain }}{{ slug.getUrl(city.id, 'city') }}</loc>
+            <changefreq>daily</changefreq>
+        </url>
+    {% endfor %}
     {#{% for cityKey, city in citiesKitchens %}#}
         {#{% for kitchen in city %}#}
             {#<url>#}

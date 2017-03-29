@@ -15,6 +15,9 @@ class Slug
     const TYPE_KITCHEN = 'kitchen';
     const TYPE_PLACE = 'place';
     const TYPE_FOOD_CATEGORY = 'food_category';
+    /**
+     * @deprecated from 2017-03-29
+     */
     const TYPE_TEXT = 'text';
     const TYPE_BLOG_CATEGORY = 'blog_category';
     const TYPE_PAGE = 'page';

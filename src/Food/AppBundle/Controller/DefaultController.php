@@ -113,28 +113,31 @@ class DefaultController extends Controller
         $availableLocales = $this->container->getParameter('available_locales');
         $availableLocales = array($availableLocales[0]);
 
-        $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->findBy(array('active' => 1));
+        $placeCollection = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->findBy(array('active' => 1));
 
-        $staticPages = $this->get('food.static')->getActivePages(30, true);
+        $staticPageCollection = $this->get('food.static')->getActivePages(30, true);
 
-        $cities = $this->get('food.city_service')->getActiveCity();
+        $cityCollection = $this->get('food.city_service')->getActiveCity();
 
-//        $citiesKitchens = array();
-//        foreach ($cities as $city) {
-//            $citiesKitchens[$city] = $this->get('food.places')->getKitchensByCity($city);
-//        }
+        $cityKitchenCollection = [];
+        foreach ($cityCollection as $city) {
+            $cityKitchenCollection[$city] = $this->get('food.places')->getKitchensByCity($city);
+        }
+
+//        var_dump($this->container->getParameter('domain'));
+//        die;
 
         $response = new Response();
         $response->headers->set('Content-Type', 'xml');
         return $this->render(
             'FoodAppBundle:Default:sitemap.xml.twig',
             array(
-                'domain' => $this->container->getParameter('domain'),
+                'domain' => str_replace(["/app_dev.php/"], "", $this->container->getParameter('domain')),
                 'availableLocales' => $availableLocales,
-                'places' => $places,
-                'cities' => $cities,
+                'places' => $placeCollection,
+                'cities' => $cityCollection,
 //                'citiesKitchens' => $citiesKitchens,
-                'staticPages' => $staticPages,
+                'staticPages' => $staticPageCollection,
             ),
             $response
         );
