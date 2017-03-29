@@ -19,6 +19,9 @@ class StaticContentAdmin extends FoodAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+
+        $hookDescription = $this->getContainer()->get('templating')->render('@FoodApp/Admin/Custom/static_page_hook_description.html.twig', []);
+
         $formMapper->add(
             'translations',
             'a2lix_translations_gedmo',
@@ -26,9 +29,9 @@ class StaticContentAdmin extends FoodAdmin
                 'translatable_class' => 'Food\AppBundle\Entity\StaticContent',
                 'fields' => array(
                     'title' => array('label' => 'admin.static.title','attr'=>['data-slugify'=>'title']),
-                    'content' => array('label' => 'admin.static.content', 'attr' => ['class' => 'ckeditor_custom', 'help' => 'asfasf']),
+                    'content' => array('label' => 'admin.static.content', 'attr' => ['help' => $hookDescription, 'class' => 'ckeditor_custom']),
                     'seo_title' => array('label' => 'admin.static.seo_title', 'required' => false,),
-                    'seo_description' => array('label' => 'admin.static.seo_description', 'required' => false,),
+                    'seo_description' => array('label' => 'admin.static.seo_description', 'attr' => ['rows' => 4, 'style' => 'width:610px !important;'], 'required' => false),
                     'slug' => [
                         'constraints' => new Slug(SlugEntity::TYPE_PAGE, $formMapper),
                         'attr'=>['data-slugify'=>'title']
@@ -38,7 +41,7 @@ class StaticContentAdmin extends FoodAdmin
             ))
             ->add('order', 'integer', array('label' => 'admin.static.order_no'))
             ->add('active', 'checkbox', array('label' => 'admin.static.active', 'required' => false))
-            ->add('visible', 'checkbox', array('label' => 'admin.static.visible', 'required' => false));;
+            ->add('visible', 'checkbox', array('label' => 'admin.static.visible', 'required' => false));
     }
 
     /**

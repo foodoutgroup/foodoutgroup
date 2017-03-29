@@ -464,7 +464,8 @@ a2lix_translation_form:
     locales: %available_locales%
     default_required: true
     manager_registry: doctrine
-    templating: "A2lixTranslationFormBundle::default.html.twig"
+#    templating: "A2lixTranslationFormBundle::default.html.twig"
+    templating: ":gedmo:default.html.twig"
 
 #evp omg
 evp_web_to_pay:

@@ -232,3 +232,30 @@ var defaultDiacriticsRemovalMap = [
     },
     {'base': 'z', 'letters': /[\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763]/g}
 ];
+
+var $select = $('.lang-switch');
+
+var switcherHandler = function(e){
+    var val = null;
+    if(typeof e.target !== 'undefined'){
+        val = $(e.target).val();
+    }else{
+        val = e.val();
+    }
+    console.log(val);
+
+    $('.lang-group').css('display', 'none');
+    $('.lang-group[data-lang="' + val + '"]').css('display', 'block');
+    $select
+        .find('option')
+        .prop('selected', false)
+        .end()
+        .find('option[value="'+val+'"]')
+        .prop('selected', true);
+};
+
+$select.change( switcherHandler );
+
+if ( $select.eq(0).length != 0 ) {
+    switcherHandler($select.eq(0));
+}
