@@ -1,0 +1,42 @@
+{% extends '@FoodApp/admin_layout.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block sonata_admin_content %}
+            {% block sonata_pre_fieldsets %}
+
+<div class="tabbable">
+    <ul class="nav nav-tabs">
+        {% for k, form in forms %}
+            <li class="{% if loop.first %}active{% endif %}">
+                <a href="#control_{{ k }}" data-toggle="tab">
+                    <i class="icon-exclamation-sign has-errors hide"></i>
+                    {{ t.trans(k) }}
+                </a>
+            </li>
+         {% endfor %}
+    </ul>
+    {% endblock %}
+
+    <div class="tab-content">
+        {% for k, form in forms %}
+            <div class="tab-pane {% if loop.first %}active{% endif %}" id="control_{{ k }}">
+                <fieldset>
+                    <div class="sonata-ba-collapsed-fields">
+                        <div class="row-fluid">
+                            {{ form_start(form) }}
+                                {% for k,v in form %}
+                                    {{ form_label(v) }}
+                                    {{ form_widget(v)}}
+                                {% endfor %}
+                            {{ form_end(form) }}
+
+                        </div>
+                    </div>
+                </fieldset>
+             </div>
+         {% endfor %}
+
+    </div>
+
+{% endblock %}
