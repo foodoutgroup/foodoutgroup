@@ -1584,6 +1584,14 @@
                 <source>general.sms.driver_assigned_order</source>
                 <target>Naujas uzsakymas nr. order_id is: restaurant_title i restaurant_address, iki deliver_time </target>
             </trans-unit>
+              <trans-unit id="import">
+                  <source>import</source>
+                  <target>Importuoti</target>
+              </trans-unit>
+            <trans-unit id="export">
+                <source>export</source>
+                <target>Eksportuoti</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

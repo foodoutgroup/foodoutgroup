@@ -126,6 +126,10 @@
         <source><![CDATA[admin.dispatcher.delayed]]></source>
         <target><![CDATA[Atidėta]]></target>
       </trans-unit>
+      <trans-unit id="import">
+          <source>import</source>
+          <target>Importuoti</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
