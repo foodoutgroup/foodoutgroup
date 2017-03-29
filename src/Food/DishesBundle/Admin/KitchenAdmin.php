@@ -38,12 +38,13 @@ class KitchenAdmin extends FoodAdmin
             array(
                 'translatable_class' => 'Food\DishesBundle\Entity\Kitchen',
                 'fields' => array(
-                    'name' => array('label' => 'label.name', 'attr' => ['data-slugify' => 'name']),
+                    'name' => array('label' => 'label.name'),
                     'alias' => array('label' => 'label.alias', 'required' => false),
                     'metaDescription' => ['label' => 'admin.meta_description', 'required' => false],
                     'metaTitle' => ['label' => 'admin.meta_title', 'required' => false],
                     'slug' => [
                         'constraints' => new Slug('kitchen', $formMapper),
+                        'attr' => ['data-slugify' => 'name']
                     ]
                 )
             ))

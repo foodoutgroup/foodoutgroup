@@ -52,7 +52,7 @@ class PlaceAdmin extends FoodAdmin
         }
 
         $formMapper
-            ->add('name', 'text', ['label' => 'admin.place.name', 'attr'=>['data-slugify'=>'name']])
+            ->add('name', 'text', ['label' => 'admin.place.name'])
             ->add(
                 'translations',
                 'a2lix_translations_gedmo',
@@ -65,6 +65,7 @@ class PlaceAdmin extends FoodAdmin
                         'alcoholRules' => $alcoholRules,
                         'slug' => [
                             'constraints' => new Slug('place', $formMapper),
+                            'attr'=>['data-slugify'=>'name']
                         ]
                     ]
                 ]);

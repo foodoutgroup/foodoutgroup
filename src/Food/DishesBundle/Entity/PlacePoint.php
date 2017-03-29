@@ -555,7 +555,7 @@ class PlacePoint
         if (!$this->getId()) {
             return '';
         }
-        return $this->getAddress().', '.$this->getCity();
+        return $this->getAddress().', '.$this->getCityId()->getTitle();
     }
 
     public function getToString()
@@ -589,6 +589,7 @@ class PlacePoint
             'fast' => $this->getFast(),
             'allowCash' => $this->getAllowCash(),
             'allowCard' => $this->getAllowCard(),
+            'city_id' => $this->getCityId(),
             'workTime' => array(
                 'wd1' => $this->getWd1(),
                 'wd2' => $this->getWd2(),

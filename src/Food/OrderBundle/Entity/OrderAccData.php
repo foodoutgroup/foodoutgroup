@@ -300,6 +300,14 @@ class OrderAccData
     private $version;
 
     /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     **/
+    private $cityId;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -1227,5 +1235,28 @@ class OrderAccData
     public function getVersion()
     {
         return $this->version;
+    }
+
+    /**
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return OrderAccData
+     */
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
+    {
+        $this->cityId = $cityId;
+    
+        return $this;
+    }
+
+    /**
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City 
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
     }
 }

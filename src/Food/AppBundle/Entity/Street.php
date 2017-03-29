@@ -34,12 +34,20 @@ class Street
     private $city;
 
     /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     **/
+    private $cityId;
+
+    /**
      * @return string
      */
     public function __toString()
     {
         if ($this->getId()) {
-            return $this->getId().'-'.$this->getCity().'-'.$this->getStreet();
+            return $this->getId().'-'.$this->getCityId()->getTitle().'-'.$this->getStreet();
         }
 
         return '';
@@ -99,5 +107,28 @@ class Street
     public function getStreet()
     {
         return $this->street;
+    }
+
+    /**
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return Street
+     */
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
+    {
+        $this->cityId = $cityId;
+    
+        return $this;
+    }
+
+    /**
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City 
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
     }
 }

@@ -299,23 +299,30 @@ class DefaultController extends Controller
         $address = null;
         $session = $request->getSession();
         $locationData = $session->get('locationData');
+
+
         $current_user = $this->container->get('security.context')->getToken()->getUser();
 
         if (!empty($locationData) && !empty($current_user) && is_object($current_user)) {
-            $address = $placeService->getCurrentUserAddress($locationData['city'], $locationData['address']);
+            $address = $placeService->getCurrentUserAddress($locationData['city_id'], $locationData['address']);
         }
 
         if (empty($address) && !empty($current_user) && is_object($current_user)) {
             $defaultUserAddress = $current_user->getCurrentDefaultAddress();
+            var_dump($defaultUserAddress);
             if (!empty($defaultUserAddress)) {
-                $loc_city = $defaultUserAddress->getCity();
+                $loc_city = $defaultUserAddress->getCityId();
                 $loc_address = $defaultUserAddress->getAddress();
                 $address = $placeService->getCurrentUserAddress($loc_city, $loc_address);
             }
         }
+
+
         // PreLoad UserAddress End
 
         if ($request->getMethod() == 'POST' && !$formHasErrors) {
+
+
             // Jei vede kupona - uzsikraunam
             $couponCode = $request->get('coupon_code');
             if (!empty($couponCode)) {
@@ -333,6 +340,7 @@ class DefaultController extends Controller
             }
 
             if (empty($order)) {
+
                 $userEmail = $request->get('customer-email');
                 $userPhone = $request->get('customer-phone');
                 $userFirstName = $request->get('customer-firstname');
@@ -395,6 +403,9 @@ class DefaultController extends Controller
 
                 $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
 
+
+
+
                 // Preorder date formation
                 $orderDate = null;
                 $preOrder = $request->get('pre-order');
@@ -408,10 +419,11 @@ class DefaultController extends Controller
                     $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
                 }
             } else {
+                die;
                 $orderService->setOrder($order);
                 if ($takeAway) {
                     $orderService->getOrder()->setPlacePoint($placePoint);
-                    $orderService->getOrder()->setPlacePointCity($placePoint->getCity());
+                    $orderService->getOrder()->setCityId($placePoint->getCityId());
                     $orderService->getOrder()->setPlacePointAddress($placePoint->getAddress());
                 }
                 $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
@@ -419,6 +431,8 @@ class DefaultController extends Controller
                 $user = $order->getUser();
                 $userPhone = $user->getPhone();
             }
+
+
 
             if ($userPhone != $user->getPhone() && !$user->getIsBussinesClient()) {
                 $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
@@ -475,7 +489,8 @@ class DefaultController extends Controller
                     $locationData['address_orig'],
                     (string)$locationData['lat'],
                     (string)$locationData['lng'],
-                    $customerComment
+                    $customerComment,
+                    $locationData['city_id']
                 );
                 $orderService->getOrder()->setAddressId($address);
                 // Set user default address

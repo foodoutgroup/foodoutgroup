@@ -319,13 +319,13 @@ class DefaultController extends Controller
         $current_user = $user;//$this->container->get('security.context')->getToken()->getUser();
 
         if (!empty($locationData) && !empty($current_user) && is_object($current_user)) {
-            $address = $placeService->getCurrentUserAddress($locationData['city'], $locationData['address']);
+            $address = $placeService->getCurrentUserAddress($locationData['city_id'], $locationData['address']);
         }
 
         if (empty($address) && !empty($current_user) && is_object($current_user)) {
             $defaultUserAddress = $current_user->getCurrentDefaultAddress();
             if (!empty($defaultUserAddress)) {
-                $loc_city = $defaultUserAddress->getCity();
+                $loc_city = $defaultUserAddress->getCityId();
                 $loc_address = $defaultUserAddress->getAddress();
                 $address = $placeService->getCurrentUserAddress($loc_city, $loc_address);
             }
@@ -459,10 +459,10 @@ class DefaultController extends Controller
                         unset($addressSplt[sizeof($addressSplt) - 1]);
                         $streetAddr = implode(" ", $addressSplt);
                     }
-                    $addresses[trim($addrRow->getCity().$streetAddr.$houseNumber)] = array(
+                    $addresses[trim($addrRow->getCityId()->getTitle().$streetAddr.$houseNumber)] = array(
                         'userId' => $addrRow->getUser()->getId(),
                         'addressId' => $addrRow->getId(),
-                        'city' => $addrRow->getCity(),
+                        'city' => $addrRow->getCityId()->getTitle(),
                         'address' => $addrRow->getAddress(),
                         'street' => $streetAddr,
                         'house' => $houseNumber

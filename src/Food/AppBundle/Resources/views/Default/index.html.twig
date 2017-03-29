@@ -24,8 +24,7 @@
                     },
                     success:  function(resp){
                         if (resp.data.success == 1) {
-                            console.log(resp.data);
-                            alert();
+                            $('.search-food-form').attr('action',$('#index_city option:selected').data('cityurl'))
                             $('.search-food-form').trigger('submit');
                         } else {
                             var dialogOpts = {
@@ -49,13 +48,12 @@
             $('#index_submit').click(function(e){
 
 
-                if ($('#index_city').val().length > 0) {
+            if ($('#index_city').val() !="" && $('#index_city').val() != null && $('#index_address').val()=="") {
 
-                    window.location.href = $('#index_city option:selected').data('cityurl');
-                }
-                else {
-                    getCrds();
-                }
+                window.location.href = $('#index_city option:selected').data('cityurl');
+            } else {
+                getCrds();
+            }
                 e.stopPropagation();
                 e.preventDefault();
             });
@@ -108,7 +106,7 @@
 
                     <select id="index_city">
                         {% for city in cityCollection %}
-                            <option value="{{ city.getId() }}" data-cityurl="{{ slug.getUrl(city.getId(), 'city') }}" {% if formDefaults.city == city.getId() %}selected{% endif %}>{{ city.getTitle() }}</option>
+                            <option value="{{ city.getId() }}" data-cityurl="{{ slug.getUrl(city.getId(), 'city') }}" {% if formDefaults.city_id == city.getId() %}selected{% endif %}>{{ city.getTitle() }}</option>
                         {% endfor %}
                     </select>
 

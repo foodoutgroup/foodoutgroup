@@ -88,6 +88,7 @@ class LocationService extends ContainerAware
      */
     public function setLocationFromUser(User $user)
     {
+
         $userAddress = $user->getDefaultAddress();
         $locationData = $this->getLocationFromSession();
         $locationData['not_found'] = true;
@@ -98,7 +99,7 @@ class LocationService extends ContainerAware
         $locationData['city'] = null;
         $locationData['address_found'] = true;
         if ($userAddress) {
-            $locationData['city'] = $userAddress->getCity();
+            $locationData['city'] = $userAddress->getCityId()->getTitle();
             $locationData['address'] = $userAddress->getAddress();
             $locationData['address_orig'] = $userAddress->getAddress();
         }

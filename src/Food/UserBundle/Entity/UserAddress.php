@@ -67,6 +67,14 @@ class UserAddress
     private $user;
 
     /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     **/
+    private $cityId;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -81,9 +89,10 @@ class UserAddress
         if (!$this->getId()) {
             return '';
         }
-
-        return $this->getAddress() .', ' . $this->getCity();
+        return $this->getAddress() .', ' . $this->getCityId()->getTitle();
     }
+
+
 
     /**
      * Set city
@@ -94,7 +103,7 @@ class UserAddress
     public function setCity($city)
     {
         $this->city = $city;
-    
+
         return $this;
     }
 
@@ -267,5 +276,58 @@ class UserAddress
     public function getComment()
     {
         return $this->comment;
+    }
+
+    /**
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return UserAddress
+     */
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
+    {
+        $this->cityId = $cityId;
+    
+        return $this;
+    }
+
+    /**
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City 
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->cityId = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return UserAddress
+     */
+    public function addCityId(\Food\AppBundle\Entity\City $cityId)
+    {
+        $this->cityId[] = $cityId;
+    
+        return $this;
+    }
+
+    /**
+     * Remove cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     */
+    public function removeCityId(\Food\AppBundle\Entity\City $cityId)
+    {
+        $this->cityId->removeElement($cityId);
     }
 }

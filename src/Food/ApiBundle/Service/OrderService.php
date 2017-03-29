@@ -486,13 +486,17 @@ class OrderService extends ContainerAware
 
         // Update order with recent address information. but only if we need to deliver
         if ($serviceVar['type'] != "pickup") {
-            // $locationData = $googleGisService->getLocationFromSession();
+
+            $locationData = $googleGisService->getLocationFromSession();
             $address = $os->createAddressMagic(
                 $user,
                 $searchCrit['city'],
                 $searchCrit['address_orig'],
                 (string)$searchCrit['lat'],
-                (string)$searchCrit['lng']
+                (string)$searchCrit['lng'],
+                '',
+                $locationData['city_id']
+
             );
             $os->getOrder()->setAddressId($address);
         }

@@ -873,7 +873,7 @@ class Order
 
         $addressId = null;
         if ($userAddress = $this->getAddressId()) {
-            $addressId = $userAddress->getAddress().', '.$userAddress->getCity();
+            $addressId = $userAddress->getAddress().', '.$userAddress->getCityId()->getTitle();
         }
 
         return array(

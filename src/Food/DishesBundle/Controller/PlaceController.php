@@ -19,8 +19,6 @@ class PlaceController extends Controller
     {
 
 
-
-
         $session = $this->get('session');
 
 
@@ -36,12 +34,9 @@ class PlaceController extends Controller
         }
 
 
-
         if (!empty($city)) {
             $this->get('food.googlegis')->setCityOnlyToSession($city);
         }
-
-
 
 
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
@@ -83,82 +78,83 @@ class PlaceController extends Controller
 
         $locationData = $this->get('food.googlegis')->getLocationFromSession();
 
+
         $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
 
         // todo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! $placeCities neranda
 
 
+        if (!isset($locationData['city_id'])) {
+            $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
+            $locationData['city_id'] = $placeCities[0]->getId();
 
+        }
 
+        if (isset($locationData['city_id'])) {
 
-            if (!isset($locationData['city'])) {
+            if (!$this->get('food.places')->isPlaceDeliversToCity($place, $locationData['city_id'])) {
                 $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
-                $locationData['city'] = $placeCities[0];
+                $locationData['city_id'] = $placeCities[0];
+
             }
 
-            if (isset($locationData['city'])) {
-                if (!$this->get('food.places')->isPlaceDeliversToCity($place, $locationData['city'])) {
-                    $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
-                    $locationData['city'] = $placeCities[0];
 
-                }
+            $cityInfo = $this->get('food.city_service')->getCityInfo($locationData['city_id']);
 
-
-                $cityInfo = $this->get('food.city_service')->getCityInfo($locationData['city']);
-
-                if (!empty($cityInfo)) {
-                    $breadcrumbData = array_merge($breadcrumbData, $cityInfo);
-                }
-
-                $kitchens = $place->getKitchens();
-                if (!empty($kitchens) && $kitchens->count() > 0) {
-                    $kitchen = $kitchens->first();
-                    $breadcrumbData['kitchen'] = $kitchen->getName();
-                    $kitchenSlug = $this->get('food.dishes.utils.slug')->getSlugByItem($kitchen->getId(), 'kitchen');
-                    $breadcrumbData['kitchen_url'] = $kitchenSlug;
-                }
+            if (!empty($cityInfo)) {
+                $breadcrumbData = array_merge($breadcrumbData, $cityInfo);
             }
 
-            $current_url = $request->getUri();
+            $kitchens = $place->getKitchens();
 
-            // only for LT and only for cili
-            $relatedPlace = null;
-            if ($this->container->getParameter('locale') == 'lt') {
-                if (in_array($place->getId(), [63, 85, 302, 333])) {
-                    $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(142);
-                } elseif ($place->getId() == 142) {
-                    $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(63);
-                }
+            if (!empty($kitchens) && $kitchens->count() > 0) {
+                $kitchen = $kitchens->first();
+                $breadcrumbData['kitchen'] = $kitchen->getName();
+                $kitchenSlug = $this->get('food.dishes.utils.slug')->getSlugByItem($kitchen->getId(), 'kitchen');
+                $breadcrumbData['kitchen_url'] = $kitchenSlug;
             }
+        }
 
-            $placeReviews = $this->get('doctrine')->getRepository('FoodDishesBundle:PlaceReviews')
-                ->getActiveReviewsByPlace($place);
+        $current_url = $request->getUri();
+
+        // only for LT and only for cili
+        $relatedPlace = null;
+        if ($this->container->getParameter('locale') == 'lt') {
+            if (in_array($place->getId(), [63, 85, 302, 333])) {
+                $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(142);
+            } elseif ($place->getId() == 142) {
+                $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(63);
+            }
+        }
+
+        $placeReviews = $this->get('doctrine')->getRepository('FoodDishesBundle:PlaceReviews')
+            ->getActiveReviewsByPlace($place);
 
 
-            $util = new Misc($this->container);
-            $cityBreadcrumb = $util->getCityBreadcrumbs($locationData['city']);
+        $util = new Misc($this->container);
+        $cityBreadcrumb = $locationData['city'];
 
-            return $this->render(
-                'FoodDishesBundle:Place:index.html.twig',
-                array(
-                    'place' => $place,
-                    'placeReviews' => $placeReviews,
-                    'relatedPlace' => $relatedPlace,
-                    'wasHere' => $wasHere,
-                    'alreadyWrote' => $alreadyWrote,
-                    'placeCategories' => $categoryList,
-                    'dishService' => $dishService,
-                    // 'selectedCategory' => $activeCategory,
-                    'placePoints' => $placePoints,
-                    'placePointsAll' => $placePointsAll,
-                    'listType' => $listType,
-                    'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
-                    'breadcrumbData' => $breadcrumbData,
-                    'current_url' => $current_url,
-                    'oldFriendIsHere' => $oldFriendIsHere,
-                    'city_breadcrumb' => $cityBreadcrumb
-                )
-            );
+        return $this->render(
+            'FoodDishesBundle:Place:index.html.twig',
+            array(
+                'place' => $place,
+                'placeReviews' => $placeReviews,
+                'relatedPlace' => $relatedPlace,
+                'wasHere' => $wasHere,
+                'alreadyWrote' => $alreadyWrote,
+                'placeCategories' => $categoryList,
+                'dishService' => $dishService,
+                // 'selectedCategory' => $activeCategory,
+                'placePoints' => $placePoints,
+                'placePointsAll' => $placePointsAll,
+                'listType' => $listType,
+                'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
+                'breadcrumbData' => $breadcrumbData,
+                'current_url' => $current_url,
+                'oldFriendIsHere' => $oldFriendIsHere,
+                'city_breadcrumb' => $cityBreadcrumb
+            )
+        );
 
     }
 

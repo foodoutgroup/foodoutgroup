@@ -92,12 +92,20 @@ class MarketingUser
     private $entryKey = null;
 
     /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     **/
+    private $cityId;
+
+    /**
      * @return string
      */
     public function __toString()
     {
         if ($this->getId()) {
-            return $this->getFirstname().'-'.$this->getLastname().'-'.$this->getCity().'-'.$this->getId();
+            return $this->getFirstname().'-'.$this->getLastname().'-'.$this->getCityId()->getTitle().'-'.$this->getId();
         }
 
         return '';
@@ -301,5 +309,28 @@ class MarketingUser
     public function getEntryKey()
     {
         return $this->entryKey;
+    }
+
+    /**
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return MarketingUser
+     */
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
+    {
+        $this->cityId = $cityId;
+    
+        return $this;
+    }
+
+    /**
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City 
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
     }
 }

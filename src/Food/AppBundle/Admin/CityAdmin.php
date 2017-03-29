@@ -36,12 +36,12 @@ class CityAdmin extends FoodAdmin
             'translatable_class' => 'Food\AppBundle\Entity\City',
                 'cascade_validation'=>true,
                 'fields' => [
-                    'title' => [ 'attr'=>['data-slugify'=>'title']],
+                    'title' => [ ],
                     'meta_title' => ['required' => false],
                     'meta_description' => ['required' => false],
                     'slug' => [
                         'constraints' => new Slug('city', $form),
-
+                        'attr'=>['data-slugify'=>'title']
                         ]
                 ]
         ]);

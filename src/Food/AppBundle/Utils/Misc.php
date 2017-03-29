@@ -449,25 +449,4 @@ class Misc
 
         return $minutes;
     }
-
-    public function getCityBreadcrumbs($city){
-       $cityBreadcrumbs = [
-            'Klaipeda' => 'Klaipėda',
-            'Siauliai' => 'Šiauliai',
-            'Panevezys' => 'Panevėžys',
-            'Marijampole' => 'Marijampolė',
-            'Kedainiai' => 'Kėdainiai',
-            'Plunge' => 'Plungė',
-            'Mazeikiai' => 'Mažeikiai',
-            'Riga' => 'Rīga',
-       ];
-
-        if(array_key_exists($city,$cityBreadcrumbs)){
-            $cityBreadcrub = $cityBreadcrumbs[$city];
-        }else{
-            $cityBreadcrub = $city;
-        }
-
-        return $cityBreadcrub;
-    }
 }

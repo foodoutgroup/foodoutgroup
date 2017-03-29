@@ -335,7 +335,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                              */
                             if (!empty($orderData['CustomerName']) && !empty($orderData['CustomerRegNo'])) {
                                 $addressToSave = $order->getAddressId()->getAddress();
-                                $cityToSave = $order->getAddressId()->getCity();
+                                $cityToSave = $order->getAddressId()->getCityId()->getTitle();
                                 if (!empty($orderData['CustomerAddress'])) {
                                     $addressToSave = trim($orderData['CustomerAddress']);
                                     $addressToSave = mb_convert_case($addressToSave, MB_CASE_TITLE, "UTF-8");

@@ -294,7 +294,7 @@ class Restaurant extends ContainerAware
                 $retData[] = [
                     'location_id'  => $point->getId(),
                     'address'      => $point->getAddress(),
-                    'city'         => $point->getCity(),
+                    'city'         => $point->getCityId()->getTitle(),
                     'selected'     => (!empty($placePoint) && $point->getId() == $placePoint->getId() ? true : false),
                     'coords'       => [
                         'latitude'  => $point->getLat(),

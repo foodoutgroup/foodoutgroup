@@ -493,15 +493,17 @@ class PlacesService extends ContainerAware
     public function getCurrentUserAddress($city, $address)
     {
         $current_user = $this->container->get('security.context')->getToken()->getUser();
+
         $user_address = [];
         if (!empty($current_user) && is_object($current_user) && !empty($city) && !empty($address)) {
+
             $user_address = $this->container->get('doctrine')->getRepository('FoodUserBundle:UserAddress')
                 ->findOneBy([
                     'user'    => $current_user,
-                    'city'    => $city,
+                    'cityId'    => $city,
                     'address' => $address,
-                ])
-            ;
+                ]);
+
         }
 
         return $user_address;
@@ -741,7 +743,7 @@ class PlacesService extends ContainerAware
                     if (empty($locationData)
                         || empty($locationData['city'])
                         || $this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($locationData['city'])
-                        || !$this->isPlaceDeliversToCity($place, $locationData['city'])
+                        || !$this->isPlaceDeliversToCity($place, $locationData['city_id'])
                     ) {
                         $response = true;
                     }
@@ -762,15 +764,13 @@ class PlacesService extends ContainerAware
     {
         $cities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
 
-        $locale = $this->container->getParameter('locale');
+        $cityArr = array();
 
         foreach($cities as $key => $value){
-            $util = new Language($this->container);
-            $cityReformat = $util->removeChars($locale,$value,false);
-            $cities[$key] = $cityReformat;
+            $cityArr[$key] =  $value->getId();
         }
 
-        return in_array($city, $cities);
+        return in_array($city, $cityArr);
     }
 
     /**
@@ -881,7 +881,7 @@ class PlacesService extends ContainerAware
 
             foreach ($placePoints as $placePoint) {
                 $place = $placePoint->getPlace();
-                $city = $placePoint->getCity();
+                $city = $placePoint->getCityId()->getTitle();
                 if ($place->getActive()) {
                     $citiesArr[] = $city;
                 }

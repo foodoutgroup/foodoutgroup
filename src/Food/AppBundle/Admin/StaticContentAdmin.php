@@ -31,6 +31,8 @@ class StaticContentAdmin extends FoodAdmin
                     'seo_description' => array('label' => 'admin.static.seo_description', 'required' => false,),
                     'slug' => [
                         'constraints' => new Slug(SlugEntity::TYPE_PAGE, $formMapper),
+                        'attr'=>['data-slugify'=>'title']
+
                     ]
                 )
             ))

@@ -301,7 +301,7 @@ class LogisticsService extends ContainerAware
         // Delivery block
         $writer->startElement("Delivery");
         $writer->writeElement('Address', $order->getAddressId()->getAddress());
-        $writer->writeElement('City', $this->convertCityForLogTime($order->getAddressId()->getCity()));
+        $writer->writeElement('City', $this->convertCityForLogTime($order->getAddressId()->getCityId()->getTitle()));
         $writer->writeElement('AddressId', $order->getAddressId()->getId());
         $writer->startElement("Coordinates");
         $writer->writeElement('Long', $order->getAddressId()->getLon());
@@ -394,7 +394,7 @@ class LogisticsService extends ContainerAware
             $writer->writeElement('Id', $driver->getId());
             $writer->writeElement('Phone', $driver->getPhone());
             $writer->writeElement('Name', $driver->getName());
-            $writer->writeElement('City', $driver->getCity());
+            $writer->writeElement('City', $driver->getCityId()->getTitle());
             $writer->writeElement('Active', ($driver->getActive() ? 'Y' : 'N'));
             $writer->endElement();
         }

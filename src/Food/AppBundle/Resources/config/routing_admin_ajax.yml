@@ -1,0 +1,11 @@
+food_admin_get_place_categories:
+      path: /place/get-categories/{placeId}
+      defaults: {_controller: FoodDishesBundle:DishAdmin:getCategoryOptionsFromPlace}
+      options:
+          expose: true
+
+food_admin_get_place_dish_options:
+    path: /place/get-dish-options/{placeId}/{uniqueId}
+    defaults: {_controller: FoodDishesBundle:DishAdmin:getDishOptionsFromPlace}
+    options:
+        expose: true

@@ -97,3 +97,45 @@ lexik_translation_edition:
 
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
+
+#    prefix:   /{_locale}/
+#    requirements:
+#        _locale:  "[a-z]{2}"
+
+#food_sms:
+#    resource: "@FoodSmsBundle/Resources/config/routing.yml"
+#    prefix:   /
+#
+#food_places:
+#    resource: "@FoodPlacesBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+#
+#food_order:
+#    resource: "@FoodOrderBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+#
+#food_cart:
+#    resource: "@FoodCartBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+
+#food_app:
+#    resource: "@FoodAppBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+#
+#food_dishes:
+#    resource: "@FoodDishesBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+#
+#food_call_center:
+#    resource: "@CallCenterBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+
+food_cart:
+    resource: "@FoodCartBundle/Resources/config/routing.yml"
+    prefix:   /cart

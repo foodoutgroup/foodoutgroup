@@ -25,22 +25,13 @@ class CityService extends BaseService
      * @param string $cityString
      * @return array
      */
-    public function getCityInfo($cityString)
+    public function getCityInfo($city)
     {
         $cityInfo = array();
-        $availableCitiesSlugs = array_map("mb_strtolower", $this->availableCitiesSlugs);
-
+        $cityString = $this->em->getRepository('FoodAppBundle:City')->getActiveById($city)[0]->getTitle();
         $cityString = $this->language->removeChars($this->locale, $cityString, true, false);
         $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", ucfirst($cityString));
         $cityInfo['city_slug_lower'] = strtolower($city);
-
-//        if (!empty($city) && in_array(mb_strtolower($city), $availableCitiesSlugs)) {
-//            $city_url = $this->router->generate('food_city_' . lcfirst($city), [], true);
-//        } else {
-//            $city_name = lcfirst(reset($availableCitiesSlugs));
-//            $city = ucfirst($city_name);
-//            $city_url = $this->router->generate('food_city_' . (!empty($city_name) ? $city_name : 'vilnius'), [], true);
-//        }
         $city_url = '';
         $cityInfo['city_url'] = $city_url;
         $cityInfo['city'] = $city;
@@ -88,16 +79,21 @@ class CityService extends BaseService
 
         $bestOfferIds = $this->em->getRepository('FoodAppBundle:City')->getBestOffersByCity($cityId);
 
-        foreach ($bestOfferIds as $item){
-            $tmpOfferIds[] = $item['id'];
+        if (!empty($bestOfferIds)) {
+
+
+            foreach ($bestOfferIds as $item) {
+                $tmpOfferIds[] = $item['id'];
+            }
+
+            shuffle($tmpOfferIds);
+
+            $bestOfferIds = array_slice($tmpOfferIds, 0, 5);
+
+            $bestOffers = $this->em->getRepository('FoodPlacesBundle:BestOffer')->getBestOffersByIds($bestOfferIds);
+        }else{
+            $bestOffers = null;
         }
-
-        shuffle($tmpOfferIds);
-
-        $bestOfferIds = array_slice($tmpOfferIds,0,5);
-
-        $bestOffers = $this->em->getRepository('FoodPlacesBundle:BestOffer')->getBestOffersByIds($bestOfferIds);
-
         return $bestOffers;
 
     }
