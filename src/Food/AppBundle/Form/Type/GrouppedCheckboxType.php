@@ -38,7 +38,7 @@ class GrouppedCheckboxType extends AbstractType
 
     public function getParent()
     {
-        return 'choice';
+        return 'sonata_type_collection';
     }
 
     public function getName()

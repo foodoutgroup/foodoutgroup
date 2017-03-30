@@ -9,8 +9,11 @@ use Exporter\Source\ArraySourceIterator;
 use Exporter\Writer\XlsWriter;
 use Food\AppBundle\Entity\City;
 use Food\AppBundle\Utils\Language;
+use Food\DishesBundle\Entity\DishOption;
 use Food\DishesBundle\Entity\Place;
 use Gedmo\Translatable\TranslatableListener;
+use PHPExcel_Style_Fill;
+use PHPExcel_Style_Protection;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -25,6 +28,8 @@ class ImportExportService extends BaseService
     protected $container;
     protected $excelWriter;
 
+    protected $importFile;
+
     public function __construct(EntityManager $em, Router $router, Language $language, $container)
     {
         parent::__construct($em);
@@ -36,19 +41,26 @@ class ImportExportService extends BaseService
         $this->locale = $container->getParameter('locale');
     }
 
-    public function process($action)
+    public function process($action, $formData = null)
     {
-        if ($action === 'export')
-        {
+        if ($action === 'export') {
             return $this->export();
         }
+        else {
+            return $this->import($formData);
+        }
+    }
+
+    private function import($formData)
+    {
+        var_dump($formData);die();
+        $this->setImportFile($formData);
     }
 
     private function export()
     {
 
         $phpExcelObject = $this->excelWriter->createPHPExcelObject();
-
 
         $sheetId = 0;
         $col = 'A';
@@ -95,6 +107,35 @@ class ImportExportService extends BaseService
 
             $col = 'A';
             $row=1;
+            $highestCol = $sheet->getHighestDataColumn();
+            $highestRow = $sheet->getHighestDataRow();
+
+
+            $sheet->protectCells('A1:'.$highestCol.'1', 'PHP');
+            $sheet->freezePane('A1');
+            $sheet->getStyle('A1:Z1')->applyFromArray(
+            array(
+                'fill' => array(
+                    'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                    'color' => array('rgb' => 'FF0000')
+                )
+            ));
+
+            $sheet->getDefaultRowDimension()->setRowHeight(-1);
+            $sheet->getDefaultColumnDimension()->setWidth(60);
+            $sheet->getColumnDimension('A')->setWidth(10);
+
+            $sheet->getStyle('A1:A'.$highestRow)->applyFromArray(
+                array(
+                    'fill' => array(
+                        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                        'color' => array('rgb' => 'FF0000')
+                    )
+                ));
+
+            $sheet->getStyle('B2:'.$highestCol.$highestRow)->getProtection()
+                ->setLocked(PHPExcel_Style_Protection::PROTECTION_UNPROTECTED);
+            $sheet->getProtection()->setSheet(true);
 
             $sheetId++;
 
@@ -118,11 +159,6 @@ class ImportExportService extends BaseService
 
     }
 
-    public function getExportFile()
-    {
-
-        return $this->export();
-    }
 
     public function setLocale($locale)
     {
@@ -154,20 +190,35 @@ class ImportExportService extends BaseService
                         'entity' => 'Food\AppBundle\Entity\City',
                         'fields' => ['title', 'meta_title', 'meta_description']
                     ],
-                'place' =>
-                    [
-                        'entity' => 'Food\DishesBundle\Entity\Place',
-                        'fields' => [ 'slogan', 'description', 'notification_content']
-                    ],
                 'dish' =>
                     [
                         'entity' => 'Food\DishesBundle\Entity\Dish',
                         'fields' => ['name', 'description']
                     ],
+                'dish_option' =>
+                    [
+                        'entity' => 'Food\DishesBundle\Entity\DishOption',
+                        'fields' => ['name', 'description']
+                    ],
+                'dish_unit' =>
+                    [
+                        'entity' => 'Food\DishesBundle\Entity\DishUnit',
+                        'fields' => ['name', 'short_name']
+                    ],
+                'food_category' =>
+                    [
+                        'entity' => 'Food\DishesBundle\Entity\DishUnit',
+                        'fields' => ['name']
+                    ],
                 'kitchen' =>
                     [
                         'entity' => 'Food\DishesBundle\Entity\Kitchen',
                         'fields' => ['name']
+                    ],
+                'place' =>
+                    [
+                        'entity' => 'Food\DishesBundle\Entity\Place',
+                        'fields' => [ 'slogan', 'description', 'notification_content']
                     ]
             ];
         }
@@ -198,6 +249,22 @@ class ImportExportService extends BaseService
         }
 
         return $return;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImportFile()
+    {
+        return $this->importFile;
+    }
+
+    /**
+     * @param mixed $importFile
+     */
+    public function setImportFile($importFile)
+    {
+        $this->importFile = $importFile;
     }
 
 
