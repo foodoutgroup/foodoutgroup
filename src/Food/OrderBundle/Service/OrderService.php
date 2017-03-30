@@ -3422,7 +3422,7 @@ class OrderService extends ContainerAware
         }
 
 
-        if ($coupon || ($takeAway && !$placeObject->getMinimalOnSelfDel()) )
+        if ($coupon || ($takeAway && !$place->getMinimalOnSelfDel()) )
         {
             $useAdminFee = false;
         }
