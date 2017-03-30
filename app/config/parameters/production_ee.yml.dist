@@ -82,6 +82,7 @@ parameters:
     nav_table_prefix: 'Čilija kabučių Centras'
     nav_ws_prefix: 'Čilija kabučių Centras'
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
+    mailer_from: info@mychef.ee
     mailer_notify_on_accept: 30010811
     mailer_notify_pickup_on_accept: 41582385
     mailer_notify_new_user: 30009253
@@ -92,6 +93,7 @@ parameters:
     mailer_send_corporate_invoice: 41585359
     mailer_send_corporate_changed_password: 41611093
     mailer_send_free_delivery_discount: 41611735
+    mailer_provider: food.mail.sendigo
     yt_video: https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=
     yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
     default_delivery_distance: 7
