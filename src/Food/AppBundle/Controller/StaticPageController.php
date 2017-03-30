@@ -3,6 +3,7 @@
 namespace Food\AppBundle\Controller;
 
 use Food\AppBundle\Entity\StaticContent;
+use \Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -25,9 +26,15 @@ class StaticPageController extends Controller
         $serviceCollection = $this->initServiceTag();
         foreach ($serviceCollection as $s){
             $serviceContent = $s['service'];
+            $serviceObj = $s['obj'];
             if(is_array($serviceContent)) {
                 if(isset($serviceContent['template'])) {
-                    return $this->render($serviceContent['template'], isset($serviceContent['params']) ? $serviceContent['params'] : []);
+
+                    $response = null;
+                    if(method_exists($serviceObj, 'getResponse')) {
+                        $response = $serviceObj->getResponse();
+                    }
+                    return $this->render($serviceContent['template'], isset($serviceContent['params']) ? $serviceContent['params'] : [], $response);
                 }
             } else {
                 $this->page->setContent(str_replace($s["replace"], $serviceContent, $this->page->getContent()));
@@ -47,9 +54,12 @@ class StaticPageController extends Controller
                 $service = $matches[1][$i];
                 $serviceDetail = explode(":", $service);
                 try {
+                    $obj = $this->get($serviceDetail[0]);
                     $serviceCollection[] = [
                         'replace' => $matches[0][$i],
+                        'params' => $serviceDetail,
                         'service' => $this->get($serviceDetail[0])->build($serviceDetail),
+                        'obj' => $obj,
                     ];
                 } catch (\Exception $ignore) {}
             }

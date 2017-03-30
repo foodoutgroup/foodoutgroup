@@ -124,6 +124,10 @@ services:
     hook.meet:
         class: Food\AppBundle\Service\HookMeet
 
+    hook.sitemap:
+        class: Food\AppBundle\Service\HookSitemap
+        arguments: ['@templating', '@doctrine.orm.entity_manager', '@service_container']
+
     food.zavalas_service:
       class: Food\AppBundle\Service\ZavalasService
       parent: food.base_service
