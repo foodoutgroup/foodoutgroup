@@ -460,6 +460,7 @@ class PlacesService extends ContainerAware
         }
 
         $dontUseFee = !$place->isUseAdminFee();
+
         if ($dontUseFee === false)
         {
             return false;
