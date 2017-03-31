@@ -16,6 +16,10 @@ food_test_payment:
     path:  /test/payment
     defaults: { _controller: FoodAppBundle:Test:payment }
 
+food_test_email:
+    path:  /test/email
+    defaults: { _controller: FoodAppBundle:Test:email }
+
 food_test_report:
     path:  /test/report
     defaults: { _controller: FoodAppBundle:Test:report }

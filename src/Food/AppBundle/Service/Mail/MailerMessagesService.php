@@ -1,5 +1,5 @@
 <?php
-namespace Food\AppBundle\Service;
+namespace Food\AppBundle\Service\Mail;
 
 class MailerMessagesService extends MailerRestBaseService
 {
