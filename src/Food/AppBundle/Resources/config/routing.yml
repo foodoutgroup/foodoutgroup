@@ -56,6 +56,11 @@ food_test_invoice:
     path:  /test/invoice
     defaults: { _controller: FoodAppBundle:Test:invoice }
 
+food_test_corporate_invoice:
+    path:  /test/corporate_invoice
+    defaults: { _controller: FoodAppBundle:Test:corporateInvoice }
+
+
 food_test_time_format:
     path:  /test/time-format
     defaults: { _controller: FoodAppBundle:Test:timeParse }
