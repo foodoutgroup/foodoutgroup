@@ -460,6 +460,7 @@ class PlacesService extends ContainerAware
         }
 
         $dontUseFee = !$place->isUseAdminFee();
+
         if ($dontUseFee === false)
         {
             return false;
@@ -474,11 +475,13 @@ class PlacesService extends ContainerAware
     public function getAdminFee(Place $place)
     {
         $feeSize = $place->getAdminFee();
+
         if (!$feeSize)
         {
-            return $this->container->get('food.app.utils.misc')->getParam('admin_fee_size');
+            $feeSize = $this->container->get('food.app.utils.misc')->getParam('admin_fee_size');
         }
-        return $feeSize;
+
+        return floatval(str_replace(',', '.',  $feeSize));
     }
 
     public function getMinCartPrice($placeId)

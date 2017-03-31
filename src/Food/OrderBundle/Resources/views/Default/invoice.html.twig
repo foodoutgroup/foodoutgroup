@@ -116,7 +116,15 @@
         <td class="sum_col">{{ order.deliveryWithoutVat|number_format(2, ',', ' ') }}</td>
         {% if currency_alternative %}<td class="no-border sum_col"></td>{% endif %}
     </tr>
-
+    <tr class="no-border-line">
+        <td class="narrow_col">2</td>
+        <td>{{ 'cart.block.admin_fee'|trans() }}</td>
+        <td></td>
+        <td class="narrow_col">1</td>
+        <td class="sum_col">{{ order.adminFeeWithoutVat|number_format(2, ',', ' ') }}</td>
+        <td class="sum_col">{{ order.adminFeeWithoutVat|number_format(2, ',', ' ') }}</td>
+        {% if currency_alternative %}<td class="no-border sum_col"></td>{% endif %}
+    </tr>
     <tr class="no-border-line"><td colspan="7">&nbsp;</td></tr>
     <tr class="no-border-line">
         <td></td>

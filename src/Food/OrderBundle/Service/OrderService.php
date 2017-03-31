@@ -581,7 +581,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * Inform client, that restourant accepted their order
+     * Inform client, that restaurant accepted their order
      */
     private function _notifyOnAccepted()
     {
@@ -673,6 +673,7 @@ class OrderService extends ContainerAware
             'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
             'invoice' => $invoice,
             'beta_kodas' => $betaCode,
+            'admin_fee'  => $this->getOrder()->getAdminFee(),
         ];
 
 
@@ -1577,6 +1578,12 @@ class OrderService extends ContainerAware
 
         $adminFee    = $placesService->getAdminFee($placeObject);
         $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
+
+        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel())
+        {
+            $useAdminFee = false;
+        }
+
         if ($useAdminFee && !$adminFee) {
             $adminFee = 0;
         }
@@ -3414,7 +3421,8 @@ class OrderService extends ContainerAware
             }
         }
 
-        if ($coupon)
+
+        if ($coupon || ($takeAway && !$place->getMinimalOnSelfDel()) )
         {
             $useAdminFee = false;
         }
@@ -3480,7 +3488,7 @@ class OrderService extends ContainerAware
                 }
             }
 
-            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false) {
+            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false  && !$useAdminFee) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }

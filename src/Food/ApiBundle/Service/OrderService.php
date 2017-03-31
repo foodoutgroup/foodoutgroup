@@ -142,6 +142,7 @@ class OrderService extends ContainerAware
 
         $em = $this->container->get('doctrine')->getManager();
         $serviceVar = $request->get('service');
+
         $logger->alert('Service var givven: ');
         $logger->alert(var_export($serviceVar, true));
         $pp = null; // placePoint :D - jei automatu - tai NULL :D
@@ -152,7 +153,6 @@ class OrderService extends ContainerAware
             }
             $pp = $em->getRepository('FoodDishesBundle:PlacePoint')->find($serviceVar['location_id']);
         }
-
         $basket = $em->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($request->get('basket_id'));
 
         $place = $basket->getPlaceId();
@@ -323,6 +323,11 @@ class OrderService extends ContainerAware
                 $useAdminFee = false;
             }
 
+            if ($user->getIsBussinesClient() || ($serviceVar['type'] == "pickup" && !$place->getMinimalOnSelfDel() ))
+            {
+                $useAdminFee = false;
+            }
+
 //            var_dump($total_cart);echo 'Naujas:';
 //
 //            if ($useAdminFee && $total_cart < $place->getCartMinimum()) {
@@ -368,7 +373,7 @@ class OrderService extends ContainerAware
 
         if ($serviceVar['type'] != "pickup") {
             $placeService = $this->container->get('food.places');
-            if (!$useAdminFee  && $total_cart < $placeService->getMinCartPrice($place->getId())) { //Jei yra admin fee - cart'o minimumo netaikom
+            if (!$useAdminFee  && ($total_cart < $placeService->getMinCartPrice($place->getId()))) { //Jei yra admin fee - cart'o minimumo netaikom
                 throw new ApiException(
                     'Order Too Small',
                     400,
@@ -435,7 +440,7 @@ class OrderService extends ContainerAware
             }
         } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
             $total_cart = $cartService->getCartTotal($list/*, $place*/);
-            if ($total_cart < $place->getCartMinimum()) {
+            if ($total_cart < $place->getCartMinimum() && !$useAdminFee) {
                 throw new ApiException(
                     'Order Too Small',
                     0,
