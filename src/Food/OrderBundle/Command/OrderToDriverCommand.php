@@ -70,37 +70,43 @@ class OrderToDriverCommand extends ContainerAwareCommand
             }
 
             $orderToDriverCollection = $em->getRepository('FoodOrderBundle:OrderToDriver')->getOrdersToSend();
-            $i = 0;
-            $fail = 0;
-            foreach ($orderToDriverCollection as $orderToDriver) {
-                if ($limit <= $i) {
-                    $output->writeln('Just reached the limit!');
-                    break;
-                }
-                $order = $orderToDriver->getOrder();
-                $msg = '{"event": "system:routing", "collection": [{"event": "api:order:newOrder", "params": {"address": "http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash().'"}}]}'."\n\n";
-                if ($debug) {
-                    $output->writeln($msg);
+            for ($k = 0; $k < 10; ++$k) {
+                $i = 0;
+                $fail = 0;
+                foreach ($orderToDriverCollection as $orderToDriver) {
+                    if ($limit <= $i) {
+                        $output->writeln('Just reached the limit!');
+                        break;
+                    }
+                    $order = $orderToDriver->getOrder();
+                    $msg = '{"event": "system:routing", "collection": [{"event": "api:order:newOrder", "params": {"address": "http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash().'"}}]}'."\n\n";
+                    if ($debug) {
+                        $output->writeln($msg);
+                    }
+                    if (!$dryRun) {
+                        if (fwrite($fp, $msg)) {
+                            $orderToDriver->setDateSent(new \DateTime());
+                            $em->persist($orderToDriver);
+                        } else {
+                            ++$fail;
+                        }
+                        ++$i;
+                        usleep(5000);
+                    }
+                    if ($fail >= 3) {
+                        $output->writeln('Too much of fails!');
+                        break;
+                    }
                 }
                 if (!$dryRun) {
-                    if (fwrite($fp, $msg)) {
-                        $orderToDriver->setDateSent(new \DateTime());
-                        $em->persist($orderToDriver);
-                    } else {
-                        ++$fail;
-                    }
-                    ++$i;
-                    usleep(5000);
+                    $em->flush();
                 }
-                if ($fail >= 3) {
-                    $output->writeln('Too much of fails!');
+                sleep(3);
+                if (date('s') > 50) {
                     break;
                 }
             }
-            if (!$dryRun) {
-                $em->flush();
-                fclose($fp);
-            }
+            fclose($fp);
 
             $output->writeln(sprintf('Sent %d / Failed %d / Total %d', $i, $fail, count($orderToDriverCollection)));
 
