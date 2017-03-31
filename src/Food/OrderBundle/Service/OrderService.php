@@ -77,8 +77,8 @@ class OrderService extends ContainerAware
         'paysera' => 'food.paysera_biller',
         'swedbank-gateway' => 'food.swedbank_gateway_biller',
         'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller',
-        'seb-banklink'                 => 'food.seb_banklink_biller',
-        'nordea-banklink'              => 'food.nordea_banklink_biller',
+        'seb-banklink' => 'food.seb_banklink_biller',
+        'nordea-banklink' => 'food.nordea_banklink_biller',
         'sandbox' => 'food.sandbox_biller',
     ];
 
@@ -94,6 +94,7 @@ class OrderService extends ContainerAware
     public static $deliveryBoth = "delivery_and_pickup";
     public static $deliveryDeliver = "deliver";
     public static $deliveryPickup = "pickup";
+    public static $deliveryPedestrian = "pedestrian";
 
     /**
      * Payment did not start yet
@@ -263,7 +264,7 @@ class OrderService extends ContainerAware
      *
      * @return Order
      */
-    public function createOrder($placeId, $placePoint = null, $fromConsole = false, $orderDate = null)
+    public function createOrder($placeId, $placePoint = null, $fromConsole = false, $orderDate = null,$deliveryType = null)
     {
         $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
         if (empty($placePoint)) {
@@ -298,14 +299,18 @@ class OrderService extends ContainerAware
 
             $timeShift = $miscService->parseTimeToMinutes($placeService->getDeliveryTime($placeRecord));
 
-            if (empty($timeShift) || $timeShift <= 0) {
+            if (empty($timeShift) || $timeShift <= 0 && $deliveryType != 'pedestrian') {
                 $timeShift = 60;
+            }else{
+                $timeShift =  $this->container->get('food.places')->getPedestrianDeliveryTime();
             }
 
             $deliveryTime = new \DateTime("now");
             $deliveryTime->modify("+" . $timeShift . " minutes");
+
         } else {
             $deliveryTime = new \DateTime($orderDate);
+
         }
 
         $this->order->setUser($user);
@@ -1306,11 +1311,12 @@ class OrderService extends ContainerAware
      * @param array|null $userData
      * @param string|null $orderDate
      */
-    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null)
+    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null,$deliveryType = null)
     {
         // TODO Fix prices calculation
-        $this->createOrder($place, $placePoint, false, $orderDate);
-        $this->getOrder()->setDeliveryType(($selfDelivery ? 'pickup' : 'deliver'));
+
+        $this->createOrder($place, $placePoint, false, $orderDate,$deliveryType);
+        $this->getOrder()->setDeliveryType($deliveryType);
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
 
@@ -1326,14 +1332,18 @@ class OrderService extends ContainerAware
         // PRE ORDER
         if (!empty($orderDate)) {
             $this->getOrder()->setOrderStatus(self::$status_preorder)->setPreorder(true);
+
         } else if (empty($orderDate) && $selfDelivery) {
+
             // Lets fix pickup situation
             $miscService = $this->container->get('food.app.utils.misc');
 
             $timeShift = $miscService->parseTimeToMinutes($placeObject->getPickupTime());
 
-            if (empty($timeShift) || $timeShift <= 0) {
+            if (empty($timeShift) || $timeShift <= 0 && $deliveryType != 'pedestrian') {
                 $timeShift = 60;
+            }else{
+
             }
 
             $deliveryTime = new \DateTime("now");
@@ -1341,7 +1351,6 @@ class OrderService extends ContainerAware
         }
 
         $this->saveOrder();
-
         // save extra order data to separate table
         $orderExtra = new OrderExtra();
         $orderExtra->setOrder($this->getOrder());
@@ -1571,7 +1580,7 @@ class OrderService extends ContainerAware
         //~ }
         $placesService = $this->container->get('food.places');
         $useAdminFee = $placesService->useAdminFee($placeObject);
-        $adminFee    = $placesService->getAdminFee($placeObject);
+        $adminFee = $placesService->getAdminFee($placeObject);
         $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
         if ($useAdminFee && !$adminFee) {
             $adminFee = 0;
@@ -2077,7 +2086,7 @@ class OrderService extends ContainerAware
      */
     public function isValidDeliveryType($type)
     {
-        if (in_array($type, [self::$deliveryDeliver, self::$deliveryPickup])) {
+        if (in_array($type, [self::$deliveryDeliver, self::$deliveryPickup, self::$deliveryPedestrian])) {
             return true;
         }
 
@@ -3410,8 +3419,7 @@ class OrderService extends ContainerAware
             }
         }
 
-        if ($coupon)
-        {
+        if ($coupon) {
             $useAdminFee = false;
         }
 
@@ -3493,8 +3501,8 @@ class OrderService extends ContainerAware
 
                 foreach ($debugDishOptions as $option) {
 
-                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['name'] =  $option->getDishOptionId()->getName();
-                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['price'] =  $option->getDishOptionId()->getPrice();
+                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['name'] = $option->getDishOptionId()->getName();
+                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['price'] = $option->getDishOptionId()->getPrice();
                 }
             }
 
@@ -3722,7 +3730,7 @@ class OrderService extends ContainerAware
             $translator->trans('order.form.errors.customeraddr');
 
             //~ foreach ($formErrors as $key => $error) {
-                //~ $formErrors[$key] = $translator->trans($error);
+            //~ $formErrors[$key] = $translator->trans($error);
             //~ }
 
 
@@ -3742,7 +3750,7 @@ class OrderService extends ContainerAware
             $error->setUrl($request->headers->get('referer'));
             $error->setSource('checkout_coupon_page');
             //~ $error->setDescription(implode(',', $formErrors));
-            $error->setDebug(serialize($request) .'<br><br>'. serialize($debugCartInfo));
+            $error->setDebug(serialize($request) . '<br><br>' . serialize($debugCartInfo));
 
             $em->persist($error);
             $em->flush();
@@ -4596,13 +4604,12 @@ class OrderService extends ContainerAware
                 ->trans(
                     $keyword,
                     [
-                        'order_id'   => $order->getId(),
+                        'order_id' => $order->getId(),
                         'delay_time' => $diffInMinutes
                     ],
                     null,
                     $order->getLocale()
-                )
-            ;
+                );
 
             $userEmail = $order->getOrderExtra()->getEmail();
             $message = $smsService->createMessage($sender, $recipient, $text, $order);
@@ -4613,8 +4620,7 @@ class OrderService extends ContainerAware
 
             $message = \Swift_Message::newInstance()
                 ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
-                ->setFrom('info@' . $domain)
-            ;
+                ->setFrom('info@' . $domain);
 
             $message->addTo($userEmail);
             $message->setBody($text);

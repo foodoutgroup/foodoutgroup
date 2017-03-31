@@ -18,6 +18,8 @@ class PlaceController extends Controller
     public function indexAction($id, $slug, $categoryId, Request $request, $oldFriendIsHere = false, $city = false)
     {
 
+
+
         $session = $this->get('session');
         $isCallcenter = $session->get('isCallcenter');
         if ($isCallcenter) {
@@ -49,7 +51,6 @@ class PlaceController extends Controller
         $categoryList = $this->get('food.places')->getActiveCategories($place);
         $placePoints = $this->get('food.places')->getPublicPoints($place);
         $placePointsAll = $this->get('food.places')->getAllPoints($place);
-//        $categoryRepo = $this->getDoctrine()->getRepository('FoodDishesBundle:FoodCategory');
         $dishService = $this->get('food.dishes');
 
         $listType = 'thumbs';
@@ -58,13 +59,7 @@ class PlaceController extends Controller
         if ($cookies->has('restaurant_menu_layout')) {
             $listType = $cookies->get('restaurant_menu_layout');
         }
-/**
-        if (!empty($categoryId)) {
-            $activeCategory = $categoryRepo->find($categoryId);
-        } else {
-            $activeCategory = $categoryList[0];
-        }
-*/
+
         $wasHere = $this->wasHere($place, $this->user());
         $alreadyWrote = $this->alreadyWrote($place, $this->user());
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);

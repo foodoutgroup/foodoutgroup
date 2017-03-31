@@ -323,6 +323,7 @@ class PlacesService extends ContainerAware
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
+
         if ($zaval) {
             $deliveryType = '';
         } else {
@@ -343,13 +344,11 @@ class PlacesService extends ContainerAware
         if (empty($filters)) {
             $filters = [];
         }
-//        if (is_array($filters)) {
-//            $this->getContainer()->get('logger')->error('getPlacesForList filters param got array -cant be. Array contents: ' . var_export($filters, true));
-//        }
 
         if (is_string($filters)) {
             $filters = explode(",", $filters);
         }
+
         if (!empty($deliveryType)) {
             $filters['delivery_type'] = $deliveryType;
         }
@@ -911,5 +910,10 @@ class PlacesService extends ContainerAware
             return array_unique($citiesArr);
         }
         return null;
+    }
+
+    public function getPedestrianDeliveryTime()
+    {
+        return $this->container->get('food.app.utils.misc')->getParam('pedestrian_delivery_time');
     }
 }

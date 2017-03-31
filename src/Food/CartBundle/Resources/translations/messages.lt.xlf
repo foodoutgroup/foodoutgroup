@@ -54,9 +54,17 @@
                 <source>cart.checkout.delivery_to_home</source>
                 <target>Pristatymas į namus</target>
             </trans-unit>
+            <trans-unit id="ab9dbc0e8b931d30795a4bcbeee01532" resname="cart.checkout.pedestrian">
+                <source>cart.checkout.pedestrian</source>
+                <target>Pristatymas pėsčiomis</target>
+            </trans-unit>
             <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1d" resname="cart.checkout.delivery_i_pickup">
                 <source>cart.checkout.delivery_i_pickup</source>
                 <target>Atsiimsiu pats</target>
+            </trans-unit>
+            <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1f" resname="cart.checkout.delivery_by_pedestrian">
+                <source>cart.checkout.delivery_by_pedestrian</source>
+                <target>33 min</target>
             </trans-unit>
             <trans-unit id="91a531cac53e76cf23ca76d224b23c27new" resname="cart.checkout.enter_address">
                 <source>cart.checkout.enter_address</source>

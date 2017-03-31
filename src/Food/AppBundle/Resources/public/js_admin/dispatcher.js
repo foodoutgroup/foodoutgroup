@@ -111,11 +111,15 @@ var Dispatcher = {
     },
 
     toggleDriverButton: function (checkbox) {
+
+
         var activeList = checkbox.closest(".order_list");
-        // Old button
-        //var button = activeList.parent().find('.get_drivers_button');
         var buttons = $('.drivers_list .city_drivers:visible').find('button');
         var checkedBoxes = activeList.find('.order_checkbox:checked');
+
+        if(activeList.hasClass('unassigned-pedestrian')){
+            buttons = $('.drivers_list .pedestrian').find('button');
+        }
 
         if (checkedBoxes.size() > 0) {
             buttons.attr('disabled', false);
