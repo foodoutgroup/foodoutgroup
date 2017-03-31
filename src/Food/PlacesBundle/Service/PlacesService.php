@@ -475,11 +475,13 @@ class PlacesService extends ContainerAware
     public function getAdminFee(Place $place)
     {
         $feeSize = $place->getAdminFee();
+
         if (!$feeSize)
         {
             $feeSize = $this->container->get('food.app.utils.misc')->getParam('admin_fee_size');
         }
-        return floatval(str_replace(',', '.', str_replace('.', '', $feeSize)));
+
+        return floatval(str_replace(',', '.',  $feeSize));
     }
 
     public function getMinCartPrice($placeId)
