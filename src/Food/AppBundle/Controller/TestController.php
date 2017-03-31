@@ -177,6 +177,36 @@ class TestController extends Controller
         );
     }
 
+    public function corporateInvoiceAction()
+    {
+        $orderByDivision = array();
+        $orders = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->getCorporateOrdersForInvoice();
+
+        $user = $orders[0]->getUser();
+
+        foreach ($orders as $order) {
+            if ($user->getRequiredDivision()) {
+                if (!isset($orderByDivision[$order->getDivisionCode()])) {
+                    $orderByDivision[$order->getDivisionCode()] = array($order);
+                } else {
+                    $orderByDivision[$order->getDivisionCode()][] = $order;
+                }
+            } else {
+                $orderByDivision['division'][] = $order;
+            }
+        }
+
+
+        return $this->render(
+            'FoodOrderBundle:Default:corporate_invoice.html.twig',
+            array(
+                'orders'  => $orderByDivision,
+                'mainOrder' => $orders[0],
+                'user' => $user
+            )
+        );
+    }
+
     public function pdfAction()
     {
         $os = $this->get('food.order');

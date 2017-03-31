@@ -2338,10 +2338,20 @@ class Order
         return $this->getTotal();
     }
 
+    public function getAdminFeeWithoutVat()
+    {
+        if ($this->getVat()) {
+            return round($this->getAdminFee() / (1 + $this->getVat() / 100), 2);
+        }
+
+        return $this->getAdminFee();
+    }
+
     public function getVatSize()
     {
         return $this->getTotal() - $this->getTotalWithoutVat();
     }
+
 
     public function getDeliveryWithoutVat()
     {
@@ -2354,7 +2364,7 @@ class Order
 
     public function getDishesWithoutVat()
     {
-        return $this->getTotalWithoutVat() - $this->getDeliveryWithoutVat();
+        return $this->getTotalWithoutVat() - $this->getDeliveryWithoutVat() - $this->getAdminFeeWithoutVat();
     }
 
     /**
