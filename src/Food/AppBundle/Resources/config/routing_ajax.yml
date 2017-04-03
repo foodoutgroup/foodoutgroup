@@ -30,11 +30,11 @@ food_place_menu_layout:
 
 food_places:
     path: /places
-    defaults: { _controller: FoodPlacesBundle:Default:index }
+    defaults: { _controller: FoodPlacesBundle:City:index }
 
 food_places_filter:
     path: /places/filter/
-    defaults: { _controller: FoodPlacesBundle:Default:list }
+    defaults: { _controller: FoodPlacesBundle:City:list }
 
 food_kitchens_filter:
     path: /kitchens/filter/
@@ -50,6 +50,6 @@ food_cities_by_place:
     path: /getCitiesByPlace/{placeId}
     defaults: { _controller: FoodDishesBundle:Place:getCitiesByPlace }
 
-food_cart:
+food_admin:
     resource: "@FoodAppBundle/Resources/config/routing_admin_ajax.yml"
     prefix:   /ajax

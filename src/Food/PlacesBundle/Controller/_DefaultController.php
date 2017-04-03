@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class DefaultController extends Controller
 {
-    public function indexAction($recommended = false, $rush_hour = false)
+    public function indexAction($recommended = false, $rush_hour = false, Request $request)
     {
         $locData = $this->get('food.location')->getLocationFromSession();
 
@@ -37,7 +37,9 @@ class DefaultController extends Controller
                 'slug_filter' => null,
                 'selected_kitchens_names' => [],
                 'city' => $city,
-                'cityUrl' => $this->generateUrl('food_slug', ['slug' => $city->getSlug()])
+                'cityUrl' => $this->generateUrl('food_slug', ['slug' => $city->getSlug()]),
+                'current_url' => $request->getUri(),
+                'current_url_path' => $this->get('slug')->getUrl($city->getId(), Slug::TYPE_CITY),
             ]
         );
     }
@@ -137,37 +139,7 @@ class DefaultController extends Controller
 
     public function bestOffersAction()
     {
-        return $this->render('FoodPlacesBundle:Default:best_offers.html.twig', [
-            'best_offers' => $this->getBestOffers()
-        ]);
-    }
-
-    public function changeLocationAction()
-    {
-        return $this->render('FoodPlacesBundle:Default:change_location.html.twig');
-    }
-
-    /**
-     * @param integer $amount
-     * @return array
-     */
-    private function getBestOffers()
-    {
-
         $cityService = $this->get('food.city_service');
-
-        //        $location = $this->get('food.location')->getLocationFromSession();
-//        $city = null;
-//        if (!empty($location['city'])) {
-//            $city = $location['city'];
-//        }
-//        $items = $this->get('doctrine.orm.entity_manager')
-//                      ->getRepository('FoodPlacesBundle:BestOffer')
-//                      ->getRandomBestOffers($amount, $city);
-//
-//        return $items;
-
-
         $location = $this->get('food.location')->getLocationFromSession();
 
         $city = null;
@@ -175,8 +147,13 @@ class DefaultController extends Controller
             $city = $location['city_id'];
         }
 
-        $items = $cityService->getRandomBestOffers($city);
+        return $this->render('FoodPlacesBundle:Default:best_offers.html.twig', [
+            'best_offers' =>  $cityService->getRandomBestOffers($city)
+        ]);
+    }
 
-        return $items;
+    public function changeLocationAction()
+    {
+        return $this->render('FoodPlacesBundle:Default:change_location.html.twig');
     }
 }

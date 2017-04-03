@@ -1,5 +1,5 @@
 <div class="restaurants-list">
-    {% for place in places %}
+    {% for place in placeCollection %}
         <div class="restaurant-item clearfix">
             <div class="logo">
                 <div class="logo-wrap"><a href="{{ slug.getUrl(place.place.id, 'place') }}"><img src="//{{ cloudfront_url }}/uploads/places/thumb_{{ place.place.logo }}"></a></div>
@@ -120,9 +120,9 @@
         var c1 = '{% trans %}general.places_found1{% endtrans %}';
         var c2 = '{% trans %}general.places_found2{% endtrans %}';
         var c3 = '{% trans %}general.places_found3{% endtrans %}';
-        var cnt = {{ places|length }};
+        var cnt = {{ placeCollection|length }};
         var trgt = $('.page-title .place-counter');
-        var recommended = {{ recommended }};
+        var isRecommended = {{ isRecommended }};
         if (cnt == 0) {
             trgt.text('');
         } else if (cnt == 1) {
@@ -133,8 +133,8 @@
             trgt.text(c3);
         }
         trgt.text(trgt.text().replace("%1", cnt));
-        {% if location_show %}
-            if (!recommended && cnt > 0) {
+        {% if location is not null %}
+            if (!isRecommended && cnt > 0) {
                 {% set locAdress = '' %}
                 {% if location and location.address_found %}
                     {% set locAdress=location.address %}

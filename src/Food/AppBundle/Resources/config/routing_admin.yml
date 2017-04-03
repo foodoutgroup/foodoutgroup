@@ -2,10 +2,10 @@ food_sms:
     resource: "@FoodSmsBundle/Resources/config/routing.yml"
     prefix:   /
 
-food_places:
-    resource: "@FoodPlacesBundle/Controller/"
-    type:     annotation
-    prefix:   /
+#food_places:
+#    resource: "@FoodPlacesBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
 
 food_order:
     resource: "@FoodOrderBundle/Controller/"
