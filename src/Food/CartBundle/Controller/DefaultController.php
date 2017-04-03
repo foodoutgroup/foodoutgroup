@@ -309,7 +309,7 @@ class DefaultController extends Controller
 
         if (empty($address) && !empty($current_user) && is_object($current_user)) {
             $defaultUserAddress = $current_user->getCurrentDefaultAddress();
-            var_dump($defaultUserAddress);
+
             if (!empty($defaultUserAddress)) {
                 $loc_city = $defaultUserAddress->getCityId();
                 $loc_address = $defaultUserAddress->getAddress();

@@ -42,12 +42,13 @@
         </div>
         {# Pristatysime i namus - duodam susitvarkyti adresus #}
         {#% if takeAway == false %#}
+
         <div class="takeaway-not {% if takeAway == true %}hide{% endif %}">
             <div class="form-row form-row-required address-change">
                 <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
                 <select class="custom-select" disabled="true">
-                    {% for city in available_cities %}
-                        <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e','Š':'S','ž':'z','ī':'i'})) %}selected{% else %}{% if userAddress and userAddress.city is defined and (userAddress.city == city or userAddress.city == city|replace({'ė':'e'})) %}selected{% endif %}{% endif %}>{{ city }}</option>
+                    {% for city in cityService.getActiveCity %}
+                        <option value="{{ city.id }}" {% if location and location.city is defined and (location.city == city.title or location.city == city|replace({'ė':'e'})) %}selected{% elseif location.city is not defined and userAddress and userAddress.city is defined and (userAddress.city_id == city.id or userAddress.city_id == city.id) %}selected{% endif %}>{{ city.title }}</option>
                     {% endfor %}
                 </select>
             </div>

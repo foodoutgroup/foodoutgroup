@@ -82,8 +82,8 @@
                 <h1>{% trans %}places.region_select{% endtrans %}</h1>
                 <select id="region_select">
                     <option label="" value=""></option>
-                    {% for city in available_cities %}
-                        <option label="{{ city }}" value="{{ city }}">{{ city }}</option>
+                    {% for city in cityService.getActiveCity %}
+                        <option label="{{ city }}" value="{{ city.id }}">{{ city.title }}</option>
                     {% endfor %}
                 </select>
                 <button type="submit" class="button-normal submit">{% trans %}places.region_confirm{% endtrans %}</button>
