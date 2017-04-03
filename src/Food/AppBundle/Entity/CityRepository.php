@@ -45,5 +45,4 @@ class CityRepository extends EntityRepository
     {
         return $this->findBy(['active' => 1,'id'=>$id]);
     }
-
 }

@@ -14,37 +14,25 @@ class BestOfferRepository extends EntityRepository
      */
     public function getActiveOffers($city = null, $forMobile = false)
     {
-        $qb = $this->createQueryBuilder('o')
-            ->where('o.active = :activity');
-
-        $params = ['activity' => true];
-
-        if ($forMobile) {
-            $qb->andWhere('o.useUrl != :use_url');
-            $params['use_url'] = true;
-        }
+        $bestOffers = $this->findBy(['active' => 1, 'useUrl' => $forMobile ? true : false]);
 
         if (!empty($city)) {
 
-            $city = strtolower($city);
 
-            $city = str_replace('klaipeda', 'klaipėda', $city);
-            $city = str_replace('marijampole', 'marijampolė', $city);
-            $city = str_replace('siauliai', 'šiauliai', $city);
-            $city = str_replace('plunge', 'plungė', $city);
-            $city = str_replace('panevežys', 'panevezys', $city);
-            $city = str_replace('panevėzys', 'panevezys', $city);
-            $city = str_replace('panevezys', 'panevėžys', $city);
-            $city = str_replace('mažeikiai', 'mazeikiai', $city);
-            $city = ucfirst($city);
-
-            $qb->andWhere($qb->expr()->like('o.text', ':city_filter'));
-            $params['city_filter'] = '%' . $city . '%';
+            foreach ($bestOffers as $key => $offer) {
+                $checker = false;
+                foreach ($offer->getOfferCity() as $city_val) {
+                    if ($city_val->getId() == $city) {
+                        $checker = true;
+                    }
+                }
+                if ($checker === false) {
+                    unset($bestOffers[$key]);
+                }
+            }
         }
 
-        return $qb->setParameters($params)
-            ->getQuery()
-            ->getResult();
+        return $bestOffers;
     }
 
     /**
@@ -56,10 +44,11 @@ class BestOfferRepository extends EntityRepository
         return $element['id'];
     }
 
-    public function getBestOffersByIds($ids){
+    public function getBestOffersByIds($ids)
+    {
 
 
-        $result = $this->findBy(['id'=>$ids]);
+        $result = $this->findBy(['id' => $ids]);
 
         return $result;
     }
