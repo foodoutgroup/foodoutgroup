@@ -581,7 +581,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * Inform client, that restourant accepted their order
+     * Inform client, that restaurant accepted their order
      */
     private function _notifyOnAccepted()
     {
@@ -673,6 +673,7 @@ class OrderService extends ContainerAware
             'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
             'invoice' => $invoice,
             'beta_kodas' => $betaCode,
+            'admin_fee'  => $this->getOrder()->getAdminFee(),
         ];
 
 
@@ -1318,6 +1319,8 @@ class OrderService extends ContainerAware
         $placeObject = $this->container->get('food.places')->getPlace($place);
         $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
 
+        $placesService = $this->container->get('food.places');
+        $useAdminFee = $placesService->useAdminFee($placeObject);
 
         $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
@@ -1405,6 +1408,7 @@ class OrderService extends ContainerAware
                     $includeDelivery = false;
                 }
 
+                $useAdminFee = false;
             } elseif ($user->getIsBussinesClient()) {
                 // Jeigu musu logistika, tada taikom fiksuota nuolaida
                 if (!$selfDelivery) {
@@ -1413,6 +1417,7 @@ class OrderService extends ContainerAware
                     $discountPercent = $discountSize;
                     $this->getOrder()->setDiscountSize($discountSize)->setDiscountSum($discountSum);
                 }
+                $useAdminFee = false;
             }
         }
 
@@ -1569,10 +1574,16 @@ class OrderService extends ContainerAware
             }
         }
         //~ }
-        $placesService = $this->container->get('food.places');
-        $useAdminFee = $placesService->useAdminFee($placeObject);
+
+
         $adminFee    = $placesService->getAdminFee($placeObject);
         $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
+
+        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel())
+        {
+            $useAdminFee = false;
+        }
+
         if ($useAdminFee && !$adminFee) {
             $adminFee = 0;
         }
@@ -3410,7 +3421,8 @@ class OrderService extends ContainerAware
             }
         }
 
-        if ($coupon)
+
+        if ($coupon || ($takeAway && !$place->getMinimalOnSelfDel()) )
         {
             $useAdminFee = false;
         }
@@ -3476,7 +3488,7 @@ class OrderService extends ContainerAware
                 }
             }
 
-            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false) {
+            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false  && !$useAdminFee) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }

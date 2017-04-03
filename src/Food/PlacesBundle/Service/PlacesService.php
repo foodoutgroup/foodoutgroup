@@ -5,6 +5,7 @@ use Food\DishesBundle\Entity\Kitchen;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Service\OrderService;
+use Food\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Food\AppBundle\Traits;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -451,7 +452,15 @@ class PlacesService extends ContainerAware
 
     public function useAdminFee(Place $place)
     {
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        if (is_object($user)){
+            if ($user->getIsBussinesClient() ) {
+                return false;
+            }
+        }
+
         $dontUseFee = !$place->isUseAdminFee();
+
         if ($dontUseFee === false)
         {
             return false;
@@ -466,11 +475,13 @@ class PlacesService extends ContainerAware
     public function getAdminFee(Place $place)
     {
         $feeSize = $place->getAdminFee();
+
         if (!$feeSize)
         {
-            return $this->container->get('food.app.utils.misc')->getParam('admin_fee_size');
+            $feeSize = $this->container->get('food.app.utils.misc')->getParam('admin_fee_size');
         }
-        return $feeSize;
+
+        return floatval(str_replace(',', '.',  $feeSize));
     }
 
     public function getMinCartPrice($placeId)
