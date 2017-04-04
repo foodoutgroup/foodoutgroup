@@ -16,6 +16,10 @@ use Gedmo\Translatable\Translatable;
  */
 class FoodCategory implements Translatable
 {
+
+
+    const SLUG_TYPE = 'food_category';
+
     /**
      * @var integer
      *

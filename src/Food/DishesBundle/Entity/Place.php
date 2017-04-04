@@ -30,6 +30,10 @@ class Place extends Uploadable implements Translatable
     const OPT_ONLY_DELIVERY = 'delivery';
     const OPT_ONLY_PICKUP = 'pickup';
 
+
+
+    const SLUG_TYPE = 'place';
+
     // megabytes
     protected $maxFileSize = 1.9;
 
@@ -1294,6 +1298,12 @@ class Place extends Uploadable implements Translatable
     {
         $this->locale = $locale;
     }
+
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
 
     /**
      * @return mixed

@@ -21,6 +21,9 @@ use Doctrine\ORM\EntityManager;
  */
 class Kitchen extends Uploadable implements Translatable
 {
+
+    const SLUG_TYPE = 'kitchen';
+
     /**
      * @var integer
      *
