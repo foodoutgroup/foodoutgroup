@@ -372,6 +372,9 @@ sonata_admin:
                       - sonata.admin.blog_category
                       - sonata.admin.blog_post
                   roles: [ ROLE_ADMIN ]
+#              admin.content:
+#                   - sonata.admin.blog_category
+#                   - sonata.admin.blog_post
 #              admin.support:
 #                  items: ~
 #                  item_adds:
@@ -405,7 +408,8 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.users
                       - sonata.admin.banned_ips
-                      #~ - sonata.admin.street
+#                      - sonata.admin.settings todo MULTI-L ideti settings adresa :)
+                        #~ - sonata.admin.street
                       - sonata.admin.params
                       - sonata.admin.paramslog
                   roles: [ ROLE_EDITOR, ROLE_ADMIN ]

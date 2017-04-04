@@ -94,7 +94,7 @@ class StaticService {
         }
 
         $pagesQuery = $pagesQueryBuilder->getQuery();
-
+        
         return $pagesQuery->getResult();
     }
 

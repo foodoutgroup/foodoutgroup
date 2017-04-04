@@ -76,6 +76,7 @@ class DefaultController extends Controller
         $topRatedPlaces = $this->get('food.places')->getTopRatedPlaces(12);
         $staticPages = $this->get('food.static')->getActivePages(10);
 
+
         $cityService = $this->get('food.city_service');
 
         return $this->render(
