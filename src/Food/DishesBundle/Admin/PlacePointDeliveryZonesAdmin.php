@@ -59,6 +59,7 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
             ->add('distance','string', array('label' => 'Distance', 'editable' => true))
             ->add('price', 'string', array('label' => 'Price', 'editable' => true))
             ->add('cartSize', 'string', array('label' => 'Cart size', 'editable' => true))
+            ->add('adminFee', 'string', array('label' => 'Admin fee', 'editable' => true))
             ->add('timeFrom', 'string', array('label' => 'Time From', 'editable' => true))
             ->add('timeTo', 'string', array('label' => 'Time To', 'editable' => true))
             ->add('active', 'boolean', array('label' => 'Active', 'editable' => true))

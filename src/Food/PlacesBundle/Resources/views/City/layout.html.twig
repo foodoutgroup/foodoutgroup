@@ -23,9 +23,6 @@
 
 {% block jscode %}
     $(document).ready(function() {
-
-
-
         $(".content-lefter").on('ifChecked', '.filters-list input', function(event) {
             $(this).attr('checked', true);
             submitKitchens();

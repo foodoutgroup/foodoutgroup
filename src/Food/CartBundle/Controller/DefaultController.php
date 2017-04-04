@@ -573,9 +573,16 @@ class DefaultController extends Controller
         $isCallcenter = $session->get('isCallcenter');
 
         $enableDiscount = !$place->getOnlyAlcohol();
+        $placeServ = $this->get('food.places');
+        $cartFromMin = $placeServ->getMinCartPrice($place->getId());
+        $cartFromMax = $placeServ->getMaxCartPrice($place->getId());
+        $useAdminFee = $placeServ->useAdminFee($place);
+        $adminFee    = $placeServ->getAdminFee($place);
 
-        $cartFromMin = $this->get('food.places')->getMinCartPrice($place->getId());
-        $cartFromMax = $this->get('food.places')->getMaxCartPrice($place->getId());
+        if ($useAdminFee && !$adminFee) {
+            $adminFee = 0;
+        }
+
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
 
         $enable_free_delivery_for_big_basket = $miscService->getParam('enable_free_delivery_for_big_basket');
@@ -691,6 +698,7 @@ class DefaultController extends Controller
 
             if ($coupon) {
                 $applyDiscount = true;
+                $useAdminFee   = false;
 
                 if ($coupon->getIgnoreCartPrice()) {
                     $noMinimumCart = true;
@@ -786,6 +794,17 @@ class DefaultController extends Controller
             $coupon = false;
         }
 
+        if ($takeAway && !$place->getMinimalOnSelfDel())
+        {
+            $useAdminFee = false;
+        }
+
+        if ($useAdminFee && $total_cart < $cartFromMin)
+        {
+            $total_cart += $adminFee;
+
+        }
+
         // Nemokamas pristatymas dideliam krepseliui
         $self_delivery = $place->getSelfDelivery();
         $left_sum = 0;
@@ -843,6 +862,8 @@ class DefaultController extends Controller
             'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
             'basket_errors' => $basketErrors,
             'isCallcenter' => $isCallcenter,
+            'useAdminFee' => $useAdminFee,
+            'adminFee'    => $adminFee
         ];
 
         if ($renderView) {

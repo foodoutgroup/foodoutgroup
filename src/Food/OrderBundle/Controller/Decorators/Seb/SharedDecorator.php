@@ -13,7 +13,9 @@ trait SharedDecorator
     {
         $config = $this->container->getParameter('seb');
         $trans = $this->container->get('translator');
-        return ['snd_id' => $config['VK_SND_ID'],
+        return [
+                'service' => $config['REDIRECT_SERVICE'],
+                'snd_id' => $config['VK_SND_ID'],
                 'curr' => $config['curr'],
                 'acc' => $config['VK_ACC'],
                 'name' => $config['name'],
@@ -22,7 +24,7 @@ trait SharedDecorator
                 'amount' => sprintf('%.2f', $order->getTotal()),
                 // 'amount' => sprintf('%.2f', 1.0),
                 'ref' => $order->getId(),
-                'msg' => $trans->trans('cart.checkout.main_title') . ' #' .  $order->getId(),
+                'msg' => $trans->trans('order.bank.title') . ' #' .  $order->getId(),
                 'return_url' => $this->getReturnUrl(),
                 'datetime' => date('Y-m-dTH:i:sO')
         ];
@@ -58,8 +60,10 @@ trait SharedDecorator
             $data[$child->getName()] = $child->getData();
         }
 
+        $config = $this->container->getParameter('seb');
+
         // generate encoded MAC
-        $mac = $seb->sign($seb->mac($data, SebService::REDIRECT_SERVICE),
+        $mac = $seb->sign($seb->mac($data, $config['REDIRECT_SERVICE']),
                           $seb->getPrivateKey());
 
         // finally update form
@@ -70,7 +74,7 @@ trait SharedDecorator
     {
         $event = new BanklinkEvent();
         $event->setOrderId($order ? $order->getId() : 0);
-        $event->setQuery(var_export($request->query->all(), true));
+        $event->setQuery($request->get('VK_SERVICE'));
         $event->setRequest(var_export($request->request->all(), true));
 
         $dispatcher->dispatch(BanklinkEvent::BANKLINK_RESPONSE, $event);

@@ -909,6 +909,9 @@
             <trans-unit id="cart.didnt_reach_min_cart" resname="cart.didnt_reach_min_cart">
                 <source>cart.didnt_reach_min_cart</source><target>Ostukorvi summa on minimaalsest summast väiksem</target>
             </trans-unit>
+            <trans-unit id="cart.didnt_reach_min_cart_add_admin_fee" resname="cart.didnt_reach_min_cart_add_admin_fee">
+                <source>cart.didnt_reach_min_cart_add_admin_fee</source><target>Rakendatakse kui minimaalse ostukorvi tingimus täitmata</target>
+            </trans-unit>
             <trans-unit id="cart.go_back_to_place" resname="cart.go_back_to_place">
                 <source>cart.go_back_to_place</source>
                 <target>Pridėti patiekalų</target>

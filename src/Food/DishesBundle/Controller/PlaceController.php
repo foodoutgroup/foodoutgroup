@@ -359,6 +359,7 @@ class PlaceController extends Controller
             }
         }
 
+        $this->get('food.googlegis')->setCityOnlyToSession($city);
         $response = new JsonResponse($found_data);
         $response->setCharset('UTF-8');
         $response->prepare($request);

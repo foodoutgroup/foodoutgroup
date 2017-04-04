@@ -71,6 +71,7 @@
     </tr>
     {% set sum_no_vat = 0 %}
     {% set delivery_no_vat = 0 %}
+    {% set admin_fee_no_vat = 0 %}
     {% set vat_sum = 0 %}
     {% set orders_total = 0 %}
     {% set delivery_total = 0 %}
@@ -85,22 +86,24 @@
             <tr class="no-border-line">
                 <td class="narrow_col">{{ loop.index }}</td>
                 <td>#{{ order.id }}</td>
-                <td class="sum_col">{{ order.total - order.deliveryPrice }}</td>
+                <td class="sum_col">{{ order.total - order.deliveryPrice - order.adminFee }}</td>
             </tr>
 
             {% set orders_total = orders_total + order.total %}
             {% set delivery_total = delivery_total + order.deliveryPrice %}
-
+            {% if order.adminFee > 0 %}
+                {% set admin_fee_no_vat = admin_fee_no_vat + ((order.adminFee / (( vat_size / 100 ) + 1))|round(2)) %}
+            {% endif %}
             {% if order.deliveryType == 'deliver' %}
-                {% set sum_no_vat = sum_no_vat + (((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2)) %}
+                {% set sum_no_vat = sum_no_vat + (((order.total - order.deliveryPrice - order.adminFee) / (( vat_size / 100 ) + 1))|round(2)) %}
                 {% set delivery_no_vat =  delivery_no_vat + ((order.deliveryPrice / (( vat_size / 100 ) + 1))|round(2)) %}
             {% else %}
-                {% set sum_no_vat = sum_no_vat + (((order.total) / (( vat_size / 100 ) + 1))|round(2)) %}
+                {% set sum_no_vat = sum_no_vat + (((order.total  - order.adminFee) / (( vat_size / 100 ) + 1))|round(2)) %}
             {% endif %}
         {% endfor %}
     {% endfor %}
 
-    {% set vat_sum = orders_total - sum_no_vat - delivery_no_vat %}
+    {% set vat_sum = orders_total - sum_no_vat - delivery_no_vat - admin_fee_no_vat %}
 
     <tr class="no-border-line"><td colspan="4">&nbsp;</td></tr>
     <tr class="no-border-line">
@@ -113,7 +116,11 @@
         <td class="no-wrap" style="white-space: nowrap;">{% trans %}order.invoice.delivery{% endtrans %}</td>
         <td class="sum_col">{{ delivery_no_vat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
     </tr>
-
+    <tr class="no-border-line">
+        <td></td>
+        <td class="no-wrap" style="white-space: nowrap;">{% trans %}order.invoice.delivery{% endtrans %}</td>
+        <td class="sum_col">{{ admin_fee_no_vat|number_format(2, ',', ' ') }} {{ currency_display|raw }}</td>
+    </tr>
     <tr class="no-border-line">
         <td></td>
         <td class="no-wrap" style="white-space: nowrap;">{% trans %}order.invoice.vat{% endtrans %} {{ vat_size }}%</td>

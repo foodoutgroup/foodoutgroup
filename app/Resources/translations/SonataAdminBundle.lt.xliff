@@ -451,6 +451,14 @@
                 <source>admin.place.cart_food_limit</source>
                 <target>Maisto krepš. limitas</target>
             </trans-unit>
+            <trans-unit id="admin.place.admin_fee">
+                <source>admin.place.admin_fee</source>
+                <target>Admin fee</target>
+            </trans-unit>
+            <trans-unit id="admin.place.use_admin_fee">
+                <source>admin.place.use_admin_fee</source>
+                <target>Nenaudoti admin fee</target>
+            </trans-unit>
             <trans-unit id="admin.place.cart_minimum">
                 <source>admin.place.cart_minimum</source>
                 <target>Min. užsakymas</target>
@@ -1199,6 +1207,10 @@
                 <source>admin.order.discount_sum</source>
                 <target>Nuolaidos suma</target>
             </trans-unit>
+            <trans-unit id="admin.order.admin_fee">
+                <source>admin.order.admin_fee</source>
+                <target>Administracinis mokestis</target>
+            </trans-unit>
             <trans-unit id="admin.order.sf_line">
                 <source>admin.order.sf_line</source>
                 <target>Faktūra</target>
@@ -1390,6 +1402,10 @@
             <trans-unit id="admin.order.ismobile_full">
                 <source>admin.order.ismobile_full</source>
                 <target>Mobile</target>
+            </trans-unit>
+            <trans-unit id="admin.order.source">
+                <source>admin.order.source</source>
+                <target>Šaltinis</target>
             </trans-unit>
             <trans-unit id="admin.order.order_from_nav">
                 <source>admin.order.order_from_nav</source>
@@ -3138,6 +3154,10 @@
                 <source>admin.call_log</source>
                 <target>Skambučių istorija</target>
             </trans-unit>
+            <trans-unit id="admin.error_log">
+                <source>admin.error_log</source>
+                <target>Error log</target>
+            </trans-unit>
             <trans-unit id="admin.general.order">
                 <source>admin.general.order</source>
                 <target>Užsakymas</target>
@@ -3181,6 +3201,38 @@
             <trans-unit id="admin.category">
                 <source>admin.category</source>
                 <target>Kategorija</target>
+            </trans-unit>
+            <trans-unit id="admin.error.source">
+                <source>admin.error.source</source>
+                <target>Šaltinis</target>
+            </trans-unit>
+            <trans-unit id="admin.error.cart_session">
+                <source>admin.error.cart_session</source>
+                <target>Krepšelio sesijos numeris</target>
+            </trans-unit>
+            <trans-unit id="admin.error.description">
+                <source>admin.error.description</source>
+                <target>Aprašymas</target>
+            </trans-unit>
+            <trans-unit id="admin.error.place">
+                <source>admin.error.place</source>
+                <target>Vieta</target>
+            </trans-unit>
+            <trans-unit id="admin.error.ip">
+                 <source>admin.error.ip</source>
+                 <target>Ip adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.error.url">
+                 <source>admin.error.url</source>
+                 <target>Nuoroda</target>
+            </trans-unit>
+            <trans-unit id="admin.error.user">
+                 <source>admin.error.user</source>
+                 <target>Vartotojas</target>
+            </trans-unit>
+            <trans-unit id="admin.error.debug">
+                 <source>admin.error.debug</source>
+                 <target>Debug</target>
             </trans-unit>
         </body>
     </file>

@@ -484,6 +484,10 @@ Tallinn]]></target>
                 <source>cart.block.discount_sum</source>
                 <target>Discount</target>
             </trans-unit>
+            <trans-unit id="cart.block.admin_fee" resname="cart.block.admin_fee">
+                <source>cart.block.discount_sum</source>
+                <target>Admin fee</target>
+            </trans-unit>
             <trans-unit id="cart.checkout.phone.prefill_phone_lt" resname="cart.checkout.phone.prefill_phone">
                 <source>cart.checkout.phone.prefill_phone</source>
                 <target></target>

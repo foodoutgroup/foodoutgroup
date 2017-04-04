@@ -44,6 +44,17 @@ parameters:
     order.cancel_notify_emails: []
     accounting_email: "jolanta@foodout.lv"
     b2b_invoice_email: ""
+    payment:
+           method:
+             - local
+             - local.card
+             - swedbank-gateway
+             - swedbank-credit-card-gateway
+           title:
+             - '[#cash#]'
+             - '[#credit.card#]'
+             - 'Swedbank'
+             - 'Ar karti internetā'
     payment.methods:
         - local
         - local.card

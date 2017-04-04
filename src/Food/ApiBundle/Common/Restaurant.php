@@ -209,6 +209,10 @@ class Restaurant extends ContainerAware
         $restaurantDesc = $place->getDescription();
         $restaurantDesc = str_replace(['„', '“'], '"', $restaurantDesc);
 
+        $useAdminFee = $placeService->useAdminFee($place);
+        $adminFee    = $placeService->getAdminFee($place);
+
+
         $this
             ->set('restaurant_id', $place->getId())
             ->set('title', $restaurantTitle)
@@ -242,7 +246,13 @@ class Restaurant extends ContainerAware
                     ],
                     'minimal_order'        => [
                         'amount'   => (!empty($devCart) ? ($devCart * 100) : ($this->container->get('food.places')->getMinCartPrice($place->getId()) * 100)),
-                        'currency' => $currency
+                        'currency' => $currency,
+                        'admin_fee' =>
+                            [
+                                'price' => $adminFee * 100,
+                                'enabled' => $useAdminFee,
+                            ],
+
                     ],
                     'minimal_order_pickup' => [
                         'amount'   => ($place->getMinimalOnSelfDel() ? $this->container->get('food.places')->getMinCartPrice($place->getId()) * 100 : 0),

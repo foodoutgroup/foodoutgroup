@@ -18,7 +18,7 @@ parameters:
 
     driver.send_to_external: true
     driver.city_filter: ["Tallinn"]
-    driver.socket_address: tcp://s2.foodout.lt:7778
+    driver.socket_address: tcp://cl1:7778
     driver.socket_hash: apiee
 
     locale: ee
@@ -43,15 +43,22 @@ parameters:
     order.cancel_notify_emails: []
     accounting_email: ""
     b2b_invoice_email: ""
+    payment:
+           method:
+             - local
+             - local.card
+           title:
+             - '[#cash#]'
+             - '[#credit.card#]'
     payment.methods:
         - local
         - local.card
-    #    - postpaid
-    #    - paysera
-    #    - swedbank-gateway
-    #   - swedbank-credit-card-gateway
-    #   - seb-banklink
-    #   - nordea-banklink
+        - postpaid
+        - paysera
+        - swedbank-gateway
+        - swedbank-credit-card-gateway
+        - seb-banklink
+        - nordea-banklink
     currency_display: '&euro;'
     currency_iso: EUR
     display_currency_alternative:  Lt
@@ -116,6 +123,10 @@ parameters:
     seb:
         banklink.private_key: "/srv/gluster/banklinks/ee/seb/private.key"
         banklink.bank_key: "/srv/gluster/banklinks/ee/seb/bank.key"
+        REDIRECT_SERVICE: 1011
+        SUCCESS_SERVICE: 1111
+        WAITING_SERVICE: 1211
+        FAILURE_SERVICE: 1911
         VK_SND_ID: "jtepart"
         VK_ACC: "EE881010000006537224"
         entrypoint: "https://www.seb.ee/cgi-bin/unet3.sh/un3min.r"

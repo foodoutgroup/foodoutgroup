@@ -464,6 +464,10 @@ LV-1046</target>
                 <source>cart.block.discount_sum</source>
                 <target>Atlaide</target>
             </trans-unit>
+            <trans-unit id="cart.block.admin_fee" resname="cart.block.admin_fee">
+                <source>cart.block.discount_sum</source>
+                <target>Administrēšanas maksa</target>
+            </trans-unit>
             <trans-unit id="cart.checkout.phone.prefill_phone_lv" resname="cart.checkout.phone.prefill_phone">
                 <source>cart.checkout.phone.prefill_phone</source>
                 <target>371</target>
