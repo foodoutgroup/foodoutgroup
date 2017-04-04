@@ -1,6 +1,6 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
-{% block title %}{% trans %}general.places{% endtrans %}{% if selected_kitchens_names %}: {% for name in selected_kitchens_names %}{{ name }}{% if not loop.last %} - {% endif %}{% endfor %}{% endif %} | {{ page_title }}{% endblock %}
+{% block title %}{% trans %}general.places{% endtrans %}{% if kitchen_collection %}: {% for kitchen in kitchen_collection %}{{ kitchen.name }}{% if not loop.last %} - {% endif %}{% endfor %}{% endif %} | {{ page_title }}{% endblock %}
 
 {% block adnet_retargeting %}
     <!-- Adform Tracking Code BEGIN -->
@@ -183,7 +183,7 @@
             <div class="alert alert2 alert-warning alert_not_detailed_search"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
         {% endif %}
     </div>
-    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'places-change-address', hideQlu: false, usr_address: userAllAddress} %}
+    {% include ':User:change_address.html.twig' with {id: 'places-change-address', hideQlu: false, usr_address: userAllAddress} %}
     <script type="text/javascript">
         // <![CDATA[
             $(document).ready(function() {

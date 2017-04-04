@@ -183,7 +183,7 @@ class PlaceAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('name', 'string', ['label' => 'admin.place.name'])
             ->add('image', 'string', [
-                'template' => 'FoodDishesBundle:Default:list_image.html.twig',
+                'template' => ':Element:list_image.html.twig',
                 'label'    => 'admin.place.logo'
             ])
             ->add('selfDelivery', null, ['label' => 'admin.place.self_delivery'])

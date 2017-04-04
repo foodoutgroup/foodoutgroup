@@ -69,7 +69,7 @@ class BestOfferAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('title', 'string', array('label' => 'admin.best_offers.title'))
             ->addIdentifier('link', 'string', array('label' => 'admin.best_offers.link'))
-            ->addIdentifier('image', 'string', array('label' => 'admin.best_offers.image', 'template' => 'FoodPlacesBundle:Default:list_type1_image.html.twig'))
+            ->addIdentifier('image', 'string', array('label' => 'admin.best_offers.image', 'template' => ':Element:list_type1_image.html.twig'))
             ->add('active', 'boolean', array('label' => 'admin.best_offers.active', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(

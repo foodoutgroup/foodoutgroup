@@ -155,7 +155,7 @@
     </div>
 </div>
 
-{% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'change-address', hideQlu: false, usr_address: userAllAddress} %}
+{% include ':User:change_address.html.twig' with {id: 'change-address', hideQlu: false, usr_address: userAllAddress} %}
 <div class="hidden">
     {% set page = pageService.getByParam('page.rules') %}
     {% if page %}

@@ -165,7 +165,7 @@ class DishAdmin extends FoodAdmin
                     'required' => false
                 )
             )
-            ->add('recomended', 'checkbox', array('label' => 'admin.dish.recomended', 'required' => false,))
+            ->add('recomended', 'checkbox', array('label' => 'admin.dish.recommended', 'required' => false,))
             ->add('active', 'checkbox', array('label' => 'admin.dish.active', 'required' => false,))
             ->add('group', null, array('label' => 'admin.dish.group'))
             ->add('checkEvenOddWeek', 'checkbox', array('label' => 'admin.dish.check_even_odd_week', 'required' => false,))
@@ -199,13 +199,13 @@ class DishAdmin extends FoodAdmin
             ->add('placeName')
             ->add('categories')
             ->add('image', 'string', array(
-                'template' => 'FoodDishesBundle:Default:list_image.html.twig',
+                'template' => ':Element:list_image.html.twig',
                 'label' => 'admin.dish.photo'
             ))
             ->add('options')
             ->add('sizes', 'string', array('template' => 'FoodDishesBundle:Default:list_admin_list_sizes.html.twig'))
             ->add('discountPricesEnabled', null, array('label' => 'admin.dish.discount_prices_enabled', 'editable' => true))
-            ->add('recomended', null, array('label' => 'admin.dish.recomended_list', 'editable' => true))
+            ->add('recomended', null, array('label' => 'admin.dish.recommended_list', 'editable' => true))
             ->add('active', null, array('label' => 'admin.dish.active_list', 'editable' => true))
             //->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))

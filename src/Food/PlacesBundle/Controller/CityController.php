@@ -3,7 +3,6 @@
 namespace Food\PlacesBundle\Controller;
 
 use Food\AppBundle\Entity\Slug;
-use Food\AppBundle\Service\CityService;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,30 +26,27 @@ class CityController extends Controller
         $metaTitle = '';
         $metaDescription = '';
 
-        $this->get('food.googlegis')->setCityOnlyToSession($city,$id);
-        $locData = $this->get('food.googlegis')->getLocationFromSession();
+        $this->get('food.googlegis')->setCityOnlyToSession($city, $id);
+
         $placeService = $this->get('food.places');
-        $selectedKitchensNames = $placeService->getKitchensFromSlug($params, $request, true);
+        $kitchenCollection = $placeService->getKitchenCollectionFromSlug($params, $request, true);
 
-        $selectedKitchensIds = $placeService->getKitchensFromSlug($params, $request);
-
-        if (!empty($selectedKitchensIds)) {
-            $kitchen = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen')->find($selectedKitchensIds[0]);
-            $metaTitle = $kitchen->getMetaTitle();
-            $metaDescription = $kitchen->getMetaDescription();
+        if (count($kitchenCollection)) {
+            list($first,) = $kitchenCollection;
+            $metaTitle = $first->getMetaTitle();
+            $metaDescription = $first->getMetaDescription();
         }
-
 
         return $this->render(
             'FoodPlacesBundle:City:index.html.twig',
             array(
-                'recommended' => false,
-                'rush_hour' => false,
-                'location' => $locData,
+                'recommended' => in_array('rec',$params), // todo MULTI-L param for recommended list
+                'rush_hour' => in_array('rec', $params), // todo MULTI-L param for rush_hour list
+                'location' => $this->get('food.googlegis')->getLocationFromSession(),
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
                 'slug_filter' => implode("/", $params),
-                'selected_kitchens_names' => $selectedKitchensNames,
+                'kitchen_collection' => $kitchenCollection,
                 'meta_title' => $metaTitle,
                 'meta_description' => $metaDescription,
                 'city' => $city,
@@ -87,15 +83,12 @@ class CityController extends Controller
 
         $placeCollection = $this->get('food.places')->getPlacesForList($isRecommended, $request, $slug_filter, $rush_hour);
 
-        $locationData = $this->get('food.googlegis')->getLocationFromSession();
-
         return $this->render(
             'FoodPlacesBundle:City:list.html.twig',
             array(
                 'placeCollection' => $placeCollection,
                 'isRecommended' => $isRecommended,
-                'location' => $locationData,
-                'location_show' => !empty($locationData),
+                'location' => $this->get('food.googlegis')->getLocationFromSession(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver)
             )
         );

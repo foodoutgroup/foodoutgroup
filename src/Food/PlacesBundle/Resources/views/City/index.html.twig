@@ -7,8 +7,9 @@
     <a href="{{ path('food_lang_homepage') }}">{% trans %}general.profile.home{% endtrans %}</a>
     <a href="{{ current_url_path }}"> {{ city.getTitle() }}</a>
 
-    {% if selected_kitchens_names is not empty%}
-        <a href="{{ current_url }}"> {{ selected_kitchens_names|first }}</a>
+    {% if kitchen_collection is not empty %}
+        {% set kitchen = kitchen_collection|first %}
+        <a href="{{ current_url }}"> {{ kitchen.name }}</a>
     {% endif %}
 {% endblock %}
 

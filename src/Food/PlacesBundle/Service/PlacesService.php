@@ -2,6 +2,8 @@
 namespace Food\PlacesBundle\Service;
 
 use Food\AppBundle\Entity\City;
+use Food\AppBundle\Entity\Slug;
+use Food\AppBundle\Service\SlugService;
 use Food\DishesBundle\Entity\Kitchen;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
@@ -281,7 +283,7 @@ class PlacesService extends ContainerAware
      * @param string     $slug_filter
      * @param            $request
      * @param bool|false $names
-     *
+     * @deprecated
      * @return array
      */
     public function getKitchensFromSlug($slugCollection, $request, $names = false)
@@ -293,9 +295,11 @@ class PlacesService extends ContainerAware
         }
 
         foreach ($slugCollection as $key => &$value) {
+
             $item_by_slug = $this->container->get('doctrine')->getManager()
                 ->getRepository('FoodAppBundle:Slug')
-                ->findOneBy(['name' => str_replace('#', '', trim($value)), 'type' => 'kitchen', 'lang_id' => $request->getLocale()]);
+                ->findOneBy(['name' => str_replace('#', '', trim($value)), 'type' => Slug::TYPE_KITCHEN, 'lang_id' => $request->getLocale()]);
+
             if (!empty($item_by_slug)) {
                 if ($names == false) {
                     $kitchens[] = $item_by_slug->getItemId();
@@ -310,6 +314,23 @@ class PlacesService extends ContainerAware
             }
         }
         return $kitchens;
+    }
+
+    public function getKitchenCollectionFromSlug($slugCollection, $request)
+    {
+        $kitchenCollection = [];
+
+        $slugService = $this->getContainer()->get('slug');
+
+        // todo MULTI-L perdaryti i viena select :)
+        foreach ($slugCollection as $key => $value) {
+            $item = $slugService->getObjBySlug($value, Slug::TYPE_KITCHEN);
+
+            if(!empty($item) && $kitchen = $this->em()->getRepository('FoodDishesBundle:Kitchen')->find((int)$item->getItemId())) {
+                $kitchenCollection[] = $kitchen;
+            }
+        }
+        return $kitchenCollection;
     }
 
     /**

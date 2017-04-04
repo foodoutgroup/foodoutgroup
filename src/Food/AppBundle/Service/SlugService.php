@@ -106,6 +106,24 @@ class SlugService
         }
     }
 
+    /**
+     * @param $slug
+     * @param $type
+     * @return SlugEntity|object
+     */
+    public function getObjBySlug($slug, $type)
+    {
+        return $this->repository->findOneBy(
+            array(
+                'name' => $slug, 'type' => $type,
+                'lang_id' => $this->getLocale(), 'active' => 1
+            )
+        );
+
+
+    }
+
+
     public function getUrl($itemId, $type, $reqLocale = false)
     {
         $locale = $this->getLocale();
