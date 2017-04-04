@@ -69,6 +69,7 @@ class AppKernel extends Kernel
             new Api\BaseBundle\ApiBaseBundle(),
             new Food\BlogBundle\FoodBlogBundle(),
             new Liuggio\ExcelBundle\LiuggioExcelBundle(),
+            new Ibrows\SonataTranslationBundle\IbrowsSonataTranslationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

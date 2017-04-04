@@ -314,6 +314,9 @@ sonata_admin:
       edit: SonataAdminBundle:CRUD:edit.html.twig
     dashboard:
           groups:
+              group.translation:
+                  label: Translation
+                  items: ~
               acme.admin.group.first:
                   label: admin.group.first
                   label_catalogue: SonataAdminBundle
