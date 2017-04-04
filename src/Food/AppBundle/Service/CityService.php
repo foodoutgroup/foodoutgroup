@@ -62,7 +62,7 @@ class CityService extends BaseService
 
     public function getDefaultCity()
     {
-        return $this->em->getRepository('FoodAppBundle:City')->findOneBy(null, ['position' => 'ASC']);
+        return $this->em->getRepository('FoodAppBundle:City')->findOneBy([], ['position' => 'ASC']);
     }
 
     public function getCityById($cityId)

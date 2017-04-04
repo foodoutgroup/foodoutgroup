@@ -106,7 +106,7 @@ services:
         arguments:
           - @doctrine.orm.entity_manager
           - @router
-    hook.free_delivery_restaurant:
+    1:
         class: Food\AppBundle\Service\HookFreeDeliveryRestaurant
         arguments: ["@templating", "@doctrine.orm.entity_manager"]
 

@@ -64,13 +64,10 @@ class SlugController extends Controller
         switch(($slugRow == null && $slug != null) ? null : $slugRow->getType()) {
 
             case Slug::TYPE_CITY:
-                return $this->forward('FoodPlacesBundle:Default:indexCity', $dataOptions);
+                return $this->forward('FoodPlacesBundle:City:index', $dataOptions);
 
             case Slug::TYPE_PAGE:
                 return $this->forward('FoodAppBundle:StaticPage:index', $dataOptions);
-
-            case Slug::TYPE_TEXT:
-                return $this->forward('FoodAppBundle:Static:index', $dataOptions);
 
             case Slug::TYPE_KITCHEN:
                 return $this->forward('FoodDishesBundle:Kitchen:index', $dataOptions);

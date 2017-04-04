@@ -5,7 +5,9 @@ food_ajax:
     requirements:
       _locale:  "[a-z]{2}"
 
-
+#food_places_lt_recommended:
+#    path: /recommended/
+#    defaults: { _controller: FoodPlacesBundle:Default:index, recommended: 1}
 
 food_slug_lang:
     path:  /{_locale}/{slug}
