@@ -8,6 +8,8 @@
         {#<loc>http://{{ domain }}{{ path('food_places_lt_recommended', {}, false) }}</loc>#}
         {#<changefreq>hourly</changefreq>#}
     {#</url>#}
+    {# todo MULTI-L reikia padaryti recommended nuorodas ir rush_hour nuorodas , igyvendinimas per hook ir page funkcionaluma :) #}
+
     {% for place in placeCollection %}
         {% set placeSlug = slug.getUrl(place.id, 'place') %}
         {% if placeSlug != "error" or dev %}
@@ -23,14 +25,15 @@
             <changefreq>daily</changefreq>
         </url>
     {% endfor %}
-    {#{% for cityKey, city in citiesKitchens %}#}
-        {#{% for kitchen in city %}#}
-            {#<url>#}
-                {#<loc>http://{{ domain }}{{ path('food_city_' ~ cityKey|lower) }}/{{ slug_util.slugByItem(kitchen.id, 'kitchen') }}</loc>#}
-                {#<changefreq>daily</changefreq>#}
-            {#</url>#}
-        {#{% endfor %}#}
-    {#{% endfor %}#}
+    {% for cityId, kitchenCollection in cityKitchenCollection %}
+
+        {% for kitchen in kitchenCollection %}
+            <url>
+                <loc>http://{{ domain }}/{{ slug.path(cityId, 'city') }}/{{ slug.path(kitchen.id, 'kitchen') }}</loc>
+                <changefreq>daily</changefreq>
+            </url>
+        {% endfor %}
+    {% endfor %}
 
     {% for page in pageCollection %}
         {% set pageSlug = slug.getUrl(page.id, 'page') %}

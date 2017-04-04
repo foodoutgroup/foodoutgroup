@@ -8,6 +8,7 @@ use Food\DishesBundle\Utils\Slug\SlugGenerator;
 use Food\DishesBundle\Utils\Slug\TextStrategy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 use \Food\AppBundle\Entity\Slug as SlugEntity;
 
@@ -124,7 +125,7 @@ class SlugService
     }
 
 
-    public function getUrl($itemId, $type, $reqLocale = false)
+    public function getUrl($itemId, $type)
     {
         $locale = $this->getLocale();
         $slug = 'food_slug';
@@ -139,14 +140,33 @@ class SlugService
             $url = $locale . "/" . $url;
         }
 
-        preg_match('/^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$/', $urlSlug, $matches);
+        if ($urlSlug) {
+            $url = $this->router->generate($slug, $params);
+        }
 
-        if ($urlSlug && (isset($matches[0]) && count($matches[0]))) {
-            if ($reqLocale) {
-                $url = $urlSlug;
-            } else {
-                $url = $this->router->generate($slug, $params);
-            }
+        return $url;
+    }
+
+    public function getPath($itemId, $type)
+    {
+        $locale = $this->getLocale();
+
+        $slug = 'food_slug';
+        $urlSlug = $this->get($itemId, $type);
+        $params = ['slug' => $urlSlug];
+
+        $url = 'error';
+        if ($locale != $this->defaultLocale) {
+            $slug = 'food_slug_lang';
+            $params['_locale'] = $locale;
+            $url = $locale . "/" . $url;
+        }
+
+//        preg_match('/^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$/', $urlSlug, $matches);
+
+//        if ($urlSlug && (isset($matches[0]) && count($matches[0]))) {
+        if ($urlSlug) {
+            $url = $this->router->generate($slug, $params, UrlGeneratorInterface::RELATIVE_PATH);
         }
 
         return $url;

@@ -1,10 +1,13 @@
 <?php
 namespace Food\AppBundle\Service;
 
+use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Traits;
 
 class StaticService {
     use Traits\Service;
+
+
 
     /**
      * @var Container
@@ -82,10 +85,33 @@ class StaticService {
      */
     public function getActivePages($limit=10, $onlyVisible=true)
     {
-        $pagesQueryBuilder = $this->em()->getRepository('FoodAppBundle:StaticContent')
-            ->createQueryBuilder('s')
-        // TODO active-not active ir positioning (top, bottom menu, hidden)
-            ->where('s.active = 1')
+
+        $excludePageCollection = [];
+        $keywordMapCollection = [
+            'page_banned',
+            'page_email_banned',
+        ];
+
+        /**
+         * @var $paramService \Food\AppBundle\Utils\Misc
+         */
+        $paramService = $this->getContainer()->get('food.app.utils.misc');
+        foreach ($keywordMapCollection as $keyword) {
+
+            $data = (int)$paramService->getParam($keyword, true);
+            if($data != 0) {
+                $excludePageCollection[] = $data;
+            }
+        }
+
+        /**
+         * $qb Doctrine\ORM\EntityManager
+         */
+        $qb = $this->em()->getRepository('FoodAppBundle:StaticContent')
+            ->createQueryBuilder('s');
+
+        $pagesQueryBuilder = $qb->where('s.active = 1')
+            ->andWhere($qb->expr()->notIn('s.id',  $excludePageCollection))
             ->orderBy('s.order', 'ASC')
             ->setMaxResults($limit);
 

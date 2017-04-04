@@ -5,33 +5,14 @@
             <h5>{% trans %}general.page_name{% endtrans %}</h5>
             <ul class="menu">
                 {% for page in staticPages %}
-                    {% if slug_util.slugByItem(page.id, 'text') != 'error' %}
                     <li>
-                        <a href="{{ slug.getUrl(page.id, 'text')}}">
+                        <a href="{{ slug.getUrl(page.id, 'page')}}">
                             {{ page.title }}
                         </a>
                     </li>
-                    {% endif %}
                 {% endfor %}
-                {#TODO #lang# reikia sutvarkyti b2b clientu nuoroda#}
-                {#<li>#}
-                    {#<a href="{{ path('food_landing_b2b_client_' ~ locale) }}">#}
-                        {#{% trans %}general.b2b_clients{% endtrans %}#}
-                    {#</a>#}
-                {#</li>#}
             </ul>
         </div>
-        {# TODO Kolkas neturime tiek nuorodu #}
-        {#<div class="col col-2">#}
-            {#<h5>Daugiau nuorodu</h5>#}
-            {#<ul class="menu">#}
-                {#<li><a href="#">About us</a></li>#}
-                {#<li><a href="#">Terms and Conditions</a></li>#}
-                {#<li><a href="#">Contact</a></li>#}
-                {#<li><a href="#">About us</a></li>#}
-                {#<li><a href="#">Privacy Policy</a></li>#}
-            {#</ul>#}
-        {#</div>#}
         {% if topRatedPlaces is not empty %}
         <div class="col col-3">
             <h5>{% trans %}general.top_restaurants{% endtrans %}</h5>

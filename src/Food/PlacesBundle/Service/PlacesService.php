@@ -834,21 +834,23 @@ class PlacesService extends ContainerAware
     }
 
     /**
-     * @param $city
+     * @param City $city
      * @return Kitchen[]
      */
     public function getKitchensByCity(City $city)
     {
-        $kitchensList = array();
-        $places = $this->getPlacesByCity($city);
-        foreach ($places as $place) {
+        $kitchenCollection = [];
+        $placeCollection = $this->getPlacesByCity($city);
+
+        foreach ($placeCollection as $place) {
             foreach ($place->getKitchens() as $kitchen) {
-                if (!in_array($kitchen, $kitchensList)) {
-                    $kitchensList[] = $kitchen;
+                if (!in_array($kitchen, $kitchenCollection)) {
+                    $kitchenCollection[] = $kitchen;
                 }
             }
         }
-        return $kitchensList;
+
+        return $kitchenCollection;
     }
 
     /**
@@ -856,12 +858,13 @@ class PlacesService extends ContainerAware
      */
     public function getPlacesByCity(City $city)
     {
-        $places = array();
-        $placePoints = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findBy(array('city' => $city));
-        foreach ($placePoints as $placePoint) {
-            $places[] = $placePoint->getPlace();
+        $placeCollection = [];
+
+        $placePointCollection = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findBy(array('cityId' => $city->getId())); // todo MULTI-L refactor :)
+        foreach ($placePointCollection as $placePoint) {
+            $placeCollection[] = $placePoint->getPlace();
         }
-        return $places;
+        return $placeCollection;
     }
 
     /**

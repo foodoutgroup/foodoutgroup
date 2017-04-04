@@ -54,11 +54,12 @@ class HookSitemap {
         $cityCollection = $this->container->get('food.city_service')->getActiveCity();
         $response['cityCollection'] = $cityCollection;
 
-//        $cityKitchenCollection = [];
-//        foreach ($cityCollection as $city) {
-//            $cityKitchenCollection[$city] = $this->get('food.places')->getKitchensByCity($city);
-//        }
 
+        $cityKitchenCollection = [];
+        foreach ($cityCollection as $city) {
+            $cityKitchenCollection[$city->getId()] = $this->container->get('food.places')->getKitchensByCity($city);
+        }
+        $response['cityKitchenCollection'] = $cityKitchenCollection;
         $response['domain'] = str_replace(["/app_dev.php/"], "", $this->container->getParameter('domain'));
 
 
