@@ -29,7 +29,7 @@
     <table class="table table-bordered table condensed" id="maintable">
         <thead>
         <tr>
-            <th colspan="5"><img src="/bundles/foodapp/images/logo_food.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
+            <th style="background-color:#cd1d36;" colspan="5"><img {%if app.request.defaultLocale == 'lv'%} src="/bundles/foodapp/images/logo_food2.png" {% else %} src="/bundles/foodapp/images/logo_food.png"{% endif %}> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
         </tr>
         <tr>
             <th style="width: 30px">#</th>
