@@ -534,6 +534,18 @@ food_city_riga:
     path: /Riga
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
 
+food_city_ogre:
+    path: /Ogre
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Ogre}
+
+food_city_jurmala:
+    path: /Jurmala
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Jurmala}
+
+food_city_jelgava:
+    path: /Jelgava
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Jelgava}
+
 food_city_vilnius_slash:
     path: /Vilnius/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Vilnius}
@@ -585,6 +597,18 @@ food_city_mazeikiai_slash:
 food_city_riga_slash:
     path: /Riga/
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga}
+
+food_city_orge_slash:
+    path: /Ogre/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Ogre}
+
+food_city_jurmala_slash:
+    path: /Jurmala/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Jurmala}
+
+food_city_jelgava_slash:
+    path: /Jelgava/
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Jelgava}
 
 food_city_tallinn_slash:
     path: /Tallinn/
@@ -763,6 +787,25 @@ food_city_riga_slash_filter:
     defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Riga, slug_filter: ~}
     requirements:
         slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_ogre_slash_filter:
+    path: /Ogre/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Ogre, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_jurmala_slash_filter:
+    path: /Jurmala/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Jurmala, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
+food_city_jelgava_slash_filter:
+    path: /Jelgava/{slug_filter}
+    defaults: { _controller: FoodPlacesBundle:Default:indexCity, city: Jelgava, slug_filter: ~}
+    requirements:
+        slug_filter : "^[a-z0-9-\__\"„“\.\+\/]{4,}"
+
 
 food_city_tallinn_slash_filter:
     path: /Tallinn/{slug_filter}
