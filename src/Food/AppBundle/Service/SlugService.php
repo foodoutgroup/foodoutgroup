@@ -125,7 +125,7 @@ class SlugService
     }
 
 
-    public function getUrl($itemId, $type, $reqLocale = false)
+    public function getUrl($itemId, $type)
     {
         $locale = $this->getLocale();
         $slug = 'food_slug';
@@ -140,14 +140,8 @@ class SlugService
             $url = $locale . "/" . $url;
         }
 
-        preg_match('/^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$/', $urlSlug, $matches);
-
-        if ($urlSlug && (isset($matches[0]) && count($matches[0]))) {
-            if ($reqLocale) {
-                $url = $urlSlug;
-            } else {
-                $url = $this->router->generate($slug, $params);
-            }
+        if ($urlSlug) {
+            $url = $this->router->generate($slug, $params);
         }
 
         return $url;
@@ -156,8 +150,8 @@ class SlugService
     public function getPath($itemId, $type)
     {
         $locale = $this->getLocale();
-        $slug = 'food_slug';
 
+        $slug = 'food_slug';
         $urlSlug = $this->get($itemId, $type);
         $params = ['slug' => $urlSlug];
 
@@ -168,9 +162,10 @@ class SlugService
             $url = $locale . "/" . $url;
         }
 
-        preg_match('/^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$/', $urlSlug, $matches);
+//        preg_match('/^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$/', $urlSlug, $matches);
 
-        if ($urlSlug && (isset($matches[0]) && count($matches[0]))) {
+//        if ($urlSlug && (isset($matches[0]) && count($matches[0]))) {
+        if ($urlSlug) {
             $url = $this->router->generate($slug, $params, UrlGeneratorInterface::RELATIVE_PATH);
         }
 
