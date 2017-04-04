@@ -57,17 +57,17 @@
                 </tr>
             {% endfor %}
         {% endfor %}
-            {% set sum_no_vat = ((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+            {% set sum_no_vat = ((order.total - order.deliveryPrice - order.adminFee) / (( vat_size / 100 ) + 1))|round(2) %}
 
             {% if order.deliveryType == 'deliver' %}
-                {% set sum_no_vat = ((order.total - order.deliveryPrice) / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set sum_no_vat = ((order.total - order.deliveryPrice - order.adminFee) / (( vat_size / 100 ) + 1))|round(2) %}
                 {% set delivery_no_vat =  (order.deliveryPrice / (( vat_size / 100 ) + 1))|round(2) %}
             {% else %}
-                {% set sum_no_vat = ((order.total) / (( vat_size / 100 ) + 1))|round(2) %}
+                {% set sum_no_vat = ((order.total - order.adminFee) / (( vat_size / 100 ) + 1))|round(2) %}
                 {% set delivery_no_vat =  0 %}
             {% endif %}
 
-            {% set vat_sum = order.total - sum_no_vat - delivery_no_vat %}
+            {% set vat_sum = order.total - sum_no_vat - delivery_no_vat - order.adminFeeWithoutVat %}
 
             <tr>
                 <td colspan="4" style="border: none;"></td>
@@ -82,6 +82,13 @@
                 <td>{% trans %}mobile.invoice.delivery_no_vat{% endtrans %}:</td>
                 <td>{{ delivery_no_vat }}</td>
             </tr>
+            {% if order.adminFeeWithoutVat > 0 %}
+            <tr>
+                <td colspan="2" style="border: none;"></td>
+                <td>{% trans %}mobile.invoice.admin_fee_no_vat{% endtrans %}:</td>
+                <td>{{ order.adminFeeWithoutVat }}</td>
+            </tr>
+            {% endif %}
             <tr>
                 <td colspan="2" style="border: none;"></td>
                 <td>{% trans %}mobile.invoice.vat{% endtrans %} ({{ vat_size }}%):</td>
