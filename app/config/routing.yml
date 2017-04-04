@@ -70,10 +70,6 @@ food_sitemap:
     requirements:
       _method:  GET
 
-#food_nagios:
-#    pattern:  /nagios/
-#    defaults: { _controller: FoodAppBundle:Monitoring:nagios }
-
 fos_user_register:
     resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
     prefix: /{_locale}/register
