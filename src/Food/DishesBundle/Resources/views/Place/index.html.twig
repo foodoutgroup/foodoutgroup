@@ -132,8 +132,8 @@
                         <div id="detailed-restaurant" class="detailed-resturant">
                         <ul>
                             <li><a href="#detailed-restaurant-menu">{% trans %}places.menu{% endtrans %}</a></li>
-                            <li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>
-                            <li class="last restaurant-info-tab"><a itemprop="menu" href="{{ current_url }}#detailed-restaurant-info">{% trans %}places.information{% endtrans %}</a></li>
+                             {#<li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>#}
+                            <li class="last restaurant-info-tab"><a itemprop="menu" href="#detailed-restaurant-info">{% trans %}places.information{% endtrans %}</a></li>
                         </ul>
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
                             <div class="clearfix">
@@ -243,19 +243,13 @@
                             </div>
                         </div>
                         {# Atsiliepimai #}
-                        <div id="detailed-restaurant-review" class="detailed-restaurant-review">
+                        {# <div id="detailed-restaurant-review" class="detailed-restaurant-review">
                             <div class="review-title clearfix">
                                 {% if placeReviews %}
                                 <h3>{{ placeReviews|length }} {% transchoice placeReviews|length %}places.review_choice{% endtranschoice %}</h3>
                                 {% else %}
                                 <h3>{% trans %}general.no_place_reviews{% endtrans %}</h3>
                                 {% endif %}
-                                {#
-                                {% if (wasHere and not alreadyWrote) or not app.user %}
-                                    <a href="{% if app.user %}#place-review-popup{% else %}#login-register-popup{% endif %}" class="fancy-box">{% trans %}places.add_review{% endtrans %}</a>
-                                {% endif %}
-                                {{ include('FoodDishesBundle:Place:review-popup.html.twig') }}
-                                #}
                             </div>
                             <div class="review-list">
                                 {% for review in placeReviews %}
@@ -277,7 +271,7 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                        </div>
+                        </div> #}
                         {# Restorano informacija #}
                         <div id="detailed-restaurant-info" class="detailed-restaurant-info">
                             <h3>{% trans %}places.about_place{% endtrans %}</h3>

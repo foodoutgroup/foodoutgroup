@@ -873,7 +873,7 @@ class Order
 
         $addressId = null;
         if ($userAddress = $this->getAddressId()) {
-            $addressId = $userAddress->getAddress().', '.$userAddress->getCityId()->getTitle();
+            $addressId = $userAddress->getAddress().', '.$userAddress->getCity();
         }
 
         return array(
@@ -2591,14 +2591,14 @@ class Order
     public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
     {
         $this->cityId = $cityId;
-    
+
         return $this;
     }
 
     /**
      * Get cityId
      *
-     * @return \Food\AppBundle\Entity\City 
+     * @return \Food\AppBundle\Entity\City
      */
     public function getCityId()
     {

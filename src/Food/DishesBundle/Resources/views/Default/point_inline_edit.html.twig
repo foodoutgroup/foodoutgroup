@@ -77,7 +77,7 @@ file that was distributed with this source code.
                                         {% endif %}
                                     {% endfor %}
                                     <td class="no-padding">
-                                        {% set counter =  ((nested_group_field.children | length - 15)  / 2) | round %}
+                                        {% set counter =  ((nested_group_field.children | length - 12)  / 2) | round %}
                                         {% set loopcounter = 0 %}
                                         <table class="the_epic_point_table first_table">
                                             {% for field_name, nested_field in nested_group_field.children %}

@@ -7,7 +7,7 @@ use Food\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Food\AppBundle\Entity\ErrorLog;
 
 class AjaxController extends Controller
 {
@@ -51,9 +51,9 @@ class AjaxController extends Controller
 
     /**
      * @param Response $response
-     * @param string   $city
-     * @param string   $address
-     * @param Request  $request
+     * @param string $city
+     * @param string $address
+     * @param Request $request
      */
     private function _ajaxActFindAddress(Response $response, $city, $address, Request $request)
     {
@@ -116,9 +116,6 @@ class AjaxController extends Controller
             $response->setContent(json_encode([
                 'data' => $respData
             ]));
-
-
-
         }
     }
 
@@ -224,7 +221,7 @@ class AjaxController extends Controller
 
     /**
      * @param Response $response
-     * @param integer  $placeId
+     * @param integer $placeId
      *
      * @todo dieve atleisk uz mano kaltes del json_encode - reik swiceri pakeisti kad contentas encodinamas priesh pati
      *     response grazinima
@@ -236,8 +233,7 @@ class AjaxController extends Controller
         $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
             $placeId,
             $this->get('food.googlegis')->getLocationFromSession()
-        )
-        ;
+        );
 
         $this->get('food.places')->saveRelationPlaceToPointSingle($placeId, $pointId);
         $cont->data->{'nodelivery'} = (!empty($pointId) ? 0 : 1);
@@ -247,8 +243,8 @@ class AjaxController extends Controller
 
     /**
      * @param Response $response
-     * @param int      $placeId
-     * @param string   $couponCode
+     * @param int $placeId
+     * @param string $couponCode
      */
     private function _ajaxCheckCoupon(Response $response, $placeId, $couponCode)
     {

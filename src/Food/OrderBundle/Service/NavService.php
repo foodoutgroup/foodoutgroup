@@ -376,7 +376,7 @@ class NavService extends ContainerAware
         $orderDate->add(new \DateInterval('P0DT0H'));
         $deliveryDate = $order->getDeliveryTime();
         //~ $deliveryDate->sub(new \DateInterval('P0DT3H'));
-        $deliveryDate->sub(new \DateInterval('P0DT2H'));
+        $deliveryDate->sub(new \DateInterval('P0DT3H'));
         //~ $deliveryDate->setTimezone(new DateTimeZone('UTC'));
         /**
          * This thing is when we move to daytime saving mode.
@@ -1007,9 +1007,9 @@ class NavService extends ContainerAware
         $returner = [
             'valid'   => ($response->return_value == 0 ? true : false),
             'errcode' => [
-                'code'         => ($response->return_value != 0 ? $response->errors->Error->Code : ''),
-                'line'         => ($response->return_value != 0 ? $response->errors->Error->SubCode : ''),
-                'msg'          => ($response->return_value != 0 ? $response->errors->Error->Description : ''),
+                'code'         => ($response->return_value != 0 && isset($response->errors->Error) ? $response->errors->Error->Code : ''),
+                'line'         => ($response->return_value != 0 && isset($response->errors->Error) ? $response->errors->Error->SubCode : ''),
+                'msg'          => ($response->return_value != 0 && isset($response->errors->Error) ? $response->errors->Error->Description : ''),
                 'problem_dish' => $prbDish
             ]
         ];
