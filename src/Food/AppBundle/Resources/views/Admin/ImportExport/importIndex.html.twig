@@ -5,6 +5,7 @@
 {% block sonata_admin_content %}
             {% block sonata_pre_fieldsets %}
 
+
 <div class="tabbable">
     <ul class="nav nav-tabs">
         {% for k, form in forms %}
@@ -19,6 +20,14 @@
     {% endblock %}
 
     <div class="tab-content">
+        {% for type, flash_messages in app.session.flashBag.all %}
+            {% for flash_message in flash_messages %}
+
+                <div class="flash-{{ type }}">
+                    {{ flash_message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         {% for k, form in forms %}
             <div class="tab-pane {% if loop.first %}active{% endif %}" id="control_{{ k }}">
                 <fieldset>
@@ -26,11 +35,12 @@
                         <div class="row-fluid">
                             {{ form_start(form) }}
                                 {% for k,v in form %}
-                                    {{ form_label(v) }}
-                                    {{ form_widget(v)}}
+                                    <div class="control-group">
+                                        {{ form_label(v) }}
+                                        {{ form_widget(v)}}
+                                    </div>
                                 {% endfor %}
                             {{ form_end(form) }}
-
                         </div>
                     </div>
                 </fieldset>
