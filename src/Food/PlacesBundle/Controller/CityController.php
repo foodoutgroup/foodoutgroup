@@ -93,9 +93,4 @@ class CityController extends Controller
             )
         );
     }
-
-    public function changeLocationAction()
-    {
-        return $this->render('FoodPlacesBundle:Default:change_location.html.twig');
-    }
 }
