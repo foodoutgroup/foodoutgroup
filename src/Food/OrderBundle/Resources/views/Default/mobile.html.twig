@@ -54,10 +54,12 @@
         }
         {% endif %}
     </style>
+
+
     <table class="table table-bordered table condensed" id="maintable">
         <thead>
         <tr>
-            <th {% if app.request.defaultLocale == 'lv'%}style="background-color:#cd1d36;"{% endif %} colspan="5"><img {%if app.request.defaultLocale == 'lv'%} src="/bundles/foodapp/images/logo_food2.png" {% else %} src="/bundles/foodapp/images/logo_food.png"{% endif %}> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
+            <th {% if site_country == 'LV'%}style="background-color:#cd1d36;"{% endif %} colspan="5"><img {%if site_country == 'LV'%} src="/bundles/foodapp/images/logo_food2.png" {% else %} src="/bundles/foodapp/images/logo_food.png"{% endif %}> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
         </tr>
         <tr>
             <th style="width: 30px">#</th>
