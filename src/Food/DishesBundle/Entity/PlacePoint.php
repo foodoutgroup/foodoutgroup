@@ -1583,4 +1583,51 @@ class PlacePoint
         return $this->phoneSend;
     }
 
+    /**
+     * Set altPhone1Send
+     *
+     * @param boolean $altPhone1Send
+     * @return PlacePoint
+     */
+    public function setAltPhone1Send($altPhone1Send)
+    {
+        $this->altPhone1Send = $altPhone1Send;
+
+        return $this;
+    }
+
+    /**
+     * Get altPhone1Send
+     *
+     * @return boolean
+     */
+    public function getAltPhone1Send()
+    {
+        return $this->altPhone1Send;
+    }
+
+    /**
+     * Set altPhone2Send
+     *
+     * @param boolean $altPhone2Send
+     * @return PlacePoint
+     */
+    public function setAltPhone2Send($altPhone2Send)
+    {
+        $this->altPhone2Send = $altPhone2Send;
+
+        return $this;
+    }
+
+    /**
+     * Get altPhone2Send
+     *
+     * @return boolean
+     */
+    public function getAltPhone2Send()
+    {
+        return $this->altPhone2Send;
+    }
+
+
 }
