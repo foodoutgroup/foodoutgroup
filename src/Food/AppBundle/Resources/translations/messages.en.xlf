@@ -1578,6 +1578,14 @@
                 <source>general.news</source>
                 <target>News</target>
             </trans-unit>
+            <trans-unit id="mobile.order.admin_fee">
+                <source>mobile.order.admin_fee</source>
+                <target>Admin fee (VAT inc.)</target>
+            </trans-unit>
+            <trans-unit id="mobile.order.admin_fee_no_vat">
+                <source>mobile.order.admin_fee_no_vat</source>
+                <target>Admin fee (VAT exc.)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

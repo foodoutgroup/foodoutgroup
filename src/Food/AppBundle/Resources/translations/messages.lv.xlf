@@ -1548,6 +1548,14 @@
                 <source>general.sms.driver_assigned_order</source>
                 <target>Jauns pasutijums no restaurant_title, pickup_restaurant_address uz restaurant_address, piegadat lidz deliver_time </target>
             </trans-unit>
+            <trans-unit id="mobile.order.admin_fee">
+                <source>mobile.order.admin_fee</source>
+                <target>Administrēšanas maksa (ar PVN)</target>
+            </trans-unit>
+            <trans-unit id="mobile.order.admin_fee_no_vat">
+                <source>mobile.order.admin_fee_no_vat</source>
+                <target>Administrēšanas maksa (bez PVN)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
