@@ -3733,31 +3733,17 @@ class OrderService extends ContainerAware
             $translator = $this->container->get('translator');
             $translator->trans('order.form.errors.customeraddr');
 
-            //~ foreach ($formErrors as $key => $error) {
-                //~ $formErrors[$key] = $translator->trans($error);
-            //~ }
-
-
-            $sessionId = $this->container->get('food.cart')->getSessionId();
-            $user = $this->getUser();
-            $userIp = ($this->container->get('request')->getClientIp());
-
-            $error = new ErrorLog();
-
-            $em = $this->container->get('doctrine')->getManager();
-            $cart = $em->getRepository("FoodCartBundle:Cart")->findOneBy(['session' => $sessionId]);
-            $error->setIp($userIp);
-            //~ $error->setCart($cart);
-            $error->setCreatedBy($user);
-            $error->setPlace($place);
-            $error->setCreatedAt(new \DateTime('now'));
-            $error->setUrl($request->headers->get('referer'));
-            $error->setSource('checkout_coupon_page');
-            //~ $error->setDescription(implode(',', $formErrors));
-            $error->setDebug(serialize($request) .'<br><br>'. serialize($debugCartInfo));
-
-            $em->persist($error);
-            $em->flush();
+            $this->get('food.error_log_service')->saveErrorLog(
+                $this->container->get('request')->getClientIp(),
+                $this->getUser(),
+                $this->container->get('food.cart')->getSessionId(),
+                $place,
+                new \DateTime('now'),
+                $request->headers->get('referer'),
+                'checkout_coupon_page',
+                implode(',', $formErrors),
+                serialize($request) .'<br><br>'. serialize($debugCartInfo)
+            );
         }
     }
 

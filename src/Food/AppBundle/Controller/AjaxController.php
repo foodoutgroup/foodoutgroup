@@ -69,23 +69,18 @@ class AjaxController extends Controller
             $respData['success'] = 1;
             unset($respData['message']);
         } else {
-            $user = $this->getUser();
-            $userIp = ($this->container->get('request')->getClientIp());
-            $error = new ErrorLog();
+            $this->get('food.error_log_service')->saveErrorLog(
+                $this->container->get('request')->getClientIp(),
+                $this->getUser(),
+                $this->container->get('food.cart')->getSessionId(),
+                null,
+                new \DateTime('now'),
+                $currentUrl,
+                'adress_change_find',
+                implode(', ', [$respData['message'], $city, $address]),
+                serialize($request)
+            );
 
-            $error->setIp($userIp);
-            //~ $error->setCart(null);
-            $error->setCreatedBy($user);
-            $error->setPlace(null);
-            $error->setCreatedAt(new \DateTime('now'));
-            $error->setUrl($currentUrl);
-            $error->setSource('adress_change_find');
-            $error->setDescription(implode(', ', [$respData['message'], $city, $address]));
-            $error->setDebug(serialize($request));
-
-            $em = $this->container->get('doctrine')->getManager();
-            $em->persist($error);
-            $em->flush();
         }
         if (!$locationInfo['not_found']) {
             $respData['adr'] = 1;
@@ -120,25 +115,19 @@ class AjaxController extends Controller
 
             if (isset($respData['message']) && !empty($respData['message'])) {
 
-                $user = $this->getUser();
-                $userIp = ($this->container->get('request')->getClientIp());
-                $error = new ErrorLog();
-
-                $error->setIp($userIp);
-                $error->setCart($cartSession);
-                $error->setCreatedBy($user);
-                $error->setPlace(null);
-                $error->setCreatedAt(new \DateTime('now'));
-                $error->setUrl($currentUrl);
-                $error->setSource('adress_change_find');
-                $error->setDescription($respData['message']);
-                $error->setDebug(serialize($request));
-
-                $em = $this->container->get('doctrine')->getManager();
-                $em->persist($error);
-                $em->flush();
-
+                $this->get('food.error_log_service')->saveErrorLog(
+                    $this->container->get('request')->getClientIp(),
+                    $this->getUser(),
+                    $cartSession,
+                    null,
+                    new \DateTime('now'),
+                    $currentUrl,
+                    'adress_change_find',
+                    $respData['message'],
+                    serialize($request)
+                );
             }
+
             $response->setContent(json_encode([
                 'data' => $respData
             ]));
@@ -365,29 +354,17 @@ class AjaxController extends Controller
         }
 
         if(isset($cont['data']['error']) && !empty($cont['data']['error'])){
-            $sessionId = $this->container->get('food.cart')->getSessionId();
-            $user = $this->getUser();
-            $userIp = ($this->container->get('request')->getClientIp());
-            $error = new ErrorLog();
-
-            $em = $this->container->get('doctrine')->getManager();
-            $place = $em->getRepository("FoodDishesBundle:Place")->find($placeId);
-            //~ $cart = $em->getRepository("FoodCartBundle:Cart")->findOneBy(['session'=>$sessionId]);
-            $debugCode['code'] = $couponCode;
-
-            $error->setIp($userIp);
-            //~ $error->setCart($cart);
-            $error->setCreatedBy($user);
-            $error->setPlace($place);
-            $error->setCreatedAt(new \DateTime('now'));
-            $error->setUrl($currentUrl);
-            $error->setSource('checkout_coupon_page');
-            $error->setDescription($cont['data']['error']);
-            $error->setDebug(serialize($request));
-
-            $em->persist($error);
-            $em->flush();
-
+            $this->get('food.error_log_service')->saveErrorLog(
+                $this->container->get('request')->getClientIp(),
+                $this->getUser(),
+                $this->container->get('food.cart')->getSessionId(),
+                $place,
+                new \DateTime('now'),
+                $currentUrl,
+                'checkout_coupon_page',
+                $cont['data']['error'],
+                serialize($request)
+            );
         }
 
         $response->setContent(json_encode($cont));
