@@ -352,6 +352,12 @@ class PlacePoint
      **/
     private $cityId;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="phone_send", type="boolean", options={"default": true})
+     */
+    private $phoneSend;
 
 
     public function getElement()
@@ -1553,4 +1559,28 @@ class PlacePoint
     {
         return $this->cityId;
     }
+
+    /**
+     * Set phoneSend
+     *
+     * @param boolean $phoneSend
+     * @return PlacePoint
+     */
+    public function setPhoneSend($phoneSend)
+    {
+        $this->phoneSend = $phoneSend;
+
+        return $this;
+    }
+
+    /**
+     * Get phoneSend
+     *
+     * @return boolean
+     */
+    public function getPhoneSend()
+    {
+        return $this->phoneSend;
+    }
+
 }
