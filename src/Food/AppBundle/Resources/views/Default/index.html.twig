@@ -107,7 +107,7 @@
                     <select id="index_city">
                         <option value="" data-cityurl="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %} index.city{% endtrans %}</option>
                         {% for city in available_cities %}
-                            <option value="{{ city }}" data-cityurl="{{ city|replace({'ė':'e','Š':'S','ž':'z','ī':'i'}) }}" {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e','Š':'S','ž':'z','ī':'i'}) %}selected{% endif %}> {% if city == 'Rīga' and app.request.locale == 'lv' %} {{city}} {{ 'un pierīga' }} {% else %}  {{ city }}{% endif %}</option>
+                            <option value="{{ city }}" data-cityurl="{{ city|replace({'ė':'e','Š':'S','ž':'z','ī':'i'}) }}" {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e','Š':'S','ž':'z','ī':'i'}) %}selected{% endif %}> {% if city == 'Rīga' and site_country == 'LV' %} {{city}} {{ 'un pierīga' }} {% else %}  {{ city }}{% endif %}</option>
                         {% endfor %}
                     </select>
 
