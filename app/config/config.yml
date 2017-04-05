@@ -455,7 +455,7 @@ sonata_admin:
                       - sonata.admin.paramslog
                       - sonata.admin.cities
                       - sonata.admin.citieslog
-                      - sonata.admin.error_log
+#                      - sonata.admin.error_log
                   roles: [ ROLE_DISPATCHER ]
               acme.admin.group.misc: ~
 

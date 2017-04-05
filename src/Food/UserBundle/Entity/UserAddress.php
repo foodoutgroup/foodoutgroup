@@ -89,7 +89,14 @@ class UserAddress
         if (!$this->getId()) {
             return '';
         }
-        return $this->getAddress() .', ' . $this->getCityId()->getTitle();
+
+        $buffer = $this->getAddress().', ';
+        if($city = $this->getCityId()) {
+            $buffer .= $city->getTitle();
+        } else {
+            $buffer .= $this->getCity().' !';
+        }
+        return $buffer;
     }
 
 
