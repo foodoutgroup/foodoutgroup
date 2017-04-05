@@ -359,6 +359,20 @@ class PlacePoint
      */
     private $phoneSend;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="alt_phone1_send", type="boolean", options={"default": true})
+     */
+    private $altPhone1Send;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="alt_phone2_send", type="boolean", options={"default": true})
+     */
+    private $altPhone2Send;
+
 
     public function getElement()
     {
