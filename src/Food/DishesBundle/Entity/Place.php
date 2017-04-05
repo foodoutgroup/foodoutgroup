@@ -2238,4 +2238,37 @@ class Place extends Uploadable implements Translatable
     {
         return $this->slug;
     }
+
+    /**
+     * @return float
+     */
+    public function getAdminFee()
+    {
+        return $this->adminFee;
+    }
+
+    /**
+     * @param int $adminFeeForPlace
+     */
+    public function setAdminFee($adminFee)
+    {
+        $this->adminFee = $adminFee;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseAdminFee()
+    {
+        return $this->useAdminFee;
+    }
+
+    /**
+     * @param bool $useAdminFee
+     */
+    public function setUseAdminFee($useAdminFee)
+    {
+        $this->useAdminFee = $useAdminFee;
+    }
+
 }
