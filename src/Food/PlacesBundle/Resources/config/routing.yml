@@ -1,3 +1,0 @@
-#food_places:
-#    pattern: /
-#    defaults: { _controller: FoodPlacesBundle:City:index}
