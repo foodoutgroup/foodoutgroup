@@ -350,7 +350,7 @@ Vilnius]]></target>
             </trans-unit>
             <trans-unit id="order.form.errors.isnt_open" resname="order.form.errors.isnt_open">
                 <source>order.form.errors.isnt_open</source>
-                <target>Apgailestaujame, restoranas dar nedirba.</target>
+                <target>Restoranas šiuo metu nedirba. Galite pateikti užsakymą vėlesniam laikui.</target>
             </trans-unit>
             <trans-unit id="order.form.errors.is_already_close" resname="order.form.errors.is_already_close">
                 <source>order.form.errors.is_already_close</source>
