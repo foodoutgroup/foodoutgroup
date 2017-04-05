@@ -3,6 +3,7 @@
 namespace Food\AppBundle\Controller;
 
 use Doctrine\ORM\OptimisticLockException;
+use Food\OrderBundle\Entity\OrderRepository;
 use Food\OrderBundle\Service\OrderService;
 use Food\PlacesBundle\Service\PlacesService;
 use libphonenumber\PhoneNumberUtil;
@@ -15,28 +16,38 @@ class DispatcherAdminController extends Controller
 {
     public function listAction()
     {
+        /**
+         * @var $repo OrderRepository
+         */
         $repo = $this->get('doctrine')->getRepository('FoodOrderBundle:Order');
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
         $logisticsService = $this->get('food.logistics');
-        $drivers = [];
+        $driverCollection = [];
 
-        $cityOrders = [];
-        $availableCities = $placeService->getAvailableCities();
+        $cityOrderCollection = [];
+//        $availableCities = $placeService->getAvailableCities();
+
+        $cityCollection = $this->getDoctrine()
+            ->getRepository('FoodAppBundle:City')
+            ->getActive();
 
         // TODO This is first stage optimization - 3/4 times less querys, more php work. Next stage - one query??
         $unapproved = $repo->getOrdersUnapproved();
+
         $unassigned = $repo->getOrdersUnassigned();
         $unconfirmed = $repo->getOrdersUnconfirmed(null, null, true);
         $notFinished = $repo->getOrdersAssigned();
         $canceled = $repo->getOrdersCanceled();
         $navProblems = $repo->getOrdersProblems();
 
-        $driversList = $logisticsService->getAllActiveDrivers();
+        $activeDriverCollection = $logisticsService->getAllActiveDrivers();
+
+
 
         // Preload city data
-        foreach ($availableCities as $city) {
-            $cityOrders[$city] = [
+        foreach ($cityCollection as $city) {
+            $cityOrderCollection[$city->getId()] = [
                 'unapproved'   => [
                     'pickup'      => [],
                     'selfdeliver' => [],
@@ -73,111 +84,143 @@ class DispatcherAdminController extends Controller
                 ],
             ];
 
-            $drivers[$city] = [];
+            $driverCollection[$city->getId()] = [];
         }
 
         foreach ($unapproved as $order) {
+
+            $placePoint = $order->getPlacePoint();
+            $city = $placePoint->getCityId();
+
+            if(!$city) {
+                continue;
+            }
+
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
-                $cityOrders[$order->getPlacePointCity()]['unapproved']['pickup'][] = $order;
+                $cityOrderCollection[$city->getId()]['unapproved']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
-                $cityOrders[$order->getPlacePointCity()]['unapproved']['selfdeliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['unapproved']['selfdeliver'][] = $order;
             } else {
-                $cityOrders[$order->getPlacePointCity()]['unapproved']['deliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['unapproved']['deliver'][] = $order;
             }
 
             if ($orderService->isLate($order)) {
-                ++$cityOrders[$order->getPlacePointCity()]['unapproved']['late'];
+                ++$cityOrderCollection[$city->getId()]['unapproved']['late'];
             }
         }
 
         foreach ($unassigned as $order) {
+
+            $placePoint = $order->getPlacePoint();
+            $city = $placePoint->getCityId();
+
+            if(!$city) {
+                continue;
+            }
+
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
-                $cityOrders[$order->getPlacePointCity()]['unassigned']['pickup'][] = $order;
+                $cityOrderCollection[$city->getId()]['unassigned']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
-                $cityOrders[$order->getPlacePointCity()]['unassigned']['selfdeliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['unassigned']['selfdeliver'][] = $order;
             } else {
-                $cityOrders[$order->getPlacePointCity()]['unassigned']['deliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['unassigned']['deliver'][] = $order;
             }
 
             if ($orderService->isLate($order)) {
-                ++$cityOrders[$order->getPlacePointCity()]['unassigned']['late'];
+                ++$cityOrderCollection[$city->getId()]['unassigned']['late'];
             }
         }
 
         foreach ($unconfirmed as $order) {
+
+            $placePoint = $order->getPlacePoint();
+            $city = $placePoint->getCityId();
+
+            if(!$city) {
+                continue;
+            }
+
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
-                $cityOrders[$order->getPlacePointCity()]['unconfirmed']['pickup'][] = $order;
+                $cityOrderCollection[$city->getId()]['unconfirmed']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
-                $cityOrders[$order->getPlacePointCity()]['unconfirmed']['selfdeliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['unconfirmed']['selfdeliver'][] = $order;
             } else {
-                $cityOrders[$order->getPlacePointCity()]['unconfirmed']['deliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['unconfirmed']['deliver'][] = $order;
             }
 
             if ($orderService->isLate($order)) {
-                ++$cityOrders[$order->getPlacePointCity()]['unconfirmed']['late'];
+                ++$cityOrderCollection[$city->getId()]['unconfirmed']['late'];
             }
         }
 
         foreach ($notFinished as $order) {
+
+            $placePoint = $order->getPlacePoint();
+            $city = $placePoint->getCityId();
+
+            if(!$city) {
+                continue;
+            }
+
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
-                $cityOrders[$order->getPlacePointCity()]['not_finished']['pickup'][] = $order;
+                $cityOrderCollection[$city->getId()]['not_finished']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
-                $cityOrders[$order->getPlacePointCity()]['not_finished']['selfdeliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['not_finished']['selfdeliver'][] = $order;
             } else {
-                $cityOrders[$order->getPlacePointCity()]['not_finished']['deliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['not_finished']['deliver'][] = $order;
             }
 
             if ($orderService->isLate($order)) {
-                ++$cityOrders[$order->getPlacePointCity()]['not_finished']['late'];
+                ++$cityOrderCollection[$order->getPlacePointCity()]['not_finished']['late'];
             }
         }
 
         foreach ($canceled as $order) {
+
+            $placePoint = $order->getPlacePoint();
+            $city = $placePoint->getCityId();
+
+            if(!$city) {
+                continue;
+            }
+
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
-                $cityOrders[$order->getPlacePointCity()]['canceled']['pickup'][] = $order;
+                $cityOrderCollection[$city->getId()]['canceled']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
-                $cityOrders[$order->getPlacePointCity()]['canceled']['selfdeliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['canceled']['selfdeliver'][] = $order;
             } else {
-                $cityOrders[$order->getPlacePointCity()]['canceled']['deliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['canceled']['deliver'][] = $order;
             }
         }
 
         foreach ($navProblems as $order) {
+
+            $placePoint = $order->getPlacePoint();
+            $city = $placePoint->getCityId();
+
+            if(!$city) {
+                continue;
+            }
+
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
-                $cityOrders[$order->getPlacePointCity()]['nav_problems']['pickup'][] = $order;
+                $cityOrderCollection[$city->getId()]['nav_problems']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
-                $cityOrders[$order->getPlacePointCity()]['nav_problems']['selfdeliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['nav_problems']['selfdeliver'][] = $order;
             } else {
-                $cityOrders[$order->getPlacePointCity()]['nav_problems']['deliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['nav_problems']['deliver'][] = $order;
             }
         }
 
-        foreach ($driversList as $driver) {
-            $city = ucfirst($driver['city']);
-            $drivers[$city][] = $driver;
+        foreach ($activeDriverCollection as $driver) {
+            $driverCollection[$driver['city_id']][] = $driver;
         }
-
-        // Old slow code
-//        foreach ($availableCities as $city) {
-//            $cityOrders[$city] = array(
-//                'unapproved' => $repo->getOrdersUnapproved($city),
-//                'unassigned' => $repo->getOrdersUnassigned($city),
-//                'unconfirmed' => array(
-//                    'deliver' => $repo->getOrdersUnconfirmed($city),
-//                    'pickup' => $repo->getOrdersUnconfirmed($city, true),
-//                ),
-//                'not_finished' => $repo->getOrdersAssigned($city),
-//                'canceled' => $repo->getOrdersCanceled($city),
-//                'nav_problems' => $repo->getOrdersProblems($city),
-//            );
-//        }
 
         return $this->render(
             'FoodAppBundle:Dispatcher:list.html.twig',
             [
-                'cities'     => $availableCities,
-                'cityOrders' => $cityOrders,
-                'drivers'    => $drivers,
+                'cityCollection'     => $cityCollection,
+                'cityOrderCollection' => $cityOrderCollection,
+                'driverCollection'    => $driverCollection,
             ]
         );
     }

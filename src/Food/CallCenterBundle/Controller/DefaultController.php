@@ -289,6 +289,8 @@ class DefaultController extends Controller
      */
     public function checkoutAction(Request $request)
     {
+        var_dump('aa');
+        die;
         $user = $this->getUserFromSession(true);
         $address = $this->getAddressFromSession(true);
         $placeId = $this->getPlaceFromSession();

@@ -39,7 +39,8 @@ class DriverAdmin extends FoodAdmin
                     )
                 )
             )
-            ->add('city', null, array('label' => 'admin.driver.city'))
+//            ->add('city', null, array('label' => 'admin.driver.city'))
+            ->add('cityId', null, array('label' => 'admin.driver.city', 'required' => true))
             ->add(
                 'type',
                 'choice',
@@ -73,7 +74,8 @@ class DriverAdmin extends FoodAdmin
     {
         $datagridMapper
             ->add('name', null, array('label' => 'admin.driver.name'))
-            ->add('city', null, array('label' => 'admin.driver.city'))
+//            ->add('city', null, array('label' => 'admin.driver.city'))
+            ->add('cityId', null, array('label' => 'admin.driver.city'))
             ->add('provider', null, array('label' => 'admin.driver.provider'))
             ->add('phone', null, array('label' => 'admin.driver.phone'))
             ->add('extId', null, array('label' => 'admin.driver.ext_id'))
@@ -93,7 +95,8 @@ class DriverAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('id', 'integer', array('label' => 'admin.driver.id'))
             ->addIdentifier('name', 'string', array('label' => 'admin.driver.name', 'editable' => true))
-            ->add('city', 'string', array('label' => 'admin.driver.city'))
+//            ->add('city', 'string', array('label' => 'admin.driver.city'))
+            ->add('cityId', 'string', array('label' => 'admin.driver.city'))
             ->add(
                 'type',
                 'choice',

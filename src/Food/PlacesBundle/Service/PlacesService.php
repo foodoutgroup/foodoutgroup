@@ -83,6 +83,7 @@ class PlacesService extends ContainerAware
     }
 
     /**
+     * @deprecated
      * @return mixed
      */
     public function getAvailableCities()
@@ -96,7 +97,6 @@ class PlacesService extends ContainerAware
 
         return $cities;
     }
-
     /**
      * @param int $categoryId
      *

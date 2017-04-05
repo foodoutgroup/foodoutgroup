@@ -156,7 +156,7 @@ class LogisticsService extends ContainerAware
         $em = $this->container->get('doctrine')->getManager();
         $drivers = $em->getRepository('Food\AppBundle\Entity\Driver')
             ->createQueryBuilder('d')
-            ->select('d.id, d.name, d.phone, d.city, d.type, COUNT(o.id) AS order_count')
+            ->select('d.id, d.name, d.phone, d.type, IDENTITY(d.cityId) as city_id, COUNT(o.id) AS order_count')
             ->leftJoin('FoodOrderBundle:Order', 'o', 'WITH', 'o.driver = d.id AND o.order_status IN (:order_statuses)')
             ->where('d.active = 1')
             ->setParameter('order_statuses', array(OrderService::$status_assiged))
