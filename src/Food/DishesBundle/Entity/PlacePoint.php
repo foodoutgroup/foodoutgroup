@@ -8,13 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PlacePoint
  *
- * @ORM\Table(name="place_point", indexes={
- *     @ORM\Index(name="city_idx", columns={"city"}),
- *     @ORM\Index(name="active_idx", columns={"active"}),
- *     @ORM\Index(name="fast_idx", columns={"fast"}),
- *     @ORM\Index(name="public_idx", columns={"public"}),
- *     @ORM\Index(name="deleted_at_idx", columns={"deleted_at"}),
- *     @ORM\Index(name="showable_idx", columns={"active", "deleted_at"})})
+ * @ORM\Table(name="place_point", indexes={@ORM\Index(name="city_idx", columns={"city"}),@ORM\Index(name="active_idx", columns={"active"}),@ORM\Index(name="fast_idx", columns={"fast"}),@ORM\Index(name="public_idx", columns={"public"}),@ORM\Index(name="deleted_at_idx", columns={"deleted_at"}),@ORM\Index(name="showable_idx", columns={"active", "deleted_at"})})
  * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\PlacePointRepository")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
@@ -58,11 +52,25 @@ class PlacePoint
     private $phone;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="phone_send", type="boolean", options={"default": true})
+     */
+    private $phoneSend;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="alt_phone1", type="string", length=20, nullable=true)
      */
     private $altPhone1;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="alt_phone1_send", type="boolean", options={"default": true})
+     */
+    private $altPhone1Send;
 
     /**
      * @var string
@@ -72,11 +80,25 @@ class PlacePoint
     private $altPhone2;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="alt_phone2_send", type="boolean", options={"default": true})
+     */
+    private $altPhone2Send;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=128, nullable=true)
      */
     private $email;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="email_send", type="boolean", options={"default": true})
+     */
+    private $emailSend;
 
     /**
      * @var string
@@ -86,11 +108,25 @@ class PlacePoint
     private $altEmail1;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="alt_email1_send", type="boolean", options={"default": true})
+     */
+    private $altEmail1Send;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="alt_email2", type="string", length=128, nullable=true)
      */
     private $altEmail2;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="alt_email2_send", type="boolean", options={"default": true})
+     */
+    private $altEmail2Send;
 
     /**
      * @var string
@@ -344,36 +380,6 @@ class PlacePoint
      */
     private $hash;
 
-    /**
-     * @var \Food\AppBundle\Entity\City
-     *
-     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
-     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
-     **/
-    private $cityId;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="phone_send", type="boolean", options={"default": true})
-     */
-    private $phoneSend;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="alt_phone1_send", type="boolean", options={"default": true})
-     */
-    private $altPhone1Send;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="alt_phone2_send", type="boolean", options={"default": true})
-     */
-    private $altPhone2Send;
-
-
     public function getElement()
     {
         return '';
@@ -581,16 +587,7 @@ class PlacePoint
         if (!$this->getId()) {
             return '';
         }
-
-        $buffer = $this->getAddress().', ';
-
-        if($city = $this->getCityId()) {
-            $buffer = $buffer.$city->getTitle();
-        } else {
-            $buffer = $buffer.$this->getCity().' !';
-        }
-
-        return $buffer;
+        return $this->getAddress().', '.$this->getCity();
     }
 
     public function getToString()
@@ -624,7 +621,6 @@ class PlacePoint
             'fast' => $this->getFast(),
             'allowCash' => $this->getAllowCash(),
             'allowCard' => $this->getAllowCard(),
-            'city_id' => $this->getCityId(),
             'workTime' => array(
                 'wd1' => $this->getWd1(),
                 'wd2' => $this->getWd2(),
@@ -1505,14 +1501,14 @@ class PlacePoint
     public function setProductionTime($productionTime)
     {
         $this->productionTime = $productionTime;
-    
+
         return $this;
     }
 
     /**
      * Get productionTime
      *
-     * @return integer 
+     * @return integer
      */
     public function getProductionTime()
     {
@@ -1549,29 +1545,6 @@ class PlacePoint
     public function setHash($hash)
     {
         $this->hash = $hash;
-    }
-
-    /**
-     * Set cityId
-     *
-     * @param \Food\AppBundle\Entity\City $cityId
-     * @return PlacePoint
-     */
-    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
-    {
-        $this->cityId = $cityId;
-    
-        return $this;
-    }
-
-    /**
-     * Get cityId
-     *
-     * @return \Food\AppBundle\Entity\City 
-     */
-    public function getCityId()
-    {
-        return $this->cityId;
     }
 
     /**
@@ -1643,5 +1616,72 @@ class PlacePoint
         return $this->altPhone2Send;
     }
 
+    /**
+     * Set emailSend
+     *
+     * @param boolean $emailSend
+     * @return PlacePoint
+     */
+    public function setEmailSend($emailSend)
+    {
+        $this->emailSend = $emailSend;
 
+        return $this;
+    }
+
+    /**
+     * Get emailSend
+     *
+     * @return boolean
+     */
+    public function getEmailSend()
+    {
+        return $this->emailSend;
+    }
+
+    /**
+     * Set altEmail1Send
+     *
+     * @param boolean $altEmail1Send
+     * @return PlacePoint
+     */
+    public function setAltEmail1Send($altEmail1Send)
+    {
+        $this->altEmail1Send = $altEmail1Send;
+
+        return $this;
+    }
+
+    /**
+     * Get altEmail1Send
+     *
+     * @return boolean
+     */
+    public function getAltEmail1Send()
+    {
+        return $this->altEmail1Send;
+    }
+
+    /**
+     * Set altEmail2Send
+     *
+     * @param boolean $altEmail2Send
+     * @return PlacePoint
+     */
+    public function setAltEmail2Send($altEmail2Send)
+    {
+        $this->altEmail2Send = $altEmail2Send;
+
+        return $this;
+    }
+
+    /**
+     * Get altEmail2Send
+     *
+     * @return boolean
+     */
+    public function getAltEmail2Send()
+    {
+        return $this->altEmail2Send;
+    }
 }
