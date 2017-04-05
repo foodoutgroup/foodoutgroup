@@ -472,6 +472,20 @@ class Place extends Uploadable implements Translatable
     private $slug;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="admin_fee", type="decimal",scale=2, nullable=true)
+     */
+    private $adminFee;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="use_admin_fee", type="boolean", nullable=true, options={"default": false})
+     */
+    private $useAdminFee;
+
+    /**
      * Returns place name
      *
      * @return string
