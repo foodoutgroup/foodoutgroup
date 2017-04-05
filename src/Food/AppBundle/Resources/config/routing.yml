@@ -15,7 +15,13 @@ food_slug_lang:
     requirements:
         slug : %slug_regex%
         _locale: "^[a-z]{2}"
-
+food_admin_assign_dispatcher:
+    path: /admin/dispatcher/assign-dispacher/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignDispatcher}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
 food_slug:
     path:  /{slug}
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale%  }

@@ -9,3 +9,11 @@ food_admin_get_place_dish_options:
     defaults: {_controller: FoodDishesBundle:DishAdmin:getDishOptionsFromPlace}
     options:
         expose: true
+
+food_admin_assign_dispatcher:
+    path: /dispatcher/assign-dispacher/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignDispatcher}
+    options:
+        expose: true
+    requirements:
+          _method:  POST
