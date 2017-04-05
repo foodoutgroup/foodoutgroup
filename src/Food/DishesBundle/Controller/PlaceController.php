@@ -58,13 +58,13 @@ class PlaceController extends Controller
         if ($cookies->has('restaurant_menu_layout')) {
             $listType = $cookies->get('restaurant_menu_layout');
         }
-/**
-        if (!empty($categoryId)) {
-            $activeCategory = $categoryRepo->find($categoryId);
-        } else {
-            $activeCategory = $categoryList[0];
-        }
-*/
+        /**
+         * if (!empty($categoryId)) {
+         * $activeCategory = $categoryRepo->find($categoryId);
+         * } else {
+         * $activeCategory = $categoryList[0];
+         * }
+         */
         $wasHere = $this->wasHere($place, $this->user());
         $alreadyWrote = $this->alreadyWrote($place, $this->user());
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
@@ -76,8 +76,7 @@ class PlaceController extends Controller
             'kitchen_url' => ''
         );
 
-        $locationData =  $this->get('food.googlegis')->getLocationFromSession();
-
+        $locationData = $this->get('food.googlegis')->getLocationFromSession();
 
 
         if (!isset($locationData['city'])) {
@@ -100,15 +99,15 @@ class PlaceController extends Controller
             }
 
             $kitchens = $place->getKitchens();
-            if(!empty($kitchens) && $kitchens->count() > 0) {
+            if (!empty($kitchens) && $kitchens->count() > 0) {
                 $kitchen = $kitchens->first();
                 $breadcrumbData['kitchen'] = $kitchen->getName();
                 $kitchenSlug = $this->get('food.dishes.utils.slug')->getSlugByItem($kitchen->getId(), 'kitchen');
-                $breadcrumbData['kitchen_url'] = $this->generateUrl('food_city_'.$cityInfo['city_slug_lower'], array(), true).'/'.$kitchenSlug;
+                $breadcrumbData['kitchen_url'] = $this->generateUrl('food_city_' . $cityInfo['city_slug_lower'], array(), true) . '/' . $kitchenSlug;
             }
         }
 
-        $current_url = $request->getUri();
+        $current_url = $request->getSchemeAndHttpHost() . $request->getRequestUri();
 
         // only for LT and only for cili
         $relatedPlace = null;
@@ -216,9 +215,9 @@ class PlaceController extends Controller
 
         // apply data from submitted data to symfony form
         $form->handleRequest($request);
-        $score = (int) $request->request->get('score');
+        $score = (int)$request->request->get('score');
         $formVar = $request->request->get('form');
-        $reviewText = (string) $formVar['review'];
+        $reviewText = (string)$formVar['review'];
 
         if ($form->isValid() && $score >= 1 && $score <= 5 && !empty($reviewText)) {
             $em = $this->getDoctrine()->getManager();
@@ -238,7 +237,7 @@ class PlaceController extends Controller
 
             return new JsonResponse(['success' => true]);
         } else {
-           $translator = $this->get('translator');
+            $translator = $this->get('translator');
 
             if (empty($reviewText)) {
                 $errors[] = $translator->trans('places.reviews.empty_review');
@@ -253,7 +252,7 @@ class PlaceController extends Controller
 
     private function getUserOrderCount(Place $place = null, User $user = null)
     {
-        $count = (int) $this
+        $count = (int)$this
             ->getDoctrine()
             ->getManager()
             ->createQueryBuilder()
@@ -272,8 +271,7 @@ class PlaceController extends Controller
                 ]
             )
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         return $count;
     }
@@ -287,7 +285,7 @@ class PlaceController extends Controller
 
     private function alreadyWrote(Place $place = null, User $user = null)
     {
-        $reviews = (int) $this
+        $reviews = (int)$this
             ->getDoctrine()
             ->getManager()
             ->createQueryBuilder()
@@ -297,8 +295,7 @@ class PlaceController extends Controller
             ->andWhere('pr.createdBy = :user')
             ->setParameters(['place' => $place, 'user' => $user])
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
 
         $orders = $this->getUserOrderCount($place, $user);
 
@@ -324,8 +321,7 @@ class PlaceController extends Controller
         return $this
             ->createFormBuilder($review, ['csrf_protection' => false])
             ->add('review', 'textarea', ['required' => true, 'label' => 'general.review'])
-            ->getForm()
-        ;
+            ->getForm();
     }
 
     private function defaultReview(Place $place = null, User $user = null)
@@ -334,13 +330,13 @@ class PlaceController extends Controller
         $review
             ->setPlace($place)
             ->setCreatedBy($user)
-            ->setCreatedAt(new \DateTime())
-        ;
+            ->setCreatedAt(new \DateTime());
 
         return $review;
     }
 
-    public function getPlaceUrlByCityAction($placeId, Request $request) {
+    public function getPlaceUrlByCityAction($placeId, Request $request)
+    {
         $placeService = $this->get('food.places');
         $domain = $this->container->getParameter('domain');
 
@@ -366,7 +362,8 @@ class PlaceController extends Controller
         return $response;
     }
 
-    public function getCitiesByPlaceAction($placeId, Request $request) {
+    public function getCitiesByPlaceAction($placeId, Request $request)
+    {
         $placeService = $this->get('food.places');
         $found_data = ['status' => 'fail', 'cities' => null];
 
