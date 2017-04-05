@@ -36,7 +36,7 @@
             </trans-unit>
             <trans-unit id="44f58adead70171ab653c725c9abf0c3" resname="index.street">
                 <source>index.street</source>
-                <target>Adrese (piemēram, Brīvības iela)</target>
+                <target>Adrese (piem. Anitas iela, Baloži)</target>
             </trans-unit>
             <trans-unit id="index.house" resname="index.house">
                 <source>index.house</source>
@@ -1216,6 +1216,18 @@
             <trans-unit id="places.in_riga" resname="places.in_riga">
                 <source>places.in_riga</source>
                 <target>Rīga</target>
+            </trans-unit>
+            <trans-unit id="places.in_ogre" resname="places.in_ogre">
+                <source>places.in_ogre</source>
+                <target>Ogre</target>
+            </trans-unit>
+            <trans-unit id="places.in_jurmala" resname="places.in_jurmala">
+                <source>places.in_jurmala</source>
+                <target>Jurmala</target>
+            </trans-unit>
+            <trans-unit id="places.in_jelgava" resname="places.in_jelgava">
+                <source>places.in_jelgava</source>
+                <target>Jelgava</target>
             </trans-unit>
             <trans-unit id="6663122b040f929c5f977c84b09089d9" resname="general.currency_minor_modals">
                 <source>general.currency_minor_modals</source>
