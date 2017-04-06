@@ -68,20 +68,8 @@ class AjaxController extends Controller
         if ((!$locationInfo['not_found'] || $locationInfo['street_found']) && $locationInfo['lng'] > 20 && $locationInfo['lat'] > 50) {
             $respData['success'] = 1;
             unset($respData['message']);
-        } else {
-            $this->get('food.error_log_service')->saveErrorLog(
-                $this->container->get('request')->getClientIp(),
-                $this->getUser(),
-                $this->container->get('food.cart')->getSessionId(),
-                null,
-                new \DateTime('now'),
-                $currentUrl,
-                'adress_change_find',
-                implode(', ', [$respData['message'], $city, $address]),
-                serialize($request)
-            );
-
         }
+
         if (!$locationInfo['not_found']) {
             $respData['adr'] = 1;
         }
@@ -94,6 +82,7 @@ class AjaxController extends Controller
         }
         $em = $this->container->get('doctrine')->getManager();
         $cart = $em->getRepository("FoodCartBundle:Cart")->findOneBy(['session' => $request->getSession()->getId()]);
+
         if (!empty($cart)){
             $cartSession = $cart->getSession();
         }else{
@@ -119,7 +108,7 @@ class AjaxController extends Controller
                     $this->container->get('request')->getClientIp(),
                     $this->getUser(),
                     $cartSession,
-                    null,
+                    $cart->getPlaceId(),
                     new \DateTime('now'),
                     $currentUrl,
                     'adress_change_find',

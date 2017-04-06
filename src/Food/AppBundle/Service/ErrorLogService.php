@@ -8,9 +8,6 @@ class ErrorLogService extends BaseService
 {
     public function saveErrorLog($userIp,$user,$cart,$place,$createdAt,$url,$source,$description,$debug){
 
-
-
-
         $error = new ErrorLog();
         $error->setIp($userIp);
         $error->setCart($cart);
