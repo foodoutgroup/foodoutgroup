@@ -252,9 +252,9 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /{_locale}/change-password
 
-lexik_translation_edition:
-    resource: "@LexikTranslationBundle/Resources/config/routing.yml"
-    prefix:   /trans
+#lexik_translation_edition:
+#    resource: "@LexikTranslationBundle/Resources/config/routing.yml"
+#    prefix:   /trans
 
 food_app_1:
     resource: "@FoodAppBundle/Resources/config/routing.yml"

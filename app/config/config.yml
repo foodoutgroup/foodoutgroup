@@ -314,9 +314,6 @@ sonata_admin:
       edit: SonataAdminBundle:CRUD:edit.html.twig
     dashboard:
           groups:
-              group.translation:
-                  label: Translation
-                  items: ~
               acme.admin.group.first:
                   label: admin.group.first
                   label_catalogue: SonataAdminBundle
@@ -377,6 +374,7 @@ sonata_admin:
                       - sonata.admin.seorecords
                       - sonata.admin.blog_category
                       - sonata.admin.blog_post
+                      - sonata.admin.translations
 #                      - sonata.admin.import_export
                   roles: [ ROLE_ADMIN ]
 #              admin.support:
