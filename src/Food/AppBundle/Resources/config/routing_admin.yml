@@ -120,6 +120,7 @@ food_admin_import_export:
     defaults: { _controller: FoodAppBundle:Admin/ImportExport:index }
 
 
-lexik_translation_edition:
-    resource: "@LexikTranslationBundle/Resources/config/routing.yml"
-    prefix:   /translations
+
+#food_admin_translate:
+#    path: /manage-translations
+#    defaults: { _controller: FoodAppBundle:Admin/Translations:dashboard }
