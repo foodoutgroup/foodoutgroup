@@ -36,7 +36,7 @@
             </trans-unit>
             <trans-unit id="44f58adead70171ab653c725c9abf0c3" resname="index.street">
                 <source>index.street</source>
-                <target>Adrese (piemēram, Brīvības iela)</target>
+                <target>Adrese (piem. Anitas iela, Baloži)</target>
             </trans-unit>
             <trans-unit id="index.house" resname="index.house">
                 <source>index.house</source>
@@ -1217,6 +1217,18 @@
                 <source>places.in_riga</source>
                 <target>Rīga</target>
             </trans-unit>
+            <trans-unit id="places.in_ogre" resname="places.in_ogre">
+                <source>places.in_ogre</source>
+                <target>Ogre</target>
+            </trans-unit>
+            <trans-unit id="places.in_jurmala" resname="places.in_jurmala">
+                <source>places.in_jurmala</source>
+                <target>Jurmala</target>
+            </trans-unit>
+            <trans-unit id="places.in_jelgava" resname="places.in_jelgava">
+                <source>places.in_jelgava</source>
+                <target>Jelgava</target>
+            </trans-unit>
             <trans-unit id="6663122b040f929c5f977c84b09089d9" resname="general.currency_minor_modals">
                 <source>general.currency_minor_modals</source>
                 <target>cents|centi|centu</target>
@@ -1356,7 +1368,7 @@
             </trans-unit>
             <trans-unit id="form.businessAgreement">
                 <source>form.businessAgreement</source>
-                <target><![CDATA[Piekrītu <a href="#business_rules" name="business_rules" class="fancy-box">noteikumiem</a>]]></target>
+                <target><![CDATA[Piekrītu <a href="%link%" target="_blank">noteikumiem</a>]]></target>
             </trans-unit>
             <trans-unit id="errors.companyName">
                 <source>errors.companyName</source>
@@ -1535,6 +1547,14 @@
             <trans-unit id="general.sms.driver_assigned_order" resname="general.sms.driver_assigned_order">
                 <source>general.sms.driver_assigned_order</source>
                 <target>Jauns pasutijums no restaurant_title, pickup_restaurant_address uz restaurant_address, piegadat lidz deliver_time </target>
+            </trans-unit>
+            <trans-unit id="mobile.order.admin_fee">
+                <source>mobile.order.admin_fee</source>
+                <target>Administrēšanas maksa (ar PVN)</target>
+            </trans-unit>
+            <trans-unit id="mobile.order.admin_fee_no_vat">
+                <source>mobile.order.admin_fee_no_vat</source>
+                <target>Administrēšanas maksa (bez PVN)</target>
             </trans-unit>
         </body>
     </file>

@@ -322,6 +322,11 @@ class OrderService extends ContainerAware
                 $useAdminFee = false;
             }
 
+            if ($user->getIsBussinesClient() || ($serviceVar['type'] == "pickup" && !$place->getMinimalOnSelfDel() ))
+            {
+                $useAdminFee = false;
+            }
+
 //            var_dump($total_cart);echo 'Naujas:';
 //
 //            if ($useAdminFee && $total_cart < $place->getCartMinimum()) {
@@ -367,7 +372,7 @@ class OrderService extends ContainerAware
 
         if ($serviceVar['type'] != "pickup") {
             $placeService = $this->container->get('food.places');
-            if (!$useAdminFee && $total_cart < $placeService->getMinCartPrice($place->getId())) { //Jei yra admin fee - cart'o minimumo netaikom
+            if (!$useAdminFee  && ($total_cart < $placeService->getMinCartPrice($place->getId()))) { //Jei yra admin fee - cart'o minimumo netaikom
                 throw new ApiException(
                     'Order Too Small',
                     400,
@@ -433,7 +438,7 @@ class OrderService extends ContainerAware
             }
         } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
             $total_cart = $cartService->getCartTotal($list/*, $place*/);
-            if ($total_cart < $place->getCartMinimum()) {
+            if ($total_cart < $place->getCartMinimum() && !$useAdminFee) {
                 throw new ApiException(
                     'Order Too Small',
                     0,
@@ -461,6 +466,8 @@ class OrderService extends ContainerAware
                 );
             }
         }
+
+
 
         $os->createOrderFromCart(
             $basket->getPlaceId()->getId(),
@@ -973,6 +980,7 @@ class OrderService extends ContainerAware
                 // @TODO check if addressId exists
                     $order->getAddressId()->getAddress()
                 );
+                $time = $order->getPlace()->getDeliveryTime();
                 break;
         }
 

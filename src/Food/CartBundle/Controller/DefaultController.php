@@ -780,6 +780,11 @@ class DefaultController extends Controller
             $coupon = false;
         }
 
+        if ($takeAway && !$place->getMinimalOnSelfDel())
+        {
+            $useAdminFee = false;
+        }
+
         if ($useAdminFee && $total_cart < $cartFromMin)
         {
             $total_cart += $adminFee;

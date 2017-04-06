@@ -103,10 +103,11 @@
                 <p class="title">{% trans %}index.search_form_qlue{% endtrans %}</p>
                 <div class="clearfix">
                     {# TODO remove city hardcode, damn it... #}
+
                     <select id="index_city">
-                        <option value="" data-cityurl="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %}index.city{% endtrans %}</option>
+                        <option value="" data-cityurl="" disabled {% if formDefaults.city == '' %}selected{% endif %}>{% trans %} index.city{% endtrans %}</option>
                         {% for city in available_cities %}
-                            <option value="{{ city }}" data-cityurl="{{ city|replace({'ė':'e','Š':'S','ž':'z','ī':'i'}) }}" {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e','Š':'S','ž':'z','ī':'i'}) %}selected{% endif %}>{{ city }}</option>
+                            <option value="{{ city }}" data-cityurl="{{ city|replace({'ė':'e','Š':'S','ž':'z','ī':'i'}) }}" {% if formDefaults.city == city or formDefaults.city == city|replace({'ė':'e','Š':'S','ž':'z','ī':'i'}) %}selected{% endif %}> {% if city == 'Rīga' and site_country == 'LV' %} {{city}} {{ 'un pierīga' }} {% else %}  {{ city }}{% endif %}</option>
                         {% endfor %}
                     </select>
 

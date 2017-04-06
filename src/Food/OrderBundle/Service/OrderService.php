@@ -586,7 +586,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * Inform client, that restourant accepted their order
+     * Inform client, that restaurant accepted their order
      */
     private function _notifyOnAccepted()
     {
@@ -678,6 +678,7 @@ class OrderService extends ContainerAware
             'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
             'invoice' => $invoice,
             'beta_kodas' => $betaCode,
+            'admin_fee'  => $this->getOrder()->getAdminFee(),
         ];
 
 
@@ -1324,6 +1325,8 @@ class OrderService extends ContainerAware
         $placeObject = $this->container->get('food.places')->getPlace($place);
         $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
 
+        $placesService = $this->container->get('food.places');
+        $useAdminFee = $placesService->useAdminFee($placeObject);
 
         $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
@@ -1334,7 +1337,6 @@ class OrderService extends ContainerAware
             $this->getOrder()->setOrderStatus(self::$status_preorder)->setPreorder(true);
 
         } else if (empty($orderDate) && $selfDelivery) {
-
             // Lets fix pickup situation
             $miscService = $this->container->get('food.app.utils.misc');
 
@@ -1342,8 +1344,6 @@ class OrderService extends ContainerAware
 
             if (empty($timeShift) || $timeShift <= 0 && $deliveryType != 'pedestrian') {
                 $timeShift = 60;
-            }else{
-
             }
 
             $deliveryTime = new \DateTime("now");
@@ -1414,6 +1414,7 @@ class OrderService extends ContainerAware
                     $includeDelivery = false;
                 }
 
+                $useAdminFee = false;
             } elseif ($user->getIsBussinesClient()) {
                 // Jeigu musu logistika, tada taikom fiksuota nuolaida
                 if (!$selfDelivery) {
@@ -1422,6 +1423,7 @@ class OrderService extends ContainerAware
                     $discountPercent = $discountSize;
                     $this->getOrder()->setDiscountSize($discountSize)->setDiscountSum($discountSum);
                 }
+                $useAdminFee = false;
             }
         }
 
@@ -1578,10 +1580,16 @@ class OrderService extends ContainerAware
             }
         }
         //~ }
-        $placesService = $this->container->get('food.places');
-        $useAdminFee = $placesService->useAdminFee($placeObject);
-        $adminFee = $placesService->getAdminFee($placeObject);
+
+
+        $adminFee    = $placesService->getAdminFee($placeObject);
         $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
+
+        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel())
+        {
+            $useAdminFee = false;
+        }
+
         if ($useAdminFee && !$adminFee) {
             $adminFee = 0;
         }
@@ -3419,7 +3427,9 @@ class OrderService extends ContainerAware
             }
         }
 
-        if ($coupon) {
+
+        if ($coupon || ($takeAway && !$place->getMinimalOnSelfDel()) )
+        {
             $useAdminFee = false;
         }
 
@@ -3484,7 +3494,7 @@ class OrderService extends ContainerAware
                 }
             }
 
-            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false) {
+            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false  && !$useAdminFee) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }
@@ -3729,31 +3739,17 @@ class OrderService extends ContainerAware
             $translator = $this->container->get('translator');
             $translator->trans('order.form.errors.customeraddr');
 
-            //~ foreach ($formErrors as $key => $error) {
-            //~ $formErrors[$key] = $translator->trans($error);
-            //~ }
-
-
-            $sessionId = $this->container->get('food.cart')->getSessionId();
-            $user = $this->getUser();
-            $userIp = ($this->container->get('request')->getClientIp());
-
-            $error = new ErrorLog();
-
-            $em = $this->container->get('doctrine')->getManager();
-            $cart = $em->getRepository("FoodCartBundle:Cart")->findOneBy(['session' => $sessionId]);
-            $error->setIp($userIp);
-            //~ $error->setCart($cart);
-            $error->setCreatedBy($user);
-            $error->setPlace($place);
-            $error->setCreatedAt(new \DateTime('now'));
-            $error->setUrl($request->headers->get('referer'));
-            $error->setSource('checkout_coupon_page');
-            //~ $error->setDescription(implode(',', $formErrors));
-            $error->setDebug(serialize($request) . '<br><br>' . serialize($debugCartInfo));
-
-            $em->persist($error);
-            $em->flush();
+            $this->get('food.error_log_service')->saveErrorLog(
+                $this->container->get('request')->getClientIp(),
+                $this->getUser(),
+                $this->container->get('food.cart')->getSessionId(),
+                $place,
+                new \DateTime('now'),
+                $request->headers->get('referer'),
+                'checkout_coupon_page',
+                implode(',', $formErrors),
+                serialize($request) .'<br><br>'. serialize($debugCartInfo)
+            );
         }
     }
 
