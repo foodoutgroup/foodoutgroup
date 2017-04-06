@@ -56,7 +56,7 @@ class TranslationCRUDController extends CRUDController
             $storage = $em->getRepository(TransUnit::class);
             $transUnitManager = $this->container->get('lexik_translation.trans_unit.manager');
             $em->beginTransaction();
-            $imported = 0;
+            $imported = false;
             foreach ($dataCollection as $transData)
             {
                 if (isset($transData[$fieldMap['id']])) {
@@ -74,10 +74,13 @@ class TranslationCRUDController extends CRUDController
                         $content = (isset($transData[$fieldMap[$locale]]) ? $transData[$fieldMap[$locale]] : '');
                         $translation = $transUnitManager->addTranslation($transEntity, $locale, $content,  null);
                         if ($translation instanceof Translation) {
-                            $imported++;
-                        } else  {
-                            $translation = $translation = $transUnitManager->updateTranslation($transEntity, $locale, $content);
-                            $imported++;
+                            $imported = true;
+                        } elseif ($translation = $transUnitManager->updateTranslation($transEntity, $locale, $content))  {
+                            $imported = true;
+                        }
+                        else {
+                            $this->addFlash('error', 'Import failed');
+                            return $this->redirect($this->generateUrl('admin_lexik_translation_transunit_list'));
                         }
                     }
                 }
@@ -87,7 +90,8 @@ class TranslationCRUDController extends CRUDController
 
             $em->flush();
             $em->commit();
-var_dump($this->exportFiles());die();
+
+
             $this->addFlash('success', 'Imported successfully');
             return $this->redirect($this->generateUrl('admin_lexik_translation_transunit_list'));
 
@@ -105,20 +109,19 @@ var_dump($this->exportFiles());die();
 
     protected function exportFiles()
     {
-        $kernel = $this->get('kernel');
-        $application = new Application($kernel);
-        $application->setAutoExit(false);
-
-        $input = new ArrayInput(array(
-            'command' => 'lexik:translations:export'
-        ));
-        // You can use NullOutput() if you don't need the output
-        $output = new BufferedOutput();
-        $application->run($input, $output);
-
-        // return the output, don't use if you used NullOutput()
-        $content = $output->fetch();
-        return $content;
+//        $kernel = $this->get('kernel');
+//        $application = new Application($kernel);
+//        $application->setAutoExit(false);
+//
+//        $input = new ArrayInput(array(
+//            'command' => 'lexik:translations:export'
+//        ));
+//
+//        $output = new BufferedOutput();
+//        $application->run($input, $output);
+//
+//        $content = $output->fetch();
+//        return $content;
     }
 
     /**

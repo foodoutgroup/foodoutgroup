@@ -1,6 +1,7 @@
 <?php
 namespace Food\AppBundle\Admin;
 
+use Doctrine\ORM\Query;
 use Food\AppBundle\Admin\Admin as FoodAdmin;
 
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -217,9 +218,29 @@ abstract class TranslationAdmin extends FoodAdmin
             $subject->setDomain($this->getDefaultDomain());
         }
 
+
+        /** @var \Doctrine\ORM\EntityManager $em */
+        $em = $this->getContainer()->get('doctrine')->getManagerForClass('Lexik\Bundle\TranslationBundle\Entity\File');
+
+        $domains = array();
+        $domainsQueryResult = $em->createQueryBuilder()
+            ->select('DISTINCT t.domain')->from('\Lexik\Bundle\TranslationBundle\Entity\File', 't')
+            ->getQuery()
+            ->getResult(Query::HYDRATE_ARRAY);
+
+        array_walk_recursive(
+            $domainsQueryResult,
+            function ($domain) use (&$domains) {
+                $domains[$domain] = $domain;
+            }
+        );
+        ksort($domains);
+
+
         $form
             ->add('key', 'text')
-            ->add('domain', 'text');
+            ->add('domain', 'choice', ['choices' => $domains, 'attr' => ['class' => 'form-control']  ]);
+
     }
 
     /**
