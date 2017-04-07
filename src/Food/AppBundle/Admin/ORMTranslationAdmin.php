@@ -52,37 +52,37 @@ class ORMTranslationAdmin extends TranslationAdmin
                     'field_type'    => 'choice',
                 )
             )
-            ->add(
-                'show_non_translated_only',
-                'doctrine_orm_callback',
-                array
-                (
-                    'callback'      => function (ProxyQuery $queryBuilder, $alias, $field, $options) {
-                        /* @var $queryBuilder \Doctrine\ORM\QueryBuilder */
-                        if (!isset($options['value']) || empty($options['value']) || false === $options['value']) {
-                            return;
-                        }
-                        $this->joinTranslations($queryBuilder, $alias);
-
-                        foreach ($this->getEmptyFieldPrefixes() as $prefix) {
-                            if (empty($prefix)) {
-                                $queryBuilder->orWhere('translations.content IS NULL');
-                            } else {
-                                $queryBuilder->orWhere('translations.content LIKE :content')->setParameter(
-                                    'content',
-                                    $prefix . '%'
-                                );
-                            }
-
-                        }
-                    },
-                    'field_options' => array(
-                        'required' => true,
-                        'value'    => $this->getNonTranslatedOnly(),
-                    ),
-                    'field_type'    => 'checkbox',
-                )
-            )
+//            ->add(
+//                'show_non_translated_only',
+//                'doctrine_orm_callback',
+//                array
+//                (
+//                    'callback'      => function (ProxyQuery $queryBuilder, $alias, $field, $options) {
+//                        /* @var $queryBuilder \Doctrine\ORM\QueryBuilder */
+//                        if (!isset($options['value']) || empty($options['value']) || false === $options['value']) {
+//                            return;
+//                        }
+//                        $this->joinTranslations($queryBuilder, $alias);
+//
+//                        foreach ($this->getEmptyFieldPrefixes() as $prefix) {
+//                            if (empty($prefix)) {
+//                                $queryBuilder->orWhere('translations.content IS NULL');
+//                            } else {
+//                                $queryBuilder->orWhere('translations.content LIKE :content')->setParameter(
+//                                    'content',
+//                                    $prefix . '%'
+//                                );
+//                            }
+//
+//                        }
+//                    },
+//                    'field_options' => array(
+//                        'required' => true,
+//                        'value'    => $this->getNonTranslatedOnly(),
+//                    ),
+//                    'field_type'    => 'checkbox',
+//                )
+//            )
             ->add('key', 'doctrine_orm_string')
             ->add(
                 'domain',

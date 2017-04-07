@@ -26,7 +26,6 @@ use XMLWriter;
 class TranslationCRUDController extends CRUDController
 {
 
-
     public function importAction(Request $request)
     {
         $form = $this->get('form.factory')->createNamedBuilder('import', 'form',  null, array(
@@ -100,9 +99,9 @@ class TranslationCRUDController extends CRUDController
 
         return $this->render('@FoodApp/Admin/Translation/import_action.html.twig', array(
             'form'           => $form->createView(),
-            'base_template'   => $this->getBaseTemplate(),
-            'admin_pool'      => $this->container->get('sonata.admin.pool'),
-            'blocks'          => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks')
+//            'base_template'   => $this->getBaseTemplate(),
+//            'admin_pool'      => $this->container->get('sonata.admin.pool'),
+//            'blocks'          => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks')
         ));
     }
 

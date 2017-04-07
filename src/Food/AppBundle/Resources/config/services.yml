@@ -223,6 +223,9 @@ services:
           - [setLocale, [%locale%]]
           - [setFieldMap]
 
+
+
+
     sonata.admin.translations:
       class: Food\AppBundle\Admin\ORMTranslationAdmin
       tags:

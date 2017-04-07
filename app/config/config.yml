@@ -375,6 +375,7 @@ sonata_admin:
                       - sonata.admin.blog_category
                       - sonata.admin.blog_post
                       - sonata.admin.translations
+#                      - food_admin_import_export
 #                      - sonata.admin.import_export
                   roles: [ ROLE_ADMIN ]
 #              admin.support:
