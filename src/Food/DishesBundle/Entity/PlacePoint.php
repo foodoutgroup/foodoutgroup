@@ -239,6 +239,14 @@ class PlacePoint
      */
     private $syncUrl;
 
+    /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     **/
+    private $cityId;
+
 //    /**
 //     * @var string
 //     * @ORM\Column(name="sync_format", type="string",  nullable=true)
@@ -587,7 +595,13 @@ class PlacePoint
         if (!$this->getId()) {
             return '';
         }
-        return $this->getAddress().', '.$this->getCity();
+        $buffer = $this->getAddress().', ';
+        if($city = $this->getCityId()) {
+            $buffer = $buffer.$city->getTitle();
+        } else {
+            $buffer = $buffer.$this->getCity().' !';
+        }
+        return $buffer;
     }
 
     public function getToString()
@@ -1684,4 +1698,27 @@ class PlacePoint
     {
         return $this->altEmail2Send;
     }
+
+    /**
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return PlacePoint
+     */
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
+    {
+        $this->cityId = $cityId;
+
+        return $this;
+    }
+    /**
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
+    }
+
 }

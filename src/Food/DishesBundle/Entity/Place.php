@@ -486,6 +486,15 @@ class Place extends Uploadable implements Translatable
     private $useAdminFee;
 
     /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     **/
+    private $cityId;
+
+
+    /**
      * Returns place name
      *
      * @return string
@@ -2270,5 +2279,28 @@ class Place extends Uploadable implements Translatable
     {
         $this->useAdminFee = $useAdminFee;
     }
+
+    /**
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return PlacePoint
+     */
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
+    {
+        $this->cityId = $cityId;
+
+        return $this;
+    }
+    /**
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
+    }
+
 
 }
