@@ -23,7 +23,9 @@ trait OrderDataForNavDecorator
         $vat = $order->getVat()->val(0.0);
         $total = $order->getTotal()->val(0.0);
         $discountTotal = $order->getDiscountSum()->val(0.0);
-        $deliveryTotal = $order->getDeliveryPrice()->val(0.0);
+        $adminFeeTotal = $order->getAdminFee()->val(0.0);
+
+        $deliveryTotal = $order->getDeliveryPrice()->val(0.0) + $adminFeeTotal;
         $foodTotal = $total - $discountTotal - $deliveryTotal;
 
         // ok so now we fill this handy data structure, nothing special
