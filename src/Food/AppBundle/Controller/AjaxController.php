@@ -103,12 +103,13 @@ class AjaxController extends Controller
         } else {
 
             if (isset($respData['message']) && !empty($respData['message'])) {
+                $placeId = is_object($cart) ? $cart->getPlaceId() : null;
 
                 $this->get('food.error_log_service')->saveErrorLog(
                     $this->container->get('request')->getClientIp(),
                     $this->getUser(),
                     $cartSession,
-                    $cart->getPlaceId(),
+                    $placeId,
                     new \DateTime('now'),
                     $currentUrl,
                     'adress_change_find',
