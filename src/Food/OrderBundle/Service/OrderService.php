@@ -3733,7 +3733,7 @@ class OrderService extends ContainerAware
             $translator = $this->container->get('translator');
             $translator->trans('order.form.errors.customeraddr');
 
-            $this->get('food.error_log_service')->saveErrorLog(
+            $this->container->get('food.error_log_service')->saveErrorLog(
                 $this->container->get('request')->getClientIp(),
                 $this->getUser(),
                 $this->container->get('food.cart')->getSessionId(),
