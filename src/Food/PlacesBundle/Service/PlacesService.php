@@ -923,4 +923,13 @@ class PlacesService extends ContainerAware
         }
         return null;
     }
+
+    public function getCityName($city){
+        $country = $this->container->getParameter('country');
+        if($country == "LV" && $city == 'Rīga'){
+            $city = 'Rīga un pierīga';
+        }
+
+        return $city;
+    }
 }
