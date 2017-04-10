@@ -156,6 +156,18 @@ class OrderService extends ContainerAware
         $basket = $em->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($request->get('basket_id'));
 
         $place = $basket->getPlaceId();
+
+        if (strpos($place->getDeliveryOptions(),$serviceVar['type']) === false) {
+            throw new ApiException(
+                'Coupon for delivery',
+                404,
+                [
+                    'error'       => 'Chosen delivery option does not match restaurants delivery',
+                    'description' => $this->container->get('translator')->trans('general.coupon.only_delivery')
+                ]
+            );
+        }
+
         $placeService = $this->container->get('food.places');
         $adminFee = $placeService->getAdminFee($place);
         $useAdminFee = $placeService->useAdminFee($place);
