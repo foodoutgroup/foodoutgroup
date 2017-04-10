@@ -4,6 +4,7 @@ namespace Api\V2Bundle\Service;
 
 use Api\BaseBundle\Common\JsonRequest;
 use Api\BaseBundle\Exceptions\ApiException;
+use Aws\Route53\Enum\Status;
 use Food\DishesBundle\Entity\DishOption;
 use Food\DishesBundle\Entity\DishSize;
 use Food\DishesBundle\Entity\Place;
@@ -67,7 +68,6 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
             if (!isset($address['city']) || !isset($address['street']) || !isset($address['house_number'])) {
                 throw new ApiException('Address  must have city, street and house_number parameters (flat_number - optional)'); // todo
             }
-
             $order->setPaymentMethod("local.card");
             $addressBuffer = $address['street'] . ' ' . $address['house_number'] . (!empty($address['flat_number']) ? '-' . $address['flat_number'] . '' : '');
             $location = $this->container->get('food.googlegis')->groupData($addressBuffer, $address['city']);
@@ -75,8 +75,8 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
             $placePoint = $doctrine->getRepository('FoodDishesBundle:PlacePoint')->find($id);
             $dp = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getDeliveryPriceForPlacePoint($place, $placePoint, $location);
             $order->setDeliveryPrice($dp);
-
         }
+        $order->setPaymentStatus(\Food\OrderBundle\Service\OrderService::$paymentStatusComplete);
 
         $deliveryTotal = $deliveryPrice = $order->getDeliveryPrice();
 
