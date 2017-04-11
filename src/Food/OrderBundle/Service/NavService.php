@@ -478,7 +478,8 @@ class NavService extends ContainerAware
             'Amount'          => 0,
             'Discount Amount' => 0,
             'Payment'         => 0,
-            'Value'           => "''"
+            'Value'           => "''",
+            'Discount No_'    => "''"
         ];
 
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
@@ -516,7 +517,8 @@ class NavService extends ContainerAware
             'Amount'          => $devPrice,
             'Discount Amount' => 0,
             'Payment'         => $devPrice,
-            'Value'           => "''"
+            'Value'           => "''",
+            'Discount No_'    => "''"
         ];
 
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
@@ -650,7 +652,8 @@ class NavService extends ContainerAware
             'Amount'          => $amountForInsert, // $detail->getPrice() * $detail->getQuantity(),// @todo test the price. Kaip gula. Total ar ne.
             'Discount Amount' => "-" . $discountAmount,
             'Payment'         => $paymentAmount, //$detail->getPrice() * $detail->getQuantity(),
-            'Value'           => "''"
+            'Value'           => "''",
+            'Discount No_'    => "''"
         ];
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
@@ -682,7 +685,8 @@ class NavService extends ContainerAware
                     'Amount'          => ($opt->getDishOptionId()->getFirstLevel() ? ($opt->getOrderDetail()->getQuantity() * $opt->getDishOptionId()->getPrice()) : 0),
                     'Discount Amount' => 0,
                     'Payment'         => ($opt->getDishOptionId()->getFirstLevel() ? ($opt->getOrderDetail()->getQuantity() * $opt->getDishOptionId()->getPrice()) : 0),
-                    'Value'           => "''"
+                    'Value'           => "''",
+                    'Discount No_'    => "''"
                 ];
                 $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
                 $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
