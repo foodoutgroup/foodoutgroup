@@ -3094,6 +3094,22 @@
                  <source>admin.error.debug</source>
                  <target>Debug</target>
             </trans-unit>
+            <trans-unit id="admin.phone.country">
+                <source>admin.phone.country</source>
+                <target>Country</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.code">
+                <source>admin.phone.code</source>
+                <target>Country code</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.active">
+                <source>admin.phone.active</source>
+                <target>Active</target>
+            </trans-unit>
+            <trans-unit id="admin.phone_codes">
+                <source>admin.phone_codes</source>
+                <target>Phone codes</target>
+            </trans-unit>
 
         </body>
     </file>

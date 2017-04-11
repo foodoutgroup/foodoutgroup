@@ -77,8 +77,8 @@ class OrderService extends ContainerAware
         'paysera' => 'food.paysera_biller',
         'swedbank-gateway' => 'food.swedbank_gateway_biller',
         'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller',
-        'seb-banklink'                 => 'food.seb_banklink_biller',
-        'nordea-banklink'              => 'food.nordea_banklink_biller',
+        'seb-banklink' => 'food.seb_banklink_biller',
+        'nordea-banklink' => 'food.nordea_banklink_biller',
         'sandbox' => 'food.sandbox_biller',
     ];
 
@@ -673,7 +673,7 @@ class OrderService extends ContainerAware
             'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
             'invoice' => $invoice,
             'beta_kodas' => $betaCode,
-            'admin_fee'  => $this->getOrder()->getAdminFee(),
+            'admin_fee' => $this->getOrder()->getAdminFee(),
         ];
 
 
@@ -1576,11 +1576,10 @@ class OrderService extends ContainerAware
         //~ }
 
 
-        $adminFee    = $placesService->getAdminFee($placeObject);
+        $adminFee = $placesService->getAdminFee($placeObject);
         $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
 
-        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel())
-        {
+        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel()) {
             $useAdminFee = false;
         }
 
@@ -3422,8 +3421,7 @@ class OrderService extends ContainerAware
         }
 
 
-        if ($coupon || ($takeAway && !$place->getMinimalOnSelfDel()) )
-        {
+        if ($coupon || ($takeAway && !$place->getMinimalOnSelfDel())) {
             $useAdminFee = false;
         }
 
@@ -3488,7 +3486,7 @@ class OrderService extends ContainerAware
                 }
             }
 
-            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false  && !$useAdminFee) {
+            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false && !$useAdminFee) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }
@@ -3505,8 +3503,8 @@ class OrderService extends ContainerAware
 
                 foreach ($debugDishOptions as $option) {
 
-                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['name'] =  $option->getDishOptionId()->getName();
-                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['price'] =  $option->getDishOptionId()->getPrice();
+                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['name'] = $option->getDishOptionId()->getName();
+                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['price'] = $option->getDishOptionId()->getPrice();
                 }
             }
 
@@ -3652,29 +3650,15 @@ class OrderService extends ContainerAware
 
         // Validate das phone number :)
         if (0 != strlen($phone)) {
-            $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
-            $country = strtoupper($this->container->getParameter('country'));
 
-            try {
-                $numberProto = $phoneUtil->parse($phone, $country);
-            } catch (\libphonenumber\NumberParseException $e) {
-                // no need for exception
-            }
+            $validation = $this->container->get('food.phones_code_service')->validatePhoneNumber($phone, $request->get('country'));
 
-            if (isset($numberProto)) {
-                $numberType = $phoneUtil->getNumberType($numberProto);
-                $isValid = $phoneUtil->isValidNumber($numberProto);
-            } else {
-                $isValid = false;
-            }
-
-            if (!$isValid) {
-                $formErrors[] = 'order.form.errors.customerphone_format';
-            } else if ($isValid && !in_array($numberType, [\libphonenumber\PhoneNumberType::MOBILE, \libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE])) {
-                $formErrors[] = 'order.form.errors.customerphone_not_mobile';
-            } else {
+            if($validation === true){
                 $phonePass = true;
+            }else{
+                $formErrors = $validation;
             }
+
         }
 
         // Company field validation
@@ -3733,17 +3717,17 @@ class OrderService extends ContainerAware
             $translator = $this->container->get('translator');
             $translator->trans('order.form.errors.customeraddr');
 
-            $this->get('food.error_log_service')->saveErrorLog(
-                $this->container->get('request')->getClientIp(),
-                $this->getUser(),
-                $this->container->get('food.cart')->getSessionId(),
-                $place,
-                new \DateTime('now'),
-                $request->headers->get('referer'),
-                'checkout_coupon_page',
-                implode(',', $formErrors),
-                serialize($request) .'<br><br>'. serialize($debugCartInfo)
-            );
+//            $this->get('food.error_log_service')->saveErrorLog(
+//                $this->container->get('request')->getClientIp(),
+//                $this->getUser(),
+//                $this->container->get('food.cart')->getSessionId(),
+//                $place,
+//                new \DateTime('now'),
+//                $request->headers->get('referer'),
+//                'checkout_coupon_page',
+//                implode(',', $formErrors),
+//                serialize($request) .'<br><br>'. serialize($debugCartInfo)
+//            );
         }
     }
 
@@ -4594,13 +4578,12 @@ class OrderService extends ContainerAware
                 ->trans(
                     $keyword,
                     [
-                        'order_id'   => $order->getId(),
+                        'order_id' => $order->getId(),
                         'delay_time' => $diffInMinutes
                     ],
                     null,
                     $order->getLocale()
-                )
-            ;
+                );
 
             $userEmail = $order->getOrderExtra()->getEmail();
             $message = $smsService->createMessage($sender, $recipient, $text, $order);
@@ -4611,8 +4594,7 @@ class OrderService extends ContainerAware
 
             $message = \Swift_Message::newInstance()
                 ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
-                ->setFrom('info@' . $domain)
-            ;
+                ->setFrom('info@' . $domain);
 
             $message->addTo($userEmail);
             $message->setBody($text);

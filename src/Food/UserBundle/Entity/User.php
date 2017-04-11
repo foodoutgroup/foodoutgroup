@@ -215,6 +215,12 @@ class User extends BaseUser
      **/
     private $paramLog;
 
+    /**
+     * @var string
+     * @ORM\Column(name="country", type="string", nullable=true)
+     **/
+    private $countryCode;
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
@@ -1124,5 +1130,61 @@ class User extends BaseUser
     public function getParamLog()
     {
         return $this->paramLog;
+    }
+
+    /**
+     * Set countryCode
+     *
+     * @param string $countryCode
+     * @return User
+     */
+    public function setCountryCode($countryCode)
+    {
+        $this->countryCode = $countryCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get countryCode
+     *
+     * @return string 
+     */
+    public function getCountryCode()
+    {
+        return $this->countryCode;
+    }
+
+    /**
+     * Add orderStatusLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
+     * @return User
+     */
+    public function addOrderStatusLog(\Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog)
+    {
+        $this->orderStatusLog[] = $orderStatusLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove orderStatusLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
+     */
+    public function removeOrderStatusLog(\Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog)
+    {
+        $this->orderStatusLog->removeElement($orderStatusLog);
+    }
+
+    /**
+     * Get orderStatusLog
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrderStatusLog()
+    {
+        return $this->orderStatusLog;
     }
 }

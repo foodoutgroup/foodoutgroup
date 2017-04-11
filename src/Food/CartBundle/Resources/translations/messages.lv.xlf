@@ -88,7 +88,7 @@
             </trans-unit>
             <trans-unit id="72ac47fdc9d8610d13cc86b4dd35e24f" resname="cart.checkout.phone_placeholder">
                 <source>cart.checkout.phone_placeholder</source>
-                <target>37160000000</target>
+                <target>60000000</target>
             </trans-unit>
             <trans-unit id="cart.checkout.delivery_date" resname="cart.checkout.delivery_date">
                 <source>cart.checkout.delivery_date</source>
@@ -294,7 +294,7 @@ LV-1046</target>
             </trans-unit>
             <trans-unit id="23071ab407fc9347e2b37d3ebe12758f" resname="order.form.errors.customerphone_format">
                 <source>order.form.errors.customerphone_format</source>
-                <target>Norādiet mob. tālruņa numuru formātā 37161234567</target>
+                <target>Norādiet mob. tālruņa numuru formātā 61234567</target>
             </trans-unit>
             <trans-unit id="order.form.errors.dishLimit" resname="order.form.errors.dishLimit">
                 <source>order.form.errors.dishLimit</source>
