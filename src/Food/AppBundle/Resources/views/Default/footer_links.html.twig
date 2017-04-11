@@ -1,4 +1,4 @@
-{# Apatine puslapio raudona juosta su nuorodomis #}
+ {#Apatine puslapio raudona juosta su nuorodomis#}
 <div class="site-footer">
     <div class="site-block clearfix footer-top">
         <div class="col col-1">
@@ -80,21 +80,21 @@
         </div>
         {% endif %}
         <div class="col col-4">
-            {#
+
             <img alt="{{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food_small.png') }}" />
             <p class="copyrights">&copy; foodout.lt</p>
-            #}
+
             {% if show_is_social %}
             <h5>{% trans %}general.footer.social{% endtrans %}</h5>
             <div class="bottom-social clerafix">
                 {% if site_country == 'LT' %}
                     <a href="https://www.facebook.com/foodout.lt" target="_blank"><img src="//{{ cloudfront_url }}/bundles/foodapp/images/fb-ico.png"></a>
-                    {# <a href="#"><img src="/bundles/foodapp/images/gp-ico.png"></a>#}
+                     <a href="#"><img src="/bundles/foodapp/images/gp-ico.png"></a>
                     <a href="http://www.youtube.com/channel/UC64X-gVnB2NXg1MeYx2oljw" target="_BLANK"><img src="//{{ cloudfront_url }}/bundles/foodapp/images/yt-ico.png"></a></div>
                 {% elseif site_country == 'LV' %}
                     <a href="https://twitter.com/LvFoodout" target="_blank"><img src="//{{ cloudfront_url }}/bundles/foodapp/images/tw-ico.png"></a>
                     <a href="https://www.facebook.com/foodout.lv" target="_blank"><img src="//{{ cloudfront_url }}/bundles/foodapp/images/fb-ico.png"></a>
-                    {# <a href="#"><img src="/bundles/foodapp/images/gp-ico.png"></a>#}
+                     <a href="#"><img src="/bundles/foodapp/images/gp-ico.png"></a>
                     <a href="https://www.youtube.com/channel/UCg5hgGVUwdmrmRe9zGwJjHA" target="_BLANK"><img src="//{{ cloudfront_url }}/bundles/foodapp/images/yt-ico.png"></a></div>
                 {% elseif site_country == 'EE' %}
                     <span class="phone"><a href="callto:{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}" title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>

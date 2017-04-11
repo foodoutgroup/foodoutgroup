@@ -104,15 +104,18 @@ class StaticService {
             }
         }
 
+
         /**
          * $qb Doctrine\ORM\EntityManager
          */
         $qb = $this->em()->getRepository('FoodAppBundle:StaticContent')
             ->createQueryBuilder('s');
 
-        $pagesQueryBuilder = $qb->where('s.active = 1')
-            ->andWhere($qb->expr()->notIn('s.id',  $excludePageCollection))
-            ->orderBy('s.order', 'ASC')
+        $pagesQueryBuilder = $qb->where('s.active = 1');
+        if (count($excludePageCollection)) {
+            $pagesQueryBuilder->andWhere($qb->expr()->notIn('s.id', $excludePageCollection));
+        }
+        $pagesQueryBuilder->orderBy('s.order', 'ASC')
             ->setMaxResults($limit);
 
         if ($onlyVisible) {
