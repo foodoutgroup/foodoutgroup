@@ -36,13 +36,14 @@ class DefaultController extends Controller
 
             if (!empty($defaultUserAddress)) {
                 $addressData = $miscUtils->parseAddress($defaultUserAddress->getAddress());
-                $formDefaults = array(
-                    'city_id' => $defaultUserAddress->getCityId()->getId(),
+
+                $cityObj = $defaultUserAddress->getCityId();
+                $formDefaults = [
+                    'city_id' => $cityObj ? $cityObj->getId() : null,
                     'address' => $addressData['street'],
                     'house' => $addressData['house'],
                     'flat' => $addressData['flat'],
-
-                );
+                ];
             }
         }
 
@@ -76,16 +77,14 @@ class DefaultController extends Controller
         $topRatedPlaces = $this->get('food.places')->getTopRatedPlaces(12);
         $staticPages = $this->get('food.static')->getActivePages(10);
 
-
         $cityService = $this->get('food.city_service');
 
         return $this->render(
-            'FoodAppBundle:Default:footer_links.html.twig',
-            array(
+            'FoodAppBundle:Default:footer_links.html.twig', [
                 'topRatedPlaces' => $topRatedPlaces,
                 'staticPages' => $staticPages,
                 'cities' => $cityService->getActiveCity()
-            )
+            ]
         );
     }
 
@@ -100,7 +99,7 @@ class DefaultController extends Controller
         switch ($request->getMethod()) {
             case "POST":
                 $this->get('food.newsletter')->subscribe($request->get('newsletter_email'), $request->getLocale());
-                return $this->redirect($this->get('slug')->generateURL('food_newsletter_subscribe', 'food_newsletter_subscribe_locale'), 302);
+                return $this->redirect($this->get('slug')->generateURL('food_newsletter_subscribe'), 302);
             default:
                 return $this->render('FoodAppBundle:Default:newsletter_subscription.html.twig');
 

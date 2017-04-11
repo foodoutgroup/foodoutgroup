@@ -144,10 +144,12 @@ class SlugService
             $url = $this->router->generate($slug, $params);
         }
 
+//        die($url);
+
         return $url;
     }
 
-    public function getPath($itemId, $type)
+    public function getPath($itemId, $type, $lang = false)
     {
         $locale = $this->getLocale();
 
@@ -156,7 +158,7 @@ class SlugService
         $params = ['slug' => $urlSlug];
 
         $url = 'error';
-        if ($locale != $this->defaultLocale) {
+        if ($locale != $this->defaultLocale && $lang) {
             $slug = 'food_slug_lang';
             $params['_locale'] = $locale;
             $url = $locale . "/" . $url;
@@ -166,23 +168,10 @@ class SlugService
 
 //        if ($urlSlug && (isset($matches[0]) && count($matches[0]))) {
         if ($urlSlug) {
-            $url = $this->router->generate($slug, $params, UrlGeneratorInterface::RELATIVE_PATH);
+            $url = str_replace(["/app_dev.php/"], "", $this->router->generate($slug, $params, UrlGeneratorInterface::ABSOLUTE_PATH));
         }
 
         return $url;
-    }
-
-    public function generateURL($route, $route_locale = null, $params = [])
-    {
-
-        $locale = $this->getLocale();
-
-        if ($locale != $this->defaultLocale) {
-            $params['_locale'] = $locale;
-            $route = ($route_locale == null ? $route . '_locale' : $route_locale);
-        }
-
-        return $this->router->generate($route, $params);
     }
 
     public function ajaxURL($route, $params = []) {
@@ -192,15 +181,17 @@ class SlugService
         return $this->router->generate($route, $params);
     }
 
-    public function generatePath($route, $route_locale = null, $params = [])
+    public function generateURL($route, $params = [])
     {
-        $locale = $this->getLocale();
 
-        if ($locale != $this->defaultLocale) {
-            $params['_locale'] = $locale;
-            $route = ($route_locale == null ? $route . '_locale' : $route_locale);
-        }
+        $params['_locale'] = $this->getLocale();
+        return $this->router->generate($route, $params);
+    }
 
+
+    public function generatePath($route, $params = [])
+    {
+        $params['_locale'] = $this->getLocale();
         return $this->router->generate($route, $params);
     }
 

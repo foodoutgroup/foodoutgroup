@@ -1,0 +1,25 @@
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+food_user_reset_password:
+    resource: "@FoodUserBundle/Controller/ResetPasswordController.php"
+    type: annotation
+    prefix: /resetting
+
+
+food_cart:
+    resource: "@FoodCartBundle/Resources/config/routing.yml"
+    prefix:   /cart
+
+food_ajax:
+    resource: "@FoodAppBundle/Resources/config/routing_ajax.yml"
+    prefix:   /ajax
+
+food_newsletter_subscribe:
+    path: /newsletter/subscription
+    defaults: { _controller: FoodAppBundle:Default:newsletterSubscription}

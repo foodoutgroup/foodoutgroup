@@ -17,7 +17,7 @@ fos_user_security:
 
 food_lang_homepage:
     path: /{_locale}
-    defaults: { _controller: FoodAppBundle:Default:index, _locale: %kernel.default_locale%}
+    defaults: { _controller: FoodAppBundle:Default:index, _locale: %kernel.default_locale% }
     requirements:
       _locale:  "[a-z]{2}"
 
@@ -63,75 +63,11 @@ admin_routing:
     defaults:
           _locale: %kernel.default_locale%
 
-# other
-food_sitemap:
-    pattern: /sitemap.xml
-    defaults: { _controller: FoodAppBundle:Default:sitemap}
-    requirements:
-      _method:  GET
-
-fos_user_register:
-    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
-    prefix: /{_locale}/register
-
-fos_user_resetting:
-    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
-    prefix: /{_locale}/resetting
-
-fos_user_change_password:
-    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
-    prefix: /{_locale}/change-password
-
-food_user_reset_password:
-    resource: "@FoodUserBundle/Controller/ResetPasswordController.php"
-    type: annotation
-    prefix: /resetting
-
-lexik_translation_edition:
-    resource: "@LexikTranslationBundle/Resources/config/routing.yml"
-    prefix:   /trans
+fos_user:
+    resource: "@FoodAppBundle/Resources/config/routing_user.yml"
+    prefix: /{_locale}/user/
+    defaults:
+            _locale: %kernel.default_locale%
 
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
-
-#    prefix:   /{_locale}/
-#    requirements:
-#        _locale:  "[a-z]{2}"
-
-#food_sms:
-#    resource: "@FoodSmsBundle/Resources/config/routing.yml"
-#    prefix:   /
-#
-#food_places:
-#    resource: "@FoodPlacesBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
-#
-#food_order:
-#    resource: "@FoodOrderBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
-#
-#food_cart:
-#    resource: "@FoodCartBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
-
-#food_app:
-#    resource: "@FoodAppBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
-#
-#food_dishes:
-#    resource: "@FoodDishesBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
-#
-#food_call_center:
-#    resource: "@CallCenterBundle/Controller/"
-#    type:     annotation
-#    prefix:   /
-
-food_cart:
-    resource: "@FoodCartBundle/Resources/config/routing.yml"
-    prefix:   /cart

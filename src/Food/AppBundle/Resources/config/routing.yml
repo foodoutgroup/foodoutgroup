@@ -1,13 +1,3 @@
-food_ajax:
-    resource: "@FoodAppBundle/Resources/config/routing_ajax.yml"
-    prefix:   /ajax/{_locale}
-    defaults: { _locale: %kernel.default_locale% }
-    requirements:
-      _locale:  "[a-z]{2}"
-
-#food_places_lt_recommended:
-#    path: /recommended/
-#    defaults: { _controller: FoodPlacesBundle:Default:index, recommended: 1}
 
 food_slug_lang:
     path:  /{_locale}/{slug}
@@ -15,27 +5,12 @@ food_slug_lang:
     requirements:
         slug : %slug_regex%
         _locale: "^[a-z]{2}"
-food_admin_assign_dispatcher:
-    path: /admin/dispatcher/assign-dispacher/
-    defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignDispatcher}
-    options:
-        expose: true
-    requirements:
-          _method:  POST
+
 food_slug:
     path:  /{slug}
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale%  }
     requirements:
         slug : %slug_regex%
-
-
-food_newsletter_subscribe:
-    path: /newsletter/subscription/
-    defaults: { _controller: FoodAppBundle:Default:newsletterSubscription}
-
-food_newsletter_subscribe_locale:
-    path: /{_locale}/newsletter/subscription/
-    defaults: { _controller: FoodAppBundle:Default:newsletterSubscription, _locale: %kernel.default_locale% }
 
 food_order_tracking:
     path: /track/{hash}/
@@ -47,15 +22,12 @@ food_order_status_check:
     options:
         expose: true
 
+
 food_review_create:
     path: /place/review/{id}
     defaults: { _controller: FoodDishesBundle:Place:reviewCreate }
     requirements:
         _method: POST
-
-food_test_init:
-    resource: "@FoodAppBundle/Resources/config/routing_test.yml"
-    prefix: /test
 
 food_order_cnt:
     resource: "@FoodOrderBundle/Resources/config/routing.yml"

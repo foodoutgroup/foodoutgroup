@@ -54,6 +54,18 @@ _sonata_admin:
     requirements:
         _locale:  "[a-z]{2}"
 
+food_admin_assign_dispatcher:
+    path: /dispatcher/assign-dispacher/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignDispatcher}
+    options:
+        expose: true
+    requirements:
+          method:  POST
+
+lexik_translation_edition:
+    resource: "@LexikTranslationBundle/Resources/config/routing.yml"
+    prefix:   /trans
+
 food_admin_settings:
    path: /settings
    defaults: { _controller: FoodAppBundle:Admin/Settings:index }

@@ -5,7 +5,7 @@
             {% for item in list %}
                 <li>
                     <label class="custom-checkbox"><a href="{{  slug.getUrl(item.id, 'kitchen') }}" onclick="return false;"> {{ item.name }}</a><span class="count">{{ item.placeCount }} </span>
-                        <input type="checkbox" name="kitchens[]" data-slug="{{ slug.getUrl(item.id, 'kitchen',true) }}" data-name="{{ item.name }}" value="{{ item.id }}" {% if item.id in selected_kitchens %}checked="checked"{% endif %}>
+                        <input type="checkbox" name="kitchens[]" data-slug="{{ slug.getPath(item.id, 'kitchen',false) }}" data-name="{{ item.name }}" value="{{ item.id }}" {% if item.id in selected_kitchens %}checked="checked"{% endif %}>
                     </label>
                 </li>
             {% endfor %}

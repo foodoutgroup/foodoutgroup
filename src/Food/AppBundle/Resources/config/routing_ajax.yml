@@ -1,7 +1,3 @@
-food_cart:
-    resource: "@FoodCartBundle/Resources/config/routing.yml"
-    prefix:   /cart
-
 food_ajax_dish:
     path: /dish/add/{dish}
     defaults: { _controller: FoodDishesBundle:Dish:getDish, dish: ~ ,  _locale: %kernel.default_locale% }
@@ -15,7 +11,7 @@ food_ajax_remove_dish:
     defaults: { _controller: FoodDishesBundle:Dish:removeDishInCart, dish: ~, cartId: ~, inCart: 0}
 
 food_ajax:
-    path: /{action}/
+    path: /{action}
     defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
     options:
         expose: true
@@ -33,11 +29,11 @@ food_places:
     defaults: { _controller: FoodPlacesBundle:City:index }
 
 food_places_filter:
-    path: /places/filter/
+    path: /places/filter
     defaults: { _controller: FoodPlacesBundle:City:list }
 
 food_kitchens_filter:
-    path: /kitchens/filter/
+    path: /kitchens/filter
     defaults: { _controller: FoodDishesBundle:Kitchen:list }
     options:
         expose: true

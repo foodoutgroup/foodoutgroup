@@ -2,7 +2,7 @@
 namespace Food\AppBundle\Service;
 
 use Food\AppBundle\Entity\Subscribers;
-
+use Food\AppBundle\Traits;
 
 class NewsletterService {
     use Traits\Service;
