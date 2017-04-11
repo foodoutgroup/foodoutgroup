@@ -914,4 +914,34 @@ class PlacesService extends ContainerAware
         }
         return null;
     }
+
+    public function useAdminFee(Place $place)
+    {
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        if (is_object($user)){
+            if ($user->getIsBussinesClient() ) {
+                return false;
+            }
+        }
+        $dontUseFee = !$place->isUseAdminFee();
+        if ($dontUseFee === false)
+        {
+            return false;
+        }
+        else{
+            return (bool) $this->container->get('food.app.utils.misc')->getParam('use_admin_fee_globally'); //Globally set to use fee?
+        }
+        return (bool)$dontUseFee;
+    }
+    public function getAdminFee(Place $place)
+    {
+        $feeSize = $place->getAdminFee();
+        if (!$feeSize)
+        {
+            $feeSize = $this->container->get('food.app.utils.misc')->getParam('admin_fee_size');
+        }
+        return floatval(str_replace(',', '.',  $feeSize));
+    }
+
+
 }

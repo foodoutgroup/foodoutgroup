@@ -20,7 +20,9 @@ class SettingsController extends CoreController
         'page_banned',
         'page_email_banned',
         'page_help',
-        'page_best_offer'
+        'page_best_offer',
+        'use_admin_fee_globally',
+        'admin_fee_size',
     ];
 
     public function indexAction(Request $request)
@@ -92,6 +94,15 @@ class SettingsController extends CoreController
         $form->add('page_best_offer', 'choice', [
             'label' => 'Best offer page',
             'choices' => $pageCollection
+        ]);
+
+        $form->add('use_admin_fee_globally', 'choice', [
+            'label' => 'Use admin fee globaly',
+            'choices' => ['No', 'Yes']
+        ]);
+
+        $form->add('admin_fee_size', 'text', [
+            'label' => 'Admin fee size',
         ]);
 
 
