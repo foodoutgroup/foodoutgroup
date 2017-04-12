@@ -64,7 +64,8 @@ class PlaceController extends Controller
 
         $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->findOneBy(['id' => $userLocationData['city_id']]);
         if($cityObj == null) {
-            throw new NotFoundHttpException('City not found');
+            $cityCollection = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getCities($place);
+            $cityObj = $cityCollection[0];
         }
 
         $slug = $this->get('slug');
