@@ -452,7 +452,7 @@ class OrderService extends ContainerAware
             }
         } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
             $total_cart = $cartService->getCartTotal($list/*, $place*/);
-            if ($total_cart < $place->getCartMinimum() && !$useAdminFee) {
+            if (abs(($place->getCartMinimum() - $total_cart) / $total_cart) >= 0.00001 && !$useAdminFee) {
                 throw new ApiException(
                     'Order Too Small',
                     0,

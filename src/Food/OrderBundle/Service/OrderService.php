@@ -1588,7 +1588,8 @@ class OrderService extends ContainerAware
             $adminFee = 0;
         }
 
-        if ($useAdminFee && $sumTotal < $cartFromMin) {
+
+        if ($useAdminFee && abs(($cartFromMin - $sumTotal) / $sumTotal) >= 0.00001) {
             $sumTotal += $adminFee;
         } else {
             $useAdminFee = false;
