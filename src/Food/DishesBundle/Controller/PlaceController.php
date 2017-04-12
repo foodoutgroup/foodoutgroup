@@ -2,6 +2,7 @@
 
 namespace Food\DishesBundle\Controller;
 
+use Food\AppBundle\Entity\Slug;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,19 +13,15 @@ use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlaceReviews;
 use Food\UserBundle\Entity\User;
 use Food\AppBundle\Utils\Misc;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PlaceController extends Controller
 {
     public function indexAction($id, $slug, Request $request, $oldFriendIsHere = false)
     {
 
-
         $session = $this->get('session');
-
-
-        $isCallcenter = $session->get('isCallcenter');
-
-        if ($isCallcenter) {
+        if ($session->get('isCallcenter')) {
             $session->set('isCallcenter', false);
         }
 
@@ -32,12 +29,6 @@ class PlaceController extends Controller
         if (empty($id)) {
             return $this->redirect($this->get('slug')->toHomepage(), 307);
         }
-
-
-        if (!empty($city)) {
-            $this->get('food.googlegis')->setCityOnlyToSession($city);
-        }
-
 
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($id);
 
@@ -58,16 +49,11 @@ class PlaceController extends Controller
         if ($cookies->has('restaurant_menu_layout')) {
             $listType = $cookies->get('restaurant_menu_layout');
         }
-        /**
-         * if (!empty($categoryId)) {
-         * $activeCategory = $categoryRepo->find($categoryId);
-         * } else {
-         * $activeCategory = $categoryList[0];
-         * }
-         */
+
         $wasHere = $this->wasHere($place, $this->user());
         $alreadyWrote = $this->alreadyWrote($place, $this->user());
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
+        $userLocationData = $this->get('food.googlegis')->getLocationFromSession();
 
         $breadcrumbData = array(
             'city' => '',
@@ -76,44 +62,37 @@ class PlaceController extends Controller
             'kitchen_url' => ''
         );
 
-        $locationData = $this->get('food.googlegis')->getLocationFromSession();
+        $cityObj = null;
 
-
-        $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
-
-        // todo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! $placeCities neranda
-
-
-        if (!isset($locationData['city_id'])) {
+        // jei neranda CITY tai miestas buna pirmas is cache
+        if (!isset($userLocationData['city_id'])) {
+            die('a');
             $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
-            $locationData['city_id'] = $placeCities[0]->getId();
-
+            if(!isset($placeCities[0])) {
+                $userLocationData['city_id'] = $placeCities[0]->getId();
+                $cityObj = $placeCities[0];
+            }
+        } else {
+            $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->findOneBy(['id' => $userLocationData['city_id']]);
         }
 
-        if (isset($locationData['city_id'])) {
-
-            if (!$this->get('food.places')->isPlaceDeliversToCity($place, $locationData['city_id'])) {
-                $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
-                $locationData['city_id'] = $placeCities[0];
-
-            }
-
-
-            $cityInfo = $this->get('food.city_service')->getCityInfo($locationData['city_id']);
-
-            if (!empty($cityInfo)) {
-                $breadcrumbData = array_merge($breadcrumbData, $cityInfo);
-            }
-
-            $kitchens = $place->getKitchens();
-
-            if (!empty($kitchens) && $kitchens->count() > 0) {
-                $kitchen = $kitchens->first();
-                $breadcrumbData['kitchen'] = $kitchen->getName();
-                $kitchenSlug = $this->get('food.dishes.utils.slug')->getSlugByItem($kitchen->getId(), 'kitchen');
-                $breadcrumbData['kitchen_url'] = $kitchenSlug;
-            }
+        if($cityObj == null) {
+            throw new NotFoundHttpException('City not found');
         }
+
+        $slug = $this->get('slug');
+
+        $breadcrumbData['city'] = $cityObj->getTitle();
+        $breadcrumbData['city_url'] = $slug->getUrl($cityObj->getId(), Slug::TYPE_CITY);
+
+        $kitchens = $place->getKitchens();
+        if (!empty($kitchens) && $kitchens->count() > 0) {
+            $kitchen = $kitchens->first();
+            $breadcrumbData['kitchen'] = $kitchen->getName();
+            $kitchenSlug = $slug->getPath($kitchen->getId(), 'kitchen');
+            $breadcrumbData['kitchen_url'] = $kitchenSlug;
+        }
+
 
         $current_url = $request->getUri();
 
