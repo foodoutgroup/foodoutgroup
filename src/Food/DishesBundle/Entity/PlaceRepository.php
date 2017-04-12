@@ -623,7 +623,7 @@ class PlaceRepository extends EntityRepository
 
     /**
      * @param Place $place
-     *
+     * @deprecated from 2017-04-12
      * @return array
      */
     public function getCities(Place $place)

@@ -781,17 +781,9 @@ class PlacesService extends ContainerAware
      *
      * @return bool
      */
-    public function isPlaceDeliversToCity(Place $place, $city)
+    public function isPlaceDeliversToCity(Place $place, $cityId)
     {
-        $cities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
-
-        $cityArr = array();
-
-        foreach($cities as $key => $value){
-            $cityArr[$key] =  $value->getId();
-        }
-
-        return in_array($city, $cityArr);
+       return $this->container->get('doctrine')->getRepository('FoodDishesBundle:PlacePoint')->isDeliverToCity($place, $cityId);
     }
 
     /**
