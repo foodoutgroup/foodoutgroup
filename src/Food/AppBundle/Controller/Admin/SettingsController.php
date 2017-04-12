@@ -29,7 +29,8 @@ class SettingsController extends CoreController
         'possible_delivery_delay',
         'late_time_to_delivery',
         'sf_next_number',
-        'footer_scripts'
+        'footer_scripts',
+        'extra_group',
     ];
 
     public function indexAction(Request $request)
@@ -175,16 +176,22 @@ class SettingsController extends CoreController
             'attr' => ['style' => 'width:100%;', 'rows' => 20]
         ]);
 
+        $form->add('extra_group', 'choice', [
+            'choices' => ['Ne', 'Taip'],
+            'required' => false
+        ]);
+
+
+        foreach ($this->keywordMapCollection as $keyword) {
+            if(!$form->has($keyword)) {
+                $form->add($keyword, 'text', ['required' => false]);
+            }
+        }
 
         $form->add('submit', 'submit', ['label' => 'Update', 'attr' => ['class' => 'btn btn-primary']]);
 //        $form->add('sex', 'sonata_block_service_choice');
 
 
-        foreach ($this->keywordMapCollection as $keyword) {
-            if(!$form->has($keyword)) {
-                throw new \Exception('Field '.$keyword.' not found at settings list');
-            }
-        }
 
     }
 

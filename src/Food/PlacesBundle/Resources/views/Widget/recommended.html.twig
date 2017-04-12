@@ -4,7 +4,8 @@
 <div class="items-list clearfix recommended_list">
 
     {% for place in places %}
-        <div class="items-list-col{{ loop.index%2 ? '' : ' even' }}">
+        {# todo: MULTI-L FIX THIS HARD CODE#}
+        <div class="items-list-col{{ loop.index % 2 ? '' : ' even' }}">
             {#{% if site_country == 'LT' and not city and place.id in [63, 85, 142, 302, 333] %}#}
             {#<a href="{{ path('food_1822_cili') }}" class="restoran-item">#}
             {#{% elseif site_country == 'LT' and not city and place.id in [67, 105, 159, 160] %}#}
@@ -14,8 +15,6 @@
             {#{% else %}#}
             {#<a href="{{ path('food_slug',{'slug': slug_util.slugByItem(place.id, 'place')}) }}" class="restoran-item">#}
             <a href="{{ slug.getPath(place.id, 'place') }}" class="restoran-item">
-
-
                 {#{% endif %}#}
                 <div class="restoran-item-top"><img alt="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/uploads/places/thumb_{{ place.logo }}" /></div>
                 <p class="restoran-name">{{ place.name }}</p>
