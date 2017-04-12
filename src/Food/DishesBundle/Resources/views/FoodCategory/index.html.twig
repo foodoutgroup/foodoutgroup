@@ -6,7 +6,7 @@
             <h1>{{ place.name }}</h1>
             <ul class="list-inline">
                 {% for category in place.categories %}
-                    <li class="active"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(category.id, 'food_category') }) }}">{{ category.name }}</a></li>
+                    <li class="active"><a href="{{ slug.getUrl(category.id, 'food_category') }}">{{ category.name }}</a></li>
                 {% endfor %}
             </ul>
         </div>
