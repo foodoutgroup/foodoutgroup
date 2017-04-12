@@ -19,12 +19,16 @@ food_order_cnt:
     resource: "@FoodOrderBundle/Resources/config/routing.yml"
     prefix: /order
 
+
 food_slug_lang:
     path:  /{_locale}/{slug}
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale% }
     requirements:
+        slug : "^(.*)$"
         _locale: "^[a-z]{2}"
 
 food_slug:
     path:  /{slug}
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale%  }
+    requirements:
+        slug : "^(.*)$"

@@ -55,27 +55,14 @@ class PlaceController extends Controller
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
         $userLocationData = $this->get('food.googlegis')->getLocationFromSession();
 
-        $breadcrumbData = array(
+        $breadcrumbData = [
             'city' => '',
             'city_url' => '',
             'kitchen' => '',
             'kitchen_url' => ''
-        );
+        ];
 
-        $cityObj = null;
-
-        // jei neranda CITY tai miestas buna pirmas is cache
-        if (!isset($userLocationData['city_id'])) {
-            die('a');
-            $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
-            if(!isset($placeCities[0])) {
-                $userLocationData['city_id'] = $placeCities[0]->getId();
-                $cityObj = $placeCities[0];
-            }
-        } else {
-            $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->findOneBy(['id' => $userLocationData['city_id']]);
-        }
-
+        $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->findOneBy(['id' => $userLocationData['city_id']]);
         if($cityObj == null) {
             throw new NotFoundHttpException('City not found');
         }
@@ -90,7 +77,7 @@ class PlaceController extends Controller
             $kitchen = $kitchens->first();
             $breadcrumbData['kitchen'] = $kitchen->getName();
             $kitchenSlug = $slug->getPath($kitchen->getId(), 'kitchen');
-            $breadcrumbData['kitchen_url'] = $kitchenSlug;
+            $breadcrumbData['kitchen_url'] = $breadcrumbData['city_url'].'/'.$kitchenSlug;
         }
 
 
@@ -106,16 +93,7 @@ class PlaceController extends Controller
             }
         }
 
-        $placeReviews = $this->get('doctrine')->getRepository('FoodDishesBundle:PlaceReviews')
-            ->getActiveReviewsByPlace($place);
-
-
-        $util = new Misc($this->container);
-
-
-
-        $cityBreadcrumb = $locationData['city_id'];
-
+        $placeReviews = $this->get('doctrine')->getRepository('FoodDishesBundle:PlaceReviews')->getActiveReviewsByPlace($place);
 
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
@@ -135,7 +113,6 @@ class PlaceController extends Controller
                 'breadcrumbData' => $breadcrumbData,
                 'current_url' => $current_url,
                 'oldFriendIsHere' => $oldFriendIsHere,
-                'city_breadcrumb' => $cityBreadcrumb
             )
         );
 
