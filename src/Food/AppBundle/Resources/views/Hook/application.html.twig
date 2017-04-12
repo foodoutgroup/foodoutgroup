@@ -1,4 +1,5 @@
-{% extends 'FoodAppBundle::layout_no_mobile.html.twig' %}
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
 
 {% block title %}{% trans %}general.places{% endtrans %} - {{ page_title }}{% endblock %}
 {% block adnet_retargeting %}
@@ -20,9 +21,9 @@
     <!-- Adform Tracking Code END -->
 {% endblock %}
 
-{% block jscode %}
+{% block jscode %}{% endblock %}
+{% block bottom_block %}{% endblock %}
 
-{% endblock %}
 {% block body %}
     {# Facebook Lead Begin #}
     <script>fbq('track', 'Lead');</script>

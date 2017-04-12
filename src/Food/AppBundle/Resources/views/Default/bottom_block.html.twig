@@ -34,19 +34,32 @@
     });
 </script>
 {% if not slug.isBanned() %}
-<div class="clearfix newsletter-outer-block">
-    <div class="newsletter-block">
-        <div class="newsletter-block-inner clearfix">
-        <h4>{% trans %}index.newsletter{% endtrans %}</h4>
-            <form class="newsletter-form" action="{{ slug.generateURL('food_newsletter_subscribe') }}" method="post">
-                <input type="text" name ="newsletter_email" class="newsletter-email" placeholder="{% trans %}index.newsletter_email{% endtrans %}" title="{% trans %}index.newsletter_provide_email{% endtrans %}">
-                <input type="submit" value="{% trans %}index.newsletter_subscribe{% endtrans %}">
-            </form>
-            <ul class="menu pros-list">
-                <li>{% trans %}index.get_best_offers{% endtrans %}</li>
-                <li>{% trans %}index.get_best_offers2{% endtrans %}</li>
-            </ul>
+    <div class="site-center site-center-bottom">
+        <div class="site-block">
+            <div class="clearfix bottom-blocks">
+                <div class="clearfix newsletter-outer-block">
+                    <div class="newsletter-block">
+                        <div class="newsletter-block-inner clearfix">
+                        <h4>{% trans %}index.newsletter{% endtrans %}</h4>
+                            <form class="newsletter-form" action="{{ slug.generateURL('food_newsletter_subscribe') }}" method="post">
+                                <input type="text" name ="newsletter_email" class="newsletter-email" placeholder="{% trans %}index.newsletter_email{% endtrans %}" title="{% trans %}index.newsletter_provide_email{% endtrans %}">
+                                <input type="submit" value="{% trans %}index.newsletter_subscribe{% endtrans %}">
+                            </form>
+                            <ul class="menu pros-list">
+                                <li>{% trans %}index.get_best_offers{% endtrans %}</li>
+                                <li>{% trans %}index.get_best_offers2{% endtrans %}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-block clearfix"><img src="//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-view.png') }}">
+                    <div class="app-block-inner">
+                        <h3>{% trans %}general.app_block.header{% endtrans %}</h3>
+                        <p>{% trans %}general.app_block.promo_text{% endtrans %}</p>
+                        <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 {% endif %}
