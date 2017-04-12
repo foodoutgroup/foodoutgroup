@@ -264,7 +264,7 @@
                 <span class="work-time">
                     <span>{% trans %}general.top_contact.worktime_days{% endtrans %}</span>
                     <span>{% trans %}general.top_contact.worktime{% endtrans %}</span>
-                    {% if misc_utils.getparam('holdiday_working_time_active') == 1 %}
+                    {% if misc_utils.getparam('holiday_working_time_active') == 1 %}
                         <br>
                         <span class="holiday-time" title="{{ misc_utils.getparam('holiday_working_time') }}">{% trans %}
                             general.top_contact.worktime_holiday{% endtrans %}</span>
