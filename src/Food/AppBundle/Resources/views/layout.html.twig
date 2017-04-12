@@ -141,82 +141,83 @@
     </script>
 </head>
 <body>
-{{ notifications.init|raw }}
-<div class="site">
-    {% block delfi_banner %}{% endblock %}
-    <div class="site-top">
-        <div class="site-block clearfix">
-            <a href="{{ path('food_lang_homepage') }}" class="main-logo">
-                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}"
-                src="{% if site_country == 'LT' %}{{ asset('bundles/foodapp/images/logo_food.png') }}{% elseif site_country == 'LV' %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% elseif site_country == 'EE' %}{{ asset('bundles/foodapp/images/logo_food_ee.png') }}{% endif %}" />
-            </a>
+    {{ notifications.init|raw }}
+    <div class="site">
+        {% block delfi_banner %}{% endblock %}
+        <div class="site-top">
+            <div class="site-block clearfix">
+                <a href="{{ path('food_lang_homepage') }}" class="main-logo">
+                    <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}"
+                    src="" />
+                    {#{% if site_country == 'LT' %}{{ asset('bundles/foodapp/images/logo_food.png') }}{% elseif site_country == 'LV' %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% elseif site_country == 'EE' %}{{ asset('bundles/foodapp/images/logo_food_ee.png') }}{% endif %}#}
+                </a>
 
-            {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
-            {% set pageH = pageService.getByParam('page_help') %}
-            {% if pageH %}
-                <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
-                    <li><a href="{{ slug.getUrl(pageH.getId(), 'page')}}"><span> {{ pageH.getTitle() }}</span></a></li>
-                </ul>
-            {% endif %}
-            {% if not slug.isBanned() %}
-                <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
-                    <li class="login-ico">
-                        {% render(controller('FoodUserBundle:Default:loginButton')) %}
-                    </li>
-                </ul>
-
-            <div class="separator"></div>
-            {% endif %}
-            <div class="top-contact-block">
-                <span class="work-time">
-                    <span>{% trans %}general.top_contact.worktime_days{% endtrans %}</span>
-                    <span>{% trans %}general.top_contact.worktime{% endtrans %}</span>
-                </span>
-                {% if site_country != 'EE' %}
-                <span class="phone"><a href="callto:{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}" title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>
+                {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
+                {% set pageH = pageService.getByParam('page_help') %}
+                {% if pageH %}
+                    <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
+                        <li><a href="{{ slug.getUrl(pageH.getId(), 'page')}}"><span> {{ pageH.getTitle() }}</span></a></li>
+                    </ul>
                 {% endif %}
+                {% if not slug.isBanned() %}
+                    <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
+                        <li class="login-ico">
+                            {% render(controller('FoodUserBundle:Default:loginButton')) %}
+                        </li>
+                    </ul>
+
+                <div class="separator"></div>
+                {% endif %}
+                <div class="top-contact-block">
+                    <span class="work-time">
+                        <span>{% trans %}general.top_contact.worktime_days{% endtrans %}</span>
+                        <span>{% trans %}general.top_contact.worktime{% endtrans %}</span>
+                    </span>
+
+                    {% if site_country != 'EE' %}
+                    <span class="phone"><a href="callto:{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}" title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>
+                    {% endif %}
+                </div>
             </div>
         </div>
+
+        {% block body %}{% endblock %}
+        {% block bottom_block %}
+            {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
+        {% endblock %}
+
+        {{ render(controller('FoodAppBundle:Default:footer')) }}
     </div>
 
-    {% block body %}{% endblock %}
-    {% block bottom_block %}
-        {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
-    {% endblock %}
+    {{ include('FoodAppBundle:Default:login_register.html.twig') }}
 
-    {{ render(controller('FoodAppBundle:Default:footer')) }}
-</div>
+    <script src="{{ asset('bundles/foodapp/scripts/common.js')}}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/scripts.js')}}"></script>
+    <script type="text/javascript">
+        {% block jscode %}{% endblock %}
+    </script>
 
-{{ include('FoodAppBundle:Default:login_register.html.twig') }}
-
-<script src="{{ asset('bundles/foodapp/scripts/common.js')}}"></script>
-<script src="{{ asset('bundles/foodapp/scripts/scripts.js')}}"></script>
-<script type="text/javascript">
-    {# var mediator = new Mediator(); #}
-    {% block jscode %}{% endblock %}
-</script>
-<script>
     {% if track_conversions %}
-    (function () {
-        var a = document.createElement("iframe");
-        a.style.cssText = "width: 0; height: 0; border: 0; display: none;";
-        a.src = "javascript:false";
-        var b = function () {
-            setTimeout(function () {
-                var b = a.contentDocument || a.contentWindow.document, c = b.createElement("script");
-                c.src = "//static-trackers.adtarget.me/javascripts/pixel.min.js";
-                c.id = "GIHhtQfW-atm-pixel";
-                c["data-pixel"] = "990d8a91b1fde610d377fae55d911552";
-                c["allow-flash"] = true;
-                b.body.appendChild(c);
-            }, 0);
-        };
-        a.addEventListener ? a.addEventListener("load", b, !1) : a.attachEvent ? a.attachEvent("onload", b) : a.onload = b;
-        document.body.appendChild(a);
-    })();
+        <script>
+            (function () {
+                var a = document.createElement("iframe");
+                a.style.cssText = "width: 0; height: 0; border: 0; display: none;";
+                a.src = "javascript:false";
+                var b = function () {
+                    setTimeout(function () {
+                        var b = a.contentDocument || a.contentWindow.document, c = b.createElement("script");
+                        c.src = "//static-trackers.adtarget.me/javascripts/pixel.min.js";
+                        c.id = "GIHhtQfW-atm-pixel";
+                        c["data-pixel"] = "990d8a91b1fde610d377fae55d911552";
+                        c["allow-flash"] = true;
+                        b.body.appendChild(c);
+                    }, 0);
+                };
+                a.addEventListener ? a.addEventListener("load", b, !1) : a.attachEvent ? a.attachEvent("onload", b) : a.onload = b;
+                document.body.appendChild(a);
+            })();
+        </script>
     {% endif %}
-</script>
-{{ misc_utils.param('footer_scripts', true)|raw }}
-
+    {{ misc_utils.param('footer_scripts', true)|raw }}
 </body>
 </html>
