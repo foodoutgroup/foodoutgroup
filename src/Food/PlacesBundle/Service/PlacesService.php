@@ -490,10 +490,10 @@ class PlacesService extends ContainerAware
         if (empty($sum)) {
             $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
 
-            return $place->getCartMinimum();
+            return floatval($place->getCartMinimum());
         }
 
-        return $sum;
+        return floatval($sum);
     }
 
     public function getMaxCartPrice($placeId)
