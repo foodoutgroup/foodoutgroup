@@ -28,7 +28,8 @@ class SettingsController extends CoreController
         'delfiJs',
         'possible_delivery_delay',
         'late_time_to_delivery',
-        'sf_next_number'
+        'sf_next_number',
+        'footer_scripts'
     ];
 
     public function indexAction(Request $request)
@@ -169,7 +170,10 @@ class SettingsController extends CoreController
             'choices' => ['on' => 'On', 'off' => 'Off'],
         ]);
 
-
+        $form->add('footer_scripts', 'textarea', [
+            'label' => 'Footer Scripts',
+            'attr' => ['style' => 'width:100%;', 'rows' => 20]
+        ]);
 
 
         $form->add('submit', 'submit', ['label' => 'Update', 'attr' => ['class' => 'btn btn-primary']]);
