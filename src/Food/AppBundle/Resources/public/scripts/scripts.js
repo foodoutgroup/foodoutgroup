@@ -389,6 +389,7 @@ initStreetHouseSearch = function(){
 var registrationForm = {
     showPrivate: function(element) {
         var theBox = $(element).closest('.popup');
+        $('.resetting_form_wrapper').hide();
         theBox.find('.button.private').addClass('selected');
         theBox.find('.button.company').removeClass('selected');
         var lefter = theBox.find('.lefter.login-form');
@@ -402,6 +403,7 @@ var registrationForm = {
     },
     showCompany: function(element) {
         var theBox = $(element).closest('.popup');
+        $('.resetting_form_wrapper').hide();
         theBox.find('.button.private').removeClass('selected');
         theBox.find('.button.company').addClass('selected');
         var lefter = theBox.find('.lefter.login-form');

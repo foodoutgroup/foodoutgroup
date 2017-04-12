@@ -23,7 +23,7 @@ use Food\OrderBundle\Service\OrderService;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/{_locale}/register/create", name="user_register_create")
+     * @Route("/register/create", name="user_register_create")
      * @Template()
      * @Method("POST")
      */
@@ -61,7 +61,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/register", name="user_register")
+     * @Route("/register", name="user_register")
      * @Template("FoodUserBundle:Default:register.html.twig")
      */
     public function registerAction(Request $request)
@@ -80,7 +80,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/login", name="user_login")
+     * @Route("/login", name="user_login")
      * @Template("FoodUserBundle:Default:login.html.twig")
      */
     public function loginAction(Request $request)
@@ -103,7 +103,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/profile/update", name="user_profile_update")
+     * @Route("/profile/update", name="user_profile_update")
      * @Template("FoodUserBundle:Default:profile.html.twig")
      * @Method("POST")
      */
@@ -183,7 +183,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/profile/{tab}", name="user_profile", defaults={"tab" = ""})
+     * @Route("/profile/{tab}", name="user_profile", defaults={"tab" = ""})
      * @Template("FoodUserBundle:Default:profile.html.twig")
      */
     public function profileAction($tab)

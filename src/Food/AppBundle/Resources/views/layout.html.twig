@@ -84,25 +84,7 @@
         {# Chosen JS End #}
 
     {% endblock %}
-    {# Facebook retargeting script for Inspired #}
-    {#<script>(function() {
-            var _fbq = window._fbq || (window._fbq = []);
-            if (!_fbq.loaded) {
-                var fbds = document.createElement('script');
-                fbds.async = true;
-                fbds.src = '//connect.facebook.net/en_US/fbds.js';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(fbds, s);
-                _fbq.loaded = true;
-            }
-            _fbq.push(['addPixelId', '1000570273293239']);
-        })();
-        window._fbq = window._fbq || [];
-        window._fbq.push(['track', 'PixelInitialized', {}]);
-    </script>
-    <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=1000570273293239&ev=PixelInitialized" /></noscript>#}
 
-    {# Facebook Pixel Code Begin #}
     <script>
         !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n; n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0; t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '901898153179068');
@@ -140,22 +122,6 @@
         })();
     </script>
     <!-- mailersoft end -->
-
-    {# TODO Pasalinti jei neveiks vis dar.. Revive Single page load multiple banners #}
-    {#{% if site_country == 'LT' %}
-        &#123;&#35; Revive Ads init for foodout.lt &#35;&#125;
-        <script type="text/javascript">
-            var OA_zones = {
-                'zone-22' : 14, 'zona-a': 8,'zone-1' : 13, 'zona-3' : 15
-            };
-//            console.log('preloadinam zonu identifikatorius');
-//            console.log(OA_zones);
-//            console.log('bandom uzsikraut revive single page loader scripta');
-        </script>
-        &#123;&#35;<script type='text/javascript' src='//ads.foodout.lt/delivery/spcjs.php'></script>&#35;&#125;
-    {% elseif site_country == 'LV' %}
-        &#123;&#35; Revive Ads init for foodout.lv &#35;&#125;
-    {% endif %}#}
     <script type="text/javascript">
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
                     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -202,26 +168,10 @@
             <div class="separator"></div>
             {% endif %}
             <div class="top-contact-block">
-                {#
-                {% if ("now"|date('d') == 31 or "now"|date('d') == 1) and site_country == 'LT' %}
-                <span class="work-time" style="text-align: right">
-                    12.31 10:00-18:00<br/>
-                    01.01 12:00-21:00
-                </span>
-                {% elseif ("now"|date('d') == 24 or "now"|date('d') == 25) and site_country == 'LV' %}
-                <span class="work-time" style="text-align: right">
-                    12.24 11:00-00:00<br/>
-                    12.25-26 11:00-23:00
-                </span>
-                {% else %}
-                #}
                 <span class="work-time">
                     <span>{% trans %}general.top_contact.worktime_days{% endtrans %}</span>
                     <span>{% trans %}general.top_contact.worktime{% endtrans %}</span>
                 </span>
-                {#
-                {% endif %}
-                #}
                 {% if site_country != 'EE' %}
                 <span class="phone"><a href="callto:{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}" title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>
                 {% endif %}
@@ -230,7 +180,6 @@
     </div>
 
     {% block body %}{% endblock %}
-
     {% block bottom_block %}
         {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
     {% endblock %}

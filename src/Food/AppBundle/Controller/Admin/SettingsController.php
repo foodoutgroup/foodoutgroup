@@ -23,6 +23,7 @@ class SettingsController extends CoreController
         'page_best_offer',
         'use_admin_fee_globally',
         'admin_fee_size',
+        'page_b2b_rules',
     ];
 
     public function indexAction(Request $request)
@@ -30,12 +31,11 @@ class SettingsController extends CoreController
         $paramService = $this->get('food.app.utils.misc');
 
         $data = [];
-
         foreach ($this->keywordMapCollection as $keyword) {
             $data[$keyword] = $paramService->getParam($keyword, true);
         }
 
-        $form = $this->get('form.factory')->createNamedBuilder('settings', 'form', $data);
+        $form = $this->get('form.factory')->createNamedBuilder('settings', 'form', $data, ['csrf_protection' => false]);
 
         $this->formFields($form);
         $form = $form->getForm();
@@ -77,6 +77,7 @@ class SettingsController extends CoreController
             'label' => 'Banned page',
             'choices' => $pageCollection,
             'attr' => [
+                'group' => 'Info pages',
                 'style' => 'margin-bottom:10px',
             ]
         ]);
@@ -95,20 +96,26 @@ class SettingsController extends CoreController
             'label' => 'Best offer page',
             'choices' => $pageCollection
         ]);
-
-        $form->add('use_admin_fee_globally', 'choice', [
-            'label' => 'Use admin fee globaly',
-            'choices' => ['No', 'Yes']
+        $form->add('page_b2b_rules', 'choice', [
+            'label' => 'B2B rules page',
+            'choices' => $pageCollection
         ]);
 
-        $form->add('admin_fee_size', 'text', [
-            'label' => 'Admin fee size',
+        $form->add('use_admin_fee_globally', 'choice', [
+            'label' => 'Use globally',
+            'choices' => ['No', 'Yes'],
+            'attr' => ['group' => 'Admin fee']
+        ]);
+
+        $form->add('admin_fee_size', 'number', [
+            'label' => 'Fee size',
         ]);
 
 
 
         $form->add('submit', 'submit', ['label' => 'Update', 'attr' => ['class' => 'btn btn-primary']]);
 //        $form->add('sex', 'sonata_block_service_choice');
+
 
         foreach ($this->keywordMapCollection as $keyword) {
             if(!$form->has($keyword)) {

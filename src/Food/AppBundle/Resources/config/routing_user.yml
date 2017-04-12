@@ -2,10 +2,6 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /
 
-fos_user_register:
-    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
-    prefix: /register
-
 food_user_reset_password:
     resource: "@FoodUserBundle/Controller/ResetPasswordController.php"
     type: annotation
@@ -23,3 +19,12 @@ food_ajax:
 food_newsletter_subscribe:
     path: /newsletter/subscription
     defaults: { _controller: FoodAppBundle:Default:newsletterSubscription}
+
+food_user:
+    resource: "@FoodUserBundle/Controller/DefaultController.php"
+    type:     annotation
+    prefix:   /
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+    prefix: /

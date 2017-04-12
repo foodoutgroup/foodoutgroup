@@ -11,10 +11,33 @@
                 </h1>
             </div>
         </div>
+    </div>
     {{ form_start(form) }}
-        <div class="col-lg-6">
-            {{ form_widget(form) }}
+        <div class="container">
+            {% set currentGroup = null %}
+            {% for element in form %}
+
+                {% if element.vars.attr.group is defined %}
+                    {% if not loop.first %}<hr/>{% endif %}
+                    {% if element.vars.attr.group is not empty  %}
+                        <h4>{{ element.vars.attr.group }}</h4>
+                        <hr/>
+                    {% endif %}
+                    {% set currentGroup = null %}
+
+                {% endif %}
+
+                {#{{ dump(element.vars.attr) }}#}
+
+                <div class="control-group has-error clearfix">
+                    <div class="span2">
+                        {{ form_label(element) }}
+                    </div>
+                    <div class="span6">
+                        {{ form_widget(element) }}
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     {{ form_end(form) }}
-    </div>
 {% endblock %}
