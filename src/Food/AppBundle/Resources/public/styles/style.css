@@ -670,10 +670,10 @@ input.button {}
     border-bottom: 1px solid #cd1d36;
 }
 
-.top-contact-block { float: right; margin-right: 5px; margin-top: 5px; padding-right: 10px; padding-left: 10px; }
+.top-contact-block { float: right; margin-right: 5px; padding-right: 10px; padding-left: 10px;display: flex;align-items: center;height: 100%; }
 .top-contact-block span {display: inline-block; }
-.top-contact-block .work-time {text-align: left; margin-top: 6px;}
-.top-contact-block .phone {font-size: 24px; font-weight: bold; margin-top: 10px; margin-left: 5px; vertical-align: bottom; }
+.top-contact-block .work-time {text-align: left; margin-top: 6px;margin-bottom: 6px;}
+.top-contact-block .phone {font-size: 24px; font-weight: bold; margin-left: 5px; vertical-align: bottom; }
 .top-contact-block .phone a {color: #fff;}
 
 /*Header ------------------------------------------*/

@@ -1293,6 +1293,10 @@
                 <source>general.top_contact.worktime_days</source>
                 <target><![CDATA[I - VI,VII<br />V - VI]]></target>
             </trans-unit>
+            <trans-unit id="general.top_contact.worktime_holiday" resname="general.top_contact.worktime_holiday">
+                <source>general.top_contact.worktime_holiday</source>
+                <target>Darba svētku reizes</target>
+            </trans-unit>
             <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
                 <source>general.top_contact.worktime</source>
                 <target><![CDATA[10 - 02 h.<br />10 - 03 h.]]></target>
