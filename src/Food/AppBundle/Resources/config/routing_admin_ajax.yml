@@ -1,3 +1,10 @@
+food_admin_get_place_points:
+    path: /place/get-points/{placeId}
+    defaults: {_controller: FoodDishesBundle:DishAdmin:getPointsFromPlace}
+    options:
+        expose: true
+
+
 food_admin_get_place_categories:
       path: /place/get-categories/{placeId}
       defaults: {_controller: FoodDishesBundle:DishAdmin:getCategoryOptionsFromPlace}

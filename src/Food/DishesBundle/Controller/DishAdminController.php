@@ -54,7 +54,10 @@ class DishAdminController extends Controller
         $placePoints = $place->getPoints();
 
         foreach($placePoints as $point){
-            $html .= '<option value="'.$point->getId().'" >'.$point->getAddress().', '.$point->getCityId()->getTitle().'</option>';
+
+            $cityObj = $point->getCityId();
+
+            $html .= '<option value="'.$point->getId().'" >'.$point->getAddress().', '.($cityObj != null ? $cityObj->getTitle() : $point->getCity()).'</option>';
         }
 
         return new Response($html, 200);
