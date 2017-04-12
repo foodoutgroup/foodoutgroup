@@ -25,18 +25,19 @@ class CityService extends BaseService
      * @param string $cityString
      * @return array
      */
-    public function getCityInfo($city)
+    public function getCityInfo($cityId)
     {
-        $cityInfo = array();
-        $cityString = $this->em->getRepository('FoodAppBundle:City')->getActiveById($city)[0]->getTitle();
-        $cityString = $this->language->removeChars($this->locale, $cityString, true, false);
-        $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", ucfirst($cityString));
-        $cityInfo['city_slug_lower'] = strtolower($city);
-        $city_url = '';
-        $cityInfo['city_url'] = $city_url;
-        $cityInfo['city'] = $city;
 
-        return $cityInfo;
+        $cityInfoCollection = [];
+        $cityObj = $this->em->getRepository('FoodAppBundle:City')->findOneBy(['id' => $cityId]);
+        if($cityObj != null) {
+            $cityString = $this->language->removeChars($this->locale, $cityObj->getTitle(), true, false);
+            $city = str_replace(array("#", "-", ";", "'", '"', ":", ".", ",", "/", "\\"), "", ucfirst($cityString));
+            $cityInfoCollection['city_slug_lower'] = strtolower($city);
+            $cityInfoCollection['city_url'] = '';
+            $cityInfoCollection['city'] = $city;
+        }
+        return $cityInfoCollection;
     }
 
     /**

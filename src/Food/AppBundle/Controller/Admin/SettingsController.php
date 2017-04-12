@@ -1,16 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: aleksas
- * Date: 17.3.27
- * Time: 11.58
- */
 
 namespace Food\AppBundle\Controller\Admin;
 
 use Sonata\AdminBundle\Controller\CoreController;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 class SettingsController extends CoreController
@@ -20,20 +13,35 @@ class SettingsController extends CoreController
         'page_banned',
         'page_email_banned',
         'page_help',
-        'page_best_offer'
+        'page_best_offer',
+        'use_admin_fee_globally',
+        'admin_fee_size',
+        'page_b2b_rules',
+        'blog_link_active',
+        'disabled_preorder_days',
+        'zaval_on',
+        'showMobilePopup',
+        'enable_free_delivery_for_big_basket',
+        'free_delivery_price',
+        'beta_code_on',
+        'delfiBanner',
+        'delfiJs',
+        'possible_delivery_delay',
+        'late_time_to_delivery',
+        'sf_next_number',
+        'footer_scripts'
     ];
 
     public function indexAction(Request $request)
     {
         $paramService = $this->get('food.app.utils.misc');
-
+        $session = $this->get('session');
         $data = [];
-
         foreach ($this->keywordMapCollection as $keyword) {
             $data[$keyword] = $paramService->getParam($keyword, true);
         }
 
-        $form = $this->get('form.factory')->createNamedBuilder('settings', 'form', $data);
+        $form = $this->get('form.factory')->createNamedBuilder('settings', 'form', $data, ['csrf_protection' => false]);
 
         $this->formFields($form);
         $form = $form->getForm();
@@ -48,13 +56,14 @@ class SettingsController extends CoreController
                 $paramService->setParam($keyword, $value);
 
             }
-
+            $session->getFlashBag()->add('success', 'Settings was saved successfully');
             return $this->redirect($this->generateUrl('food_admin_settings'));
         }
 
         return $this->render('@FoodApp/Admin/Settings/index.html.twig', array(
             'form'          => $form->createView(),
             'base_template' => $this->getBaseTemplate(),
+            'flash_messages' => $session->getFlashBag(),
             'admin_pool'    => $this->container->get('sonata.admin.pool'),
             'blocks'        => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks')
         ));
@@ -75,6 +84,7 @@ class SettingsController extends CoreController
             'label' => 'Banned page',
             'choices' => $pageCollection,
             'attr' => [
+                'group' => 'Info pages',
                 'style' => 'margin-bottom:10px',
             ]
         ]);
@@ -93,11 +103,82 @@ class SettingsController extends CoreController
             'label' => 'Best offer page',
             'choices' => $pageCollection
         ]);
+        $form->add('page_b2b_rules', 'choice', [
+            'label' => 'B2B rules page',
+            'choices' => $pageCollection
+        ]);
 
+        $form->add('use_admin_fee_globally', 'choice', [
+            'label' => 'Use globally',
+            'choices' => ['No', 'Yes'],
+            'attr' => ['group' => 'Admin fee']
+        ]);
+
+        $form->add('admin_fee_size', 'number', [
+            'label' => 'Fee size',
+        ]);
+
+        $form->add('blog_link_active', 'choice', [
+            'label' => 'Blog activated',
+            'choices' => ['No', 'Yes'],
+            'attr' => ['group' => 'Blog']
+        ]);
+
+
+
+        $form->add('disabled_preorder_days', 'text', [
+            'attr' => ['group' => 'Order']
+        ]);
+
+        $form->add('zaval_on', 'choice', [
+            'label' => 'Rush hours',
+            'choices' => ['On', 'Off'],
+        ]);
+
+        $form->add('enable_free_delivery_for_big_basket', 'choice', [
+            'choices' => ['No', 'Yes'],
+        ]);
+
+        $form->add('free_delivery_price', 'number');
+
+        $form->add('possible_delivery_delay', 'number');
+
+        $form->add('late_time_to_delivery', 'number');
+
+        $form->add('sf_next_number', 'number', [
+            'label' => 'SF next number'
+        ]);
+
+        $form->add('delfiBanner', 'textarea', [
+            'label' => 'Delfi banner',
+            'attr' => ['group' => 'Integrations','style' => 'width:100%;', 'rows' => 10]
+        ]);
+
+        $form->add('delfiJs', 'textarea', [
+            'label' => 'Delfi JS',
+            'attr' => ['style' => 'width:100%;', 'rows' => 4]
+        ]);
+
+
+        $form->add('showMobilePopup', 'choice', [
+            'label' => 'Show mobile popup',
+            'choices' => ['No', 'Yes'],
+        ]);
+
+        $form->add('beta_code_on', 'choice', [
+            'label' => 'Beta code',
+            'choices' => ['on' => 'On', 'off' => 'Off'],
+        ]);
+
+        $form->add('footer_scripts', 'textarea', [
+            'label' => 'Footer Scripts',
+            'attr' => ['style' => 'width:100%;', 'rows' => 20]
+        ]);
 
 
         $form->add('submit', 'submit', ['label' => 'Update', 'attr' => ['class' => 'btn btn-primary']]);
 //        $form->add('sex', 'sonata_block_service_choice');
+
 
         foreach ($this->keywordMapCollection as $keyword) {
             if(!$form->has($keyword)) {
@@ -106,6 +187,5 @@ class SettingsController extends CoreController
         }
 
     }
-
 
 }

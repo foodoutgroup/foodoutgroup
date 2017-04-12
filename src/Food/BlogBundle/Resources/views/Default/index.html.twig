@@ -15,10 +15,10 @@
                     <div class="static-page-content">
                         <ul>
                             {% for category in categories %}
-                            <li><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(category.id, 'blog_category') }) }}">{{ category }}</a></li>
+                            <li><a href="{{ slug.getUrl(category.id, 'blog_category') }}">{{ category }}</a></li>
                             <ul>
                                 {% for post in blogPosts[category.id] %}
-                                <li><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(post.id, 'blog_post') }) }}">{{ post }}</a></li>
+                                <li><a href="{{ slug.getUrl(post.id, 'blog_post') }}">{{ post }}</a></li>
                                 {% endfor %}
                             </ul>
                             {% endfor %}

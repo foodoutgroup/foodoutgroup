@@ -77,7 +77,7 @@
                 {% endfor %}
             <tbody>
         </table>
-        <span id="restaurant_link" data="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"></span>
+        <span id="restaurant_link" data="{{ slug.getUrl(place.id, 'place') }}"></span>
         <span id="restaurant_image" data="//{{ cloudfront_url }}/{{place.getWebPathThumb}}"></span>
         <span id="restaurant_image_alt" data="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}"></span>
         {% if place %}

@@ -113,37 +113,43 @@
                 </div><a href="{{ slug.getUrl(place.place.id, 'place') }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
             </div>
         </div>
+    {% else %}
+    <div class="restaurant-item clearfix">
+        <p align="center">{% trans %}restaurant.not_found{% endtrans %}</p>
+    </div>
     {% endfor %}
 </div>
-<script>
-    $(document).ready(function(){
-        var c1 = '{% trans %}general.places_found1{% endtrans %}';
-        var c2 = '{% trans %}general.places_found2{% endtrans %}';
-        var c3 = '{% trans %}general.places_found3{% endtrans %}';
-        var cnt = {{ placeCollection|length }};
-        var trgt = $('.page-title .place-counter');
-        var isRecommended = {{ isRecommended }};
-        if (cnt == 0) {
-            trgt.text('');
-        } else if (cnt == 1) {
-            trgt.text(c1);
-        } else if (cnt > 1 && cnt < 10) {
-            trgt.text(c2);
-        } else {
-            trgt.text(c3);
-        }
-        trgt.text(trgt.text().replace("%1", cnt));
-        {% if location is not null %}
-            if (!isRecommended && cnt > 0) {
-                {% set locAdress = '' %}
-                {% if location and location.address_found %}
-                    {% set locAdress=location.address %}
-                    {% set locFlat=location.flat %}
-                {% endif %}
-                trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ locAdress }}{% if locFlat is defined and locFlat %} - {{ locFlat }}{% endif %}');
+{% if placeCollection|length %}
+    <script>
+        $(document).ready(function(){
+            var c1 = '{% trans %}general.places_found1{% endtrans %}';
+            var c2 = '{% trans %}general.places_found2{% endtrans %}';
+            var c3 = '{% trans %}general.places_found3{% endtrans %}';
+            var cnt = {{ placeCollection|length }};
+            var trgt = $('.page-title .place-counter');
+            var isRecommended = {{ isRecommended }};
+            if (cnt == 0) {
+                trgt.text('');
+            } else if (cnt == 1) {
+                trgt.text(c1);
+            } else if (cnt > 1 && cnt < 10) {
+                trgt.text(c2);
+            } else {
+                trgt.text(c3);
             }
-        {% endif %}
+            trgt.text(trgt.text().replace("%1", cnt));
+            {% if location is not null %}
+                if (!isRecommended && cnt > 0) {
+                    {% set locAdress = '' %}
+                    {% if location and location.address_found %}
+                        {% set locAdress=location.address %}
+                        {% set locFlat=location.flat %}
+                    {% endif %}
+                    trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ locAdress }}{% if locFlat is defined and locFlat %} - {{ locFlat }}{% endif %}');
+                }
+            {% endif %}
 
-        $('.delivery-time-info').tooltip();
-    });
-</script>
+            $('.delivery-time-info').tooltip();
+        });
+    </script>
+{% endif %}

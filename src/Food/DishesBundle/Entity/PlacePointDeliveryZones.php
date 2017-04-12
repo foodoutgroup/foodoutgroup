@@ -548,4 +548,13 @@ class PlacePointDeliveryZones
     {
         $this->adminFee = $adminFee;
     }
+
+    public function __toString()
+    {
+        if(!$this->getId()) {
+            return '';
+        }
+
+        return $this->getPlace()->getName().' - '.$this->getPlacePoint();
+    }
 }

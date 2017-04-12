@@ -68,8 +68,8 @@ security:
         - { path: ^/admin/[a-z][a-z]/login-check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         # -> end
 
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^[a-z][a-z]/user/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^[a-z][a-z]/user/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
         - { path: ^/admin/[a-z][a-z]/, role: [ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_MODERATOR, ROLE_SUPPORT, ROLE_DISPATCHER, ROLE_MARKETING, ROLE_EDITOR] }
         - { path: ^/.*, role: IS_AUTHENTICATED_ANONYMOUSLY }

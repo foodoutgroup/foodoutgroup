@@ -10,7 +10,7 @@
 
             <ul class="list-inline">
                 {% for place in kitchen.places %}
-                    <li><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}">{{ place.name }}</a></li>
+                    <li><a href="{{ slug.getUrl(place.id, 'place') }}">{{ place.name }}</a></li>
                 {% endfor %}
             </ul>
         </div><!--/row-->

@@ -1,7 +1,7 @@
 <script>
     if(!window.jQuery)
     {
-        var whereToGo = '{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') })}}#dish{{ dish.id }}';
+        var whereToGo = '{{ slug.getUrl(place.id, 'place') }}#dish{{ dish.id }}';
         window.location.href = whereToGo;
     } else {
         var page = "/lightbox";

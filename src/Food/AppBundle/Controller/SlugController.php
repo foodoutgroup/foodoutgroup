@@ -96,6 +96,9 @@ class SlugController extends Controller
             case Slug::TYPE_BLOG_POST:
                 return $this->forward('FoodBlogBundle:Default:postIndex', ['id' => $slugRow->getItemId()]);
                 break;
+            case Slug::TYPE_DISH:
+                die("todo dish page");
+                break;
             default:
                 $this->pageNotFound404($slug);
                 break;

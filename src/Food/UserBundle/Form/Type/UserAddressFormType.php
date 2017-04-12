@@ -9,12 +9,6 @@ use Doctrine\ORM\EntityRepository;
 
 class UserAddressFormType extends AbstractType
 {
-    private $availableCities = array();
-
-    function __construct($cities)
-    {
-        $this->setAvailableCities($cities);
-    }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -53,14 +47,4 @@ class UserAddressFormType extends AbstractType
             ->add('address', null, ['label' => 'form.address', 'translation_domain' => 'FOSUserBundle', 'required' => false]);
     }
 
-    /**
-     * @param array $cities
-     * @return $this
-     */
-    public function setAvailableCities($cities)
-    {
-        $this->availableCities = $cities;
-
-        return $this;
-    }
 }

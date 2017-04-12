@@ -121,13 +121,14 @@
                 return url;
             };
 
+
             var currentUrl = remove_last_slash('{{ current_url_path }}');
-            var new_url = currentUrl + '/' + _page_url;
+            var new_url = remove_last_slash(currentUrl + '/' + _page_url);
 
 
             document.title = _page_title.replace(/%s/g, '{% trans %}general.places{% endtrans %}' + (_title_row !== '' ? ': ' : '') + _title_row.substr(0, _title_row.length - 3));
             if (_kitchens_count > 1) {
-                window.history.pushState("string", document.title, currentUrl + '/' + _url_slug_for_all + '/' + _page_url);
+                window.history.pushState("string", document.title, remove_last_slash(currentUrl + '/' + _url_slug_for_all + '/' + _page_url));
             } else {
                 window.history.pushState("string", document.title, new_url.replace(_url_slug_for_all + '/', ''));
             }

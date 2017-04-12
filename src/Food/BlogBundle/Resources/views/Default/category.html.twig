@@ -15,7 +15,7 @@
                     <div class="static-page-content">
                         <ul>
                             {% for post in blogPosts %}
-                            <li><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(post.id, 'blog_post') }) }}">{{ post }}</a></li>
+                            <li><a href="{{ slug.getUrl(post.id, 'blog_post') }}">{{ post }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>

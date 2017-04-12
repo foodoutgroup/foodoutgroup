@@ -1,17 +1,17 @@
-{# Rodomas restoranu sarase #}
-<div class="filters-list food-type-filters">
-    <p class="kitchens-label">{% trans %}places.select_kitchen{% endtrans %}</p>
-    <ul class="menu" aria-labelledby="dLabel">
-        {#{{ dump(list) }}#}
-        {% for item in list %}
+{% if list|length %}
+    <div class="filters-list food-type-filters">
+        <p class="kitchens-label">{% trans %}places.select_kitchen{% endtrans %}</p>
+        <ul class="menu" aria-labelledby="dLabel">
+            {% for item in list %}
+                <li>
+                    <label class="custom-checkbox"><a href="{{  slug.getUrl(item.id, 'kitchen') }}" onclick="return false;"> {{ item.name }}</a><span class="count">{{ item.placeCount }} </span>
+                        <input type="checkbox" name="kitchens[]" data-slug="{{ slug.getPath(item.id, 'kitchen',false) }}" data-name="{{ item.name }}" value="{{ item.id }}" {% if item.id in selected_kitchens %}checked="checked"{% endif %}>
+                    </label>
+                </li>
+            {% endfor %}
             <li>
-                <label class="custom-checkbox"><a href="{{  slug.getUrl(item.id, 'kitchen') }}" onclick="return false;"> {{ item.name }}</a><span class="count">{{ item.placeCount }} </span>
-                    <input type="checkbox" name="kitchens[]" data-slug="{{ slug.getUrl(item.id, 'kitchen',true) }}" data-name="{{ item.name }}" value="{{ item.id }}" {% if item.id in selected_kitchens %}checked="checked"{% endif %}>
-                </label>
+                <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
             </li>
-        {% endfor %}
-        <li>
-            <a href="#" class="clear-filter-link">{% trans %}places.clear_filters{% endtrans %}</a>
-        </li>
-    </ul>
-</div>
+        </ul>
+    </div>
+{% endif %}
