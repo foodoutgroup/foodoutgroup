@@ -1589,7 +1589,7 @@ class OrderService extends ContainerAware
         }
 
 
-        if ($useAdminFee && abs(($cartFromMin - $sumTotal) / $sumTotal) >= 0.00001) {
+        if ($useAdminFee && ($cartFromMin - $sumTotal)  >= 0.00001) {
             $sumTotal += $adminFee;
         } else {
             $useAdminFee = false;
@@ -3475,7 +3475,7 @@ class OrderService extends ContainerAware
                     $pointRecord
                 );
 
-                if ($total_cart < $cartMinimum && $noMinimumCart == false && !$useAdminFee) {
+                if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false && !$useAdminFee) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
             }
@@ -3489,7 +3489,7 @@ class OrderService extends ContainerAware
                 }
             }
 
-            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false  && !$useAdminFee) {
+            if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false  && !$useAdminFee) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }

@@ -782,7 +782,7 @@ class DefaultController extends Controller
             $useAdminFee = false;
         }
 
-        if ($useAdminFee && abs(($cartFromMin - $total_cart) / $cartFromMin) >= 0.00001)
+        if ($useAdminFee && ($cartFromMin - $total_cart) >= 0.00001)
         {
             $total_cart += $adminFee;
 
