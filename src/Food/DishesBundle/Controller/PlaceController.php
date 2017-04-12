@@ -132,7 +132,11 @@ class PlaceController extends Controller
 
 
         $util = new Misc($this->container);
-        $cityBreadcrumb = $locationData['city'];
+
+
+
+        $cityBreadcrumb = $locationData['city_id'];
+
 
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
