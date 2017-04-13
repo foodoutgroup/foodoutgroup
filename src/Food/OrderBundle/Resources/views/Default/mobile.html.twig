@@ -103,6 +103,13 @@
         <tr>
             <td colspan="5">
                 <b>
+                    {% trans %}mobile.order.sum_without_admin_fee_and_delivery{% endtrans %}
+                </b> {{ order.foodTotal }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <b>
                     {% if order.deliveryType == 'deliver' %}
                     {% trans %}mobile.order.sum_with_delivery{% endtrans %}
                 {% else %}

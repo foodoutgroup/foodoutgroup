@@ -2367,6 +2367,11 @@ class Order
         return $this->getTotalWithoutVat() - $this->getDeliveryWithoutVat() - $this->getAdminFeeWithoutVat();
     }
 
+    public function getFoodTotal()
+    {
+        return $this->getTotal() - $this->getDeliveryPrice() - $this->getAdminFee();
+    }
+
     /**
      * Set dispatcher_id
      *
