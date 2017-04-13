@@ -8,14 +8,14 @@
                 <h2 class="name clearfix">
                     <span class="text"><a href="{{ slug.getUrl(place.place.id, 'place') }}">{{ place.place.name }}</a></span>
                     {% if place.point.fast %}
-                    <span class="tag">
-                        <img src="/bundles/foodapp/images/tag-speed.png">
-                    </span>
+                        <span class="tag">
+                            <img src="/bundles/foodapp/images/tag-speed.png">
+                        </span>
                     {% endif %}
                     {% if place.place.new %}
-                    <span class="tag">
-                        <img src="/bundles/foodapp/images/tag-new.png">
-                    </span>
+                        <span class="tag">
+                            <img src="/bundles/foodapp/images/tag-new.png">
+                        </span>
                     {% endif %}
 
                     {% if place.is_work == 1 %}
@@ -122,33 +122,32 @@
 {% if placeCollection|length %}
     <script>
         $(document).ready(function(){
-            var c1 = '{% trans %}general.places_found1{% endtrans %}';
-            var c2 = '{% trans %}general.places_found2{% endtrans %}';
-            var c3 = '{% trans %}general.places_found3{% endtrans %}';
-            var cnt = {{ placeCollection|length }};
-            var trgt = $('.page-title .place-counter');
-            var isRecommended = {{ isRecommended }};
-            if (cnt == 0) {
-                trgt.text('');
-            } else if (cnt == 1) {
-                trgt.text(c1);
-            } else if (cnt > 1 && cnt < 10) {
-                trgt.text(c2);
-            } else {
-                trgt.text(c3);
+
+            var placeCollectionLength = {{ placeCollection|length }};
+            var buffer = '{% trans %}general.places_found3{% endtrans %}';
+
+            if (placeCollectionLength == 1) {
+                buffer = '{% trans %}general.places_found1{% endtrans %}';
+            } else if (placeCollectionLength < 10) {
+                buffer = ('{% trans %}general.places_found2{% endtrans %}');
             }
-            trgt.text(trgt.text().replace("%1", cnt));
-            {% if location is not null %}
-                if (!isRecommended && cnt > 0) {
-                    {% set locAdress = '' %}
-                    {% if location and location.address_found %}
-                        {% set locAdress=location.address %}
-                        {% set locFlat=location.flat %}
-                    {% endif %}
-                    trgt.text(trgt.text() + ', {% trans %}places.places_near{% endtrans %} {{ locAdress }}{% if locFlat is defined and locFlat %} - {{ locFlat }}{% endif %}');
-                }
+
+            {% if location is not null and placeCollection|length > 0 and location.street is defined %}
+
+                buffer = buffer + ', {% trans %}places.places_near{% endtrans %}';
+                buffer = buffer + ' {{ location.street_short }}';
+
+                {% if location.street_nr is defined %}
+                    buffer = buffer + ' {{ location.street_nr }}';
+                {% endif %}
+
+                {% if location.flat is defined and location.flat is not empty %}
+                    buffer = buffer + ' - {{ location.flat }}';
+                {% endif %}
+
             {% endif %}
 
+            $('.page-title .place-counter').html(buffer.replace("%1", placeCollectionLength));
             $('.delivery-time-info').tooltip();
         });
     </script>

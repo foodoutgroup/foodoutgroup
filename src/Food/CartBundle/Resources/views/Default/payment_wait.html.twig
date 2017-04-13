@@ -23,14 +23,16 @@
 {% endblock %}
 
 {% block jscode %}
-    $(document).ready(function(){
-        $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function(event){
-        Cart.submitOrder($(this).closest(".delivery-info-form"));
-        event.stopPropagation();
-        event.preventDefault();
-        return false;
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function(event){
+            Cart.submitOrder($(this).closest(".delivery-info-form"));
+            event.stopPropagation();
+            event.preventDefault();
+            return false;
+            });
         });
-    });
+    </script>
 {% endblock %}
 
 {% block ga_js_code %}

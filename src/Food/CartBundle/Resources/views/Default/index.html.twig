@@ -2,9 +2,7 @@
 
 
 {% block jscode %}
-    /**
-     * @todo Migrate to JS file
-     */
+    <script type="text/javascript">
     $(document).ready(function(){
         $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function(event){
             Cart.submitOrder($(this).closest(".delivery-info-form"));
@@ -152,6 +150,7 @@
         }
 
     });
+    </script>
 {% endblock %}
 {% block ga_js_code %}
     $(document).ready(

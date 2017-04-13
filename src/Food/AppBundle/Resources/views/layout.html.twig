@@ -192,9 +192,7 @@
 
     <script src="{{ asset('bundles/foodapp/scripts/common.js')}}"></script>
     <script src="{{ asset('bundles/foodapp/scripts/scripts.js')}}"></script>
-    <script type="text/javascript">
-        {% block jscode %}{% endblock %}
-    </script>
+    {% block jscode %}{% endblock %}
 
     {% if track_conversions %}
         <script>
