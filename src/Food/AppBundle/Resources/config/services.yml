@@ -124,7 +124,6 @@ services:
         parent: food.base_service
         arguments:
           - @router
-          - @food.app.utils.language
           - @service_container
     food.page_service:
         class: Food\AppBundle\Service\PageService
@@ -214,12 +213,7 @@ services:
     app.form.type.gender:
         class: Food\AppBundle\Form\Type\CityType
         tags:
-            - { name: form.type, alias: app_city }
-    app.form.type.offer:
-
-        class: Food\AppBundle\Form\Type\BestOfferType
-        tags:
-            - { name: form.type, alias: offer_city }
+            - { name: form.type, alias: city }
 
     sonata.admin.error_log:
       class: Food\AppBundle\Admin\ErrorLogAdmin
