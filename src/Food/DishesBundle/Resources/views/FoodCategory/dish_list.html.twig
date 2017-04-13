@@ -78,6 +78,8 @@
                         {% set largestDiscountPrice = dish_service.largestDishDiscountPrice(dish.id) %}
                         {% set hasDiscountCount = dish_service.countDiscountSizes(dish.id) %}
                         <span class="price {% if hasDiscount %}discount{% endif %} {% if hasDiscount and multiLine %}multiline{% endif %} {{ priceClass }}">
+                            a{{ smallestDiscountPrice }}a
+                            b{{ largestDiscountPrice }}b
                         {% if smallestDiscountPrice == largestDiscountPrice %}
                             {{ currency_display | raw}} {{ smallestDiscountPrice|replace({'.': ','}) }}
                             {% if currency_alternative %}
@@ -87,7 +89,7 @@
                             {% endif %}
                         {% else %}
                             {% set showNormalDiscount = true %}
-                            {% if smallestPrice == smallestDiscountPrice and  largestPrice == largestDiscountPrice %}
+                            {#% if smallestPrice == smallestDiscountPrice and  largestPrice == largestDiscountPrice %}
                                 {% set discountStr = dish_service.getDiscountString(dish.id) %}
                                 {% if discountStr != '' %}
                                     {% set showNormalDiscount = false %}
@@ -97,7 +99,7 @@
                                 {% if discountStr != '' %}
                                     {% set showNormalDiscount = false %}
                                 {% endif %}
-                            {% endif %}
+                            {% endif %#}
                             {% if showNormalDiscount %}
                                 {{ currency_display | raw}} {{ smallestDiscountPrice|replace({'.': ','}) }} - {{ largestDiscountPrice|replace({'.': ','}) }}
                                 {% if currency_alternative %}
