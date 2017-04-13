@@ -1577,6 +1577,27 @@ class OrderService extends ContainerAware
                 $deliveryPrice = 0;
             }
         }
+        //~ }
+
+
+        $adminFee    = $placesService->getAdminFee($placeObject);
+        $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
+
+        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel())
+        {
+            $useAdminFee = false;
+        }
+
+        if ($useAdminFee && !$adminFee) {
+            $adminFee = 0;
+        }
+
+        if ($useAdminFee && $sumTotal < $cartFromMin) {
+            $sumTotal += $adminFee;
+        } else {
+            $useAdminFee = false;
+        }
+
         $sumTotal += $deliveryPrice;
         //~ }
 
@@ -3436,7 +3457,7 @@ class OrderService extends ContainerAware
                     $pointRecord
                 );
 
-                if ($total_cart < $cartMinimum && $noMinimumCart == false) {
+                if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false && !$useAdminFee) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
             }
@@ -3450,7 +3471,7 @@ class OrderService extends ContainerAware
                 }
             }
 
-            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false) {
+            if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false  && !$useAdminFee) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }
@@ -3673,6 +3694,20 @@ class OrderService extends ContainerAware
 
         if (!empty($formErrors)) {
             $formHasErrors = true;
+            $translator = $this->container->get('translator');
+            $translator->trans('order.form.errors.customeraddr');
+
+            $this->container->get('food.error_log_service')->saveErrorLog(
+                $this->container->get('request')->getClientIp(),
+                $this->getUser(),
+                $this->container->get('food.cart')->getSessionId(),
+                $place,
+                new \DateTime('now'),
+                $request->headers->get('referer'),
+                'checkout_coupon_page',
+                implode(',', $formErrors),
+                serialize($request) .'<br><br>'. serialize($debugCartInfo)
+            );
         }
     }
 

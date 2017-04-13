@@ -500,6 +500,10 @@ Tallinn]]></target>
                 <source>general.coupon.coupon_expired</source>
                 <target>Discount coupon has expired</target>
             </trans-unit>
+            <trans-unit id="general.delivery_does_not_match" resname="general.delivery_does_not_match">
+                <source>general.delivery_does_not_match</source>
+                <target>Šis restorāns nenodrošina ēdienu ar izvēlēto piegādes iespējas</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

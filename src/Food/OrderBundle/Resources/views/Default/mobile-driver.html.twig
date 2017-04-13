@@ -75,6 +75,11 @@
                 <td colspan="5"><b>{% trans %}mobile.restaurant_delivery_price{% endtrans %}:</b> {{ order.deliveryPrice }} {{ currency_display|raw }}</td>
             </tr>
         {% endif %}
+        {% if order.adminFee > 0 %}
+            <tr>
+                <td colspan="5"><b>{% trans %}mobile.order.admin_fee{% endtrans %}:</b> {{ order.adminFee }} {{ currency_display|raw }}</td>
+            </tr>
+        {% endif %}
         <tr>
             <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>
         </tr>

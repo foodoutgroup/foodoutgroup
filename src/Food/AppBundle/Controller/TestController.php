@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
 class TestController extends Controller
@@ -49,6 +50,34 @@ class TestController extends Controller
         }
 
         return new Response('Uber');
+    }
+
+    public function emailAction()
+    {
+        $ml = $this->get('food.mailer');
+
+        $order = $this->getDoctrine()->getRepository('FoodOrderBundle:Order')->find(632601);
+
+        $variables = array(
+            'username' => $order->getOrderExtra()->getFirstname(),
+            'maisto_gamintojas' => $order->getPlacename(),
+            'maisto_ruosejas' => $order->getPlacename(),
+            'uzsakymas' => $order->getId(),
+            'order_hash' => $order->getOrderHash(),
+            'adresas' => $order->getAddressId(),
+            'pristatymo_data' => $order->getDeliveryTime(),
+        );
+
+        var_dump($variables);
+
+        $ml->setVariables( $variables )
+            ->setRecipient( 'karolis.m@foodout.lt', 'Sample Client')
+            ->setId( 'template-1489653773' )
+            ->addAttachment('invoice.pdf', file_get_contents('/home/karolis/Downloads/document(52).pdf'));
+        var_dump($ml->send());die;
+        //~ $ml->setVariables( $variables )->setRecipient( 'karolis.m@foodout.lt', 'Sample Client')->setId( 30010811 )->send();
+
+        return new JsonResponse(['ok']);
     }
 
     public function mssqlAction()

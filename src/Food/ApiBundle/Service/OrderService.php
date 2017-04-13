@@ -156,6 +156,18 @@ class OrderService extends ContainerAware
         $basket = $em->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($request->get('basket_id'));
 
         $place = $basket->getPlaceId();
+
+        if (strpos($place->getDeliveryOptions(),$serviceVar['type']) === false) {
+            throw new ApiException(
+                'Coupon for delivery',
+                404,
+                [
+                    'error'       => 'Chosen delivery option does not match restaurants delivery',
+                    'description' => $this->container->get('translator')->trans('general.coupon.only_delivery')
+                ]
+            );
+        }
+
         $placeService = $this->container->get('food.places');
         $adminFee = $placeService->getAdminFee($place);
         $useAdminFee = $placeService->useAdminFee($place);
@@ -373,7 +385,7 @@ class OrderService extends ContainerAware
 
         if ($serviceVar['type'] != "pickup") {
             $placeService = $this->container->get('food.places');
-            if (!$useAdminFee  && ($total_cart < $placeService->getMinCartPrice($place->getId()))) { //Jei yra admin fee - cart'o minimumo netaikom
+            if (!$useAdminFee  && ($placeService->getMinCartPrice($place->getId()) - $total_cart) >= 0.00001 ) { //Jei yra admin fee - cart'o minimumo netaikom
                 throw new ApiException(
                     'Order Too Small',
                     400,
@@ -440,7 +452,7 @@ class OrderService extends ContainerAware
             }
         } elseif ($basket->getPlaceId()->getMinimalOnSelfDel()) {
             $total_cart = $cartService->getCartTotal($list/*, $place*/);
-            if ($total_cart < $place->getCartMinimum() && !$useAdminFee) {
+            if (($place->getCartMinimum() - $total_cart) >= 0.00001 && !$useAdminFee) {
                 throw new ApiException(
                     'Order Too Small',
                     0,
