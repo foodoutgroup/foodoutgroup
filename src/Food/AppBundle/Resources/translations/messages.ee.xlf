@@ -1046,6 +1046,10 @@
             <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
                 <source>general.top_contact.worktime_days</source><target><![CDATA[VII–IV<br />V–I]]></target>
             </trans-unit>
+            <trans-unit id="general.top_contact.worktime_holiday" resname="general.top_contact.worktime_holiday">
+                <source>general.top_contact.worktime_holiday</source>
+                <target>Töö pidulik korda</target>
+            </trans-unit>
             <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
                 <source>general.top_contact.worktime</source><target><![CDATA[10.00–23.00<br />10.00–01.00.]]></target>
             </trans-unit>
