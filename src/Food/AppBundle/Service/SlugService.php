@@ -52,7 +52,7 @@ class SlugService
             throw new \Exception('getTranslations method required');
         }
 
-        $locales = $this->container->getParameter('available_locales');
+        $locales = $this->container->getParameter('locales');
         $defaultLocale = $this->container->getParameter('locale');
 
         $textsForSlugs = [];

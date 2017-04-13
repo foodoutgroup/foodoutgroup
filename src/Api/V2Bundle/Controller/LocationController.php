@@ -2,7 +2,6 @@
 
 namespace Api\V2Bundle\Controller;
 
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -22,7 +21,7 @@ class LocationController extends Controller
 
                 $cityCollection = [];
                 $placeGroupIDs = [63,85, 105,142,333,302,160];
-                $cityConfigCollection = $this->container->getParameter('available_cities');
+                $cityConfigCollection = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getActive();
 
                 foreach ($cityConfigCollection as $city) {
 
@@ -31,13 +30,13 @@ class LocationController extends Controller
 
                     $qb = $repository->createQueryBuilder('pp')
                         ->innerJoin('FoodDishesBundle:Place', 'p', 'WITH','p.id = pp.place')
-                        ->where('pp.city = :city')
+                        ->where('pp.cityId = :city')
                         ->andWhere('pp.active = 1')
                         ->andWhere('p.deletedAt IS NULL')
                         ->andWhere('p.id IN (:ids)')
                         ->andWhere('p.apiHash IS NOT NULL');
 
-                    $query = $qb->getQuery()->setParameters(['city' => $city, 'ids' => implode(",",$placeGroupIDs)]);
+                    $query = $qb->getQuery()->setParameters(['cityId' => $city->getId(), 'ids' => implode(",",$placeGroupIDs)]);
 
                     $result = $query->execute();
                     $place = (count($result) >= 1 ? $result[0]->getPlace() : null);
@@ -65,17 +64,6 @@ class LocationController extends Controller
                     }
 
                     $cityCollection[] = $dataArray;
-//                    var_dump($dataArray);
-//                    die;
-//
-//                    $dataArray = [];
-//
-//                    if($place != null && $place->getActive()) {
-//                        $cityCollection[] = [
-//                            'city' => $city,
-//                            'hash' => $place->getApiHash(),
-//                        ];
-//                    }
                 }
 
                 $response['success'] = true;

@@ -18,11 +18,11 @@ services:
 
     slug:
         class: Food\AppBundle\Service\SlugService
-        arguments: ["@doctrine.orm.entity_manager", @service_container, @router, %available_locales%, %kernel.default_locale%]
+        arguments: ["@doctrine.orm.entity_manager", @service_container, @router, %locales%, %kernel.default_locale%]
 
     validate.slug:
         class: Food\AppBundle\Validator\Constraints\SlugValidator
-        arguments: [@doctrine.orm.entity_manager, %available_locales%, %kernel.default_locale%, %slug_regex%]
+        arguments: [@doctrine.orm.entity_manager, %locales%, %kernel.default_locale%]
         tags:
           - { name: validator.constraint_validator, alias: validate.slug }
 
@@ -126,9 +126,6 @@ services:
           - @router
           - @food.app.utils.language
           - @service_container
-        calls:
-          - [setAvailableCitiesSlugs, [%available_cities_slugs%]]
-          - [setLocale, [%locale%]]
     food.page_service:
         class: Food\AppBundle\Service\PageService
         arguments:
@@ -216,15 +213,11 @@ services:
         - [ setSecurityContext, [@security.context]]
     app.form.type.gender:
         class: Food\AppBundle\Form\Type\CityType
-        arguments:
-            - '%available_cities%'
         tags:
             - { name: form.type, alias: app_city }
     app.form.type.offer:
 
         class: Food\AppBundle\Form\Type\BestOfferType
-        arguments:
-            - '%available_cities%'
         tags:
             - { name: form.type, alias: offer_city }
 
