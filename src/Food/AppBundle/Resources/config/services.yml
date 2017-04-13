@@ -1,5 +1,21 @@
 services:
 
+    request_listener:
+        class: Food\AppBundle\EventListener\RequestListener
+        arguments: [ @service_container ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_listener, event: kernel.request, method: onLateKernelRequest, priority: -10 }
+
+    gedmo.listener.translatable:
+        class: Gedmo\Translatable\TranslatableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ]
+            - [ setDefaultLocale, [ %locale% ] ]
+            - [ setTranslationFallback, [ true ] ]
+
     slug:
         class: Food\AppBundle\Service\SlugService
         arguments: ["@doctrine.orm.entity_manager", @service_container, @router, %available_locales%, %kernel.default_locale%]
