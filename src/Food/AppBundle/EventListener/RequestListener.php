@@ -38,7 +38,6 @@ class RequestListener
                 $translatable->setTranslatableLocale($requestedLocale);
             }
         }
-
     }
 
 }

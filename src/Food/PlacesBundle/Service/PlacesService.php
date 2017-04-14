@@ -334,29 +334,25 @@ class PlacesService extends ContainerAware
     }
 
     /**
-     * @param         $recommended
+     * @param $recommended
      * @param Request $request
-     * @param bool    $slug_filter
-     * @param bool    $zaval
-     *
+     * @param array $slug_filter
+     * @param bool $rush_hour
      * @return array|mixed
      */
-    public function getPlacesForList($recommended, Request $request, $slug_filter = false, $zaval = false)
+    public function getPlacesForList($recommended, Request $request, $slug_filter = [], $rush_hour = false)
     {
+        var_dump('asiliukas');
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
 
-        if ($zaval) {
-            $deliveryType = '';
-        } else {
-            $deliveryType = $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver);
-        }
 
-        if (empty($kitchens)) {
-            $kitchens = [];
-        } else {
-            $kitchens = explode(",", $kitchens);
-        }
+        $sessionService = $this->container->get('session');
+
+
+        $deliveryType = $rush_hour ? '' : $sessionService->get('delivery_type', OrderService::$deliveryDeliver);
+
+        $kitchens = empty($kitchens) ? [] : explode(",", $kitchens);
 
         if (!empty($slug_filter)) {
             $kitchens = $this->getKitchensFromSlug($slug_filter, $request);
@@ -366,15 +362,12 @@ class PlacesService extends ContainerAware
         if (empty($filters)) {
             $filters = [];
         }
-//        if (is_array($filters)) {
-//            $this->getContainer()->get('logger')->error('getPlacesForList filters param got array -cant be. Array contents: ' . var_export($filters, true));
-//        }
 
         if (is_string($filters)) {
             $filters = explode(",", $filters);
         }
-        if (!empty($deliveryType)) {
-            $filters['delivery_type'] = $deliveryType;
+        if (!$rush_hour) {
+            $filters['delivery_type'] = $sessionService->get('delivery_type', OrderService::$deliveryDeliver);
         }
 
         foreach ($kitchens as $kkey => &$kitchen) {
@@ -390,13 +383,12 @@ class PlacesService extends ContainerAware
             $recommended,
             $this->container->get('food.googlegis')->getLocationFromSession(),
             $this->container
-        )
-        ;
+        );
 
         $this->container->get('food.places')->saveRelationPlaceToPoint($places);
         $places = $this->container->get('food.places')->placesPlacePointsWorkInformation($places);
 
-        if ($zaval) {
+        if ($rush_hour) {
             $places = $this->container->get('food.places')->zavalPlaces($places);
         }
 

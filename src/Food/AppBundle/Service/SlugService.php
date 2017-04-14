@@ -151,7 +151,6 @@ class SlugService
             $url = $this->router->generate($slug, $params);
         }
         self::$cache[$type][$itemId] = $url;
-//        die($url);
 
         return $url;
     }
@@ -175,9 +174,6 @@ class SlugService
             $url = $locale . "/" . $url;
         }
 
-//        preg_match('/^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$/', $urlSlug, $matches);
-
-//        if ($urlSlug && (isset($matches[0]) && count($matches[0]))) {
         if ($urlSlug) {
             $url = str_replace(["/app_dev.php/"], "", $this->router->generate($slug, $params, UrlGeneratorInterface::ABSOLUTE_PATH));
         }
