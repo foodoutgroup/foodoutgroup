@@ -78,8 +78,6 @@
                         {% set largestDiscountPrice = dish_service.largestDishDiscountPrice(dish.id) %}
                         {% set hasDiscountCount = dish_service.countDiscountSizes(dish.id) %}
                         <span class="price {% if hasDiscount %}discount{% endif %} {% if hasDiscount and multiLine %}multiline{% endif %} {{ priceClass }}">
-                            a{{ smallestDiscountPrice }}a
-                            b{{ largestDiscountPrice }}b
                         {% if smallestDiscountPrice == largestDiscountPrice %}
                             {{ currency_display | raw}} {{ smallestDiscountPrice|replace({'.': ','}) }}
                             {% if currency_alternative %}
