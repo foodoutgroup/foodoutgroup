@@ -27,6 +27,10 @@ class SlugService
 
     private $isBanned;
 
+
+    public static $cache = [];
+    public static $cachePath = [];
+
     public function __construct(EntityManager $entityManager, ContainerInterface $container, Router $router, $localeCollection, $defaultLocale)
     {
         $this->em = $entityManager;
@@ -127,6 +131,9 @@ class SlugService
 
     public function getUrl($itemId, $type)
     {
+        if(isset(self::$cache[$type][$itemId])) {
+            return self::$cache[$type][$itemId];
+        }
         $locale = $this->getLocale();
         $slug = 'food_slug';
 
@@ -143,7 +150,7 @@ class SlugService
         if ($urlSlug) {
             $url = $this->router->generate($slug, $params);
         }
-
+        self::$cache[$type][$itemId] = $url;
 //        die($url);
 
         return $url;
@@ -151,6 +158,10 @@ class SlugService
 
     public function getPath($itemId, $type, $lang = false)
     {
+        if(isset(self::$cachePath[$type][$itemId])) {
+            return self::$cachePath[$type][$itemId];
+        }
+
         $locale = $this->getLocale();
 
         $slug = 'food_slug';
@@ -170,7 +181,7 @@ class SlugService
         if ($urlSlug) {
             $url = str_replace(["/app_dev.php/"], "", $this->router->generate($slug, $params, UrlGeneratorInterface::ABSOLUTE_PATH));
         }
-
+        self::$cachePath[$type][$itemId] = $url;
         return $url;
     }
 

@@ -1,26 +1,30 @@
 <div class="restaurants-list">
-    {% for place in placeCollection %}
+    {% for place_point in placeCollection %}
+
+        {% set place = place_point.place %}
+        {% set url = slug.getUrl(place.id, 'place') %}
+
         <div class="restaurant-item clearfix">
             <div class="logo">
-                <div class="logo-wrap"><a href="{{ slug.getUrl(place.place.id, 'place') }}"><img src="//{{ cloudfront_url }}/uploads/places/thumb_{{ place.place.logo }}"></a></div>
+                <div class="logo-wrap"><a href="{{ url }}"><img src="//{{ cloudfront_url }}/uploads/places/thumb_{{ place.logo }}"></a></div>
             </div>
             <div class="item-center">
                 <h2 class="name clearfix">
-                    <span class="text"><a href="{{ slug.getUrl(place.place.id, 'place') }}">{{ place.place.name }}</a></span>
-                    {% if place.point.fast %}
+                    <span class="text"><a href="{{ url }}">{{ place.name }}</a></span>
+                    {% if place_point.point.fast %}
                         <span class="tag">
                             <img src="/bundles/foodapp/images/tag-speed.png">
                         </span>
                     {% endif %}
-                    {% if place.place.new %}
+                    {% if place.new %}
                         <span class="tag">
                             <img src="/bundles/foodapp/images/tag-new.png">
                         </span>
                     {% endif %}
 
-                    {% if place.is_work == 1 %}
+                    {% if place_point.is_work == 1 %}
                         {# IT WORKS. Everything works :) #}
-                        {% if not place.is_delivering %}
+                        {% if not place_point.is_delivering %}
                             <span class="tag">
                                 <span class="partial-work"></span>
                                 <div class="time-popup time-popup2">{{ 'general.restaurant_not_delivering_to_address'|trans }}
@@ -28,27 +32,27 @@
                                 </div>
                             </span>
                         {% endif %}
-                    {% elseif place.is_work == 2 %}
+                    {% elseif place_point.is_work == 2 %}
                         {# IT WORKS. Well some of the points do :D :) #}
                         <span class="tag">
                             <span class="partial-work{% if locale == 'lv' %} partial-work-lv{% elseif locale == 'ee' %} partial-work-ee{% endif %}"></span>
-                            <div class="time-popup time-popup2">{{ order_service.notWorkingPlacesPoints(place.place)|raw }}
+                            <div class="time-popup time-popup2">{{ order_service.notWorkingPlacesPoints(place)|raw }}
                                 <div class="nip"></div>
                             </div>
                         </span>
                     {% else %}
                         {# NAH non of it works :) #}
-                        {% if place.pp_count == 1 %}
+                        {% if place_point.pp_count == 1 %}
                             <span class="tag">
                                 <img src="/bundles/foodapp/images/tag-not-working{% if locale == 'lv' %}_lv{% elseif locale == 'ee' %}_ee{% endif %}.png">
-                                <div class="time-popup">{{ order_service.getTodayWork(place.point) }}
+                                <div class="time-popup">{{ order_service.getTodayWork(place_point.point) }}
                                     <div class="nip"></div>
                                 </div>
                             </span>
                         {% else %}
                             <span class="tag">
                                 <img src="/bundles/foodapp/images/tag-not-working{% if locale == 'lv' %}_lv{% elseif locale == 'ee' %}_ee{% endif %}.png">
-                                <div class="time-popup">{{ order_service.notWorkingPlacesPoints(place.place)|raw }}
+                                <div class="time-popup">{{ order_service.notWorkingPlacesPoints(place)|raw }}
                                     <div class="nip"></div>
                                 </div>
                             </span>
@@ -56,42 +60,42 @@
                     {% endif %}
                 </h2>
                 <p class="desc">
-                    {% for kitchen in place.place.kitchens %}
+                    {% for kitchen in place.kitchens %}
                         {{kitchen.name}}{% if loop.last == false %}, {% endif %}
                     {% endfor %}
                 </p>
                 <div class="details">
-                    {% if place.place.deliveryOptions == 'delivery' %}
-                        <span class="delivery">{% trans %}place.delivery_info{% endtrans %}:
+                    {% if place.deliveryOptions == 'delivery' %}
+                        <span class="delivery">{% trans %}place_point.delivery_info{% endtrans %}:
                             <span>
-                                {{ places_service.getDeliveryTime(place.place) }}
-                                {% if place.place.deliveryTimeInfo is not empty %}
-                                    <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.place.deliveryTimeInfo }}"></span>
+                                {{ places_service.getDeliveryTime(place) }}
+                                {% if place.deliveryTimeInfo is not empty %}
+                                    <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
                                 {% endif %}
                             </span>
                         </span>
-                    {% elseif place.place.deliveryOptions == 'pickup' %}
-                        <span class="pickup">{% trans %}place.pickup_info{% endtrans %}: {{ place.place.pickupTime }}
+                    {% elseif place.deliveryOptions == 'pickup' %}
+                        <span class="pickup">{% trans %}place_point.pickup_info{% endtrans %}: {{ place.pickupTime }}
                             <span></span>
                         </span>
-                    {% elseif place.place.deliveryOptions == 'delivery_and_pickup' %}
-                        <span class="pickup">{% trans %}place.pickup_info{% endtrans %}: {{ place.place.pickupTime }}
+                    {% elseif place.deliveryOptions == 'delivery_and_pickup' %}
+                        <span class="pickup">{% trans %}place_point.pickup_info{% endtrans %}: {{ place.pickupTime }}
                             <span></span>
                         </span>
-                        <span class="delivery">{% trans %}place.delivery_info{% endtrans %}:
+                        <span class="delivery">{% trans %}place_point.delivery_info{% endtrans %}:
                             <span>
-                                {{ places_service.getDeliveryTime(place.place) }}
-                                {% if place.place.deliveryTimeInfo is not empty %}
-                                    <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.place.deliveryTimeInfo }}"></span>
+                                {{ places_service.getDeliveryTime(place) }}
+                                {% if place.deliveryTimeInfo is not empty %}
+                                    <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
                                 {% endif %}
                             </span>
                         </span>
                     {% endif %}
 
-                    {% if (delivery_type_filter != 'deliver' and place.place.minimalOnSelfDel) or (delivery_type_filter == 'deliver' and place.place.deliveryOptions != 'pickup') or (place.place.deliveryOptions == 'pickup' and place.place.minimalOnSelfDel) %}
-                    <span class="min-cart-size">{% trans %}place.min_cart_amount{% endtrans %}:
-                        {% set minCart = places_service.minCartPrice(place.place.id) %}
-                        {% set maxCart = places_service.maxCartPrice(place.place.id) %}
+                    {% if (delivery_type_filter != 'deliver' and place.minimalOnSelfDel) or (delivery_type_filter == 'deliver' and place.deliveryOptions != 'pickup') or (place.deliveryOptions == 'pickup' and place.minimalOnSelfDel) %}
+                    <span class="min-cart-size">{% trans %}place_point.min_cart_amount{% endtrans %}:
+                        {% set minCart = places_service.minCartPrice(place.id) %}
+                        {% set maxCart = places_service.maxCartPrice(place.id) %}
                         {% if minCart == maxCart %}
                             <span>{{ currency_display|raw }}{{ minCart }}</span>
                         {% else %}
@@ -99,18 +103,18 @@
                         {% endif %}
                     </span>
                     {% endif %}
-                    {#<span class="select-place-point"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.place.id, 'place') }) }}#detailed-restaurant-info">{% trans %}place.select_place_to_pickup{% endtrans %}</a></span>#}
+                    {#<span class="select-place-point"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}#detailed-restaurant-info">{% trans %}place.select_place_to_pickup{% endtrans %}</a></span>#}
                 </div>
             </div>
             <!-- <div class="discount-tag"></div> -->
             <div class="item-righter">
                 <div class="clearfix">
                     {#todo:fix this god damn link#}
-                    {#<div data-stars="{{ place.place.rating }}" class="restoran-rating fl"></div>#}
-                    {% if place.place.reviewCount != 0 %}
-                        <div class="rating-count fr"><a href="{{ slug.getUrl(place.place.id, 'place') }}#detailed-restaurant-review">{{ place.place.reviewCount }} {% transchoice place.place.reviewCount %}places.reviews_count{% endtranschoice %}</a></div>
+                    {#<div data-stars="{{ place.rating }}" class="restoran-rating fl"></div>#}
+                    {% if place.reviewCount != 0 %}
+                        <div class="rating-count fr"><a href="{{ url }}#detailed-restaurant-review">{{ place.reviewCount }} {% transchoice place.reviewCount %}places.reviews_count{% endtranschoice %}</a></div>
                     {% endif %}
-                </div><a href="{{ slug.getUrl(place.place.id, 'place') }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
+                </div><a href="{{ url }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
             </div>
         </div>
     {% else %}
