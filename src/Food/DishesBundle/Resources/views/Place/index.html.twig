@@ -182,6 +182,22 @@
                                                 <img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
                                             </a>
                                         {% endif %}
+                                    {% elseif site_country == 'LV' %}
+                                        {% if place.id in [1, 35] %}
+                                            {# Link to Cili Express #}
+                                            <br />
+                                            <a class="btn-walk" href="{{ path('food_cili_greita_lv') }}">
+                                                <span><i class="icon-walk"></i><b>Iet uz Čili Take Away</b><i class="icon-arrow"></i></span>
+                                                <img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
+                                            </a>
+                                        {% elseif place.id == 36 %}
+                                            {# Link to Cili #}
+                                            <br />
+                                            <a class="btn-walk" href="{{ path('food_cili_lv') }}">
+                                                <span><i class="icon-walk"></i><b>Iet uz Čili Pizza</b><i class="icon-arrow"></i></span>
+                                                <img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
+                                            </a>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                         {# Meniu #}
