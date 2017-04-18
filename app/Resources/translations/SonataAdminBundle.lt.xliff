@@ -1219,6 +1219,14 @@
                 <source>admin.order.details.dish_name</source>
                 <target>Patiekalas</target>
             </trans-unit>
+            <trans-unit id="admin.order.details.all">
+                <source>admin.order.details.all</source>
+                <target>Viso</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.count">
+                <source>admin.order.details.count</source>
+                <target>Kiekis</target>
+            </trans-unit>
             <trans-unit id="admin.order.details.price">
                 <source>admin.order.details.price</source>
                 <target>Kaina</target>

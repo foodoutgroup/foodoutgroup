@@ -1203,6 +1203,14 @@
                 <source>admin.order.details.dish_name</source>
                 <target>Dish</target>
             </trans-unit>
+            <trans-unit id="admin.order.details.all">
+                <source>admin.order.details.all</source>
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.count">
+                <source>admin.order.details.count</source>
+                <target>Quantity</target>
+            </trans-unit>
             <trans-unit id="admin.order.details.price">
                 <source>admin.order.details.price</source>
                 <target>Price</target>
