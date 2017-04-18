@@ -69,8 +69,8 @@ class OrderToDriverCommand extends ContainerAwareCommand
                 }
             }
 
-            $orderToDriverCollection = $em->getRepository('FoodOrderBundle:OrderToDriver')->getOrdersToSend();
             for ($k = 0; $k < 10; ++$k) {
+                $orderToDriverCollection = $em->getRepository('FoodOrderBundle:OrderToDriver')->getOrdersToSend();
                 $i = 0;
                 $fail = 0;
                 foreach ($orderToDriverCollection as $orderToDriver) {
