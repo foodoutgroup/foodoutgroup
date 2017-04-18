@@ -17,8 +17,8 @@ parameters:
     s3_bucket: foodout-lv-invoice
 
     driver.send_to_external: false
-    driver.city_filter: []
-    driver.socket_address: tcp://s2.foodout.lt:7778
+    driver.city_filter: ["Rīga"]
+    driver.socket_address: tcp://cl1:7778
     driver.socket_hash: api
 
     locale: lv
