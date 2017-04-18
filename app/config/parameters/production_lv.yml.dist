@@ -16,7 +16,7 @@ parameters:
     aws_region: eu-west-1
     s3_bucket: foodout-lv-invoice
 
-    driver.send_to_external: false
+    driver.send_to_external: true
     driver.city_filter: ["Rīga"]
     driver.socket_address: tcp://cl1:7778
     driver.socket_hash: api
