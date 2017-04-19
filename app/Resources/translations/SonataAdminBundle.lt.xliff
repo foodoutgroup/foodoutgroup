@@ -794,6 +794,10 @@
                 <source>admin.users.group</source>
                 <target>Grupė</target>
             </trans-unit>
+            <trans-unit id="admin.users.special">
+                <source>admin.users.special</source>
+                <target>Išskirtinis klientas</target>
+            </trans-unit>
             <trans-unit id="admin.users.bussines_management">
                 <source>admin.users.bussines_management</source>
                 <target>Verslo klientų valdymas</target>

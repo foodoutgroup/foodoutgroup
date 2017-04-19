@@ -233,7 +233,7 @@
                     {% set additional_class = 'hesburger_distinct_color' %}
                 {% endif %}
 
-                <tr class="{{ loop.index%2 ? 'odd' : 'even' }} {{ additional_class }}">
+                <tr {% if order.user.special == true and type == 'unapproved-selfdeliver' %} style="background-color: mediumvioletred !important;" {% endif %} class="{{ loop.index%2 ? 'odd' : 'even' }} {{ additional_class }}">
                     <td class="no-wrap">
                         {% if not order.placePointSelfDelivery %}
                             <input type="checkbox" id="order_{{ order.id }}" value="{{ order.id }}" class="order_checkbox" />
