@@ -490,6 +490,10 @@
                 <source>mobile.order.sum_without_delivery</source>
                 <target>Summa bez piegādes maksas (ar PVN)</target>
             </trans-unit>
+            <trans-unit id="mobile.order.sum_without_admin_fee_and_delivery" resname="mobile.order.sum_without_admin_fee_and_delivery">
+                <source>mobile.order.sum_without_admin_fee_and_delivery</source>
+                <target>Summa tikai par produktiem (ar PVN):</target>
+            </trans-unit>
             <trans-unit id="mobile.order.coupon_code" resname="mobile.order.coupon_code">
                 <source>mobile.order.coupon_code</source>
                 <target>Atlaižu kods</target>
@@ -1292,6 +1296,10 @@
             <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
                 <source>general.top_contact.worktime_days</source>
                 <target><![CDATA[I - VI,VII<br />V - VI]]></target>
+            </trans-unit>
+            <trans-unit id="general.top_contact.worktime_holiday" resname="general.top_contact.worktime_holiday">
+                <source>general.top_contact.worktime_holiday</source>
+                <target>Darba svētku reizes</target>
             </trans-unit>
             <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
                 <source>general.top_contact.worktime</source>

@@ -2,9 +2,9 @@
 <html lang="{{ app.request.locale }}">
 <head>
     <meta charset="utf-8">
-    <meta name="verify-webtopay" content="461551ad8deddc3ad0975adb27d1eff4" />
+    <meta name="verify-webtopay" content="461551ad8deddc3ad0975adb27d1eff4"/>
     <title>{% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}</title>
-    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico"/>
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
@@ -21,40 +21,47 @@
 
     {# Chosen CSS Begin #}
     {% stylesheets '@FoodAppBundle/Resources/public/scripts/chosen/chosen.min.css' filter="cssrewrite" %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
     {% endstylesheets %}
     {# Chosen CSS End #}
 
     {% stylesheets 'bundles/foodapp/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css' filter="cssrewrite" %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
     {% endstylesheets %}
-    {% stylesheets '@FoodAppBundle/Resources/public/scripts/boxer/jquery.fs.boxer.css*'  %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% stylesheets '@FoodAppBundle/Resources/public/scripts/boxer/jquery.fs.boxer.css*' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
     {% endstylesheets %}
-    {% stylesheets '@FoodAppBundle/Resources/public/styles/style.css'  %}
-    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"  />
+    {% stylesheets '@FoodAppBundle/Resources/public/styles/style.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"/>
     {% endstylesheets %}
-    {% stylesheets '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css'  %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% stylesheets '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
     {% endstylesheets %}
 
     {% block javascripts %}
+
         <script src="{{ asset('bundles/foodapp/scripts/jquery-1.10.2.min.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery.cycle2.min.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery.ui.selectmenu.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery.raty.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/boxer/jquery.fs.boxer.min.js') }}"></script>
-        <script src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}">       </script>
+        <script src="{{ asset('bundles/foodapp/scripts/icheck/jquery.icheck.min.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery.placeholder.min.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery.loadmask.min.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery.typeahead.js') }}"></script>
         {# <script src="{{ asset('bundles/foodapp/scripts/mediator.min.js') }}"></script> #}
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-        <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/selectivizr-min.js') }}"></script><![endif]-->
-        <!--[if IE 9]><script src="{{ asset('bundles/foodapp/scripts/pie_ie9.js') }}"></script><![endif]-->
-        <!--[if IE 8]><script src="{{ asset('bundles/foodapp/scripts/pie_ie8.js') }}"></script><![endif]-->
+        <!--[if IE 8]>
+        <script src="{{ asset('bundles/foodapp/scripts/selectivizr-min.js') }}"></script><![endif]-->
+        <!--[if IE 9]>
+        <script src="{{ asset('bundles/foodapp/scripts/pie_ie9.js') }}"></script><![endif]-->
+        <!--[if IE 8]>
+        <script src="{{ asset('bundles/foodapp/scripts/pie_ie8.js') }}"></script><![endif]-->
+        {# <script src="{{ asset('bundles/foodapp/scripts/mediator.min.js') }}"></script> #}
+
+
         <script type="text/javascript">
             $.fn.raty.defaults.noRatedMsg = '{% trans %}general.raty.not_rated_yet{% endtrans %}';
             $.fn.raty.defaults.hints = [
@@ -74,7 +81,7 @@
         {% endjavascripts %}
 
         {% stylesheets '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.css' %}
-        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
         {% endstylesheets %}
 
         {# Chosen JS Begin #}
@@ -86,11 +93,33 @@
     {% endblock %}
 
     <script>
-        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n; n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0; t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq)return;
+            n = f.fbq = function () {
+                n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = '2.0';
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '901898153179068');
         fbq('track', "PageView");
+
+        $(document).ready(function () {
+            $('.holiday-time').tooltip({
+                placement: 'bottom'
+            });
+        });
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=901898153179068&ev=PageView&noscript=1" /></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+                   src="https://www.facebook.com/tr?id=901898153179068&ev=PageView&noscript=1"/></noscript>
     {# Facebook Pixel Code End #}
 
     {% block adnet_retargeting %}
@@ -101,12 +130,20 @@
                 divider: encodeURIComponent('|'),
                 pagename: encodeURIComponent('Foodout.lt|Pagrindinis')
             };
-            (function () { var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://track.adform.net/serving/scripts/trackpoint/async/'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); })();
+            (function () {
+                var s = document.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'https://track.adform.net/serving/scripts/trackpoint/async/';
+                var x = document.getElementsByTagName('script')[0];
+                x.parentNode.insertBefore(s, x);
+            })();
 
         </script>
         <noscript>
             <p style="margin:0;padding:0;border:0;">
-                <img src="https://track.adform.net/Serving/TrackPoint/?pm=314127&ADFPageName=Foodout.lt|Pagrindinis&ADFdivider=|" width="1" height="1" alt="" />
+                <img src="https://track.adform.net/Serving/TrackPoint/?pm=314127&ADFPageName=Foodout.lt|Pagrindinis&ADFdivider=|"
+                     width="1" height="1" alt=""/>
             </p>
         </noscript>
         <!-- Adform Tracking Code END -->
@@ -117,18 +154,30 @@
     <script type="text/javascript">
         var _ml = _ml || [];
         _ml.push({account_code: 'x8e0d0o9o9y6t6n7'});
-        (function() {
-            var mlo = document.createElement('script'); mlo.type = 'text/javascript'; mlo.async = true; mlo.src = '//app.mailersoft.com/ecommerce/v4/track.js';var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mlo, s);
+        (function () {
+            var mlo = document.createElement('script');
+            mlo.type = 'text/javascript';
+            mlo.async = true;
+            mlo.src = '//app.mailersoft.com/ecommerce/v4/track.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(mlo, s);
         })();
     </script>
     <!-- mailersoft end -->
     <script type="text/javascript">
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-                    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-        ga('create', '{{ google_analytics_uid }}', 'auto', {'allowLinker': true });
+        ga('create', '{{ google_analytics_uid }}', 'auto', {'allowLinker': true});
         ga('require', 'displayfeatures');
         ga('require', 'linker');
         ga('send', 'pageview');

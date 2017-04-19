@@ -8,6 +8,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class OrderToDriverCommand extends ContainerAwareCommand
 {
+    private $_ch;
+
     protected function configure()
     {
         $this
@@ -69,8 +71,8 @@ class OrderToDriverCommand extends ContainerAwareCommand
                 }
             }
 
-            $orderToDriverCollection = $em->getRepository('FoodOrderBundle:OrderToDriver')->getOrdersToSend();
             for ($k = 0; $k < 10; ++$k) {
+                $orderToDriverCollection = $em->getRepository('FoodOrderBundle:OrderToDriver')->getOrdersToSend();
                 $i = 0;
                 $fail = 0;
                 foreach ($orderToDriverCollection as $orderToDriver) {
@@ -84,14 +86,30 @@ class OrderToDriverCommand extends ContainerAwareCommand
                         $output->writeln($msg);
                     }
                     if (!$dryRun) {
-                        if (fwrite($fp, $msg)) {
-                            $orderToDriver->setDateSent(new \DateTime());
-                            $em->persist($orderToDriver);
-                        } else {
-                            ++$fail;
-                        }
-                        ++$i;
-                        usleep(5000);
+                        $this->_ch = curl_init();
+
+                        $post = ['msg' => $msg];
+
+                        curl_setopt($this->_ch, CURLOPT_AUTOREFERER, TRUE);
+                        curl_setopt($this->_ch, CURLOPT_HEADER, 0);
+                        curl_setopt($this->_ch, CURLOPT_RETURNTRANSFER, 1);
+                        curl_setopt($this->_ch, CURLOPT_FOLLOWLOCATION, TRUE);
+                        curl_setopt($this->_ch, CURLOPT_POST, true);
+                        curl_setopt($this->_ch, CURLOPT_POSTFIELDS, $post);
+
+                        curl_setopt($this->_ch, CURLOPT_URL, 'http://v2.foodout.lt/order/new');
+
+                        curl_close($this->_ch);
+                        $orderToDriver->setDateSent(new \DateTime());
+                        $em->persist($orderToDriver);
+                        //~ if (fwrite($fp, $msg)) {
+                            //~ $orderToDriver->setDateSent(new \DateTime());
+                            //~ $em->persist($orderToDriver);
+                        //~ } else {
+                            //~ ++$fail;
+                        //~ }
+                        //~ ++$i;
+                        //~ usleep(5000);
                     }
                     if ($fail >= 3) {
                         $output->writeln('Too much of fails!');

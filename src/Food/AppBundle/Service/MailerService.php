@@ -46,7 +46,7 @@ class MailerService
 
     public function setVariable($name, $value)
     {
-        return $this->provider->setVariable();
+        return $this->provider->setVariable($name, $value);
     }
 
     public function setId($id)

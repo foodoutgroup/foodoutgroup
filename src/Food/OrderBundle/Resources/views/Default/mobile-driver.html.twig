@@ -18,7 +18,7 @@
     <table class="table table-bordered table condensed">
         <thead>
         <tr>
-            <th colspan="5"><img src="/bundles/foodapp/images/logo_food.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
+            <th colspan="5"><img style="width: 100px;height: 30px" src="/bundles/foodapp/images/logo_food_easter_lt.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
         </tr>
         <tr>
             <th style="width: 30px">#</th>
@@ -59,6 +59,13 @@
             </tr>
         {% endif %}
         <tr><td colspan="5"><b>{% trans %}mobile.order.id{% endtrans %}</b>: {{ order.id }}</td></tr>
+        <tr>
+            <td colspan="5">
+                <b>
+                    {% trans %}mobile.order.sum_without_admin_fee_and_delivery{% endtrans %}
+                </b> {{ order.foodTotal }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
+            </td>
+        </tr>
         <tr>
             <td colspan="5">
                 <b>

@@ -3310,12 +3310,18 @@ class OrderService extends ContainerAware
         $noMinimumCart = ($user instanceof User ? $user->getNoMinimumCart() : false);
         $locationService = $this->container->get('food.location');
         $dishesService = $this->container->get('food.dishes');
+
+        $debugCartInfo = array();
+
+
         $loggedIn = true;
         $phonePass = false;
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
+        $debugCartInfo['total'] = $total_cart;
 
         $customerEmail = $request->get('customer-email');
+        $useAdminFee = $this->container->get('food.places')->useAdminFee($place);
 
         if (!$isCallcenter) {
             if (0 === strlen($customerEmail)) {
@@ -3508,6 +3514,28 @@ class OrderService extends ContainerAware
                 ];
             }
         }
+
+
+        foreach ($this->getCartService()->getCartDishes($place) as $item) {
+            $dish = $item->getDishId();
+            $debugDishOptions = $this->getCartService()->getCartDishOptions($item);
+            if (!empty($debugDishOptions)) {
+                foreach ($debugDishOptions as $option) {
+                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['name'] =  $option->getDishOptionId()->getName();
+                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['price'] =  $option->getDishOptionId()->getPrice();
+                }
+            }
+            $debugCartInfo['dish'][$dish->getId()]['price'] = $item->getDishSizeId()->getCurrentPrice();
+            $debugCartInfo['dish'][$dish->getId()]['name'] = $dish->getName();
+            if (!$dishesService->isDishAvailable($dish)) {
+                $formErrors[] = [
+                    'message' => 'dishes.no_production',
+                    'text' => $dish->getName()
+                ];
+            }
+        }
+
+
 
         $preOrder = $request->get('pre-order');
         $pointRecord = null;
