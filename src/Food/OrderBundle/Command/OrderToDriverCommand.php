@@ -100,6 +100,8 @@ class OrderToDriverCommand extends ContainerAwareCommand
                         curl_setopt($this->_ch, CURLOPT_URL, 'http://v2.foodout.lt/order/new');
 
                         curl_close($this->_ch);
+                        $orderToDriver->setDateSent(new \DateTime());
+                        $em->persist($orderToDriver);
                         //~ if (fwrite($fp, $msg)) {
                             //~ $orderToDriver->setDateSent(new \DateTime());
                             //~ $em->persist($orderToDriver);
