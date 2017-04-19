@@ -812,12 +812,7 @@ class OrderService extends ContainerAware
     {
         $languageUtil = $this->container->get('food.app.utils.language');
 
-        if (strpos($messageText, 'Cili pica Kaunas/Klaipeda') !== false) {
-            $messageText = str_replace('Cili pica Kaunas/Klaipeda', 'Cili pica', $messageText);
-        }
-        if (strpos($messageText, 'Cili Kaimas Kaunas') !== false) {
-            $messageText = str_replace('Cili Kaimas Kaunas', 'Cili Kaimas', $messageText);
-        }
+        $messageText = $this->correctMessageText($messageText);
 
         $max_len = 160;
         $all_message_len = mb_strlen($messageText, 'UTF-8');
@@ -860,6 +855,21 @@ class OrderService extends ContainerAware
 
         return $messageText;
     }
+
+    public function correctMessageText($messageText){
+        if (strpos($messageText, 'Cili pica Kaunas/Klaipeda') !== false) {
+            $messageText = str_replace('Cili pica Kaunas/Klaipeda', 'Cili pica', $messageText);
+        }
+        if (strpos($messageText, 'Cili Kaimas Kaunas') !== false) {
+            $messageText = str_replace('Cili Kaimas Kaunas', 'Cili Kaimas', $messageText);
+        }
+        if (strpos($messageText, '\\') !== false) {
+            $messageText = str_replace('\\', '-', $messageText);
+        }
+
+        return $messageText;
+    }
+
 
     /**
      * @param null|string $source
