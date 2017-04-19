@@ -30,11 +30,16 @@ class DriverController extends Controller
                 'extId' => $driver->getExtId(),
                 'phone' => $driver->getPhone(),
                 'name' => $driver->getName(),
-                'city' => $driver->getCityId()->getTitle(),
+                'city' => $driver->getCity(),
                 'dispatchPhone' => $translator->trans('general.top_contact.phone'),
                 //'bannerUrl' => '',
                 //'timezone' => '2'
             );
+
+            if($cityObj = $driver->getCityId()) {
+
+            }
+
         } catch (ApiException $e) {
             $this->get('logger')->error('Driver:meAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Driver:meAction Trace1:' . $e->getTraceAsString());
@@ -76,11 +81,18 @@ class DriverController extends Controller
                 'extId' => $driver->getExtId(),
                 'phone' => $driver->getPhone(),
                 'name' => $driver->getName(),
-                'city_id' => $driver->getCityId(),
+                'city' => $driver->getCity(),
                 'dispatchPhone' => $translator->trans('general.top_contact.phone'),
                 //'bannerUrl' => '',
                 //'timezone' => '2'
             ];
+
+            if($cityObj = $driver->getCityId()) {
+                $response['city'] = $cityObj->getTitle();
+                $response['city_id'] = $cityObj->getId();
+            }
+
+
         } catch (ApiException $e) {
             $this->get('logger')->error('Driver:meIdAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Driver:meIdAction Trace1:' . $e->getTraceAsString());

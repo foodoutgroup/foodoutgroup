@@ -337,4 +337,9 @@ class UserAddress
     {
         $this->cityId->removeElement($cityId);
     }
+
+    public function toString()
+    {
+        return $this->__toString();
+    }
 }

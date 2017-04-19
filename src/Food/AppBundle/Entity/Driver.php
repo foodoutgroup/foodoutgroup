@@ -121,7 +121,7 @@ class Driver
      * @var \Food\AppBundle\Entity\City
      *
      * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
-     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id", nullable=true)
      **/
     private $cityId;
 

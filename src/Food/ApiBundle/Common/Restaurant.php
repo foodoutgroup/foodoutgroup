@@ -301,10 +301,10 @@ class Restaurant extends ContainerAware
         $retData = [];
         foreach ($points as $point) {
             if ($point->getActive()) {
-                $retData[] = [
+                $item = [
                     'location_id'  => $point->getId(),
                     'address'      => $point->getAddress(),
-                    'city'         => $point->getCityId()->getTitle(),
+                    'city'         => $point->getCity(),
                     'selected'     => (!empty($placePoint) && $point->getId() == $placePoint->getId() ? true : false),
                     'coords'       => [
                         'latitude'  => $point->getLat(),
@@ -320,6 +320,14 @@ class Restaurant extends ContainerAware
                     )
                     */
                 ];
+
+                if($cityObj = $point->getCityId()) {
+                    $item['city'] = $cityObj->getTitle();
+                    $item['city_id'] = $cityObj->getId();
+                }
+
+                $retData[] = $item;
+
             }
         }
 

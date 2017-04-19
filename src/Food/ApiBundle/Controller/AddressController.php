@@ -15,6 +15,7 @@ class AddressController extends Controller
     {
         $startTime = microtime(true);
         $this->get('logger')->alert('Address:findAddressAction Request:', (array)$request);
+
         try {
             $lat = $request->get('lat');
             $lng = $request->get('lng');
@@ -76,10 +77,17 @@ class AddressController extends Controller
 
                 if (!empty($streets)) {
                     foreach ($streets as $street) {
-                        $response[] = array(
+
+                        $item = [
                             'street' => $street->getStreet(),
-                            'city' => $street->getCityId()->getTitle(),
-                        );
+                            'city' => $street->getCity(),
+                        ];
+
+                        if($cityObj = $street->getCityId()) {
+                            $item['city'] = $cityObj->getTitle();
+                            $item['city_id'] = $cityObj->getId();
+                        }
+                        $response[] = $item;
                     }
                 }
             }
