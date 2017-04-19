@@ -30,9 +30,35 @@ class SlugController extends Controller
 
         $params = explode("/", $slug);
 
+
         $slug = $params[0];
         unset($params[0]);
-        $slugRow = $this->util->getOneByName($slug, $request->getLocale());
+        $qb = $this->getDoctrine()
+            ->getRepository('FoodAppBundle:Slug')
+            ->createQueryBuilder('s');
+
+        $query = $qb->where('s.lang_id = :locale')
+            ->andWhere('s.name = :name')
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->isNull('s.deactivated_at'),
+                $qb->expr()->lt('s.deactivated_at', ':dateDeactivated')
+            ));
+
+            $query->setParameters([
+                'name' => $slug,
+                'locale' => $request->getLocale(),
+                'dateDeactivated' => date('Y-m-d H:i:s', time() - Slug::SLUG_LIFETIME)
+            ]);
+
+            $query
+                ->orderBy('s.id', 'DESC')
+                ->setMaxResults(1);
+
+            $result = $query->getQuery()->execute();
+            $slugRow = null;
+            if(count($result)) {
+                list($slugRow, ) = $result;
+            }
 
         if ($this->slug->isBanned()) {
             $banned_page = $this->get('food.static')->getPage($this->get('food.app.utils.misc')->getParam('banned_page', true));
@@ -41,12 +67,10 @@ class SlugController extends Controller
             }
         }
 
-
         if (!is_null($slugRow) && !$slugRow->isActive()) {
             $slugRow = $this->repository->findOneBy([
-                'item_id' => $slugRow->getItemId(),
                 'lang_id' => $slugRow->getLangId(),
-                'type' => $slugRow->getType(),
+                'orig_name' => $slugRow->getOrigName(),
                 'active' => true,
             ]);
 
