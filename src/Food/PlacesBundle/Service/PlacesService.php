@@ -342,7 +342,6 @@ class PlacesService extends ContainerAware
      */
     public function getPlacesForList($recommended, Request $request, $slug_filter = [], $rush_hour = false)
     {
-        var_dump('asiliukas');
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
 

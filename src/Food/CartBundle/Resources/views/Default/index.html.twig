@@ -299,8 +299,12 @@
                                     <label>{% trans %}cart.checkout.place_point{% endtrans %}: <span class="checkout-pickup-place-tooltip" title="{% trans %}cart.checkout.pickup_tooltip{% endtrans %}">&nbsp;</span></label>
                                     <select class="custom-select" name="place_point">
                                         {% for point in places_service.getPublicPoints(place) %}
+                                            {#{{  dump(point)}}#}
+
+                                            {% set cityObj = point.cityId %}
+
                                             {% if point.pickUp %}
-                                                <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.cityId.title }}, {{ point.address }}{% if point.additionalInfo %} ({{ point.additionalInfo }}) {% endif %}</option>
+                                                <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point }}{% if point.additionalInfo %} ({{ point.additionalInfo }}) {% endif %}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>
