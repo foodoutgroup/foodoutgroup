@@ -49,7 +49,6 @@ class InvoiceToSendCommand extends ContainerAwareCommand
             $dryRun = false;
 
             $orders = $em->getRepository('FoodOrderBundle:InvoiceToSend')->getInvoiceToSend();
-
             /**
              * TODO:
              *  - force order
