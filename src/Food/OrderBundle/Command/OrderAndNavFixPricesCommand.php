@@ -82,7 +82,7 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
             }
 
             // 2. update Navision invoices
-            $foodAmount = $this->calculateFoodTotal($data['posted_total'], $order->getDeliveryPrice());
+            $foodAmount = $this->calculateFoodTotal($data['posted_total'], $order->getDeliveryPrice(), $order->getAdminFee());
             $deliveryAmount = number_format($data['delivery'], 2, '.', '');
 
             $output->write('[Order ID] = ' . $order->getId() . ': update NAV invoice [Food Amount With VAT] from ' . number_format($navInvoice['Food Amount With VAT'], 2, '.', '') . ' to ' . $foodAmount . ', [Delivery Amount With VAT] from ' . number_format($navInvoice['Delivery Amount With VAT'], 2, '.', '') . ' to ' . $deliveryAmount . '.. ');
@@ -198,17 +198,17 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
         return $order;
     }
 
-    protected function calculateFoodTotal($postedTotal, $deliveryPrice)
+    protected function calculateFoodTotal($postedTotal, $deliveryPrice, $adminFee = 0)
     {
-        if (!is_numeric($postedTotal) || !is_numeric($deliveryPrice)) {
-            throw new \InvalidArgumentException('$postedTotal or $deliveryPrice is not numeric, but it should be.');
+        if (!is_numeric($postedTotal) || !is_numeric($deliveryPrice) || !is_numeric($adminFee)) {
+            throw new \InvalidArgumentException('$postedTotal or $deliveryPrice or $adminFee is not numeric, but it should be.');
         }
 
         if (0.0 == $postedTotal) {
             return '0.01';
         }
 
-        return number_format($postedTotal - $deliveryPrice, 2, '.', '');
+        return number_format($postedTotal - $deliveryPrice - $adminFee, 2, '.', '');
     }
 
     protected function fillPostedOrders($from, $to, \StdClass $services)

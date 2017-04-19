@@ -2347,6 +2347,13 @@ class Order
         return $this->getAdminFee();
     }
 
+
+    public function getFoodTotalForNav()
+    {
+        return $this->getTotal() - $this->getDeliveryPrice() + $this->getDiscountSum() - $this->getAdminFee();
+
+    }
+
     public function getVatSize()
     {
         return $this->getTotal() - $this->getTotalWithoutVat();
