@@ -215,6 +215,12 @@ class User extends BaseUser
      **/
     private $paramLog;
 
+    /**
+     * @var boolean
+     * @ORM\Column(name="special", type="boolean", nullable=true)
+     */
+    private $special = false;
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
@@ -1124,5 +1130,61 @@ class User extends BaseUser
     public function getParamLog()
     {
         return $this->paramLog;
+    }
+
+    /**
+     * Set special
+     *
+     * @param boolean $special
+     * @return User
+     */
+    public function setSpecial($special)
+    {
+        $this->special = $special;
+    
+        return $this;
+    }
+
+    /**
+     * Get special
+     *
+     * @return boolean 
+     */
+    public function getSpecial()
+    {
+        return $this->special;
+    }
+
+    /**
+     * Add orderStatusLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
+     * @return User
+     */
+    public function addOrderStatusLog(\Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog)
+    {
+        $this->orderStatusLog[] = $orderStatusLog;
+    
+        return $this;
+    }
+
+    /**
+     * Remove orderStatusLog
+     *
+     * @param \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
+     */
+    public function removeOrderStatusLog(\Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog)
+    {
+        $this->orderStatusLog->removeElement($orderStatusLog);
+    }
+
+    /**
+     * Get orderStatusLog
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrderStatusLog()
+    {
+        return $this->orderStatusLog;
     }
 }
