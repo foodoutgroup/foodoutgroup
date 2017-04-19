@@ -81,14 +81,14 @@ class OrderToDriverCommand extends ContainerAwareCommand
                         break;
                     }
                     $order = $orderToDriver->getOrder();
-                    $msg = '{"event": "system:routing", "collection": [{"event": "api:order:newOrder", "params": {"address": "http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash().'"}}]}'."\n\n";
+                    $data = ['url' => 'http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash()];
                     if ($debug) {
                         $output->writeln($msg);
                     }
                     if (!$dryRun) {
                         $this->_ch = curl_init();
 
-                        $post = ['msg' => $msg];
+                        $post = ['msg' => $data];
 
                         curl_setopt($this->_ch, CURLOPT_AUTOREFERER, TRUE);
                         curl_setopt($this->_ch, CURLOPT_HEADER, 0);
