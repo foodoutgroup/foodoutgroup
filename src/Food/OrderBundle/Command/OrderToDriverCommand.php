@@ -61,15 +61,15 @@ class OrderToDriverCommand extends ContainerAwareCommand
             }
 
 
-            if (!$dryRun) {
-                $fp = stream_socket_client($this->getContainer()->getParameter('driver.socket_address'), $errno, $errstr, 30);
-                if (!$fp) {
-                    $logger->error("$errstr ($errno)");
-                    throw new \Exception("$errstr ($errno)");
-                } else {
-                    fwrite($fp, sprintf('{"event":"system:auth","collection":{"secure":"%s","method":"hash","type":"api"}}'."\n\n", $this->getContainer()->getParameter('driver.socket_hash')));
-                }
-            }
+            //~ if (!$dryRun) {
+                //~ $fp = stream_socket_client($this->getContainer()->getParameter('driver.socket_address'), $errno, $errstr, 30);
+                //~ if (!$fp) {
+                    //~ $logger->error("$errstr ($errno)");
+                    //~ throw new \Exception("$errstr ($errno)");
+                //~ } else {
+                    //~ fwrite($fp, sprintf('{"event":"system:auth","collection":{"secure":"%s","method":"hash","type":"api"}}'."\n\n", $this->getContainer()->getParameter('driver.socket_hash')));
+                //~ }
+            //~ }
 
             for ($k = 0; $k < 10; ++$k) {
                 $orderToDriverCollection = $em->getRepository('FoodOrderBundle:OrderToDriver')->getOrdersToSend();
@@ -81,14 +81,14 @@ class OrderToDriverCommand extends ContainerAwareCommand
                         break;
                     }
                     $order = $orderToDriver->getOrder();
-                    $data = ['url' => 'http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash()];
-                    if ($debug) {
-                        $output->writeln($msg);
-                    }
+                    $post = ['url' => 'http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash()];
+                    //~ if ($debug) {
+                        //~ $output->writeln($msg);
+                    //~ }
                     if (!$dryRun) {
                         $this->_ch = curl_init();
 
-                        $post = ['msg' => $data];
+                        //~ $post = ['msg' => $data];
 
                         curl_setopt($this->_ch, CURLOPT_AUTOREFERER, TRUE);
                         curl_setopt($this->_ch, CURLOPT_HEADER, 0);
@@ -124,7 +124,7 @@ class OrderToDriverCommand extends ContainerAwareCommand
                     break;
                 }
             }
-            fclose($fp);
+            //~ fclose($fp);
 
             $output->writeln(sprintf('Sent %d / Failed %d / Total %d', $i, $fail, count($orderToDriverCollection)));
 
