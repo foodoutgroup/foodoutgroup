@@ -423,7 +423,7 @@
     {% endmacro %}
     {% import _self as table %}
 
-    <div class="city_list">
+    <div class="city_list todo_nieks_nezino_klases">
         <ul>
             {% for city in cityCollection %}
                 {% set cityUnapproved = (cityOrderCollection[city.id].unapproved.deliver|length + cityOrderCollection[city.id].unapproved.selfdeliver|length + cityOrderCollection[city.id].unapproved.pickup|length) %}

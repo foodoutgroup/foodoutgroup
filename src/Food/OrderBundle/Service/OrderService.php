@@ -4850,7 +4850,7 @@ class OrderService extends ContainerAware
         $params = ['place' => $order->getPlace()->getId()];
 
         if($cityObj = $order->getPlacePoint()->getCityId()) {
-            $params['city_id'] = $cityObj->getId();
+            $params['cityId'] = $cityObj->getId();
         } else {
             $params['city'] = $order->getPlacePointCity();
         }

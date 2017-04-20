@@ -170,8 +170,9 @@ class DispatcherAdminController extends Controller
                 $cityOrderCollection[$city->getId()]['not_finished']['deliver'][] = $order;
             }
 
+            //todo:@@@@@@@@@@@@@@@@@@@@
             if ($orderService->isLate($order)) {
-                ++$cityOrderCollection[$order->getPlacePointCity()]['not_finished']['late'];
+                ++$cityOrderCollection[$city->getId()]['not_finished']['late'];
             }
         }
 
