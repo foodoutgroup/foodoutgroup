@@ -33,6 +33,7 @@ class SettingsController extends CoreController
         'extra_group',
         'free_delivery_discount_code_generation_enable',
         'free_delivery_discount_code_generation_after_completed_orders',
+        'placepoint_prepare_times',
     ];
 
     public function indexAction(Request $request)
