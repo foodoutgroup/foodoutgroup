@@ -50,6 +50,7 @@ class PlaceController extends Controller
             $listType = $cookies->get('restaurant_menu_layout');
         }
 
+
         $wasHere = $this->wasHere($place, $this->user());
         $alreadyWrote = $this->alreadyWrote($place, $this->user());
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
@@ -82,7 +83,7 @@ class PlaceController extends Controller
         }
 
 
-        $current_url = $request->getUri();
+        $current_url = $request->getSchemeAndHttpHost() . $request->getRequestUri();
 
         // only for LT and only for cili
         $relatedPlace = null;

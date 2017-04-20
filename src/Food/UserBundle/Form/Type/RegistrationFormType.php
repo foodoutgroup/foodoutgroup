@@ -19,10 +19,9 @@ class RegistrationFormType extends BaseType
     /**
      * @param string $class The User class name
      */
-    public function __construct($class,$locale)
+    public function __construct($class)
     {
         $this->class = $class;
-        $this->locale = $locale;
     }
 
     public function getName()

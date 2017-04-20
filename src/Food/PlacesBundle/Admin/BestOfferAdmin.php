@@ -46,7 +46,7 @@ class BestOfferAdmin extends FoodAdmin
             ));
 
         $formMapper
-            ->add('offerCity', 'offer_city', array('label' => 'admin.point.city'))
+            ->add('offerCity', 'city', ['label' => 'admin.point.city', 'multiple' => true])
             ->add('place', null, ['label' => 'admin.best_offers.place', 'required' => true])
             ->add('useUrl', 'checkbox', ['label' => 'admin.best_offers.use_url', 'required' => false])
             ->add('active', 'checkbox', ['label' => 'admin.best_offers.active', 'required' => false])

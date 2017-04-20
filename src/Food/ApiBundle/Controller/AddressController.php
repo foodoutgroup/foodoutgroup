@@ -14,7 +14,8 @@ class AddressController extends Controller
     public function findAddressAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Address:findAddressAction Request:', (array) $request);
+        $this->get('logger')->alert('Address:findAddressAction Request:', (array)$request);
+
         try {
             $lat = $request->get('lat');
             $lng = $request->get('lng');
@@ -42,28 +43,23 @@ class AddressController extends Controller
             );
         }
 
-        if(empty($response)){
-            $user = $this->getUser();
-            $userIp = ($this->container->get('request')->getClientIp());
-            $error = new ErrorLog();
+        if (empty($response)) {
 
-            $error->setIp($userIp);
-            //~ $error->setCart(null);
-            $error->setCreatedBy($user);
-            $error->setPlace(null);
-            $error->setCreatedAt(new \DateTime('now'));
-            $error->setUrl($request->getUri());
-            $error->setSource('api_adress_change_find');
-            $error->setDescription('api_null_request');
-            $error->setDebug(serialize($request));
-
-            $em = $this->container->get('doctrine')->getManager();
-            $em->persist($error);
-            $em->flush();
+            $this->get('food.error_log_service')->saveErrorLog(
+                $this->container->get('request')->getClientIp(),
+                $this->getUser(),
+                null,
+                null,
+                new \DateTime('now'),
+                $request->getUri(),
+                'api_adress_change_find',
+                'api_null_request',
+                serialize($request)
+            );
         }
 
 
-        $this->get('logger')->alert('Address:findAddressAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Address:findAddressAction Response:' . print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
@@ -71,7 +67,7 @@ class AddressController extends Controller
     public function findStreetAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Address:findStreetAction Request:', (array) $request);
+        $this->get('logger')->alert('Address:findStreetAction Request:', (array)$request);
         try {
             $queryPart = $request->get('query');
             $response = array();
@@ -81,10 +77,17 @@ class AddressController extends Controller
 
                 if (!empty($streets)) {
                     foreach ($streets as $street) {
-                        $response[] = array(
+
+                        $item = [
                             'street' => $street->getStreet(),
-                            'city' => $street->getCityId()->getTitle(),
-                        );
+                            'city' => $street->getCity(),
+                        ];
+
+                        if($cityObj = $street->getCityId()) {
+                            $item['city'] = $cityObj->getTitle();
+                            $item['city_id'] = $cityObj->getId();
+                        }
+                        $response[] = $item;
                     }
                 }
             }
@@ -99,7 +102,7 @@ class AddressController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Address:findStreetAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Address:findStreetAction Response:' . print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }

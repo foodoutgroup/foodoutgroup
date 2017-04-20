@@ -486,6 +486,10 @@
                 <source>mobile.order.sum_with_delivery</source>
                 <target>Suma su pristatymu (su PVM)</target>
             </trans-unit>
+            <trans-unit id="mobile.order.sum_without_admin_fee_and_delivery" resname="mobile.order.sum_without_admin_fee_and_delivery">
+                <source>mobile.order.sum_without_admin_fee_and_delivery</source>
+                <target>Maisto kaina (su PVM)</target>
+            </trans-unit>
             <trans-unit id="mobile.order.sum">
                 <source>mobile.order.sum_without_delivery</source>
                 <target>Suma be pristatymo (su PVM)</target>
@@ -1325,6 +1329,10 @@
                 <source>general.top_contact.worktime_days</source>
                 <target><![CDATA[VII - IV<br />V - VI]]></target>
             </trans-unit>
+            <trans-unit id="general.top_contact.worktime_holiday" resname="general.top_contact.worktime_holiday">
+                <source>general.top_contact.worktime_holiday</source>
+                <target>Šventiniai darbo laikai</target>
+            </trans-unit>
             <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
                 <source>general.top_contact.worktime</source>
                 <target><![CDATA[10 - 23 val.<br />10 - 01 val.]]></target>
@@ -1587,6 +1595,14 @@
             <trans-unit id="general.sms.driver_assigned_order" resname="general.sms.driver_assigned_order">
                 <source>general.sms.driver_assigned_order</source>
                 <target>Naujas uzsakymas nr. order_id is: restaurant_title i restaurant_address, iki deliver_time </target>
+            </trans-unit>
+            <trans-unit id="mobile.order.admin_fee">
+                <source>mobile.order.admin_fee</source>
+                <target>Administracinis mokestis (su PVM)</target>
+            </trans-unit>
+            <trans-unit id="mobile.order.admin_fee_no_vat">
+                <source>mobile.order.admin_fee_no_vat</source>
+                <target>Administracinis mokestis (be PVM)</target>
             </trans-unit>
         </body>
     </file>

@@ -1,5 +1,5 @@
 <?php
-namespace Food\AppBundle\Service;
+namespace Food\AppBundle\Service\Mail;
 
 class MailerRestBaseService
 {
@@ -20,23 +20,23 @@ class MailerRestBaseService
 
     public function __construct ($url = 'https://api.mailersoft.com/api/v1/', $verb = 'GET')
     {
-        $this->url				= $url;
-        $this->verb				= $verb;
-        $this->requestLength	= 0;
-        $this->username			= null;
-        $this->password			= null;
-        $this->acceptType		= 'application/json';
-        $this->responseBody		= null;
-        $this->responseInfo		= null;
+        $this->url              = $url;
+        $this->verb             = $verb;
+        $this->requestLength    = 0;
+        $this->username         = null;
+        $this->password         = null;
+        $this->acceptType       = 'application/json';
+        $this->responseBody     = null;
+        $this->responseInfo     = null;
     }
 
     public function flush ()
     {
-        $this->requestBody		= null;
-        $this->requestLength	= 0;
-        $this->verb				= 'GET';
-        $this->responseBody		= null;
-        $this->responseInfo		= null;
+        $this->requestBody      = null;
+        $this->requestLength    = 0;
+        $this->verb             = 'GET';
+        $this->responseBody     = null;
+        $this->responseInfo     = null;
     }
 
     public function execute ( $method = null, $data = null, $action = null )
@@ -153,7 +153,7 @@ class MailerRestBaseService
         $this->setCurlOpts($curlHandle);
         $this->responseBody = curl_exec($curlHandle);
 
-        $this->responseInfo	= curl_getinfo($curlHandle);
+        $this->responseInfo = curl_getinfo($curlHandle);
 
         curl_close($curlHandle);
     }

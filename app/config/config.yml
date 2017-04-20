@@ -11,10 +11,6 @@ imports:
 parameters:
     #nav_table_prefix: "Čilija Skambučių Centras"
     #nav_ws_prefix: "Čilija Skambučių Centras"
-    #available_locales: [lt, en, ru]
-    #available_locales_routing: lt | en | ru
-    #available_cities: ["Vilnius","Kaunas","Klaipėda"]
-    #available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda"]
     time_zone: "Europe/Vilnius"
     #~ sms.available_providers: [food.infobip, food.silverstreet]
     sms.available_providers: [food.infobip]
@@ -122,8 +118,6 @@ twig:
         track_conversions: %track_conversions%
         publicdomain: "%publicdomain%"
         google_analytics_uid: "%google_analytics_uid%"
-        available_cities: %available_cities%
-        available_cities_slugs: %available_cities_slugs%
         vat_size: "%vat%"
         google_maps_api: "%google.maps_api%"
         cloudfront_url: "%cloudfront_url%"
@@ -237,14 +231,6 @@ fos_user:
         type: food_user_registration
 
 services:
-
-  request_listener:
-    class: Food\AppBundle\EventListener\RequestListener
-    arguments: [ @service_container ]
-    tags:
-      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-
-
 
   gedmo.listener.softdeleteable:
     class: Gedmo\SoftDeleteable\SoftDeleteableListener
@@ -466,10 +452,9 @@ stof_doctrine_extensions:
             translatable: true
 
 a2lix_translation_form:
-    locales: %available_locales%
+    locales: %locales%
     default_required: true
     manager_registry: doctrine
-#    templating: "A2lixTranslationFormBundle::default.html.twig"
     templating: ":gedmo:default.html.twig"
 
 #evp omg
@@ -518,7 +503,7 @@ knp_snappy:
 
 nelmio_cors:
     paths:
-        '^/api/v1/':
+        '^/api/':
             allow_origin: ['*']
             allow_headers: ['*']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']

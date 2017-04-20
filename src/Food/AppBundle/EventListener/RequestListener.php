@@ -17,13 +17,26 @@ class RequestListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest()->getLocale();
-
-//        var_dump($request);
-
         $availableLocales = $this->container->getParameter('locales');
 
         if (!in_array($request, $availableLocales)) {
             throw new NotFoundHttpException('Sorry page does not exist');
+        }
+    }
+
+    public function onLateKernelRequest(GetResponseEvent $event)
+    {
+        $request = $event->getRequest();
+        $requestedLocale = $request->headers->get('locale');
+
+        if($requestedLocale != null ) {
+
+            if(!in_array($requestedLocale, $this->container->getParameter('locales'))) {
+                $requestedLocale = null;
+            } else {
+                $translatable = $this->container->get('gedmo.listener.translatable');
+                $translatable->setTranslatableLocale($requestedLocale);
+            }
         }
     }
 

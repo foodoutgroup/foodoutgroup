@@ -92,11 +92,14 @@ class AjaxController extends Controller
             $session = $request->getSession();
             $session->set('locationData', ['address' => $address, 'city_id' => $city->getId()]);
         }
+        $em = $this->container->get('doctrine')->getManager();
+        $cart = $em->getRepository("FoodCartBundle:Cart")->findOneBy(['session' => $request->getSession()->getId()]);
 
-
-
-
-
+        if (!empty($cart)){
+            $cartSession = $cart->getSession();
+        }else{
+            $cartSession = null;
+        }
         // Only City Selected
         $city_only = $request->get('city_only');
         if ($city && empty($address) && !empty($city_only)) {
@@ -112,6 +115,22 @@ class AjaxController extends Controller
                 ]
             ]));
         } else {
+
+            if (isset($respData['message']) && !empty($respData['message'])) {
+                $placeId = is_object($cart) ? $cart->getPlaceId() : null;
+
+                $this->get('food.error_log_service')->saveErrorLog(
+                    $this->container->get('request')->getClientIp(),
+                    $this->getUser(),
+                    $cartSession,
+                    $placeId,
+                    new \DateTime('now'),
+                    $currentUrl,
+                    'adress_change_find',
+                    $respData['message'],
+                    serialize($request)
+                );
+            }
 
             $response->setContent(json_encode([
                 'data' => $respData
@@ -345,6 +364,19 @@ class AjaxController extends Controller
             $cont['data'] = $coupon->__toArray();
         }
 
+        if(isset($cont['data']['error']) && !empty($cont['data']['error'])){
+            $this->get('food.error_log_service')->saveErrorLog(
+                $this->container->get('request')->getClientIp(),
+                $this->getUser(),
+                $this->container->get('food.cart')->getSessionId(),
+                $place,
+                new \DateTime('now'),
+                $currentUrl,
+                'checkout_coupon_page',
+                $cont['data']['error'],
+                serialize($request)
+            );
+        }
 
         $response->setContent(json_encode($cont));
     }

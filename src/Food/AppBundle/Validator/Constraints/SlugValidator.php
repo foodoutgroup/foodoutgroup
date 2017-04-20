@@ -23,15 +23,12 @@ class SlugValidator extends ConstraintValidator
     private $localeCollection = [];
     private $defaultLocale;
 
-    public function __construct(EntityManager $entityManager, $localeCollection, $defaultLocale, $regex)
+    public function __construct(EntityManager $entityManager, $localeCollection, $defaultLocale)
     {
         $this->defaultLocale = $defaultLocale;
         $this->em = $entityManager;
         $this->repository = $entityManager->getRepository('FoodAppBundle:Slug');
         $this->localeCollection = $localeCollection;
-////        $this->regex = "/".$regex."/u";
-////        var_dump($this->regex);
-//        die;
         if(method_exists($this->context, 'getRoot') && method_exists($this->context->getRoot(), 'getData')) {
             $this->itemId = $this->context->getRoot()->getData()->getId();
         } else {

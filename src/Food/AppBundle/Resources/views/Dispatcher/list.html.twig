@@ -233,7 +233,7 @@
                     {% set additional_class = 'hesburger_distinct_color' %}
                 {% endif %}
 
-                <tr class="{{ loop.index%2 ? 'odd' : 'even' }} {{ additional_class }}">
+                <tr {% if order.user.special == true%} style="background-color: mediumvioletred !important;" {% endif %} class="{{ loop.index%2 ? 'odd' : 'even' }} {{ additional_class }}">
                     <td class="no-wrap">
                         {% if not order.placePointSelfDelivery %}
                             <input type="checkbox" id="order_{{ order.id }}" value="{{ order.id }}" class="order_checkbox" />
@@ -423,7 +423,7 @@
     {% endmacro %}
     {% import _self as table %}
 
-    <div class="city_list">
+    <div class="city_list todo_nieks_nezino_klases">
         <ul>
             {% for city in cityCollection %}
                 {% set cityUnapproved = (cityOrderCollection[city.id].unapproved.deliver|length + cityOrderCollection[city.id].unapproved.selfdeliver|length + cityOrderCollection[city.id].unapproved.pickup|length) %}

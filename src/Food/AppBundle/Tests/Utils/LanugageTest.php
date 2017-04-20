@@ -101,7 +101,7 @@ class LanguageTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('available_locales')
+            ->with('locales')
             ->will($this->returnValue($expectedLocales));
 
         $allLocales = $util->getAll();

@@ -27,6 +27,10 @@ class SlugService
 
     private $isBanned;
 
+
+    public static $cache = [];
+    public static $cachePath = [];
+
     public function __construct(EntityManager $entityManager, ContainerInterface $container, Router $router, $localeCollection, $defaultLocale)
     {
         $this->em = $entityManager;
@@ -52,7 +56,7 @@ class SlugService
             throw new \Exception('getTranslations method required');
         }
 
-        $locales = $this->container->getParameter('available_locales');
+        $locales = $this->container->getParameter('locales');
         $defaultLocale = $this->container->getParameter('locale');
 
         $textsForSlugs = [];
@@ -127,6 +131,9 @@ class SlugService
 
     public function getUrl($itemId, $type)
     {
+        if(isset(self::$cache[$type][$itemId])) {
+            return self::$cache[$type][$itemId];
+        }
         $locale = $this->getLocale();
         $slug = 'food_slug';
 
@@ -143,14 +150,17 @@ class SlugService
         if ($urlSlug) {
             $url = $this->router->generate($slug, $params);
         }
-
-//        die($url);
+        self::$cache[$type][$itemId] = $url;
 
         return $url;
     }
 
     public function getPath($itemId, $type, $lang = false)
     {
+        if(isset(self::$cachePath[$type][$itemId])) {
+            return self::$cachePath[$type][$itemId];
+        }
+
         $locale = $this->getLocale();
 
         $slug = 'food_slug';
@@ -164,13 +174,10 @@ class SlugService
             $url = $locale . "/" . $url;
         }
 
-//        preg_match('/^(?!admin|cart|invoice|payments|callcenter|newsletter|ajax|js|routing|monitoring|nagios|banned)([a-z0-9-\__\"„“\.\+]+)([a-z0-9-\/\__\"„“\.\+]+)$/', $urlSlug, $matches);
-
-//        if ($urlSlug && (isset($matches[0]) && count($matches[0]))) {
         if ($urlSlug) {
             $url = str_replace(["/app_dev.php/"], "", $this->router->generate($slug, $params, UrlGeneratorInterface::ABSOLUTE_PATH));
         }
-
+        self::$cachePath[$type][$itemId] = $url;
         return $url;
     }
 

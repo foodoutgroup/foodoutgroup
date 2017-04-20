@@ -729,8 +729,14 @@ class OrderService extends ContainerAware
                 $restaurant_title = $restaurant_title . " - " . $internal_code;
             }
 
-            $restaurant_address = $order->getAddressId()->getAddress() . " " . $order->getAddressId()->getCityId()->getTitle();
-            $pickup_restaurant_address = $order->getPlacePointAddress() . ' ' . $order->getPlacePointCity();
+            $restaurant_address = $order->getAddressId()->toString();
+
+            $prac = $order->getPlacePointCity();
+            if($cityObj = $order->getPlacePoint()->getCityId()) {
+                $prac = $cityObj->getTitle();
+            }
+
+            $pickup_restaurant_address = $order->getPlacePointAddress() . ' ' . $prac;
             $curr_locale = $this->container->getParameter('locale');
             $languageUtil = $this->container->get('food.app.utils.language');
 
@@ -811,12 +817,7 @@ class OrderService extends ContainerAware
     {
         $languageUtil = $this->container->get('food.app.utils.language');
 
-        if (strpos($messageText, 'Cili pica Kaunas/Klaipeda') !== false) {
-            $messageText = str_replace('Cili pica Kaunas/Klaipeda', 'Cili pica', $messageText);
-        }
-        if (strpos($messageText, 'Cili Kaimas Kaunas') !== false) {
-            $messageText = str_replace('Cili Kaimas Kaunas', 'Cili Kaimas', $messageText);
-        }
+        $messageText = $this->correctMessageText($messageText);
 
         $max_len = 160;
         $all_message_len = mb_strlen($messageText, 'UTF-8');
@@ -859,6 +860,21 @@ class OrderService extends ContainerAware
 
         return $messageText;
     }
+
+    public function correctMessageText($messageText){
+        if (strpos($messageText, 'Cili pica Kaunas/Klaipeda') !== false) {
+            $messageText = str_replace('Cili pica Kaunas/Klaipeda', 'Cili pica', $messageText);
+        }
+        if (strpos($messageText, 'Cili Kaimas Kaunas') !== false) {
+            $messageText = str_replace('Cili Kaimas Kaunas', 'Cili Kaimas', $messageText);
+        }
+        if (strpos($messageText, '\\') !== false) {
+            $messageText = str_replace('\\', '-', $messageText);
+        }
+
+        return $messageText;
+    }
+
 
     /**
      * @param null|string $source
@@ -1271,25 +1287,37 @@ class OrderService extends ContainerAware
      */
     public function createAddressMagic($user, $city, $address, $lat, $lon, $comment = null, $cityId = null)
     {
-        $userAddress = $this->getEm()
-            ->getRepository('Food\UserBundle\Entity\UserAddress')
-            ->findOneBy([
-                'user' => $user,
-                'cityId' => $cityId,
-                'address' => $address,
-            ]);
+        if(is_null($cityId)) {
+            $userAddress = $this->getEm()
+                ->getRepository('Food\UserBundle\Entity\UserAddress')
+                ->findOneBy([
+                    'user' => $user,
+                    'city' => $city,
+                    'address' => $address,
+                ]);
 
-        $cityItem = $this->getEm()
-            ->getRepository('Food\AppBundle\Entity\City')
-            ->find($cityId);
+            $cityId = $this->getEm()
+                ->getRepository('Food\AppBundle\Entity\City')
+                ->findOneBy(['title' => ucfirst(strtolower($city))]);
 
+        } else {
+
+            $userAddress = $this->getEm()
+                ->getRepository('Food\UserBundle\Entity\UserAddress')
+                ->findOneBy([
+                    'user' => $user,
+                    'cityId' => $cityId,
+                    'address' => $address,
+                ]);
+
+            $cityId = $this->getEm()
+                ->getRepository('Food\AppBundle\Entity\City')
+                ->find($cityId);
+
+        }
 
         if (!$userAddress) {
             $userAddress = new UserAddress();
-        }
-
-        if (!empty($cityId)) {
-
         }
 
         $userAddress
@@ -1297,8 +1325,9 @@ class OrderService extends ContainerAware
             ->setAddress($address)
             ->setLat($lat)
             ->setLon($lon)
+            ->setCity($city)
             ->setComment($comment)
-            ->setCityId($cityItem);;
+            ->setCityId($cityId);
 
         $this->getEm()->persist($userAddress);
         $this->getEm()->flush();
@@ -1327,6 +1356,9 @@ class OrderService extends ContainerAware
 
         $placeObject = $this->container->get('food.places')->getPlace($place);
         $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
+
+        $placesService = $this->container->get('food.places');
+        $useAdminFee = $placesService->useAdminFee($placeObject);
 
         $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
@@ -1414,6 +1446,7 @@ class OrderService extends ContainerAware
                     $includeDelivery = false;
                 }
 
+                $useAdminFee = false;
             } elseif ($user->getIsBussinesClient()) {
                 // Jeigu musu logistika, tada taikom fiksuota nuolaida
                 if (!$selfDelivery) {
@@ -1422,6 +1455,7 @@ class OrderService extends ContainerAware
                     $discountPercent = $discountSize;
                     $this->getOrder()->setDiscountSize($discountSize)->setDiscountSum($discountSum);
                 }
+                $useAdminFee = false;
             }
         }
 
@@ -1577,11 +1611,37 @@ class OrderService extends ContainerAware
                 $deliveryPrice = 0;
             }
         }
+        //~ }
+
+        $placesService =  $this->container->get('food.places');
+        $adminFee    = $placesService->getAdminFee($placeObject);
+        $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
+
+        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel())
+        {
+            $useAdminFee = false;
+        }
+
+        if ($useAdminFee && !$adminFee) {
+            $adminFee = 0;
+        }
+
+        if ($useAdminFee && $sumTotal < $cartFromMin) {
+            $sumTotal += $adminFee;
+        } else {
+            $useAdminFee = false;
+        }
+
         $sumTotal += $deliveryPrice;
         //~ }
 
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
+
+        if ($useAdminFee) {
+            $this->getOrder()->setAdminFee($adminFee);
+        }
+
         $this->saveOrder();
     }
 
@@ -1683,10 +1743,7 @@ class OrderService extends ContainerAware
     public function getOrderByNavDeliveryId($id)
     {
         $em = $this->container->get('doctrine')->getManager();
-        $order = $em->getRepository('Food\OrderBundle\Entity\Order')
-            ->findOneBy(
-                ['navDeliveryOrder' => $id], null, 1
-            );
+        $order = $em->getRepository('Food\OrderBundle\Entity\Order')->findOneBy(['navDeliveryOrder' => $id], null, 1);
 
         if (!$order) {
             return false;
@@ -2410,18 +2467,18 @@ class OrderService extends ContainerAware
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
         $dispatchers = $this->container->getParameter('order.accept_notify_emails');
 
-        $userAddress = '';
-        $userAddressObject = $order->getAddressId();
-
-        if (!empty($userAddressObject) && is_object($userAddressObject)) {
-            $userAddress = $order->getAddressId()->getAddress() . ', ' . $order->getAddressId()->getCity();
-        }
+        $userAddress = $order->getAddressId()->toString();
 
         $newOrderText = $translator->trans('general.new_unapproved_order.title');
 
+        $placePointCity = $order->getPlacePoint()->getCity();
+        if($cityObj = $order->getPlacePoint()->getCityId()) {
+            $placePointCity = $cityObj->getTitle();
+        }
+
         $emailMessageText = $newOrderText . ' ' . $order->getPlace()->getName() . "\n"
             . "OrderId: " . $order->getId() . "\n\n"
-            . $translator->trans('general.new_order.selected_place_point') . ": " . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCityId()->getTitle() . "\n"
+            . $translator->trans('general.new_order.selected_place_point') . ": " . $order->getPlacePoint()->getAddress() . ', ' . $placePointCity . "\n"
             . $translator->trans('general.new_order.place_point_phone') . ":" . $order->getPlacePoint()->getPhone() . "\n"
             . "\n"
             . $translator->trans('general.new_order.client_name') . ": " . $order->getUser()->getFirstname() . ' ' . $order->getUser()->getLastname() . "\n"
@@ -2440,10 +2497,10 @@ class OrderService extends ContainerAware
             ->setFrom('info@' . $domain);
 
         if (!empty($cityCoordinators)) {
-            if (isset($cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')])) {
+            if (isset($cityCoordinators[mb_strtolower($placePointCity, 'UTF-8')])) {
                 $notifyEmails = array_merge(
                     $notifyEmails,
-                    $cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')]
+                    $cityCoordinators[mb_strtolower($placePointCity, 'UTF-8')]
                 );
             }
         }
@@ -2491,11 +2548,18 @@ class OrderService extends ContainerAware
             $messageText = $orderSmsTextTranslation . ' ' . $orderConfirmRoute;
 
             // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
+
+            $placePointCity = $order->getPlacePoint()->getCity();
+            if($cityObj = $order->getCityId()) {
+                $placePointCity = $cityObj->getTitle();
+            }
+
+
             if (!empty($placePointEmail)) {
                 $logger->alert('--- Place asks for email, so we have sent an email about canceled order to: ' . $placePointEmail);
                 $emailMessageText = $messageText;
                 $emailMessageText .= "\n" . $orderTextTranslation . ': '
-                    . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCityId()->getTitle();
+                    . $order->getPlacePoint()->getAddress() . ', ' . $placePointCity;
                 $mailer = $this->container->get('mailer');
 
                 $message = \Swift_Message::newInstance()
@@ -2574,10 +2638,15 @@ class OrderService extends ContainerAware
         $notifyEmails = $this->container->getParameter('order.notify_emails');
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
 
+        $placePointCity = $order->getPlacePoint()->getCity();
+        if($cityObj = $order->getCityId()) {
+            $placePointCity = $cityObj->getTitle();
+        }
+
         $emailSubject = $translator->trans('general.canceled_order.title');
         $emailMessageText = $emailSubject . "\n\n"
             . "OrderId: " . $order->getId() . "\n\n"
-            . $translator->trans('general.new_order.selected_place_point') . ": " . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCityId()->getTitle() . "\n"
+            . $translator->trans('general.new_order.selected_place_point') . ": " . $order->getPlacePoint()->getAddress() . ', ' . $placePointCity . "\n"
             . $translator->trans('general.new_order.place_point_phone') . ":" . $order->getPlacePoint()->getPhone() . "\n"
             . "\n"
             . $translator->trans('general.new_order.client_name') . ": " . $order->getOrderExtra()->getFirstname() . ' ' . $order->getOrderExtra()->getLastname() . "\n"
@@ -2587,11 +2656,11 @@ class OrderService extends ContainerAware
             . $translator->trans('general.new_order.payment_type') . ": " . $order->getPaymentMethod() . "\n"
             . $translator->trans('general.new_order.payment_status') . ": " . $order->getPaymentStatus() . "\n";
 
-        $emailMessageText .= "\n"
-            . $translator->trans('general.new_order.admin_link') . ": "
-            . 'http://' . $domain . $this->container->get('router')
-                ->generate('order_support_mobile', ['hash' => $order->getOrderHash()], false)
-            . "\n";
+//        $emailMessageText .= "\n"
+//            . $translator->trans('general.new_order.admin_link') . ": "
+//            . 'http://' . $domain . $this->container->get('router')
+//                ->generate('order_support_mobile', ['hash' => $order->getOrderHash()], false)
+//            . "\n";
 
         $mailer = $this->container->get('mailer');
 
@@ -2600,10 +2669,10 @@ class OrderService extends ContainerAware
             ->setFrom('info@' . $domain);
 
         if (!empty($cityCoordinators)) {
-            if (isset($cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')])) {
+            if (isset($cityCoordinators[mb_strtolower($placePointCity, 'UTF-8')])) {
                 $notifyEmails = array_merge(
                     $notifyEmails,
-                    $cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')]
+                    $cityCoordinators[mb_strtolower($placePointCity, 'UTF-8')]
                 );
             }
         }
@@ -2694,18 +2763,18 @@ class OrderService extends ContainerAware
         $notifyEmails = $this->container->getParameter('order.notify_emails');
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
 
-        $userAddress = '';
-        $userAddressObject = $order->getAddressId();
-
-        if (!empty($userAddressObject) && is_object($userAddressObject)) {
-            $userAddress = $order->getAddressId()->getAddress() . ', ' . $order->getAddressId()->getCityId()->getTitle();
-        }
+        $userAddress = $order->getAddressId()->toString();
 
         $newOrderText = $translator->trans('general.new_order.title');
 
+        $placePointCity = $order->getPlacePointCity();
+        if($cityObj = $order->getPlacePoint()->getCityId()) {
+            $placePointCity = $cityObj->getTitle();
+        }
+
         $emailMessageText = $newOrderText . ' ' . $order->getPlace()->getName() . "\n"
             . "OrderId: " . $order->getId() . "\n\n"
-            . $translator->trans('general.new_order.selected_place_point') . ": " . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCityId()->getTitle() . "\n"
+            . $translator->trans('general.new_order.selected_place_point') . ": " . $order->getPlacePoint()->getAddress() . ', ' . $placePointCity . "\n"
             . $translator->trans('general.new_order.place_point_phone') . ":" . $order->getPlacePoint()->getPhone() . "\n"
             . "\n"
             . $translator->trans('general.new_order.client_name') . ": " . $order->getUser()->getFirstname() . ' ' . $order->getUser()->getLastname() . "\n"
@@ -2721,10 +2790,11 @@ class OrderService extends ContainerAware
             . $translator->trans('general.new_order.restaurant_link') . ": " . $this->container->get('router')
                 ->generate('ordermobile', ['hash' => $order->getOrderHash()], true)
             . "\n";
-        $emailMessageText .= "\n"
-            . $translator->trans('general.new_order.admin_link') . ": " . $this->container->get('router')
-                ->generate('order_support_mobile', ['hash' => $order->getOrderHash()], true)
-            . "\n";
+
+//        $emailMessageText .= "\n"
+//            . $translator->trans('general.new_order.admin_link') . ": " . $this->container->get('router')
+//                ->generate('order_support_mobile', ['hash' => $order->getOrderHash()], true)
+//            . "\n";
 
         $mailer = $this->container->get('mailer');
 
@@ -2733,10 +2803,10 @@ class OrderService extends ContainerAware
             ->setFrom('info@' . $domain);
 
         if (!empty($cityCoordinators)) {
-            if (isset($cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')])) {
+            if (isset($cityCoordinators[mb_strtolower($placePointCity, 'UTF-8')])) {
                 $notifyEmails = array_merge(
                     $notifyEmails,
-                    $cityCoordinators[mb_strtolower($order->getPlacePointCity(), 'UTF-8')]
+                    $cityCoordinators[mb_strtolower($placePointCity, 'UTF-8')]
                 );
             }
         }
@@ -2777,12 +2847,7 @@ class OrderService extends ContainerAware
         $domain = $this->container->getParameter('domain');
         $notifyEmails = $this->container->getParameter('order.accept_notify_emails');
 
-        $userAddress = '';
-        $userAddressObject = $order->getAddressId();
-
-        if (!empty($userAddressObject) && is_object($userAddressObject)) {
-            $userAddress = $order->getAddressId()->getAddress() . ', ' . $order->getAddressId()->getCityId()->getTitle();
-        }
+        $userAddress = $order->getAddressId()->toString();
 
         $driverUrl = $this->container->get('router')
             ->generate('drivermobile', ['hash' => $order->getOrderHash()], true);
@@ -3266,12 +3331,18 @@ class OrderService extends ContainerAware
         $noMinimumCart = ($user instanceof User ? $user->getNoMinimumCart() : false);
         $locationService = $this->container->get('food.location');
         $dishesService = $this->container->get('food.dishes');
+
+        $debugCartInfo = array();
+
+
         $loggedIn = true;
         $phonePass = false;
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
+        $debugCartInfo['total'] = $total_cart;
 
         $customerEmail = $request->get('customer-email');
+        $useAdminFee = $this->container->get('food.places')->useAdminFee($place);
 
         if (!$isCallcenter) {
             if (0 === strlen($customerEmail)) {
@@ -3436,7 +3507,7 @@ class OrderService extends ContainerAware
                     $pointRecord
                 );
 
-                if ($total_cart < $cartMinimum && $noMinimumCart == false) {
+                if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false && !$useAdminFee) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
             }
@@ -3450,7 +3521,7 @@ class OrderService extends ContainerAware
                 }
             }
 
-            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false) {
+            if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false  && !$useAdminFee) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }
@@ -3464,6 +3535,28 @@ class OrderService extends ContainerAware
                 ];
             }
         }
+
+
+        foreach ($this->getCartService()->getCartDishes($place) as $item) {
+            $dish = $item->getDishId();
+            $debugDishOptions = $this->getCartService()->getCartDishOptions($item);
+            if (!empty($debugDishOptions)) {
+                foreach ($debugDishOptions as $option) {
+                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['name'] =  $option->getDishOptionId()->getName();
+                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['price'] =  $option->getDishOptionId()->getPrice();
+                }
+            }
+            $debugCartInfo['dish'][$dish->getId()]['price'] = $item->getDishSizeId()->getCurrentPrice();
+            $debugCartInfo['dish'][$dish->getId()]['name'] = $dish->getName();
+            if (!$dishesService->isDishAvailable($dish)) {
+                $formErrors[] = [
+                    'message' => 'dishes.no_production',
+                    'text' => $dish->getName()
+                ];
+            }
+        }
+
+
 
         $preOrder = $request->get('pre-order');
         $pointRecord = null;
@@ -3673,6 +3766,20 @@ class OrderService extends ContainerAware
 
         if (!empty($formErrors)) {
             $formHasErrors = true;
+            $translator = $this->container->get('translator');
+            $translator->trans('order.form.errors.customeraddr');
+
+            $this->container->get('food.error_log_service')->saveErrorLog(
+                $this->container->get('request')->getClientIp(),
+                $this->getUser(),
+                $this->container->get('food.cart')->getSessionId(),
+                $place,
+                new \DateTime('now'),
+                $request->headers->get('referer'),
+                'checkout_coupon_page',
+                implode(',', $formErrors),
+                serialize($request) .'<br><br>'. serialize($debugCartInfo)
+            );
         }
     }
 
@@ -4540,6 +4647,10 @@ class OrderService extends ContainerAware
                 // And an email
                 $mailer = $this->container->get('mailer');
 
+                $translator = $this->container->get('translator');
+                $domain = $this->container->getParameter('domain');
+
+
                 $message = \Swift_Message::newInstance()
                     ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
                     ->setFrom('info@' . $domain);
@@ -4745,11 +4856,15 @@ class OrderService extends ContainerAware
     {
         $em = $this->container->get('doctrine')->getManager();
         $order = $this->getOrder();
-        $ppList = $em->getRepository('FoodDishesBundle:PlacePoint')->findBy([
-            'place' => $order->getPlace()->getId(),
-            'city' => $order->getPlacePointCity()
-        ]);
 
-        return $ppList;
+        $params = ['place' => $order->getPlace()->getId()];
+
+        if($cityObj = $order->getPlacePoint()->getCityId()) {
+            $params['cityId'] = $cityObj->getId();
+        } else {
+            $params['city'] = $order->getPlacePointCity();
+        }
+
+        return $em->getRepository('FoodDishesBundle:PlacePoint')->findBy($params);
     }
 }

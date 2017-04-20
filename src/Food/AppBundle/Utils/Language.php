@@ -162,7 +162,7 @@ class Language
      */
     public function getAll()
     {
-        return $this->getContainer()->getParameter('available_locales');
+        return $this->getContainer()->getParameter('locales');
     }
 
     /**

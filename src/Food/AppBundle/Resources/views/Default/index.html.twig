@@ -1,6 +1,7 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
     {% block jscode %}
+        <script type="text/javascript">
         $(document).ready(function(){
             $('#index_city').selectmenu();
 
@@ -9,7 +10,7 @@
             var waitIntervals = null;
             var currentTime = null;
             var closeBtnTxt = '{% trans %}general.close_btn{% endtrans %}';
-
+            var currentUrl  = window.location.href;
 
             function getCrds() {
                 if (addrXhr != null) {
@@ -75,6 +76,7 @@
         });
         initStreetSearch();
         initStreetHouseSearch();
+        </script>
     {% endblock %}
 
 {% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}

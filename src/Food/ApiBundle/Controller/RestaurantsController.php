@@ -47,7 +47,7 @@ class RestaurantsController extends Controller
             if (!empty($address)) {
 
                 // TODO Pauliau, istrink sita gabala, kai isspresi GIS'a
-                $availableCities = $this->container->getParameter('available_cities');
+                $availableCities = [];//$this->container->getParameter('available_cities');
                 $availableCities = array_map("mb_strtolower", $availableCities);
                 if (!in_array(mb_strtolower($city), $availableCities)) {
                     $places = array();

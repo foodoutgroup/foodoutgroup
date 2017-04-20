@@ -19,7 +19,7 @@ class PlacePointFullAdmin extends FoodAdmin
 
             ->add('address', 'text', array('label' => 'admin.point.address'))
             ->add('additional_info', 'text', array('label' => 'admin.point.additional_info', 'required' => false))
-            ->add('city_id','app_city',array('label'=>'admin.point.city'))
+            ->add('city_id','city',array('label'=>'admin.point.city'))
             ->add('internal_code', null, array('label' => 'admin.place.internal_code', 'required' => false,))
             ->add('hash', null, array('label' => 'admin.place.hash', 'required' => false,))
             ->add('phone', 'text', array('label' => 'admin.point.phone', 'attr' => array('placeholder'=>'3706xxxxxxx')))

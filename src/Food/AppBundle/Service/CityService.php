@@ -4,58 +4,21 @@ namespace Food\AppBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Utils\Language;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CityService extends BaseService
 {
     protected $router;
-    protected $availableCitiesSlugs;
     protected $locale;
-    protected $language;
     protected $request;
 
-    public function __construct(EntityManager $em, Router $router, Language $language, $container)
+    public function __construct(EntityManager $em, Router $router, ContainerInterface $container)
     {
         parent::__construct($em);
         $this->router = $router;
-        $this->language = $language;
         $this->request = $container->get('request');
+        $this->locale= $this->request->getLocale();
     }
-
-    /**
-     * @param string $cityString
-     * @return array
-     */
-    public function getCityInfo($cityId)
-    {
-
-        $cityInfoCollection = [];
-        $cityObj = $this->em->getRepository('FoodAppBundle:City')->findOneBy(['id' => $cityId]);
-        if($cityObj != null) {
-            $cityString = $this->language->removeChars($this->locale, $cityObj->getTitle(), true, false);
-            $city = str_replace(array("#", "-", ";", "'", '"', ":", ".", ",", "/", "\\"), "", ucfirst($cityString));
-            $cityInfoCollection['city_slug_lower'] = strtolower($city);
-            $cityInfoCollection['city_url'] = '';
-            $cityInfoCollection['city'] = $city;
-        }
-        return $cityInfoCollection;
-    }
-
-    /**
-     * @param mixed $availableCitiesSlugs
-     */
-    public function setAvailableCitiesSlugs($availableCitiesSlugs)
-    {
-        $this->availableCitiesSlugs = $availableCitiesSlugs;
-    }
-
-    /**
-     * @param mixed $locale
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-    }
-
     public function getActiveCity()
     {
         return $this->em->getRepository('FoodAppBundle:City')->getActive();
@@ -90,7 +53,6 @@ class CityService extends BaseService
             shuffle($tmpOfferIds);
 
             $bestOfferIds = array_slice($tmpOfferIds, 0, 5);
-
             $bestOffers = $this->em->getRepository('FoodPlacesBundle:BestOffer')->getBestOffersByIds($bestOfferIds);
         }else{
             $bestOffers = null;

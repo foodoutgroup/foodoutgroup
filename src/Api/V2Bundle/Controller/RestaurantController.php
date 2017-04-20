@@ -13,7 +13,6 @@ class RestaurantController extends Controller
 
     public function getMenuAction($placeHash, Request $request){
 
-
         try {
             $ps = $this->get('api.v2.place');
 

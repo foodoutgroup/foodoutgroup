@@ -27,7 +27,7 @@
                 }
             });
         }
-        
+
         function showPrepareTimePrompt() {
             var prepareTime = prompt("{% trans %}mobile.order_confirm_enterPrepareTime{% endtrans %}");
             if (prepareTime) {
@@ -54,10 +54,12 @@
         }
         {% endif %}
     </style>
+
+
     <table class="table table-bordered table condensed" id="maintable">
         <thead>
         <tr>
-            <th colspan="5"><img src="/bundles/foodapp/images/logo_food.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
+            <th {% if site_country == 'LV'%}style="background-color:#cd1d36;"{% endif %} colspan="5"><img style="width: 100px; height: 30px;" {%if site_country == 'LV'%} src="/bundles/foodapp/images/logo_food_easter_lv.png" {% else %} src="/bundles/foodapp/images/logo_food_easter_lt.png"{% endif %}> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
         </tr>
         <tr>
             <th style="width: 30px">#</th>
@@ -101,6 +103,13 @@
         <tr>
             <td colspan="5">
                 <b>
+                    {% trans %}mobile.order.sum_without_admin_fee_and_delivery{% endtrans %}
+                </b> {{ order.foodTotal }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <b>
                     {% if order.deliveryType == 'deliver' %}
                     {% trans %}mobile.order.sum_with_delivery{% endtrans %}
                 {% else %}
@@ -116,6 +125,11 @@
             <tr>
                 <td colspan="5"><b>{% trans %}mobile.restaurant_delivery_price{% endtrans %}:</b> {{ order.deliveryPrice }} {{ currency_display|raw }}</td>
             </tr>
+        {% endif %}
+        {% if order.adminFee > 0 %}
+        <tr>
+            <td colspan="5"><b>{% trans %}mobile.order.admin_fee{% endtrans %}:</b> {{ order.adminFee }} {{ currency_display|raw }}</td>
+        </tr>
         {% endif %}
         <tr>
             <th colspan="5">{% trans %}mobile.restourant_place_point_address{% endtrans %}</th>
