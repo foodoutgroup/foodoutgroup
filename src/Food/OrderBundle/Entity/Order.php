@@ -116,6 +116,12 @@ class Order
     private $total;
 
     /**
+     * @var decimal
+     * @ORM\Column(name="adminFee", type="decimal", precision=8, scale=2, nullable=true)
+     */
+    private $adminFee;
+
+    /**
      * @var float
      * @ORM\Column(name="total_before_discount", type="decimal", precision=8, scale=2, nullable=true)
      */
@@ -2335,6 +2341,22 @@ class Order
         return $this->getTotal();
     }
 
+    public function getAdminFeeWithoutVat()
+    {
+        if ($this->getVat()) {
+            return round($this->getAdminFee() / (1 + $this->getVat() / 100), 2);
+        }
+
+        return $this->getAdminFee();
+    }
+
+
+    public function getFoodTotalForNav()
+    {
+        return $this->getTotal() - $this->getDeliveryPrice() + $this->getDiscountSum() - $this->getAdminFee();
+
+    }
+
     public function getVatSize()
     {
         return $this->getTotal() - $this->getTotalWithoutVat();
@@ -2608,5 +2630,20 @@ class Order
     public function getCityId()
     {
         return $this->cityId;
+    }
+
+    /**
+     * @return decimal
+     */
+    public function getAdminFee()
+    {
+        return $this->adminFee;
+    }
+    /**
+     * @param decimal $adminFee
+     */
+    public function setAdminFee($adminFee)
+    {
+        $this->adminFee = $adminFee;
     }
 }

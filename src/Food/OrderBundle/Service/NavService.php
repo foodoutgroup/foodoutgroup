@@ -795,10 +795,10 @@ class NavService extends ContainerAware
         $o = \Maybe($order);
 
         // some calculations beforehand
-        $total = $o->getTotal()->val(0.0);
+
         $deliveryTotal = $o->getDeliveryPrice()->val(0.0);
         $discountSum = $o->getDiscountSum()->val(0.0);
-        $foodTotal = $total - $deliveryTotal + $discountSum;
+        $foodTotal = $o->getFoodTotalForNav()->val(0.0);
 
         // payment type and code preprocessing
         $driverId = $o->getDriver()->getId()->val('');

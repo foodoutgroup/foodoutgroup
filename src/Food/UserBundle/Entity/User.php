@@ -221,6 +221,12 @@ class User extends BaseUser
      */
     private $locale;
 
+    /**
+     * @var boolean
+     * @ORM\Column(name="special", type="boolean", nullable=true)
+     */
+    private $special = false;
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
@@ -1133,6 +1139,19 @@ class User extends BaseUser
     }
 
     /**
+     * Set special
+     *
+     * @param boolean $special
+     * @return User
+     */
+    public function setSpecial($special)
+    {
+        $this->special = $special;
+    
+        return $this;
+    }
+
+    /**
      * Add orderStatusLog
      *
      * @param \Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog
@@ -1144,6 +1163,17 @@ class User extends BaseUser
     
         return $this;
     }
+
+    /**
+     * Get special
+     *
+     * @return boolean 
+     */
+    public function getSpecial()
+    {
+        return $this->special;
+    }
+
 
     /**
      * Remove orderStatusLog
