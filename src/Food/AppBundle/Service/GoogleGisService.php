@@ -1,9 +1,12 @@
 <?php
 namespace Food\AppBundle\Service;
 
+use Doctrine\ORM\EntityManager;
+use Food\AppBundle\Entity\City;
 use Food\AppBundle\Entity\GeoCache;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Curl;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
 class GoogleGisService extends ContainerAware
@@ -14,9 +17,15 @@ class GoogleGisService extends ContainerAware
      */
     private $_cli;
 
-    public function __construct()
-    {
+    /**
+     * @var EntityManager
+     */
+    private $em;
 
+    public function __construct(EntityManager $em, ContainerInterface $container)
+    {
+        $this->container = $container;
+        $this->em = $em;
     }
 
     /**
@@ -67,7 +76,7 @@ class GoogleGisService extends ContainerAware
         $address = preg_replace('#[\/][a-z\d]+#i', '', $address);
 
         if (!$fresh) {
-            $geoCache = $this->container->get('doctrine')->getRepository('FoodAppBundle:GeoCache')
+            $geoCache = $this->em->getRepository('FoodAppBundle:GeoCache')
                 ->findOneBy(
                     [
                         'requestAddress' => $address,
@@ -80,8 +89,7 @@ class GoogleGisService extends ContainerAware
             $geoCache = $this->findAndCache($address);
         } else {
             $geoCache->setCounter($geoCache->getCounter() + 1);
-            $em = $this->container->get('doctrine')->getManager();
-            $em->flush();
+            $this->em->flush();
         }
 
         return json_decode($geoCache->getRessponseBody());
@@ -127,7 +135,6 @@ class GoogleGisService extends ContainerAware
     public function groupData($address, $city, $id = false)
     {
 
-
         $location = $this->getPlaceData($address . ', ' . $city);
         $returner = $this->parseDataFromLocation($location, $address);
 
@@ -140,14 +147,6 @@ class GoogleGisService extends ContainerAware
                 @mail('karolis.m@foodout.lt', 'not found address 2', $address . $city, ['from' => 'info@foodout.lt']);
             }
         }
-
-        if (!empty($returner['city'])) {
-            $returner['city'] = $city;
-            if ($id) {
-                $returner['city_id'] = $id;
-            }
-        }
-
 
         $this->setLocationToSession($returner);
 
@@ -208,23 +207,27 @@ class GoogleGisService extends ContainerAware
             }
         }
 
+        if(isset($returner['city'])) {
+            if($cityObj = $this->em->getRepository('FoodAppBundle:City')->getByName($returner['city'])) {
+                $returner['city_id'] = $cityObj->getId();
+            }
+        }
+
         return $returner;
     }
 
-    public function setCityOnlyToSession($city, $id = false)
+    public function setCity(City $city)
     {
         $returner = $this->getLocationFromSession();
 
-        if ($returner || empty($returner) || $returner['city'] != $city) {
-            $returner['not_found'] = true;
-            $returner['street_found'] = false;
-            $returner['address_found'] = false;
-            $returner['city'] = $city->getTitle();
-            $returner['address'] = $returner['city'];
-            $returner['city_only'] = true;
-            $returner['city_id'] = $id;
-            $this->setLocationToSession($returner);
-        }
+        $returner['not_found'] = true;
+        $returner['street_found'] = false;
+        $returner['address_found'] = false;
+        $returner['city'] = $city->getTitle();
+        $returner['address'] =  $city->getTitle();
+        $returner['city_only'] = true;
+        $returner['city_id'] = $city->getId();
+        $this->setLocationToSession($returner);
 
         return $returner;
     }
@@ -304,6 +307,10 @@ class GoogleGisService extends ContainerAware
                 }
             }
         }
+
+        $cityObj = $this->em->getRepository('FoodAppBundle:City')->getByName($returner['city']);
+        $returner['city_id'] = $cityObj ? $cityObj->getId() : 0;
+        $returner['city_obj'] = $cityObj;
 
         return $returner;
     }

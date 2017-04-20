@@ -15,6 +15,7 @@ class RestaurantsController extends Controller
      */
     public function getRestaurantsAction(Request $request)
     {
+
         $startTime = microtime(true);
         $this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array) $request);
         try {
@@ -40,61 +41,45 @@ class RestaurantsController extends Controller
                 $filters['delivery_type'] = $delivery_type;
             }
 
-            $kitchens = explode(", ", $request->get('cuisines', ''));
-            if (empty($kitchens) || (sizeof($kitchens) == 1 && empty($kitchens[0]))) {
-                $kitchens = array();
+            $kitchenCollection = explode(", ", $request->get('cuisines', ''));
+            if (empty($kitchenCollection) || (sizeof($kitchenCollection) == 1 && empty($kitchenCollection[0]))) {
+                $kitchenCollection = array();
             }
+
+            $placeCollection = [];
+
             if (!empty($address)) {
 
-                // TODO Pauliau, istrink sita gabala, kai isspresi GIS'a
-                $availableCities = [];//$this->container->getParameter('available_cities');
-                $availableCities = array_map("mb_strtolower", $availableCities);
-                if (!in_array(mb_strtolower($city), $availableCities)) {
-                    $places = array();
-                } else {
-                    // TODO HACK pabaiga :)
-
-                    $this->get('food.googlegis')->groupData($address, $city);
-
-                    $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-                        $kitchens,
-                        $filters,
-                        false,
-                        $this->get('food.googlegis')->getLocationFromSession(),
-                        $this->container
-                    );
-                }
-            } elseif (!empty($lat) && !empty($lng)) {
-                $data = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
-                $this->get('food.googlegis')->setLocationToSession(
-                    array(
-                        'city' => $data['city'],
-                        'lat' => $lat,
-                        'lng' => $lng
-                    )
-                );
-                $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-                    $kitchens,
+                $placeCollection = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+                    $kitchenCollection,
                     $filters,
                     false,
-                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $this->get('food.googlegis')->groupData($address, $city),
                     $this->container
                 );
-            } else {
-                $places = array();
+
+            } elseif (!empty($lat) && !empty($lng)) {
+                $locationData = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
+                $placeCollection = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+                    $kitchenCollection,
+                    $filters,
+                    false,
+                    $this->get('food.googlegis')->setCity($locationData['city_obj']),
+                    $this->container
+                );
             }
 
-            $response = array(
-                'restaurants' => array(),
-                '_meta' => array(
-                    'total' => sizeof($places),
+            $response = [
+                'restaurants' => [],
+                '_meta' => [
+                    'total' => sizeof($placeCollection),
                     'offset' => 0,
                     'limit' => 50
-                )
-            );
+                ]
+            ];
 
-            $places = $this->get('food.places')->placesPlacePointsWorkInformation($places);
-            foreach ($places as $place) {
+            $placeCollection = $this->get('food.places')->placesPlacePointsWorkInformation($placeCollection);
+            foreach ($placeCollection as $place) {
                 $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
                     $place['place'],
                     $place['point'],
@@ -113,7 +98,7 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getRestaurantsAction Trace2:' . $e->getTraceAsString());
 
             return new JsonResponse(
-                ['error' => $this->get('translator')->trans('general.error_happened')],
+                ['error' => $this->get('translator')->trans('general.error_happened').''. $e->getMessage()],
                 500,
                 array('error' => 'server error', 'description' => null)
             );
@@ -157,20 +142,14 @@ class RestaurantsController extends Controller
                     $this->container
                 );
             } elseif (!empty($lat) && !empty($lng)) {
-                $foundAddress = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
-                if (isset($foundAddress['city'])) {
-                    $this->get('food.googlegis')->setLocationToSession(
-                        array(
-                            'lat' => $lat,
-                            'lng' => $lng,
-                            'city' => $foundAddress['city']
-                        )
-                    );
+
+                $locationData = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
+                if($locationData['city_obj']) {
                     $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-                        array(),
-                        array(),
+                        [],
+                        [],
                         false,
-                        $this->get('food.googlegis')->getLocationFromSession(),
+                        $this->get('food.googlegis')->setCity($locationData['city_obj']),
                         $this->container
                     );
                 }

@@ -103,7 +103,7 @@ class AjaxController extends Controller
         // Only City Selected
         $city_only = $request->get('city_only');
         if ($city && empty($address) && !empty($city_only)) {
-            $this->get('food.googlegis')->setCityOnlyToSession($city,$city->getId());
+            $this->get('food.googlegis')->setCity($city);
 
 
             $response->setContent(json_encode([

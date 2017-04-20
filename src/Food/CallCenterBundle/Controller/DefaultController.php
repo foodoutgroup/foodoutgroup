@@ -424,9 +424,10 @@ class DefaultController extends Controller
         $houseNumber = $request->get('house_number');
 
         if (!empty($city) && empty($street) && empty($houseNumber)) {
-            $this->get('food.googlegis')->setCityOnlyToSession($city);
-            $locData = $this->get('food.googlegis')->getLocationFromSession();
-            return new JsonResponse($locData);
+            $city = $this->getDoctrine()->getRepository('FoodAppBundle:City')->findOneBy(['title' => $city]);
+            if($city) {
+                $this->get('food.googlegis')->setCity($city);
+            }
         }
 
         $locData = $this->get('food.googlegis')->getLocationFromSession();

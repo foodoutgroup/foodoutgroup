@@ -62,8 +62,7 @@ services:
 
     food.googlegis:
         class: Food\AppBundle\Service\GoogleGisService
-        calls:
-            - [setContainer, [@service_container]]
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
 
     food.location:
         class: Food\AppBundle\Service\LocationService

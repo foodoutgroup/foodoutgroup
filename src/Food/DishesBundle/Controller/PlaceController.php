@@ -308,20 +308,21 @@ class PlaceController extends Controller
         $domain = $this->container->getParameter('domain');
 
         $found_data = ['status' => 'fail', 'city' => null, 'url' => null];
-        $city = $request->get('city');
 
-        if (!empty($city) && !empty($placeId)) {
-            $url = $placeService->getPlaceUrlByCity($placeId, $city);
+        $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->findOneBy(['title' => $request->get('city')]);
+
+        if ($cityObj && !empty($placeId)) {
+            $url = $placeService->getPlaceUrlByCity($placeId, $cityObj->getTitle());
             if (!empty($url)) {
                 $found_data = [
                     'status' => 'success',
-                    'city' => $city,
+                    'city' => $cityObj->getTitle(),
                     'url' => '//' . $domain . '/' . $url
                 ];
+                $this->get('food.googlegis')->setCity($cityObj);
             }
         }
 
-        $this->get('food.googlegis')->setCityOnlyToSession($city);
         $response = new JsonResponse($found_data);
         $response->setCharset('UTF-8');
         $response->prepare($request);
