@@ -2646,11 +2646,11 @@ class OrderService extends ContainerAware
             . $translator->trans('general.new_order.payment_type') . ": " . $order->getPaymentMethod() . "\n"
             . $translator->trans('general.new_order.payment_status') . ": " . $order->getPaymentStatus() . "\n";
 
-        $emailMessageText .= "\n"
-            . $translator->trans('general.new_order.admin_link') . ": "
-            . 'http://' . $domain . $this->container->get('router')
-                ->generate('order_support_mobile', ['hash' => $order->getOrderHash()], false)
-            . "\n";
+//        $emailMessageText .= "\n"
+//            . $translator->trans('general.new_order.admin_link') . ": "
+//            . 'http://' . $domain . $this->container->get('router')
+//                ->generate('order_support_mobile', ['hash' => $order->getOrderHash()], false)
+//            . "\n";
 
         $mailer = $this->container->get('mailer');
 
@@ -2780,10 +2780,11 @@ class OrderService extends ContainerAware
             . $translator->trans('general.new_order.restaurant_link') . ": " . $this->container->get('router')
                 ->generate('ordermobile', ['hash' => $order->getOrderHash()], true)
             . "\n";
-        $emailMessageText .= "\n"
-            . $translator->trans('general.new_order.admin_link') . ": " . $this->container->get('router')
-                ->generate('order_support_mobile', ['hash' => $order->getOrderHash()], true)
-            . "\n";
+
+//        $emailMessageText .= "\n"
+//            . $translator->trans('general.new_order.admin_link') . ": " . $this->container->get('router')
+//                ->generate('order_support_mobile', ['hash' => $order->getOrderHash()], true)
+//            . "\n";
 
         $mailer = $this->container->get('mailer');
 

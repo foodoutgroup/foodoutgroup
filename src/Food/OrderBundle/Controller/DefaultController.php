@@ -86,63 +86,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * Mobile admin page for order to be monitored and ruined
-     * @param $hash
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function mobileAdminAction($hash, Request $request)
-    {
-        $orderService = $this->get('food.order');
-        $order = $orderService->getOrderByHash($hash);
-
-        if (!$order instanceof Order) {
-            throw new NotFoundHttpException('Order not found');
-        }
-
-        if ($request->isMethod('post')) {
-            switch($request->get('status')) {
-                case 'confirm':
-                    $orderService->statusAccepted('admin_mobile');
-                break;
-
-                case 'delay':
-                    $orderService->statusDelayed('admin_mobile', 'delay reason: '.$request->get('delay_reason'));
-                    $orderService->getOrder()->setDelayed(true);
-                    $orderService->getOrder()->setDelayReason($request->get('delay_reason'));
-                    $orderService->getOrder()->setDelayDuration($request->get('delay_duration'));
-                    $orderService->saveDelay();
-                    $orderService->getOrderByHash($hash);
-                break;
-
-                case 'cancel':
-                    $orderService->statusCanceled('admin_mobile');
-                    // Order has been canceled by admins - inform restourant
-                    $orderService->informPlaceCancelAction();
-                break;
-
-                case 'finish':
-                    $orderService->statusFinished('admin_mobile');
-                break;
-
-                case 'completed':
-                    $orderService->statusCompleted('admin_mobile');
-                break;
-
-                case 'partialy_completed':
-                    $orderService->statusPartialyCompleted('admin_mobile');
-                break;
-            }
-            $orderService->saveOrder();
-
-            return $this->redirect(
-                $this->generateUrl('order_support_mobile', array('hash' => $hash))
-            );
-        }
-        return $this->render('FoodOrderBundle:Default:mobile_admin.html.twig', array('order' => $order));
-    }
-
-    /**
      * @param $hash
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
