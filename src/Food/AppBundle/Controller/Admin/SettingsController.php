@@ -31,6 +31,8 @@ class SettingsController extends CoreController
         'sf_next_number',
         'footer_scripts',
         'extra_group',
+        'free_delivery_discount_code_generation_enable',
+        'free_delivery_discount_code_generation_after_completed_orders',
     ];
 
     public function indexAction(Request $request)
@@ -177,10 +179,14 @@ class SettingsController extends CoreController
         ]);
 
         $form->add('extra_group', 'choice', [
-            'choices' => ['Ne', 'Taip'],
+            'choices' => ['No', 'Yes'],
             'required' => false
         ]);
 
+        $form->add('free_delivery_discount_code_generation_enable', 'choice', [
+            'choices' => ['No', 'Yes'],
+            'required' => true
+        ]);
 
         foreach ($this->keywordMapCollection as $keyword) {
             if(!$form->has($keyword)) {
