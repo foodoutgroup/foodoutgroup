@@ -81,10 +81,11 @@ class OrderToDriverCommand extends ContainerAwareCommand
                         break;
                     }
                     $order = $orderToDriver->getOrder();
-                    $post = ['url' => 'http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash()];
-                    //~ if ($debug) {
-                        //~ $output->writeln($msg);
-                    //~ }
+                    $url = 'http://'.$this->getContainer()->getParameter('domain').'/api/v1/ordersByHash/'.$order->getOrderHash();
+                    $post = ['url' => $url];
+                    if ($debug) {
+                        $output->writeln($url);
+                    }
                     if (!$dryRun) {
                         $this->_ch = curl_init();
 
@@ -98,6 +99,8 @@ class OrderToDriverCommand extends ContainerAwareCommand
                         curl_setopt($this->_ch, CURLOPT_POSTFIELDS, $post);
 
                         curl_setopt($this->_ch, CURLOPT_URL, 'http://v2.foodout.lt/order/new');
+
+                        curl_exec($this->_ch);
 
                         curl_close($this->_ch);
                         $orderToDriver->setDateSent(new \DateTime());
