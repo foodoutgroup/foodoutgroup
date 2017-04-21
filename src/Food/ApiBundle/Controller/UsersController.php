@@ -775,8 +775,8 @@ class UsersController extends Controller
      */
     public function AllowToAccess(User $user = null)
     {
+        $sc = $this->get('security.context');
         if (!$user) {
-            $sc = $this->get('security.context');
             $user = $sc->getToken()->getUser();
         }
 
