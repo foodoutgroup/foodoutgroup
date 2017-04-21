@@ -773,10 +773,12 @@ class UsersController extends Controller
     /**
      * @return bool
      */
-    public function AllowToAccess()
+    public function AllowToAccess(User $user = null)
     {
-        $sc = $this->get('security.context');
-        $user = $sc->getToken()->getUser();
+        if (!$user) {
+            $sc = $this->get('security.context');
+            $user = $sc->getToken()->getUser();
+        }
 
         if ($user instanceof User) {
             return (
@@ -944,6 +946,7 @@ class UsersController extends Controller
                 'phone' => $user->getPhone(),
                 'name' => $user->getFullName(),
                 'email' => $user->getEmail(),
+                'superUser' => $this->AllowToAccess($user)
             );
         } catch (ApiException $e) {
             $this->get('logger')->error('Users:meAction Error1:' . $e->getMessage());
