@@ -30,6 +30,7 @@ class BlogCategoryAdmin extends FoodAdmin
     {
         $form
             ->add('title', null, array('label' => 'admin.static.title', 'required' => false))
+            ->add('slug', 'text', array('label' => 'admin.slug', 'required' => true))
             ->add('language', 'choice', array('label' => 'admin.language', 'required' => true, 'choices' => $this->getLanguageChoice()))
             ->add('seo_title', null, array('label' => 'admin.seo_title', 'required' => false))
             ->add('seo_description', null, array('label' => 'admin.seo_description', 'required' => false))
@@ -44,26 +45,5 @@ class BlogCategoryAdmin extends FoodAdmin
             $languages[$language] = $language;
         }
         return $languages;
-    }
-
-    function postPersist($object)
-    {
-        $this->fixSlugs($object);
-        parent::postPersist($object);
-    }
-
-    function postUpdate($object)
-    {
-        $this->fixSlugs($object);
-        parent::postUpdate($object);
-    }
-
-    /**
-     * @param BlogCategory $object
-     */
-    private function fixSlugs($object)
-    {
-        $slugService = $this->getContainer()->get('food.dishes.utils.slug');
-        $slugService->generateForBlogCategory($object->getLanguage(), $object->getId(), $object->getTitle());
     }
 }

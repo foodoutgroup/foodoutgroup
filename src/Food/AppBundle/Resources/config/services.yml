@@ -64,6 +64,7 @@ services:
         class: Food\AppBundle\Service\GoogleGisService
         arguments: ["@doctrine.orm.entity_manager", "@service_container"]
 
+
     food.location:
         class: Food\AppBundle\Service\LocationService
         calls:
@@ -129,7 +130,7 @@ services:
         arguments:
           - @doctrine.orm.entity_manager
           - @router
-    1:
+    hook.free_delivery_restaurant:
         class: Food\AppBundle\Service\HookFreeDeliveryRestaurant
         arguments: ["@templating", "@doctrine.orm.entity_manager"]
 

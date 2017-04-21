@@ -14,6 +14,7 @@ class SettingsController extends CoreController
         'page_email_banned',
         'page_help',
         'page_best_offer',
+        'page_blog',
         'use_admin_fee_globally',
         'admin_fee_size',
         'page_b2b_rules',
@@ -110,6 +111,11 @@ class SettingsController extends CoreController
         $form->add('page_b2b_rules', 'choice', [
             'label' => 'B2B rules page',
             'choices' => $pageCollection
+        ]);
+
+        $form->add('page_blog', 'choice', [
+            'label' => 'Blog page',
+            'choices' => array_merge(['0' => ''], $pageCollection),
         ]);
 
         $form->add('use_admin_fee_globally', 'choice', [

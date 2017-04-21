@@ -63,12 +63,13 @@ class SlugController extends Controller
 
         switch(($slugRow == null && $slug != null) ? null : $slugRow->getType()) {
 
-            case Slug::TYPE_CITY:
-                return $this->forward('FoodPlacesBundle:City:index', $dataOptions);
-
             case Slug::TYPE_PAGE:
                 return $this->forward('FoodAppBundle:StaticPage:index', $dataOptions);
-
+            case Slug::TYPE_CITY:
+                return $this->forward('FoodPlacesBundle:City:index', $dataOptions);
+            case Slug::TYPE_DISH:
+                die("todo dish page");
+                break;
             case Slug::TYPE_KITCHEN:
                 return $this->forward('FoodDishesBundle:Kitchen:index', $dataOptions);
 
@@ -89,15 +90,6 @@ class SlugController extends Controller
 //                    'FoodDishesBundle:Place:index',
 //                    ['id' => $place->getId(), 'slug' => $placeSlug, 'categoryId' => $slugRow->getItemId()]
 //                );
-                break;
-            case Slug::TYPE_BLOG_CATEGORY:
-                return $this->forward('FoodBlogBundle:Default:categoryIndex', ['id' => $slugRow->getItemId()]);
-                break;
-            case Slug::TYPE_BLOG_POST:
-                return $this->forward('FoodBlogBundle:Default:postIndex', ['id' => $slugRow->getItemId()]);
-                break;
-            case Slug::TYPE_DISH:
-                die("todo dish page");
                 break;
             default:
                 $this->pageNotFound404($slug);

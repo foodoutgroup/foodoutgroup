@@ -6,7 +6,6 @@
 {% block body %}
     {# Facebook ViewContent Begin #}
     <script>fbq('track', 'ViewContent');</script>
-    {# Facebook ViewContent End #}
     <div class="site-center">
         <div class="site-block">
             <div class="middle-content">
@@ -15,12 +14,12 @@
                     <div class="static-page-content">
                         <ul>
                             {% for category in categories %}
-                            <li><a href="{{ slug.getUrl(category.id, 'blog_category') }}">{{ category }}</a></li>
-                            <ul>
-                                {% for post in blogPosts[category.id] %}
-                                <li><a href="{{ slug.getUrl(post.id, 'blog_post') }}">{{ post }}</a></li>
-                                {% endfor %}
-                            </ul>
+                                <li><a href="{{ address }}/{{ category.slug }}">{{ category }}</a></li>
+                                <ul>
+                                    {% for post in blogPosts[category.id] %}
+                                    <li><a href="{{ address }}/{{ category.slug }}/{{ post.slug }}">{{ post }}</a></li>
+                                    {% endfor %}
+                                </ul>
                             {% endfor %}
                         </ul>
                     </div>
