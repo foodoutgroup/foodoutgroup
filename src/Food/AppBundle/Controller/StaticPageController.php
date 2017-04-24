@@ -14,19 +14,20 @@ class StaticPageController extends Controller
      */
     private $page;
 
-    public function indexAction($id)
+    public function indexAction($id, $slug, $params)
     {
-        $this->page = $this->get('food.static')->getPage($id);
 
+        $this->page = $this->get('food.static')->getPage($id);
         if (!$this->page ) {
             throw new NotFoundHttpException('Sorry not existing!');
         }
 
         $this->page->setContent(str_replace("&quot;", '"', $this->page->getContent()));
-        $serviceCollection = $this->initServiceTag();
+        $serviceCollection = $this->initServiceTag($params);
         foreach ($serviceCollection as $s){
             $serviceContent = $s['service'];
             $serviceObj = $s['obj'];
+
             if(is_array($serviceContent)) {
                 if(isset($serviceContent['template'])) {
 
@@ -44,24 +45,32 @@ class StaticPageController extends Controller
         return $this->render('FoodAppBundle:StaticPage:index.html.twig', ['page' => $this->page]);
     }
 
-    private function initServiceTag()
+    private function initServiceTag($params)
     {
 
         $serviceCollection = [];
         preg_match_all('/\[s=\"(.*)\"\]/', htmlspecialchars_decode($this->page->getContent()), $matches);
         if(count($matches[1])) {
-            for($i=0;$i<count($matches[1]); $i++) {
+            for ($i = 0; $i < count($matches[1]); $i++) {
                 $service = $matches[1][$i];
                 $serviceDetail = explode(":", $service);
                 try {
                     $obj = $this->get($serviceDetail[0]);
+
+                    if (method_exists($obj, 'setParams')) {
+                        $obj->setParams($params);
+                    }
+
                     $serviceCollection[] = [
                         'replace' => $matches[0][$i],
                         'params' => $serviceDetail,
                         'service' => $this->get($serviceDetail[0])->build($serviceDetail),
                         'obj' => $obj,
                     ];
-                } catch (\Exception $ignore) {}
+                } catch (NotFoundHttpException $e) {
+                    throw new NotFoundHttpException($e->getMessage());
+                } catch (\Exception $ignore) {
+                }
             }
         }
 

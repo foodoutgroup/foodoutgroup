@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    {% set homepage = 'http://' ~ domain ~ slug.toHomepage() %}
+    {% if homepage|last == "/" %}
+        {% set homepage = homepage|trim('/') %}
+    {% endif %}
     <url>
-        <loc>http://{{ domain }}{{ slug.toHomepage() }}</loc>
+        <loc>{{ homepage }}</loc>
         <changefreq>hourly</changefreq>
     </url>
     {#<url>#}
@@ -45,6 +50,23 @@
         {% endif %}
     {% endfor %}
 
+    {% if page_block_config != 0 %}
+        {% set blogPathStart = homepage ~ '/' ~ slug.path(page_block_config, 'page') %}
+        <url>{{ blogPathStart }}</url>
+        {% for blogCategory in blogCollection %}
+            {% set category = blogCategory['category'] %}
+            {% set postCollection = blogCategory['postCollection'] %}
+            <url>
+                <loc>{{ blogPathStart }}/{{ category.slug }}</loc>
+                <changefreq>weekly</changefreq>
+            </url>
+            {% for post in postCollection %}
+                <url>
+                    <loc>{{ blogPathStart }}/{{ category.slug }}/{{ post.slug }}</loc>
+                    <changefreq>monthly</changefreq>
+                </url>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
 
-    {#{% endfor %}#}
 </urlset>

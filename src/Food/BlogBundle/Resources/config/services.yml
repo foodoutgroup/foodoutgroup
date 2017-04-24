@@ -20,7 +20,6 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
-
-    food.blog_service:
-        class: Food\BlogBundle\Service\BlogService
-        parent: food.base_service
+    hook.blog:
+        class: Food\BlogBundle\Service\HookBlog
+        arguments: ['@service_container']

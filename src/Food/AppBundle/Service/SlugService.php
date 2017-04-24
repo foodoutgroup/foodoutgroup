@@ -124,10 +124,7 @@ class SlugService
                 'lang_id' => $this->getLocale(), 'active' => 1
             )
         );
-
-
     }
-
 
     public function getUrl($itemId, $type)
     {
@@ -232,14 +229,5 @@ class SlugService
         $contentId = $bannedEmailPageId = $this->misc->getParam($name);
         return $this->getUrl($contentId, $type);
     }
-
-    /**
-     * @deprecated from 2017-03-29
-     */
-    public function bannedUrl(){
-        $bannedPageId = $this->misc->getParam('page_banned');
-        return $this->getUrl($bannedPageId, Slug::TYPE_PAGE);
-    }
-
 
 }

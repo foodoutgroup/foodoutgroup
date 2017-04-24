@@ -45,4 +45,19 @@ class CityRepository extends EntityRepository
     {
         return $this->findBy(['active' => 1,'id'=>$id]);
     }
+
+    /**
+     * @param $cityName
+     * @return City
+     */
+    public function getByName($cityName)
+    {
+        $cityName = ucfirst(strtolower(trim($cityName)));
+
+        $search = [];
+        $replace = [];
+        $cityName  = str_replace($search, $replace, $cityName);
+
+        return $this->findOneBy(['title' => $cityName]);
+    }
 }

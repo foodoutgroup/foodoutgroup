@@ -7,9 +7,15 @@ use Food\AppBundle\Validator\Constraints\Slug;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use \Food\AppBundle\Entity\Slug as SlugEntity;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class CityAdmin extends FoodAdmin
 {
+
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->add('clone', $this->getRouterIdParameter().'/clone');
+    }
 
     function configureListFields(ListMapper $list)
     {

@@ -3,7 +3,6 @@ imports:
 
 parameters:
   evp.test_payments: 1
-  domain: "foodout/app_dev.php/"
 
 framework:
     router:

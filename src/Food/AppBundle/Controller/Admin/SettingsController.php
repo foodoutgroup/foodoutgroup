@@ -3,6 +3,7 @@
 namespace Food\AppBundle\Controller\Admin;
 
 use Sonata\AdminBundle\Controller\CoreController;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,6 +15,7 @@ class SettingsController extends CoreController
         'page_email_banned',
         'page_help',
         'page_best_offer',
+        'page_blog',
         'use_admin_fee_globally',
         'admin_fee_size',
         'page_b2b_rules',
@@ -33,6 +35,7 @@ class SettingsController extends CoreController
         'extra_group',
         'free_delivery_discount_code_generation_enable',
         'free_delivery_discount_code_generation_after_completed_orders',
+        'placepoint_prepare_times',
     ];
 
     public function indexAction(Request $request)
@@ -111,9 +114,13 @@ class SettingsController extends CoreController
             'choices' => $pageCollection
         ]);
 
-        $form->add('use_admin_fee_globally', 'choice', [
+        $form->add('page_blog', 'choice', [
+            'label' => 'Blog page',
+            'choices' => array_merge(['0' => ''], $pageCollection),
+        ]);
+
+        $form->add('use_admin_fee_globally', 'boolean', [
             'label' => 'Use globally',
-            'choices' => ['No', 'Yes'],
             'attr' => ['group' => 'Admin fee']
         ]);
 
@@ -121,9 +128,8 @@ class SettingsController extends CoreController
             'label' => 'Fee size',
         ]);
 
-        $form->add('blog_link_active', 'choice', [
+        $form->add('blog_link_active', 'boolean', [
             'label' => 'Blog activated',
-            'choices' => ['No', 'Yes'],
             'attr' => ['group' => 'Blog']
         ]);
 
@@ -133,14 +139,11 @@ class SettingsController extends CoreController
             'attr' => ['group' => 'Order']
         ]);
 
-        $form->add('zaval_on', 'choice', [
-            'label' => 'Rush hours',
-            'choices' => ['On', 'Off'],
+        $form->add('zaval_on', 'boolean', [
+            'label' => 'Rush hours activated',
         ]);
 
-        $form->add('enable_free_delivery_for_big_basket', 'choice', [
-            'choices' => ['No', 'Yes'],
-        ]);
+        $form->add('enable_free_delivery_for_big_basket', 'boolean');
 
         $form->add('free_delivery_price', 'number');
 
@@ -163,9 +166,8 @@ class SettingsController extends CoreController
         ]);
 
 
-        $form->add('showMobilePopup', 'choice', [
+        $form->add('showMobilePopup', 'boolean', [
             'label' => 'Show mobile popup',
-            'choices' => ['No', 'Yes'],
         ]);
 
         $form->add('beta_code_on', 'choice', [
@@ -178,15 +180,9 @@ class SettingsController extends CoreController
             'attr' => ['style' => 'width:100%;', 'rows' => 20]
         ]);
 
-        $form->add('extra_group', 'choice', [
-            'choices' => ['No', 'Yes'],
-            'required' => false
-        ]);
+        $form->add('extra_group', 'boolean');
 
-        $form->add('free_delivery_discount_code_generation_enable', 'choice', [
-            'choices' => ['No', 'Yes'],
-            'required' => true
-        ]);
+        $form->add('free_delivery_discount_code_generation_enable', 'boolean');
 
         foreach ($this->keywordMapCollection as $keyword) {
             if(!$form->has($keyword)) {
@@ -196,8 +192,6 @@ class SettingsController extends CoreController
 
         $form->add('submit', 'submit', ['label' => 'Update', 'attr' => ['class' => 'btn btn-primary']]);
 //        $form->add('sex', 'sonata_block_service_choice');
-
-
 
     }
 

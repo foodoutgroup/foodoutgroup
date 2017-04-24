@@ -42,6 +42,8 @@ class HookSitemap {
 
         $response['dev'] = false;//($this->container->getParameter('kernel.environment') == "dev");
 
+        $request = $this->container->get('request');
+
         $placeCollection = $this->em
             ->getRepository('FoodDishesBundle:Place')
             ->findBy(['active' => 1]);
@@ -54,6 +56,21 @@ class HookSitemap {
         $cityCollection = $this->container->get('food.city_service')->getActiveCity();
         $response['cityCollection'] = $cityCollection;
 
+        $blogCollection = [];
+
+        $blogCategoryCollection = $this->container->get('doctrine')
+            ->getRepository('FoodBlogBundle:BlogCategory')
+            ->findBy(['active' => 1, 'language' => $request->getLocale()]);
+
+        foreach ($blogCategoryCollection as $category) {
+
+            $blogCollection[] = [
+                'category' => $category,
+                'postCollection' => $this->container->get('doctrine')->getRepository('FoodBlogBundle:BlogPost')
+                    ->getAllPostsByCategory($category)
+            ];
+
+        }
 
         $cityKitchenCollection = [];
         foreach ($cityCollection as $city) {
@@ -61,7 +78,8 @@ class HookSitemap {
         }
         $response['cityKitchenCollection'] = $cityKitchenCollection;
         $response['domain'] = str_replace(["/app_dev.php/"], "", $this->container->getParameter('domain'));
-
+        $response['blogCollection'] = $blogCollection;
+        $response['page_block_config'] = $this->container->get('food.app.utils.misc')->getParam('page_blog');
 
         return $response;
 

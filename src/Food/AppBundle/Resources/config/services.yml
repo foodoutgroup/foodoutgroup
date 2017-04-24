@@ -62,8 +62,8 @@ services:
 
     food.googlegis:
         class: Food\AppBundle\Service\GoogleGisService
-        calls:
-            - [setContainer, [@service_container]]
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
+
 
     food.location:
         class: Food\AppBundle\Service\LocationService
@@ -130,7 +130,7 @@ services:
         arguments:
           - @doctrine.orm.entity_manager
           - @router
-    1:
+    hook.free_delivery_restaurant:
         class: Food\AppBundle\Service\HookFreeDeliveryRestaurant
         arguments: ["@templating", "@doctrine.orm.entity_manager"]
 
@@ -215,6 +215,11 @@ services:
         tags:
             - { name: form.type, alias: city }
 
+    app.form.type.boolean:
+        class: Food\AppBundle\Form\Type\BooleanType
+        tags:
+            - { name: form.type, alias: boolean }
+
     sonata.admin.error_log:
       class: Food\AppBundle\Admin\ErrorLogAdmin
       tags:
@@ -225,7 +230,3 @@ services:
         - ~
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]
-
-    food.error_log_service:
-            class: Food\AppBundle\Service\ErrorLogService
-            parent: food.base_service

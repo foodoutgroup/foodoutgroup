@@ -26,7 +26,7 @@ class CityController extends Controller
         $metaTitle = '';
         $metaDescription = '';
 
-        $this->get('food.googlegis')->setCityOnlyToSession($city, $id);
+        $this->get('food.googlegis')->setCity($city);
 
         $placeService = $this->get('food.places');
         $kitchenCollection = $placeService->getKitchenCollectionFromSlug($params, $request, true);
