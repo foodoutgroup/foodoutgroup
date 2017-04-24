@@ -344,15 +344,14 @@ sonata_admin:
                       - sonata.admin.order.data_import
                   roles: [ ROLE_ADMIN, ROLE_DISPATCHER, ROLE_MODERATOR ]
               admin.system:
-                  items: ~
-                  item_adds:
+                  items:
+#                      - food_admin_settings
                       - sonata.admin.users
                       - sonata.admin.sms
                       - sonata.admin.static
                       - sonata.admin.newsletter_subscribers
                       - sonata.admin.banned_ips
                       - sonata.admin.banned_email
-                      #~ - sonata.admin.street
                       - sonata.admin.unused_sf_numbers
                       - sonata.admin.seorecords
                       - sonata.admin.blog_category
