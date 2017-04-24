@@ -1,10 +1,10 @@
 <?php namespace Food\AppBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
+use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Route\RouteCollection;
 
 class SmsTemplateAdmin extends FoodAdmin
 {
@@ -20,8 +20,13 @@ class SmsTemplateAdmin extends FoodAdmin
 
     function configureFormFields(FormMapper $form)
     {
-        $sourceCollection = ['NAV', 'Apiv2'];
-        $typeCollection = ['pickup', 'order'];
+
+        $sourceCollection = [];
+        foreach (Order::$sourceCollection as $source) {
+            $sourceCollection[$source] = $source;
+        }
+
+        $typeCollection = ['pickup' => 'Pickup', 'order' => 'Simple Order'];
         $orderStatusCollection = [];
         foreach (OrderService::getOrderStatuses() as $os) {
             $orderStatusCollection[$os] = $os;

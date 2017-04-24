@@ -274,6 +274,7 @@ class OrderService extends ContainerAware
         }
 
         $this->order = new Order();
+        $this->order->setSource(Order::SOURCE_FOODOUT);
         if (!$fromConsole) {
             $user = $this->container->get('security.context')->getToken()->getUser();
             if ($user == 'anon.') {
@@ -1885,6 +1886,7 @@ class OrderService extends ContainerAware
     {
         $order = $this->getOrder();
         $order->setMobile($isMobile);
+        $order->setSource(Order::SOURCE_APIV1);
     }
 
     /**
