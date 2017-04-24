@@ -162,15 +162,27 @@ services:
         - @food.places
 
     sonata.admin.cities:
-      class: Food\AppBundle\Admin\CityAdmin
-      tags:
-        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.cities" }
-      arguments:
-        - ~
-        - Food\AppBundle\Entity\City
-        - ~
-      calls:
-        - [ setTranslationDomain, [SonataAdminBundle]]
+         class: Food\AppBundle\Admin\CityAdmin
+         tags:
+           - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.cities" }
+         arguments:
+           - ~
+           - Food\AppBundle\Entity\City
+           - ~
+         calls:
+           - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.sms.template:
+        class: Food\AppBundle\Admin\SmsTemplateAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "Editor", label: "admin.sms.template" }
+        arguments:
+          - ~
+          - Food\AppBundle\Entity\SmsTemplate
+          - ~
+        calls:
+          - [ setTranslationDomain, [SonataAdminBundle]]
+
 
     sonata.admin.citieslog:
       class: Food\AppBundle\Admin\CityLogAdmin
