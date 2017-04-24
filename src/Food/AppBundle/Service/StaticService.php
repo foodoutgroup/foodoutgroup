@@ -68,8 +68,7 @@ class StaticService {
             throw new \InvalidArgumentException('Sorry, no ID - no information. Get lucky!');
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $staticPage = $em->getRepository('Food\AppBundle\Entity\StaticContent')->find($id);
+        $staticPage = $this->getContainer()->get('doctrine')->getRepository('Food\AppBundle\Entity\StaticContent')->find($id);
 
         if (!$staticPage) {
             return false;
