@@ -8,16 +8,16 @@ use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 /**
  * Food categories localized
  *
- * @ORM\Table(name="sms_template_localized",
+ * @ORM\Table(name="email_template_localized",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="zebalookup_unique_idx", columns={
  *         "locale", "object_id", "field"
  *     })}))
  * @ORM\Entity
  */
-class SmsTemplateLocalized extends AbstractPersonalTranslation
+class EmailTemplateLocalized extends AbstractPersonalTranslation
 {
     /**
-     * @ORM\ManyToOne(targetEntity="SmsTemplate", inversedBy="translations")
+     * @ORM\ManyToOne(targetEntity="EmailTemplate", inversedBy="translations")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $object;
@@ -157,7 +157,7 @@ class SmsTemplateLocalized extends AbstractPersonalTranslation
     /**
      * Get object
      *
-     * @return \Food\AppBundle\Entity\SmsTemplate
+     * @return \Food\AppBundle\Entity\EmailTemplate
      */
     public function getObject()
     {

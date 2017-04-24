@@ -6,15 +6,15 @@ use Food\OrderBundle\Service\OrderService;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
-class SmsTemplateAdmin extends FoodAdmin
+class EmailTemplateAdmin extends FoodAdmin
 {
     function configureListFields(ListMapper $list)
     {
-        $list->add('text', null, ['label' => 'admin.sms.text'])
-            ->add('status', 'text', ['label' => 'admin.sms.status'])
-            ->add('preorder', 'boolean', ['label' => 'admin.sms.preorder'])
-            ->add('type', 'text', ['label' => 'admin.sms.type'])
-            ->add('source', 'text', ['label' => 'admin.sms.source'])
+        $list->add('templateId', null, ['label' => 'admin.email.text'])
+            ->add('status', 'text', ['label' => 'admin.email.status'])
+            ->add('preorder', 'boolean', ['label' => 'admin.email.preorder'])
+            ->add('type', 'text', ['label' => 'admin.email.type'])
+            ->add('source', 'text', ['label' => 'admin.email.source'])
             ->add('_action', 'actions', ['actions' => ['edit' => [], 'delete' => [],], 'label' => 'admin.actions']);
     }
 
@@ -32,20 +32,18 @@ class SmsTemplateAdmin extends FoodAdmin
             $orderStatusCollection[$os] = $os;
         }
 
-        $templateHelp = $this->getContainer()->get('templating')->render('@FoodApp/Admin/Custom/sms_template_help.html.twig', []);
-
 
         $form->add('translations', 'a2lix_translations_gedmo', [
-                'translatable_class' => 'Food\AppBundle\Entity\SmsTemplate',
+                'translatable_class' => 'Food\AppBundle\Entity\EmailTemplate',
                 'cascade_validation' => true,
             'fields' => [
-                'text' => ['required' => true, 'attr' => ['help' => $templateHelp]]
+                'templateId' => ['required' => true, 'label' => 'Template ID', 'attr' => ['help' => 'Use template ID from <b>www.mailerlite.com</b> system.']]
             ]
         ])
-        ->add('status', 'choice', ['label' => 'admin.sms.status', 'choices' => $orderStatusCollection])
-        ->add('preorder', 'boolean', ['label' => 'admin.sms.preorder'])
-        ->add('type', 'boolean', ['label' => 'admin.sms.type', 'choices' => $typeCollection])
-        ->add('source', 'choice', ['label' => 'admin.sms.source', 'choices' => $sourceCollection])
+        ->add('status', 'choice', ['label' => 'admin.email.status', 'choices' => $orderStatusCollection])
+        ->add('preorder', 'boolean', ['label' => 'admin.email.preorder'])
+        ->add('type', 'boolean', ['label' => 'admin.email.type', 'choices' => $typeCollection])
+        ->add('source', 'choice', ['label' => 'admin.email.source', 'choices' => $sourceCollection])
         ->add('active', 'boolean');
     }
 

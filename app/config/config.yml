@@ -358,6 +358,7 @@ sonata_admin:
                       - sonata.admin.blog_category
                       - sonata.admin.blog_post
                       - sonata.admin.sms.template
+                      - sonata.admin.email.template
                   roles: [ ROLE_EDITOR, ROLE_ADMIN ]
               admin.marketing:
                   label: admin.group.marketing

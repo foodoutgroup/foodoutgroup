@@ -184,6 +184,18 @@ services:
           - [ setTranslationDomain, [SonataAdminBundle]]
 
 
+    sonata.admin.email.template:
+        class: Food\AppBundle\Admin\EmailTemplateAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "Editor", label: "admin.email.template" }
+        arguments:
+          - ~
+          - Food\AppBundle\Entity\EmailTemplate
+          - ~
+        calls:
+          - [ setTranslationDomain, [SonataAdminBundle]]
+
+
     sonata.admin.citieslog:
       class: Food\AppBundle\Admin\CityLogAdmin
       tags:
