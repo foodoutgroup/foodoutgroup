@@ -28,8 +28,8 @@ class SlugController extends Controller
             $slug = substr($slug, 0, -1);
         }
 
-        $params = explode("/", $slug);
 
+        $params = explode("/", $slug);
 
         $slug = $params[0];
         unset($params[0]);
