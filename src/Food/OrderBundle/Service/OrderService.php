@@ -3745,14 +3745,8 @@ class OrderService extends ContainerAware
             $translator->trans('order.form.errors.customeraddr');
 
             $this->container->get('food.error_log_service')->saveErrorLog(
-                $this->container->get('request')->getClientIp(),
-                $this->getUser(),
-                $this->container->get('food.cart')->getSessionId(),
-                $place,
-                new \DateTime('now'),
-                $request->headers->get('referer'),
-                'checkout_coupon_page',
-                implode(',', $formErrors),
+                'checkout_form_page',
+                is_array($formErrors) ? implode(',', $formErrors) : $formErrors,
                 serialize($request) .'<br><br>'. serialize($debugCartInfo)
             );
         }

@@ -19,7 +19,9 @@ class ErrorLogAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $filter)
     {
         $filter
-            ->add('source', null, array('label' => 'admin.error.source'));
+            ->add('source', null, array('label' => 'admin.error.source'))
+            ->add('description', null, array('label' => 'admin.error.source'))
+            ->add('createdAt', 'doctrine_orm_date_range', array(), null, array('widget' => 'single_text', 'required' => false,  'attr' => array('class' => 'datepicker2')));
     }
 
     protected function configureListFields(ListMapper $list)
@@ -58,12 +60,16 @@ class ErrorLogAdmin extends FoodAdmin
 
     public function getExportFields()
     {
-
-
-        $exportFields = parent::getExportFields();
-        $exportFields["created_by"] = 'created_by';
-        $exportFields["place"] = 'place';
-        $exportFields["cart"] = 'cart';
+        $exportFields =[];
+        $exportFields[] = 'id';
+        $exportFields[] = 'created_by';
+        $exportFields[] = 'ip';
+        $exportFields[] = 'url';
+        $exportFields[] = 'source';
+        $exportFields[] = 'description';
+        $exportFields[] = 'cart';
+        $exportFields[] = 'place';
+        $exportFields[] = 'cart';
 
         return $exportFields;
     }

@@ -559,6 +559,7 @@ class OrdersController extends Controller
                             'description' => $this->get('translator')->trans('api.orders.coupon_too_early')
                         )
                     );
+
                 }
                 if ($coupon->getValidHourlyTo() && $coupon->getValidHourlyTo() < new \DateTime()) {
                     throw new ApiException(
@@ -604,10 +605,24 @@ class OrdersController extends Controller
                 );
             }
         }  catch (ApiException $e) {
+
+            $this->container->get('food.error_log_service')->saveErrorLog(
+                'coupon_api_error',
+                $e->getMessage(),
+                serialize($request)
+            );
+
             $this->get('logger')->error('Orders:getOrderStatusAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrderStatusAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+
+            $this->container->get('food.error_log_service')->saveErrorLog(
+                'coupon_api_error_fatal',
+                $e->getMessage(),
+                serialize($request)
+            );
+
             $this->get('logger')->error('Orders:getOrderStatusAction Error2:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrderStatusAction Trace2:' . $e->getTraceAsString());
 
@@ -617,6 +632,9 @@ class OrdersController extends Controller
                 array('error' => 'server error', 'description' => null)
             );
         }
+
+//        var_dump($response);
+//        die;
 
         $this->get('logger')->alert('Orders:getOrderStatusAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');

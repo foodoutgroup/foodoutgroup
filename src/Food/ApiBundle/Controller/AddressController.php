@@ -43,16 +43,15 @@ class AddressController extends Controller
         }
 
         if (empty($response)) {
+            $description = 'City:'. (!empty($city) ? $city :'empty').
+                           ', Street:'. (!empty($street) ? $street :'empty').
+                           ', House number:'. (!empty($houseNumber) ? $houseNumber :'empty').
+                           ', Lat:'. (!empty($lat) ? $lat : 'empty').
+                           ', Lng:'. (!empty($lng) ? $lng : 'empty');
 
             $this->get('food.error_log_service')->saveErrorLog(
-                $this->container->get('request')->getClientIp(),
-                $this->getUser(),
-                null,
-                null,
-                new \DateTime('now'),
-                $request->getUri(),
                 'api_adress_change_find',
-                'api_null_request',
+                $description,
                 serialize($request)
             );
         }
