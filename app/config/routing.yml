@@ -123,6 +123,20 @@ food_cili_greita:
         path: /lt/cili-greita
         permanent: true
 
+food_cili_greita_lv:
+    path: /cili-take-away
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /cili-take-away
+        permanent: true
+
+food_cili_lv:
+    path: /cili-pizza
+    defaults:
+        _controller: FrameworkBundle:Redirect:urlRedirect
+        path: /cili-pizza
+        permanent: true
+
 food_cili_express_slash:
     path: /ciliexpress/
     defaults:
