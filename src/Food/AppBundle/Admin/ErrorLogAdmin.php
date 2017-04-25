@@ -69,7 +69,6 @@ class ErrorLogAdmin extends FoodAdmin
         $exportFields[] = 'description';
         $exportFields[] = 'cart';
         $exportFields[] = 'place';
-        $exportFields[] = 'cart';
 
         return $exportFields;
     }
