@@ -546,6 +546,8 @@ class OrderService extends ContainerAware
                 '[total_card]' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
                 '[invoice]' => $invoice,
                 '[beta_code]' => $betaCode,
+                '[city]' => $order->getCityId()->getTitle(),
+                '[food_review_url]' =>  'http://'.$this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review'
             ];
 
 
@@ -984,55 +986,6 @@ class OrderService extends ContainerAware
         $mailer->send($message);
 
         return $this;
-    }
-
-    /**
-     * Sends client an email after order complete
-     *
-     * @param boolean $partialy
-     *
-     * @throws \Exception
-     */
-    public function sendCompletedMail($partialy = false)
-    {
-        $ml = $this->container->get('food.mailer');
-        $slugUtil = $this->container->get('food.dishes.utils.slug');
-        $slugUtil->setLocale($this->getOrder()->getLocale());
-
-        // TODO darant LV - sutvarkyti URL ir sablonu ID
-        $variables = [
-            'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
-            'uzsakymo_nr' => $this->getOrder()->getId(),
-            'order_hash' => $this->getOrder()->getOrderHash(),
-            'miestas' => $this->getOrder()->getPlacePoint()->getCityId()->getTitle(),
-            'maisto_review_url' => 'http://www.foodout.lt/lt/' . $slugUtil->getSlugByItem(
-                    $this->getOrder()->getPlace()->getId(),
-                    'place'
-                ) . '/#detailed-restaurant-review'
-        ];
-
-        if ($partialy) {
-            $template = $this->container->getParameter('mailer_partialy_deliverer');
-            $source = 'mailer_partialy_deliverer';
-        } else {
-            $template = $this->container->getParameter('mailer_rate_your_food');
-            $source = 'mailer_rate_your_food';
-        }
-
-        $ml->setVariables($variables)
-            ->setRecipient(
-                $this->getOrder()->getOrderExtra()->getEmail(),
-                $this->getOrder()->getOrderExtra()->getEmail()
-            )
-            ->setId($template)
-            ->send();
-
-        $this->logMailSent(
-            $this->getOrder(),
-            $source,
-            $template,
-            $variables
-        );
     }
 
     /**
