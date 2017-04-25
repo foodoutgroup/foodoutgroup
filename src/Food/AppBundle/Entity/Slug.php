@@ -15,6 +15,9 @@ class Slug
     const TYPE_KITCHEN = 'kitchen';
     const TYPE_PLACE = 'place';
     const TYPE_FOOD_CATEGORY = 'food_category';
+
+    const SLUG_LIFETIME = 1814400; // Three weeks (86400 * 21);
+
     /**
      * @deprecated from 2017-03-29
      */
@@ -88,6 +91,11 @@ class Slug
      */
     private $active = true;
 
+    /**
+     * @var \DateTime $deactivated_at
+     * @ORm\Column(name="deactivated_at", type="datetime", nullable=true)
+     */
+    private $deactivated_at;
 
     /**
      * Get id
@@ -251,5 +259,23 @@ class Slug
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeactivatedAt()
+    {
+        return $this->deactivated_at;
+    }
+
+    /**
+     * @param \DateTime $deactivated_at
+     * @return $this
+     */
+    public function setDeactivatedAt($deactivated_at)
+    {
+        $this->deactivated_at = $deactivated_at;
+        return $this;
     }
 }

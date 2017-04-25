@@ -4,6 +4,7 @@ namespace Food\DishesBundle\Utils\Slug;
 
 use Food\AppBundle\Traits;
 use Food\AppBundle\Entity\Slug;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 
 class TextStrategy extends AbstractStrategy
@@ -73,6 +74,7 @@ class TextStrategy extends AbstractStrategy
                     $createNew = false;
                 } else if ($oldItem->getName() != $slug) {
                     $oldItem->setActive(false);
+                    $oldItem->setDeactivatedAt(new \DateTime());
                 }
                 $em->persist($oldItem);
             }

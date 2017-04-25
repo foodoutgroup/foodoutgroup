@@ -11,6 +11,12 @@ food_lang_homepage:
     requirements:
       _locale:  "[a-z]{2}"
 
+food_lang_homepage_slash:
+    path: /{_locale}/
+    defaults: { _controller: FoodAppBundle:Default:index, _locale: %kernel.default_locale% }
+    requirements:
+      _locale:  "[a-z]{2}"
+
 ordermobile:
     path: /o/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }
