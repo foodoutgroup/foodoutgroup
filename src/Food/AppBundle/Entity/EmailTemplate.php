@@ -10,15 +10,13 @@ use Food\AppBundle\Validator\Constraints as AppAssert;
 
 
 /**
- * City
  *
- * @ORM\Table(name="sms_template")
- * @ORM\Entity(repositoryClass="Food\AppBundle\Entity\SmsTemplateRepository")
- * @Gedmo\TranslationEntity(class="Food\AppBundle\Entity\SmsTemplateLocalized")
+ * @ORM\Table(name="email_template")
+ * @ORM\Entity(repositoryClass="Food\AppBundle\Entity\EmailTemplateRepository")
+ * @Gedmo\TranslationEntity(class="Food\AppBundle\Entity\EmailTemplateLocalized")
  * @Gedmo\SoftDeleteable(fieldName="deletedAt")
-
  */
-class SmsTemplate
+class EmailTemplate
 {
      /**
      * @var integer
@@ -30,16 +28,16 @@ class SmsTemplate
     private $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="Food\AppBundle\Entity\SmsTemplateLocalized", mappedBy="object", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Food\AppBundle\Entity\EmailTemplateLocalized", mappedBy="object", cascade={"persist", "remove"})
      **/
     private $translations;
 
     /**
      * @var string
      * @Gedmo\Translatable
-     * @ORM\Column(name="text", type="string", length=255)
+     * @ORM\Column(name="templateId", type="string", length=255)
      */
-    private $text;
+    private $templateId;
 
     /**
      * @var string
@@ -104,9 +102,9 @@ class SmsTemplate
     /**
      * Add translations
      *
-     * @param SmsTemplateLocalized $t
+     * @param EmailTemplate $t
      */
-    public function addTranslation(SmsTemplateLocalized $t)
+    public function addTranslation(EmailTemplateLocalized $t)
     {
         if (!$this->translations->contains($t)) {
             $this->translations[] = $t;
@@ -117,9 +115,9 @@ class SmsTemplate
     /**
      * Remove translations
      *
-     * @param SmsTemplateLocalized $translations
+     * @param EmailTemplateLocalized $translations
      */
-    public function removeTranslation(SmsTemplateLocalized $translations)
+    public function removeTranslation(EmailTemplateLocalized $translations)
     {
         $this->translations->removeElement($translations);
     }
@@ -162,20 +160,19 @@ class SmsTemplate
     /**
      * @return string
      */
-    public function getText()
+    public function getTemplateId()
     {
-        return $this->text;
+        return $this->templateId;
     }
 
     /**
-     * @param string $text
+     * @param string $templateId
      * @return $this
      */
-    public function setText($text)
+    public function setTemplateId($templateId)
     {
-        $this->text = $text;
+        $this->templateId = $templateId;
         return $this;
-
     }
 
     /**
@@ -268,6 +265,7 @@ class SmsTemplate
         $this->active = $active;
         return $this;
     }
+
 
     /**
      * Set deletedAt

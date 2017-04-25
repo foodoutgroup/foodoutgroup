@@ -274,6 +274,7 @@ class OrderService extends ContainerAware
         }
 
         $this->order = new Order();
+        $this->order->setSource(Order::SOURCE_FOODOUT);
         if (!$fromConsole) {
             $user = $this->container->get('security.context')->getToken()->getUser();
             if ($user == 'anon.') {
@@ -455,12 +456,47 @@ class OrderService extends ContainerAware
      * @param string|null $source
      * @param string|null $message
      */
-    protected function chageOrderStatus($status, $source = null, $message = null)
+    protected function changeOrderStatus($status, $source = null, $message = null)
     {
         // Let's log the shit out of it
         $this->logStatusChange($this->getOrder(), $status, $source, $message);
 
         $this->getOrder()->setOrderStatus($status);
+
+        $smsObj = $this->em->getRepository('FoodAppBundle:SmsTemplate')->findOneByOrder($this->order);
+        if($smsObj) {
+
+            $order = $this->getOrder();
+            $place = $order->getPlace();
+            $placeService = $this->container->get('food.places');
+
+            $smsText = str_replace(
+                [
+                    '[order_id]',
+                    '[restaurant_name]',
+                    '[delivery_time]',
+                    '[pre_delivery_time]'],
+                [
+                    $order->getId(),
+                    $place->getName(),
+                    ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
+                    $order->getDeliveryTime()->format('m-d H:i')
+                ],
+                $smsObj->getText()
+            );
+
+            $smsService = $this->container->get('food.messages');
+            $sender = $this->container->getParameter('sms.sender');
+
+            $message = $smsService->createMessage($sender, $order->getOrderExtra()->getPhone(), $smsText, $order);
+            $smsService->saveMessage($message);
+        }
+
+        $emailObj = $this->em->getRepository('FoodAppBundle:EmailTemplate')->findOneByOrder($this->order);
+        if($emailObj) {
+
+        }
+
     }
 
     /**
@@ -471,7 +507,7 @@ class OrderService extends ContainerAware
      */
     public function statusUnapproved($source = null, $statusMessage = null)
     {
-        $this->chageOrderStatus(self::$status_unapproved, $source, $statusMessage);
+        $this->changeOrderStatus(self::$status_unapproved, $source, $statusMessage);
 
         return $this;
     }
@@ -484,7 +520,7 @@ class OrderService extends ContainerAware
      */
     public function statusNew($source = null, $statusMessage = null)
     {
-        $this->chageOrderStatus(self::$status_new, $source, $statusMessage);
+        $this->changeOrderStatus(self::$status_new, $source, $statusMessage);
 
         return $this;
     }
@@ -498,7 +534,7 @@ class OrderService extends ContainerAware
     public function statusNewPreorder($source = null, $statusMessage = null)
     {
 
-        $this->chageOrderStatus(self::$status_preorder, $source, $statusMessage);
+        $this->changeOrderStatus(self::$status_preorder, $source, $statusMessage);
 
         return $this;
     }
@@ -513,7 +549,7 @@ class OrderService extends ContainerAware
      */
     public function statusFailed($source = null, $statusMessage = null)
     {
-        $this->chageOrderStatus(self::$status_failed, $source, $statusMessage);
+        $this->changeOrderStatus(self::$status_failed, $source, $statusMessage);
 
         return $this;
     }
@@ -571,7 +607,7 @@ class OrderService extends ContainerAware
         }
         $order->setDriver(null);
         $order->setAcceptTime(new \DateTime("now"));
-        $this->chageOrderStatus(self::$status_accepted, $source, $statusMessage);
+        $this->changeOrderStatus(self::$status_accepted, $source, $statusMessage);
 
         $this->updateDriver();
 
@@ -790,7 +826,7 @@ class OrderService extends ContainerAware
             $late = $this->getLateDiff($order);
             $order->setAssignLate($late->d * 1440 + $late->h * 60 + $late->i);
         }
-        $this->chageOrderStatus(self::$status_assiged, $source, $statusMessage);
+        $this->changeOrderStatus(self::$status_assiged, $source, $statusMessage);
 
         if (!$api) {
             $this->updateDriver();
@@ -919,7 +955,7 @@ class OrderService extends ContainerAware
     {
         $order = $this->getOrder();
         $this->logDeliveryEvent($this->getOrder(), 'order_completed');
-        $this->chageOrderStatus(self::$status_completed, $source, $statusMessage);
+        $this->changeOrderStatus(self::$status_completed, $source, $statusMessage);
         $this->getOrder()->setCompletedTime(new \DateTime());
 
         $this->createDiscountCode($order);
@@ -960,7 +996,7 @@ class OrderService extends ContainerAware
     {
         $order = $this->getOrder();
         $this->logDeliveryEvent($this->getOrder(), 'order_canceled_produced');
-        $this->chageOrderStatus(self::$status_canceled_produced, $source, $statusMessage);
+        $this->changeOrderStatus(self::$status_canceled_produced, $source, $statusMessage);
         $this->getOrder()->setCompletedTime(new \DateTime());
         $this->createDiscountCode($order);
 
@@ -988,7 +1024,7 @@ class OrderService extends ContainerAware
      */
     public function statusPartialyCompleted($source = null, $statusMessage = null)
     {
-        $this->chageOrderStatus(self::$status_partialy_completed, $source, $statusMessage);
+        $this->changeOrderStatus(self::$status_partialy_completed, $source, $statusMessage);
 
         $this->container->get('food.mail')->addEmailForSend(
             $this->getOrder(),
@@ -1144,7 +1180,7 @@ class OrderService extends ContainerAware
      */
     public function statusFinished($source = null, $statusMessage = null)
     {
-        $this->chageOrderStatus(self::$status_finished, $source, $statusMessage);
+        $this->changeOrderStatus(self::$status_finished, $source, $statusMessage);
         $this->logDeliveryEvent($this->getOrder(), 'order_finished');
 
         $this->updateDriver();
@@ -1170,7 +1206,7 @@ class OrderService extends ContainerAware
 
         $this->logDeliveryEvent($this->getOrder(), 'order_canceled');
 
-        $this->chageOrderStatus(self::$status_canceled, $source, $statusMessage);
+        $this->changeOrderStatus(self::$status_canceled, $source, $statusMessage);
 
         $this->updateDriver();
 
@@ -1185,7 +1221,7 @@ class OrderService extends ContainerAware
      */
     public function statusDelayed($source = null, $statusMessage = null)
     {
-        $this->chageOrderStatus(self::$status_delayed, $source, $statusMessage);
+        $this->changeOrderStatus(self::$status_delayed, $source, $statusMessage);
 
         $this->logDeliveryEvent($this->getOrder(), 'order_delayed');
 
@@ -1885,6 +1921,7 @@ class OrderService extends ContainerAware
     {
         $order = $this->getOrder();
         $order->setMobile($isMobile);
+        $order->setSource(Order::SOURCE_APIV1);
     }
 
     /**
@@ -2890,6 +2927,9 @@ class OrderService extends ContainerAware
      */
     public function logStatusChange($order = null, $newStatus, $source = null, $message = null)
     {
+
+
+
         $log = new OrderStatusLog();
         $log->setOrder($order)
             ->setEventDate(new \DateTime('now'))

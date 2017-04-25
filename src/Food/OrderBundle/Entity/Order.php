@@ -11,6 +11,19 @@ use Food\AppBundle\Entity\Driver;
  */
 class Order
 {
+
+    const SOURCE_NAV = "nav";
+    const SOURCE_APIV1 = "apiv1";
+    const SOURCE_APIV2 = "apiv2";
+    const SOURCE_FOODOUT = "foodout";
+
+    public static $sourceCollection = [
+        Order::SOURCE_FOODOUT,
+        Order::SOURCE_NAV,
+        Order::SOURCE_APIV1,
+        Order::SOURCE_APIV2,
+    ];
+
     /**
      * @var integer
      *
@@ -503,7 +516,11 @@ class Order
      **/
     private $cityId;
 
-
+    /**
+     * @var string
+     * @ORM\Column(name="source", type="string", length=20, nullable=true)
+     */
+    private $source = Order::SOURCE_FOODOUT;
 
     /**
      * @return string
@@ -2646,4 +2663,24 @@ class Order
     {
         $this->adminFee = $adminFee;
     }
+
+    /**
+     * @return String
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param String $source
+     * @return $this
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
+        return $this;
+    }
+
+
 }

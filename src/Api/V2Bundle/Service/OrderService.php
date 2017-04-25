@@ -31,7 +31,6 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         $em = $this->container->get('doctrine')->getManager();
         $doctrine = $this->container->get('doctrine');
 
-
         $deliveryType = ($json->has('type') && $json->get('type', 'deliver') == 'pickup' ? 'pickup' : 'deliver');
         $os = $this->container->get('food.order');
 
@@ -80,7 +79,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
 
         $deliveryTotal = $deliveryPrice = $order->getDeliveryPrice();
 
-        $order->setSource("APIv2");
+        $order->setSource(Order::SOURCE_APIV2);
         $order->setPlace($place);
         $order->setPlaceName($place->getName());
         $order->setPlacePointSelfDelivery($place->getSelfDelivery());

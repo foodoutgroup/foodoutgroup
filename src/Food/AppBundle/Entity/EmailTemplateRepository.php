@@ -7,15 +7,11 @@ use Food\OrderBundle\Entity\Order;
 use Gedmo\Translatable\TranslatableListener;
 
 /**
- * SmsTemplateRepository
+ * EmailTemplateRepository
  */
 
-class SmsTemplateRepository extends EntityRepository
+class EmailTemplateRepository extends EntityRepository
 {
-    /**
-     * @param Order $order
-     * @return bool|SmsTemplate
-     */
     public function findOneByOrder(Order $order)
     {
         $params = [
@@ -30,12 +26,12 @@ class SmsTemplateRepository extends EntityRepository
             $params['type'] = 'pickup';
         }
 
-        $qb = $this->createQueryBuilder('st')
-            ->where('st.order_status = :order_statis')
-            ->andWhere('st.preorder = :preorder')
-            ->andWhere('st.source = :source')
-            ->andWhere('st.active = 1')
-            ->andWhere('st.type = :type')
+        $qb = $this->createQueryBuilder('et')
+            ->where('et.order_status = :order_statis')
+            ->andWhere('et.preorder = :preorder')
+            ->andWhere('et.source = :source')
+            ->andWhere('et.active = 1')
+            ->andWhere('et.type = :type')
             ->setMaxResults(1);
 
         $result = $qb->getQuery()->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker')
