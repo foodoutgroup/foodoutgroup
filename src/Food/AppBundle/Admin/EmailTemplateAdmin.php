@@ -32,12 +32,13 @@ class EmailTemplateAdmin extends FoodAdmin
             $orderStatusCollection[$os] = $os;
         }
 
+        $templateHelp = $this->getContainer()->get('templating')->render('@FoodApp/Admin/Custom/email_template_help.html.twig', []);
 
         $form->add('translations', 'a2lix_translations_gedmo', [
                 'translatable_class' => 'Food\AppBundle\Entity\EmailTemplate',
                 'cascade_validation' => true,
             'fields' => [
-                'templateId' => ['required' => true, 'label' => 'Template ID', 'attr' => ['help' => 'Use template ID from <b>www.mailerlite.com</b> system.']]
+                'templateId' => ['required' => true, 'label' => 'Template ID', 'attr' => ['help' => $templateHelp]]
             ]
         ])
         ->add('status', 'choice', ['label' => 'admin.email.status', 'choices' => $orderStatusCollection])

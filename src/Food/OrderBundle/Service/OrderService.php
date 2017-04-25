@@ -465,25 +465,23 @@ class OrderService extends ContainerAware
 
         $smsObj = $this->em->getRepository('FoodAppBundle:SmsTemplate')->findOneByOrder($this->order);
 
-        if($smsObj) {
-            $order = $this->getOrder();
-            $place = $order->getPlace();
-            $placeService = $this->container->get('food.places');
+        $order = $this->getOrder();
+        $place = $order->getPlace();
+        $placeService = $this->container->get('food.places');
 
+        if($smsObj) {
             $smsText = str_replace(
                 [
                     '[order_id]',
                     '[restaurant_name]',
                     '[delivery_time]',
                     '[pre_delivery_time]',
-                    '[delay_time]'
                 ],
                 [
                     $order->getId(),
                     $place->getName(),
                     ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
                     $order->getDeliveryTime()->format('m-d H:i'),
-                    $order->getD()->format("H:")
                 ],
                 $smsObj->getText()
             );
@@ -496,7 +494,78 @@ class OrderService extends ContainerAware
         }
 
         $emailObj = $this->em->getRepository('FoodAppBundle:EmailTemplate')->findOneByOrder($this->order);
+
         if($emailObj) {
+
+            $ml = $this->container->get('food.mailer');
+            $placeService = $this->container->get('food.places');
+
+            $invoice = [];
+            foreach ($this->getOrder()->getDetails() as $ord) {
+
+                $optionCollection = $ord->getOptions();
+                $invoice[] = [
+                    'itm_name' => $ord->getDishName(),
+                    'itm_amount' => $ord->getQuantity(),
+                    'itm_price' => $ord->getPrice(),
+                    'itm_sum' => $ord->getPrice() * $ord->getQuantity(),
+                ];
+                if (count($optionCollection)) {
+
+                    foreach ($optionCollection as $k => $opt) {
+
+                        $invoice[] = [
+                            'itm_name' => "  - " . $opt->getDishOptionName(),
+                            'itm_amount' => $ord->getQuantity(),
+                            'itm_price' => $opt->getPrice(),
+                            'itm_sum' => $opt->getPrice() * $ord->getQuantity(),
+                        ];
+                    }
+
+                }
+            }
+
+            // TODO temp Beta.lt code
+            $betaCode = '';
+            if ($this->container->get('food.app.utils.misc')->getParam('beta_code_on', true) == 'on') {
+                // TODO Kavos akcija tik mobilkom
+                if ($this->getOrder()->getMobile()) {
+                    $betaCode = $this->getBetaCode();
+                }
+            }
+
+            $variables = [
+                '[place_name]' => $this->getOrder()->getPlace()->getName(),
+                '[place_address]' => $this->getOrder()->getPlacePoint()->getAddress(),
+                '[order_id]' => $this->getOrder()->getId(),
+                '[order_hash]' => $this->getOrder()->getOrderHash(),
+                '[user_address]' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId() : "--"),
+                '[delivery_date]' => $placeService->getDeliveryTime($this->getOrder()->getPlace()),
+                '[total_sum]' => $this->getOrder()->getTotal(),
+                '[total_delivery]' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
+                '[total_card]' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
+                '[invoice]' => $invoice,
+                '[beta_code]' => $betaCode,
+            ];
+
+
+            $mailTemplate = $emailObj->getTemplateId();
+
+            if ($this->getOrder()->getPlace()->getId() == 142 && $this->container->getParameter('country') == 'LT') {
+                $mailTemplate = 41586573;
+            }
+
+            $ml->setVariables($variables)
+                ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
+                ->setId($mailTemplate)
+                ->send();
+
+            $this->logMailSent(
+                $this->getOrder(),
+                'auto_email_send_'.$status,
+                $mailTemplate,
+                $variables
+            );
 
         }
 
@@ -570,7 +639,6 @@ class OrderService extends ContainerAware
         if (in_array($order->getOrderStatus(), [self::$status_new, self::$status_preorder])) {
             if (!$order->getOrderFromNav()) {
                 $this->saveOrder();
-                $this->_notifyOnAccepted();
 
                 // Notify Dispatchers
                 $this->notifyOrderAccept();
@@ -590,90 +658,6 @@ class OrderService extends ContainerAware
         $this->logDeliveryEvent($order, 'order_accepted');
 
         return $this;
-    }
-
-    /**
-     * Inform client, that restourant accepted their order
-     */
-    private function _notifyOnAccepted()
-    {
-        $ml = $this->container->get('food.mailer');
-        $placeService = $this->container->get('food.places');
-
-        $invoice = [];
-        foreach ($this->getOrder()->getDetails() as $ord) {
-//            $ordersText.="<li>".$ord->getDishName()." (".$ord->getQuantity()." vnt.)";
-            $options = $ord->getOptions();
-            $invoice[] = [
-                'itm_name' => $ord->getDishName(),
-                'itm_amount' => $ord->getQuantity(),
-                'itm_price' => $ord->getPrice(),
-                'itm_sum' => $ord->getPrice() * $ord->getQuantity(),
-            ];
-            if (sizeof($options) > 0) {
-
-                foreach ($options as $k => $opt) {
-
-                    $invoice[] = [
-                        'itm_name' => "  - " . $opt->getDishOptionName(),
-                        'itm_amount' => $ord->getQuantity(),
-                        'itm_price' => $opt->getPrice(),
-                        'itm_sum' => $opt->getPrice() * $ord->getQuantity(),
-                    ];
-                }
-
-            }
-        }
-
-        // TODO temp Beta.lt code
-        $betaCode = '';
-        if ($this->container->get('food.app.utils.misc')->getParam('beta_code_on', true) == 'on') {
-            // TODO Kavos akcija tik mobilkom
-            if ($this->getOrder()->getMobile()) {
-                $betaCode = $this->getBetaCode();
-            }
-        }
-
-        $variables = [
-            'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
-            'maisto_ruosejas' => $this->getOrder()->getPlacePoint()->getAddress(),
-            'uzsakymas' => $this->getOrder()->getId(),
-            'order_hash' => $this->getOrder()->getOrderHash(),
-            'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress() . ", " . $this->getOrder()->getAddressId()->getCityId()->getTitle() : "--"),
-            'pristatymo_data' => $placeService->getDeliveryTime($this->getOrder()->getPlace()),
-            'total_sum' => $this->getOrder()->getTotal(),
-            'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
-            'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
-            'invoice' => $invoice,
-            'beta_kodas' => $betaCode,
-        ];
-
-
-//        $ml->setVariables( $variables )->setRecipient($this->getOrder()->getUser()->getEmail(), $this->getOrder()->getUser()->getEmail())->setId( 30009269  )->send();
-
-        // Pickup sablonas kitoks
-        if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
-            $mailTemplate = $this->container->getParameter('mailer_notify_pickup_on_accept');
-
-            // Cili express omg hack :( TODO isimt sita velnio ismisla ir nueit ispazinties :(
-            if ($this->getOrder()->getPlace()->getId() == 142 && $this->container->getParameter('country') == 'LT') {
-                $mailTemplate = 41586573;
-            }
-        } else {
-            $mailTemplate = $this->container->getParameter('mailer_notify_on_accept');
-        }
-
-        $ml->setVariables($variables)
-            ->setRecipient($this->getOrder()->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
-            ->setId($mailTemplate)
-            ->send();
-
-        $this->logMailSent(
-            $this->getOrder(),
-            'notify_on_accept',
-            $mailTemplate,
-            $variables
-        );
     }
 
     /**
@@ -2882,21 +2866,6 @@ class OrderService extends ContainerAware
 
         $this->getEm()->persist($log);
         $this->getEm()->flush();
-
-//        if(!empty($order->getPlacePoint()->getSyncUrl())
-//            && !in_array($newStatus, [self::$status_preorder, self::$status_pre, self::$status_unapproved, self::$status_nav_problems, self::$status_partialy_completed])) {
-//            $otr = new OrderToRestaurant();
-//            $otr->setOrder($order);
-//            $otr->setDateAdded(new \DateTime());
-//            $otr->setTryCount(0);
-//            $otr->setState($newStatus);
-//            $this->getEm()->persist($otr);
-//            $this->getEm()->flush();
-//        }
-    }
-
-    public function sentToDriver($order)
-    {
 
     }
 

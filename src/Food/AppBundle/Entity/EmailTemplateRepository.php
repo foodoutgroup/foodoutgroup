@@ -12,6 +12,10 @@ use Gedmo\Translatable\TranslatableListener;
 
 class EmailTemplateRepository extends EntityRepository
 {
+    /**
+     * @param Order $order
+     * @return bool|EmailTemplate
+     */
     public function findOneByOrder(Order $order)
     {
         $params = [
