@@ -92,6 +92,17 @@
     {# Facebook Pixel Code Begin #}
     {{  misc_utils.getParam('facebook_pixel_code_'~site_country|lower)|raw }}
     {# Facebook Pixel Code End #}
+
+    {% if site_country == 'LT'  %}
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-PNDJF9');</script>
+        <!-- End Google Tag Manager -->
+    {% endif %}
+
 </head>
 <body>
 {{ notifications.init|raw }}
