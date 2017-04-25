@@ -23,6 +23,7 @@ parameters:
 
     locale: lv
     locales: ["lv", "en", "ru"]
+    locales_hidden: ['en','ru']
     available_cities: ["Rīga", "Ogre", "Jurmala", "Jelgava"]
     available_cities_slugs: ["Riga", "Ogre", "Jurmala", "Jelgava"]
     available_locales: ["lv", "en", "ru"]

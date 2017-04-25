@@ -23,6 +23,7 @@ parameters:
 
     locale: ee
     locales: ["ee", "en"]
+    locales_hidden: ['en']
     available_cities: ["Tallinn"]
     available_cities_slugs: ["Tallinn"]
     available_locales: ["ee", "en"]

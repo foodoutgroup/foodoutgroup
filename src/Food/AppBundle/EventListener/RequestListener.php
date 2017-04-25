@@ -18,6 +18,15 @@ class RequestListener
     {
         $request = $event->getRequest()->getLocale();
         $availableLocales = $this->container->getParameter('locales');
+        $disabledLocales = $this->container->getParameter('locales_hidden');
+
+        if(count($disabledLocales)) {
+            foreach ($availableLocales as $key => $locale) {
+                if (in_array($locale, $disabledLocales)) {
+                    unset($availableLocales[$key]);
+                }
+            }
+        }
 
         if (!in_array($request, $availableLocales)) {
             throw new NotFoundHttpException('Sorry page does not exist');

@@ -23,6 +23,7 @@ parameters:
 
     locale: lt
     locales: ["lt", "en", "ru"]
+    locales_hidden: ['en','ru']
     available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Marijampolė", "Utena", "Kėdainiai", "Plungė", "Palanga", "Mažeikiai"]
     available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda", "Siauliai", "Panevezys", "Alytus", "Marijampole", "Utena", "Kedainiai", "Plunge", "Palanga", "Mazeikiai"]
     available_locales: ["lt", "en", "ru"]
