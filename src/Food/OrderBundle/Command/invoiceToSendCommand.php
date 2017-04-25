@@ -128,6 +128,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                                         ->getInvoiceToSendNavOnly();
 
             foreach ($invoicesToSendNavOnly as $invoice) {
+                $nav->deleteInvoiceFromNav($invoice->getOrder()->getSfSeries().$invoice->getOrder()->getSfNumber());
                 $success = $nav->sendNavInvoice($invoice->getOrder(), $invoice);
             }
         }
