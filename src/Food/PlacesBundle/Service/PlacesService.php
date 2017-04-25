@@ -349,7 +349,7 @@ class PlacesService extends ContainerAware
         $sessionService = $this->container->get('session');
 
 
-        $deliveryType = $rush_hour ? '' : $sessionService->get('delivery_type', OrderService::$deliveryDeliver);
+
 
         $kitchens = empty($kitchens) ? [] : explode(",", $kitchens);
 
@@ -362,12 +362,13 @@ class PlacesService extends ContainerAware
             $filters = [];
         }
 
+
         if (is_string($filters)) {
             $filters = explode(",", $filters);
         }
-        if (!$rush_hour) {
-            $filters['delivery_type'] = $sessionService->get('delivery_type', OrderService::$deliveryDeliver);
-        }
+
+        $filters['delivery_type'] = $rush_hour ? '' : $sessionService->get('delivery_type', OrderService::$deliveryDeliver);
+
 
         foreach ($kitchens as $kkey => &$kitchen) {
             $kitchen = intval($kitchen);
