@@ -633,9 +633,6 @@ class OrdersController extends Controller
             );
         }
 
-//        var_dump($response);
-//        die;
-
         $this->get('logger')->alert('Orders:getOrderStatusAction Response:'. print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
