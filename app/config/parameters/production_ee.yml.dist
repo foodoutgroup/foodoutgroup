@@ -96,7 +96,7 @@ parameters:
     mailer_provider: food.mail.sendigo
     mailer_newsletter_provider: food.mail.mailerlite
     mailerlite_api_key: "71b32c22e0944db62613e34669489d1a"
-    mailerlite_group_id: 6456020
+    mailerlite_group_id: 4748489
     yt_video: https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=
     yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
     default_delivery_distance: 7
