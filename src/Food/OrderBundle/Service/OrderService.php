@@ -464,8 +464,8 @@ class OrderService extends ContainerAware
         $this->getOrder()->setOrderStatus($status);
 
         $smsObj = $this->em->getRepository('FoodAppBundle:SmsTemplate')->findOneByOrder($this->order);
-        if($smsObj) {
 
+        if($smsObj) {
             $order = $this->getOrder();
             $place = $order->getPlace();
             $placeService = $this->container->get('food.places');
@@ -475,12 +475,15 @@ class OrderService extends ContainerAware
                     '[order_id]',
                     '[restaurant_name]',
                     '[delivery_time]',
-                    '[pre_delivery_time]'],
+                    '[pre_delivery_time]',
+                    '[delay_time]'
+                ],
                 [
                     $order->getId(),
                     $place->getName(),
                     ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
-                    $order->getDeliveryTime()->format('m-d H:i')
+                    $order->getDeliveryTime()->format('m-d H:i'),
+                    $order->getD()->format("H:")
                 ],
                 $smsObj->getText()
             );
@@ -565,34 +568,7 @@ class OrderService extends ContainerAware
         $order = $this->getOrder();
         // Inform poor user, that his order was accepted
         if (in_array($order->getOrderStatus(), [self::$status_new, self::$status_preorder])) {
-            $recipient = $order->getOrderExtra()->getPhone();
-            $placeService = $this->container->get('food.places');
-
-            $this->sendOrderAcceptedMessage();
-
             if (!$order->getOrderFromNav()) {
-                if (!$order->getPreorder()) {
-                    /*
-                    $miscService = $this->container->get('food.app.utils.misc');
-
-                    if ($order->getDeliveryType() == self::$deliveryPickup) {
-                        $timeShift = $miscService->parseTimeToMinutes($order->getPlace()->getPickupTime());
-                    } else {
-                        $place = $order->getPlace();
-                        $timeShift = $miscService->parseTimeToMinutes($placeService->getDeliveryTime($order->getPlace(), $order->getPlacePoint()));
-                    }
-
-                    $this->logOrder($order, 'calculating_delivery_time', 'Old delivery time: ' . $order->getDeliveryTime()->format('Y-m-d H:i:s'));
-                    $this->logOrder($order, 'calculating_delivery_time', 'Setting delivery time with a parsed value of ' . $timeShift . ' minutes');
-                    if (empty($timeShift) || $timeShift <= 0) {
-                        $timeShift = 60;
-                    }
-
-                    $dt = new \DateTime('now');
-                    $dt->modify('+' . $timeShift . ' minutes');
-                    $order->setDeliveryTime($dt);
-                    */
-                }
                 $this->saveOrder();
                 $this->_notifyOnAccepted();
 
@@ -624,19 +600,6 @@ class OrderService extends ContainerAware
         $ml = $this->container->get('food.mailer');
         $placeService = $this->container->get('food.places');
 
-        // TODO pansu, kad naujame sablone sitie nebereikalingi
-        /*$userName = "";
-        if ($this->getOrder()->getUser()->getFirstname()) {
-            $userName = $this->getOrder()->getUser()->getFirstname();
-        }
-        if ($this->getOrder()->getUser()->getLastname()) {
-            if (!empty($userName)) {
-                $userName.= " ";
-            }
-            $userName.= $this->getOrder()->getUser()->getLastname();
-        }
-        $ordersText = "<br />";
-        $ordersText.= "<ul>";*/
         $invoice = [];
         foreach ($this->getOrder()->getDetails() as $ord) {
 //            $ordersText.="<li>".$ord->getDishName()." (".$ord->getQuantity()." vnt.)";
@@ -648,19 +611,9 @@ class OrderService extends ContainerAware
                 'itm_sum' => $ord->getPrice() * $ord->getQuantity(),
             ];
             if (sizeof($options) > 0) {
-                /*$ordersText.="<ul>";
-                foreach ($options as $opt) {
-                    $ordersText.="<li>".$opt->getDishOptionName()."</li>";
-                }
-                $ordersText.="</ul>";
 
-
-                $ordersText.=" (".$this->container->get('translator')->trans('email.dishes.options').": ";*/
                 foreach ($options as $k => $opt) {
-                    /*if ($k !=0) {
-                        $ordersText.=", ";
-                    }
-                    $ordersText.=$opt->getDishOptionName();*/
+
                     $invoice[] = [
                         'itm_name' => "  - " . $opt->getDishOptionName(),
                         'itm_amount' => $ord->getQuantity(),
@@ -668,25 +621,9 @@ class OrderService extends ContainerAware
                         'itm_sum' => $opt->getPrice() * $ord->getQuantity(),
                     ];
                 }
-//                $ordersText.=")";
 
             }
-//            $ordersText.="</li>";
         }
-//        $ordersText.= "</ul>";
-
-        /*
-                $variables = array(
-                    'username' => $userName,
-                    'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
-                    'maisto_ruosejas' => $this->getOrder()->getPlacePoint()->getAddress(),
-                    'uzsakymas' => $ordersText,
-                    'order_hash' => $this->getOrder()->getOrderHash(),
-                    'adresas' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->getAddress().", ".$this->getOrder()->getAddressId()->getCity() : "--"),
-                    'pristatymo_data' => $this->getOrder()->getDeliveryTime()->format('Y-m-d H:i:s')
-                );
-
-        */
 
         // TODO temp Beta.lt code
         $betaCode = '';
@@ -938,7 +875,6 @@ class OrderService extends ContainerAware
         $order = $this->getOrder();
         $this->logDeliveryEvent($this->getOrder(), 'order_pickedup');
         $this->getOrder()->setOrderPicked(true);
-        $this->sendOrderPickedMessage();
 
         $this->updateDriver();
 
@@ -980,8 +916,6 @@ class OrderService extends ContainerAware
         }
 
         $this->updateDriver();
-
-        $this->sendOrderCompletedMessage();
 
         return $this;
     }
@@ -4539,110 +4473,6 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * Send Message To User About Successfully Created Order
-     */
-    public function sendOrderCreatedMessage()
-    {
-        $order = $this->getOrder();
-        if (!$order instanceof Order) {
-            throw new \InvalidArgumentException('No order is set');
-        }
-
-        $recipient = $this->getOrder()->getOrderExtra()->getPhone();
-        if (!empty($recipient)) {
-            $smsService = $this->container->get('food.messages');
-            $sender = $this->container->getParameter('sms.sender');
-
-            $keyword = 'general.sms.client.order_created';
-            if ($this->getOrder()->getPreorder()) {
-                $keyword .= '_preorder';
-            }
-            if ($this->getOrder()->getDeliveryType() == self::$deliveryPickup) {
-                $keyword .= '_pickup';
-            }
-
-            $placeService = $this->container->get('food.places');
-            $place = $order->getPlace();
-
-            $text = $this->container->get('translator')
-                ->trans(
-                    $keyword,
-                    [
-                        'order_id' => $order->getId(),
-                        'delivery_time' => ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
-                        'pre_delivery_time' => ($order->getDeliveryTime()->format('m-d H:i')),
-                    ],
-                    null,
-                    $this->getOrder()->getLocale()
-                );
-
-            $message = $smsService->createMessage($sender, $recipient, $text, $this->getOrder());
-            $smsService->saveMessage($message);
-        }
-    }
-
-    /**
-     * Send Message To User About Restaurant accepted order
-     */
-    public function sendOrderAcceptedMessage()
-    {
-        $order = $this->getOrder();
-        if (!$order instanceof Order) {
-            throw new \InvalidArgumentException('No order is set');
-        }
-
-        $recipient = $this->getOrder()->getOrderExtra()->getPhone();
-        if (!empty($recipient)) {
-            $smsService = $this->container->get('food.messages');
-            $sender = $this->container->getParameter('sms.sender');
-
-            $sendSms = false;
-
-            if ($order->getPreorder()) {
-                $sendSms = true;
-            }
-
-            if ($sendSms) {
-                $keyword = 'general.sms.client.order_accepted';
-                if ($order->getPreorder()) {
-                    $keyword .= '_preorder';
-                }
-                if ($order->getDeliveryType() == self::$deliveryPickup) {
-                    $keyword .= '_pickup';
-                }
-
-                $placeName = $this->container->get('food.app.utils.language')
-                    ->removeChars('lt', $order->getPlaceName(), false, false);
-                $placeName = ucfirst($placeName);
-                // Hack for too long restaurant names in LT :) Sorry mates, had to do this for whale :D
-                // Add others if needed
-                if ($placeName == 'Cili GREITA (tik issinesimui)') {
-                    $placeName = 'Cili GREITA';
-                }
-
-                $placeService = $this->container->get('food.places');
-                $place = $order->getPlace();
-
-                $text = $this->container->get('translator')
-                    ->trans(
-                        $keyword,
-                        [
-                            'order_id' => $order->getId(),
-                            'restourant_name' => $placeName,
-                            'delivery_time' => ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
-                            'pre_delivery_time' => ($order->getDeliveryTime()->format('m-d H:i'))
-                        ],
-                        null,
-                        $order->getLocale()
-                    );
-
-                $message = $smsService->createMessage($sender, $recipient, $text, $order);
-                $smsService->saveMessage($message);
-            }
-        }
-    }
-
-    /**
      * Send Message To User About Restaurant delayed order
      */
     public function sendOrderDelayedMessage($diffInMinutes)
@@ -4698,87 +4528,6 @@ class OrderService extends ContainerAware
                 $message->addTo($userEmail);
                 $message->setBody($text);
                 $mailer->send($message);
-            }
-
-        }
-    }
-
-    public function sendOrderPickedMessage()
-    {
-        /*
-        $order = $this->getOrder();
-        if (!$order instanceof Order) {
-            throw new \InvalidArgumentException('No order is set');
-        }
-
-        $recipient = $this->getOrder()->getOrderExtra()->getPhone();
-        if (!empty($recipient)) {
-            $smsService = $this->container->get('food.messages');
-            $sender = $this->container->getParameter('sms.sender');
-
-            $sendSms = false;
-
-            switch ($this->getLocale()) {
-                case 'lv':
-                    if (!$order->getOrderFromNav()) {
-                        $sendSms = true;
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-            if ($sendSms) {
-                // SMS siunciam tik tuo atveju jei orderis ne is callcentro
-                $text = $this->container->get('translator')
-                    ->trans(
-                        'general.sms.client.driver_picked_up',
-                        [],
-                        null,
-                        $this->getOrder()->getLocale()
-                    )
-                ;
-
-                $message = $smsService->createMessage($sender, $recipient, $text, $this->getOrder());
-                $smsService->saveMessage($message);
-            }
-        }
-        */
-    }
-
-    public function sendOrderCompletedMessage()
-    {
-        $order = $this->getOrder();
-        if (!$order instanceof Order) {
-            throw new \InvalidArgumentException('No order is set');
-        }
-
-        $recipient = $this->getOrder()->getOrderExtra()->getPhone();
-        if (!empty($recipient)) {
-            $smsService = $this->container->get('food.messages');
-            $sender = $this->container->getParameter('sms.sender');
-
-            $sendSms = false;
-
-            if (!$order->getMobile()) {
-                $sendSms = true;
-            }
-
-            if ($sendSms) {
-                $keyword = 'general.sms.client.order_completed';
-
-                $text = $this->container->get('translator')
-                    ->trans(
-                        $keyword,
-                        [],
-                        null,
-                        $order->getLocale()
-                    );
-
-                if (!empty($text)) {
-                    $message = $smsService->createMessage($sender, $recipient, $text, $order);
-                    $smsService->saveMessage($message);
-                }
             }
 
         }
