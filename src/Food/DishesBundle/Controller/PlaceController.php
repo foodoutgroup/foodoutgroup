@@ -61,6 +61,10 @@ class PlaceController extends Controller
             $cityObj = $cityCollection[0];
         }
 
+        if($cityObj == null) {
+            throw new NotFoundHttpException('City was not found');
+        }
+
         $slug = $this->get('slug');
 
         $breadcrumbData['city'] = $cityObj->getTitle();
