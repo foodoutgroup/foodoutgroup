@@ -239,14 +239,14 @@
                         {% if placeReviewCollection is defined %}
                             <div id="detailed-restaurant-review" class="detailed-restaurant-review">
                                 <div class="review-title clearfix">
-                                    {% if placeReviews %}
-                                        <h3>{{ placeReviews|length }} {% transchoice placeReviews|length %}places.review_choice{% endtranschoice %}</h3>
+                                    {% if placeReviewCollection %}
+                                        <h3>{{ placeReviewCollection|length }} {% transchoice placeReviewCollection|length %}places.review_choice{% endtranschoice %}</h3>
                                         {% else %}
                                         <h3>{% trans %}general.no_place_reviews{% endtrans %}</h3>
                                     {% endif %}
                                 </div>
                                 <div class="review-list">
-                                    {% for review in placeReviews %}
+                                    {% for review in placeReviewCollection %}
                                     <div class="review-item clearfix">
                                         <div class="review-person"><img src="/bundles/foodapp/images/person.png">
                                             <p class="name">{{ review.createdBy.getFirstname }}</p>

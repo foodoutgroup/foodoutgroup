@@ -83,15 +83,11 @@
 {% block seo_description %}{% trans %}general.base_page_description{% endtrans %}{% endblock %}
 
 {% block delfi_js %}
-    {% if show_delfi_banner %}
-       {{ misc_utils.param('delfiJs', true)|raw }}
-    {% endif %}
+    {{ misc_utils.param('delfiJs', true)|raw }}
 {% endblock %}
 
 {% block delfi_banner %}
-    {% if show_delfi_banner %}
-       {{ misc_utils.param('delfiBanner', true)|raw }}
-    {% endif %}
+    {{ misc_utils.param('delfiBanner', true)|raw }}
 {% endblock %}
 
 {% block body %}
@@ -127,13 +123,8 @@
         </div>
         {% if show_game %}
             <div class="site-block banner">
-                {% if site_country == 'LT' %}
-                    <ins data-revive-zoneid="8" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
-                    <script async src="//ads.foodout.lt/delivery/asyncjs.php"></script>
-                {% else %}
-                    <ins data-revive-zoneid="16" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
-                    <script async src="//ads.foodout.lt/delivery/asyncjs.php"></script>
-                {% endif %}
+                <ins data-revive-zoneid="{% if site_country == 'LT' %}8{% else %}16{% endif %}" data-revive-id="12b88dd43b1c40010eb436263abc6451"></ins>
+                <script async src="//ads.foodout.lt/delivery/asyncjs.php"></script>
             </div>
         {% endif %}
 

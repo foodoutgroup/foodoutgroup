@@ -36,7 +36,8 @@ class SettingsController extends CoreController
         'free_delivery_discount_code_generation_enable',
         'free_delivery_discount_code_generation_after_completed_orders',
         'placepoint_prepare_times',
-        'facebook_pixel_code'
+        'facebook_pixel_code',
+        'reviews_enabled'
     ];
 
     public function indexAction(Request $request)
@@ -182,6 +183,7 @@ class SettingsController extends CoreController
         ]);
 
         $form->add('extra_group', 'boolean');
+        $form->add('reviews_enabled', 'boolean');
 
         $form->add('free_delivery_discount_code_generation_enable', 'boolean');
 

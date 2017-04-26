@@ -40,6 +40,7 @@
 
     {% block javascripts %}
 
+        <script src="{{ asset('bundles/foodapp/scripts/top_head.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery-1.10.2.min.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery.cycle2.min.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"></script>
@@ -92,25 +93,6 @@
 
     {% endblock %}
 
-    {#<script>#}
-        {#!function (f, b, e, v, n, t, s) {#}
-            {#if (f.fbq)return;#}
-            {#n = f.fbq = function () {#}
-                {#n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments)#}
-            {#};#}
-            {#if (!f._fbq) f._fbq = n;#}
-            {#n.push = n;#}
-            {#n.loaded = !0;#}
-            {#n.version = '2.0';#}
-            {#n.queue = [];#}
-            {#t = b.createElement(e);#}
-            {#t.async = !0;#}
-            {#t.src = v;#}
-            {#s = b.getElementsByTagName(e)[0];#}
-            {#s.parentNode.insertBefore(t, s)#}
-        {#}(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');#}
-        {#fbq('init', '901898153179068');#}
-        {#fbq('track', "PageView");#}
     {# todo: MULT-L fix hardcode #}
     {% if site_country == 'LT'%}
         <!-- Google Tag Manager -->
@@ -124,36 +106,24 @@
 
     {# Facebook Pixel Code Begin #}
 
-    {{  misc_utils.getParam('facebook_pixel_code')|raw }}
+    {% set FBpixelCode = misc_utils.getParam('facebook_pixel_code', null) %}
 
-    {#<script>#}
-        {#!function (f, b, e, v, n, t, s) {#}
-            {#if (f.fbq)return;#}
-            {#n = f.fbq = function () {#}
-                {#n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments)#}
-            {#};#}
-            {#if (!f._fbq) f._fbq = n;#}
-            {#n.push = n;#}
-            {#n.loaded = !0;#}
-            {#n.version = '2.0';#}
-            {#n.queue = [];#}
-            {#t = b.createElement(e);#}
-            {#t.async = !0;#}
-            {#t.src = v;#}
-            {#s = b.getElementsByTagName(e)[0];#}
-            {#s.parentNode.insertBefore(t, s)#}
-        {#}(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');#}
-        {#fbq('init', '901898153179068');#}
-        {#fbq('track', "PageView");#}
+    <script type="text/javascript">
 
-        {#$(document).ready(function () {#}
-            {#$('.holiday-time').tooltip({#}
-                {#placement: 'bottom'#}
-            {#});#}
-        {#});#}
-    {#</script>#}
-    {#<noscript><img height="1" width="1" style="display:none"#}
-                   {#src="https://www.facebook.com/tr?id=901898153179068&ev=PageView&noscript=1"/></noscript>#}
+        {% if FBpixelCode is not null %}
+        fbq('init', '{{ FBpixelCode }}');
+        {% endif %}
+        fbq('track', "PageView");
+
+        $(document).ready(function () {
+            $('.holiday-time').tooltip({
+                placement: 'bottom'
+            });
+        });
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=901898153179068&ev=PageView&noscript=1"/>
+    </noscript>
      {#Facebook Pixel Code End #}
 
 
@@ -178,8 +148,7 @@
         </script>
         <noscript>
             <p style="margin:0;padding:0;border:0;">
-                <img src="https://track.adform.net/Serving/TrackPoint/?pm=314127&ADFPageName=Foodout.lt|Pagrindinis&ADFdivider=|"
-                     width="1" height="1" alt=""/>
+                <img src="https://track.adform.net/Serving/TrackPoint/?pm=314127&ADFPageName=Foodout.lt|Pagrindinis&ADFdivider=|" width="1" height="1" alt=""/>
             </p>
         </noscript>
         <!-- Adform Tracking Code END -->
