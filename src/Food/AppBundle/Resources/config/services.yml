@@ -176,19 +176,6 @@ services:
         - ~
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]
-
-#    sonata.admin.import_export_controller:
-#      class: Food\AppBundle\Controller\Admin\ImportExportController
-#      arguments:
-#        - ~
-#        - Food\AppBundle\Entity\CallLog
-#        - ~
-#      tags:
-#        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.call_log" }
-##      calls:
-##        - [ setTranslationDomain, [SonataAdminBundle]]
-
-
     food.dispatcher_service:
       class: Food\AppBundle\Service\DispatcherService
       parent: food.base_service
@@ -222,9 +209,6 @@ services:
         calls:
           - [setLocale, [%locale%]]
           - [setFieldMap]
-
-
-
 
     sonata.admin.translations:
       class: Food\AppBundle\Admin\ORMTranslationAdmin
