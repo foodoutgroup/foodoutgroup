@@ -3259,7 +3259,10 @@
                 <source>admin.place.api_hash</source>
                 <target>Restorano API kodas (WL)</target>
             </trans-unit>
-
+            <trans-unit id="admin.settings">
+                <source>admin.settings</source>
+                <target>Sisteminiai nustatymai</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

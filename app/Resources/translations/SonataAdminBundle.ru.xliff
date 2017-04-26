@@ -390,6 +390,10 @@
         <source><![CDATA[add_new_entry]]></source>
         <target><![CDATA[Добавить новую запись]]></target>
       </trans-unit>
+      <trans-unit id="admin.settings">
+          <source>admin.settings</source>
+          <target>Настройки</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -3242,6 +3242,10 @@
                 <source>admin.place.api_hash</source>
                 <target>Place API code (WL)</target>
             </trans-unit>
+            <trans-unit id="admin.settings">
+                <source>admin.settings</source>
+                <target>Seaded</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
