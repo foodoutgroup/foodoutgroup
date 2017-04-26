@@ -23,7 +23,6 @@ class SlugController extends Controller
         if($slugForward) {
             return $this->forward($slugForward->getController(), $slugForward->getParams());
         }
-        var_dump('aaaaaaaaaaaaa');
         $this->request = $request;
         $this->repository = $this->getDoctrine()->getRepository('FoodAppBundle:Slug');
         $this->util = $this->get('food.dishes.utils.slug');
