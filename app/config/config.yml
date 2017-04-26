@@ -350,7 +350,7 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.users
                       - sonata.admin.banned_ips
-#                      - sonata.admin.settings todo MULTI-L ideti settings adresa :)
+                      - sonata.admin.settings
                       - sonata.admin.params
                       - sonata.admin.paramslog
                       - sonata.admin.static

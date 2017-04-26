@@ -254,3 +254,9 @@ services:
         - ~
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]
+
+#    sonata.admin.settings_page:
+#       class: Food\AppBundle\Controller\Admin\SettingsController
+#       tags:
+#         - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.settings" }
+
