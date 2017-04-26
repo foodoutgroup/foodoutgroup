@@ -52,6 +52,10 @@
 
     {% if page_block_config != 0 %}
         {% set blogPathStart = homepage ~ '/' ~ slug.path(page_block_config, 'page') %}
+        <url>
+            <loc>{{ blogPathStart }}</loc>
+            <changefreq>weekly</changefreq>
+        </url>
         {% for blogCategory in blogCollection %}
             {% set category = blogCategory['category'] %}
             {% set postCollection = blogCategory['postCollection'] %}

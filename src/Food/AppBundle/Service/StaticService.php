@@ -89,6 +89,7 @@ class StaticService {
         $keywordMapCollection = [
             'page_banned',
             'page_email_banned',
+            'page_sitemap'
         ];
 
         /**
@@ -129,6 +130,7 @@ class StaticService {
     /**
      * @param bool $cities
      * @return mixed
+     * @deprecated from 2017-04-26
      */
     public function getPlacesWithOurLogistic()
     {

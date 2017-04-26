@@ -40,8 +40,8 @@ class CityController extends Controller
         return $this->render(
             'FoodPlacesBundle:City:index.html.twig',
             array(
-                'recommended' => in_array('rec',$params), // todo MULTI-L param for recommended list
-                'rush_hour' => in_array('rec', $params), // todo MULTI-L param for rush_hour list
+                'recommended' => in_array('recom',$params), // todo MULTI-L param for recommended list
+                'rush_hour' => in_array('rush', $params), // todo MULTI-L param for rush_hour list
                 'location' => $this->get('food.googlegis')->getLocationFromSession(),
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
@@ -63,11 +63,9 @@ class CityController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction($isRecommended = false, $slug_filter = false, $rush_hour = false, Request $request)
+    public function listAction($recommended = false, $slug_filter = false, $rush_hour = false, Request $request)
     {
-        if ($recommendedFromRequest = $request->get('recommended', null) !== null) {
-            $isRecommended = (bool)$recommendedFromRequest;
-        }
+        $isRecommended = $recommended;
 
         if ($deliveryType = $request->get('delivery_type', false)) {
             switch ($deliveryType) {

@@ -19,6 +19,11 @@ class SlugController extends Controller
     public function processAction(Request $request, $slug)
     {
 
+        $slugForward = $this->getDoctrine()->getRepository('FoodAppBundle:SlugForward')->getByLocaleAndSlug($request->getLocale(), $slug);
+        if($slugForward) {
+            return $this->forward($slugForward->getController(), $slugForward->getParams());
+        }
+        var_dump('aaaaaaaaaaaaa');
         $this->request = $request;
         $this->repository = $this->getDoctrine()->getRepository('FoodAppBundle:Slug');
         $this->util = $this->get('food.dishes.utils.slug');
@@ -27,7 +32,6 @@ class SlugController extends Controller
         if(substr($slug, -1) == '/') {
             $slug = substr($slug, 0, -1);
         }
-
 
         $params = explode("/", $slug);
 

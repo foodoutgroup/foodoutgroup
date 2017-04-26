@@ -10,6 +10,7 @@ class SettingsController extends CRUDController
 
     private $keywordMapCollection = [
         'page_banned',
+        'page_sitemap',
         'page_email_banned',
         'page_help',
         'page_best_offer',
@@ -24,8 +25,6 @@ class SettingsController extends CRUDController
         'enable_free_delivery_for_big_basket',
         'free_delivery_price',
         'beta_code_on',
-        'delfiBanner',
-        'delfiJs',
         'possible_delivery_delay',
         'late_time_to_delivery',
         'sf_next_number',
@@ -85,6 +84,7 @@ class SettingsController extends CRUDController
             $pageCollection[$page->getId()] = $page->getTitle();
         }
 
+
         $form->add('page_banned', 'choice', [
             'label' => 'Banned page',
             'choices' => $pageCollection,
@@ -96,6 +96,10 @@ class SettingsController extends CRUDController
 
         $form->add('page_email_banned', 'choice', [
             'label' => 'Banned email page',
+            'choices' => $pageCollection
+        ]);
+
+        $form->add('page_sitemap', 'choice', [
             'choices' => $pageCollection
         ]);
 
@@ -133,7 +137,6 @@ class SettingsController extends CRUDController
         ]);
 
 
-
         $form->add('disabled_preorder_days', 'text', [
             'attr' => ['group' => 'Order']
         ]);
@@ -154,17 +157,6 @@ class SettingsController extends CRUDController
             'label' => 'SF next number'
         ]);
 
-        $form->add('delfiBanner', 'textarea', [
-            'label' => 'Delfi banner',
-            'attr' => ['group' => 'Integrations','style' => 'width:100%;', 'rows' => 10]
-        ]);
-
-        $form->add('delfiJs', 'textarea', [
-            'label' => 'Delfi JS',
-            'attr' => ['style' => 'width:100%;', 'rows' => 4]
-        ]);
-
-
         $form->add('showMobilePopup', 'boolean', [
             'label' => 'Show mobile popup',
         ]);
@@ -174,24 +166,28 @@ class SettingsController extends CRUDController
             'choices' => ['on' => 'On', 'off' => 'Off'],
         ]);
 
-        $form->add('footer_scripts', 'textarea', [
-            'label' => 'Footer Scripts',
-            'attr' => ['style' => 'width:100%;', 'rows' => 20]
-        ]);
-
+        $form->add('free_delivery_discount_code_generation_enable', 'boolean');
         $form->add('extra_group', 'boolean');
+
+
+        $form->add('placepoint_prepare_times');
+        $form->add('free_delivery_discount_code_generation_after_completed_orders');
+
         $form->add('reviews_enabled', 'boolean');
 
-        $form->add('free_delivery_discount_code_generation_enable', 'boolean');
+        $form->add('footer_scripts', 'textarea', [
+            'label' => 'Footer Scripts',
+            'required' => false,
+            'attr' => ['style' => 'width:100%;', 'group' => 'Content', 'rows' => 20]
+        ]);
 
         foreach ($this->keywordMapCollection as $keyword) {
             if(!$form->has($keyword)) {
                 $form->add($keyword, 'text', ['required' => false]);
             }
         }
-
+        
         $form->add('submit', 'submit', ['label' => 'Update', 'attr' => ['class' => 'btn btn-primary']]);
-//        $form->add('sex', 'sonata_block_service_choice');
 
     }
 

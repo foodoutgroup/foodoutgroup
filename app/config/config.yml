@@ -360,8 +360,6 @@ sonata_admin:
                       - sonata.admin.banned_ips
                       - sonata.admin.settings
                       - sonata.admin.import_export
-                      - sonata.admin.params
-                      - sonata.admin.paramslog
                       - sonata.admin.static
                       - sonata.admin.seorecords
                       - sonata.admin.blog_category
@@ -369,6 +367,9 @@ sonata_admin:
                       - sonata.admin.sms.template
                       - sonata.admin.email.template
                       - sonata.admin.translations
+                      - sonata.admin.import_export
+                      - sonata.admin.settings
+                      - sonata.admin.paramslog
                   roles: [ ROLE_EDITOR, ROLE_ADMIN ]
               admin.marketing:
                   label: admin.group.marketing
