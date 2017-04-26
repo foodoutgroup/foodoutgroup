@@ -3662,19 +3662,12 @@ class OrderService extends ContainerAware
 
         if (!empty($formErrors)) {
             $formHasErrors = true;
-            $translator = $this->container->get('translator');
-            $translator->trans('order.form.errors.customeraddr');
-
-            $this->container->get('food.error_log_service')->saveErrorLog(
-                $this->container->get('request')->getClientIp(),
+            $this->container->get('food.error_log')->write(
                 $this->getUser(),
                 $this->container->get('food.cart')->getSessionId(),
                 $place,
-                new \DateTime('now'),
-                $request->headers->get('referer'),
                 'checkout_coupon_page',
-                implode(',', $formErrors),
-                serialize($request) .'<br><br>'. serialize($debugCartInfo)
+                implode(',', $formErrors)
             );
         }
     }

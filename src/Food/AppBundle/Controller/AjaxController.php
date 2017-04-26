@@ -117,19 +117,8 @@ class AjaxController extends Controller
         } else {
 
             if (isset($respData['message']) && !empty($respData['message'])) {
-                $placeId = is_object($cart) ? $cart->getPlaceId() : null;
-
-                $this->get('food.error_log_service')->saveErrorLog(
-                    $this->container->get('request')->getClientIp(),
-                    $this->getUser(),
-                    $cartSession,
-                    $placeId,
-                    new \DateTime('now'),
-                    $request->getUri(),
-                    'adress_change_find',
-                    $respData['message'],
-                    serialize($request)
-                );
+                $placeObj = is_object($cart) ? $cart->getPlaceId() : null;
+                $this->get('food.error_log')->write($this->getUser(), $cartSession, $placeObj, 'adress_change_find', $respData['message']);
             }
 
             $response->setContent(json_encode([
@@ -365,16 +354,13 @@ class AjaxController extends Controller
         }
 
         if(isset($cont['data']['error']) && !empty($cont['data']['error'])){
-            $this->get('food.error_log_service')->saveErrorLog(
-                $this->container->get('request')->getClientIp(),
+
+            $this->get('food.error_log')->write(
                 $this->getUser(),
                 $this->container->get('food.cart')->getSessionId(),
                 $place,
-                new \DateTime('now'),
-                $request->getUri(),
                 'checkout_coupon_page',
-                $cont['data']['error'],
-                serialize($request)
+                $cont['data']['error']
             );
         }
 
