@@ -1,4 +1,12 @@
 parameters:
+    defaultDomain: messages
+    defaultSelections: [messages]
+    emptyPrefixes: []
+    editable:
+        mode: inline		 # Mode of editable, can be popup or inline
+        type: textarea		 # Type of input. Can be text|textarea|select|date|checklist and more
+        emptytext: Empty 	 # text to display on empty translations
+        placement: top		 # ingnored for inline mode
     database_driver: pdo_mysql
     database_host: localhost
     database_port: 3306
