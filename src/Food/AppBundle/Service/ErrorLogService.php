@@ -17,7 +17,7 @@ class ErrorLogService extends BaseService
     /**
      * @var EntityManager
      */
-    private $em;
+    protected $em;
 
     public function __construct(EntityManager $em, ContainerInterface $container)
     {
@@ -52,7 +52,7 @@ class ErrorLogService extends BaseService
      * @param $source
      * @param $description
      */
-    public function write(User $user, $cart, Place $place, $source, $description)
+    public function write($user, $cart, $place, $source, $description)
     {
         $error = new ErrorLog();
         $error->setIp($this->request->getClientIp());

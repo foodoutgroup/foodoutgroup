@@ -37,7 +37,7 @@ class AjaxController extends Controller
                 $this->_isPlaceInRadius($response, intval($request->get('place')));
                 break;
             case 'check-coupon':
-                $this->_ajaxCheckCoupon($response, $request->get('place_id'), $request->get('coupon_code'), $request);
+                $this->_ajaxCheckCoupon($response, $request->get('place_id'), $request->get('coupon_code'));
                 break;
             default:
                 $response->setContent(json_encode([
@@ -132,18 +132,6 @@ class AjaxController extends Controller
     {
         $respData = [];
         $street = mb_strtoupper($street, 'utf-8');
-        if ($city == "Rīga") {
-            $city = "Ryga";
-        }
-        /*
-        $street = str_replace("S", "[S|Š]", $street);
-        $street = str_replace("A", "[A|Ą]", $street);
-        $street = str_replace("C", "[C|Č]", $street);
-        $street = str_replace("E", "[E|Ę|Ė]", $street);
-        $street = str_replace("I", "[I|Į|Y]", $street);
-        $street = str_replace("U", "[U|Ų|Ū]", $street);
-        $street = str_replace("Z", "[Z|Ž]", $street);
-        */
         $conn = $this->get('database_connection');
 
         // protect
@@ -254,7 +242,7 @@ class AjaxController extends Controller
      * @param int $placeId
      * @param string $couponCode
      */
-    private function _ajaxCheckCoupon(Response $response, $placeId, $couponCode, Request $request)
+    private function _ajaxCheckCoupon(Response $response, $placeId, $couponCode)
     {
         $trans = $this->get('translator');
         $cont = [
