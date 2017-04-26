@@ -268,7 +268,7 @@ class MailerliteService extends ContainerAware
 //        );
 //        $ch = curl_init('http://api.mailerlite.com/api/v2/');
 //        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt($ch, CURLOPT_POST, true);
+//        curl_setopt($ch, CURLOPT_POST, mailerlite_api_keytrue);
 //        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 //        $output = curl_exec($ch);
 //        curl_close($ch);
@@ -278,16 +278,12 @@ class MailerliteService extends ContainerAware
 
     public function addAll($subscribers, $resubscribe = 0)
     {
-
-        $apiKey = $this->container->getParameter('mailerlite_api_key');
-        $groupid = $this->container->getParameter('mailerlite_group_id');
-
         $curl = curl_init();
 
         $subscribers['subscribers'] = $subscribers;
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://api.mailerlite.com/api/v2/groups/" . $groupid . "/subscribers/import",
+            CURLOPT_URL => "https://api.mailerlite.com/api/v2/groups/" . $this->id . "/subscribers/import",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -297,7 +293,7 @@ class MailerliteService extends ContainerAware
             CURLOPT_POSTFIELDS => json_encode($subscribers),
             CURLOPT_HTTPHEADER => array(
                 "content-type: application/json",
-                "x-mailerlite-apikey: $apiKey"
+                "x-mailerlite-apikey: " . $this->apiKey
             ),
         ));
 
