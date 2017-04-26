@@ -282,6 +282,29 @@ services:
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.settings:
+        class: Food\AppBundle\Admin\SettingsAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.settings" }
+        arguments:
+            - ~
+            - ~
+            - 'FoodAppBundle:Settings'
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+
+    sonata.admin.import_export:
+        class: Food\AppBundle\Admin\ImportAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.import_export" }
+        arguments:
+            - ~
+            - ~
+            - 'FoodAppBundle:Import'
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
     food.error_log:
-            class: Food\AppBundle\Service\ErrorLogService
-            arguments: ["@doctrine.orm.entity_manager","@service_container"]
+        class: Food\AppBundle\Service\ErrorLogService
+        arguments: ["@doctrine.orm.entity_manager","@service_container"]

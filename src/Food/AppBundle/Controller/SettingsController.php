@@ -1,13 +1,11 @@
 <?php
 
-namespace Food\AppBundle\Controller\Admin;
+namespace Food\AppBundle\Controller;
 
-use Sonata\AdminBundle\Controller\CoreController;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Request;
 
-class SettingsController extends CoreController
+class SettingsController extends CRUDController
 {
 
     private $keywordMapCollection = [
@@ -40,8 +38,10 @@ class SettingsController extends CoreController
         'reviews_enabled'
     ];
 
-    public function indexAction(Request $request)
+    public function listAction( )
     {
+        $request = $this->get('request');
+
         $paramService = $this->get('food.app.utils.misc');
         $session = $this->get('session');
         $data = [];
@@ -65,7 +65,6 @@ class SettingsController extends CoreController
 
             }
             $session->getFlashBag()->add('success', 'Settings was saved successfully');
-            return $this->redirect($this->generateUrl('food_admin_settings'));
         }
 
         return $this->render('@FoodApp/Admin/Settings/index.html.twig', array(
@@ -79,8 +78,6 @@ class SettingsController extends CoreController
 
     private function formFields(FormBuilderInterface &$form)
     {
-
-
         $static = $this->getDoctrine()->getRepository('FoodAppBundle:StaticContent');
         $pageCollection = [];
 

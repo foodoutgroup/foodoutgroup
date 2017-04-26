@@ -66,10 +66,6 @@ lexik_translation_edition:
     resource: "@LexikTranslationBundle/Resources/config/routing.yml"
     prefix:   /trans
 
-food_admin_settings:
-   path: /settings
-   defaults: { _controller: FoodAppBundle:Admin/Settings:index }
-
 ajax_admin:
     resource: "routing_admin_ajax.yml"
     prefix:   /ajax

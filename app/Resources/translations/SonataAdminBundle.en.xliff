@@ -3555,6 +3555,10 @@
                   <source>admin.error.debug</source>
                   <target>Debug</target>
             </trans-unit>
+            <trans-unit id="admin.settings">
+                <source>admin.settings</source>
+                <target>System settings</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
