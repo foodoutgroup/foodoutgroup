@@ -38,6 +38,8 @@ class SettingsController extends Controller
         'free_delivery_discount_code_generation_enable',
         'free_delivery_discount_code_generation_after_completed_orders',
         'placepoint_prepare_times',
+        'facebook_pixel_code',
+        'reviews_enabled'
     ];
 
     public function listAction( )
@@ -48,7 +50,7 @@ class SettingsController extends Controller
         $session = $this->get('session');
         $data = [];
         foreach ($this->keywordMapCollection as $keyword) {
-            $data[$keyword] = $paramService->getParam($keyword, true);
+            $data[$keyword] = $paramService->getParam($keyword, '');
         }
 
         $form = $this->get('form.factory')->createNamedBuilder('settings', 'form', $data, ['csrf_protection' => false]);
@@ -182,6 +184,7 @@ class SettingsController extends Controller
         ]);
 
         $form->add('extra_group', 'boolean');
+        $form->add('reviews_enabled', 'boolean');
 
         $form->add('free_delivery_discount_code_generation_enable', 'boolean');
 

@@ -391,6 +391,10 @@
                 <source>Place</source>
                 <target>Vieta</target>
             </trans-unit>
+            <trans-unit id="import">
+                <source>import</source>
+                <target>Importuoti</target>
+            </trans-unit>
             <trans-unit id="admin.group.places">
                 <source>admin.group.places</source>
                 <target>Vietos</target>
@@ -3205,6 +3209,10 @@
             <trans-unit id="admin.category">
                 <source>admin.category</source>
                 <target>Kategorija</target>
+            </trans-unit>
+            <trans-unit id="admin.import_export">
+                <source>admin.import_export</source>
+                <target>Duomenų eksportavimas/importavimas</target>
             </trans-unit>
             <trans-unit id="admin.error.source">
                 <source>admin.error.source</source>

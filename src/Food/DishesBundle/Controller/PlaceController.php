@@ -37,11 +37,6 @@ class PlaceController extends Controller
             return $this->redirect($this->get('slug')->toHomepage(), 307);
         }
 
-        $categoryList = $this->get('food.places')->getActiveCategories($place);
-        $placePoints = $this->get('food.places')->getPublicPoints($place);
-        $placePointsAll = $this->get('food.places')->getAllPoints($place);
-//        $categoryRepo = $this->getDoctrine()->getRepository('FoodDishesBundle:FoodCategory');
-        $dishService = $this->get('food.dishes');
 
         $listType = 'thumbs';
         $cookies = $request->cookies;
@@ -51,9 +46,6 @@ class PlaceController extends Controller
         }
 
 
-        $wasHere = $this->wasHere($place, $this->user());
-        $alreadyWrote = $this->alreadyWrote($place, $this->user());
-        $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
         $userLocationData = $this->get('food.googlegis')->getLocationFromSession();
 
         $breadcrumbData = [
@@ -85,38 +77,49 @@ class PlaceController extends Controller
 
         $current_url = $request->getSchemeAndHttpHost() . $request->getRequestUri();
 
+        $relatedPlaceCollection = [];
+
         // only for LT and only for cili
+        // todo: MULTI-L someday move to database as conditions
         $relatedPlace = null;
-        if ($this->container->getParameter('locale') == 'lt') {
+        if ($this->container->getParameter('country') == 'LT') {
             if (in_array($place->getId(), [63, 85, 302, 333])) {
-                $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(142);
+                $relatedPlaceCollection[] = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(142);
             } elseif ($place->getId() == 142) {
-                $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(63);
+                $relatedPlaceCollection[] = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(63);
+            }
+        } elseif($this->container->getParameter('country') == 'LV'){
+            if (in_array($place->getId(), [1, 35])) {
+                $relatedPlaceCollection[] = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(36);
+            } elseif ($place->getId() == 36) {
+                $relatedPlaceCollection[] = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(35);
             }
         }
 
-        $placeReviews = $this->get('doctrine')->getRepository('FoodDishesBundle:PlaceReviews')->getActiveReviewsByPlace($place);
+        $variableCollection = [
+            'place' => $place,
+            'relatedPlaceCollection' => $relatedPlaceCollection,
+            'wasHere' => $this->wasHere($place, $this->user()),
+            'alreadyWrote' => $this->alreadyWrote($place, $this->user()),
+            'placeCategories' => $this->get('food.places')->getActiveCategories($place),
+            'dishService' => $this->get('food.dishes'),
+            'placePoints' => $this->get('food.places')->getPublicPoints($place),
+            'placePointsAll' => $this->get('food.places')->getAllPoints($place),
+            'listType' => $listType,
+            'isTodayNoOneWantsToWork' => $this->get('food.order')->isTodayNoOneWantsToWork($place),
+            'breadcrumbData' => $breadcrumbData,
+            'current_url' => $current_url,
+            'oldFriendIsHere' => $oldFriendIsHere,
+        ];
 
-        return $this->render(
-            'FoodDishesBundle:Place:index.html.twig',
-            array(
-                'place' => $place,
-                'placeReviews' => $placeReviews,
-                'relatedPlace' => $relatedPlace,
-                'wasHere' => $wasHere,
-                'alreadyWrote' => $alreadyWrote,
-                'placeCategories' => $categoryList,
-                'dishService' => $dishService,
-                // 'selectedCategory' => $activeCategory,
-                'placePoints' => $placePoints,
-                'placePointsAll' => $placePointsAll,
-                'listType' => $listType,
-                'isTodayNoOneWantsToWork' => $isTodayNoOneWantsToWork,
-                'breadcrumbData' => $breadcrumbData,
-                'current_url' => $current_url,
-                'oldFriendIsHere' => $oldFriendIsHere,
-            )
-        );
+        if($this->get('food.app.utils.misc')->getParam('reviews_enabled', false)) {
+            $variableCollection['placeReviewCollection'] = $this->get('doctrine')
+                ->getRepository('FoodDishesBundle:PlaceReviews')
+                ->getActiveReviewsByPlace($place);
+        }
+
+
+        return $this->render('FoodDishesBundle:Place:index.html.twig', $variableCollection);
 
     }
 

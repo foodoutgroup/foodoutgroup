@@ -2374,6 +2374,13 @@ class Order
 
     }
 
+
+    public function getDeliveryPriceForNav()
+    {
+        return $this->getDeliveryPrice() + $this->getAdminFee();
+
+    }
+
     public function getVatSize()
     {
         return $this->getTotal() - $this->getTotalWithoutVat();

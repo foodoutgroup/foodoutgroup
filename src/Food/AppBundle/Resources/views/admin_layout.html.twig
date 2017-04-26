@@ -76,8 +76,8 @@
             // File Input Validation Begin
             var file_input = $('input[type="file"]');
             if (file_input.length) {
-                file_input.on('change', function (e) {
-                    var max_upload_size = 2097152;
+                file_input.on('change', function(e) {
+                    var max_upload_size = 99992097152;
                     var file_size = this.files[0].size;
                     var file_to_big_message = $('.file_to_big_message');
                     if (file_to_big_message.length) {

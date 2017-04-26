@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3ba315b27f7f7d0244331409c852e80f",
-    "content-hash": "db47115a2529f537c6222b0288aa6ef7",
+    "content-hash": "a54ab2a2fa47b381f3d6f5018c379b26",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -134,7 +133,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2015-04-07 21:07:40"
+            "time": "2015-04-07T21:07:40+00:00"
         },
         {
             "name": "beberlei/DoctrineExtensions",
@@ -236,7 +235,7 @@
                 "slug",
                 "transliterator"
             ],
-            "time": "2015-09-28 16:26:35"
+            "time": "2015-09-28T16:26:35+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -304,7 +303,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2015-08-31 12:32:49"
+            "time": "2015-08-31T12:32:49+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -374,7 +373,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2015-08-31 12:36:41"
+            "time": "2015-08-31T12:36:41+00:00"
         },
         {
             "name": "doctrine/collections",
@@ -440,7 +439,7 @@
                 "collections",
                 "iterator"
             ],
-            "time": "2015-04-14 22:21:58"
+            "time": "2015-04-14T22:21:58+00:00"
         },
         {
             "name": "doctrine/common",
@@ -513,7 +512,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2015-08-31 14:38:45"
+            "time": "2015-08-31T14:38:45+00:00"
         },
         {
             "name": "doctrine/data-fixtures",
@@ -567,7 +566,7 @@
             "keywords": [
                 "database"
             ],
-            "time": "2015-03-27 21:01:43"
+            "time": "2015-03-27T21:01:43+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -628,7 +627,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2014-09-15 11:44:29"
+            "time": "2014-09-15T11:44:29+00:00"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -700,7 +699,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2013-03-25 20:13:59"
+            "time": "2013-03-25T20:13:59+00:00"
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
@@ -882,7 +881,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2014-12-20 21:24:13"
+            "time": "2014-12-20T21:24:13+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -936,7 +935,7 @@
                 "lexer",
                 "parser"
             ],
-            "time": "2014-09-09 13:34:57"
+            "time": "2014-09-09T13:34:57+00:00"
         },
         {
             "name": "doctrine/migrations",
@@ -1075,7 +1074,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2014-06-03 19:53:45"
+            "time": "2014-06-03T19:53:45+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -1119,7 +1118,7 @@
             "keywords": [
                 "html"
             ],
-            "time": "2015-08-05 01:03:42"
+            "time": "2015-08-05T01:03:42+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -1177,7 +1176,7 @@
                 "javascript",
                 "routing"
             ],
-            "time": "2015-01-23 02:44:26"
+            "time": "2015-01-23T02:44:26+00:00"
         },
         {
             "name": "friendsofsymfony/rest-bundle",
@@ -1262,7 +1261,7 @@
             "keywords": [
                 "rest"
             ],
-            "time": "2015-10-16 07:05:52"
+            "time": "2015-10-16T07:05:52+00:00"
         },
         {
             "name": "friendsofsymfony/user-bundle",
@@ -1329,7 +1328,7 @@
             "keywords": [
                 "User management"
             ],
-            "time": "2015-06-01 00:57:03"
+            "time": "2015-06-01T00:57:03+00:00"
         },
         {
             "name": "gedmo/doctrine-extensions",
@@ -1407,7 +1406,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2015-02-24 21:41:37"
+            "time": "2015-02-24T21:41:37+00:00"
         },
         {
             "name": "giggsey/libphonenumber-for-php",
@@ -1470,7 +1469,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2015-10-08 14:46:18"
+            "time": "2015-10-08T14:46:18+00:00"
         },
         {
             "name": "google/apiclient",
@@ -1513,7 +1512,7 @@
             "keywords": [
                 "google"
             ],
-            "time": "2015-10-16 22:11:08"
+            "time": "2015-10-16T22:11:08+00:00"
         },
         {
             "name": "guzzle/guzzle",
@@ -1609,7 +1608,47 @@
                 "web service"
             ],
             "abandoned": "guzzlehttp/guzzle",
-            "time": "2015-03-18 18:23:50"
+            "time": "2015-03-18T18:23:50+00:00"
+        },
+        {
+            "name": "ibrows/sonata-translation-bundle",
+            "version": "1.0.6",
+            "target-dir": "Ibrows/SonataTranslationBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ibrows/IbrowsSonataTranslationBundle.git",
+                "reference": "c6c78557461e0598ec5362217e4001215d5a2117"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ibrows/IbrowsSonataTranslationBundle/zipball/c6c78557461e0598ec5362217e4001215d5a2117",
+                "reference": "c6c78557461e0598ec5362217e4001215d5a2117",
+                "shasum": ""
+            },
+            "require": {
+                "lexik/translation-bundle": "*",
+                "php": ">=5.3.0",
+                "sonata-project/admin-bundle": "*",
+                "symfony/framework-bundle": ">=2.1"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Ibrows\\SonataTranslationBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Integration of lexik translation into sonata admin",
+            "keywords": [
+                "ibrows",
+                "lexik",
+                "sonata",
+                "translation"
+            ],
+            "time": "2014-01-06T16:22:02+00:00"
         },
         {
             "name": "imagine/imagine",
@@ -1717,7 +1756,7 @@
             "keywords": [
                 "parameters management"
             ],
-            "time": "2015-06-03 08:27:03"
+            "time": "2015-06-03T08:27:03+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -1822,7 +1861,7 @@
                 "xml",
                 "yaml"
             ],
-            "time": "2014-07-12 07:13:19"
+            "time": "2014-07-12T07:13:19+00:00"
         },
         {
             "name": "jms/parser-lib",
@@ -1857,7 +1896,7 @@
                 "Apache2"
             ],
             "description": "A library for easily creating recursive-descent parsers.",
-            "time": "2012-11-18 18:08:43"
+            "time": "2012-11-18T18:08:43+00:00"
         },
         {
             "name": "jms/serializer",
@@ -1927,7 +1966,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2014-03-18 08:39:00"
+            "time": "2014-03-18T08:39:00+00:00"
         },
         {
             "name": "jms/serializer-bundle",
@@ -1997,7 +2036,7 @@
                 "serialization",
                 "xml"
             ],
-            "time": "2013-12-05 14:36:11"
+            "time": "2013-12-05T14:36:11+00:00"
         },
         {
             "name": "jquery/jquery",
@@ -2072,7 +2111,7 @@
                 "menu",
                 "tree"
             ],
-            "time": "2012-06-10 16:20:40"
+            "time": "2012-06-10T16:20:40+00:00"
         },
         {
             "name": "knplabs/knp-menu-bundle",
@@ -2121,7 +2160,7 @@
             "keywords": [
                 "menu"
             ],
-            "time": "2013-05-25 10:20:03"
+            "time": "2013-05-25T10:20:03+00:00"
         },
         {
             "name": "knplabs/knp-snappy",
@@ -2184,7 +2223,7 @@
                 "thumbnail",
                 "wkhtmltopdf"
             ],
-            "time": "2015-09-16 12:34:39"
+            "time": "2015-09-16T12:34:39+00:00"
         },
         {
             "name": "knplabs/knp-snappy-bundle",
@@ -2312,7 +2351,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2014-12-12 05:37:00"
+            "time": "2014-12-12T05:37:00+00:00"
         },
         {
             "name": "leafo/lessphp",
@@ -2417,7 +2456,71 @@
                 "i18n",
                 "translation"
             ],
-            "time": "2014-03-20 16:49:42"
+            "time": "2014-03-20T16:49:42+00:00"
+        },
+        {
+            "name": "liuggio/ExcelBundle",
+            "version": "v2.0.1",
+            "target-dir": "Liuggio/ExcelBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/liuggio/ExcelBundle.git",
+                "reference": "dce33eb948ba01303c15b9c3bd17390afe37407c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/liuggio/ExcelBundle/zipball/dce33eb948ba01303c15b9c3bd17390afe37407c",
+                "reference": "dce33eb948ba01303c15b9c3bd17390afe37407c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "phpoffice/phpexcel": "~1.8.0",
+                "symfony/framework-bundle": "~2.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*",
+                "sensio/framework-extra-bundle": "~2.1",
+                "symfony/browser-kit": "~2.1",
+                "symfony/class-loader": "~2.1",
+                "symfony/finder": "~2.0",
+                "symfony/form": "~2.1",
+                "symfony/validator": "~2.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Liuggio\\ExcelBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ExcelBundle Contributors",
+                    "homepage": "https://github.com/liuggio/ExcelBundle#contributors"
+                },
+                {
+                    "name": "Giulio De Donato",
+                    "email": "liuggio@gmail.com"
+                }
+            ],
+            "description": "This is a Symfony2 Bundle helps you to read and write Excel files (including pdf, xlsx, odt), thanks to the PHPExcel library",
+            "homepage": "http://www.welcometothebundle.com",
+            "keywords": [
+                "Symfony2",
+                "bundle",
+                "excel",
+                "xls"
+            ],
+            "time": "2014-06-11T13:07:44+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -2468,7 +2571,7 @@
             "keywords": [
                 "markdown"
             ],
-            "time": "2015-03-01 12:03:08"
+            "time": "2015-03-01T12:03:08+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2545,7 +2648,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-10-14 12:51:02"
+            "time": "2015-10-14T12:51:02+00:00"
         },
         {
             "name": "nelmio/api-doc-bundle",
@@ -2627,7 +2730,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2015-10-27 08:23:44"
+            "time": "2015-10-27T08:23:44+00:00"
         },
         {
             "name": "nelmio/cors-bundle",
@@ -2684,7 +2787,7 @@
                 "cors",
                 "crossdomain"
             ],
-            "time": "2015-12-09 17:26:34"
+            "time": "2015-12-09T17:26:34+00:00"
         },
         {
             "name": "ob/highcharts-bundle",
@@ -2739,7 +2842,7 @@
                 "marcaube",
                 "ob"
             ],
-            "time": "2014-06-26 19:18:50"
+            "time": "2014-06-26T19:18:50+00:00"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -2789,7 +2892,7 @@
                 "sequence",
                 "set"
             ],
-            "time": "2014-03-11 13:46:42"
+            "time": "2014-03-11T13:46:42+00:00"
         },
         {
             "name": "phpoffice/phpexcel",
@@ -2846,7 +2949,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2015-05-01 07:00:55"
+            "time": "2015-05-01T07:00:55+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -2896,7 +2999,7 @@
                 "php",
                 "type"
             ],
-            "time": "2015-07-25 16:39:46"
+            "time": "2015-07-25T16:39:46+00:00"
         },
         {
             "name": "pirminis/maybe-monad",
@@ -2937,7 +3040,7 @@
                 "monad",
                 "safe"
             ],
-            "time": "2014-10-23 19:27:17"
+            "time": "2014-10-23T19:27:17+00:00"
         },
         {
             "name": "psr/log",
@@ -2975,7 +3078,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2012-12-21 11:40:51"
+            "time": "2012-12-21T11:40:51+00:00"
         },
         {
             "name": "sensio/distribution-bundle",
@@ -3021,7 +3124,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2015-06-05 22:32:08"
+            "time": "2015-06-05T22:32:08+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -3070,7 +3173,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2013-07-24 08:49:53"
+            "time": "2013-07-24T08:49:53+00:00"
         },
         {
             "name": "sensio/generator-bundle",
@@ -3120,7 +3223,7 @@
                 }
             ],
             "description": "This bundle generates code for you",
-            "time": "2014-04-28 14:01:06"
+            "time": "2014-04-28T14:01:06+00:00"
         },
         {
             "name": "shuber/curl",
@@ -3233,7 +3336,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2014-06-12 12:23:06"
+            "time": "2014-06-12T12:23:06+00:00"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -3360,7 +3463,7 @@
                 "mongodb",
                 "redis"
             ],
-            "time": "2015-05-18 12:12:33"
+            "time": "2015-05-18T12:12:33+00:00"
         },
         {
             "name": "sonata-project/cache-bundle",
@@ -3542,7 +3645,7 @@
                 "doctrine2",
                 "json"
             ],
-            "time": "2014-02-14 12:45:49"
+            "time": "2014-02-14T12:45:49+00:00"
         },
         {
             "name": "sonata-project/doctrine-orm-admin-bundle",
@@ -3667,7 +3770,7 @@
                 "Easy Extends",
                 "sonata"
             ],
-            "time": "2014-09-29 09:36:23"
+            "time": "2014-09-29T09:36:23+00:00"
         },
         {
             "name": "sonata-project/exporter",
@@ -3780,7 +3883,7 @@
             "keywords": [
                 "google authenticator"
             ],
-            "time": "2014-03-31 09:18:53"
+            "time": "2014-03-31T09:18:53+00:00"
         },
         {
             "name": "sonata-project/intl-bundle",
@@ -3892,7 +3995,7 @@
                 "sonata"
             ],
             "abandoned": true,
-            "time": "2013-03-01 17:24:02"
+            "time": "2013-03-01T17:24:02+00:00"
         },
         {
             "name": "sonata-project/user-bundle",
@@ -4025,7 +4128,7 @@
                 "translatable",
                 "tree"
             ],
-            "time": "2013-06-23 16:53:41"
+            "time": "2013-06-23T16:53:41+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -4078,7 +4181,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2015-06-06 14:19:39"
+            "time": "2015-06-06T14:19:39+00:00"
         },
         {
             "name": "symfony/assetic-bundle",
@@ -4141,7 +4244,7 @@
                 "compression",
                 "minification"
             ],
-            "time": "2013-11-25 16:34:50"
+            "time": "2013-11-25T16:34:50+00:00"
         },
         {
             "name": "symfony/icu",
@@ -4191,7 +4294,7 @@
                 "intl"
             ],
             "abandoned": "symfony/intl",
-            "time": "2014-07-25 10:00:11"
+            "time": "2014-07-25T10:00:11+00:00"
         },
         {
             "name": "symfony/monolog-bundle",
@@ -4250,7 +4353,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2014-07-21 00:36:06"
+            "time": "2014-07-21T00:36:06+00:00"
         },
         {
             "name": "symfony/swiftmailer-bundle",
@@ -4307,7 +4410,7 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2014-12-01 17:44:50"
+            "time": "2014-12-01T17:44:50+00:00"
         },
         {
             "name": "symfony/symfony",
@@ -4420,7 +4523,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2014-09-28 17:03:37"
+            "time": "2014-09-28T17:03:37+00:00"
         },
         {
             "name": "trsteel/ckeditor-bundle",
@@ -4521,7 +4624,7 @@
                 "i18n",
                 "text"
             ],
-            "time": "2014-07-05 10:01:35"
+            "time": "2014-07-05T10:01:35+00:00"
         },
         {
             "name": "twig/twig",
@@ -4582,7 +4685,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2015-10-13 07:07:02"
+            "time": "2015-10-13T07:07:02+00:00"
         },
         {
             "name": "webtopay/libwebtopay",
@@ -4615,7 +4718,7 @@
                 }
             ],
             "description": "PHP Library for WebToPay provided services",
-            "time": "2015-07-29 15:27:14"
+            "time": "2015-07-29T15:27:14+00:00"
         },
         {
             "name": "webtopay/webtopay-bundle",
@@ -4689,7 +4792,7 @@
                 }
             ],
             "description": "JSONP callback validator.",
-            "time": "2014-01-20 22:35:06"
+            "time": "2014-01-20T22:35:06+00:00"
         },
         {
             "name": "willdurand/negotiation",
@@ -4738,7 +4841,7 @@
                 "header",
                 "negotiation"
             ],
-            "time": "2015-10-01 07:42:40"
+            "time": "2015-10-01T07:42:40+00:00"
         },
         {
             "name": "zendframework/zend-json",
@@ -4792,7 +4895,7 @@
                 "json",
                 "zf2"
             ],
-            "time": "2014-03-12 16:10:15"
+            "time": "2014-03-12T16:10:15+00:00"
         },
         {
             "name": "zendframework/zend-stdlib",
@@ -4847,7 +4950,7 @@
                 "stdlib",
                 "zf2"
             ],
-            "time": "2014-03-12 16:10:15"
+            "time": "2014-03-12T16:10:15+00:00"
         }
     ],
     "packages-dev": [],

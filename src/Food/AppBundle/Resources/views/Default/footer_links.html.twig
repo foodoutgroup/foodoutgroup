@@ -4,7 +4,7 @@
         <div class="col col-1">
             <h5>{% trans %}general.page_name{% endtrans %}</h5>
             <ul class="menu">
-                {% for page in staticPages %}
+                {% for page in staticPageCollection %}
                     <li>
                         <a href="{{ slug.getUrl(page.id, 'page')}}">
                             {{ page.title }}
@@ -13,12 +13,12 @@
                 {% endfor %}
             </ul>
         </div>
-        {% if topRatedPlaces is not empty %}
+        {% if topRatedPlaceCollection is not empty %}
         <div class="col col-3">
             <h5>{% trans %}general.top_restaurants{% endtrans %}</h5>
             <div class="clearfix">
                 <div class="small-col fl rating-col">
-                    {% for place in topRatedPlaces %}
+                    {% for place in topRatedPlaceCollection %}
                         {% if  (loop.index % 2) %}
                             <div class="clearfix">
                                 <span class="name fl">
@@ -32,7 +32,7 @@
                     {% endfor %}
                 </div>
                 <div class="small-col fr rating-col">
-                    {% for place in topRatedPlaces %}
+                    {% for place in topRatedPlaceCollection %}
                         {% if not (loop.index % 2) %}
                             <div class="clearfix">
                                 <span class="name fl">

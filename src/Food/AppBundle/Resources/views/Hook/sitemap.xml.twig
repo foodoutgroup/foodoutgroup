@@ -7,7 +7,7 @@
     {% endif %}
     <url>
         <loc>{{ homepage }}</loc>
-        <changefreq>hourly</changefreq>
+        {#<changefreq>hourly</changefreq>#}
     </url>
     {#<url>#}
         {#<loc>http://{{ domain }}{{ path('food_places_lt_recommended', {}, false) }}</loc>#}
@@ -52,7 +52,6 @@
 
     {% if page_block_config != 0 %}
         {% set blogPathStart = homepage ~ '/' ~ slug.path(page_block_config, 'page') %}
-        <url>{{ blogPathStart }}</url>
         {% for blogCategory in blogCollection %}
             {% set category = blogCategory['category'] %}
             {% set postCollection = blogCategory['postCollection'] %}
