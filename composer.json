@@ -74,7 +74,8 @@
         "google/apiclient": "~1.1.0",
         "phpoffice/phpexcel": "^1.8",
         "nelmio/cors-bundle": "1.4.1",
-        "symfony/intl": "^2.8"
+        "symfony/intl": "^2.8",
+        "mailerlite/mailerlite_rest_v1": "^1.1"
     },
     "scripts": {
         "post-install-cmd": [
