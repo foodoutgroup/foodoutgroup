@@ -37,7 +37,7 @@ class AjaxController extends Controller
                 $this->_isPlaceInRadius($response, intval($request->get('place')));
                 break;
             case 'check-coupon':
-                $this->_ajaxCheckCoupon($response, $request->get('place_id'), $request->get('coupon_code'));
+                $this->_ajaxCheckCoupon($response, $request->get('place_id'), $request->get('coupon_code'), $request);
                 break;
             default:
                 $response->setContent(json_encode([
@@ -125,7 +125,7 @@ class AjaxController extends Controller
                     $cartSession,
                     $placeId,
                     new \DateTime('now'),
-                    $currentUrl,
+                    $request->getUri(),
                     'adress_change_find',
                     $respData['message'],
                     serialize($request)
@@ -265,7 +265,7 @@ class AjaxController extends Controller
      * @param int $placeId
      * @param string $couponCode
      */
-    private function _ajaxCheckCoupon(Response $response, $placeId, $couponCode)
+    private function _ajaxCheckCoupon(Response $response, $placeId, $couponCode, Request $request)
     {
         $trans = $this->get('translator');
         $cont = [
@@ -371,7 +371,7 @@ class AjaxController extends Controller
                 $this->container->get('food.cart')->getSessionId(),
                 $place,
                 new \DateTime('now'),
-                $currentUrl,
+                $request->getUri(),
                 'checkout_coupon_page',
                 $cont['data']['error'],
                 serialize($request)
