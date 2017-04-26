@@ -18,6 +18,10 @@ use Food\AppBundle\Validator\Constraints as AppAssert;
  */
 class City implements \JsonSerializable
 {
+
+
+    const SLUG_TYPE = 'city';
+
     /**
      * @ORM\ManyToMany(targetEntity="Food\PlacesBundle\Entity\BestOffer", mappedBy="offerCity")
      */
@@ -102,6 +106,28 @@ class City implements \JsonSerializable
      * this is not a mapped field of entity metadata, just a simple property
      */
     private $locale;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
+
+    /**
+     * @var \Food\UserBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
+     */
+    private $editedBy;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="edited_at", type="datetime", nullable=true)
+     */
+    private $editedAt;
 
     public function __construct()
     {
@@ -337,6 +363,13 @@ class City implements \JsonSerializable
         return $this->locale;
     }
 
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+        return $this;
+
+    }
+
 
 
 
@@ -392,5 +425,53 @@ class City implements \JsonSerializable
     public function getBestOffers()
     {
         return $this->bestOffers;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param null|string $deletedAt
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getEditedAt()
+    {
+        return $this->editedAt;
+    }
+
+    /**
+     * @param \DateTime|null $editedAt
+     */
+    public function setEditedAt($editedAt)
+    {
+        $this->editedAt = $editedAt;
+    }
+
+    /**
+     * @return \Food\UserBundle\Entity\User
+     */
+    public function getEditedBy()
+    {
+        return $this->editedBy;
+    }
+
+    /**
+     * @param \Food\UserBundle\Entity\User $editedBy
+     */
+    public function setEditedBy($editedBy)
+    {
+        $this->editedBy = $editedBy;
     }
 }

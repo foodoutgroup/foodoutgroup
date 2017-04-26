@@ -26,6 +26,7 @@ class Dish extends Uploadable implements Translatable
     // megabytes
     protected $maxFileSize = 1.9;
 
+    const SLUG_TYPE = 'dish';
     /**
      * @var integer
      *

@@ -11,6 +11,10 @@ imports:
 parameters:
     #nav_table_prefix: "Čilija Skambučių Centras"
     #nav_ws_prefix: "Čilija Skambučių Centras"
+    #available_locales: [lt, en, ru]
+    #available_locales_routing: lt | en | ru
+    #available_cities: ["Vilnius","Kaunas","Klaipėda"]
+    #available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda"]
     time_zone: "Europe/Vilnius"
     #~ sms.available_providers: [food.infobip, food.silverstreet]
     sms.available_providers: [food.infobip]
@@ -99,6 +103,9 @@ framework:
 
 # Twig Configuration
 twig:
+    form:
+        resources:
+            - 'FoodAppBundle:Form:fields.html.twig'
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
@@ -342,6 +349,8 @@ sonata_admin:
                       - sonata.admin.banned_ips
                       - sonata.admin.banned_email
                       - sonata.admin.unused_sf_numbers
+#                      - food_admin_import_export
+#                      - sonata.admin.import_export
                   roles: [ ROLE_ADMIN ]
               admin.editor:
                   label: admin.group.editor
@@ -359,6 +368,7 @@ sonata_admin:
                       - sonata.admin.blog_post
                       - sonata.admin.sms.template
                       - sonata.admin.email.template
+                      - sonata.admin.translations
                   roles: [ ROLE_EDITOR, ROLE_ADMIN ]
               admin.marketing:
                   label: admin.group.marketing

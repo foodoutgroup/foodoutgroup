@@ -108,6 +108,12 @@ class DishUnit implements Translatable
      */
     private $locale;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
 
     /**
      * Returns the name
@@ -404,5 +410,21 @@ class DishUnit implements Translatable
     public function getNameToNav()
     {
         return $this->nameToNav;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param null|string $deletedAt
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
     }
 }

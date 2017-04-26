@@ -2,8 +2,12 @@
 namespace Food\AppBundle\Service;
 
 
+use Aws\CloudFront\Exception\Exception;
+use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Entity;
 use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Entity\Slug;
+use Food\AppBundle\Entity\City;
 use Food\DishesBundle\Utils\Slug\SlugGenerator;
 use Food\DishesBundle\Utils\Slug\TextStrategy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -45,10 +49,55 @@ class SlugService
         $this->isBanned = $this->misc->isIpBanned($this->container->get('request')->getClientIp());
     }
 
+    public function generateForLocale($locale, $object,  $slugField = 'slug', $type = SlugEntity::TYPE_PAGE)
+    {
+        $defined = false;
+        if(defined(get_class($object) . '::SLUG_TYPE')){
+            $defined = true;
+            $type = $object::SLUG_TYPE;
+        } elseif ($type === null)
+        {
+            throw new \Exception('Type not defined');
+        }
+
+
+        if ($type != null && !$defined && !in_array($type, SlugEntity::$typeCollection)) {
+            throw new \Exception('Slug type was not found');
+        }
+
+        if (!method_exists($object, 'getTranslations')) {
+            throw new \Exception('getTranslations method required');
+        }
+
+        if (!$locale){
+            throw new \Exception('Locale is required');
+        }
+
+
+        $method = Inflector::camelize('get_' . $slugField);
+
+        $strategy = new TextStrategy($this->container);
+        $strategy->setType($type);
+        $context = new SlugGenerator($strategy);
+        $context->generate($locale, $object->getId(), $object->{$method}());
+
+
+    }
+
     public function generate($object, $slugField = 'slug', $type = SlugEntity::TYPE_PAGE)
     {
 
-        if (!in_array($type, SlugEntity::$typeCollection)) {
+        $defined = false;
+        if(defined(get_class($object) . '::SLUG_TYPE')){
+            $defined = true;
+            $type = $object::SLUG_TYPE;
+        } elseif ($type === null)
+        {
+            throw new \Exception('Type not defined');
+        }
+
+
+        if ($type != null && !$defined && !in_array($type, SlugEntity::$typeCollection)) {
             throw new \Exception('Slug type was not found');
         }
 
@@ -62,13 +111,15 @@ class SlugService
         $textsForSlugs = [];
         $origName = null;
 
-        $method = 'get' . ucfirst($slugField);
-        if (method_exists($object, $method)) {
+        $method = Inflector::camelize('get_' . $slugField);
+
+        if (method_exists($object, $method) ) {
             $textsForSlugs[$defaultLocale] = $object->{$method}();
             $origName = $textsForSlugs[$defaultLocale];
         }
 
         foreach ($object->getTranslations()->getValues() as $row) {
+
             if ($row->getField() == $slugField) {
                 $textsForSlugs[$row->getLocale()] = $row->getContent();
             }
@@ -79,8 +130,6 @@ class SlugService
                 $textsForSlugs[$loc] = $origName;
             }
         }
-
-
         foreach ($locales as $loc) {
             $strategy = new TextStrategy($this->container);
             $strategy->setType($type);
