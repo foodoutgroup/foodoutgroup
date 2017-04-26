@@ -15,6 +15,7 @@ use Food\AppBundle\Validator\Constraints as AppAssert;
  * @ORM\Table(name="city")
  * @ORM\Entity(repositoryClass="Food\AppBundle\Entity\CityRepository")
  * @Gedmo\TranslationEntity(class="Food\AppBundle\Entity\CityLocalized")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class City implements \JsonSerializable
 {
