@@ -36,6 +36,7 @@ class SettingsController extends CoreController
         'free_delivery_discount_code_generation_enable',
         'free_delivery_discount_code_generation_after_completed_orders',
         'placepoint_prepare_times',
+        'facebook_pixel_code'
     ];
 
     public function indexAction(Request $request)
@@ -44,7 +45,7 @@ class SettingsController extends CoreController
         $session = $this->get('session');
         $data = [];
         foreach ($this->keywordMapCollection as $keyword) {
-            $data[$keyword] = $paramService->getParam($keyword, true);
+            $data[$keyword] = $paramService->getParam($keyword, '');
         }
 
         $form = $this->get('form.factory')->createNamedBuilder('settings', 'form', $data, ['csrf_protection' => false]);

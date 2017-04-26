@@ -650,6 +650,7 @@ class OrderService extends ContainerAware
             'place_point_self_delivery' => $order->getPlacePointSelfDelivery(),
             'payment_method' => $this->container->get('translator')->trans('mobile.payment.'.$order->getPaymentMethod()),
             'order_date' => $order->getOrderDate()->format('H:i'),
+            'order_date_full' => $order->getOrderDate(),
             'discount'    => $discount,
             'state'       => [
                 'title'       => $title,

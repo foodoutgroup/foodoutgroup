@@ -796,7 +796,7 @@ class NavService extends ContainerAware
 
         // some calculations beforehand
 
-        $deliveryTotal = $o->getDeliveryPrice()->val(0.0);
+        $deliveryTotal = $o->getDeliveryPriceForNav()->val(0.0);
         $discountSum = $o->getDiscountSum()->val(0.0);
         $foodTotal = $o->getFoodTotalForNav()->val(0.0);
 
@@ -1817,9 +1817,9 @@ class NavService extends ContainerAware
             'Payment Method Code'      => $o->getPaymentMethod()->val('') == 'local'
                 ? $o->getDriver()->getId()->val('')
                 : $this->convertPaymentType($o->getPaymentMethod()->val('')),
-            'Food Amount With VAT'     => $o->getTotal()->val(0.0) - $o->getDeliveryPrice()->val(0.0),
+            'Food Amount With VAT'     => $o->getTotal()->val(0.0) - $o->getDeliveryPriceForNav()->val(0.0),
             'Alcohol Amount With VAT'  => 0.0,
-            'Delivery Amount With VAT' => $o->getDeliveryPrice()->val('')
+            'Delivery Amount With VAT' => $o->getDeliveryPriceForNav()->val('')
         ];
 
         $result = [

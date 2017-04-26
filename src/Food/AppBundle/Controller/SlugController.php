@@ -61,8 +61,8 @@ class SlugController extends Controller
             }
 
         if ($this->slug->isBanned()) {
-            $banned_page = $this->get('food.static')->getPage($this->get('food.app.utils.misc')->getParam('banned_page', true));
-            if($banned_page->getSlug() != $slug) {
+            $banned_page = $this->get('food.static')->getPage($this->get('food.app.utils.misc')->getParam('banned_page', -1));
+            if($banned_page && $banned_page->getSlug() != $slug) {
                 return $this->redirect($this->slug->urlFromParam('page_banned', Slug::TYPE_PAGE), 302);
             }
         }

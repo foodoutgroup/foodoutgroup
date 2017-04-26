@@ -92,35 +92,71 @@
 
     {% endblock %}
 
-    <script>
-        !function (f, b, e, v, n, t, s) {
-            if (f.fbq)return;
-            n = f.fbq = function () {
-                n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-            };
-            if (!f._fbq) f._fbq = n;
-            n.push = n;
-            n.loaded = !0;
-            n.version = '2.0';
-            n.queue = [];
-            t = b.createElement(e);
-            t.async = !0;
-            t.src = v;
-            s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s)
-        }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '901898153179068');
-        fbq('track', "PageView");
+    {#<script>#}
+        {#!function (f, b, e, v, n, t, s) {#}
+            {#if (f.fbq)return;#}
+            {#n = f.fbq = function () {#}
+                {#n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments)#}
+            {#};#}
+            {#if (!f._fbq) f._fbq = n;#}
+            {#n.push = n;#}
+            {#n.loaded = !0;#}
+            {#n.version = '2.0';#}
+            {#n.queue = [];#}
+            {#t = b.createElement(e);#}
+            {#t.async = !0;#}
+            {#t.src = v;#}
+            {#s = b.getElementsByTagName(e)[0];#}
+            {#s.parentNode.insertBefore(t, s)#}
+        {#}(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');#}
+        {#fbq('init', '901898153179068');#}
+        {#fbq('track', "PageView");#}
+    {# todo: MULT-L fix hardcode #}
+    {% if site_country == 'LT'%}
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-PNDJF9');</script>
+        <!-- End Google Tag Manager -->
+    {% endif %}
 
-        $(document).ready(function () {
-            $('.holiday-time').tooltip({
-                placement: 'bottom'
-            });
-        });
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-                   src="https://www.facebook.com/tr?id=901898153179068&ev=PageView&noscript=1"/></noscript>
-    {# Facebook Pixel Code End #}
+    {# Facebook Pixel Code Begin #}
+
+    {{  misc_utils.getParam('facebook_pixel_code')|raw }}
+
+    {#<script>#}
+        {#!function (f, b, e, v, n, t, s) {#}
+            {#if (f.fbq)return;#}
+            {#n = f.fbq = function () {#}
+                {#n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments)#}
+            {#};#}
+            {#if (!f._fbq) f._fbq = n;#}
+            {#n.push = n;#}
+            {#n.loaded = !0;#}
+            {#n.version = '2.0';#}
+            {#n.queue = [];#}
+            {#t = b.createElement(e);#}
+            {#t.async = !0;#}
+            {#t.src = v;#}
+            {#s = b.getElementsByTagName(e)[0];#}
+            {#s.parentNode.insertBefore(t, s)#}
+        {#}(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');#}
+        {#fbq('init', '901898153179068');#}
+        {#fbq('track', "PageView");#}
+
+        {#$(document).ready(function () {#}
+            {#$('.holiday-time').tooltip({#}
+                {#placement: 'bottom'#}
+            {#});#}
+        {#});#}
+    {#</script>#}
+    {#<noscript><img height="1" width="1" style="display:none"#}
+                   {#src="https://www.facebook.com/tr?id=901898153179068&ev=PageView&noscript=1"/></noscript>#}
+     {#Facebook Pixel Code End #}
+
+
 
     {% block adnet_retargeting %}
         <!-- Adform Tracking Code BEGIN -->
@@ -190,15 +226,18 @@
     </script>
 </head>
 <body>
-    {{ notifications.init|raw }}
-    <div class="site">
-        {% block delfi_banner %}{% endblock %}
-        <div class="site-top">
-            <div class="site-block clearfix">
-                <a href="{{ path('food_lang_homepage') }}" class="main-logo">
-                    <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}"
-                    src="{% if site_country == 'LT' %}{{ asset('bundles/foodapp/images/logo_food.png') }}{% elseif site_country == 'LV' %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% elseif site_country == 'EE' %}{{ asset('bundles/foodapp/images/logo_food_ee.png') }}{% endif %}" />
-                </a>
+{{ notifications.init|raw }}
+<div class="site">
+    {% block delfi_banner %}{% endblock %}
+    <div class="site-top">
+        <div class="site-block clearfix">
+            <a href="{{ slug.toHomepage() }}" class="main-logo">
+                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}"
+
+                     src="{% if site_country == 'LT' %}{{ asset('bundles/foodapp/images/logo_food.png') }}{% elseif site_country == 'LV' %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% elseif site_country == 'EE' %}{{ asset('bundles/foodapp/images/logo_food_ee.png') }}{% endif %}"/>
+
+                     {#src="{% if site_country == 'LT' %}{{ asset('bundles/foodapp/images/logo_food_easter_lt.png') }}{% elseif site_country == 'LV' %}{{ asset('bundles/foodapp/images/logo_food_easter_lv.png') }}{% elseif site_country == 'EE' %}{{ asset('bundles/foodapp/images/logo_food_ee.png') }}{% endif %}" />#}
+            </a>
 
                 {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
                 {% set pageH = pageService.getByParam('page_help') %}

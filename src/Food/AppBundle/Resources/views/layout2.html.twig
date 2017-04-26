@@ -72,15 +72,38 @@
         {% endstylesheets %}
 
     {% endblock %}
+    {# Facebook retargeting script for Inspired #}
+    {#<script>(function() {
+            var _fbq = window._fbq || (window._fbq = []);
+            if (!_fbq.loaded) {
+                var fbds = document.createElement('script');
+                fbds.async = true;
+                fbds.src = '//connect.facebook.net/en_US/fbds.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(fbds, s);
+                _fbq.loaded = true;
+            }
+            _fbq.push(['addPixelId', '1000570273293239']);
+        })();
+        window._fbq = window._fbq || [];
+        window._fbq.push(['track', 'PixelInitialized', {}]);
+    </script>
+    <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=1000570273293239&ev=PixelInitialized" /></noscript>#}
+    {# Facebook Pixel Code Begin #}
+    <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod? n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n; n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0; t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '901898153179068');
+        fbq('track', "PageView");
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=901898153179068&ev=PageView&noscript=1" /></noscript>
+    {# Facebook Pixel Code End #}
 </head>
 <body>
 {{ notifications.init|raw }}
 <div class="site">
     <div class="site-top">
-        {#<div class="site-block clearfix"><a href="{{ path('food_lang_homepage') }}" class="main-logo"><img alt="{{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food_easter_lt.png') }}"></a>#}
-        <div class="site-block clearfix"><a href="{{ path('food_lang_homepage') }}" class="main-logo"><img alt="{{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food.png') }}"></a>
-
-                {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
+        <div class="site-block clearfix"><a href="{{ path('food_lang_homepage') }}" class="main-logo"><img alt="{{ page_title }}" src="{{ asset('bundles/foodapp/images/logo_food_easter_lt.png') }}"></a>
+            {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
             <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
                 <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}general.help_button{% endtrans %}</span></a></li>
                 <li class="login-ico">
@@ -98,7 +121,7 @@
                     <div class="app-block-inner">
                         <h3>Foodout.lt tavo kišenėje!</h3>
                         <p>Užsisakyk maisto į namus ar biurą per iPhone arba Android telefonus. Atsisiųsk nemokamą aplikaciją!.</p>
-                        <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
+                        <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img src="{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a target="_BLANK" href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img src="{{ asset('bundles/foodapp/images/g-store.png') }}"></a></div>
                     </div>
                 </div>
             </div>
@@ -129,6 +152,8 @@
 
     {% block ga_js_code %}{% endblock %}
 
+
+    {% render(controller('FoodAppBundle:Default:showVideo')) %}
 </script>
 </body>
 </html>

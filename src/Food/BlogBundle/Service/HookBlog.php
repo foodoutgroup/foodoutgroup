@@ -78,6 +78,8 @@ class HookBlog {
     public function build()
     {
 
+
+
         $page_blog = $this->container->get('food.app.utils.misc')->getParam('page_blog');
 
         if($page_blog == 0) {

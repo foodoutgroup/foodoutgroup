@@ -227,6 +227,9 @@ class SlugService
     public function urlFromParam($name, $type)
     {
         $contentId = $bannedEmailPageId = $this->misc->getParam($name);
+        if(!$contentId) {
+            throw new \Exception('Parameter '.$name.' not found');
+        }
         return $this->getUrl($contentId, $type);
     }
 

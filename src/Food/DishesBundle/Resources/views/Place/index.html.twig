@@ -115,7 +115,6 @@
             <div class="page-path clearfix">
                 <a href="{{ slug.toHomepage() }}">{% trans %}places.home{% endtrans %}</a>
                 {% if breadcrumbData.city is not empty %}
-
                     <a href="{{ breadcrumbData.city_url }}">{{ breadcrumbData.city }}</a>
                     {% if breadcrumbData.kitchen is not empty %}
                         <a href="{{ breadcrumbData.kitchen_url }}">{{ breadcrumbData.kitchen }}</a>
@@ -133,7 +132,9 @@
                         <div id="detailed-restaurant" class="detailed-resturant">
                         <ul>
                             <li><a href="#detailed-restaurant-menu">{% trans %}places.menu{% endtrans %}</a></li>
-                             {#<li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>#}
+                            {% if placeReviewCollection is defined %}
+                                <li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>
+                            {% endif %}
                             <li class="last restaurant-info-tab"><a itemprop="menu" href="{{ current_url }}#detailed-restaurant-info">{% trans %}places.information{% endtrans %}</a></li>
                         </ul>
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
@@ -169,25 +170,16 @@
                                         </div>
                                     {% endif %}
 
-                                    {#{% if site_country == 'LT' %}#}
-                                        {#{% if place.id in [63, 85, 302, 333] %}#}
-                                            {# Link to Cili Express #}
-                                            {#<br />#}
-                                            {#<a class="btn-walk" href="{{ path('food_cili_greita') }}">#}
-                                                {#<span><i class="icon-walk"></i><b>Eiti į Čili Take Away</b><i class="icon-arrow"></i></span>#}
-                                                {#<img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">#}
-                                            {#</a>#}
-                                        {#{% elseif place.id == 142 %}#}
-                                            {# Link to Cili #}
-                                            {#<br />#}
-                                            {#<a class="btn-walk" href="{{ path('food_1822_cili') }}">#}
-                                                {#<span><i class="icon-walk"></i><b>Eiti į Čili Pica</b><i class="icon-arrow"></i></span>#}
-                                                {#<img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">#}
-                                            {#</a>#}
-                                        {#{% endif %}#}
-                                    {#{% endif %}#}
+                                    {#Related place collection view#}
+                                    {% for relatedPlace in relatedPlaceCollection %}
+                                        <br />
+                                        <a class="btn-walk" href="{{ slug.getUrl(relatedPlace.id, 'place') }}">
+                                            <span><i class="icon-walk"></i><b>{% trans %}related.place.go.to{% endtrans %} {{ relatedPlace.name }}</b><i class="icon-arrow"></i></span>
+                                            <img itemprop="logo" class="restaurant_image" alt="general.restaurant_logo_alt" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
+                                        </a>
+                                    {% endfor %}
+                                    {# end of related place collection view #}
                                 </div>
-                        {# Meniu #}
                                 <div class="menu-righter">
                                     {% if placePointsAll|length == 1 %}
                                         {% if isTodayNoOneWantsToWork == true %}
@@ -244,35 +236,37 @@
                             </div>
                         </div>
                         {# Atsiliepimai #}
-                        {# <div id="detailed-restaurant-review" class="detailed-restaurant-review">
-                            <div class="review-title clearfix">
-                                {% if placeReviews %}
-                                <h3>{{ placeReviews|length }} {% transchoice placeReviews|length %}places.review_choice{% endtranschoice %}</h3>
-                                {% else %}
-                                <h3>{% trans %}general.no_place_reviews{% endtrans %}</h3>
-                                {% endif %}
-                            </div>
-                            <div class="review-list">
-                                {% for review in placeReviews %}
-                                <div class="review-item clearfix">
-                                    <div class="review-person"><img src="/bundles/foodapp/images/person.png">
-                                        <p class="name">{{ review.createdBy.getFirstname }}</p>
-                                        {% if review.createdBy.getDefaultAddress %}
-                                            <p class="location">{{ review.createdBy.getDefaultAddress.city }}</p>
-                                        {% endif %}
-                                    </div>
-                                    <div class="review-baloon">
-                                        <div class="nip"></div>
-                                        <p class="text">{{ review.review }}</p>
-                                        <div class="clearfix">
-                                            <div data-stars="{{ review.rate }}" class="restoran-rating fl"></div>
-                                            <div class="date fr">{{ review.createdAt|localizeddate('medium', 'none', locale) }}</div>
+                        {% if placeReviewCollection is defined %}
+                            <div id="detailed-restaurant-review" class="detailed-restaurant-review">
+                                <div class="review-title clearfix">
+                                    {% if placeReviews %}
+                                        <h3>{{ placeReviews|length }} {% transchoice placeReviews|length %}places.review_choice{% endtranschoice %}</h3>
+                                        {% else %}
+                                        <h3>{% trans %}general.no_place_reviews{% endtrans %}</h3>
+                                    {% endif %}
+                                </div>
+                                <div class="review-list">
+                                    {% for review in placeReviews %}
+                                    <div class="review-item clearfix">
+                                        <div class="review-person"><img src="/bundles/foodapp/images/person.png">
+                                            <p class="name">{{ review.createdBy.getFirstname }}</p>
+                                            {% if review.createdBy.getDefaultAddress %}
+                                                <p class="location">{{ review.createdBy.getDefaultAddress.city }}</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="review-baloon">
+                                            <div class="nip"></div>
+                                            <p class="text">{{ review.review }}</p>
+                                            <div class="clearfix">
+                                                <div data-stars="{{ review.rate }}" class="restoran-rating fl"></div>
+                                                <div class="date fr">{{ review.createdAt|localizeddate('medium', 'none', locale) }}</div>
+                                            </div>
                                         </div>
                                     </div>
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
                             </div>
-                        </div> #}
+                        {% endif %}
                         {# Restorano informacija #}
                         <div id="detailed-restaurant-info" class="detailed-restaurant-info">
                             <h3>{% trans %}places.about_place{% endtrans %}</h3>
