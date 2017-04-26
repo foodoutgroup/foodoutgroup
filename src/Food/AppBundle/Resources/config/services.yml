@@ -292,3 +292,15 @@ services:
             - 'FoodAppBundle:Settings'
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
+
+
+    sonata.admin.import_export:
+        class: Food\AppBundle\Admin\ImportAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.import_export" }
+        arguments:
+            - ~
+            - ~
+            - 'FoodAppBundle:Import'
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]

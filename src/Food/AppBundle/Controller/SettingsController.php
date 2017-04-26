@@ -2,14 +2,10 @@
 
 namespace Food\AppBundle\Controller;
 
-use Sonata\AdminBundle\Controller\CoreController;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Request;
 
-
-use Sonata\AdminBundle\Controller\CRUDController as Controller;
-class SettingsController extends Controller
+class SettingsController extends CRUDController
 {
 
     private $keywordMapCollection = [
@@ -44,8 +40,8 @@ class SettingsController extends Controller
 
     public function listAction( )
     {
+        $request = $this->get('request');
 
-        $request = $this->getRequest();
         $paramService = $this->get('food.app.utils.misc');
         $session = $this->get('session');
         $data = [];
