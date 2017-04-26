@@ -304,3 +304,7 @@ services:
             - 'FoodAppBundle:Import'
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
+
+    food.error_log_service:
+            class: Food\AppBundle\Service\ErrorLogService
+            parent: food.base_service
