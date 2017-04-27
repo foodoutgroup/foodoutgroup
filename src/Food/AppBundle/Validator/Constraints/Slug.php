@@ -14,7 +14,11 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class Slug extends Constraint
 {
-    public $message = ['regex' => 'Bad address structure', 'exist' => 'This address already exists'];
+    public $message = [
+        'regex' => 'Bad address structure',
+        'exist' => 'This address already exists',
+        'length' => 'Address to short, minimum 3 symbols required'
+    ];
     public $type;
 
     /**

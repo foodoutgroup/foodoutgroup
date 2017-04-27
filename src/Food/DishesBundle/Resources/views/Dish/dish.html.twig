@@ -1,8 +1,6 @@
-<script>
-    if(!window.jQuery)
-    {
-        var whereToGo = '{{ slug.getUrl(place.id, 'place') }}#dish{{ dish.id }}';
-        window.location.href = whereToGo;
+<script type="text/javascript">
+    if(!window.jQuery) {
+        window.location.href = '{{ slug.getUrl(place.id, 'place') }}#dish{{ dish.id }}';
     } else {
         var page = "/lightbox";
 
@@ -43,7 +41,7 @@
                 <img alt="{{ dish.name }}" src="//{{ cloudfront_url }}/{{ dish.getWebPathThumb('type3') }}" class="popup-header" />
             {% endif %}
             <div class="dish-info">
-                <p class="name {% if locale == 'lt' %}style{% endif %}">{{ dish.name }}</p>
+                <p class="name {% if site_country == 'LT' %}style{% endif %}">{{ dish.name }}</p>
                 <p class="desc">{{ dish.description|nl2br }}</p>
             </div>
         </div>

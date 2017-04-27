@@ -15,7 +15,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 class SlugValidator extends ConstraintValidator
 {
 
-    private $regex = '/^(?!admin|cart|login|logout|invoice|payments|newsletter|ajax|js|routing|banned)([\pL0-9-\/\__\"„“\.\+]+)/u';
+    private $regex = '^(?!admin|payment|api|js|user)([^\/]*)';
 
     protected $em;
     private $repository;
@@ -38,25 +38,20 @@ class SlugValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-
-
         if (preg_match($this->regex, $value, $matches)) {
-
-
 
             /**
              * @var $route Slug
              */
             $locale = $this->getLocale();
-
-
-
             $route = $this->repository->getBySlugAndLocale($value, $locale);
 
             if($route) {
                 if( ($route->getType() != $constraint->type) || ($this->itemId && $route->getId() != $this->itemId)) {
                     $this->context->addViolation($constraint->message['exist'],[]);
                 }
+            } else if(mb_strlen(trim($value)) <= 2) {
+                $this->context->addViolation($constraint->message['length'],[]);
             }
 
         } else {
