@@ -228,7 +228,7 @@ class AjaxController extends Controller
     {
         $cont = json_decode($response->getContent());
 
-        $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
+        $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithWorkCheck(
             $placeId,
             $this->get('food.googlegis')->getLocationFromSession()
         );
