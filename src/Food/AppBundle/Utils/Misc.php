@@ -24,6 +24,8 @@ class Misc
      */
     private $accountingEuroRate = 3.4528;
 
+    private static $paramCollection = [];
+
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
@@ -225,14 +227,21 @@ class Misc
      */
     public function getParam($name, $default = null)
     {
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(['param' => $name]);
+        if (isset(self::$paramCollection[$name])) {
+            return self::$paramCollection[$name];
+        }
+        else {
+            $em = $this->getContainer()->get('doctrine')->getManager();
+            $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(['param' => $name]);
 
-        if (!$parameter instanceof Param) {
-            return $default;
+            if (!$parameter instanceof Param) {
+                self::$paramCollection[$name] = $default;
+                return $default;
+            }
+            self::$paramCollection[$name] = $parameter->getValue();
+            return $parameter->getValue();
         }
 
-        return $parameter->getValue();
     }
 
     /**

@@ -252,9 +252,7 @@ class PlaceController extends Controller
 
     private function wasHere(Place $place = null, User $user = null)
     {
-        $count = $this->getUserOrderCount($place, $user);
-
-        return $count ? true : false;
+        return $this->getUserOrderCount($place, $user);
     }
 
     private function alreadyWrote(Place $place = null, User $user = null)
@@ -312,11 +310,10 @@ class PlaceController extends Controller
     public function getPlaceUrlByCityAction($placeId, Request $request)
     {
         $placeService = $this->get('food.places');
-        $domain = $this->container->getParameter('domain');
 
         $found_data = ['status' => 'fail', 'city' => null, 'url' => null];
 
-        $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->findOneBy(['title' => $request->get('city')]);
+        $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($request->get('city'));
 
         if ($cityObj && !empty($placeId)) {
             $url = $placeService->getPlaceUrlByCity($placeId, $cityObj->getTitle());
@@ -324,7 +321,7 @@ class PlaceController extends Controller
                 $found_data = [
                     'status' => 'success',
                     'city' => $cityObj->getTitle(),
-                    'url' => '//' . $domain . '/' . $url
+                    'url' =>    $this->get('slug')->getUrl($placeId, Slug::TYPE_PLACE),
                 ];
                 $this->get('food.googlegis')->setCity($cityObj);
             }

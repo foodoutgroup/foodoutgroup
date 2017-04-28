@@ -49,9 +49,9 @@
                     var cities_form = $(this);
                     var city = cities_form.find('#region_select').val();
 
-                    if (city == 'Vilnius' || city == 'Kaunas' || city == 'Klaipėda') {
-                        $.fancybox.close();
-                    } else if (city != '') {
+//                    if (city == 'Vilnius' || city == 'Kaunas' || city == 'Klaipėda') {
+//                        $.fancybox.close();
+//                    } else if (city != '') {
                         $.get("{{ path('food_place_url_by_city', { 'placeId': place.getId }) }}", { city: city }).done(function(data) {
                             if (data && data.url && data.status == 'success') {
                                 window.location = data.url;
@@ -59,7 +59,7 @@
                                 $.fancybox.close();
                             }
                         });
-                    }
+//                    }
                     return false;
                 });
 
@@ -386,15 +386,7 @@
     </script>
     {# Zavalas Popup Begin #}
     {% if places_service.isShowZavalDeliveryTime(place) %}
-        {% if site_country == 'LT' %}
-            <!-- This site is converting visitors into subscribers and customers with OptinMonster - http://optinmonster.com :: Campaign Title: [LT] Zavalas -->
-            <div id="om-nkcu3qstsjxkdv12-holder"></div><script>var nkcu3qstsjxkdv12,nkcu3qstsjxkdv12_poll=function(){var r=0;return function(n,l){clearInterval(r),r=setInterval(n,l)}}();!function(e,t,n){if(e.getElementById(n)){nkcu3qstsjxkdv12_poll(function(){if(window['om_loaded']){if(!nkcu3qstsjxkdv12){nkcu3qstsjxkdv12=new OptinMonsterApp();return nkcu3qstsjxkdv12.init({"u":"11462.367922","staging":0,"dev":0,"beta":0});}}},25);return;}var d=false,o=e.createElement(t);o.id=n,o.src="//a.optnmnstr.com/app/js/api.min.js",o.onload=o.onreadystatechange=function(){if(!d){if(!this.readyState||this.readyState==="loaded"||this.readyState==="complete"){try{d=om_loaded=true;nkcu3qstsjxkdv12=new OptinMonsterApp();nkcu3qstsjxkdv12.init({"u":"11462.367922","staging":0,"dev":0,"beta":0});o.onload=o.onreadystatechange=null;}catch(t){}}}};(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(o)}(document,"script","omapi-script");</script>
-            <!-- / OptinMonster -->
-        {% elseif site_country == 'LV' %}
-            <!-- This site is converting visitors into subscribers and customers with OptinMonster - http://optinmonster.com :: Campaign Title: [LV] Zavalas -->
-            <div id="om-xx1z1otqbssjrm1t-holder"></div><script>var xx1z1otqbssjrm1t,xx1z1otqbssjrm1t_poll=function(){var r=0;return function(n,l){clearInterval(r),r=setInterval(n,l)}}();!function(e,t,n){if(e.getElementById(n)){xx1z1otqbssjrm1t_poll(function(){if(window['om_loaded']){if(!xx1z1otqbssjrm1t){xx1z1otqbssjrm1t=new OptinMonsterApp();return xx1z1otqbssjrm1t.init({"u":"11462.367923","staging":0,"dev":0,"beta":0});}}},25);return;}var d=false,o=e.createElement(t);o.id=n,o.src="//a.optnmnstr.com/app/js/api.min.js",o.onload=o.onreadystatechange=function(){if(!d){if(!this.readyState||this.readyState==="loaded"||this.readyState==="complete"){try{d=om_loaded=true;xx1z1otqbssjrm1t=new OptinMonsterApp();xx1z1otqbssjrm1t.init({"u":"11462.367923","staging":0,"dev":0,"beta":0});o.onload=o.onreadystatechange=null;}catch(t){}}}};(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(o)}(document,"script","omapi-script");</script>
-            <!-- / OptinMonster -->
-        {% endif %}
+        {{ misc_utils.getParam('optin_code')|raw }}
     {% endif %}
     {# Zavalas Popup End #}
 {% endblock %}

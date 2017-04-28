@@ -142,13 +142,7 @@
         <div class="site-top">
             <div class="site-block clearfix">
                 <a href="{{ slug.toHomepage() }}" class="main-logo">
-                    {% set logoUrl = asset('bundles/foodapp/images/logo_food.png') %}
-                    {% if site_country == 'LV' %}
-                        {% set logoUrl = asset('bundles/foodapp/images/logo_food2.png') %}
-                    {% elseif site_country == 'EE' %}
-                        {% set logoUrl = asset('bundles/foodapp/images/logo_food_ee.png') %}
-                    {% endif %}
-                    <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{{ logoUrl }}"/>
+                    <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{{ asset(misc_utils.getParam('site_logo_url')) }}"/>
                 </a>
 
                 {% set pageH = pageService.getByParam('page_help') %}

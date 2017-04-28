@@ -5,6 +5,18 @@
 
 {% block body %}
     <style type="text/css">
+
+        .headerLogoMobile {
+            background: #cd1d36;
+        }
+
+        .headerLogoMobile img
+        {
+            max-height: 50px;
+        }
+
+
+
         {% if order.orderStatus in ['canceled', 'canceled_produced'] %}
         body {
             background: #f2dbd4;
@@ -18,8 +30,10 @@
     <table class="table table-bordered table condensed">
         <thead>
         <tr>
-            {#<th colspan="5"><img style="width: 100px;height: 30px" src="/bundles/foodapp/images/logo_food_easter_lt.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>#}
-            <th colspan="5"><img style="width: 100px;height: 30px" src="/bundles/foodapp/images/logo_food.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
+            <th class="headerLogoMobile" colspan="5">
+                <img src="{{ asset(misc_utils.getParam('site_logo_url')) }}" style="float: left;">
+                <img src="//{{ cloudfront_url }}/{{order.place.getWebPathThumb}}" style="float: right">
+            </th>
         </tr>
         <tr>
             <th style="width: 30px">#</th>

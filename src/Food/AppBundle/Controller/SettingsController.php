@@ -9,6 +9,7 @@ class SettingsController extends CRUDController
 {
 
     private $keywordMapCollection = [
+        'site_logo_url',
         'page_banned',
         'page_sitemap',
         'page_email_banned',
@@ -34,7 +35,9 @@ class SettingsController extends CRUDController
         'free_delivery_discount_code_generation_after_completed_orders',
         'placepoint_prepare_times',
         'facebook_pixel_code',
-        'reviews_enabled'
+        'reviews_enabled',
+        'optin_code',
+        'game_revive_zone_id',
     ];
 
     public function listAction( )
@@ -84,6 +87,7 @@ class SettingsController extends CRUDController
             $pageCollection[$page->getId()] = $page->getTitle();
         }
 
+        $form->add('site_logo_url', 'text');
 
         $form->add('page_banned', 'choice', [
             'label' => 'Banned page',
@@ -179,6 +183,18 @@ class SettingsController extends CRUDController
             'label' => 'Footer Scripts',
             'required' => false,
             'attr' => ['style' => 'width:100%;', 'group' => 'Content', 'rows' => 20]
+        ]);
+
+        $form->add('optin_code', 'textarea', [
+            'label' => 'Optin Code',
+            'required' => false,
+            'attr' => ['style' => 'width:100%;',  'rows' => 20]
+        ]);
+
+        $form->add('footer_social', 'textarea', [
+            'label' => 'Footer Social',
+            'required' => false,
+            'attr' => ['style' => 'width:100%;', 'rows' => 20]
         ]);
 
         foreach ($this->keywordMapCollection as $keyword) {

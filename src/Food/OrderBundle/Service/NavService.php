@@ -1594,7 +1594,7 @@ class NavService extends ContainerAware
             $this->getContractTable(),
             $this->getCustomerTable(),
             $datePart,
-            "'Vilnius', 'Kaunas', 'Klaipeda','Ryga'"
+            "'Vilnius', 'Kaunas', 'Klaipeda','Ryga'" //todo MULTI-L a čia viskas ok?
         );
 
         $this->container->get("logger")->alert('Nav import query: ' . $query);
