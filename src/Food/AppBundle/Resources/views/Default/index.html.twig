@@ -5,6 +5,13 @@
         $(document).ready(function(){
             $('#index_city').selectmenu();
 
+
+            $('.search-food-form input,.search-food-form select, #index_city-button').click(function(){
+                $(".border-red").removeClass('border-red');
+                $('.border-red-right').removeClass('.border-red-right');
+                $("#errorMessageAddress").html('');
+            });
+
             var addrXhr = null;
             var addrResponse = {};
             var waitIntervals = null;
@@ -40,14 +47,17 @@
                                     }
                                 }
                             };
-                            $("<div>"+resp.data.message+"</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
+
+                            $('.search-food-form').shake(3,20,400);
+                            $('.search-field').addClass('border-red');
+                            $('#index_address').addClass('border-red-right');
+                            $('#errorMessageAddress').html(resp.data.message);
                         }
                     }
                 });
             }
 
             $('#index_submit').click(function(e){
-
 
             if ($('#index_city').val() !="" && $('#index_city').val() != null && $('#index_address').val()=="") {
 
@@ -76,6 +86,19 @@
         });
         initStreetSearch();
         initStreetHouseSearch();
+
+        jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
+            this.each(function() {
+                $(this).css("position","relative");
+                for (var x=1; x<=intShakes; x++) {
+                    $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
+                            .animate({left:intDistance}, ((intDuration/intShakes)/2))
+                            .animate({left:0}, (((intDuration/intShakes)/4)));
+                }
+            });
+            return this;
+        };
+
         </script>
     {% endblock %}
 
@@ -102,17 +125,18 @@
                 <p class="title">{% trans %}index.search_form_qlue{% endtrans %}</p>
                 <div class="clearfix">
 
-                    <select id="index_city">
+                    <select id="index_city" class="search-field">
                         {% for city in cityCollection %}
                             <option value="{{ city.getId() }}" data-cityurl="{{ slug.getUrl(city.getId(), 'city') }}" {% if formDefaults.city_id == city.getId() %}selected{% endif %}>{{ city.getTitle() }}</option>
                         {% endfor %}
                     </select>
 
                     {# <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" > #}
-                    <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street" autocomplete="off" value="{{ formDefaults.address }}" />
-                    <input type="text" id="index_house" placeholder="{% trans %}index.house{% endtrans %} - {% trans %}index.flat{% endtrans %}" class="input-house" autocomplete="off" value="{{ formDefaults.house }}{% if formDefaults.flat %} - {{ formDefaults.flat }}{% endif %}" />
+                    <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{{ formDefaults.address }}" />
+                    <input type="text" id="index_house" placeholder="{% trans %}index.house{% endtrans %} - {% trans %}index.flat{% endtrans %}" class="input-house search-field" autocomplete="off" value="{{ formDefaults.house }}{% if formDefaults.flat %} - {{ formDefaults.flat }}{% endif %}" />
                     <input type="submit" id="index_submit" value="{% trans %}index.findfood{% endtrans %}" />
                 </div>
+                <div style="margin-top: 4px; text-align: center; margin-right:140px; color: red; font-weight: bold; cursor: pointer;" id="errorMessageAddress"></div>
             </form>
         </div>
         <p class="img-description">{# pavadinimas produkto, vietove, kaina #}</p>

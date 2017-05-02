@@ -2868,3 +2868,7 @@ div.coupon_form_popup {
 .static-page.blog-categories a, .static-page.blog-post a{
     color: #55422e;
 }
+
+.border-red {
+    border:1px solid red !important;
+}
