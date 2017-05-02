@@ -212,8 +212,8 @@
                        },
                  success: function (data) {
 
-                    if(data.length > 0){
-                        $('.delivery-price .fr').text(data);
+                    if(data){
+                        $('.delivery-price .fr').text('€'+data.toFixed(2));
                     }
                  }
              });
