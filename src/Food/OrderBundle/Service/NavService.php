@@ -652,7 +652,7 @@ class NavService extends ContainerAware
             'Parent Line'     => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
             'Amount'          => $amountForInsert, // $detail->getPrice() * $detail->getQuantity(),// @todo test the price. Kaip gula. Total ar ne.
             'Discount Amount' => "-" . $discountAmount,
-            'Payment'         => $paymentAmount, //$detail->getPrice() * $detail->getQuantity(),
+            'Payment'         => $amountForInsert - $discountAmount, //$detail->getPrice() * $detail->getQuantity(),
             'Value'           => "''",
             'Discount No_'    => $mmCode
         ];
