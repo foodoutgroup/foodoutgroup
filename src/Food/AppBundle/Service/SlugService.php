@@ -12,6 +12,7 @@ use Food\DishesBundle\Utils\Slug\SlugGenerator;
 use Food\DishesBundle\Utils\Slug\TextStrategy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Router;
 use \Food\AppBundle\Entity\Slug as SlugEntity;
@@ -280,6 +281,27 @@ class SlugService
             throw new \Exception('Parameter '.$name.' not found');
         }
         return $this->getUrl($contentId, $type);
+    }
+
+    public function checkNotFound()
+    {
+
+        $request = $this->request->getLocale();
+        $availableLocales = $this->localeCollection;
+        $disabledLocales = $this->container->getParameter('locales_hidden');
+
+        if(count($disabledLocales)) {
+            foreach ($availableLocales as $key => $locale) {
+                if (in_array($locale, $disabledLocales)) {
+                    unset($availableLocales[$key]);
+                }
+            }
+        }
+
+        if (!in_array($request, $availableLocales)) {
+            throw new NotFoundHttpException();
+        }
+
     }
 
 }

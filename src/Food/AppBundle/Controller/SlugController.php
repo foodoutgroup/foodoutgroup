@@ -18,6 +18,7 @@ class SlugController extends Controller
 
     public function processAction(Request $request, $slug)
     {
+        $this->container->get('slug')->checkNotFound();
 
         $slugForward = $this->getDoctrine()->getRepository('FoodAppBundle:SlugForward')->getByLocaleAndSlug($request->getLocale(), $slug);
         if($slugForward) {
