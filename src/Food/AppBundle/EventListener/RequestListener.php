@@ -1,7 +1,7 @@
 <?php
 namespace Food\AppBundle\EventListener;
 
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -15,7 +15,7 @@ class RequestListener
         $this->container = $container;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelController(FilterControllerEvent $event)
     {
         $request = $event->getRequest()->getLocale();
         $availableLocales = $this->container->getParameter('locales');
@@ -30,7 +30,7 @@ class RequestListener
         }
 
         if (!in_array($request, $availableLocales)) {
-            $event->setResponse(new Response('Not found!', 404));
+            throw new NotFoundHttpException('Sorry page does not exist');
         }
     }
 

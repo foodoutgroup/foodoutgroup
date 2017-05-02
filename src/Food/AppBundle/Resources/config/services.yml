@@ -4,7 +4,7 @@ services:
         class: Food\AppBundle\EventListener\RequestListener
         arguments: [ @service_container ]
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
             - { name: kernel.event_listener, event: kernel.request, method: onLateKernelRequest, priority: -10 }
 
     gedmo.listener.translatable:
