@@ -846,7 +846,8 @@ class DefaultController extends Controller
             'basket_errors' => $basketErrors,
             'isCallcenter' => $isCallcenter,
             'useAdminFee' => $useAdminFee,
-            'adminFee' => $adminFee
+            'adminFee' => $adminFee,
+            'noneWorking' => isset($noneWorking) ? $noneWorking : false
         ];
 
         if ($renderView) {
@@ -916,4 +917,6 @@ class DefaultController extends Controller
 
         return new Response('Smooth end');
     }
+
+
 }

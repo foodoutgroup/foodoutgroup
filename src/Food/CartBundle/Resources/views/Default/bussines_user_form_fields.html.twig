@@ -78,7 +78,7 @@
         </select>
     </div><div class="form-row">
         <label>{% trans %}cart.checkout.delivery_time{% endtrans %}:</label>
-        <select id="pre_order_time" class="custom-select today_times {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty ) %}hidden{% endif %}" name="pre_order_time" >
+        <select id="pre_order_time" onchange="checkDeliveryPrice(this)" class="custom-select today_times {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty ) %}hidden{% endif %}" name="pre_order_time" >
             {% if dataToLoad is not empty and dataToLoad['pre_order_date'] %}
                 {% set useDateForPre = dataToLoad['pre_order_date'] %}
             {% else %}
