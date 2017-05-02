@@ -115,7 +115,8 @@ class DishRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
         */
-        $query = "SELECT IF(discount_price < 0.01 OR discount_price IS NULL OR discount_price ='' , price, discount_price) as discountPrice FROM dish_size WHERE deleted_at IS NULL AND dish_id=".intval($dishId)." ORDER BY IF(discount_price < 1 OR discount_price IS NULL OR discount_price ='', price, discount_price) ASC";
+        //~ $query = "SELECT IF(discount_price < 0.01 OR discount_price IS NULL OR discount_price ='' , price, discount_price) as discountPrice FROM dish_size WHERE deleted_at IS NULL AND dish_id=".intval($dishId)." ORDER BY IF(discount_price < 1 OR discount_price IS NULL OR discount_price ='', price, discount_price) ASC";
+        $query = "SELECT discount_price as discountPrice FROM dish_size WHERE deleted_at IS NULL AND discount_price > 0 AND dish_id=".intval($dishId)." ORDER BY discount_price ASC";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -139,7 +140,8 @@ class DishRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
         */
-        $query = "SELECT IF(discount_price < 0.01 OR discount_price IS NULL OR discount_price ='' , price, discount_price) as discountPrice FROM dish_size WHERE deleted_at IS NULL AND dish_id=".intval($dishId)." ORDER BY IF(discount_price < 1 OR discount_price IS NULL OR discount_price ='', price, discount_price) DESC";
+        //~ $query = "SELECT IF(discount_price < 0.01 OR discount_price IS NULL OR discount_price ='' , price, discount_price) as discountPrice FROM dish_size WHERE deleted_at IS NULL AND dish_id=".intval($dishId)." ORDER BY IF(discount_price < 1 OR discount_price IS NULL OR discount_price ='', price, discount_price) DESC";
+        $query = "SELECT discount_price as discountPrice FROM dish_size WHERE deleted_at IS NULL AND discount_price > 0 AND dish_id=".intval($dishId)." ORDER BY discount_price DESC";
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();

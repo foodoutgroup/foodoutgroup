@@ -4,6 +4,7 @@ namespace Api\V2Bundle\Service;
 
 use Api\BaseBundle\Common\JsonRequest;
 use Api\BaseBundle\Exceptions\ApiException;
+use Aws\Route53\Enum\Status;
 use Food\DishesBundle\Entity\DishOption;
 use Food\DishesBundle\Entity\DishSize;
 use Food\DishesBundle\Entity\Place;
@@ -56,11 +57,12 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         }
 
         $order = new Order();
-
         $location = false;
         if ($deliveryType == "pickup" && $json->has('placepoint')) {
             $placePoint = $this->container->get("api.v2.place")->getPlacePoint($json->get('placepoint'));
             $order->setPaymentMethod("local");
+            $order->setDeliveryPrice(0);
+
         } else {
             $address = $json->get('address', []);
             if (!isset($address['city']) || !isset($address['street']) || !isset($address['house_number'])) {
@@ -71,8 +73,13 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
             $location = $this->container->get('food.googlegis')->groupData($addressBuffer, $address['city']);
             $id = $doctrine->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance($place->getId(), $location, false, true);
             $placePoint = $doctrine->getRepository('FoodDishesBundle:PlacePoint')->find($id);
-
+            $dp = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getDeliveryPriceForPlacePoint($place, $placePoint, $location);
+            $order->setDeliveryPrice($dp);
         }
+        $order->setPaymentStatus(\Food\OrderBundle\Service\OrderService::$paymentStatusComplete);
+
+        $deliveryTotal = $deliveryPrice = $order->getDeliveryPrice();
+
         $order->setSource("APIv2");
         $order->setPlace($place);
         $order->setPlaceName($place->getName());
@@ -80,7 +87,9 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         $order->setPlacePoint($placePoint);
         $order->setPlacePointCity($placePoint->getCity());
         $order->setPlacePointAddress($placePoint->getAddress());
-
+        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($placePoint->getCity())) {
+            $order->setDuringZavalas(true);
+        }
         $order->setOrderDate(new \DateTime("now"));
 
         $orderDate = ($json->has('preorder') ? $json->get("preorder") : null);
@@ -101,9 +110,8 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
             $deliveryTime = new \DateTime($orderDate);
         }
 
-
         $order->setDeliveryTime($deliveryTime);
-        $order->setDeliveryPrice($place->getDeliveryPrice());
+        $order->setDeliveryPrice($deliveryTotal); // todo
         $order->setVat($this->container->getParameter('vat'));
         $order->setOrderHash(
             $os->generateOrderHash($order)
@@ -217,6 +225,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
             $product['object'] = $prod;
             $product['count'] = (int)$item['count'];
             $product['additional'] = [];
+
             if (isset($item['additional'])) {
                 foreach ($item['additional'] as $additional) {
                     if (!isset($additional['code']) || !isset($additional['count'])) {
@@ -231,6 +240,11 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                     if (!$option) {
                         throw new ApiException('Dish option with code ' . $item['code'] . ' was not found');
                     }
+
+                    $product['additional'][] = [
+                        'object' => $option,
+                        'count' => $item['count']
+                    ];
 
                 }
             } else {
@@ -297,7 +311,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         $discountSumTotal = 0;
         $discountUsed = 0;
         $sumTotal = 0;
-        $deliveryPrice = 0; // todo get delivery price :)
+//        $deiveryPrice = 0; // todo get delivery price :)
         if ($discount) {
             $discountPercent = $discount['discount'];
             $discountSumLeft = $discountSumTotal = $this->getDiscountTotal($productCollection, $discountPercent);
@@ -358,7 +372,9 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                 ->setDishSizeCode($dishSize->getCode())
                 ->setIsFree(false);
             $em->persist($dish);
+            $em->persist($order);
 
+            $em->flush();
             $sumTotal += $product['count'] * $price;
 
             $dishOptionPricesBeforeDiscount = $this->container->get('food.dishes')->getDishOptionsPrices($dishSize->getDish());
@@ -408,13 +424,6 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                     ->setOrderDetail($dish);
                 $em->persist($orderOpt);
                 $sumTotal += $opt['count'] * $dishOptionPrice;
-            }
-        }
-        $deliveryTotal = 0;
-        if ($deliveryType == "delivery") {
-            $deliveryTotal = $doctrine->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $location);
-            if (false === $deliveryTotal) {
-                $deliveryTotal = $place->getDeliveryPrice();
             }
         }
 

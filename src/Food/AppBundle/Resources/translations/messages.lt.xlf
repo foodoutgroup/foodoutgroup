@@ -486,6 +486,10 @@
                 <source>mobile.order.sum_with_delivery</source>
                 <target>Suma su pristatymu (su PVM)</target>
             </trans-unit>
+            <trans-unit id="mobile.order.sum_without_admin_fee_and_delivery" resname="mobile.order.sum_without_admin_fee_and_delivery">
+                <source>mobile.order.sum_without_admin_fee_and_delivery</source>
+                <target>Maisto kaina (su PVM)</target>
+            </trans-unit>
             <trans-unit id="mobile.order.sum">
                 <source>mobile.order.sum_without_delivery</source>
                 <target>Suma be pristatymo (su PVM)</target>
@@ -1324,6 +1328,10 @@
             <trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
                 <source>general.top_contact.worktime_days</source>
                 <target><![CDATA[VII - IV<br />V - VI]]></target>
+            </trans-unit>
+            <trans-unit id="general.top_contact.worktime_holiday" resname="general.top_contact.worktime_holiday">
+                <source>general.top_contact.worktime_holiday</source>
+                <target>Šventiniai darbo laikai</target>
             </trans-unit>
             <trans-unit id="general.top_contact.worktime" resname="general.top_contact.worktime">
                 <source>general.top_contact.worktime</source>

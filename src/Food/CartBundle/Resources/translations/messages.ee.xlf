@@ -414,6 +414,10 @@ Vilnius</target>
             <trans-unit id="general.coupon.coupon_expired" resname="general.coupon.coupon_expired">
                 <source>general.coupon.coupon_expired</source><target>Sooduskupong ei ole enam kehtiv</target>
             </trans-unit>
+            <trans-unit id="general.delivery_does_not_match" resname="general.delivery_does_not_match">
+                <source>general.delivery_does_not_match</source>
+                <target>See restoran ei anna toidu valinud saatmisviisi</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

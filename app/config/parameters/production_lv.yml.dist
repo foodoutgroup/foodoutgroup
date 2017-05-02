@@ -16,9 +16,9 @@ parameters:
     aws_region: eu-west-1
     s3_bucket: foodout-lv-invoice
 
-    driver.send_to_external: false
-    driver.city_filter: []
-    driver.socket_address: tcp://s2.foodout.lt:7778
+    driver.send_to_external: true
+    driver.city_filter: ["Rīga"]
+    driver.socket_address: tcp://cl1:7778
     driver.socket_hash: api
 
     locale: lv
@@ -99,6 +99,9 @@ parameters:
     mailer_send_corporate_changed_password: 41611951
     mailer_send_free_delivery_discount: 41611739
     mailer_provider: food.mail.mailer
+    mailer_newsletter_provider: food.mail.mailer
+    mailerlite_api_key: "71b32c22e0944db62613e34669489d1a"
+    mailerlite_group_id: 6456020
     yt_video: https://www.youtube.com/v/D-EkSle0r84?fs=1&amp;autoplay=
     yt_embeded: //www.youtube-nocookie.com/embed/D-EkSle0r84
     default_delivery_distance: 3

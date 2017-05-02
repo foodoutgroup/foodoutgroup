@@ -52,6 +52,18 @@ services:
         class: Food\AppBundle\Service\MailerService
         arguments: ['@service_container', %mailer_provider%]
 
+    food.newsletter_mailer:
+        class: Food\AppBundle\Service\MailerService
+        arguments: ['@service_container', %mailer_newsletter_provider%]
+
+    food.mail.mailerlite:
+        class: Food\AppBundle\Service\Mail\MailerliteService
+        arguments: [%mailerlite_api_key%]
+        calls:
+            - [setContainer, [@service_container]]
+            - [setFromEmail, [%mailer_from%]]
+            - [setFromName, [%title%]]
+
     food.mail.mailer:
         class: Food\AppBundle\Service\Mail\MailerMessagesService
         arguments: [%mailer_api_key%]

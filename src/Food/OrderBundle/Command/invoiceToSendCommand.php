@@ -49,7 +49,6 @@ class InvoiceToSendCommand extends ContainerAwareCommand
             $dryRun = false;
 
             $orders = $em->getRepository('FoodOrderBundle:InvoiceToSend')->getInvoiceToSend();
-
             /**
              * TODO:
              *  - force order
@@ -129,6 +128,7 @@ class InvoiceToSendCommand extends ContainerAwareCommand
                                         ->getInvoiceToSendNavOnly();
 
             foreach ($invoicesToSendNavOnly as $invoice) {
+                $nav->deleteInvoiceFromNav($invoice->getOrder()->getSfSeries().$invoice->getOrder()->getSfNumber());
                 $success = $nav->sendNavInvoice($invoice->getOrder(), $invoice);
             }
         }

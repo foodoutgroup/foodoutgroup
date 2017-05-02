@@ -22,6 +22,7 @@ class UserAdmin extends SonataUserAdmin {
             ->add('isBussinesClient', null, array('editable' => true, 'label' => 'admin.users.bussines_client'))
             ->add('companyName', null, array('label' => 'admin.users.company_name'))
             ->add('lastLogin', null, array('format' => 'Y-m-d H:i:s', 'label' => 'admin.users.last_login'))
+            ->add('special', null, array('editable' => true, 'label' => 'admin.users.special'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -64,6 +65,7 @@ class UserAdmin extends SonataUserAdmin {
             ->with('General')
             ->add('createdAt', null, array('label' => 'admin.users.created_at'))
             ->add('group', null, array('label' => 'admin.users.group'))
+            ->add('special', null, array('label' => 'admin.users.special'))
             ->remove('groups')
             ->remove('dateOfBirth')
             ->remove('website')
@@ -127,6 +129,7 @@ class UserAdmin extends SonataUserAdmin {
                 'label' => 'admin.users.place'
             ))
             ->add('plainPassword', 'text', array('required' => false, 'label' => 'admin.users.plainPassword'))
+            ->add('special', 'checkbox', array('label' => 'admin.users.special','required'=>false))
         ;
 
         if ($this->getSubject() && !$this->getSubject()->hasRole('ROLE_SUPER_ADMIN')) {

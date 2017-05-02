@@ -87,7 +87,7 @@
                             {% endif %}
                         {% else %}
                             {% set showNormalDiscount = true %}
-                            {% if smallestPrice == smallestDiscountPrice and  largestPrice == largestDiscountPrice %}
+                            {#% if smallestPrice == smallestDiscountPrice and  largestPrice == largestDiscountPrice %}
                                 {% set discountStr = dish_service.getDiscountString(dish.id) %}
                                 {% if discountStr != '' %}
                                     {% set showNormalDiscount = false %}
@@ -97,7 +97,7 @@
                                 {% if discountStr != '' %}
                                     {% set showNormalDiscount = false %}
                                 {% endif %}
-                            {% endif %}
+                            {% endif %#}
                             {% if showNormalDiscount %}
                                 {{ currency_display | raw}} {{ smallestDiscountPrice|replace({'.': ','}) }} - {{ largestDiscountPrice|replace({'.': ','}) }}
                                 {% if currency_alternative %}

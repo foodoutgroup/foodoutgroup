@@ -489,10 +489,10 @@ class PlacesService extends ContainerAware
         if (empty($sum)) {
             $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
 
-            return $place->getCartMinimum();
+            return floatval($place->getCartMinimum());
         }
 
-        return $sum;
+        return floatval($sum);
     }
 
     public function getMaxCartPrice($placeId)
@@ -926,5 +926,15 @@ class PlacesService extends ContainerAware
     public function getPedestrianDeliveryTime()
     {
         return $this->container->get('food.app.utils.misc')->getParam('pedestrian_delivery_time');
+    }
+
+    public function getCityName($city)
+    {
+        $country = $this->container->getParameter('country');
+        if ($country == "LV" && $city == 'Rīga') {
+            $city = 'Rīga un pierīga';
+        }
+
+        return $city;
     }
 }

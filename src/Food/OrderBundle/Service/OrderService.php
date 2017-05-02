@@ -817,12 +817,7 @@ class OrderService extends ContainerAware
     {
         $languageUtil = $this->container->get('food.app.utils.language');
 
-        if (strpos($messageText, 'Cili pica Kaunas/Klaipeda') !== false) {
-            $messageText = str_replace('Cili pica Kaunas/Klaipeda', 'Cili pica', $messageText);
-        }
-        if (strpos($messageText, 'Cili Kaimas Kaunas') !== false) {
-            $messageText = str_replace('Cili Kaimas Kaunas', 'Cili Kaimas', $messageText);
-        }
+        $messageText = $this->correctMessageText($messageText);
 
         $max_len = 160;
         $all_message_len = mb_strlen($messageText, 'UTF-8');
@@ -865,6 +860,21 @@ class OrderService extends ContainerAware
 
         return $messageText;
     }
+
+    public function correctMessageText($messageText){
+        if (strpos($messageText, 'Cili pica Kaunas/Klaipeda') !== false) {
+            $messageText = str_replace('Cili pica Kaunas/Klaipeda', 'Cili pica', $messageText);
+        }
+        if (strpos($messageText, 'Cili Kaimas Kaunas') !== false) {
+            $messageText = str_replace('Cili Kaimas Kaunas', 'Cili Kaimas', $messageText);
+        }
+        if (strpos($messageText, '\\') !== false) {
+            $messageText = str_replace('\\', '-', $messageText);
+        }
+
+        return $messageText;
+    }
+
 
     /**
      * @param null|string $source
@@ -1594,7 +1604,8 @@ class OrderService extends ContainerAware
             $adminFee = 0;
         }
 
-        if ($useAdminFee && $sumTotal < $cartFromMin) {
+
+        if ($useAdminFee && ($cartFromMin - $sumTotal)  >= 0.00001) {
             $sumTotal += $adminFee;
         } else {
             $useAdminFee = false;
@@ -3480,7 +3491,7 @@ class OrderService extends ContainerAware
                     $pointRecord
                 );
 
-                if ($total_cart < $cartMinimum && $noMinimumCart == false && !$useAdminFee) {
+                if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false && !$useAdminFee) {
                     $formErrors[] = 'order.form.errors.cartlessthanminimum';
                 }
             }
@@ -3494,7 +3505,7 @@ class OrderService extends ContainerAware
                 }
             }
 
-            if ($total_cart < $place->getCartMinimum() && $noMinimumCart == false  && !$useAdminFee) {
+            if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false  && !$useAdminFee) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }
@@ -3739,7 +3750,7 @@ class OrderService extends ContainerAware
             $translator = $this->container->get('translator');
             $translator->trans('order.form.errors.customeraddr');
 
-            $this->get('food.error_log_service')->saveErrorLog(
+            $this->container->get('food.error_log_service')->saveErrorLog(
                 $this->container->get('request')->getClientIp(),
                 $this->getUser(),
                 $this->container->get('food.cart')->getSessionId(),

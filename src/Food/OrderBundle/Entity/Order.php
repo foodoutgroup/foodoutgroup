@@ -2347,6 +2347,20 @@ class Order
         return $this->getAdminFee();
     }
 
+
+    public function getFoodTotalForNav()
+    {
+        return $this->getTotal() - $this->getDeliveryPrice() + $this->getDiscountSum() - $this->getAdminFee();
+
+    }
+
+
+    public function getDeliveryPriceForNav()
+    {
+        return $this->getDeliveryPrice() + $this->getAdminFee();
+
+    }
+
     public function getVatSize()
     {
         return $this->getTotal() - $this->getTotalWithoutVat();
@@ -2365,6 +2379,11 @@ class Order
     public function getDishesWithoutVat()
     {
         return $this->getTotalWithoutVat() - $this->getDeliveryWithoutVat() - $this->getAdminFeeWithoutVat();
+    }
+
+    public function getFoodTotal()
+    {
+        return $this->getTotal() - $this->getDeliveryPrice() - $this->getAdminFee();
     }
 
     /**

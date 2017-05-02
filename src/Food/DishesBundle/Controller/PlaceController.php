@@ -119,6 +119,14 @@ class PlaceController extends Controller
             }
         }
 
+        if($this->container->getParameter('country') == 'LV'){
+            if (in_array($place->getId(), [1, 35])) {
+                $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(36);
+            } elseif ($place->getId() == 36) {
+                $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(35);
+            }
+        }
+
         $placeReviews = $this->get('doctrine')->getRepository('FoodDishesBundle:PlaceReviews')
             ->getActiveReviewsByPlace($place);
 

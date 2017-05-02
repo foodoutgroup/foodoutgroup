@@ -42,6 +42,31 @@ parameters:
     order.cancel_notify_emails: [pagalba@foodout.lt]
     accounting_email: "buhalterija@foodout.lt"
     b2b_invoice_email: ""
+    payment:
+        method:
+         - local
+         - local.card
+         - swedbank-gateway
+         - swedbank-credit-card-gateway
+         - seb-banklink
+         - paysera
+         - paysera
+         - paysera
+         - paysera
+         - paysera
+         - paysera
+        title:
+         - '[#cash#]'
+         - '[#credit.card#]'
+         - 'Swedbank'
+         - 'Kreditinės kortelės'
+         - 'SEB bankas'
+         - 'Medicinos bankas'
+         - 'DNB bankas'
+         - 'Citadele bankas'
+         - 'Nordea bankas'
+         - 'Danske bankas'
+         - 'Paysera'
     payment.methods:
         - local
         - local.card
@@ -86,6 +111,9 @@ parameters:
     mailer_send_corporate_changed_password: 41611093
     mailer_send_free_delivery_discount: 41611735
     mailer_provider: food.mail.mailer
+    mailer_newsletter_provider: food.mail.mailer
+    mailerlite_api_key: "71b32c22e0944db62613e34669489d1a"
+    mailerlite_group_id: 6456020
     yt_video: https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=
     yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
     default_delivery_distance: 7
