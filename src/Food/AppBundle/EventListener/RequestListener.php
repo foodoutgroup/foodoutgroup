@@ -1,6 +1,7 @@
 <?php
 namespace Food\AppBundle\EventListener;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -29,7 +30,7 @@ class RequestListener
         }
 
         if (!in_array($request, $availableLocales)) {
-            throw new NotFoundHttpException('Sorry page does not exist');
+            $event->setResponse(new Response('Not found!', 404));
         }
     }
 
