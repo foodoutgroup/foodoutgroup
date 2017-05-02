@@ -6,10 +6,12 @@ use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="UserRepository")
  * @ORM\Table(name="fos_user")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class User extends BaseUser
 {
@@ -226,6 +228,13 @@ class User extends BaseUser
      * @ORM\Column(name="special", type="boolean", nullable=true)
      */
     private $special = false;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
 
     public function __construct()
     {
@@ -1217,4 +1226,24 @@ class User extends BaseUser
     {
         return $this->locale;
     }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param \DateTime $deletedAt
+     * @return $this
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
+        return $this;
+    }
+
+
 }

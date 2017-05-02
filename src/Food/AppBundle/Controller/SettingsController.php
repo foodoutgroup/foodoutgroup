@@ -38,6 +38,7 @@ class SettingsController extends CRUDController
         'reviews_enabled',
         'optin_code',
         'game_revive_zone_id',
+        'footer_social'
     ];
 
     public function listAction( )
@@ -63,8 +64,9 @@ class SettingsController extends CRUDController
                     $value = $value->getId();
                 }
 
-                $paramService->setParam($keyword, $value);
-
+                if($data[$keyword] != $value) {
+                    $paramService->setParam($keyword, $value);
+                }
             }
             $session->getFlashBag()->add('success', 'Settings was saved successfully');
         }

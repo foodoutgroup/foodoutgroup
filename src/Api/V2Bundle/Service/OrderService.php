@@ -86,10 +86,10 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         $order->setPlacePoint($placePoint);
         $order->setCityId($placePoint->getCityId());
         $order->setPlacePointAddress($placePoint->getAddress());
-        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($placePoint->getCity())) {
+        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($placePoint->getCityId()->getId())) {
             $order->setDuringZavalas(true);
         }
-        $order->setOrderDate(new \DateTime("now"));
+        $order->setOrderDate(new \DateTime());
 
         $orderDate = ($json->has('preorder') ? $json->get("preorder") : null);
 
@@ -115,7 +115,6 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         $order->setOrderHash(
             $os->generateOrderHash($order)
         );
-
 
         /**
          * @var User $user

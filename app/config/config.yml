@@ -301,6 +301,7 @@ sonata_admin:
       list: SonataAdminBundle:CRUD:list.html.twig
       show: SonataAdminBundle:CRUD:show.html.twig
       edit: SonataAdminBundle:CRUD:edit.html.twig
+#      list_orm_many_to_one: SonataAdminBundle:CRUD:edit.html.twig
     dashboard:
           groups:
               acme.admin.group.first:
@@ -358,8 +359,6 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.users
                       - sonata.admin.banned_ips
-                      - sonata.admin.settings
-                      - sonata.admin.import_export
                       - sonata.admin.static
                       - sonata.admin.seorecords
                       - sonata.admin.blog_category
