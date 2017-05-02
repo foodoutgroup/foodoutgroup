@@ -125,6 +125,11 @@ class SlugController extends Controller
     }
 
 
+    public function notFoundAction()
+    {
+        throw new NotFoundHttpException('Sorry page does not exist');
+    }
+
     private function pageNotFound404($slug) {
         $errorMessage = sprintf('User requested non-existant slug: "%s" Locale: "%s" IP: "%s" UserAgent: "%s"',
             $slug, $this->request->getLocale(), $this->request->getClientIp(), $this->request->headers->get('User-Agent')

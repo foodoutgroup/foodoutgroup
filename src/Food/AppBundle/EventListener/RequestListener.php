@@ -30,7 +30,7 @@ class RequestListener
         }
 
         if (!in_array($request, $availableLocales)) {
-            throw new NotFoundHttpException('Sorry page does not exist');
+            $event->getController()->forward('FoodAppBunlde:Slug:notFound');
         }
     }
 
