@@ -83,8 +83,6 @@ class LocalBiller extends ContainerAware implements BillingInterface
         $orderService->setPaymentStatus($orderService::$paymentStatusComplete);
         $orderService->saveOrder();
 
-        // Send Message To User About Successfully Created Order
-        $orderService->sendOrderCreatedMessage();
 
         // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
         $orderService->deactivateCoupon();
