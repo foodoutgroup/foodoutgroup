@@ -3746,7 +3746,7 @@ class OrderService extends ContainerAware
 
             $this->container->get('food.error_log_service')->saveErrorLog(
                 'checkout_form_page',
-                is_array($formErrors) ? implode(',', $formErrors) : $formErrors,
+                $formErrors,
                 serialize($request) .'<br><br>'. serialize($debugCartInfo)
             );
         }

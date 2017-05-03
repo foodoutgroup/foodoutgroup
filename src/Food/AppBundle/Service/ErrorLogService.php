@@ -15,6 +15,8 @@ class ErrorLogService extends ContainerAware
 
     public function saveErrorLog($source,$description,$debug){
 
+        $description = is_array($description) ? implode(',', $description) : $description;
+
         $cart = $this->container->get('food.cart')->getSessionId();
         $cart = is_object($cart) ? $cart : null;
         $place = is_object($cart) ? $cart->getPlaceId() : null;
