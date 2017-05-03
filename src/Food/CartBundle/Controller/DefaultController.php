@@ -44,7 +44,7 @@ class DefaultController extends Controller
     /**
      * Daz proxy for ajax requests :)
      *
-     * @param string  $action
+     * @param string $action
      * @param Request $request
      *
      * @return Response
@@ -83,8 +83,7 @@ class DefaultController extends Controller
 
         $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
             $request->get('place', 0)
-        )
-        ;
+        );
 
         // Somehow we've lost the place.. dont crash.. better show nothing
         if (!$place) {
@@ -116,8 +115,7 @@ class DefaultController extends Controller
                 intval($request->get('counter')),
                 $request->get('options'),
                 $request->get('option')
-            )
-            ;
+            );
         }
         $this->_recountBundles($request);
     }
@@ -133,8 +131,7 @@ class DefaultController extends Controller
         if (empty($place)) {
             $dishSize = $this->container->get('doctrine')
                 ->getRepository('FoodDishesBundle:DishSize')
-                ->findBy((int)$request->get('dish-size'))
-            ;
+                ->findBy((int)$request->get('dish-size'));
             $place = $dishSize->getDish()->getPlace()->getId();
         }
         if (empty($place)) {
@@ -155,8 +152,7 @@ class DefaultController extends Controller
             $request->get('dish_id'),
             $request->get('cart_id'),
             $request->get('place')
-        )
-        ;
+        );
         $this->_recountBundles($request);
     }
 
@@ -169,14 +165,13 @@ class DefaultController extends Controller
             ->get('session')
             ->set('delivery_type', $request->get('take_away', false) ?
                 OrderService::$deliveryPickup :
-                OrderService::$deliveryDeliver)
-        ;
+                OrderService::$deliveryDeliver);
     }
 
     /**
      * @param       $dishId
      * @param       $dishSize
-     * @param int   $dishQuantity
+     * @param int $dishQuantity
      * @param int[] $options
      */
     public function addDishToCartAction($dishId, $dishSize, $dishQuantity = 0, $options = [])
@@ -228,8 +223,7 @@ class DefaultController extends Controller
         if (!empty($placePointMap) && isset($placePointMap[$placeId]) && !empty($placePointMap[$placeId])) {
             $pointRecord = $this->container->get('doctrine')
                 ->getRepository('FoodDishesBundle:PlacePoint')
-                ->find($placePointMap[$placeId])
-            ;
+                ->find($placePointMap[$placeId]);
         } else {
             $pointRecord = null;
         }
@@ -271,8 +265,7 @@ class DefaultController extends Controller
                 ($takeAway ? $request->get('place_point') : null),
                 $couponEnt,
                 $isCallcenter
-            )
-            ;
+            );
         }
 
         // Empty dish protection
@@ -345,10 +338,10 @@ class DefaultController extends Controller
                     }
                 }
                 $userData = [
-                    'email'     => $userEmail,
-                    'phone'     => $userPhone,
+                    'email' => $userEmail,
+                    'phone' => $userPhone,
                     'firstname' => $userFirstName,
-                    'lastname'  => $userLastName,
+                    'lastname' => $userLastName,
                 ];
 
                 $user = $fosUserManager->findUserByEmail($userEmail);
@@ -449,8 +442,7 @@ class DefaultController extends Controller
                     ->setCompanyName($request->get('company_name'))
                     ->setCompanyCode($request->get('company_code'))
                     ->setVatCode($request->get('vat_code'))
-                    ->setCompanyAddress($request->get('company_address'))
-                ;
+                    ->setCompanyAddress($request->get('company_address'));
             }
 
             if ($user->getIsBussinesClient()) {
@@ -461,8 +453,7 @@ class DefaultController extends Controller
                     ->setCompanyName($user->getCompanyName())
                     ->setCompanyCode($user->getCompanyCode())
                     ->setVatCode($user->getVatCode())
-                    ->setCompanyAddress($user->getCompanyAddress())
-                ;
+                    ->setCompanyAddress($user->getCompanyAddress());
             }
 
             // Update order with recent address information. but only if we need to deliver
@@ -505,23 +496,23 @@ class DefaultController extends Controller
         }
 
         $data = [
-            'order'                   => $order,
-            'formHasErrors'           => $formHasErrors,
-            'formErrors'              => $formErrors,
-            'place'                   => $place,
-            'takeAway'                => ($takeAway ? true : false),
-            'location'                => $this->get('food.googlegis')->getLocationFromSession(),
-            'dataToLoad'              => $dataToLoad,
-            'userAddress'             => $address,
-            'userAllAddress'          => $placeService->getCurrentUserAddresses(),
-            'submitted'               => $request->isMethod('POST'),
-            'testNordea'              => $request->query->get('test_nordea'),
+            'order' => $order,
+            'formHasErrors' => $formHasErrors,
+            'formErrors' => $formErrors,
+            'place' => $place,
+            'takeAway' => ($takeAway ? true : false),
+            'location' => $this->get('food.googlegis')->getLocationFromSession(),
+            'dataToLoad' => $dataToLoad,
+            'userAddress' => $address,
+            'userAllAddress' => $placeService->getCurrentUserAddresses(),
+            'submitted' => $request->isMethod('POST'),
+            'testNordea' => $request->query->get('test_nordea'),
             'workingHoursForInterval' => $workingHoursForInterval,
-            'workingDaysCount'        => $workingDaysCount,
-            'isCallcenter'            => ($isCallcenter ? true : false),
-            'require_lastname'        => $require_lastname,
-            'pointIsWorking'          => $pointIsWorking,
-            'disabledPreorderDays'    => $disabledPreorderDays,
+            'workingDaysCount' => $workingDaysCount,
+            'isCallcenter' => ($isCallcenter ? true : false),
+            'require_lastname' => $require_lastname,
+            'pointIsWorking' => $pointIsWorking,
+            'disabledPreorderDays' => $disabledPreorderDays,
         ];
 
 
@@ -541,10 +532,10 @@ class DefaultController extends Controller
     /**
      * Side cart block
      *
-     * @param Place       $place
-     * @param bool        $renderView
-     * @param bool        $inCart
-     * @param null|Order  $order
+     * @param Place $place
+     * @param bool $renderView
+     * @param bool $inCart
+     * @param null|Order $order
      * @param null|string $couponCode
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -563,7 +554,11 @@ class DefaultController extends Controller
         $cartFromMin = $placeServ->getMinCartPrice($place->getId());
         $cartFromMax = $placeServ->getMaxCartPrice($place->getId());
         $useAdminFee = $placeServ->useAdminFee($place);
-        $adminFee    = $placeServ->getAdminFee($place);
+        $adminFee = $placeServ->getAdminFee($place);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $noneWorking = false;
 
         if ($useAdminFee && !$adminFee) {
             $adminFee = 0;
@@ -589,7 +584,7 @@ class DefaultController extends Controller
         $displayCartInterval = true;
 
         $basketErrors = [
-            'foodQuantityError'  => false,
+            'foodQuantityError' => false,
             'drinkQuantityError' => false,
         ];
 
@@ -603,29 +598,42 @@ class DefaultController extends Controller
         } else {
             $placePointMap = $this->container->get('session')->get('point_data');
 
-            $gis = $this->get('food.googlegis')->getLocationFromSession();
+            $locationData = $this->get('food.googlegis')->getLocationFromSession();
 
             if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
                 $deliveryTotal = $place->getDeliveryPrice();
-            } elseif (!$gis['not_found']) {
+
+            } elseif (!$locationData['not_found']) {
                 // TODO Trying to catch fatal when searching for PlacePoint
                 if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
                     $this->container->get('logger')->error('Trying to find PlacePoint without ID in CartBundle Default controller - sideBlockAction');
                 }
-                $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+
+                $checkNearest = $em
+                    ->getRepository('FoodDishesBundle:Place')
+                    ->getPlacePointNear($place->getId(), $locationData);
+
+                if (empty($checkNearest)) {
+                    $noneWorking = true;
+                }
+
+                $pointRecord = $em
+                    ->getRepository('FoodDishesBundle:PlacePoint')
+                    ->find($placePointMap[$place->getId()]);
+
                 $deliveryTotal = $this->getCartService()->getDeliveryPrice(
                     $place,
-                    $gis,
-                    $pointRecord
-                )
-                ;
+                    $locationData,
+                    $pointRecord,
+                    $noneWorking
+                );
+
                 $displayCartInterval = false;
                 $cartFromMin = $this->getCartService()->getMinimumCart(
                     $place,
-                    $gis,
+                    $locationData,
                     $pointRecord
-                )
-                ;
+                );
             }
 
             // Check cart limits
@@ -684,7 +692,7 @@ class DefaultController extends Controller
 
             if ($coupon) {
                 $applyDiscount = true;
-                $useAdminFee   = false;
+                $useAdminFee = false;
 
                 if ($coupon->getIgnoreCartPrice()) {
                     $noMinimumCart = true;
@@ -714,12 +722,12 @@ class DefaultController extends Controller
 
                 // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
                 $otherMinusDiscount = $otherPriceTotal - $discountSum;
-                if ($otherMinusDiscount < 0){
+                if ($otherMinusDiscount < 0) {
                     $discountSum = $otherPriceTotal;
                 }
 
 
-                if($enableDiscount) {
+                if ($enableDiscount) {
                     $total_cart -= $discountSum;
                 } else {
                     $discountSum = 0;
@@ -753,12 +761,12 @@ class DefaultController extends Controller
 
                 // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
                 $otherMinusDiscount = $otherPriceTotal - $discountSum;
-                if ($otherMinusDiscount < 0){
+                if ($otherMinusDiscount < 0) {
                     $discountSum = $otherPriceTotal;
                 }
 
 
-                if($enableDiscount) {
+                if ($enableDiscount) {
                     $total_cart -= $discountSum;
                 } else {
                     $discountSum = 0;
@@ -776,17 +784,15 @@ class DefaultController extends Controller
             $hideDelivery = false;
         }
 
-        if(!isset($coupon)) {
+        if (!isset($coupon)) {
             $coupon = false;
         }
 
-        if ($takeAway && !$place->getMinimalOnSelfDel())
-        {
+        if ($takeAway && !$place->getMinimalOnSelfDel()) {
             $useAdminFee = false;
         }
 
-        if ($useAdminFee && ($cartFromMin - $total_cart) >= 0.00001)
-        {
+        if ($useAdminFee && ($cartFromMin - $total_cart) >= 0.00001) {
             $total_cart += $adminFee;
 
         }
@@ -824,9 +830,9 @@ class DefaultController extends Controller
         // discountSum
 
         $params = [
-            'list'  => $list,
+            'list' => $list,
             'place' => $place,
-            'total_cart' => sprintf('%.2f',$priceBeforeDiscount),
+            'total_cart' => sprintf('%.2f', $priceBeforeDiscount),
             'total_with_delivery' => $totalWIthDelivery,
             'total_delivery' => $deliveryTotal,
             'inCart' => (int)$inCart,
@@ -837,7 +843,7 @@ class DefaultController extends Controller
             'discountInSum' => $discountInSum,
             'discountSum' => $discountSum,
             'noMinimumCart' => $noMinimumCart,
-            'cart_from_min' => sprintf('%.2f',$cartFromMin),
+            'cart_from_min' => sprintf('%.2f', $cartFromMin),
             'cart_from_max' => $cartFromMax,
             'display_cart_interval' => $displayCartInterval,
             'takeAway' => $takeAway,
@@ -849,7 +855,8 @@ class DefaultController extends Controller
             'basket_errors' => $basketErrors,
             'isCallcenter' => $isCallcenter,
             'useAdminFee' => $useAdminFee,
-            'adminFee'    => $adminFee
+            'adminFee' => $adminFee,
+            'noneWorking' => $noneWorking
         ];
 
         if ($renderView) {
@@ -919,4 +926,6 @@ class DefaultController extends Controller
 
         return new Response('Smooth end');
     }
+
+
 }
