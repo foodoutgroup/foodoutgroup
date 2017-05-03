@@ -22,7 +22,6 @@ class StaticContent implements Translatable
      * @var string
      * @Gedmo\Translatable
      * @ORM\Column(name="slug", type="string", length=255, nullable=true, unique=true)
-     * @Assert\Regex(pattern="/^[A-Za-z\d-_]+$/", message="invalid.slug")
      */
     private $slug;
 
