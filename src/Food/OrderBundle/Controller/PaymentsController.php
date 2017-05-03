@@ -185,9 +185,6 @@ class PaymentsController extends Controller
                         $orderService->informPlace();
                     }
 
-                    // Send Message To User About Successfully Created Order
-                    $orderService->sendOrderCreatedMessage();
-
                     // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
                     $orderService->deactivateCoupon();
                 }
