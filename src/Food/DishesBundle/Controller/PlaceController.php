@@ -86,13 +86,13 @@ class PlaceController extends Controller
         // only for LT and only for cili
         // todo: MULTI-L someday move to database as conditions
         $relatedPlace = null;
-        if ($this->container->getParameter('site_country') == 'LT') {
+        if ($this->container->getParameter('country') == 'LT') {
             if (in_array($place->getId(), [63, 85, 302, 333])) {
                 $relatedPlaceCollection[] = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(142);
             } elseif ($place->getId() == 142) {
                 $relatedPlaceCollection[] = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(63);
             }
-        } elseif($this->container->getParameter('site_country') == 'LV'){
+        } elseif($this->container->getParameter('country') == 'LV'){
             if (in_array($place->getId(), [1, 35])) {
                 $relatedPlaceCollection[] = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(36);
             } elseif ($place->getId() == 36) {
@@ -100,20 +100,22 @@ class PlaceController extends Controller
             }
         }
 
+        $placeService = $this->get('food.places');
+
         $variableCollection = [
             'place' => $place,
             'relatedPlaceCollection' => $relatedPlaceCollection,
             'wasHere' => $this->wasHere($place, $this->user()),
             'alreadyWrote' => $this->alreadyWrote($place, $this->user()),
-            'placeCategories' => $this->get('food.places')->getActiveCategories($place),
+            'placeCategories' => $placeService->getActiveCategories($place),
             'dishService' => $this->get('food.dishes'),
-            'placePoints' => $this->get('food.places')->getPublicPoints($place),
-            'placePointsAll' => $this->get('food.places')->getAllPoints($place),
+            'placePoints' => $placeService->getPublicPoints($place),
+            'placePointsAll' => $placeService->getAllPoints($place),
             'listType' => $listType,
             'isTodayNoOneWantsToWork' => $this->get('food.order')->isTodayNoOneWantsToWork($place),
             'breadcrumbData' => $breadcrumbData,
             'current_url' => $current_url,
-            'oldFriendIsHere' => $oldFriendIsHere,
+            'oldFriendIsHere' => $oldFriendIsHere
         ];
 
         if($this->get('food.app.utils.misc')->getParam('reviews_enabled', false)) {

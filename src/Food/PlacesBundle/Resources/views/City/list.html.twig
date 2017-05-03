@@ -107,12 +107,15 @@
                 </div>
             </div>
             <!-- <div class="discount-tag"></div> -->
+
             <div class="item-righter">
                 <div class="clearfix">
                     {#todo:fix this god damn link#}
-                    {#<div data-stars="{{ place.rating }}" class="restoran-rating fl"></div>#}
-                    {% if place.reviewCount != 0 %}
-                        <div class="rating-count fr"><a href="{{ url }}#detailed-restaurant-review">{{ place.reviewCount }} {% transchoice place.reviewCount %}places.reviews_count{% endtranschoice %}</a></div>
+                    {% if reviewsEnabled == 1 %}
+                        <div data-stars="{{ place.rating }}" class="restoran-rating fl"></div>
+                        {% if place.reviewCount != 0 %}
+                            <div class="rating-count fr"><a href="{{ url }}#detailed-restaurant-review">{{ place.reviewCount }} {% transchoice place.reviewCount %}places.reviews_count{% endtranschoice %}</a></div>
+                        {% endif %}
                     {% endif %}
                 </div><a href="{{ url }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
             </div>

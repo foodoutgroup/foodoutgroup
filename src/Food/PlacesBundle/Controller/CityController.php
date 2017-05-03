@@ -84,6 +84,7 @@ class CityController extends Controller
         return $this->render(
             'FoodPlacesBundle:City:list.html.twig',
             array(
+                'reviewsEnabled' => $this->get('food.app.utils.misc')->getParam('reviews_enabled', 0),
                 'placeCollection' => $placeCollection,
                 'isRecommended' => $isRecommended,
                 'location' => $this->get('food.googlegis')->getLocationFromSession(),
