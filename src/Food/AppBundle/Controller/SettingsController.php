@@ -19,6 +19,7 @@ class SettingsController extends CRUDController
         'use_admin_fee_globally',
         'admin_fee_size',
         'page_b2b_rules',
+        'page_privacy',
         'blog_link_active',
         'disabled_preorder_days',
         'zaval_on',
@@ -120,6 +121,11 @@ class SettingsController extends CRUDController
         ]);
         $form->add('page_b2b_rules', 'choice', [
             'label' => 'B2B rules page',
+            'choices' => $pageCollection
+        ]);
+
+        $form->add('page_privacy', 'choice', [
+            'label' => 'Privacy page',
             'choices' => $pageCollection
         ]);
 

@@ -112,12 +112,21 @@
             </trans-unit>
             <trans-unit id="cart.checkout.cart_rules" resname="cart.checkout.cart_rules">
                 <source>cart.checkout.cart_rules</source>
-                <target><![CDATA[Susipažinau ir sutinku su <a href="#rules" name="order_rules" class="fancy-box">taisyklėmis</a>]]></target>
+                <target>Susipažinau ir sutinku su</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.cart_rules.href" resname="cart.checkout.cart_rules.href">
+               <source>cart.checkout.cart_rules.href</source>
+               <target>taisyklėmis</target>
             </trans-unit>
             <trans-unit id="cart.checkout.newsletter_subscribe" resname="cart.checkout.newsletter_subscribe">
                 <source>cart.checkout.newsletter_subscribe</source>
-                <target><![CDATA[Sutinku gauti skaniausias Foodout.lt <a href="#privacy" name="newsletter_subscribe" class="fancy-box">naujienas</a>]]></target>
+                <target>Sutinku gauti skaniausias Foodout.lt</target>
             </trans-unit>
+            <trans-unit id="cart.checkout.newsletter_subscribe.href" resname="cart.checkout.newsletter_subscribe.href">
+                <source>cart.checkout.newsletter_subscribe.href</source>
+                <target>naujienas</target>
+            </trans-unit>
+
             <trans-unit id="58234b47f3f611cffbbd19bbaaa7dd73" resname="cart.checkout.delivery_comment_placeholder">
                 <source>cart.checkout.delivery_comment_placeholder</source>
                 <target>Įveskite laiptinės kodą, aukštą ir kitą kurjeriui naudingą informaciją...</target>

@@ -320,11 +320,11 @@
                             {# End of different form part #}
 
                             <div class="form-row form-row-required custom-checkbox cart-rules">
-                                <label>{% trans %}cart.checkout.cart_rules{% endtrans %}</label>
+                                <label>{% trans %}cart.checkout.cart_rules{% endtrans %} <a href="#rules" name="order_rules" class="fancy-box">{% trans %}cart.checkout.cart_rules.href{% endtrans %}</a></label>
                                 <input type="checkbox" name="cart_rules" {% if (dataToLoad is empty or (dataToLoad['cart_rules'] is defined and dataToLoad['cart_rules'] is not empty)) %}checked="checked"{% endif %} />
                             </div>
                             <div class="form-row custom-checkbox newsletter_subscribe">
-                                <label>{% trans %}cart.checkout.newsletter_subscribe{% endtrans %}</label>
+                                <label>{% trans %}cart.checkout.newsletter_subscribe{% endtrans %} <a href="#privacy" name="newsletter_subscribe" class="fancy-box">{% trans %}cart.checkout.newsletter_subscribe.href{% endtrans %}</a></label>
                                 <input type="checkbox" name="newsletter_subscribe" {% if (dataToLoad['newsletter_subscribe'] is defined and dataToLoad['newsletter_subscribe'] is not empty) or newsletter_subscribe_tick_by_default %}checked="checked"{% endif %} />
                             </div>
                             <div class="clearfix"></div>
@@ -354,7 +354,8 @@
 
                             {% if places_service.getAllowOnlinePayment(place) %}
                             {# TODO kolkas viskas rodo i Paysera#}
-                                {% if locale == 'lv' %}
+                                {# bbd su jusu tokiu hardcode.. bl nx stengtis jei tokius s daro zmones.#}
+                                {% if site_country == 'LV' %}
                                 <div class="for_hiding">
                                     <div class="select-payment clearfix">
                                         <label class="custom-radio wider-radio">
@@ -373,7 +374,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                {% elseif locale == 'ee' %}
+                                {% elseif site_country == 'EE' %}
                                 <div class="for_hiding">
                                     <div class="select-bank clearfix">
                                         <label class="custom-radio">
@@ -450,13 +451,13 @@
     </div>
     {% include ':User:change_address.html.twig' with {id: 'change-address', hideQlu: true, usr_address: userAllAddress} %}
     <div class="hidden">
-        {% set page = pageService.getByParam('page.rules') %}
+        {% set page = pageService.getByParam('page_b2b_rules') %}
         {% if page %}
             <div id="rules" class="cart_rules_content">
                 <div class="cart_rules_inner">{{ page.content|raw }}</div>
             </div>
         {% endif %}
-        {% set page = pageService.getByParam('page.privacy') %}
+        {% set page = pageService.getByParam('page_privacy') %}
         {% if page %}
             <div id="privacy" class="privacy_content">
                 <div class="privacy_inner">{{ page.content|raw }}</div>
