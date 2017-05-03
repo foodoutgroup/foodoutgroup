@@ -319,7 +319,7 @@
                                         <label for="place-select">{% trans %}places.select_place_point{% endtrans %}:</label>
                                         <select id="place-select" class="custom-select">
                                             {% for point in placePoints %}
-                                                <option itemprop="address" value="{{ point.id }}">{{ point.address }}, {{ point.city }}{% if point.getAdditionalInfo %} ({{ point.getAdditionalInfo }}){% endif %}</option>
+                                                <option itemprop="address" value="{{ point.id }}">{{ point}} {% if point.getAdditionalInfo %} ({{ point.getAdditionalInfo }}){% endif %}</option>
                                             {% endfor %}
                                         </select>
                                         <div class="location-work-hours clearfix">
