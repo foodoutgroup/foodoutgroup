@@ -629,9 +629,10 @@ class CartService {
      * @param PlacePoint $placePoint
      * @return int
      */
-    public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint)
+    public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint,$noneWorking = false)
     {
-        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData);
+        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData,$noneWorking);
+
         if (false === $deliveryTotal) {
             $deliveryTotal = $place->getDeliveryPrice();
         }
@@ -699,7 +700,7 @@ class CartService {
                 }
             }
             //~ if ($bund->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_CATEGORY) {
-                //~ $this->getContainer()->get('logger')->debug('OPT_COMBO_APPLY_CATEGORY not implemented');
+            //~ $this->getContainer()->get('logger')->debug('OPT_COMBO_APPLY_CATEGORY not implemented');
             //~ }
         }
     }
@@ -814,4 +815,5 @@ class CartService {
         }
         return false;
     }
+
 }

@@ -230,32 +230,12 @@ class NavService extends ContainerAware
 
     public function getLastOrders()
     {
-        $sqlSS = $this->initSqlConn();
-        $rez = sqlsrv_query($this->getConnection(), 'SELECT TOP 1 * FROM ' . iconv('utf-8', 'cp1257', $this->getHeaderTable()) . ' ORDER BY timestamp DESC');
-
-        if ($rez === false) {
-            die(print_r(sqlsrv_errors(), true));
+        $query = sprintf('SELECT TOP 1 * FROM %s WHERE [Order No_] = 2000529081', $this->getHeaderTable());
+        $conn = $this->initSqlConn();
+        $result = $conn->query($query);
+        foreach ($conn->fetchArray($result) as $row) {
+            var_dump($row);
         }
-        echo '<pre>';
-        while ($rowRez = sqlsrv_fetch_array($rez, SQLSRV_FETCH_ASSOC)) {
-            //echo $rowRez['Order No'];
-            print_r($rowRez);
-            echo "\n-----------\n";
-        }
-        echo '</pre>';
-
-        $rez = sqlsrv_query($this->getConnection(), 'SELECT TOP 5 * FROM ' . iconv('utf-8', 'cp1257', $this->getLineTable()) . ' ORDER BY timestamp DESC');
-
-        if ($rez === false) {
-            die(print_r(sqlsrv_errors(), true));
-        }
-        echo '<pre>';
-        while ($rowRez = sqlsrv_fetch_array($rez, SQLSRV_FETCH_ASSOC)) {
-            //echo $rowRez['Order No'];
-            print_r($rowRez);
-            echo "\n-----------\n";
-        }
-        echo '</pre>';
     }
 
     /**
@@ -651,7 +631,7 @@ class NavService extends ContainerAware
             'Parent Line'     => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
             'Amount'          => $amountForInsert, // $detail->getPrice() * $detail->getQuantity(),// @todo test the price. Kaip gula. Total ar ne.
             'Discount Amount' => "-" . $discountAmount,
-            'Payment'         => $paymentAmount, //$detail->getPrice() * $detail->getQuantity(),
+            'Payment'         => $amountForInsert - $discountAmount, //$detail->getPrice() * $detail->getQuantity(),
             'Value'           => "''",
             'Discount No_'    => "''"
         ];

@@ -820,7 +820,8 @@ class OrderService extends ContainerAware
         return $messageText;
     }
 
-    public function correctMessageText($messageText){
+    public function correctMessageText($messageText)
+    {
         if (strpos($messageText, 'Cili pica Kaunas/Klaipeda') !== false) {
             $messageText = str_replace('Cili pica Kaunas/Klaipeda', 'Cili pica', $messageText);
         }
@@ -1524,8 +1525,7 @@ class OrderService extends ContainerAware
         $adminFee    = $placesService->getAdminFee($placeObject);
         $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
 
-        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel())
-        {
+        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel()) {
             $useAdminFee = false;
         }
 
@@ -1533,7 +1533,8 @@ class OrderService extends ContainerAware
             $adminFee = 0;
         }
 
-        if ($useAdminFee && $sumTotal < $cartFromMin) {
+
+        if ($useAdminFee && ($cartFromMin - $sumTotal) >= 0.00001) {
             $sumTotal += $adminFee;
         } else {
             $useAdminFee = false;
@@ -3229,6 +3230,8 @@ class OrderService extends ContainerAware
         $dishesService = $this->container->get('food.dishes');
 
         $debugCartInfo = array();
+        $cartService = $this->container->get('food.cart');
+
 
 
         $loggedIn = true;
@@ -3356,6 +3359,11 @@ class OrderService extends ContainerAware
             }
         }
 
+
+        if ($coupon || ($takeAway && !$place->getMinimalOnSelfDel())) {
+            $useAdminFee = false;
+        }
+
         if ($coupon && $coupon->getIgnoreCartPrice()) {
             $noMinimumCart = true;
         }
@@ -3417,7 +3425,7 @@ class OrderService extends ContainerAware
                 }
             }
 
-            if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false  && !$useAdminFee) {
+            if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false && !$useAdminFee) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }
@@ -3456,7 +3464,9 @@ class OrderService extends ContainerAware
 
         $preOrder = $request->get('pre-order');
         $pointRecord = null;
+
         if (empty($placePointId)) {
+
             $placePointMap = $this->container->get('session')->get('point_data');
             if (!empty($placePointMap[$place->getId()])) {
                 $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
@@ -3486,12 +3496,38 @@ class OrderService extends ContainerAware
                             $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointForPlace);
                         }
                     }
+                } else {
+
+                    $checkPoint = $this->checkWorkingPlace($pointRecord);
+
+                    if (!$checkPoint) {
+                        $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                        $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
+                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
+                    } else {
+                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
+                    }
+
                 }
             } else {
-                $formErrors[] = 'cart.checkout.place_point_not_in_radius';
+
+                if($preOrder == 'it-is'){
+                    $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                    $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
+                    if(!empty($pointRecordId)){
+                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
+                    }else{
+                        $formErrors[] = 'cart.checkout.place_point_not_in_radius';
+                    }
+
+                }else {
+                    $formErrors[] = 'cart.checkout.place_point_not_in_radius';
+                }
+
             }
         } else {
             $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
+
         }
 
         // Test if correct dates passed to pre order
@@ -4439,6 +4475,9 @@ class OrderService extends ContainerAware
                 $message = \Swift_Message::newInstance()
                     ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
                     ->setFrom('info@' . $domain);
+            $message = \Swift_Message::newInstance()
+                ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
+                ->setFrom('info@' . $domain);
 
                 $message->addTo($userEmail);
                 $message->setBody($text);
@@ -4570,5 +4609,22 @@ class OrderService extends ContainerAware
         }
 
         return $em->getRepository('FoodDishesBundle:PlacePoint')->findBy($params);
+    }
+
+
+    public function checkWorkingPlace($pointRecord)
+    {
+        $pointWorkingErrors = [];
+        $pointIsWorking = true;
+
+        if ($pointRecord) {
+            $this->workTimeErrors($pointRecord, $pointWorkingErrors);
+        }
+
+        if (!empty($pointWorkingErrors)) {
+            $pointIsWorking = false;
+        }
+
+        return $pointIsWorking;
     }
 }

@@ -81,7 +81,7 @@ class MailerSubscribersUpdateCommand extends ContainerAwareCommand
     protected function importUsersToServer($type, $users, $list_id, $output)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
-        $mailer = $this->getContainer()->get('food.mailer');
+        $mailer = $this->getContainer()->get('food.newsletter_mailer');
         $output->write(sprintf("[*] Found %d " . $type . " users. Importing data to mailer.lt", count($users))."\n");
         $processedUsers = 0;
         $subscribers = array();
@@ -131,6 +131,8 @@ class MailerSubscribersUpdateCommand extends ContainerAwareCommand
         }
 
         /* Set it to '1', if you want to reactivate subscriber (default '0') */
+
+
         $subscribers_all = $mailer->setId($list_id)->addAll($subscribers, 0);
         if (!empty($subscribers_all['Results']) && count($subscribers_all['Results']) > 0) {
             $output->writeln('[+] ' . $type . ' Data imported successfully.');
