@@ -894,15 +894,10 @@ class Order
             $lastUpdated = null;
         }
 
-        $addressId = null;
-        if ($userAddress = $this->getAddressId()) {
-            $addressId = $userAddress->getAddress().', '.$userAddress->getCity();
-        }
-
         return array(
             'id' => $this->getId(),
             'userId' => $userId,
-            'addressId' => $addressId,
+            'addressId' => $this->getAddressId(),
             'userIp' => $this->getUserIp(),
             'details' => 'TODO', // TODO
             'orderStatus' => $this->getOrderStatus(),

@@ -624,7 +624,7 @@ class PlacePoint
             'placeId' => $this->getPlace()->getId(),
             'placeName' => $this->getPlace()->getName(),
             'address' => $this->getAddress(),
-            'city' => $this->getCity(),
+            'city' => $this->getCity(), // todo MULTI-L
             'active' => $this->getActive(),
             'public' => $this->getPublic(),
             'delivery' => $this->getDelivery(),

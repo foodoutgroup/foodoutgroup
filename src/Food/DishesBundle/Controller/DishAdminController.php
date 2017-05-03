@@ -51,13 +51,9 @@ class DishAdminController extends Controller
             ->getRepository('FoodDishesBundle:Place')
             ->find($placeId);
 
-        $placePoints = $place->getPoints();
 
-        foreach($placePoints as $point){
-
-            $cityObj = $point->getCityId();
-
-            $html .= '<option value="'.$point->getId().'" >'.$point->getAddress().', '.($cityObj != null ? $cityObj->getTitle() : $point->getCity()).'</option>';
+        foreach($place->getPoints() as $point){
+            $html .= '<option value="'.$point->getId().'" >'.$point.'</option>';
         }
 
         return new Response($html, 200);

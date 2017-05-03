@@ -311,6 +311,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                 $address = new UserAddress();
                                 $address->setUser($user)
                                     ->setCity($fixedCity)
+//                                    ->setCityId($fixedCity) todo MULTI-L FIX
                                     ->setAddress($addressStr)
                                     ->setLat($gisAddress['lat'])
                                     ->setLon($gisAddress['lng']);
@@ -342,16 +343,9 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                     $addressToSave = mb_convert_case($addressToSave, MB_CASE_TITLE, "UTF-8");
                                     $addressToSave = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressToSave);
                                 }
-                                if (!empty($orderData['CustomerCity'])) {
-                                    $cityToSave = $orderData['CustomerCity'];
-                                    $cityToSave = mb_convert_case($cityToSave, MB_CASE_TITLE, "UTF-8");
-                                }
 
-                                $companyAddress = $addressToSave;
+                                $companyAddress = $order->getAddressId();
 
-                                if (strpos($addressToSave, $cityToSave) === false) {
-                                    $companyAddress .= ", ". $cityToSave;
-                                }
 
                                 $order->setCompany(true)
                                     ->setCompanyName($orderData['CustomerName'])
