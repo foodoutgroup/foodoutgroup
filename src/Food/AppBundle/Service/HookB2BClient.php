@@ -12,7 +12,8 @@ class HookB2BClient {
 
     public function build()
     {
-        $locale = $this->container->getParameter('locale');
-        return ['template' => 'FoodAppBundle:Hook:b2b_client_' . $locale . '.html.twig'];
+        return [
+            'template' => 'FoodAppBundle:Hook:b2b_client_' . strtolower($this->container->getParameter('site_country')) . '.html.twig'
+        ];
     }
 }

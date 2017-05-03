@@ -70,6 +70,7 @@ class StaticPageController extends Controller
                 } catch (NotFoundHttpException $e) {
                     throw new NotFoundHttpException($e->getMessage());
                 } catch (\Exception $ignore) {
+                    die($ignore->getMessage());
                 }
             }
         }
