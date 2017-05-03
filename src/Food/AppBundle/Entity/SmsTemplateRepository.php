@@ -34,7 +34,6 @@ class SmsTemplateRepository extends EntityRepository
             ->where('st.status = :order_status')
             ->andWhere('st.preorder = :preorder')
             ->andWhere('st.source = :source')
-            ->andWhere('st.active = 1')
             ->andWhere('st.type = :type')
             ->setMaxResults(1);
 
