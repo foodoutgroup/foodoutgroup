@@ -13,7 +13,7 @@ class HookB2BClient {
     public function build()
     {
         return [
-            'template' => 'FoodAppBundle:Hook:b2b_client_' . strtolower($this->container->getParameter('site_country')) . '.html.twig'
+            'template' => 'FoodAppBundle:Hook:b2b_client_' . strtolower($this->container->getParameter('country')) . '.html.twig'
         ];
     }
 }
