@@ -1,6 +1,7 @@
 <?php
 namespace Food\AppBundle\EventListener;
 
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,23 +15,23 @@ class RequestListener
         $this->container = $container;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelController(FilterControllerEvent $event)
     {
-        $request = $event->getRequest()->getLocale();
-        $availableLocales = $this->container->getParameter('locales');
-        $disabledLocales = $this->container->getParameter('locales_hidden');
-
-        if(count($disabledLocales)) {
-            foreach ($availableLocales as $key => $locale) {
-                if (in_array($locale, $disabledLocales)) {
-                    unset($availableLocales[$key]);
-                }
-            }
-        }
-
-        if (!in_array($request, $availableLocales)) {
-            throw new NotFoundHttpException('Sorry page does not exist');
-        }
+//        $request = $event->getRequest()->getLocale();
+//        $availableLocales = $this->container->getParameter('locales');
+//        $disabledLocales = $this->container->getParameter('locales_hidden');
+//
+//        if(count($disabledLocales)) {
+//            foreach ($availableLocales as $key => $locale) {
+//                if (in_array($locale, $disabledLocales)) {
+//                    unset($availableLocales[$key]);
+//                }
+//            }
+//        }
+//
+//        if (!in_array($request, $availableLocales)) {
+//            $event->getController()->forward('FoodAppBunlde:Slug:notFound');
+//        }
     }
 
     public function onLateKernelRequest(GetResponseEvent $event)

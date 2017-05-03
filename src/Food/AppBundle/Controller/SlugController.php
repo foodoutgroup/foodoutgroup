@@ -18,6 +18,7 @@ class SlugController extends Controller
 
     public function processAction(Request $request, $slug)
     {
+        $this->container->get('slug')->checkNotFound();
 
         $slugForward = $this->getDoctrine()->getRepository('FoodAppBundle:SlugForward')->getByLocaleAndSlug($request->getLocale(), $slug);
         if($slugForward) {
@@ -124,6 +125,11 @@ class SlugController extends Controller
         }
     }
 
+
+    public function notFoundAction()
+    {
+        throw new NotFoundHttpException('Sorry page does not exist');
+    }
 
     private function pageNotFound404($slug) {
         $errorMessage = sprintf('User requested non-existant slug: "%s" Locale: "%s" IP: "%s" UserAgent: "%s"',

@@ -69,5 +69,4 @@ class SlugValidator extends ConstraintValidator
         }
         return $this->defaultLocale;
     }
-
 }

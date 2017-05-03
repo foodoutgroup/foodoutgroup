@@ -52,7 +52,7 @@ class TranslationCRUDController extends CRUDController
 
             unset($dataCollection[0]);
 
-            $storage = $em->getRepository(TransUnit::class);
+            $storage = $em->getRepository('LexikTranslationBundle:TransUnit');
             $transUnitManager = $this->container->get('lexik_translation.trans_unit.manager');
             $em->beginTransaction();
             $imported = false;
@@ -283,7 +283,7 @@ class TranslationCRUDController extends CRUDController
 
 
         $stringCollection = $em->createQueryBuilder()
-            ->from(TransUnit::class, 'tu')
+            ->from('LexikTranslationBundle:TransUnit', 'tu')
             ->select(['tu.id','tu.key','tu.domain', 'te.locale', 'te.content'])
             ->leftJoin('tu.translations', 'te')
             ->getQuery()
