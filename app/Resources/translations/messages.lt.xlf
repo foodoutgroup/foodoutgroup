@@ -10,6 +10,22 @@
         <source><![CDATA[Please fill out this field.]]></source>
         <target><![CDATA[Privalote sutikti, norėdami tęsti]]></target>
       </trans-unit>
+      <trans-unit id="form.regenerate_password">
+          <source>form.regenerate_password</source>
+          <target>Pergeneruoti slaptažodį kas savaite</target>
+      </trans-unit>
+      <trans-unit id="download.foodout.application">
+          <source>download.foodout.application</source>
+          <target>Atsisiųsk nemokamą Foodout.lt aplikaciją!</target>
+      </trans-unit>
+      <trans-unit id="cart.checkout.cart_rules.href">
+          <source>cart.checkout.cart_rules.href</source>
+          <target>taisyklės</target>
+      </trans-unit>
+      <trans-unit id="cart.checkout.newsletter_subscribe.href">
+          <source>cart.checkout.newsletter_subscribe.href</source>
+          <target>naujienos</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
