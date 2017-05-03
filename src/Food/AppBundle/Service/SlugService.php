@@ -222,10 +222,8 @@ class SlugService
         }
 
         if ($urlSlug) {
-            $url = str_replace(["/app_dev.php/"], "", $this->router->generate($slug, $params, UrlGeneratorInterface::ABSOLUTE_PATH));
-            if(isset($url[0]) && $url[0] == "/") {
-                $url[0] = "";
-            }
+            $url = ltrim(str_replace(["/app_dev.php/"], "", $this->router->generate($slug, $params, UrlGeneratorInterface::ABSOLUTE_PATH)), '/');
+
         }
         self::$cachePath[$type][$itemId] = $url;
         return $url;
