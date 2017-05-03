@@ -553,6 +553,10 @@ class DefaultController extends Controller
         $useAdminFee = $placeServ->useAdminFee($place);
         $adminFee = $placeServ->getAdminFee($place);
 
+        $em = $this->getDoctrine()->getManager();
+
+        $noneWorking = false;
+
         if ($useAdminFee && !$adminFee) {
             $adminFee = 0;
         }
@@ -591,30 +595,32 @@ class DefaultController extends Controller
         } else {
             $placePointMap = $this->container->get('session')->get('point_data');
 
-            $gis = $this->get('food.googlegis')->getLocationFromSession();
+            $locationData = $this->get('food.googlegis')->getLocationFromSession();
 
             if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
                 $deliveryTotal = $place->getDeliveryPrice();
-               
-            } elseif (!$gis['not_found']) {
+
+            } elseif (!$locationData['not_found']) {
                 // TODO Trying to catch fatal when searching for PlacePoint
                 if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
                     $this->container->get('logger')->error('Trying to find PlacePoint without ID in CartBundle Default controller - sideBlockAction');
                 }
 
-                $checkNearest = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $gis);
+                $checkNearest = $em
+                    ->getRepository('FoodDishesBundle:Place')
+                    ->getPlacePointNear($place->getId(), $locationData);
 
                 if (empty($checkNearest)) {
                     $noneWorking = true;
-                }else{
-                    $noneWorking = false;
                 }
 
-                $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+                $pointRecord = $em
+                    ->getRepository('FoodDishesBundle:PlacePoint')
+                    ->find($placePointMap[$place->getId()]);
 
                 $deliveryTotal = $this->getCartService()->getDeliveryPrice(
                     $place,
-                    $gis,
+                    $locationData,
                     $pointRecord,
                     $noneWorking
                 );
@@ -622,7 +628,7 @@ class DefaultController extends Controller
                 $displayCartInterval = false;
                 $cartFromMin = $this->getCartService()->getMinimumCart(
                     $place,
-                    $gis,
+                    $locationData,
                     $pointRecord
                 );
             }
@@ -847,7 +853,7 @@ class DefaultController extends Controller
             'isCallcenter' => $isCallcenter,
             'useAdminFee' => $useAdminFee,
             'adminFee' => $adminFee,
-            'noneWorking' => isset($noneWorking) ? $noneWorking : false
+            'noneWorking' => $noneWorking
         ];
 
         if ($renderView) {
