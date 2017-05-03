@@ -31,7 +31,7 @@ class EmailTemplateRepository extends EntityRepository
         }
 
         $qb = $this->createQueryBuilder('et')
-            ->where('et.order_status = :order_statis')
+            ->where('et.status = :order_statis')
             ->andWhere('et.preorder = :preorder')
             ->andWhere('et.source = :source')
             ->andWhere('et.active = 1')

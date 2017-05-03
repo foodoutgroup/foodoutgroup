@@ -31,7 +31,7 @@ class SmsTemplateRepository extends EntityRepository
         }
 
         $qb = $this->createQueryBuilder('st')
-            ->where('st.order_status = :order_statis')
+            ->where('st.status = :order_statis')
             ->andWhere('st.preorder = :preorder')
             ->andWhere('st.source = :source')
             ->andWhere('st.active = 1')
