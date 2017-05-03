@@ -39,6 +39,9 @@ class AjaxController extends Controller
             case 'check-coupon':
                 $this->_ajaxCheckCoupon($response, $request->get('place_id'), $request->get('coupon_code'),$request->get('currentUrl'),$request);
                 break;
+            case 'delivery-price':
+                $this->_ajaxGetDeliveryPrice($response,$request->get('restaurant'),$request->get('time'));
+                break;
             default:
                 $response->setContent(json_encode([
                     'message' => 'Method not found :)',
@@ -222,7 +225,7 @@ class AjaxController extends Controller
     {
         $cont = json_decode($response->getContent());
 
-        $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
+        $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithWorkCheck(
             $placeId,
             $this->get('food.googlegis')->getLocationFromSession()
         );
@@ -347,5 +350,35 @@ class AjaxController extends Controller
         }
 
         $response->setContent(json_encode($cont));
+    }
+
+    private function _ajaxGetDeliveryPrice(Response $response, $restaurant,$time)
+    {
+        $em = $this->container->get('doctrine')->getManager();
+
+        $date = date('Y-m-d ').$time.':00';
+        $location = $this->get('food.googlegis')->getLocationFromSession();
+        $placeRepo = $em->getRepository("FoodDishesBundle:Place");
+        $place = $placeRepo->find($restaurant);
+        $placePointId = $placeRepo->getPlacePointNear($restaurant,$location,false,$date);
+
+        if(!empty($placePointId)) {
+            $placePointRepo = $em->getRepository("FoodDishesBundle:PlacePoint");
+            $cartService = $this->container->get('food.cart');
+
+            $placePoint = $placePointRepo->find($placePointId);
+
+            $deliveryPrice = $cartService->getDeliveryPrice(
+                $place,
+                $location,
+                $placePoint,
+                true
+            );
+
+        }else{
+            $deliveryPrice = '';
+        }
+
+        $response->setContent(json_encode($deliveryPrice));
     }
 }

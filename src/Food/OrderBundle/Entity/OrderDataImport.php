@@ -57,10 +57,10 @@ class OrderDataImport
     private $ordersChanged;
 
     /**
-     * @var string
-     * @ORM\Column(name="is_imported", type="boolean", nullable=true)
+     * @var boolean
+     * @ORM\Column(name="is_imported", type="boolean", options={"default": false})
      */
-    private $isImported = null;
+    private $isImported = false;
 
     public function __construct()
     {
