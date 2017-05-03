@@ -1,58 +1,58 @@
 $(document).ready(function () {
-    var inElement = $("input[name$='[" + $("input[data-slugify]").attr('data-slugify') + "]'");
-    var outElement = $("input[data-slugify]");
-    $("input[name$='[" + $("input[data-slugify]").attr('data-slugify') + "]'").focusout(function () {
-        slugGenerator(outElement, inElement);
+
+    var inputs =  $("input[name$='[" + $("input[data-slugify]").attr('data-slugify') + "]'");
+    var outputs = $("input[data-slugify]");
+
+    outputs.each(function () {
+        $(this).data('old-val', $(this).val());
     });
+
+    inputs.on('keyup',function () {
+        slugGenerator(outputs, inputs);
+    });
+
+    inputs.on('focusout', function () {
+        outputs.each(function () {
+            $(this).data('old-val', $(this).val());
+        });
+    });
+
 });
+
 
 
 function slugGenerator(outputs, inputs) {
 
-    var op;
-    var out;
-
     if (inputs.length == 1) {
-        op = inputs;
-
-        if (typeof op !== null) {
-
-            out = removeDiacritics(op.val())
-        }
-
         outputs.each(function () {
-
-            if ($(this).is(":visible")) {
-                $(this).val(out);
+            if ($(this).data('old-val') == '') {
+                inputs.data('old-val', inputs.val());
+                $(this).val(removeDiacritics(inputs.val()))
+                inputs.val(inputs.data('old-val'));
             }
         });
-
     } else if (inputs.length > 1) {
 
+        console.log("1->m");
         inputs.each(function () {
-
-            if ($(this).is(":visible")) {
-                op = $(this);
-            }
-        });
-
-        if (typeof op !== null) {
-
-            out = removeDiacritics(op.val())
-        }
-
-        outputs.each(function () {
-
-            if ($(this).is(":visible")) {
-                $(this).val(out);
+            var input = $(this);
+            if (input.is(":visible")) {
+                input.data('old-val', input.val());
+                outputs.each(function () {
+                    var output = $(this);
+                    if (output.is(":visible") && output.data('old-val') == '') {
+                        output.val(op);
+                        input.val(input.data('old-val'));
+                    }
+                });
             }
         });
 
     }
 }
 
-
 function removeDiacritics(str) {
+
     var changes;
 
     if (!changes) {
@@ -68,7 +68,7 @@ function removeDiacritics(str) {
         .replace(/^-+/, '')
         .replace(/-+$/, '');
 
-    return str;
+    return str.toString();
 }
 
 var defaultDiacriticsRemovalMap = [
@@ -232,30 +232,3 @@ var defaultDiacriticsRemovalMap = [
     },
     {'base': 'z', 'letters': /[\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763]/g}
 ];
-
-var $select = $('.lang-switch');
-
-var switcherHandler = function(e){
-    var val = null;
-    if(typeof e.target !== 'undefined'){
-        val = $(e.target).val();
-    }else{
-        val = e.val();
-    }
-    console.log(val);
-
-    $('.lang-group').css('display', 'none');
-    $('.lang-group[data-lang="' + val + '"]').css('display', 'block');
-    $select
-        .find('option')
-        .prop('selected', false)
-        .end()
-        .find('option[value="'+val+'"]')
-        .prop('selected', true);
-};
-
-$select.change( switcherHandler );
-
-if ( $select.eq(0).length != 0 ) {
-    switcherHandler($select.eq(0));
-}
