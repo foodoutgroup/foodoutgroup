@@ -196,14 +196,7 @@
         <div class="delivery-time tac">
             {% trans %}cart.block.delivery_time{% endtrans %}
 
-            {% if place.deliveryOptions ==  'pedestrian' %}
-
-                {{ places_service.getPedestrianDeliveryTime() }} {{ 'min' }}
-
-            {% else %}
-                {{ places_service.getDeliveryTime(place) }}
-            {% endif %}
-
+                {{ places_service.getDeliveryTime(place,null,place.deliveryOptions) }}
 
             {% if place.deliveryTimeInfo is not empty %}
                 <span class="delivery-time-info-cart ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>

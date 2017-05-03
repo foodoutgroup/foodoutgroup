@@ -736,17 +736,21 @@ class PlacesService extends ContainerAware
      *
      * @return string
      */
-    public function getDeliveryTime(Place $place, PlacePoint $placePoint = null)
+    public function getDeliveryTime(Place $place, PlacePoint $placePoint = null,$type = false)
     {
-        $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
-        if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
-            $zavalasTimeByPlace = $this->container->get('food.zavalas_service')->getZavalasTimeByPlace($place);
-            if ($zavalasTimeByPlace) {
+        if($type && $type == 'pedestrian'){
+            $deliveryTime = $this->getPedestrianDeliveryTime().' min';
+        }else {
+
+            $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
+            if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
+                $zavalasTimeByPlace = $this->container->get('food.zavalas_service')->getZavalasTimeByPlace($place);
+                if ($zavalasTimeByPlace) {
+                    $deliveryTime = $zavalasTimeByPlace;
+                }
                 $deliveryTime = $zavalasTimeByPlace;
             }
-            $deliveryTime = $zavalasTimeByPlace;
         }
-
         return $deliveryTime;
     }
 
