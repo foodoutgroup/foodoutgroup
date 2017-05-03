@@ -124,7 +124,9 @@ class KitchenAdmin extends FoodAdmin
     {
 
         //$this->saveFile($object);
-        //$this->slug($object);
+        if ($object->getId()) {
+            $this->slug($object);
+        }
 
         parent::prePersist($object);
     }
