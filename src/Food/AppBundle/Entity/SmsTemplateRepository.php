@@ -22,7 +22,6 @@ class SmsTemplateRepository extends EntityRepository
             'order_status' => $order->getOrderStatus(),
             'preorder' => (bool)$order->getPreorder(),
             'source' => $order->getSource(),
-            'active' => true,
             'type' => 'deliver'
         ];
 
