@@ -468,7 +468,7 @@ class DispatcherAdminController extends Controller
             $logisticsService->assignDriver($driverId, $ordersIds);
         } catch (\Exception $e) {
             // TODO normalus error return ir ispiesimas popupe
-            $this->get('logger')->error('Error happened assigning a driver: ' . $e->getMessage());
+            $this->get('logger')->error('Error happened assigning a driver: ' . $e->getMessage().' '. $e->getFile().' '.$e->getLine()git );
 
             return new Response('Error: error occured');
         }
