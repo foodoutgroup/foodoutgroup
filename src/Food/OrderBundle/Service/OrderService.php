@@ -77,8 +77,8 @@ class OrderService extends ContainerAware
         'paysera' => 'food.paysera_biller',
         'swedbank-gateway' => 'food.swedbank_gateway_biller',
         'swedbank-credit-card-gateway' => 'food.swedbank_credit_card_gateway_biller',
-        'seb-banklink'                 => 'food.seb_banklink_biller',
-        'nordea-banklink'              => 'food.nordea_banklink_biller',
+        'seb-banklink' => 'food.seb_banklink_biller',
+        'nordea-banklink' => 'food.nordea_banklink_biller',
         'sandbox' => 'food.sandbox_biller',
     ];
 
@@ -673,7 +673,7 @@ class OrderService extends ContainerAware
             'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
             'invoice' => $invoice,
             'beta_kodas' => $betaCode,
-            'admin_fee'  => $this->getOrder()->getAdminFee(),
+            'admin_fee' => $this->getOrder()->getAdminFee(),
         ];
 
 
@@ -856,7 +856,8 @@ class OrderService extends ContainerAware
         return $messageText;
     }
 
-    public function correctMessageText($messageText){
+    public function correctMessageText($messageText)
+    {
         if (strpos($messageText, 'Cili pica Kaunas/Klaipeda') !== false) {
             $messageText = str_replace('Cili pica Kaunas/Klaipeda', 'Cili pica', $messageText);
         }
@@ -1586,11 +1587,10 @@ class OrderService extends ContainerAware
         //~ }
 
 
-        $adminFee    = $placesService->getAdminFee($placeObject);
+        $adminFee = $placesService->getAdminFee($placeObject);
         $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
 
-        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel())
-        {
+        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel()) {
             $useAdminFee = false;
         }
 
@@ -1599,7 +1599,7 @@ class OrderService extends ContainerAware
         }
 
 
-        if ($useAdminFee && ($cartFromMin - $sumTotal)  >= 0.00001) {
+        if ($useAdminFee && ($cartFromMin - $sumTotal) >= 0.00001) {
             $sumTotal += $adminFee;
         } else {
             $useAdminFee = false;
@@ -3304,6 +3304,8 @@ class OrderService extends ContainerAware
         $locationService = $this->container->get('food.location');
         $dishesService = $this->container->get('food.dishes');
         $debugCartInfo = array();
+        $cartService = $this->container->get('food.cart');
+
 
         $useAdminFee = $this->container->get('food.places')->useAdminFee($place);
 
@@ -3433,8 +3435,7 @@ class OrderService extends ContainerAware
         }
 
 
-        if ($coupon || ($takeAway && !$place->getMinimalOnSelfDel()) )
-        {
+        if ($coupon || ($takeAway && !$place->getMinimalOnSelfDel())) {
             $useAdminFee = false;
         }
 
@@ -3499,7 +3500,7 @@ class OrderService extends ContainerAware
                 }
             }
 
-            if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false  && !$useAdminFee) {
+            if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false && !$useAdminFee) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }
@@ -3516,8 +3517,8 @@ class OrderService extends ContainerAware
 
                 foreach ($debugDishOptions as $option) {
 
-                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['name'] =  $option->getDishOptionId()->getName();
-                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['price'] =  $option->getDishOptionId()->getPrice();
+                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['name'] = $option->getDishOptionId()->getName();
+                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['price'] = $option->getDishOptionId()->getPrice();
                 }
             }
 
@@ -3535,7 +3536,9 @@ class OrderService extends ContainerAware
 
         $preOrder = $request->get('pre-order');
         $pointRecord = null;
+
         if (empty($placePointId)) {
+
             $placePointMap = $this->container->get('session')->get('point_data');
             if (!empty($placePointMap[$place->getId()])) {
                 $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
@@ -3565,12 +3568,38 @@ class OrderService extends ContainerAware
                             $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointForPlace);
                         }
                     }
+                } else {
+
+                    $checkPoint = $this->checkWorkingPlace($pointRecord);
+
+                    if (!$checkPoint) {
+                        $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                        $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
+                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
+                    } else {
+                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
+                    }
+
                 }
             } else {
-                $formErrors[] = 'cart.checkout.place_point_not_in_radius';
+
+                if($preOrder == 'it-is'){
+                    $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                    $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
+                    if(!empty($pointRecordId)){
+                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
+                    }else{
+                        $formErrors[] = 'cart.checkout.place_point_not_in_radius';
+                    }
+
+                }else {
+                    $formErrors[] = 'cart.checkout.place_point_not_in_radius';
+                }
+
             }
         } else {
             $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
+
         }
 
         // Test if correct dates passed to pre order
@@ -4599,13 +4628,12 @@ class OrderService extends ContainerAware
                 ->trans(
                     $keyword,
                     [
-                        'order_id'   => $order->getId(),
+                        'order_id' => $order->getId(),
                         'delay_time' => $diffInMinutes
                     ],
                     null,
                     $order->getLocale()
-                )
-            ;
+                );
 
             $userEmail = $order->getOrderExtra()->getEmail();
             $message = $smsService->createMessage($sender, $recipient, $text, $order);
@@ -4616,8 +4644,7 @@ class OrderService extends ContainerAware
 
             $message = \Swift_Message::newInstance()
                 ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
-                ->setFrom('info@' . $domain)
-            ;
+                ->setFrom('info@' . $domain);
 
             $message->addTo($userEmail);
             $message->setBody($text);
@@ -4824,5 +4851,22 @@ class OrderService extends ContainerAware
         ]);
 
         return $ppList;
+    }
+
+
+    public function checkWorkingPlace($pointRecord)
+    {
+        $pointWorkingErrors = [];
+        $pointIsWorking = true;
+
+        if ($pointRecord) {
+            $this->workTimeErrors($pointRecord, $pointWorkingErrors);
+        }
+
+        if (!empty($pointWorkingErrors)) {
+            $pointIsWorking = false;
+        }
+
+        return $pointIsWorking;
     }
 }
