@@ -86,13 +86,13 @@ class PlaceController extends Controller
         // only for LT and only for cili
         // todo: MULTI-L someday move to database as conditions
         $relatedPlace = null;
-        if ($this->container->getParameter('country') == 'LT') {
+        if ($this->container->getParameter('site_country') == 'LT') {
             if (in_array($place->getId(), [63, 85, 302, 333])) {
                 $relatedPlaceCollection[] = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(142);
             } elseif ($place->getId() == 142) {
                 $relatedPlaceCollection[] = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(63);
             }
-        } elseif($this->container->getParameter('country') == 'LV'){
+        } elseif($this->container->getParameter('site_country') == 'LV'){
             if (in_array($place->getId(), [1, 35])) {
                 $relatedPlaceCollection[] = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(36);
             } elseif ($place->getId() == 36) {

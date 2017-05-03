@@ -145,9 +145,9 @@ twig:
         misc_utils: "@food.app.utils.misc"
         user_service: "@food.user"
 #        image_manager_service: "@food.image_manager_service"
-        slug: "@slug"
         cityService: "@food.city_service"
         pageService: "@food.page_service"
+        slug: "@slug"
 
 
 # Assetic Configuration
