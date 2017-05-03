@@ -678,7 +678,7 @@ class OrderService extends ContainerAware
             'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
             'invoice' => $invoice,
             'beta_kodas' => $betaCode,
-            'admin_fee'  => $this->getOrder()->getAdminFee(),
+            'admin_fee' => $this->getOrder()->getAdminFee(),
         ];
 
 
@@ -861,7 +861,8 @@ class OrderService extends ContainerAware
         return $messageText;
     }
 
-    public function correctMessageText($messageText){
+    public function correctMessageText($messageText)
+    {
         if (strpos($messageText, 'Cili pica Kaunas/Klaipeda') !== false) {
             $messageText = str_replace('Cili pica Kaunas/Klaipeda', 'Cili pica', $messageText);
         }
@@ -1592,11 +1593,10 @@ class OrderService extends ContainerAware
         //~ }
 
 
-        $adminFee    = $placesService->getAdminFee($placeObject);
+        $adminFee = $placesService->getAdminFee($placeObject);
         $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
 
-        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel())
-        {
+        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel()) {
             $useAdminFee = false;
         }
 
@@ -1605,7 +1605,7 @@ class OrderService extends ContainerAware
         }
 
 
-        if ($useAdminFee && ($cartFromMin - $sumTotal)  >= 0.00001) {
+        if ($useAdminFee && ($cartFromMin - $sumTotal) >= 0.00001) {
             $sumTotal += $adminFee;
         } else {
             $useAdminFee = false;
@@ -3310,6 +3310,8 @@ class OrderService extends ContainerAware
         $locationService = $this->container->get('food.location');
         $dishesService = $this->container->get('food.dishes');
         $debugCartInfo = array();
+        $cartService = $this->container->get('food.cart');
+
 
         $useAdminFee = $this->container->get('food.places')->useAdminFee($place);
 
@@ -3439,8 +3441,7 @@ class OrderService extends ContainerAware
         }
 
 
-        if ($coupon || ($takeAway && !$place->getMinimalOnSelfDel()) )
-        {
+        if ($coupon || ($takeAway && !$place->getMinimalOnSelfDel())) {
             $useAdminFee = false;
         }
 
@@ -3505,7 +3506,7 @@ class OrderService extends ContainerAware
                 }
             }
 
-            if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false  && !$useAdminFee) {
+            if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false && !$useAdminFee) {
                 $formErrors[] = 'order.form.errors.cartlessthanminimum_on_pickup';
             }
         }
@@ -3541,7 +3542,9 @@ class OrderService extends ContainerAware
 
         $preOrder = $request->get('pre-order');
         $pointRecord = null;
+
         if (empty($placePointId)) {
+
             $placePointMap = $this->container->get('session')->get('point_data');
             if (!empty($placePointMap[$place->getId()])) {
                 $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
@@ -3571,12 +3574,38 @@ class OrderService extends ContainerAware
                             $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointForPlace);
                         }
                     }
+                } else {
+
+                    $checkPoint = $this->checkWorkingPlace($pointRecord);
+
+                    if (!$checkPoint) {
+                        $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                        $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
+                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
+                    } else {
+                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
+                    }
+
                 }
             } else {
-                $formErrors[] = 'cart.checkout.place_point_not_in_radius';
+
+                if($preOrder == 'it-is'){
+                    $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                    $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
+                    if(!empty($pointRecordId)){
+                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
+                    }else{
+                        $formErrors[] = 'cart.checkout.place_point_not_in_radius';
+                    }
+
+                }else {
+                    $formErrors[] = 'cart.checkout.place_point_not_in_radius';
+                }
+
             }
         } else {
             $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
+
         }
 
         // Test if correct dates passed to pre order
@@ -3759,7 +3788,7 @@ class OrderService extends ContainerAware
                 $request->headers->get('referer'),
                 'checkout_coupon_page',
                 implode(',', $formErrors),
-                serialize($request) .'<br><br>'. serialize($debugCartInfo)
+                serialize($request) . '<br><br>' . serialize($debugCartInfo)
             );
         }
     }
@@ -4834,5 +4863,22 @@ class OrderService extends ContainerAware
         ]);
 
         return $ppList;
+    }
+
+
+    public function checkWorkingPlace($pointRecord)
+    {
+        $pointWorkingErrors = [];
+        $pointIsWorking = true;
+
+        if ($pointRecord) {
+            $this->workTimeErrors($pointRecord, $pointWorkingErrors);
+        }
+
+        if (!empty($pointWorkingErrors)) {
+            $pointIsWorking = false;
+        }
+
+        return $pointIsWorking;
     }
 }

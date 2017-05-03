@@ -103,7 +103,7 @@
                     {% if freeDelivery %}
                         <div class="fr">{{ currency_display|raw }}0,00 {% if currency_alternative %}<span class="euro">/ 0,00 {{ display_currency_alternative|raw }}</span>{% endif %}</div>
                     {% else %}
-                        <div class="fr">{{ currency_display|raw }}{{ total_delivery|number_format(2, ',', ' ') }}
+                        <div class="fr" data-true="{{ noneWorking }}">{{ currency_display|raw }}{{ total_delivery|number_format(2, ',', ' ') }}
                             {% if currency_alternative %}
                                 <span class="euro">/ {{  misc_utils.getLitas(total_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
                             {% endif %}
