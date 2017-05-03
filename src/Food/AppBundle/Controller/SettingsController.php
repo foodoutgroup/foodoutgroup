@@ -20,7 +20,6 @@ class SettingsController extends CRUDController
         'admin_fee_size',
         'page_b2b_rules',
         'page_privacy',
-        'blog_link_active',
         'disabled_preorder_days',
         'zaval_on',
         'showMobilePopup',
@@ -141,11 +140,6 @@ class SettingsController extends CRUDController
 
         $form->add('admin_fee_size', 'number', [
             'label' => 'Fee size',
-        ]);
-
-        $form->add('blog_link_active', 'boolean', [
-            'label' => 'Blog activated',
-            'attr' => ['group' => 'Blog']
         ]);
 
 
