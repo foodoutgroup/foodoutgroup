@@ -1047,24 +1047,18 @@ class UsersController extends Controller
         $translator = $this->get('translator');
         $this->validateUserCommon($data);
 
-        $error = array();
+        $error = null();
 
         if (empty($data['email'])) {
-            $error = array(
-                'error' => 'Email empty',
-                'description' => $translator->trans('registration.email.is_empty')
-            );
-        }
-        if (!empty($data['password']) && mb_strlen($data['password']) < 6) {
-            $error = array(
-                'error' => 'Password too short',
-                'description' => $translator->trans('registration.password.too_short')
-            );
+            throw new ApiException('Email empty', 400, $translator->trans('registration.email.is_empty'));
         }
 
-        if (!empty($error)) {
-            throw new ApiException('Validation exception', 400, $error);
+        if (!empty($data['password']) && mb_strlen($data['password']) < 6) {
+            throw new ApiException('Password too short', 400, $translator->trans('registration.password.too_short'));
         }
+
+        return (bool) !$error;
+
     }
 
     /**
