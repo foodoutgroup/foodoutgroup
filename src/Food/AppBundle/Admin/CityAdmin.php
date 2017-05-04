@@ -53,7 +53,8 @@ class CityAdmin extends FoodAdmin
         ]);
 
 
-        $form->add('zavalas_on', 'checkbox', array('label' => 'admin.cities.zavalas_on', 'required' => false))
+        $form->add('code', 'text', array('required' => false))
+            ->add('zavalas_on', 'checkbox', array('label' => 'admin.cities.zavalas_on', 'required' => false))
             ->add('zavalas_time', 'text', array('label' => 'admin.cities.zavalas_time', 'required' => false))
             ->add('position', 'text', array('required' => false))
             ->add('active', 'checkbox', array('required' => false))

@@ -94,6 +94,13 @@ class City implements \JsonSerializable
     private $position;
 
     /**
+     * @var String
+     *
+     * @ORM\Column(name="code", type="string", nullable=true)
+     */
+    private $code;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="active", type="boolean", nullable=true)
@@ -236,6 +243,25 @@ class City implements \JsonSerializable
             'zavalasTime'=> $this->getZavalasTime(),
         ));
     }
+
+    /**
+     * @return string
+     */
+    public function isCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     * @return $this
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+        return $this;
+    }
+
 
     /**
      * @return boolean
