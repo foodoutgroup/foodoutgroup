@@ -1,24 +1,13 @@
-(function($, window){
+(function($){
     $(function() {
-        var $window = $(window);
 
         /*Placeholder for old browsers*/
         $('input[placeholder], textarea[placeholder]').placeholder();
-
-        /*JS PIE. Fetures and usage: http://css3pie.com/documentation/supported-css3-features/*/
         if (window.PIE) {
             $('.rounded').each(function() {
                 PIE.attach(this);
             });
         }
-
-        resizeSensitive();
-
-        $window.resize(function () {
-            resizeSensitive();
-        });
-
-        // Boxer lightbox plugin
 
         bind_custom_select();
 
@@ -39,7 +28,6 @@
             }
         });
 
-
         $('.restoran-rating').raty({
             readOnly: true,
             score: function() {
@@ -47,10 +35,6 @@
             },
             path: '/bundles/foodapp/images/'
         });
-
-        function resizeSensitive() {
-
-        }
 
         bind_registration_form();
         bind_login_form();
@@ -60,38 +44,22 @@
         bind_password_resetting_form();
     });
 
-})(jQuery, window);
+})(jQuery);
 
 bind_custom_select = function() {
-    var custom_select;
-
-    custom_select = $('.custom-select');
+    var custom_select = $('.custom-select');
     custom_select.selectmenu();
-}
+};
 
 init_raty = function() {
-    var selector, options;
-
-    selector = '.place-review-popup-wrapper .rate-review:empty';
-    options = {
-        path: '/bundles/foodapp/images/'
-    };
-
-    $(selector).raty(options);
-}
+    $('.place-review-popup-wrapper .rate-review:empty').raty({path: '/bundles/foodapp/images/'});
+};
 
 bind_registration_form = function() {
-    $('body').on('submit', '.righter.register-form', function(e) {
-        var callback, data, form, url;
-
-        form = $(this);
-        submit_btn = form.find('input[type=submit]');
-        url = form.attr('action');
-        data = form.serialize();
-
+    $('body').on('submit', '.righter.register-form', function() {
+        var  form = $(this);
         form.mask();
-
-        callback = function(response) {
+        $.post(form.attr('action'), form.serialize(), function(response) {
             if (response.length > 0) {
 
                 $('.registration_form_wrapper:visible').html(response);
@@ -105,9 +73,7 @@ bind_registration_form = function() {
             } else {
                 top.location.href = top.location.href.replace('#', '');
             }
-        };
-
-        $.post(url, data, callback);
+        });
 
         return false;
     });
@@ -115,20 +81,15 @@ bind_registration_form = function() {
 
 bind_login_form = function() {
     $('body').on('submit', '.lefter.login-form', function(e) {
-        var callback, data, form, url, error;
+        var form, error, form_login_rows;
 
         form = $(this);
-        url = form.attr('action');
-        data = form.serialize();
         form_login_rows = $('.login-form-row');
-        error = form.find('.login-error')
-        dataType = 'json';
-
-        error.hide();
+        error = form.find('.login-error').hide();
         form_login_rows.removeClass('error');
         form.closest('.login-register-popup').mask();
 
-        callback = function(response) {
+        $.post(form.attr('action'), form.serialize(), function(response) {
             if (response.success == 1) {
                 top.location.href = top.location.href.replace('#', '');
             } else {
@@ -137,56 +98,44 @@ bind_login_form = function() {
                 error.show();
                 form.closest('.login-register-popup').unmask();
             }
-        };
-
-        $.post(url, data, callback, dataType);
+        }, 'json');
 
         return false;
     });
-}
+};
 
 bind_profile_menu_items = function() {
-    var menu_items, content_items;
-
-    menu_items = $('.user-page .user-menu .menu-item');
-    content_items = $('.user-page .content-item');
+    var menu_items = $('.user-page .user-menu .menu-item');
 
     menu_items.click(function() {
         menu_items.removeClass('active');
-        content_items.hide();
+        $('.user-page .content-item').hide();
 
         $(this).addClass('active');
         $($(this).attr('data-target')).show();
 
         return false;
     });
-}
+};
 
 bind_review_form = function() {
     $('body').on('submit', '.review-form', function(e) {
-        var callback, data, form, url, form_rows, data_type;
+        var form, form_rows;
 
         form = $(this);
-        url = form.attr('action');
-        data = form.serialize();
-        form_rows = $('.review-form .form-row');
-        data_type = 'json';
+        form_rows = $('.review-form .form-row').removeClass('error');
 
-        form_rows.removeClass('error');
-
-        callback = function(response) {
+        $.post(form.attr('action'),  form.serialize(), function(response) {
             if (response.success == 1) {
                 top.location.reload();
             } else {
                 form_rows.addClass('error');
             }
-        };
-
-        $.post(url, data, callback, data_type);
+        }, 'json');
 
         return false;
     });
-}
+};
 
 bind_show_password_resetting_form = function() {
     $('body').on('click', '.reset_password_btn', function(e) {
@@ -207,83 +156,44 @@ bind_show_password_resetting_form = function() {
 };
 
 bind_password_resetting_form = function() {
+
     $('body').on('submit', '.resetting_form_wrapper form', function(e) {
-        var callback, data, form, popup, url, form_rows, data_type;
+        var data, form, popup, form_rows;
 
         form = $(this);
-        popup = $('.popup.login-register-popup')
-        url = form.attr('action');
+        popup = $('.popup.login-register-popup');
         data = form.serialize();
         form_rows = $('.resetting_form_wrapper form .form-row');
-        data_type = 'json';
-
         form_rows.removeClass('error');
         popup.mask();
 
-        callback = function(response) {
+        $.post(form.attr('action'), form.serialize(), function(response) {
             if (response.success == 1) {
                 top.location = form.attr('data-redirect-target');
             } else {
                 form_rows.addClass('error');
                 popup.unmask();
             }
-        };
-
+        }, 'json');
         return false;
     });
-}
+};
 
-// 'click_callback' is needed since it's function may differ from page to page.
-// 'data_callback' is needed since we need to lazy evaluate data from inputs at
-// the very last moment.
-change_location = function(element,
-                           click_callback,
-                           data_callback,
-                           change_text,
-                           cancel_text,
-                           request_url)
-{
-    var dialog_options,
-        change_options,
-        cancel_options;
 
-    change_options = {
+change_location = function(element, click_callback, data_callback, change_text, cancel_text, request_url) {
+
+    var change_options = {
         text: change_text,
         click: function() {
-            var dialog,
-                options,
-                alert;
-
-            dialog = $(this);
-            dialog.parent().mask();
-
-            alert = element.find('.alert');
-
-            options = {
-                type: 'GET',
-                url: request_url,
-                data: data_callback(),
-                success: function(response){
-                    click_callback({response: response,
-                                    dialog: dialog,
-                                    alert: alert});
+            var dialog = $(this);
+            $.ajax({type: 'GET', url: request_url, data: data_callback(), success: function(response){
+                    click_callback({response: response, dialog: dialog.parent().mask(), alert: element.find('.alert')});
                 }
-            }
-
-            $.ajax(options);
+            });
         }
     };
 
-    /*
-    cancel_options = {
-        text: cancel_text,
-        click: function() {
-            $(this).dialog('close');
-        }
-    };
-    */
     if (element.find('.submit').size() == 0) {
-        //element.append('<a href="#" class="submit-button btn-cancel no-arrow no-arrow-second"><span>'+ cancel_options.text +'</span></a>');
         element.append('<div class="form-row address-row width463"><label></label><button class="button-normal submit">'+ change_options.text +'</button></div>');
     }
 
@@ -293,20 +203,18 @@ change_location = function(element,
 
     element.find('.submit').unbind('click').bind('click', function(){
         element.mask();
-        alert = element.find('.alert');
-
-        options = {
+        $.ajax({
             type: 'GET',
             url: request_url,
             data: data_callback(),
             success: function(response){
-                click_callback({response: response,
+                click_callback({
+                    response: response,
                     dialog: element,
-                    alert: alert}
-                );
+                    alert: element.find('.alert')
+                });
             }
-        }
-        $.ajax(options);
+        });
     });
 
     $.fancybox({
@@ -320,23 +228,7 @@ change_location = function(element,
         //'modal': true,
         'content' : element
     });
-
-    /*
-    dialog_options = {
-        modal: true,
-        resizeable: false,
-        width: 360,
-        buttons: {
-            'change': change_options,
-            'cancel': cancel_options
-        }
-    };
-
-    element.dialog(dialog_options)
-           .siblings('.ui-dialog-titlebar')
-           .remove();
-    */
-}
+};
 
 initStreetSearch = function(){
     var streetsUrl = Routing.generate('food_ajax', { '_locale': $('html').attr('lang'), 'action' : 'find-street' });
@@ -360,7 +252,8 @@ initStreetSearch = function(){
         displayKey: 'value',
         source: streets.ttAdapter()
     });
-}
+};
+
 initStreetHouseSearch = function(){
     var streetsUrl = Routing.generate('food_ajax', { '_locale': $('html').attr('lang'), 'action' : 'find-street-house' });
     var streets = new Bloodhound({
@@ -384,12 +277,11 @@ initStreetHouseSearch = function(){
         displayKey: 'value',
         source: streets.ttAdapter()
     });
-}
+};
 
 var registrationForm = {
     showPrivate: function(element) {
         var theBox = $(element).closest('.popup');
-        $('.resetting_form_wrapper').hide();
         theBox.find('.button.private').addClass('selected');
         theBox.find('.button.company').removeClass('selected');
         var lefter = theBox.find('.lefter.login-form');
@@ -403,7 +295,6 @@ var registrationForm = {
     },
     showCompany: function(element) {
         var theBox = $(element).closest('.popup');
-        $('.resetting_form_wrapper').hide();
         theBox.find('.button.private').removeClass('selected');
         theBox.find('.button.company').addClass('selected');
         var lefter = theBox.find('.lefter.login-form');
