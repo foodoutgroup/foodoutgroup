@@ -29,7 +29,7 @@ class CityController extends Controller
         $this->get('food.googlegis')->setCity($city);
 
         $placeService = $this->get('food.places');
-        $kitchenCollection = $placeService->getKitchenCollectionFromSlug($params, $request, true);
+        $kitchenCollection = $placeService->getKitchenCollectionFromSlug($params, $request);
 
         if (count($kitchenCollection)) {
             list($first,) = $kitchenCollection;

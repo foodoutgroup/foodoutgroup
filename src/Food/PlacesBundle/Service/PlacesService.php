@@ -316,20 +316,24 @@ class PlacesService extends ContainerAware
         return $kitchens;
     }
 
-    public function getKitchenCollectionFromSlug($slugCollection, $request)
+    public function getKitchenCollectionFromSlug($slugCollection = [], $request)
     {
+        if(!is_array($slugCollection)) {
+            $slugCollection = explode("/", $slugCollection);
+        }
+
         $kitchenCollection = [];
 
-        $slugService = $this->getContainer()->get('slug');
+//        $slugService = $this->getContainer()->get('slug');
 
-        // todo MULTI-L perdaryti i viena select :)
-        foreach ($slugCollection as $key => $value) {
-            $item = $slugService->getObjBySlug($value, Slug::TYPE_KITCHEN);
-
-            if(!empty($item) && $kitchen = $this->em()->getRepository('FoodDishesBundle:Kitchen')->find((int)$item->getItemId())) {
-                $kitchenCollection[] = $kitchen;
-            }
-        }
+//        // todo MULTI-L perdaryti i viena select :)
+//        foreach ($slugCollection as $key => $value) {
+//            $item = $slugService->getObjBySlug($value, Slug::TYPE_KITCHEN);
+//
+//            if(!empty($item) && $kitchen = $this->em()->getRepository('FoodDishesBundle:Kitchen')->find((int)$item->getItemId())) {
+//                $kitchenCollection[] = $kitchen;
+//            }
+//        }
         return $kitchenCollection;
     }
 
@@ -349,12 +353,10 @@ class PlacesService extends ContainerAware
         $sessionService = $this->container->get('session');
 
 
-
-
         $kitchens = empty($kitchens) ? [] : explode(",", $kitchens);
-
         if (!empty($slug_filter)) {
-            $kitchens = $this->getKitchenCollectionFromSlug($slug_filter, $request);
+
+          $kitchens = $this->getKitchenCollectionFromSlug($slug_filter, $request);
         }
 
         // TODO lets debug this strange scenario :(

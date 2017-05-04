@@ -26,6 +26,8 @@ class PlaceRepository extends EntityRepository
     public function magicFindByKitchensIds($kitchens, $filters = [], $recommended = false, $locationData = null, $container = null)//, $city, $lat, $long)
     {
 
+
+
         $city = null;
         $lat = null;
         $lon = null;
@@ -50,7 +52,6 @@ class PlaceRepository extends EntityRepository
                     $zaval = $container->get('food.zavalas_service')->isRushHourOnGlobal();
                 }
             }
-
             /**
              * $container->getParameter('default_delivery_distance')
              *  This stuff needs to be deprecated. And parameter removed.
@@ -135,6 +136,7 @@ class PlaceRepository extends EntityRepository
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city_id = " . $city . " AND ppc.place = p.id";
             $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL ". $placeFilter . $otherFilters . " AND pp.id = (" . $subQuery . ") " . $kitchensQuery . " ORDER BY p.priority DESC, RAND()";
         }
+
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
@@ -683,7 +685,7 @@ class PlaceRepository extends EntityRepository
         if (empty(self::$_citiesCache[$place->getId()])) {
             self::$_citiesCache[$place->getId()] = [];
             foreach ($place->getPoints() as $placePoint) {
-                if ($placePoint->getActive() && !in_array($placePoint->getCityId(), self::$_citiesCache[$place->getId()], true)) {
+                if ($placePoint && $placePoint->getActive() && !in_array($placePoint->getCityId(), self::$_citiesCache[$place->getId()], true)) {
                     self::$_citiesCache[$place->getId()][] = $placePoint->getCityId();
                 }
             }

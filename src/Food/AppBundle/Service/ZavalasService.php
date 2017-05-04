@@ -32,11 +32,8 @@ class ZavalasService extends BaseService
 
     public function isRushHourAtCity(City $city)
     {
-        $rushHour = false;
-        if ($this->isRushHourAtCity($city)) {
-            $rushHour = $city->isZavalasOn();
-        }
-        return $rushHour;
+        var_dump(get_class($city));
+        return $city->isZavalasOn();
     }
 
     public function isRushHourAtCityById($cityId)

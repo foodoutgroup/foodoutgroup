@@ -167,4 +167,3 @@ class PlaceService extends PlacesService
     }
 
 }
-
