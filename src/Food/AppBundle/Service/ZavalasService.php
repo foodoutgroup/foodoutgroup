@@ -25,32 +25,70 @@ class ZavalasService extends BaseService
         $this->placesService = $placesService;
     }
 
-    public function isRushHourOnGlobal()
+
+    /**
+     * @return bool
+     */
+    public function isRushHourEnabled()
     {
-        return $this->miscService->getParam('zaval_on', false);
+        return $this->isRushHourOnGlobal();
     }
 
-    public function isRushHourAtCity(City $city)
+    /**
+     * @return bool
+     * @deprecated 2017-04-05
+     */
+    public function isRushHourOnGlobal()
     {
-        var_dump(get_class($city));
+        return (boolean) $this->miscService->getParam('zaval_on', false);
+    }
+
+    /**
+     * @param City $city
+     * @return bool
+     */
+    public function isRushHourAtCity($city)
+    {
+        if(!$city) {
+            return false;
+        }
         return $city->isZavalasOn();
     }
 
+    /**
+     * @param int $cityId
+     * @return bool
+     */
     public function isRushHourAtCityById($cityId)
     {
         return $this->isRushHourAtCity($this->em->getRepository("FoodAppBundle:City")->find($cityId));
     }
 
-    public function getRushHourTimeAtCity(City $city)
+    /**
+     * @param City $city
+     * @return bool|string
+     */
+    public function getRushHourTimeAtCity($city)
     {
+        if(!$city) {
+            return false;
+        }
         return round($city->getZavalasTime() / 60, 2) . " " . $this->translator->trans('general.hour');
     }
 
+    /**
+     * @param int $cityId
+     * @return bool
+     */
     public function getRushHourTimeAtCityById($cityId)
     {
         return $this->getRushHourTimeAtCity($this->em->getRepository("FoodAppBundle:City")->find($cityId));
     }
 
+    /**
+     * @param Place $place
+     * @return bool
+     */
     public function getRushHourTimeByPlace(Place $place)
     {
         $locationData = $this->locationService->getLocationFromSession();
