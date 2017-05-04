@@ -13,7 +13,7 @@ class TextStrategy extends AbstractStrategy
 
     const BATCH_SIZE = 1000;
 
-    private $type = Slug::TYPE_TEXT;
+    private $type = Slug::TYPE_PAGE;
 
     public function __construct(\Symfony\Component\DependencyInjection\ContainerInterface $container)
     {

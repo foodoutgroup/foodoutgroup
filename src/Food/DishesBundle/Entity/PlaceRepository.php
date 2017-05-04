@@ -45,9 +45,9 @@ class PlaceRepository extends EntityRepository
         } else {
             if ($container) {
                 if ($city) {
-                    $zaval = $container->get('food.zavalas_service')->isZavalasTurnedOnByCity($city);
+                    $zaval = $container->get('food.zavalas_service')->isRushHourAtCityById($city);
                 } else {
-                    $zaval = $container->get('food.zavalas_service')->isZavalasTurnedOnGlobal();
+                    $zaval = $container->get('food.zavalas_service')->isRushHourOnGlobal();
                 }
             }
 
@@ -672,13 +672,32 @@ class PlaceRepository extends EntityRepository
         return (boolean)$stmt->fetchColumn(0);
     }
 
+
     /**
+     * @param Place $place
+     * @return mixed
+     * @description metodas dubliuotas nes keiciamas jo pavadinimas :) tas kitas zemiau deprecated :)
+     */
+    public function getCityCollectionByPlace(Place $place)
+    {
+        if (empty(self::$_citiesCache[$place->getId()])) {
+            self::$_citiesCache[$place->getId()] = [];
+            foreach ($place->getPoints() as $placePoint) {
+                if ($placePoint->getActive() && !in_array($placePoint->getCityId(), self::$_citiesCache[$place->getId()], true)) {
+                    self::$_citiesCache[$place->getId()][] = $placePoint->getCityId();
+                }
+            }
+        }
+
+        return self::$_citiesCache[$place->getId()];
+    }
+
+        /**
      * @param Place $place
      * @deprecated from 2017-04-12
      * @return array
      */
-    public
-    function getCities(Place $place)
+    public function getCities(Place $place)
     {
 
         if (empty(self::$_citiesCache[$place->getId()])) {

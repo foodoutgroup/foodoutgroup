@@ -2,6 +2,7 @@
 namespace Food\AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Food\AppBundle\Entity\City;
 use Food\AppBundle\Utils\Misc;
 use Food\DishesBundle\Entity\Place;
 use Food\PlacesBundle\Service\PlacesService;
@@ -24,71 +25,56 @@ class ZavalasService extends BaseService
         $this->placesService = $placesService;
     }
 
-    public function isZavalasTurnedOnGlobal()
+    public function isRushHourOnGlobal()
     {
-        $zavalasStatus = false;
-        if ($this->miscService->getParam('zaval_on')) {
-            $zavalasStatus = true;
+        return $this->miscService->getParam('zaval_on', false);
+    }
+
+    public function isRushHourAtCity(City $city)
+    {
+        $rushHour = false;
+        if ($this->isRushHourAtCity($city)) {
+            $rushHour = $city->isZavalasOn();
         }
-        return $zavalasStatus;
+        return $rushHour;
     }
 
-    public function isZavalasTurnedOnByCity($cityId)
+    public function isRushHourAtCityById($cityId)
     {
-        $zavalasStatus = false;
-
-        if ($this->isZavalasTurnedOnGlobal()) {
-            $activeCities = $this->em->getRepository("FoodAppBundle:City")->findBy(array(
-                'id' => $cityId,
-                'zavalasOn' => true
-            ));
-            if (count($activeCities)) {
-                $zavalasStatus = true;
-            }
-        }
-        return $zavalasStatus;
+        return $this->isRushHourAtCity($this->em->getRepository("FoodAppBundle:City")->find($cityId));
     }
 
-    public function getZavalasTimeByCity($city)
+    public function getRushHourTimeAtCity(City $city)
     {
-        $zavalasCity = $this->em->getRepository("FoodAppBundle:City")->findOneBy(array(
-            'title' => $city
-        ));
-        return round($zavalasCity->getZavalasTime() / 60, 2) . " " . $this->translator->trans('general.hour');
+        return round($city->getZavalasTime() / 60, 2) . " " . $this->translator->trans('general.hour');
     }
 
-    public function getZavalasTimeByPlace(Place $place)
+    public function getRushHourTimeAtCityById($cityId)
     {
-        $city = false;
+        return $this->getRushHourTimeAtCity($this->em->getRepository("FoodAppBundle:City")->find($cityId));
+    }
 
+    public function getRushHourTimeByPlace(Place $place)
+    {
         $locationData = $this->locationService->getLocationFromSession();
+        $cityObj = $this->em->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
 
-        if ($this->isZavalasTurnedOnByCity($locationData['city_id']) && $this->placesService->isPlaceDeliversToCity($place, $locationData['city_id'])) {
-            $city = $locationData['city'];
-        } else {
-            $placeCities = $this->em->getRepository('FoodDishesBundle:Place')->getCities($place);
-            foreach ($placeCities as $placeCity) {
-                $placeCityKey = $this->em->getRepository('FoodAppBundle:City')->getZavalasTimeByTitle($placeCity);
-                $placeCitiesOrdered[$placeCityKey] = $placeCity;
+        if (!$cityObj || !$this->isRushHourAtCity($cityObj) || !$this->placesService->isPlaceDeliversToCity($place, $cityObj->getId())) {
+
+            $placeCityCollection = $this->em->getRepository('FoodDishesBundle:Place')->getCityCollectionByPlace($place);
+            $placeCityCollectionOrdered = [];
+            foreach ($placeCityCollection as $placeCity) {
+                $placeCityKey = $this->em->getRepository('FoodAppBundle:City')->find($placeCity->getId())->getZavalasTime();
+                $placeCityCollectionOrdered[$placeCityKey] = $placeCity;
             }
-            krsort($placeCitiesOrdered);
-            $placeCities = $placeCitiesOrdered;
-            foreach ($placeCities as $placeCity) {
-                if ($this->isZavalasTurnedOnByCity($placeCity)) {
-                    $city = $placeCity;
-                    break;
+            krsort($placeCityCollectionOrdered);
+            $placeCityCollection = $placeCityCollectionOrdered;
+            foreach ($placeCityCollection as $placeCity) {
+                if ($this->isRushHourAtCity($placeCity)) {
+                    return $this->getRushHourTimeAtCity($placeCity);
                 }
             }
         }
-        if ($city) {
-            $zavalasCity = $this->em->getRepository("FoodAppBundle:City")->findOneBy(array(
-                'title' => $city
-            ));
-            return round($zavalasCity->getZavalasTime() / 60, 2) . " " . $this->translator->trans('general.hour');
-        } else {
-            return false;
-        }
-
-
+        return false;
     }
 }

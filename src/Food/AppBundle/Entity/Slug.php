@@ -18,10 +18,7 @@ class Slug
 
     const SLUG_LIFETIME = 1814400; // Three weeks (86400 * 21);
 
-    /**
-     * @deprecated from 2017-03-29
-     */
-    const TYPE_TEXT = 'text';
+
     const TYPE_BLOG_CATEGORY = 'blog_category';
     const TYPE_PAGE = 'page';
     const TYPE_CITY = 'city';
@@ -32,7 +29,6 @@ class Slug
         self::TYPE_KITCHEN,
         self::TYPE_PLACE,
         self::TYPE_FOOD_CATEGORY,
-        self::TYPE_TEXT,
         self::TYPE_PAGE,
         self::TYPE_CITY,
         self::TYPE_BLOG_POST,

@@ -52,7 +52,7 @@ class KitchenController extends Controller
         if (!empty($selectedKitchens)) {
             $selectedKitchens = explode(',', $selectedKitchens);
         } else {
-            $selectedKitchens = $this->get('food.places')->getKitchensFromSlug($slug_filter, $request);
+            $selectedKitchens = $this->get('food.places')->getKitchenCollectionFromSlug($slug_filter, $request);
         }
 
         $selectedKitchensSlugs = $request->get('selected_kitchens_slugs', '');

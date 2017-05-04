@@ -9,7 +9,8 @@
     a.async = 1;
     a.src = g;
     m.parentNode.insertBefore(a, m)
-})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga', document.createElement('script'));
+
 // google tag manager
 (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -60,6 +61,7 @@
 //conversion
 
 (function () {
+    var s = document.getElementsByTagName('body')[0];
     var a = document.createElement("iframe");
     a.style.cssText = "width: 0; height: 0; border: 0; display: none;";
     a.src = "javascript:false";
@@ -71,8 +73,10 @@
             c["data-pixel"] = "990d8a91b1fde610d377fae55d911552";
             c["allow-flash"] = true;
             b.body.appendChild(c);
+            s.parentNode.insertBefore(c, s);
         }, 0);
     };
     a.addEventListener ? a.addEventListener("load", b, !1) : a.attachEvent ? a.attachEvent("onload", b) : a.onload = b;
-    document.body.appendChild(a);
+    s.parentNode.insertBefore(a, s);
+
 })();

@@ -8,18 +8,13 @@ use Exporter\Source\ArraySourceIterator;
 use Exporter\Writer\CsvWriter;
 use Exporter\Writer\JsonWriter;
 use Exporter\Writer\XlsWriter;
-use Gedmo\Translatable\TranslatableListener;
 use Lexik\Bundle\TranslationBundle\Entity\Translation;
 use Lexik\Bundle\TranslationBundle\Entity\TransUnit;
-use Lexik\Bundle\TranslationBundle\Entity\TransUnitRepository;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use XMLWriter;
 
@@ -129,9 +124,8 @@ class TranslationCRUDController extends CRUDController
      * @throws AccessDeniedException
      * @return \Symfony\Component\HttpFoundation\Response|Ambigous <\Symfony\Component\HttpFoundation\Response, \Symfony\Component\HttpFoundation\RedirectResponse>
      */
-    public function editAction($id = null)
+    public function editAction($id = null, Request $request)
     {
-        $request = $this->getRequest();
         if (!$request->isMethod('POST')) {
             return $this->redirect($this->admin->generateUrl('list'));
         }
@@ -152,7 +146,7 @@ class TranslationCRUDController extends CRUDController
 
         /* @var $transUnitManager \Lexik\Bundle\TranslationBundle\Manager\TransUnitManager */
         $transUnitManager = $this->get('lexik_translation.trans_unit.manager');
-        $parameters = $this->getRequest()->request;
+        $parameters = $request->request;
 
         $locale = $parameters->get('locale');
         $content = $parameters->get('value');
@@ -183,10 +177,9 @@ class TranslationCRUDController extends CRUDController
         ));
     }
 
-    public function createTransUnitAction()
+    public function createTransUnitAction(Request $request)
     {
-        $request = $this->getRequest();
-        $parameters = $this->getRequest()->request;
+        $parameters = $request->request;
         if (!$request->isMethod('POST')) {
             return $this->renderJson(array(
                     'message' => 'method not allowed'

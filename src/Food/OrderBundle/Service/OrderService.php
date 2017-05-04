@@ -324,9 +324,8 @@ class OrderService extends ContainerAware
             $this->order->setUserIp('');
         }
 
-        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($this->order->getCityId())) {
-            $this->order->setDuringZavalas(true);
-        }
+        $this->order->setDuringZavalas($this->container->get('food.zavalas_service')->isRushHourAtCity($this->order->getCityId()));
+
 
         return $this->getOrder();
     }
@@ -4538,13 +4537,13 @@ class OrderService extends ContainerAware
     public function isAllowToInformOnZaval()
     {
         $response = true;
-        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnGlobal()) {
+        if ($this->container->get('food.zavalas_service')->isRushHourOnGlobal()) {
             $order = $this->getOrder();
             if (!$order instanceof Order) {
                 throw new \InvalidArgumentException('No order is set');
             }
 
-            if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($order->getCityId())
+            if ($this->container->get('food.zavalas_service')->isRushHourAtCity($order->getCityId())
                 && !$order->getPlacePointSelfDelivery()
                 && $order->getDeliveryType() != self::$deliveryPickup
             ) {

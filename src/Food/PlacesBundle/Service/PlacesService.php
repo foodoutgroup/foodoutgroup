@@ -354,7 +354,7 @@ class PlacesService extends ContainerAware
         $kitchens = empty($kitchens) ? [] : explode(",", $kitchens);
 
         if (!empty($slug_filter)) {
-            $kitchens = $this->getKitchensFromSlug($slug_filter, $request);
+            $kitchens = $this->getKitchenCollectionFromSlug($slug_filter, $request);
         }
 
         // TODO lets debug this strange scenario :(
@@ -723,7 +723,7 @@ class PlacesService extends ContainerAware
     {
         $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
         if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
-            $zavalasTimeByPlace = $this->container->get('food.zavalas_service')->getZavalasTimeByPlace($place);
+            $zavalasTimeByPlace = $this->container->get('food.zavalas_service')->getRushHourTimeByPlace($place);
             if ($zavalasTimeByPlace) {
                 $deliveryTime = $zavalasTimeByPlace;
             }
@@ -747,19 +747,18 @@ class PlacesService extends ContainerAware
     public function isShowZavalDeliveryTime(Place $place)
     {
         $response = false;
-        $placeCities = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getCities($place);
-        $locationData = $this->container->get('food.location')->getLocationFromSession();
-
-        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnGlobal()) {
-            foreach ($placeCities as $city) {
-                if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($city)) {
-                    if (empty($locationData)
+        $rhService = $this->container->get('food.zavalas_service');
+        if ($rhService->isRushHourOnGlobal()) {
+            $locationData = $this->container->get('food.location')->getLocationFromSession();
+            $placeCityCollection = $this->em()->getRepository('FoodDishesBundle:Place')->getCityCollectionByPlace($place);
+            foreach ($placeCityCollection as $city) {
+                if ($rhService->isRushHourAtCity($city)
+                    && (empty($locationData)
                         || empty($locationData['city'])
-                        || $this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($locationData['city'])
-                        || !$this->isPlaceDeliversToCity($place, $locationData['city_id'])
-                    ) {
+                        || $rhService->isRushHourAtCityById($locationData['city_id'])
+                        || !$this->isPlaceDeliversToCity($place, $locationData['city_id']))) {
                         $response = true;
-                    }
+                        break;
                 }
             }
         }

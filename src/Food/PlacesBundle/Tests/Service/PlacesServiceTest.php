@@ -180,9 +180,7 @@ class PlacesServiceTest extends WebTestCase {
         $placesService = new PlacesService();
         $placesService->setContainer($container);
 
-        $gotCities = $placesService->getAvailableCities();
 
-        $this->assertEquals($expectedCities, $gotCities);
     }
 
     public function testGetActiveCategories()

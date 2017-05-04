@@ -86,7 +86,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         $order->setPlacePoint($placePoint);
         $order->setCityId($placePoint->getCityId());
         $order->setPlacePointAddress($placePoint->getAddress());
-        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($placePoint->getCityId()->getId())) {
+        if ($this->container->get('food.zavalas_service')->isRushHourAtCity($placePoint->getCityId())) {
             $order->setDuringZavalas(true);
         }
         $order->setOrderDate(new \DateTime());
@@ -183,7 +183,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
 
         $order->setUserIp('');
 
-        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($order->getCityId())) {
+        if ($this->container->get('food.zavalas_service')->isRushHourAtCity($order->getCityId())) {
             $order->setDuringZavalas(true);
         }
 
