@@ -79,11 +79,13 @@ class Street
     /**
      * Get city
      *
-     * @return string 
+     * @return string
+     * @deprecated from 2017-05-03
      */
     public function getCity()
     {
-        return $this->city;
+        throw new \Exception('This method was changed by getCityId()');
+//        return $this->city;
     }
 
     /**

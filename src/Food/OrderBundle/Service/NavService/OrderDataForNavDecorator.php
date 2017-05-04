@@ -233,6 +233,7 @@ trait OrderDataForNavDecorator
             ->setIsDelivered($data->isDelivered == 'yes' ? true : false)
             ->setDeliveryAddress($data->deliveryAddress)
             ->setCity($data->city)
+//            ->setCityId($data->city) todo MULTI-L bbz
             ->setCountry($data->country)
             ->setPaymentType($data->paymentType)
             ->setFoodAmount($data->foodAmount)
