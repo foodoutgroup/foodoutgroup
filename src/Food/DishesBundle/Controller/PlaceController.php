@@ -45,7 +45,6 @@ class PlaceController extends Controller
             $listType = $cookies->get('restaurant_menu_layout');
         }
 
-
         $userLocationData = $this->get('food.googlegis')->getLocationFromSession();
 
         $breadcrumbData = [
@@ -55,13 +54,18 @@ class PlaceController extends Controller
             'kitchen_url' => ''
         ];
 
-        $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->findOneBy(['id' => $userLocationData['city_id']]);
-        if($cityObj == null) {
+        if(!isset($userLocationData['city_id'])) {
+            $userLocationData['city_id'] = -1;
+        }
+
+        $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($userLocationData['city_id']);
+        if (!$cityObj) {
             $cityCollection = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getCityCollectionByPlace($place);
             $cityObj = $cityCollection[0];
         }
 
-        if($cityObj == null) {
+        if(!$cityObj) {
+            // todo tas funkcionalas kur hardcode for cili
             throw new NotFoundHttpException('City was not found');
         }
 
