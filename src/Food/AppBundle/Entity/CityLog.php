@@ -23,7 +23,7 @@ class CityLog
 
     /**
      * @ORM\ManyToOne(targetEntity="City")
-     * @ORM\JoinColumn(name="city_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
      */
     private $city;
 

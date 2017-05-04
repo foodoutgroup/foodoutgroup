@@ -149,8 +149,8 @@
             <th colspan="5">{% trans %}mobile.restourant_place_point_address{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.city }}</td>
-        </tr>
+            <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.cityId.title }}</td>
+        </tr>gi
         {% if order.deliveryType == 'deliver' %}
             {% if order.placePointSelfDelivery == 1 %}
                 <tr>
@@ -163,7 +163,7 @@
                     <th colspan="5">{% trans %}mobile.delivery_destination{% endtrans %}</th>
                 </tr>
                 <tr>
-                    <td colspan="5">{{ order.addressId.address }}, {{ order.addressId.city }}</td>
+                    <td colspan="5">{{ order.addressId.address }}, {{ order.addressId.cityId.title }}</td>
                 </tr>
             {% else %}
                 <tr>
@@ -194,7 +194,7 @@
                             {{ order.orderExtra.firstname }}, {{ order.orderExtra.lastname }}
                             {% if order.deliveryType == 'deliver' %}
                                 <br />
-                                {{ order.addressId.address }}, {{ order.addressId.city }}
+                                {{ order.addressId.address }}, {{ order.addressId.cityId.title }}
                             {% endif %}
 
                 {% endif %}

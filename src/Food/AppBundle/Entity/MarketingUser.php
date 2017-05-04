@@ -184,10 +184,12 @@ class MarketingUser
     /**
      * Get city
      *
-     * @return string 
+     * @return string
+     * @deprecated from 2017-05-04
      */
     public function getCity()
     {
+        throw new \Exception('on MarketingUser.php: Method getCity() is deprecated. Use getCityId() instead.');
         return $this->city;
     }
 

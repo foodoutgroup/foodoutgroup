@@ -443,9 +443,11 @@ class PlacePoint
      * Get city
      *
      * @return string
+     * @deprecated from 2017-05-04
      */
     public function getCity()
     {
+        throw new \Exception('on PlacePoint.php: Method getCity() is deprecated. Use getCityId() instead.');
         return $this->city;
     }
 
@@ -598,9 +600,8 @@ class PlacePoint
         $buffer = $this->getAddress().', ';
         if($city = $this->getCityId()) {
             $buffer = $buffer.$city->getTitle();
-        } else {
-            $buffer = $buffer.$this->getCity().' !';
         }
+
         return $buffer;
     }
 
@@ -627,7 +628,7 @@ class PlacePoint
             'placeId' => $this->getPlace()->getId(),
             'placeName' => $this->getPlace()->getName(),
             'address' => $this->getAddress(),
-            'city' => $cityObj ? $cityObj->getTitle() : $this->getCity(),
+            'city' => $cityObj ? $cityObj->getTitle() : '',
             'cityId' => $cityObj ? $cityObj->getId() : null,
             'active' => $this->getActive(),
             'public' => $this->getPublic(),
