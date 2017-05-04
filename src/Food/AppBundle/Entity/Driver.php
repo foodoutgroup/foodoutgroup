@@ -136,8 +136,6 @@ class Driver
 
         if($cityObj = $this->getCityId()) {
             $city = $cityObj->getTitle();
-        } else {
-            $city = $this->getCity();
         }
 
         return $this->getName().'-'.$city.'-'.$this->getId();

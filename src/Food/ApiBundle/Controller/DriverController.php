@@ -30,15 +30,13 @@ class DriverController extends Controller
                 'extId' => $driver->getExtId(),
                 'phone' => $driver->getPhone(),
                 'name' => $driver->getName(),
-                'city' => $driver->getCity(),
+                'city' => $driver->getCityId()->getTitle(),
+                'city_id' => $driver->getCityId(),
                 'dispatchPhone' => $translator->trans('general.top_contact.phone'),
                 //'bannerUrl' => '',
                 //'timezone' => '2'
             );
 
-            if($cityObj = $driver->getCityId()) {
-
-            }
 
         } catch (ApiException $e) {
             $this->get('logger')->error('Driver:meAction Error1:' . $e->getMessage());
@@ -81,7 +79,7 @@ class DriverController extends Controller
                 'extId' => $driver->getExtId(),
                 'phone' => $driver->getPhone(),
                 'name' => $driver->getName(),
-                'city' => $driver->getCity(),
+                'city' => $driver->getCityId()->getTitle(),
                 'dispatchPhone' => $translator->trans('general.top_contact.phone'),
                 //'bannerUrl' => '',
                 //'timezone' => '2'
