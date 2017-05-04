@@ -124,8 +124,9 @@ class TranslationCRUDController extends CRUDController
      * @throws AccessDeniedException
      * @return \Symfony\Component\HttpFoundation\Response|Ambigous <\Symfony\Component\HttpFoundation\Response, \Symfony\Component\HttpFoundation\RedirectResponse>
      */
-    public function editAction($id = null, Request $request)
+    public function editAction($id = null)
     {
+        $request = $this->container->get('request');
         if (!$request->isMethod('POST')) {
             return $this->redirect($this->admin->generateUrl('list'));
         }
@@ -146,7 +147,7 @@ class TranslationCRUDController extends CRUDController
 
         /* @var $transUnitManager \Lexik\Bundle\TranslationBundle\Manager\TransUnitManager */
         $transUnitManager = $this->get('lexik_translation.trans_unit.manager');
-        $parameters = $request->request;
+        $parameters = $this->container->get('request')->request;
 
         $locale = $parameters->get('locale');
         $content = $parameters->get('value');
@@ -177,8 +178,9 @@ class TranslationCRUDController extends CRUDController
         ));
     }
 
-    public function createTransUnitAction(Request $request)
+    public function createTransUnitAction()
     {
+        $request = $this->container->get('request');
         $parameters = $request->request;
         if (!$request->isMethod('POST')) {
             return $this->renderJson(array(
