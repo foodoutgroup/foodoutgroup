@@ -93,8 +93,6 @@ class UserAddress
         $buffer = $this->getAddress().', ';
         if($city = $this->getCityId()) {
             $buffer .= $city->getTitle();
-        } else {
-            $buffer .= $this->getCity().' !';
         }
         return $buffer;
     }
@@ -117,10 +115,12 @@ class UserAddress
     /**
      * Get city
      *
-     * @return string 
+     * @return string
+     * @deprecated from 2017-05-04
      */
     public function getCity()
     {
+        throw new \Exception('on UserAddress.php: Method getCity() is deprecated. Use getCityId() instead.');
         return $this->city;
     }
 

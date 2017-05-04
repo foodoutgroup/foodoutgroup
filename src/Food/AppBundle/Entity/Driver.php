@@ -285,9 +285,11 @@ class Driver
      * Get city
      *
      * @return string
+     * @deprecated from 2015-05-04
      */
     public function getCity()
     {
+        throw new \Exception('Method getCity() is deprecated. Use getCityId() instead.');
         return $this->city;
     }
 
