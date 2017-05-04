@@ -619,12 +619,16 @@ class PlacePoint
         }
 
         // TODO - kam ko reik - patys pasipildot!
+
+        $cityObj = $this->getCityId();
+
         return array(
             'id' => $this->getId(),
             'placeId' => $this->getPlace()->getId(),
             'placeName' => $this->getPlace()->getName(),
             'address' => $this->getAddress(),
-            'city' => $this->getCity(), // todo MULTI-L
+            'city' => $cityObj ? $cityObj->getTitle() : $this->getCity(),
+            'cityId' => $cityObj ? $cityObj->getId() : null,
             'active' => $this->getActive(),
             'public' => $this->getPublic(),
             'delivery' => $this->getDelivery(),

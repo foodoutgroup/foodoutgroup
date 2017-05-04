@@ -310,10 +310,6 @@ class NavService extends ContainerAware
 //todo MULTI-L BBZ
     public function putTheOrderToTheNAV(Order $order)
     {
-        //~ $dbgEmail = date("Y-m-d H:i:s") . "\n\n\n" . print_r($_SERVER, true) . "\n\n\n" . print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 0), true);
-        //~ $logger = $this->getContainer()->get('logger');
-        //~ $logger->alert("putTheOrderToTheNAV backtrace #" . $order->getId());
-        //~ $logger->alert($dbgEmail);
 
         $orderNewId = $this->getNavOrderId($order);
 
@@ -327,30 +323,12 @@ class NavService extends ContainerAware
             $street = trim(str_replace($errz[0], '', $target));
             $houseNr = (!empty($errz[2]) ? $errz[2] : '');
             $flatNr = (!empty($errz[3]) ? $errz[3] : '');
-            /*
-            $orderRow = $this->container->get('doctrine')->getRepository('FoodAppBundle:Streets')->findOneBy(
-                array(
-                    'name' => $street,
-                    'numberFrom' => $houseNr,
-                    'deliveryRegion' => $order->getAddressId()->getCity()
-                )
-            );
-            */
-            //$this->container->get('doctrine')->getManager()->refresh($orderRow);
         }
 
-        $city = $order->getPlacePoint()->getCityId()->getTitle();
-        $city = str_replace("ė", "e", $city);
-        $city = str_replace("ī", "i", $city);
-        $city = mb_strtoupper($city);
-        $region = mb_strtoupper($city);
-        if ($region == "RIGA") {
-            $region = "RYGA";
-        }
+        $cityObj = $order->getPlacePoint()->getCityId();
 
-        if ($city == "RIGA") {
-            $city = "RYGA";
-        }
+        $city = $cityObj->getTitle();
+        $region = $cityObj->getCode();
 
         $orderDate = $order->getOrderDate();
         $orderDate->add(new \DateInterval('P0DT0H'));
@@ -368,18 +346,24 @@ class NavService extends ContainerAware
         $comment = $order->getComment();
 
         if ($order->getPaymentMethod() == "local.card") {
-            $comment .= ". KREDITKARTE";
-//            $comment.=". Mokesiu kortele";
+            if($this->container->getParameter('country') == 'LV'){
+                $comment .= ". KREDITKARTE";
+            } else {
+                $comment.=". Mokesiu kortele";
+            }
         } elseif ($order->getPaymentMethod() == "local") {
-            $comment .= ". SKAIDRA NAUDA";
-//            $comment.=". Mokesiu grynais";
+            if($this->container->getParameter('country') == 'LV') {
+                $comment .= ". SKAIDRA NAUDA";
+            } else {
+                $comment .= ". Mokesiu grynais";
+            }
         } else {
             $comment .= ". ".$order->getPaymentMethod();
         }
 
         $dataToPut = [
             'Order No_'          => $orderNewId,
-            'Phone'              => str_replace(['370', '371'], '8', $order->getOrderExtra()->getPhone()),
+            'Phone'              => str_replace(['370', '371'], '8', $order->getOrderExtra()->getPhone()), //TODO: create standart at params
             'ZipCode'            => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getZipCode() : ''),
             'City'               => $city,
             'Street'             => $street, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
@@ -401,7 +385,7 @@ class NavService extends ContainerAware
             'Error Description'  => '',
             'Flat No_'           => $flatNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
             'Entrance Code'      => '',
-            'Region Code'        => $region, //$order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''),
+            'Region Code'        => $region, //$order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''), // TODO: MULTI-L REGION UPPER CASE ??
             'Delivery Status'    => 12,
             'In Use By User'     => '',
             'Loyalty Card No_'   => '',

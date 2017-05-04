@@ -126,6 +126,8 @@ class OrderAccData
      */
     private $city;
 
+
+
     /**
      * @var string
      *

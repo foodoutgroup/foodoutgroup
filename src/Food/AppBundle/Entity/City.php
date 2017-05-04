@@ -247,7 +247,7 @@ class City implements \JsonSerializable
     /**
      * @return string
      */
-    public function isCode()
+    public function getCode()
     {
         return $this->code;
     }

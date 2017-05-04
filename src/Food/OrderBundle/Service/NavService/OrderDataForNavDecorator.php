@@ -9,6 +9,10 @@ use Food\OrderBundle\Service\NavService\OrderDataForNav;
 
 trait OrderDataForNavDecorator
 {
+    /**
+     * @param Order $order
+     * @return \Food\OrderBundle\Service\NavService\OrderDataForNav
+     */
     public function getOrderDataForNav(Order $order)
     {
         $orderService = $this->container->get('food.order');
@@ -113,6 +117,7 @@ trait OrderDataForNavDecorator
         $data->isDelivered = $orderAccData->getIsDelivered() ? 'yes' : 'no';
         $data->deliveryAddress = $orderAccData->getDeliveryAddress();
         $data->city = $orderAccData->getCityId()->getTitle();
+        $data->cityId = $orderAccData->getCityId();
         $data->country = $orderAccData->getCountry();
         $data->paymentType = $orderAccData->getPaymentType();
         $data->foodAmount = (double)$orderAccData->getFoodAmount();
@@ -233,7 +238,7 @@ trait OrderDataForNavDecorator
             ->setIsDelivered($data->isDelivered == 'yes' ? true : false)
             ->setDeliveryAddress($data->deliveryAddress)
             ->setCity($data->city)
-//            ->setCityId($data->city) todo MULTI-L bbz
+            ->setCityId($data->cityId) // todo MULTI-L bbz
             ->setCountry($data->country)
             ->setPaymentType($data->paymentType)
             ->setFoodAmount($data->foodAmount)
