@@ -211,7 +211,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             ->setVat($orderData['VAT %'])
                             ->setNavPorcessedOrder(true)
                             ->setNavPriceUpdated(true)
-                            ->setLastUpdated(new \DateTime('now'))
+                            ->setLastUpdated(new \DateTime())
                             ->setNavDeliveryOrder($orderId)
                             ->setOrderFromNav(true)
                             ->setSource(Order::SOURCE_NAV)
@@ -294,24 +294,35 @@ class NavImportOrdersCommand extends ContainerAwareCommand
 
                             $addressStr = strstr($orderData['Address'], ', ' . $fixedCity, true);
                             $addressStr = mb_convert_case($addressStr, MB_CASE_TITLE, "UTF-8");
-                            $addressStr = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressStr);
+                            $addressStr = str_replace(['G.', 'Pr.'], ['g.', 'pr.'], $addressStr);
                             $output->writeln('Fixed street: '.var_export($addressStr, true));
                             $gisAddress = $gisService->groupData($addressStr, $fixedCity);
 
                             $address = $em->getRepository('FoodUserBundle:UserAddress')
                                 ->findOneBy(
                                     array(
-                                        'city' => $fixedCity,
+                                        'cityId' => $gisAddress['city_id'],
                                         'address' => $addressStr,
                                         'user' => $user
                                     )
                                 );
 
+                            if(!$address) {
+                                $address = $em->getRepository('FoodUserBundle:UserAddress')
+                                    ->findOneBy(
+                                        array(
+                                            'city' => $fixedCity,
+                                            'address' => $addressStr,
+                                            'user' => $user
+                                        )
+                                    );
+                            }
+
                             if (!$address instanceof UserAddress || $address->getId() == '') {
                                 $address = new UserAddress();
                                 $address->setUser($user)
                                     ->setCity($fixedCity)
-//                                    ->setCityId($fixedCity) todo MULTI-L FIX
+                                    ->setCityId($em->getRepository('FoodAppBundle:City')->find($gisAddress['city_id']))
                                     ->setAddress($addressStr)
                                     ->setLat($gisAddress['lat'])
                                     ->setLon($gisAddress['lng']);
@@ -344,8 +355,16 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                     $addressToSave = str_replace(array('G.', 'Pr.'), array('g.', 'pr.'), $addressToSave);
                                 }
 
-                                $companyAddress = $order->getAddressId();
+                                if (!empty($orderData['CustomerCity'])) {
+                                    $cityToSave = $orderData['CustomerCity'];
+                                    $cityToSave = mb_convert_case($cityToSave, MB_CASE_TITLE, "UTF-8");
+                                }
 
+                                $companyAddress = $addressToSave;
+
+                                if (strpos($addressToSave, $cityToSave) === false) {
+                                    $companyAddress .= ", ". $cityToSave;
+                                }
 
                                 $order->setCompany(true)
                                     ->setCompanyName($orderData['CustomerName'])
