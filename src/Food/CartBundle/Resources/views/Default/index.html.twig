@@ -301,7 +301,7 @@
 
                                     <select class="custom-select" disabled="true">
                                         {% for city in cityService.getActiveCity %}
-                                            <option value="{{ city.id }}" {% if location and location.city is defined and (location.city == city.title or location.city == city|replace({'ė':'e'})) %}selected{% elseif location.city is not defined and userAddress and userAddress.city is defined and (userAddress.city_id == city.id or userAddress.city_id == city.id) %}selected{% endif %}>{{ city.title }}</option>
+                                            <option value="{{ city.id }}" {% if location and location.city is defined and (location.city == city.title or location.city == city|replace({'ė':'e'})) %}selected{% elseif location.city is not defined and userAddress and userAddress.cityId.title is defined and (userAddress.city_id == city.id or userAddress.city_id == city.id) %}selected{% endif %}>{{ city.title }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

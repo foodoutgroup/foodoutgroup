@@ -189,7 +189,7 @@ class DefaultController extends Controller
     {
 
         // for now this is relevant for callcenter functionality
-        $isCallcenter = $request->isXmlHttpRequest();
+        $isCallCenter = $request->isXmlHttpRequest();
 
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
@@ -266,7 +266,7 @@ class DefaultController extends Controller
                 ($takeAway ? true : false),
                 ($takeAway ? $request->get('place_point') : null),
                 $couponEnt,
-                $isCallcenter
+                $isCallCenter
             );
         }
 
@@ -523,7 +523,7 @@ class DefaultController extends Controller
             'testNordea' => $request->query->get('test_nordea'),
             'workingHoursForInterval' => $workingHoursForInterval,
             'workingDaysCount' => $workingDaysCount,
-            'isCallcenter' => ($isCallcenter ? true : false),
+            'isCallcenter' => $isCallCenter,
             'require_lastname' => $require_lastname,
             'pointIsWorking' => $pointIsWorking,
             'disabledPreorderDays' => $disabledPreorderDays,
@@ -531,7 +531,7 @@ class DefaultController extends Controller
 
 
         // callcenter functionality
-        if ($isCallcenter) {
+        if ($isCallCenter) {
             $data['isCallcenter'] = true;
 
             return $this->render('FoodCartBundle:Default:form.html.twig', $data);
@@ -561,7 +561,7 @@ class DefaultController extends Controller
         $miscService = $this->get('food.app.utils.misc');
         $session = $this->get('session');
 
-        $isCallcenter = $session->get('isCallcenter');
+        $isCallCenter = $session->get('isCallcenter');
 
         $enableDiscount = !$place->getOnlyAlcohol();
         $placeServ = $this->get('food.places');
@@ -867,7 +867,7 @@ class DefaultController extends Controller
             'self_delivery' => $self_delivery,
             'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
             'basket_errors' => $basketErrors,
-            'isCallcenter' => $isCallcenter,
+            'isCallcenter' => $isCallCenter,
             'useAdminFee' => $useAdminFee,
             'adminFee' => $adminFee,
             'noneWorking' => $noneWorking

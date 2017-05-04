@@ -111,7 +111,7 @@
     {# Customer information#}
     <div>
         {% trans %}mobile.invoice.customer{% endtrans %}:<br />
-        {% trans %}mobile.invoice.customer_phone{% endtrans %}: {{ order.orderExtra.phone }}, {{ order.addressId.address }}, {{ order.addressId.city }}, {{ order.comment }}<br />
+        {% trans %}mobile.invoice.customer_phone{% endtrans %}: {{ order.orderExtra.phone }}, {{ order.addressId.address }}, {{ order.addressId.cityId.title }}, {{ order.comment }}<br />
         {% trans %}mobile.payment{% endtrans %}: {{ ('mobile.payment.' ~ order.paymentMethod)|trans }}
     </div>
     <br />
@@ -142,7 +142,7 @@
         </tr>
         <tr>
             <td>{% trans %}order.invoice.foodout_address{% endtrans %}</td>
-            <td>{{ order.addressId.address }}, {{ order.addressId.city }}</td>
+            <td>{{ order.addressId.address }}, {{ order.addressId.cityId.title }}</td>
         </tr>
         </tbody>
     </table>
