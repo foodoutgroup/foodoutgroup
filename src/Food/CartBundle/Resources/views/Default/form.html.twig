@@ -48,7 +48,8 @@
                 <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
                 <select class="custom-select" disabled="true">
                     {% for city in cityService.getActiveCity %}
-                        <option value="{{ city.id }}" {% if location and location.city is defined and (location.city == city.title or location.city == city|replace({'ė':'e'})) %}selected{% elseif location.city is not defined and userAddress and userAddress.city is defined and (userAddress.city_id == city.id or userAddress.city_id == city.id) %}selected{% endif %}>{{ city.title }}</option>
+                        <option value="{{ city.id }}"
+                                {% if location and location.city_id is defined and location.city_id == city.id %}selected{% elseif location.city is not defined and userAddress and userAddress.cityId is defined and userAddress.cityId == city.id %}selected{% endif %}>{{ city.title }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -69,7 +70,7 @@
                 <select class="custom-select" name="place_point">
                     {% for point in places_service.getPublicPoints(place) %}
                         {% if point.pickUp %}
-                            <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}</option>
+                            <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>

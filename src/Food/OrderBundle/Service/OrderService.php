@@ -2379,7 +2379,7 @@ class OrderService extends ContainerAware
 
         $newOrderText = $translator->trans('general.new_unapproved_order.title');
 
-        $placePointCity = $order->getPlacePoint()->getCity();
+        $placePointCity = '';
         if($cityObj = $order->getPlacePoint()->getCityId()) {
             $placePointCity = $cityObj->getTitle();
         }
@@ -2457,7 +2457,7 @@ class OrderService extends ContainerAware
 
             // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
 
-            $placePointCity = $order->getPlacePoint()->getCity();
+            $placePointCity = '';
             if($cityObj = $order->getCityId()) {
                 $placePointCity = $cityObj->getTitle();
             }
@@ -2546,7 +2546,7 @@ class OrderService extends ContainerAware
         $notifyEmails = $this->container->getParameter('order.notify_emails');
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
 
-        $placePointCity = $order->getPlacePoint()->getCity();
+        $placePointCity = '';
         if($cityObj = $order->getCityId()) {
             $placePointCity = $cityObj->getTitle();
         }

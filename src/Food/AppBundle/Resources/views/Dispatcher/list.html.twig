@@ -340,7 +340,7 @@
                                 {% if order.driver is not null and order.driver is not empty and order.isDriverNotDeleted %}
                                     {%
                                     set driverInfo = 'admin.driver.phone'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.phone ~ "<br/>"
-                                    ~ 'admin.driver.city'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.city ~ "<br/>"
+                                    ~ 'admin.driver.city'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.cityId.title ~ "<br/>"
                                     ~ 'admin.driver.type'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.driver.type.' ~ order.driver.type)|trans({}, 'SonataAdminBundle') ~ "<br/>"
                                     ~ 'admin.driver.provider'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.provider ~ "<br/>"
                                     ~ 'admin.driver.ext_id'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.extId ~ "<br/>"

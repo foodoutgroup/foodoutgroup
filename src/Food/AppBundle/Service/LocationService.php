@@ -57,9 +57,6 @@ class LocationService extends ContainerAware
             if($cityObj = $userAddress->getCityId()) {
                 $locationData['city'] = $cityObj->getTitle();
                 $locationData['city_id'] = $cityObj->getId();
-
-            } else {
-                $locationData['city'] = $userAddress->getCity();
             }
 
             $locationData['address'] = $userAddress->getAddress();
