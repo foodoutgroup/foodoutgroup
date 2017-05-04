@@ -975,7 +975,6 @@ class UsersController extends Controller
     public function parseRequestBody(Request $request)
     {
         $body = $request->getContent();
-
         if (!empty($body)) {
             $this->requestParams = json_decode($body, true);
         } else {
@@ -1047,7 +1046,7 @@ class UsersController extends Controller
         $translator = $this->get('translator');
         $this->validateUserCommon($data);
 
-        $error = null();
+        $error = false;
 
         if (empty($data['email'])) {
             throw new ApiException('Email empty', 400, $translator->trans('registration.email.is_empty'));
