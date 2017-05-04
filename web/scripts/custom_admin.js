@@ -33,7 +33,6 @@ function slugGenerator(outputs, inputs) {
         });
     } else if (inputs.length > 1) {
 
-        console.log("1->m");
         inputs.each(function () {
             var input = $(this);
             if (input.is(":visible")) {
@@ -41,7 +40,7 @@ function slugGenerator(outputs, inputs) {
                 outputs.each(function () {
                     var output = $(this);
                     if (output.is(":visible") && output.data('old-val') == '') {
-                        output.val(op);
+                        output.val(removeDiacritics(input.val()));
                         input.val(input.data('old-val'));
                     }
                 });
