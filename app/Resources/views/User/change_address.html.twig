@@ -29,7 +29,7 @@
             {% if usr_address %}
                 <datalist id="user_address">
                     {% for address in usr_address %}
-                        <option data-city="{{ address.city }}" value="{{ address.address }}" label="{{ address.address }}">
+                        <option data-city="{{ address.cityId.title }}" value="{{ address.address }}" label="{{ address.address }}">
                     {% endfor %}
                 </datalist>
             {% endif %}
