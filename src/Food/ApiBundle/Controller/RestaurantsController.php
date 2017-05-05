@@ -60,13 +60,16 @@ class RestaurantsController extends Controller
 
             } elseif (!empty($lat) && !empty($lng)) {
                 $locationData = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
-                $placeCollection = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-                    $kitchenCollection,
-                    $filters,
-                    false,
-                    $this->get('food.googlegis')->setCity($locationData['city_obj']),
-                    $this->container
-                );
+                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
+                if($cityObj) {
+                    $placeCollection = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+                        $kitchenCollection,
+                        $filters,
+                        false,
+                        $this->get('food.googlegis')->getCityObj(),
+                        $this->container
+                    );
+                }
             }
 
             $response = [
@@ -144,12 +147,13 @@ class RestaurantsController extends Controller
             } elseif (!empty($lat) && !empty($lng)) {
 
                 $locationData = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
-                if($locationData['city_obj']) {
+                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
+                if($cityObj) {
                     $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                         [],
                         [],
                         false,
-                        $this->get('food.googlegis')->setCity($locationData['city_obj']),
+                        $this->get('food.googlegis')->setCity($cityObj),
                         $this->container
                     );
                 }

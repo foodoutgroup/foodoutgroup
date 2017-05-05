@@ -22,6 +22,8 @@ class GoogleGisService extends ContainerAware
      */
     private $em;
 
+    private $currentCity = null;
+
     public function __construct(EntityManager $em, ContainerInterface $container)
     {
         $this->container = $container;
@@ -210,6 +212,7 @@ class GoogleGisService extends ContainerAware
         if(isset($returner['city'])) {
             if($cityObj = $this->em->getRepository('FoodAppBundle:City')->getByName($returner['city'])) {
                 $returner['city_id'] = $cityObj->getId();
+                $this->currentCity = $cityObj;
             }
         }
 
@@ -227,9 +230,14 @@ class GoogleGisService extends ContainerAware
         $returner['address'] =  $city->getTitle();
         $returner['city_only'] = true;
         $returner['city_id'] = $city->getId();
+        $this->currentCity = $city;
         $this->setLocationToSession($returner);
 
         return $returner;
+    }
+
+    public function getCityObj(){
+        return $this->currentCity;
     }
 
     private function __getCity($results)
@@ -285,6 +293,7 @@ class GoogleGisService extends ContainerAware
                 'key' => $this->container->getParameter('google.maps_server_api')
             ]
         );
+
         $data = json_decode($resp->body);
         $matchIsFound = null;
         foreach ($data->results as $rezRow) {
@@ -308,9 +317,12 @@ class GoogleGisService extends ContainerAware
             }
         }
 
-        $cityObj = $this->em->getRepository('FoodAppBundle:City')->getByName($returner['city']);
+        if($this->getCityObj() && $this->getCityObj()->getTitle() == $returner['city']) {
+            $cityObj = $this->getCityObj();
+        } else {
+            $cityObj = $this->em->getRepository('FoodAppBundle:City')->getByName($returner['city']);
+        }
         $returner['city_id'] = $cityObj ? $cityObj->getId() : 0;
-        $returner['city_obj'] = $cityObj;
 
         return $returner;
     }

@@ -264,8 +264,7 @@ class Restaurant extends ContainerAware
             ->set('is_taking_orders', !$this->container->get('food.order')->isTodayNoOneWantsToWork($place))
             ->set('order_hours', (isset($placePoint) ? $this->_getWorkHoursOfPlacePoint($placePoint) : null))
             ->set('work_hours', (isset($placePoint) ? $this->_getWorkHoursOfPlacePoint($placePoint) : null))
-            ->set('locations', $this->_getLocationsForResponse($place, $placePoint))
-        ;
+            ->set('locations', $this->_getLocationsForResponse($place, $placePoint));
 
         return $this;
     }
