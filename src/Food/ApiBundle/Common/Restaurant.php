@@ -300,11 +300,12 @@ class Restaurant extends ContainerAware
         $points = $place->getPoints();
         $retData = [];
         foreach ($points as $point) {
-            if ($point->getActive()) {
+            if ($point->getActive() && $cityObj = $point->getCityId()) {
                 $item = [
                     'location_id'  => $point->getId(),
                     'address'      => $point->getAddress(),
-                    'city'         => $point->getCityId()->getTitle(),
+                    'city'         => $cityObj->getTitle(),
+                    'city_id'      => $cityObj->getId(),
                     'selected'     => (!empty($placePoint) && $point->getId() == $placePoint->getId() ? true : false),
                     'coords'       => [
                         'latitude'  => $point->getLat(),
@@ -313,18 +314,7 @@ class Restaurant extends ContainerAware
                     'is_working'   => $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->isPlacePointWorks($point),
                     'work_hours'   => $this->_getWorkHoursOfPlacePoint($point),
                     'phone_number' => $point->getPhone(),
-                    /*
-                    'services' => array(
-                        'pickup' => $point->getPickUp(),
-                        'delivery' => $point->getDelivery()
-                    )
-                    */
                 ];
-
-                if($cityObj = $point->getCityId()) {
-                    $item['city'] = $cityObj->getTitle();
-                    $item['city_id'] = $cityObj->getId();
-                }
 
                 $retData[] = $item;
 
