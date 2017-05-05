@@ -60,6 +60,11 @@ class OrderDetails
     private $dish_size_code;
 
     /**
+     * @ORM\Column(name="dish_size_mm_code", type="string", length=255, nullable=true)
+     */
+    private $dish_size_mm_code;
+
+    /**
      * @ORM\Column(name="quantity", type="integer", length=3)
      */
     private $quantity;
@@ -429,17 +434,40 @@ class OrderDetails
     public function setNameToNav($nameToNav)
     {
         $this->nameToNav = $nameToNav;
-    
+
         return $this;
     }
 
     /**
      * Get nameToNav
      *
-     * @return string 
+     * @return string
      */
     public function getNameToNav()
     {
         return $this->nameToNav;
+    }
+
+    /**
+     * Set dish_size_mm_code
+     *
+     * @param string $dishSizeMmCode
+     * @return OrderDetails
+     */
+    public function setDishSizeMmCode($dishSizeMmCode)
+    {
+        $this->dish_size_mm_code = $dishSizeMmCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get dish_size_mm_code
+     *
+     * @return string 
+     */
+    public function getDishSizeMmCode()
+    {
+        return $this->dish_size_mm_code;
     }
 }

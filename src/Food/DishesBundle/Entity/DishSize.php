@@ -47,6 +47,13 @@ class DishSize
     private $code;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="mm_code", type="string", length=45, nullable=true)
+     */
+    private $mmCode;
+
+    /**
      * @var double
      *
      * @ORM\Column(name="price", type="decimal", scale=2)
@@ -133,14 +140,14 @@ class DishSize
     public function setCode($code)
     {
         $this->code = $code;
-    
+
         return $this;
     }
 
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
     public function getCode()
     {
@@ -156,14 +163,14 @@ class DishSize
     public function setPrice($price)
     {
         $this->price = $price;
-    
+
         return $this;
     }
 
     /**
      * Get price
      *
-     * @return float 
+     * @return float
      */
     public function getPrice()
     {
@@ -187,14 +194,14 @@ class DishSize
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
-    
+
         return $this;
     }
 
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -210,7 +217,7 @@ class DishSize
     public function setEditedAt($editedAt)
     {
         $this->editedAt = $editedAt;
-    
+
         return $this;
     }
 
@@ -233,7 +240,7 @@ class DishSize
     public function setDeletedAt($deletedAt)
     {
         $this->deletedAt = $deletedAt;
-    
+
         return $this;
     }
 
@@ -256,14 +263,14 @@ class DishSize
     public function setDish(\Food\DishesBundle\Entity\Dish $dish)
     {
         $this->dish = $dish;
-    
+
         return $this;
     }
 
     /**
      * Get dish
      *
-     * @return \Food\DishesBundle\Entity\Dish 
+     * @return \Food\DishesBundle\Entity\Dish
      */
     public function getDish()
     {
@@ -279,14 +286,14 @@ class DishSize
     public function setCreatedBy(\Food\UserBundle\Entity\User $createdBy = null)
     {
         $this->createdBy = $createdBy;
-    
+
         return $this;
     }
 
     /**
      * Get createdBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -302,14 +309,14 @@ class DishSize
     public function setEditedBy(\Food\UserBundle\Entity\User $editedBy = null)
     {
         $this->editedBy = $editedBy;
-    
+
         return $this;
     }
 
     /**
      * Get editedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getEditedBy()
     {
@@ -325,14 +332,14 @@ class DishSize
     public function setDeletedBy(\Food\UserBundle\Entity\User $deletedBy = null)
     {
         $this->deletedBy = $deletedBy;
-    
+
         return $this;
     }
 
     /**
      * Get deletedBy
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getDeletedBy()
     {
@@ -348,14 +355,14 @@ class DishSize
     public function setUnit(\Food\DishesBundle\Entity\DishUnit $unit)
     {
         $this->unit = $unit;
-    
+
         return $this;
     }
 
     /**
      * Get unit
      *
-     * @return \Food\DishesBundle\Entity\DishUnit 
+     * @return \Food\DishesBundle\Entity\DishUnit
      */
     public function getUnit()
     {
@@ -365,7 +372,7 @@ class DishSize
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -381,14 +388,14 @@ class DishSize
     public function setDiscountPrice($discountPrice)
     {
         $this->discountPrice = $discountPrice;
-    
+
         return $this;
     }
 
     /**
      * Get discountPrice
      *
-     * @return string 
+     * @return string
      */
     public function getDiscountPrice()
     {
@@ -413,14 +420,14 @@ class DishSize
     public function setPriceOld($priceOld)
     {
         $this->priceOld = $priceOld;
-    
+
         return $this;
     }
 
     /**
      * Get priceOld
      *
-     * @return string 
+     * @return string
      */
     public function getPriceOld()
     {
@@ -436,14 +443,14 @@ class DishSize
     public function setDiscountPriceOld($discountPriceOld)
     {
         $this->discountPriceOld = $discountPriceOld;
-    
+
         return $this;
     }
 
     /**
      * Get discountPriceOld
      *
-     * @return string 
+     * @return string
      */
     public function getDiscountPriceOld()
     {
@@ -459,17 +466,40 @@ class DishSize
     public function setPublicPrice($publicPrice)
     {
         $this->publicPrice = $publicPrice;
-    
+
         return $this;
     }
 
     /**
      * Get publicPrice
      *
-     * @return string 
+     * @return string
      */
     public function getPublicPrice()
     {
         return $this->publicPrice;
+    }
+
+    /**
+     * Set mmCode
+     *
+     * @param string $mmCode
+     * @return DishSize
+     */
+    public function setMmCode($mmCode)
+    {
+        $this->mmCode = $mmCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get mmCode
+     *
+     * @return string 
+     */
+    public function getMmCode()
+    {
+        return $this->mmCode;
     }
 }
