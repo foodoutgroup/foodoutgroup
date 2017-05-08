@@ -2905,6 +2905,9 @@ div.coupon_form_popup {
     z-index: 9999999;
     width: auto;
     min-width: 150px;
+    float: right;
+    display: flex;
+    height: 100%
 }
 
 .separator.forLang {

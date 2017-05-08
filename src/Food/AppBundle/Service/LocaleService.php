@@ -26,9 +26,7 @@ class LocaleService
 
     public function getAvailable()
     {
-        $locales = array_diff($this->container->getParameter('locales'), $this->container->getParameter('locales_hidden'));
-        var_dump($locales);
-        return $locales;
+        return array_diff($this->container->getParameter('locales'), $this->container->getParameter('locales_hidden'));
     }
 
 

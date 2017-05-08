@@ -144,10 +144,8 @@
                 <a href="{{ slug.toHomepage() }}" class="main-logo">
                     <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{{ asset(misc_utils.getParam('site_logo_url')) }}"/>
                 </a>
-
-
-
-                <div class="langSwitcher" style="float: right; display: flex; height: 100%">
+                {% if localeService.getAvailable()|length > 1 %}
+                <div class="langSwitcher" >
                     <div class="lang-drop">
                         {% set currentLangName = 'language_' ~ app.request.locale  %}
                         <a class="lang-chose" href="#"> {{ currentLangName|trans() }}</a>
@@ -162,7 +160,7 @@
                     </div>
                 </div>
                 <div class="separator forLang"></div>
-
+                {% endif %}
 
                 {% set pageH = pageService.getByParam('page_help') %}
                 {% if pageH %}

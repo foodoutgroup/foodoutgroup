@@ -147,6 +147,7 @@ twig:
 #        image_manager_service: "@food.image_manager_service"
         cityService: "@food.city_service"
         pageService: "@food.page_service"
+        localeService: "@food.locale_service"
         slug: "@slug"
 
 
