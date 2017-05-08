@@ -6,7 +6,8 @@ use Food\AppBundle\Traits;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Router;
 
-class LocaleService {
+class LocaleService
+{
 
     /**
      * @var EntityManager
@@ -23,12 +24,12 @@ class LocaleService {
         $this->container = $container;
     }
 
-    public function getAvailable(){
-        return array_diff($this->container->getParameter('locales'), $this->container->getParameter('locales_hidden'));
+    public function getAvailable()
+    {
+        $locales = array_diff($this->container->getParameter('locales'), $this->container->getParameter('locales_hidden'));
+        var_dump($locales);
+        return $locales;
     }
-
-
-
 
 
 }
