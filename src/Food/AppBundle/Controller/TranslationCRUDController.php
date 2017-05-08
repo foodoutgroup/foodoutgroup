@@ -40,31 +40,34 @@ class TranslationCRUDController extends CRUDController
 
             /** @var \PHPExcel $excelReader */
             $dataCollection = $this->container->get('phpexcel')->createPHPExcelObject($file)->getActiveSheet()->toArray();
-            $em = $this->container->get('doctrine.orm.entity_manager');
+            foreach ($dataCollection[0] as $key => $value) {
+                if (is_null($value)) {
+                    unset($dataCollection[0][$key]);
+                }
+            }
 
+            $em = $this->container->get('doctrine.orm.entity_manager');
             $localeCollection = $this->getManagedLocales();
             $fieldMap = array_flip($dataCollection[0]);
 
-            unset($dataCollection[0]);
 
             $storage = $em->getRepository('LexikTranslationBundle:TransUnit');
             $transUnitManager = $this->container->get('lexik_translation.trans_unit.manager');
             $em->beginTransaction();
             $imported = false;
+            unset($dataCollection[0]);
             foreach ($dataCollection as $transData)
             {
                 if (isset($transData[$fieldMap['id']])) {
-                    $transEntity = $storage->find($transData[$fieldMap['id']]);
-
+                    $transEntity = $storage->findOneBy(['key' => $transData[$fieldMap['key']]]);
                     if (!($transEntity instanceof TransUnit)) {
-                        $this->addFlash('error', 'Translation not found');
+                        $this->addFlash('error', 'Translation not found: ' . $transData[$fieldMap['key']]);
                         return $this->redirect($this->generateUrl('admin_lexik_translation_transunit_list'));
                         // $transEntity = $transUnitManager->create($key, $domain);
                     }
+
                     $em->persist($transEntity);
                     foreach ($localeCollection as $locale) {
-
-
                         $content = (isset($transData[$fieldMap[$locale]]) ? $transData[$fieldMap[$locale]] : '');
                         $translation = $transUnitManager->addTranslation($transEntity, $locale, $content,  null);
                         if ($translation instanceof Translation) {
