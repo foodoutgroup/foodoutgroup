@@ -51,7 +51,7 @@ class SwedbankGatewayBiller extends ContainerAware
                                                 'someting, but not order :(');
         }
 
-        $redirectUrl = $router->generate('swedbank_gateway_redirect',
+        $redirectUrl = 'http://'.$this->container->getParameter('domain').$router->generate('swedbank_gateway_redirect',
                                          array('id' => $order->getId(),
                                                'locale' => $this->getLocale()));
 

@@ -628,7 +628,7 @@ class OrderService extends ContainerAware
                     $paymentService = $orderService->getPaymentSystemByMethod($order->getPaymentMethod());
                     $paymentService->setOrder($order);
 //                    $paymentService->setLocale($return)
-                    $selectedPayment['url'] = $paymentService->bill();
+                    $selectedPayment['url'] = $paymentService->bill(); // fix...
                 } catch (\Exception $e) {
                     $this->container->get('logger')->addDebug("tata".$e->getMessage());
                 }
