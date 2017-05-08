@@ -145,6 +145,28 @@
                     <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{{ asset(misc_utils.getParam('site_logo_url')) }}"/>
                 </a>
 
+                <script type="text/javascript">
+                    $( document ).ready(function() {
+
+                    });
+                </script>
+
+                <div class="langSwitcher" style="float: right; display: flex; height: 100%">
+                    <div class="lang-drop">
+                        {% set currentLangName = 'language_' ~ app.request.locale  %}
+                        <a class="lang-chose" href="#"> {{ currentLangName|trans() }}</a>
+                        <ul>
+                            {% for locale in localeService.getAvailable() %}
+                                {% set langName = 'language_' ~ locale  %}
+                                <li class="lang-item lang-{{ locale }} {% if locale == app.request.locale %}current-lang{% endif %}">
+                                    <a href="{{ slug.generateUrl('food_lang_homepage_slashSwitch', [{'_locale':locale}]) }}"> {{ langName|trans() }} </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="separator forLang"></div>
+
                 {% set pageH = pageService.getByParam('page_help') %}
                 {% if pageH %}
                 <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
@@ -170,6 +192,9 @@
                     <span class="phone"><a href="callto:{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}" title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>
                     {% endif %}
                 </div>
+
+
+
             </div>
         </div>
 

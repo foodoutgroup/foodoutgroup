@@ -2872,3 +2872,43 @@ div.coupon_form_popup {
 .border-red {
     border:1px solid red !important;
 }
+
+.lang-drop ul {
+    display: none;
+    background: #cd1d36;
+    border-bottom: 2px solid #FCB436;
+    border-left: 2px solid #FCB436;
+    border-right: 2px solid #FCB436;
+    padding: 0!important;
+}
+.lang-drop ul li {
+    list-style-type: none;
+    padding: 5px 10px 5px 10px!important;
+    line-height: 30px;
+}
+
+.lang-drop {
+    text-align: right;
+    width: 100%;
+}
+
+.langSwitcher {
+    /*background: #CD1D36;*/
+    position: relative;
+    padding-top: 20px;
+    color: #fff;
+    font-family: 'avenirbook';
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    z-index: 9999999;
+    width: auto;
+    min-width: 150px;
+}
+
+.separator.forLang {
+    margin-left: 20px;
+}
+
+.langSwitcher a {color: #fff;}

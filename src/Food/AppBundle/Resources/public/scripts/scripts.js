@@ -44,6 +44,17 @@
         bind_password_resetting_form();
     });
 
+    $('.lang-chose').click(function (event) {
+        $('.lang-drop ul').slideToggle(500);
+        event.preventDefault();
+        return false;
+    });
+
+    $(document).bind('click', function (e) {
+        if (!$(e.target).parents().hasClass("lang-drop"))
+            $(".lang-drop ul").hide();
+    });
+
 })(jQuery);
 
 bind_custom_select = function() {

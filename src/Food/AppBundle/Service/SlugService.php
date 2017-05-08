@@ -236,18 +236,33 @@ class SlugService
         return $this->router->generate($route, $params);
     }
 
+
     public function generateURL($route, $params = [])
     {
+        if (count($params)){
+            if (array_key_exists('_locale', $params[0])) {
+                $params = $params[0];
+                $recLoc = $this->request->getLocale();
+                $this->request->setLocale($params['_locale']);
+                $default = ['_locale' => $this->getLocale()];
+                $url =  $this->router->generate($route, array_merge($params, $default));
+                $this->request->setLocale($recLoc);
 
-        $params['_locale'] = $this->getLocale();
-        return $this->router->generate($route, $params);
+                return $url;
+            }
+        }
+        else {
+            $default = ['_locale' => $this->getLocale()];
+            return $this->router->generate($route, array_merge($params, $default));
+        }
+
     }
 
 
     public function generatePath($route, $params = [])
     {
-        $params['_locale'] = $this->getLocale();
-        return $this->router->generate($route, $params);
+        $default = ['_locale' => $this->getLocale()];
+        return $this->router->generate($route, array_merge($params, $default));
     }
 
     public function toHomepage()

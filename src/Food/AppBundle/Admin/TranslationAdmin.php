@@ -166,9 +166,9 @@ abstract class TranslationAdmin extends FoodAdmin
     {
 
         $list
-            ->add('id', 'integer');
-//            ->add('key', 'string')
-//            ->add('domain', 'string');
+            ->add('id', 'integer')
+            ->add('key', 'string')
+            ->add('domain', 'string');
 
         $localesToShow = count($this->filterLocales) > 0 ? $this->filterLocales : $this->managedLocales;
 

@@ -66,10 +66,11 @@ class DefaultController extends Controller
 
         $cityCollection = $this->get("food.city_service")->getActiveCity();
 
+
         return $this->render(
             'FoodAppBundle:Default:index.html.twig', [
                 'formDefaults' => $formDefaults,
-                'cityCollection' => $cityCollection,
+                'cityCollection' => $cityCollection
             ]
         );
     }
