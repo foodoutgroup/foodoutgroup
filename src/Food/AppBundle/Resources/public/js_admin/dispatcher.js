@@ -28,7 +28,7 @@ var Dispatcher = {
 
         Dispatcher.initDriverFilter();
 
-        $(".todo_nieks_nezino_klases").on('click', ' .unassigned .order_checkbox,.not_finished .order_checkbox', function () {
+        $(".todo_nieks_nezino_klases").on('click', ' .unassigned .order_checkbox,.not_finished .order_checkbox,.unassigned-pedestrian .order_checkbox', function () {
             Dispatcher.toggleDriverButton($(this));
             //TODO - enable active drivers list buttons
         });
@@ -112,13 +112,15 @@ var Dispatcher = {
 
     toggleDriverButton: function (checkbox) {
 
-
         var activeList = checkbox.closest(".order_list");
         var buttons = $('.drivers_list .city_drivers:visible').find('button');
         var checkedBoxes = activeList.find('.order_checkbox:checked');
 
         if(activeList.hasClass('unassigned-pedestrian')){
             buttons = $('.drivers_list .pedestrian').find('button');
+        }else{
+            buttons = $('.drivers_list .normal').find('button');
+
         }
 
         if (checkedBoxes.size() > 0) {

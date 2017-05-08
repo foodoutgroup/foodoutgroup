@@ -519,7 +519,6 @@
                 {# unassigned / nepriskirti #}
                 <div id="city-{{ loop.index }}-unassigned">
                     {{ table.order_table(city.unassigned.deliver, 'unassigned', cityName) }}
-
                     {% if city.unassigned.pedestrian|length %}
                         <div style="text-align: center;">
                             <br />
@@ -703,7 +702,7 @@
                             {% set type = driver['type'] %}
                             <tr><td colspan="4"><hr/></td></tr>
                         {% endif %}
-                        <tr class="{{ loop.index%2 ? 'odd' : 'even' }} {{ driver.type }}" data-driver-id="{{ driver.id }}">
+                        <tr class="{{ loop.index%2 ? 'odd' : 'even' }} {% if driver.type == 'pedestrian'  %} {{  driver.type }} {% else %} {{ 'normal' }} {% endif %}" data-driver-id="{{ driver.id }}">
                             <td>{{ driver['name'] }}</td>
                             <td><a onclick="Dispatcher.logCallEvent('driver', {{ driver.phone }})" href="callto:{{ driver['phone'] }}">{{ driver['phone'] }}</a></td>
                             {#<td>{{ ('admin.driver.type.' ~ driver.type)|trans({}, 'SonataAdminBundle') }}</td>#}
