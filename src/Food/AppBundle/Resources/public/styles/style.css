@@ -2868,3 +2868,19 @@ div.coupon_form_popup {
 .static-page.blog-categories a, .static-page.blog-post a{
     color: #55422e;
 }
+
+.delivery-type-filter{
+    display: flex;
+    align-items: center;
+}
+
+.main-pedestrian-filter{
+    display: flex;
+    align-items: center;
+}
+
+.pedestrian-new-container{
+    padding-bottom: 1px;
+    display: flex;
+    align-items: center;
+}

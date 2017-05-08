@@ -25,55 +25,6 @@ class PlaceRepository extends EntityRepository
      */
     public function magicFindByKitchensIds($kitchens, $filters = [], $recommended = false, $locationData = null, $container = null)//, $city, $lat, $long)
     {
-        /*
-            SET @lat1 = 54.680437, @lon1 = 25.261236, @lat2 = 54.681914, @lon2 = 25.268156;
-            SELECT (6371 * 2 * ASIN(SQRT(POWER(SIN((@lat1 - abs(@lat2)) * pi()/180 / 2), 2) + COS(abs(@lat1) * pi()/180 ) * COS(abs(@lat2) * pi()/180) * POWER(SIN((@lon1 - @lon2) * pi()/180 / 2), 2) ))) as dist;
-         */
-        /*
-                $qb = $this->createQueryBuilder('p');
-                $qb->join('p.kitchens', 'f')
-                    ->where(
-                        $qb->expr()->in('f.id', $kitchens)
-                    );
-
-                $qb->join('p.points', 'pp')
-                    ->where("pp.city = :city")
-                    //->where("(6371 * 2 * ASIN(SQRT(POWER(SIN((:lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs(:lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN((:lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7")
-                    ->andWhere("(6371 * 2 * ASIN(SQRT(POWER(SIN((:lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs(:lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN((:lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7")
-                    ->setParameter('city', $city)
-                    ->setParameter('lat', $lat)
-                    ->setParameter('lon', $lon);
-
-
-                return $qb->getQuery()->getResult();
-        */
-
-        /*
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult('FoodDishesBundle:Place', 'p');
-        $rsm->addFieldResult('p', 'id', 'id');
-        $rsm->addFieldResult('p', 'name', 'name');
-        $rsm->addFieldResult('p', 'logo', 'logo');
-        $rsm->addEntityResult('FoodDishesBundle:PlacePoint', 'pp');
-        $rsm->addEntityResult('FoodDishesBundle:Kitchen', 'pk');
-
-
-        $queryPart_kitchen = "";
-
-        $query = $this->_em->createNativeQuery("
-            SELECT
-                p.id, p.name, p.logo
-            FROM place p
-            JOIN place_point pp
-
-            WHERE
-                pp.place = p.id
-                AND pp.city = '$city'
-                AND (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= 7
-                "
-        , $rsm);
-        */
-        //return $query->getResult();
         $city = null;
         $lat = null;
         $lon = null;
@@ -121,8 +72,11 @@ class PlaceRepository extends EntityRepository
 
         // Place filters
         $placeFilter = '';
+
         if (!empty($filters) && is_array($filters)) {
+
             foreach ($filters as $filterName => $filterValue) {
+
                 switch ($filterName) {
                     case 'keyword':
                         if (!empty($filterValue)) {
@@ -142,6 +96,8 @@ class PlaceRepository extends EntityRepository
                                 case OrderService::$deliveryPickup:
                                     $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "pickup")';
                                     break;
+                                case OrderService::$deliveryPedestrian:
+                                    $placeFilter .= ' AND p.delivery_options IN ("pedestrian")';
                                 default:
                                     // Do nothing ;)
                             }

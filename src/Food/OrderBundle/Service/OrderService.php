@@ -94,6 +94,7 @@ class OrderService extends ContainerAware
     public static $deliveryBoth = "delivery_and_pickup";
     public static $deliveryDeliver = "deliver";
     public static $deliveryPickup = "pickup";
+    public static $deliveryPedestrian = "pedestrian";
 
     /**
      * Payment did not start yet
@@ -263,7 +264,7 @@ class OrderService extends ContainerAware
      *
      * @return Order
      */
-    public function createOrder($placeId, $placePoint = null, $fromConsole = false, $orderDate = null)
+    public function createOrder($placeId, $placePoint = null, $fromConsole = false, $orderDate = null,$deliveryType = null)
     {
         $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
         if (empty($placePoint)) {
@@ -298,14 +299,18 @@ class OrderService extends ContainerAware
 
             $timeShift = $miscService->parseTimeToMinutes($placeService->getDeliveryTime($placeRecord));
 
-            if (empty($timeShift) || $timeShift <= 0) {
+            if (empty($timeShift) || $timeShift <= 0 && $deliveryType != 'pedestrian') {
                 $timeShift = 60;
+            }else{
+                $timeShift =  $this->container->get('food.places')->getPedestrianDeliveryTime();
             }
 
             $deliveryTime = new \DateTime("now");
             $deliveryTime->modify("+" . $timeShift . " minutes");
+
         } else {
             $deliveryTime = new \DateTime($orderDate);
+
         }
 
         $this->order->setUser($user);
@@ -1318,11 +1323,12 @@ class OrderService extends ContainerAware
      * @param array|null $userData
      * @param string|null $orderDate
      */
-    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null)
+    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null,$deliveryType = null)
     {
         // TODO Fix prices calculation
-        $this->createOrder($place, $placePoint, false, $orderDate);
-        $this->getOrder()->setDeliveryType(($selfDelivery ? 'pickup' : 'deliver'));
+
+        $this->createOrder($place, $placePoint, false, $orderDate,$deliveryType);
+        $this->getOrder()->setDeliveryType($deliveryType);
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
 
@@ -1340,13 +1346,14 @@ class OrderService extends ContainerAware
         // PRE ORDER
         if (!empty($orderDate)) {
             $this->getOrder()->setOrderStatus(self::$status_preorder)->setPreorder(true);
+
         } else if (empty($orderDate) && $selfDelivery) {
             // Lets fix pickup situation
             $miscService = $this->container->get('food.app.utils.misc');
 
             $timeShift = $miscService->parseTimeToMinutes($placeObject->getPickupTime());
 
-            if (empty($timeShift) || $timeShift <= 0) {
+            if (empty($timeShift) || $timeShift <= 0 && $deliveryType != 'pedestrian') {
                 $timeShift = 60;
             }
 
@@ -1355,7 +1362,6 @@ class OrderService extends ContainerAware
         }
 
         $this->saveOrder();
-
         // save extra order data to separate table
         $orderExtra = new OrderExtra();
         $orderExtra->setOrder($this->getOrder());
@@ -2099,7 +2105,7 @@ class OrderService extends ContainerAware
      */
     public function isValidDeliveryType($type)
     {
-        if (in_array($type, [self::$deliveryDeliver, self::$deliveryPickup])) {
+        if (in_array($type, [self::$deliveryDeliver, self::$deliveryPickup, self::$deliveryPedestrian])) {
             return true;
         }
 

@@ -308,6 +308,8 @@ class DefaultController extends Controller
 
         if ($request->getMethod() == 'POST' && !$formHasErrors) {
             // Jei vede kupona - uzsikraunam
+            $deliveryType = $request->get('delivery-type');
+
             $couponCode = $request->get('coupon_code');
             if (!empty($couponCode)) {
                 $coupon = $orderService->getCouponByCode($couponCode);
@@ -393,7 +395,7 @@ class DefaultController extends Controller
                     $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
                 }
 
-                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate);
+                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate,$deliveryType);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
                 if ($preOrder == 'it-is') {
                     $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
@@ -423,7 +425,7 @@ class DefaultController extends Controller
             }
 
             $paymentMethod = $request->get('payment-type');
-            $deliveryType = $request->get('delivery-type');
+
             $customerComment = $request->get('customer-comment');
             $orderService->setPaymentMethod($paymentMethod);
             $orderService->setDeliveryType($deliveryType);
@@ -455,7 +457,7 @@ class DefaultController extends Controller
             }
 
             // Update order with recent address information. but only if we need to deliver
-            if ($deliveryType == $orderService::$deliveryDeliver) {
+            if ($deliveryType == $orderService::$deliveryDeliver || $deliveryType == $orderService::$deliveryPedestrian) {
                 $locationData = $googleGisService->getLocationFromSession();
                 $em = $this->getDoctrine()->getManager();
                 $address = $orderService->createAddressMagic(
@@ -468,6 +470,7 @@ class DefaultController extends Controller
                 );
                 $orderService->getOrder()->setAddressId($address);
                 // Set user default address
+
                 if (!$user->getDefaultAddress()) {
                     $em->persist($address);
                     $user->addAddress($address);

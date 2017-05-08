@@ -165,9 +165,11 @@
 
         {# Delivery type choice #}
         {% if inCart == false and isCallcenter == false %}
+
             <div class="cart_delivery_type">
                 {% trans %}cart.block.delivery_type{% endtrans %} <span class="delivery-type-tooltip" title="{% trans %}cart.block.delivery_type.tooltip{% endtrans %}">&nbsp;</span><br />
                 <br />
+
                 <label class="custom-radio{% if place.deliveryOptions == "pickup" %} disabled{% endif %}">
                     <input type="radio" name="delivery_type" value="deliver" {% if not takeAway %}checked="checked"{% endif %}{% if place.deliveryOptions == "pickup" %} disabled="disabled"{% endif %}>
                     {% trans %}cart.checkout.delivery_to_home{% endtrans %}
@@ -176,6 +178,11 @@
                     <input type="radio" name="delivery_type" value="pickup" {% if takeAway or place.deliveryOptions == "pickup" %}checked="checked"{% endif %}{% if place.deliveryOptions == "delivery" %} disabled="disabled"{% endif %}>
                     {% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
                 </label>
+                <label class="custom-radio{% if place.deliveryOptions == "pedestrian" %} disabled{% endif %}">
+                    <input type="radio" name="delivery_type" value="pedestrian" {% if place.deliveryOptions == "pedestrian" %}checked="checked"{% endif %}{% if place.deliveryOptions == "pedestrian" %} disabled="disabled"{% endif %}>
+                    {% trans %}cart.checkout.delivery_by_pedestrian{% endtrans %}
+                </label>
+
                 <br />
             </div>
         {% endif %}
@@ -184,9 +191,13 @@
         {% if inCart == false %}
             <a href="{{ path('food_cart', { 'placeId' : place.id, 'takeAway': hide_delivery }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
         {% endif %}
+
         {% if hide_delivery == false %}
         <div class="delivery-time tac">
-            {% trans %}cart.block.delivery_time{% endtrans %} {{ places_service.getDeliveryTime(place) }}
+            {% trans %}cart.block.delivery_time{% endtrans %}
+
+                {{ places_service.getDeliveryTime(place,null,place.deliveryOptions) }}
+
             {% if place.deliveryTimeInfo is not empty %}
                 <span class="delivery-time-info-cart ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
             {% endif %}
@@ -234,7 +245,9 @@
             var hadSticky = $('.check-block').hasClass('sticky');
             if (event.target.checked) {
                 if (event.target.value == 'pickup') {
-                    takeAway = 1;
+//                    console.log(takeAway);
+                    takeAway = 18;
+//                    console.log(takeAway);
                 }
                 $('.check-block').mask();
                 var url = Routing.generate(

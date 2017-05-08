@@ -33,6 +33,12 @@ class OrderRepository extends EntityRepository
 
         $orders = $this->getOrdersByFilter($filter, 'list');
 
+        $filter['deliveryType'] = OrderService::$deliveryPedestrian;
+
+        $ordersPedestrian = $this->getOrdersByFilter($filter, 'list');
+
+        $orders = array_merge($orders,$ordersPedestrian);
+
         if (!$orders) {
             return array();
         }
@@ -105,7 +111,7 @@ class OrderRepository extends EntityRepository
      * @param boolean $forceBoth
      * @return array|Order[]
      */
-    public function getOrdersUnconfirmed($city=null, $pickup = false, $forceBoth=false)
+    public function getOrdersUnconfirmed($city = null, $pickup = false, $forceBoth = false)
     {
         $filter = array(
             'order_status' =>  array(OrderService::$status_new, OrderService::$status_preorder),
@@ -147,6 +153,12 @@ class OrderRepository extends EntityRepository
 
         $orders = $this->getOrdersByFilter($filter, 'list');
 
+        $filter['deliveryType'] =  OrderService::$deliveryPedestrian;
+
+        $ordersPedestrian = $this->getOrdersByFilter($filter, 'list');
+
+        $orders = array_merge($orders,$ordersPedestrian);
+
         if (!$orders) {
             return array();
         }
@@ -175,6 +187,12 @@ class OrderRepository extends EntityRepository
         }
 
         $orders = $this->getOrdersByFilter($filter, 'list');
+
+        $filter['deliveryType'] = OrderService::$deliveryPedestrian;
+
+        $ordersPedestrian = $this->getOrdersByFilter($filter, 'list');
+
+        $orders = array_merge($orders,$ordersPedestrian);
 
         if (!$orders) {
             return array();
@@ -419,12 +437,14 @@ class OrderRepository extends EntityRepository
             throw new \InvalidArgumentException('Unknown query type, dude');
         }
 
+
         if ($type == 'list') {
             $qb = $this->createQueryBuilder('o');
 
             $qb->where('1 = 1');
 
             foreach ($filter as $filterName => $filterValue) {
+
                 switch($filterName) {
                     case 'order_date_more':
                         $qb->andWhere('o.order_date < :'.$filterName);
