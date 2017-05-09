@@ -2671,8 +2671,10 @@ class OrderService extends ContainerAware
         $notifyEmails = $this->container->getParameter('order.notify_emails');
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
 
-        $userAddress = $order->getAddressId()->toString();
-
+        $userAddress = '';
+        if (is_object($order->getAddressId())) {
+            $userAddress = $order->getAddressId()->toString();
+        }
         $newOrderText = $translator->trans('general.new_order.title');
 
         $placePointCity = $order->getPlacePointCity();
