@@ -27,6 +27,7 @@ use Food\OrderBundle\Entity\OrderToRestaurant;
 use Food\OrderBundle\Entity\PaymentLog;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
+use Symfony\Component\Debug\Debug;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -2149,7 +2150,7 @@ class OrderService extends ContainerAware
         } else if (is_object($debugData)) {
             if (method_exists($debugData, '__toArray')) {
                 $debugData = 'Class: ' . get_class($debugData) . ' Data: '
-                    . var_export($debugData->__toArray(), true);
+                    . \Doctrine\Common\Util\Debug::export($debugData->__toArray());
             } else {
                 $debugData = get_class($debugData);
             }
