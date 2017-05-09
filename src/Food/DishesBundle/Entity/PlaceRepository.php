@@ -161,11 +161,9 @@ class PlaceRepository extends EntityRepository
                         AND pps.id = ppwt.place_point
                         AND pps.active=1
                         AND pps.deleted_at is NULL
-                        AND pps.place = " . $place['place']->getId();
-                        if (isset($locationData['city_id'])){
-                            $placePointQuery .= "AND pps . city_id = " . $locationData['city_id'];
-                        }
-                        $placePointQuery .= "AND ppwt.week_day = " . $wd . "
+                        AND pps.place = " . $place['place']->getId() . "
+                        AND pps.city_id = " . $locationData['city_id'] . "
+                        AND ppwt.week_day = " . $wd . "
                         AND (
                         (start_hour = 0 OR start_hour < ' . $dh . ' OR
                             (start_hour <= ' . $dh . ' AND start_min <= ' . $dm . ')
@@ -178,6 +176,7 @@ class PlaceRepository extends EntityRepository
 
             )
             ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
+
             $defaultPlacePoint = true;
             if (empty($lat) || empty($lon)) {
                 $defaultPlacePoint = false;
