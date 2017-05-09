@@ -185,7 +185,7 @@ abstract class TranslationAdmin extends FoodAdmin
 
     public function getExportFormats()
     {
-        return ['xls'];
+        return ['xls','csv'];
     }
 
     /**
