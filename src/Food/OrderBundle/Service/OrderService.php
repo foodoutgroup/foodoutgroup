@@ -2150,7 +2150,7 @@ class OrderService extends ContainerAware
         } else if (is_object($debugData)) {
             if (method_exists($debugData, '__toArray')) {
                 $debugData = 'Class: ' . get_class($debugData) . ' Data: '
-                    . \Doctrine\Common\Util\Debug::export($debugData->__toArray());
+                    . \Doctrine\Common\Util\Debug::export($debugData->__toArray(),100);
             } else {
                 $debugData = get_class($debugData);
             }
