@@ -48,8 +48,15 @@ class TranslationCRUDController extends CRUDController
 
             $em = $this->container->get('doctrine.orm.entity_manager');
             $localeCollection = $this->getManagedLocales();
-            $fieldMap = array_flip($dataCollection[0]);
+            $deletedFromCSV = array_diff($localeCollection,$dataCollection[0]);
+            foreach ($deletedFromCSV as $del) {
+                if (($key = array_search($del, $localeCollection)) !== false) {
 
+                    unset($localeCollection[$key]);
+                }
+            }
+
+            $fieldMap = array_flip($dataCollection[0]);
 
             $storage = $em->getRepository('LexikTranslationBundle:TransUnit');
             $transUnitManager = $this->container->get('lexik_translation.trans_unit.manager');
