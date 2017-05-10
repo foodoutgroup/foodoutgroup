@@ -6,12 +6,12 @@ set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
-set :branch, "master"
+set :branch, "feature/language_l10n_fix_and_update"
 
 # multi-stage environment
 set :stages,        %w(betalt betalv production production_lv production_ee pipiras)
 # isijungiam kada reik :)
-set :default_stage, "betalt"
+set :default_stage, "betalv"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
@@ -61,8 +61,8 @@ after "deploy:rollback", "symfony:cache:clear"
 
 #
 # Be more verbose by uncommenting the following line
-#logger.level = Logger::MAX_LEVEL
-logger.level = 0
+logger.level = Logger::MAX_LEVEL
+#logger.level = 0
 
 # copy parameters.yml to specific env
 set :parameters_dir, "app/config/parameters"

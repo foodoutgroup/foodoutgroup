@@ -111,6 +111,7 @@ parameters:
     google.analytics.view_id: "85237075"
     nav_table_prefix: 'PROTOTIPAS Skambuciu Centras'
     nav_ws_prefix: 'PROTOTIPAS Skambuciu Centras'
+
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
     mailer_from: info@foodout.lt
     mailer_notify_on_accept: 30010811

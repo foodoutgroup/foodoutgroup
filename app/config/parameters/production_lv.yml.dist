@@ -7,6 +7,7 @@ parameters:
         type: textarea		 # Type of input. Can be text|textarea|select|date|checklist and more
         emptytext: Empty 	 # text to display on empty translations
         placement: top		 # ingnored for inline mode
+    slug_regex: "^(?!admin|cart|login|logout|invoice|payments|newsletter|ajax|js|routing|banned)([\pL0-9-\/\__\"„“\.\+]+)"
     database_driver: pdo_mysql
     database_host: localhost
     database_port: 3306
@@ -142,7 +143,12 @@ parameters:
     session_memcached_port:     11211
     session_memcached_prefix:   foodoutlv
     session_memcached_expire:   3600
-
+lexik_translation:
+    fallback_locale: '%locale%'
+    managed_locales: '%locales%'
+    resources_registration:
+        type: all
+        managed_locales_only: true
 pirminis_gateway:
     datacash_url: 'https://mars.transaction.datacash.com/Transaction'
     swedbank:
