@@ -66,11 +66,9 @@ class TranslationCRUDController extends CRUDController
             foreach ($dataCollection as $transData)
             {
                 if (isset($transData[$fieldMap['id']])) {
-                    $transEntity = $storage->findOneBy(['key' => $transData[$fieldMap['key']]]);
+                    $transEntity = $storage->findOneBy(['key' => $transData[$fieldMap['key']], 'domain' => $transData[$fieldMap['domain']]]);
                     if (!($transEntity instanceof TransUnit)) {
-                        $this->addFlash('error', 'Translation not found: ' . $transData[$fieldMap['key']]);
-                        return $this->redirect($this->generateUrl('admin_lexik_translation_transunit_list'));
-                        // $transEntity = $transUnitManager->create($key, $domain);
+                        $transEntity = $transUnitManager->create($transData[$fieldMap['key']], $transData[$fieldMap['domain']], true);
                     }
 
                     $em->persist($transEntity);
