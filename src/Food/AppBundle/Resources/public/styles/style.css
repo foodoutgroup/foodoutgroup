@@ -891,6 +891,7 @@ input.button {}
 .restaurant-item .delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left 2px;  display: block; float: right}
 .restaurant-item .pickup {background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left 2px; color: #55422e; padding-left: 20px; letter-spacing: 0.5px; display: block; float: left}
 .restaurant-item .min-cart-size {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left 1px; display: block; float: left}
+.restaurant-item .business {background: url(/bundles/foodapp/images/business.png) no-repeat left 2px; color: #55422e; padding-left: 20px; letter-spacing: 0.5px; display: block; float: left}
 
 .restaurant-item .delivery span,
 .restaurant-item .min-cart-size span {padding-left: 13px; color: #bea2a6; letter-spacing: 0.5px;}

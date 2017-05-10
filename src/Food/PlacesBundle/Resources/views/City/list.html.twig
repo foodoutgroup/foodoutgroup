@@ -103,6 +103,16 @@
                         {% endif %}
                     </span>
                     {% endif %}
+
+                    {% if app.user and app.user.isBussinesClient %}
+                        <span class="business" style="color:#373737;">
+                            {% if place.selfDelivery %}
+                                {% trans %}work.for.business.client{% endtrans %}
+                            {% else %}
+                                {% trans %}not.work.for.business.client{% endtrans %}
+                            {% endif %}
+                        </span>
+                    {% endif %}
                 </div>
             </div>
             <div class="item-righter">
