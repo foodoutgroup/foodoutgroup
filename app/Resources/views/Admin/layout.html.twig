@@ -108,6 +108,22 @@
     {% endif %}
 {% endblock %}
 
+{% block sonata_top_bar_nav %}
+    {{ parent() }}
+    {% if localeService.getAvailable()|length > 1 %}
+        {% set currentLangName = 'language_' ~ app.request.locale  %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ currentLangName|trans() }}<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                {% for locale in localeService.getAvailable() %}
+                    {% set langName = 'language_' ~ locale  %}
+                    <li><a href="{{ slug.generateUrl('admin_dashboard_redirect', [{'_locale':locale}]) }}">{{ langName|trans() }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
+{% endblock %}
+
 {% block footer %}
     {# Nerodome sonatos logo :) #}
     <script src="{{ asset('scripts/custom_admin.js') }}" type="text/javascript"></script>
