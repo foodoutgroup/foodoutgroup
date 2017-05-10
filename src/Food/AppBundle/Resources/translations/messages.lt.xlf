@@ -1600,10 +1600,7 @@
                 <source>mobile.order.admin_fee</source>
                 <target>Administracinis mokestis (su PVM)</target>
             </trans-unit>
-            <trans-unit id="mobile.order.admin_fee_no_vat">
-                <source>mobile.order.admin_fee_no_vat</source>
-                <target>Administracinis mokestis (be PVM)</target>
-            </trans-unit>
+
               <trans-unit id="import">
                   <source>import</source>
                   <target>Importuoti</target>
@@ -1612,10 +1609,7 @@
                 <source>export</source>
                 <target>Eksportuoti</target>
             </trans-unit>
-            <trans-unit id="mobile.order.admin_fee_no_vat" resname="index.search_form_qlue">
-                <source>index.search_form_qlue</source>
-                <target>Įveskite savo adresą ir sužinokite, iš kurių restoranų galite užsisakyti</target>
-            </trans-unit>
+
         </body>
     </file>
 </xliff>

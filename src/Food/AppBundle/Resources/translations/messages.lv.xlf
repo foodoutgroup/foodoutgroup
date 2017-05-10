@@ -1560,10 +1560,6 @@
                 <source>mobile.order.admin_fee</source>
                 <target>Administrēšanas maksa (ar PVN)</target>
             </trans-unit>
-            <trans-unit id="mobile.order.admin_fee_no_vat">
-                <source>mobile.order.admin_fee_no_vat</source>
-                <target>Administrēšanas maksa (bez PVN)</target>
-            </trans-unit>
         </body>
     </file>
 </xliff>
