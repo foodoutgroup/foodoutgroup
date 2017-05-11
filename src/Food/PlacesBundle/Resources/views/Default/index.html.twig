@@ -210,7 +210,7 @@
                     $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
                         console.log(response.data);
                         if(response.data.success == 1) {
-                            window.location = window.location.href;
+                            window.location = window.location.href.split("#")[0];
                         } else {
                             alert(response.data.message);
                         }
@@ -223,13 +223,8 @@
         {% set showNoAddress  = false %}
         <div class="clearfix">
             <div class="content-lefter">
-                {% if zaval %}
-                    {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended, 'slug_filter': slug_filter, 'zaval': true})) }}
-                {% else %}
-                    {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended, 'slug_filter': slug_filter})) }}
-                {% endif %}
+                {{ render(controller('FoodDishesBundle:Kitchen:kitchenlist', {'recommended':recommended, 'slug_filter': slug_filter, 'zaval': zaval})) }}
                 {{ render(controller('FoodDishesBundle:Place:filtersList')) }}
-
                 <div class="banners">
                     {% if site_country == 'LT' %}
                         <div>

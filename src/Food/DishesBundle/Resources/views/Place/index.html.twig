@@ -203,19 +203,47 @@
                                 </div>
                         {# Meniu #}
                                 <div class="menu-righter">
-                                    {% set showNoAddress = true %}
+
+                                    <script type="text/javascript">
+                                        var addressFound = {% if location != null and not location.not_found and location.street_found %}true{% else %}false{% endif %};
+                                        showFillAddress();
+                                        function showFillAddress(){
+                                            $('.alert-no-address').addClass('hidden');
+                                            $('.restaurants-list-controls').removeClass('nab-visible').addClass('nab-hidden');
+                                            if(!addressFound){
+                                                $('.alert-no-address').show().removeClass('hidden');
+                                                $('.restaurants-list-controls').removeClass('nab-hidden').addClass('nab-visible');
+                                            }
+
+                                        }
+                                        $(document).ready(function() {
+                                            showFillAddress();
+                                            $('.submit-address-change').click(function () {
+                                                var params = { city: $('#address_city').val(), address: $('#address').val(), currentUrl: window.location.href };
+                                                $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
+                                                    console.log(response.data);
+                                                    if(response.data.success == 1) {
+                                                        window.location = window.location.href.split("#")[0];
+                                                    } else {
+                                                        alert(response.data.message);
+                                                    }
+                                                });
+                                            });
+                                        });
+                                    </script>
+
+                                    {% set showNoAddress = false %}
                                     <div class="alert-no-address {% if not showNoAddress %}hidden{% endif %}">
                                         {% trans %}please.fill.address.message.top{% endtrans %}<br/>
                                         <div class="input-section">
                                             <select id="address_city" style="width: 120px;" class="custom-select">
-                                                {#{% for city in available_cities %}#}
-                                                    {#<option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e','ī':'i'})) %}selected{% endif %}>{{places_service.getCityName(city)}}</option>#}
-                                                {#{% endfor %}#}
+                                                {% for city in available_cities %}
+                                                    <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e','ī':'i'})) %}selected{% endif %}>{{places_service.getCityName(city)}}</option>
+                                                {% endfor %}
                                             </select>
                                             <input type="text"
                                                    id="address"
-                                                   list="user_address"
-                                                   {#value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}"#}
+                                                   value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
                                                    placeholder="{{ 'index.street'|trans }}" />
                                             <button class="submit-address-change">{% trans %}save.button{% endtrans %}</button>
                                         </div>

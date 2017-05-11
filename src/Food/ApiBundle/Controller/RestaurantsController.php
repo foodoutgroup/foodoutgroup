@@ -84,6 +84,9 @@ class RestaurantsController extends Controller
                 $places = array();
             }
 
+            $this->get('session')->set('filter', $filters);
+
+
             $response = array(
                 'restaurants' => array(),
                 '_meta' => array(

@@ -144,6 +144,7 @@ class PlaceController extends Controller
                 'alreadyWrote' => $alreadyWrote,
                 'placeCategories' => $categoryList,
                 'dishService' => $dishService,
+                'location' => $this->get('food.googlegis')->getLocationFromSession(),
                 // 'selectedCategory' => $activeCategory,
                 'placePoints' => $placePoints,
                 'placePointsAll' => $placePointsAll,
