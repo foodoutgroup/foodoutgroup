@@ -735,6 +735,39 @@ input.button {}
     text-align: center;
     font-size:16px;
 }
+.alert-no-address .input-section {
+    padding: 10px;
+}
+
+.alert-no-address .input-section input[type=text]{
+    width: 200px;
+    font-size: 15px;
+    padding: 8px 12px;
+    border: 1px solid #d8d8d8;
+    border-radius: 3px;
+    box-shadow: 0 0 1px #f2f2f2;
+    box-shadow: 0 0 2px #d0c8c1;
+}
+
+.alert-no-address .input-section button {
+    font-size: 13px;
+    color: #fff;
+    text-shadow: 0 1px 0 #6d9104;
+    text-transform: uppercase;
+    width: 128px;
+    height: 38px;
+    padding-top: 6px;
+    border-radius: 4px;
+    background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left center;
+    box-shadow: 0 1px 1px #c0c0c0;
+    border: none;
+    letter-spacing: 1px;
+}
+
+
+#address_city-button {
+    margin-bottom: -14px !important;
+}
 
 .nab-visible {
     padding-top:16px;

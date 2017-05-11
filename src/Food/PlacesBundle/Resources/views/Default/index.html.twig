@@ -187,64 +187,37 @@
     <div class="page-path clearfix">{% block breadcrumb %}{% endblock %}</div>
     <div class="page-title">
         {% block page_title_h1 %}
-        <h1>{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city_translations[location.city]|trans }}{% endif %}</h1>
+            <h1>{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city_translations[location.city]|trans }}{% endif %}</h1>
         {% endblock %}
         <h2 class="clearfix">
             <span class="place-counter"></span>
         </h2>
-        {% if recommended==0 and ( location == null or (location.not_found and location.street_found)) %}
-            <div class="alert alert2 alert-warning alert_not_detailed_search"><li>{% trans %}places.is_not_detailed_search{% endtrans %}</li></div>
-        {% endif %}
     </div>
 
-    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'places-change-address', hideQlu: false, usr_address: userAllAddress} %}
     <script type="text/javascript">
-        // <![CDATA[
-            $(document).ready(function() {
+            $(document).on('click','.restaurants-list a',function(e){
+                if($('.alert-no-address:visible').length && $('.delivery-type-filter a[class="selected"]').attr("data-type") == "delivery") {
+                    e.preventDefault();
+                    alert('{% trans %}please.fill.address.first{% endtrans %}')
+                } else {
 
-                $(document).on('click','.restaurants-list a',function(e){
-                    if($('.alert-no-address:visible').length && $('.delivery-type-filter a[class="selected"]').attr("data-type") == "delivery") {
-                        e.preventDefault();
-                        alert('{% trans %}please.fill.address.first{% endtrans %}')
-                    } else {
-
-                    }
-                });
-
-                $('#places-change-location-link').click(function() {
-                    var data_callback, data_callback;
-
-                    click_callback = function(options) {
-                        if (options.response.data.success == 1) {
-                            window.location = '{{ url('food_places_lt_main') }}';
-                        } else {
-                            options.dialog.unmask();
-                            options.alert.show();
-
-                            setTimeout(function(){
-                                options.alert.hide();
-                            }, 5000);
-                        }
-                    }
-
-                    data_callback = function() {
-                        return { city: $('.city-row select').val(),
-                                 address: $('.address-row input').val(),
-                                 currentUrl:window.location.href,
-                        };
-                    }
-
-                    change_location($('#places-change-address'),
-                                    click_callback,
-                                    data_callback,
-                                    '{% trans %}cart.checkout.address_change_change{% endtrans %}',
-                                    '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
-                                    '{{ url('food_ajax', {'action': 'find-address'}) }}');
-
-                    return false;
-                })
+                }
             });
-        // ]]>
+
+            $(document).ready(function() {
+                $('.submit-address-change').click(function () {
+                    var params = { city: $('#address_city').val(), address: $('#address').val(), currentUrl: window.location.href };
+                    $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
+                        console.log(response.data);
+                        if(response.data.success == 1) {
+                            window.location = window.location.href;
+                        } else {
+                            alert(response.data.message);
+                        }
+                    });
+                });
+            });
+
     </script>
 
         {% set showNoAddress  = false %}
@@ -301,9 +274,22 @@
 
                 <div class="alert-no-address {% if not showNoAddress %}hidden{% endif %}">
                     {% trans %}please.fill.address.message.top{% endtrans %}<br/>
-                    <a href="#" id="places-change-location-link" style="width: 373px; height: 35px; color: white; display:inline-block; background: white; margin:4px;">{% trans %}places.change_address{% endtrans %}</a><br/>
+                    <div class="input-section">
+                        <select id="address_city" style="width: 120px;" class="custom-select">
+                            {% for city in available_cities %}
+                                <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e','ī':'i'})) %}selected{% endif %}>{{places_service.getCityName(city)}}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="text"
+                               id="address"
+                               list="user_address"
+                               value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
+                               placeholder="{{ 'index.street'|trans }}" />
+                        <button class="submit-address-change">{% trans %}save.button{% endtrans %}</button>
+                    </div>
                     {% trans %}please.fill.address.message.bottom{% endtrans %}<br/>
                 </div>
+
                 <div class="restaurants-list-controls clearfix {% if showNoAddress %}nab-visible{% else %}nab-hidden{% endif %}">
                     <div class="restaurants-list-top-filters {% if zaval %}hidden{% endif %}">
                         <div class="delivery-type-filter">
@@ -313,6 +299,7 @@
                         </div>
                     </div>
                 </div>
+
                 {% if zaval %}
                     {{ render(controller('FoodPlacesBundle:Default:list', {'recommended': recommended, 'slug_filter': slug_filter, 'zaval': true})) }}
                 {% else %}

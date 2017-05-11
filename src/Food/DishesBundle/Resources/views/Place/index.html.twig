@@ -133,6 +133,7 @@
                              {#<li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>#}
                             <li class="last restaurant-info-tab"><a itemprop="menu" href="{{ current_url }}#detailed-restaurant-info">{% trans %}places.information{% endtrans %}</a></li>
                         </ul>
+
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
                             <div class="clearfix">
                                 <div class="menu-lefter" id="catmnu">
@@ -202,6 +203,25 @@
                                 </div>
                         {# Meniu #}
                                 <div class="menu-righter">
+                                    {% set showNoAddress = true %}
+                                    <div class="alert-no-address {% if not showNoAddress %}hidden{% endif %}">
+                                        {% trans %}please.fill.address.message.top{% endtrans %}<br/>
+                                        <div class="input-section">
+                                            <select id="address_city" style="width: 120px;" class="custom-select">
+                                                {#{% for city in available_cities %}#}
+                                                    {#<option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e','ī':'i'})) %}selected{% endif %}>{{places_service.getCityName(city)}}</option>#}
+                                                {#{% endfor %}#}
+                                            </select>
+                                            <input type="text"
+                                                   id="address"
+                                                   list="user_address"
+                                                   {#value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}"#}
+                                                   placeholder="{{ 'index.street'|trans }}" />
+                                            <button class="submit-address-change">{% trans %}save.button{% endtrans %}</button>
+                                        </div>
+                                        {% trans %}please.fill.address.message.bottom{% endtrans %}<br/>
+                                    </div>
+
                                     {% if placePointsAll|length == 1 %}
                                         {% if isTodayNoOneWantsToWork == true %}
                                             <div class="alert alert-danger">
