@@ -195,14 +195,6 @@
     </div>
 
     <script type="text/javascript">
-            $(document).on('click','.restaurants-list a',function(e){
-                if($('.alert-no-address:visible').length && $('.delivery-type-filter a[class="selected"]').attr("data-type") == "delivery") {
-                    e.preventDefault();
-                    alert('{% trans %}please.fill.address.first{% endtrans %}')
-                } else {
-
-                }
-            });
 
             $(document).ready(function() {
                 $('.submit-address-change').click(function () {

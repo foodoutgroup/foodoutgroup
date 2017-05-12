@@ -214,6 +214,13 @@
                                             }
                                         }
 
+                                        $(document).on('click','.order-button',function(e){
+                                            if($('.alert-no-address:visible').length > 0 && $('.iradio input[name=delivery_type]:checked').val() == "deliver") {
+                                                e.preventDefault();
+                                                alert('{% trans %}please.fill.address.first{% endtrans %}')
+                                            }
+                                        });
+
                                         $(document).ready(function() {
                                             showFillAddress();
                                             $('.submit-address-change').click(function () {
