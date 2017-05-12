@@ -1334,12 +1334,11 @@ class OrderService extends ContainerAware
 
 
         $placeObject = $this->container->get('food.places')->getPlace($place);
-        $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
-
+        $totalPriceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
         $placesService = $this->container->get('food.places');
         $useAdminFee = $placesService->useAdminFee($placeObject);
 
-        $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
+        $this->getOrder()->setTotalBeforeDiscount($totalPriceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
         $enableDiscount = !$placeObject->getOnlyAlcohol();
 
@@ -1442,14 +1441,17 @@ class OrderService extends ContainerAware
          * Na daugiau kintamuju jau nebesugalvojau :/
          */
         $discountOverTotal = 0;
-        if ($discountSum > $priceBeforeDiscount) {
-            $discountOverTotal = $discountSum - $priceBeforeDiscount;
-            $discountSum = $priceBeforeDiscount;
+        if ($discountSum > $totalPriceBeforeDiscount) {
+            $discountOverTotal = $discountSum - $totalPriceBeforeDiscount;
+            $discountSum = $totalPriceBeforeDiscount;
         }
+
         $discountSumLeft = $discountSum;
         $discountSumTotal = $discountSum;
         $discountUsed = 0;
-        $relationPart = $discountSum / $priceBeforeDiscount;
+        $relationPart = $discountSum / $totalPriceBeforeDiscount;
+
+        $sumTotal = $totalPriceBeforeDiscount - $discountSum;
 
         foreach ($itemCollection as $cartDish) {
 
@@ -1462,7 +1464,9 @@ class OrderService extends ContainerAware
                 if (!$this->getCartService()->isAlcohol($cartDish->getDishId()) && $enableDiscount) {
                     if ($priceBeforeDiscount == $price && $discountPercent > 0) { // todo? :::................... $priceBeforeDiscount == $price
                         $price = round($priceBeforeDiscount * ((100 - $discountPercent) / 100), 2);
+
                         $discountPercentForInsert = $discountPercent;
+
                     } elseif ($discountSumLeft > 0) {
 
                         $discountPart = (float)round($price * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
@@ -1503,7 +1507,8 @@ class OrderService extends ContainerAware
             $this->getEm()->persist($dish);
             $this->getEm()->flush();
 
-            $sumTotal += $cartDish->getQuantity() * $price;
+            // negerai uzduotis https://trello.com/c/tnFVYtaE/1393-wrong-discount-calculation
+            // $sumTotal += $cartDish->getQuantity() * $price;
 
             $optionCollection = $this->getCartService()->getCartDishOptions($cartDish);
             $dishOptionPricesBeforeDiscount = $this->container->get('food.dishes')->getDishOptionsPrices($cartDish->getDishId());
@@ -1550,7 +1555,7 @@ class OrderService extends ContainerAware
                 $this->getEm()->persist($orderOpt);
                 $this->getEm()->flush();
 
-                $sumTotal += $cartDish->getQuantity() * $dishOptionPrice;
+//                $sumTotal += $cartDish->getQuantity() * $dishOptionPrice;
             }
         }
 
@@ -3585,16 +3590,16 @@ class OrderService extends ContainerAware
                 }
             } else {
 
-                if($preOrder == 'it-is'){
+                if ($preOrder == 'it-is') {
                     $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
                     $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
-                    if(!empty($pointRecordId)){
+                    if (!empty($pointRecordId)) {
                         $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
-                    }else{
+                    } else {
                         $formErrors[] = 'cart.checkout.place_point_not_in_radius';
                     }
 
-                }else {
+                } else {
                     $formErrors[] = 'cart.checkout.place_point_not_in_radius';
                 }
 

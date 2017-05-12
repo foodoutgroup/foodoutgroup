@@ -515,10 +515,13 @@ class CartService {
                     $theDish += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
                 }
                 if ($theDish > 0) {
-                    $total+= round(($theDish * $discountPercent / 100), 2);
+                    $total+= ($theDish * $discountPercent / 100);
                 }
             }
         }
+
+        $total = round($total,2);
+
         return $total;
     }
 
