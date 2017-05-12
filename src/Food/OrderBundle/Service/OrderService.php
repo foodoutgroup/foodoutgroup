@@ -1484,6 +1484,7 @@ class OrderService extends ContainerAware
                 ->setOrderId($this->getOrder())
                 ->setQuantity($cartDish->getQuantity())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
+                ->setDishSizeMmCode($cartDish->getDishSizeId()->getMmCode())
                 ->setPrice($price)
                 ->setOrigPrice($priceBeforeDiscount)
                 ->setPriceBeforeDiscount($priceBeforeDiscount)
@@ -1492,8 +1493,6 @@ class OrderService extends ContainerAware
                 ->setNameToNav(mb_substr($cartDish->getDishId()->getNameToNav() . $cartDish->getDishSizeId()->getUnit()->getNameToNav(), 0, 32, 'UTF-8'))
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
-                ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
-                ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
                 ->setIsFree($cartDish->getIsFree());
             $this->getEm()->persist($dish);
             $this->getEm()->flush();
