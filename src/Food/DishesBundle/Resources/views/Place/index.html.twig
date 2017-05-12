@@ -209,19 +209,16 @@
                                         showFillAddress();
                                         function showFillAddress(){
                                             $('.alert-no-address').addClass('hidden');
-                                            $('.restaurants-list-controls').removeClass('nab-visible').addClass('nab-hidden');
                                             if(!addressFound){
                                                 $('.alert-no-address').show().removeClass('hidden');
-                                                $('.restaurants-list-controls').removeClass('nab-hidden').addClass('nab-visible');
                                             }
-
                                         }
+
                                         $(document).ready(function() {
                                             showFillAddress();
                                             $('.submit-address-change').click(function () {
                                                 var params = { city: $('#address_city').val(), address: $('#address').val(), currentUrl: window.location.href };
                                                 $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
-                                                    console.log(response.data);
                                                     if(response.data.success == 1) {
                                                         window.location = window.location.href.split("#")[0];
                                                     } else {

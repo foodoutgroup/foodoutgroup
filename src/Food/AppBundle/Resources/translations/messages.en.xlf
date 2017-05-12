@@ -1602,6 +1602,10 @@
                 <source>please.fill.address.message.bottom</source>
                 <target><![CDATA[or <u><b>Choose pick up at the restaurant</b></u>]]></target>
             </trans-unit>
+            <trans-unit id="please.fill.address.first">
+                <source>please.fill.address.first</source>
+                <target>Please fill address first</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
