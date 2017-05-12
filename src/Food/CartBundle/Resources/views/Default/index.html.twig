@@ -213,7 +213,7 @@
                  success: function (data) {
 
                     if(data){
-                        $('.delivery-price .fr').text('€'+data.toFixed(2));
+                        $('.delivery-price .fr').text('{{ currency_iso}}'+data.toFixed(2));
                     }
                  }
              });

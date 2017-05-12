@@ -3576,16 +3576,13 @@ class OrderService extends ContainerAware
                     }
                 } else {
 
-                    $checkPoint = $this->checkWorkingPlace($pointRecord);
+                    $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                    $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
+                    $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
 
-                    if (!$checkPoint) {
-                        $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
-                        $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
-                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
-                    } else {
-                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
+                    if (empty($pointRecord)) {
+                        $formErrors[] = 'order.form.errors.no_restaurant_to_deliver';
                     }
-
                 }
             } else {
 
