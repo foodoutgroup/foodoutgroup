@@ -206,6 +206,19 @@
 
                                     <script type="text/javascript">
                                         var addressFound = {% if location != null and not location.not_found and location.street_found %}true{% else %}false{% endif %};
+                                        var dialogOpts = {
+                                            modal: true,
+                                            resizable: false,
+                                            buttons: {
+                                                'close': {
+                                                    'text': '{% trans %}general.close_btn{% endtrans %}',
+                                                    'click': function() {
+                                                        $(this).dialog('close');
+                                                    }
+                                                }
+                                            }
+                                        };
+
                                         showFillAddress();
                                         function showFillAddress(){
                                             $('.alert-no-address').addClass('hidden');
@@ -217,7 +230,7 @@
                                         $(document).on('click','.order-button',function(e){
                                             if($('.alert-no-address:visible').length > 0 && $('.iradio input[name=delivery_type]:checked').val() == "deliver") {
                                                 e.preventDefault();
-                                                alert('{% trans %}please.fill.address.first{% endtrans %}')
+                                                $("<div>{% trans %}please.fill.address.first{% endtrans %}</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
                                             }
                                         });
 
@@ -229,7 +242,7 @@
                                                     if(response.data.success == 1) {
                                                         window.location = window.location.href.split("#")[0];
                                                     } else {
-                                                        alert(response.data.message);
+                                                        $("<div>" + response.data.message + "</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
                                                     }
                                                 });
                                             });

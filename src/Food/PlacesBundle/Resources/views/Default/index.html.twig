@@ -196,18 +196,39 @@
 
     <script type="text/javascript">
 
-            $(document).ready(function() {
-                $('.submit-address-change').click(function () {
-                    var params = { city: $('#address_city').val(), address: $('#address').val(), currentUrl: window.location.href };
-                    $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
-                        if(response.data.success == 1) {
-                            window.location = window.location.href.split("#")[0];
-                        } else {
-                            alert(response.data.message);
-                        }
-                    });
+        var dialogOpts = {
+            modal: true,
+            resizable: false,
+            buttons: {
+                'close': {
+                    'text': '{% trans %}general.close_btn{% endtrans %}',
+                    'click': function() {
+                        $(this).dialog('close');
+                    }
+                }
+            }
+        };
+        $(document).on('click','.restaurants-list a',function(e){
+            if($('.alert-no-address:visible').length && $('.delivery-type-filter a[class="selected"]').attr("data-type") == "delivery") {
+                e.preventDefault();
+                $("<div>{% trans %}please.fill.address.first{% endtrans %}</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
+            }
+        });
+
+
+        $(document).ready(function() {
+            $('.submit-address-change').click(function () {
+                var params = { city: $('#address_city').val(), address: $('#address').val(), currentUrl: window.location.href };
+                $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
+                    if(response.data.success == 1) {
+                        window.location = window.location.href.split("#")[0];
+                    } else {
+                        $("<div>"+response.data.message+"</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
+                        e.preventDefault();
+                    }
                 });
             });
+        });
 
     </script>
 
