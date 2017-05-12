@@ -44,7 +44,7 @@ class SebBanklinkBiller extends ContainerAware
         }
 
         $options = ['id' => $order->getId()];
-        $redirectUrl = $router->generate('seb_banklink_redirect', $options);
+        $redirectUrl = 'http://'.$this->container->getParameter('domain').$router->generate('seb_banklink_redirect', $options);
 
         return $redirectUrl;
     }
