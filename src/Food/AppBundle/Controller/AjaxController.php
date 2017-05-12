@@ -109,12 +109,6 @@ class AjaxController extends Controller
                 $placeId = is_object($cart) ? $cart->getPlaceId() : null;
 
                 $this->get('food.error_log_service')->saveErrorLog(
-                    $this->container->get('request')->getClientIp(),
-                    $this->getUser(),
-                    $cartSession,
-                    $placeId,
-                    new \DateTime('now'),
-                    $currentUrl,
                     'adress_change_find',
                     $respData['message'],
                     serialize($request)
@@ -347,13 +341,8 @@ class AjaxController extends Controller
         }
 
         if(isset($cont['data']['error']) && !empty($cont['data']['error'])){
+
             $this->get('food.error_log_service')->saveErrorLog(
-                $this->container->get('request')->getClientIp(),
-                $this->getUser(),
-                $this->container->get('food.cart')->getSessionId(),
-                $place,
-                new \DateTime('now'),
-                $currentUrl,
                 'checkout_coupon_page',
                 $cont['data']['error'],
                 serialize($request)

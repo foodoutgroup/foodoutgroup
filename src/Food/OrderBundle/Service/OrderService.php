@@ -3570,16 +3570,13 @@ class OrderService extends ContainerAware
                     }
                 } else {
 
-                    $checkPoint = $this->checkWorkingPlace($pointRecord);
+                    $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                    $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
+                    $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
 
-                    if (!$checkPoint) {
-                        $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
-                        $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
-                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
-                    } else {
-                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
+                    if (empty($pointRecord)) {
+                        $formErrors[] = 'order.form.errors.no_restaurant_to_deliver';
                     }
-
                 }
             } else {
 
@@ -3774,15 +3771,9 @@ class OrderService extends ContainerAware
             $translator->trans('order.form.errors.customeraddr');
 
             $this->container->get('food.error_log_service')->saveErrorLog(
-                $this->container->get('request')->getClientIp(),
-                $this->getUser(),
-                $this->container->get('food.cart')->getSessionId(),
-                $place,
-                new \DateTime('now'),
-                $request->headers->get('referer'),
-                'checkout_coupon_page',
-                implode(',', $formErrors),
-                serialize($request) . '<br><br>' . serialize($debugCartInfo)
+                'checkout_form_page',
+                $formErrors,
+                serialize($request) .'<br><br>'. serialize($debugCartInfo)
             );
         }
     }
