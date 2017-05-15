@@ -208,15 +208,34 @@
                 }
             }
         };
+
+        jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
+            this.each(function() {
+                $(this).css("position","relative");
+                for (var x=1; x<=intShakes; x++) {
+                    $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
+                            .animate({left:intDistance}, ((intDuration/intShakes)/2))
+                            .animate({left:0}, (((intDuration/intShakes)/4)));
+                }
+            });
+            return this;
+        };
+
         $(document).on('click','.restaurants-list a',function(e){
             if($('.alert-no-address:visible').length && $('.delivery-type-filter a[class="selected"]').attr("data-type") == "delivery") {
                 e.preventDefault();
-                $("<div>{% trans %}please.fill.address.first{% endtrans %}</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
+                $('.alert-no-address').shake(3,20,400);
+                {#$("<div>{% trans %}please.fill.address.first{% endtrans %}</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();#}
             }
         });
 
 
         $(document).ready(function() {
+
+            $('.pickup_click').click(function(){
+                $('.delivery-type-filter a[data-type="pickup"]').trigger('click');
+            });
+
             $('.submit-address-change').click(function () {
                 var params = { city: $('#address_city').val(), address: $('#address').val(), currentUrl: window.location.href };
                 $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {

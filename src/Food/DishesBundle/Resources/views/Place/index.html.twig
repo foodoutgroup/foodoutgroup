@@ -206,6 +206,7 @@
 
                                     <script type="text/javascript">
                                         var addressFound = {% if location != null and not location.not_found and location.street_found %}true{% else %}false{% endif %};
+                                        var requestAddress = true;
                                         var dialogOpts = {
                                             modal: true,
                                             resizable: false,
@@ -219,23 +220,61 @@
                                             }
                                         };
 
-                                        showFillAddress();
-                                        function showFillAddress(){
-                                            $('.alert-no-address').addClass('hidden');
-                                            if(!addressFound){
-                                                $('.alert-no-address').show().removeClass('hidden');
+
+                                        $(document).on('ifToggled', '.cart_delivery_type input', function (e) {
+                                            if(e.target.checked) {
+                                                type = e.target.value;
+                                                if(type == "deliver") {
+                                                    if(!addressFound) {
+                                                        $('.alert-no-address').removeClass('hidden');
+                                                        requestAddress = true;
+                                                    }
+                                                } else {
+                                                    $('.alert-no-address').addClass('hidden');
+                                                    requestAddress = false;
+                                                }
                                             }
-                                        }
+                                        });
+
+                                        $(document).on('click', '.click-this-to-real-click', function(e){
+                                            e.preventDefault();
+
+                                            type = $('.iradio input[name=delivery_type]:checked');
+                                            if(type.length >= 1) {
+                                                requestAddress = type.val() == "deliver";
+                                            }
+
+                                            if(requestAddress && !addressFound) {
+                                                $('.alert-no-address').removeClass('hidden');
+
+                                                $('html,body').animate({scrollTop: $('#detailed-restaurant-menu').offset().top}, 'fast');
+                                                $('.alert-no-address').shake(3,20,400);
+
+                                            } else {
+                                                $(this).parent().find('.add-to-card-real-click').click();
+                                            }
+                                        });
 
                                         $(document).on('click','.order-button',function(e){
-                                            if($('.alert-no-address:visible').length > 0 && $('.iradio input[name=delivery_type]:checked').val() == "deliver") {
+                                            if(!addressFound || ($('.alert-no-address:visible').length > 0 && $('.iradio input[name=delivery_type]:checked').val() == "deliver")) {
                                                 e.preventDefault();
-                                                $("<div>{% trans %}please.fill.address.first{% endtrans %}</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
+                                                $('.alert-no-address').removeClass('hidden');
+                                                $('html,body').animate({scrollTop: $('#detailed-restaurant-menu').offset().top}, 'fast');
+                                                $('.alert-no-address').shake(3,20,400);
                                             }
                                         });
 
                                         $(document).ready(function() {
-                                            showFillAddress();
+
+                                            $('.pickup_click').click(function () {
+                                                $('.alert-no-address').addClass('hidden');
+                                                requestAddress = false;
+                                                type = $('.iradio input[name=delivery_type]');
+                                                if(type.length >= 1) {
+                                                    $('.delivery_type[value=pickup]').iCheck('check');
+                                                }
+                                            });
+
                                             $('.submit-address-change').click(function () {
                                                 var params = { city: $('#address_city').val(), address: $('#address').val(), currentUrl: window.location.href };
                                                 $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
@@ -247,10 +286,23 @@
                                                 });
                                             });
                                         });
+
+                                        jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
+                                            this.each(function() {
+                                                $(this).css("position","relative");
+                                                for (var x=1; x<=intShakes; x++) {
+                                                    $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
+                                                            .animate({left:intDistance}, ((intDuration/intShakes)/2))
+                                                            .animate({left:0}, (((intDuration/intShakes)/4)));
+                                                }
+                                            });
+                                            return this;
+                                        };
+
                                     </script>
 
-                                    {% set showNoAddress = false %}
-                                    <div class="alert-no-address {% if not showNoAddress %}hidden{% endif %}">
+
+                                    <div class="alert-no-address hidden">
                                         {% trans %}please.fill.address.message.top{% endtrans %}<br/>
                                         <div class="input-section">
                                             <select id="address_city" style="width: 120px;" class="custom-select">

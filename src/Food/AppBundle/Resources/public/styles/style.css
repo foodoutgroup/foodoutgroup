@@ -739,6 +739,13 @@ input.button {}
     padding: 10px;
 }
 
+.alert-no-address a {
+    color: #ffffff;
+}
+.alert-no-address a:hover {
+    color: #ffffff;
+}
+
 .alert-no-address .input-section input[type=text]{
     width: 200px;
     font-size: 15px;
