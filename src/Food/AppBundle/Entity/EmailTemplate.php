@@ -86,6 +86,46 @@ class EmailTemplate
     private $deletedAt;
 
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="edited_at", type="datetime", nullable=true)
+     */
+    private $editedAt;
+
+
+    /**
+     * @var \Food\UserBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     **/
+    private $createdBy;
+
+    /**
+     * @var \Food\UserBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
+     */
+    private $editedBy;
+
+    /**
+     * @var \Food\UserBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
+     */
+    private $deletedBy;
+
+
     public function __construct()
     {
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
@@ -288,6 +328,86 @@ class EmailTemplate
     public function getDeletedAt()
     {
         return $this->deletedAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getEditedAt()
+    {
+        return $this->editedAt;
+    }
+
+    /**
+     * @param \DateTime|null $editedAt
+     */
+    public function setEditedAt($editedAt)
+    {
+        $this->editedAt = $editedAt;
+    }
+
+    /**
+     * @return \Food\UserBundle\Entity\User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param \Food\UserBundle\Entity\User $createdBy
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    /**
+     * @return \Food\UserBundle\Entity\User
+     */
+    public function getEditedBy()
+    {
+        return $this->editedBy;
+    }
+
+    /**
+     * @param \Food\UserBundle\Entity\User $editedBy
+     */
+    public function setEditedBy($editedBy)
+    {
+        $this->editedBy = $editedBy;
+    }
+
+    /**
+     * @return \Food\UserBundle\Entity\User
+     */
+    public function getDeletedBy()
+    {
+        return $this->deletedBy;
+    }
+
+    /**
+     * @param \Food\UserBundle\Entity\User $deletedBy
+     */
+    public function setDeletedBy($deletedBy)
+    {
+        $this->deletedBy = $deletedBy;
     }
 
 }
