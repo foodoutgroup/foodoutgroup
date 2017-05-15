@@ -240,7 +240,7 @@
                 var params = { city: $('#address_city').val(), address: $('#address').val(), currentUrl: window.location.href };
                 $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
                     if(response.data.success == 1) {
-                        window.location = window.location.href.split("#")[0];
+                        window.location =  '{{ urlToRedirect }}';
                     } else {
                         $("<div>"+response.data.message+"</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
                         e.preventDefault();
