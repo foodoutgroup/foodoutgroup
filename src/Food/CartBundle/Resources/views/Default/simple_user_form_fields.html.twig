@@ -108,10 +108,17 @@
     <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
     <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% else %}{{ userAddress.getComment|default('') }}{% endif %}</textarea>
 </div>
-<div class="form-row custom-checkbox checkbox-right">
+{% is app.user %}
+<div class="form-row custom-checkbox checkbox-right" style="float: left;">
     <label>{% trans %}cart.checkout.company{% endtrans %}:</label>
     <input type="checkbox" name="company" id="company_order" {% if (dataToLoad is not empty and dataToLoad['company'] is defined and dataToLoad['company'] is not empty) %}checked="checked"{% endif %} />
 </div>
+{% endif %}
+<div class="form-row custom-checkbox checkbox-left" style="float: right;">
+    <label>{% trans %}cart.checkout.company_contract{% endtrans %}</label>
+    <input style="margin-top: 10px;" type="checkbox" name="company_contract" id="company_order_contract" {% if (dataToLoad is not empty and dataToLoad['company'] is defined and dataToLoad['company'] is not empty) %}checked="checked"{% endif %} />
+</div>
+<div class="clearfix"></div>
 <div class="company_data {% if (dataToLoad is empty or dataToLoad['company'] is not defined or dataToLoad['company'] is empty) %}hidden{% endif %}">
     <div class="alert alert-info">{% trans %}general.company.note_text{% endtrans %}</div>
     <div class="form-row form-row-required">
@@ -131,3 +138,8 @@
         <textarea cols="20" rows="3" name="company_address" class="company_address" placeholder="{% trans %}cart.checkout.company_address_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['company_address'] is not empty) %}{{ dataToLoad['company_address'] }}{% endif %}</textarea>
     </div>
 </div>
+{% is app.user %}
+    <div class="company_contract {% if (dataToLoad is empty or dataToLoad['company_contract'] is not defined or dataToLoad['company_contract'] is empty) %}hidden{% endif %}">
+        hey
+    </div>
+{% endif %}

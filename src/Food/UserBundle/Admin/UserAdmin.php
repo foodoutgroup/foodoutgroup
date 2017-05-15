@@ -39,6 +39,8 @@ class UserAdmin extends SonataUserAdmin {
      */
     protected function configureDatagridFilters(\Sonata\AdminBundle\Datagrid\DatagridMapper $filterMapper)
     {
+
+
         $filterMapper
             ->add('id')
             ->add('username', null, array('label' => 'admin.users.username'))
@@ -180,6 +182,7 @@ class UserAdmin extends SonataUserAdmin {
 //                        'template' => 'FoodDishesBundle:Default:point_inline_edit.html.twig'
                     )
                 )
+                ->add('contractNumber', null)
                 ->end()
                 ->with('admin.users.other')
                 ->add('noInvoice', null, array('required' => false, 'label' => 'admin.users.no_invoice'))
