@@ -1474,7 +1474,7 @@
             </trans-unit>
             <trans-unit id="general.sms.client.order_created_pickup" resname="general.sms.client.order_created_pickup">
                 <source>general.sms.client.order_created_pickup</source>
-                <target>Sveiki. restourant_name sanema Tavu pasutijumu. Panemt to varesi pre_delivery_time! :)</target>
+                <target>Sveiki. restaurant_name sanema Tavu pasutijumu. Panemt to varesi pre_delivery_time! :)</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_created_preorder" resname="general.sms.client.order_created_preorder">
                 <source>general.sms.client.order_created_preorder</source>
@@ -1482,7 +1482,7 @@
             </trans-unit>
             <trans-unit id="general.sms.client.order_created_preorder_pickup" resname="general.sms.client.order_created_preorder_pickup">
                 <source>general.sms.client.order_created_preorder_pickup</source>
-                <target>Sveiki. restourant_name sanema Tavu pasutijumu. Panemt to varesi pre_delivery_time! :)</target>
+                <target>Sveiki. restaurant_name sanema Tavu pasutijumu. Panemt to varesi pre_delivery_time! :)</target>
             </trans-unit>
 
             <!-- order accepted -->

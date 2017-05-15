@@ -324,6 +324,7 @@ class PlacesService extends ContainerAware
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
+
         if ($zaval) {
             $deliveryType = '';
         } else {
@@ -344,13 +345,11 @@ class PlacesService extends ContainerAware
         if (empty($filters)) {
             $filters = [];
         }
-//        if (is_array($filters)) {
-//            $this->getContainer()->get('logger')->error('getPlacesForList filters param got array -cant be. Array contents: ' . var_export($filters, true));
-//        }
 
         if (is_string($filters)) {
             $filters = explode(",", $filters);
         }
+
         if (!empty($deliveryType)) {
             $filters['delivery_type'] = $deliveryType;
         }
@@ -737,17 +736,21 @@ class PlacesService extends ContainerAware
      *
      * @return string
      */
-    public function getDeliveryTime(Place $place, PlacePoint $placePoint = null)
+    public function getDeliveryTime(Place $place, PlacePoint $placePoint = null,$type = false)
     {
-        $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
-        if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
-            $zavalasTimeByPlace = $this->container->get('food.zavalas_service')->getZavalasTimeByPlace($place);
-            if ($zavalasTimeByPlace) {
+        if($type && $type == 'pedestrian'){
+            $deliveryTime = $this->getPedestrianDeliveryTime().' min';
+        }else {
+
+            $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
+            if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
+                $zavalasTimeByPlace = $this->container->get('food.zavalas_service')->getZavalasTimeByPlace($place);
+                if ($zavalasTimeByPlace) {
+                    $deliveryTime = $zavalasTimeByPlace;
+                }
                 $deliveryTime = $zavalasTimeByPlace;
             }
-            $deliveryTime = $zavalasTimeByPlace;
         }
-
         return $deliveryTime;
     }
 
@@ -924,9 +927,15 @@ class PlacesService extends ContainerAware
         return null;
     }
 
-    public function getCityName($city){
+    public function getPedestrianDeliveryTime()
+    {
+        return $this->container->get('food.app.utils.misc')->getParam('pedestrian_delivery_time');
+    }
+
+    public function getCityName($city)
+    {
         $country = $this->container->getParameter('country');
-        if($country == "LV" && $city == 'Rīga'){
+        if ($country == "LV" && $city == 'Rīga') {
             $city = 'Rīga un pierīga';
         }
 

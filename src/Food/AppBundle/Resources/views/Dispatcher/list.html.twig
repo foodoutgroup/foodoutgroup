@@ -154,16 +154,9 @@
 
 {% block list_table %}
     {# type gali buti 'unapproved', 'unassigned', 'unconfirmed', 'not_finished', 'canceled', 'nav_problems' ;) Just in case you need that #}
+
     {% macro order_table(order_list, type, cityName) %}
-        {# Drivers are show all the time
-        {% if type == 'unassigned' or type == 'not_finished' %}
-        <div class="driver_button">
-            <button class="get_drivers_button btn btn-lg" disabled="disabled">
-                #}{#<span class="icon_steering_wheel"></span>#}{#
-                {{ 'admin.dispatcher.get_drivers'|trans({}, 'SonataAdminBundle') }}
-            </button>
-        </div>
-        {% endif %}#}
+
         <table class="order_list {{ type }}" list-type="{{ type }}">
             <tr>
                 <th></th>
@@ -206,7 +199,9 @@
                 <th class="problem_solved_check">{{ 'admin.dispatcher.problem_solved'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
             </tr>
+
             {% for order in order_list %}
+
                 {#{% if loop.last %}#}
                     {#<script type="text/javascript">#}
                         {#if (typeof Dispatcher.recentOrders['{{ cityName }}'] == "undefined") {#}
@@ -301,6 +296,7 @@
                         {% endif %}
                     </td>
                 {% endif %}
+
                 {% if type starts with "unapproved" or type == "unassigned" or type starts with "unconfirmed" or type == "not_finished" %}
                     <td class="order_date">
                         {% set diff = order_service.getLateDiff(order) %}
@@ -427,12 +423,12 @@
     <div class="city_list todo_nieks_nezino_klases">
         <ul>
             {% for city in cities %}
-                {% set cityUnapproved = (cityOrders[city].unapproved.deliver|length + cityOrders[city].unapproved.selfdeliver|length + cityOrders[city].unapproved.pickup|length) %}
-                {% set cityUnassigned = (cityOrders[city].unassigned.deliver|length + cityOrders[city].unassigned.selfdeliver|length + cityOrders[city].unassigned.pickup|length) %}
-                {% set cityUnconfirmed = (cityOrders[city].unconfirmed.deliver|length + cityOrders[city].unconfirmed.selfdeliver|length + cityOrders[city].unconfirmed.pickup|length) %}
-                {% set cityNotFinished = (cityOrders[city].not_finished.deliver|length + cityOrders[city].not_finished.selfdeliver|length + cityOrders[city].not_finished.pickup|length) %}
-                {% set cityCanceled = (cityOrders[city].canceled.deliver|length + cityOrders[city].canceled.selfdeliver|length + cityOrders[city].canceled.pickup|length) %}
-                {% set cityNavProblems = (cityOrders[city].nav_problems.deliver|length + cityOrders[city].nav_problems.selfdeliver|length + cityOrders[city].nav_problems.pickup|length) %}
+                {% set cityUnapproved = (cityOrders[city].unapproved.deliver|length + cityOrders[city].unapproved.selfdeliver|length + cityOrders[city].unapproved.pickup|length + cityOrders[city].unapproved.pedestrian|length) %}
+                {% set cityUnassigned = (cityOrders[city].unassigned.deliver|length + cityOrders[city].unassigned.selfdeliver|length + cityOrders[city].unassigned.pickup|length + cityOrders[city].unassigned.pedestrian|length) %}
+                {% set cityUnconfirmed = (cityOrders[city].unconfirmed.deliver|length + cityOrders[city].unconfirmed.selfdeliver|length + cityOrders[city].unconfirmed.pickup|length + cityOrders[city].unconfirmed.pedestrian|length) %}
+                {% set cityNotFinished = (cityOrders[city].not_finished.deliver|length + cityOrders[city].not_finished.selfdeliver|length + cityOrders[city].not_finished.pickup|length + cityOrders[city].not_finished.pedestrian|length) %}
+                {% set cityCanceled = (cityOrders[city].canceled.deliver|length + cityOrders[city].canceled.selfdeliver|length + cityOrders[city].canceled.pickup|length + cityOrders[city].canceled.pedestrian|length) %}
+                {% set cityNavProblems = (cityOrders[city].nav_problems.deliver|length + cityOrders[city].nav_problems.selfdeliver|length + cityOrders[city].nav_problems.pickup|length + cityOrders[city].nav_problems.pedestrian|length) %}
                 {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unapprovedCount': cityUnapproved, 'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled, 'navProblemsCount': cityNavProblems}, 'SonataAdminBundle') %}
                 <li class="city-tab" data-city="{{ city }}">
                     <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} <span class="theCount">({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }}:{{ cityNavProblems }})</span></a>
@@ -447,7 +443,7 @@
                 <ul class="orderTypeTabList">
                     <li class="city-{{ loop.index }}-unapproved-tab">
                         <a href="#city-{{ loop.index }}-unapproved">
-                            {{ 'admin.dispatcher.unapproved'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unapproved.deliver|length + city.unapproved.selfdeliver|length + city.unapproved.pickup|length) }})</span>
+                            {{ 'admin.dispatcher.unapproved'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unapproved.deliver|length + city.unapproved.selfdeliver|length + city.unapproved.pickup|length + city.unapproved.pedestrian|length) }})</span>
                         </a>
                         {% if city.unapproved.late > 0 %}
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -455,7 +451,7 @@
                     </li>
                     <li class="city-{{ loop.index }}-unassigned-tab">
                         <a href="#city-{{ loop.index }}-unassigned">
-                            {{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unassigned.deliver|length + city.unassigned.selfdeliver|length + city.unassigned.pickup|length) }})</span>
+                            {{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unassigned.deliver|length + city.unassigned.selfdeliver|length + city.unassigned.pickup|length + city.unassigned.pedestrian|length) }})</span>
                         </a>
                         {% if city.unassigned.late > 0 %}
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -463,7 +459,7 @@
                     </li>
                     <li class="city-{{ loop.index }}-unconfirmed-tab">
                         <a href="#city-{{ loop.index }}-unconfirmed">
-                            {{ 'admin.dispatcher.unconfirmed'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unconfirmed.deliver|length + city.unconfirmed.selfdeliver|length + city.unconfirmed.pickup|length) }})</span>
+                            {{ 'admin.dispatcher.unconfirmed'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unconfirmed.deliver|length + city.unconfirmed.selfdeliver|length + city.unconfirmed.pickup|length + city.unconfirmed.pedestrian|length) }})</span>
                         </a>
                         {% if city.unconfirmed.late > 0 %}
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -471,7 +467,7 @@
                     </li>
                     <li>
                         <a href="#city-{{ loop.index }}-undelivered">
-                            {{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.not_finished.deliver|length + city.not_finished.selfdeliver|length + city.not_finished.pickup|length) }})</span>
+                            {{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.not_finished.deliver|length + city.not_finished.selfdeliver|length + city.not_finished.pickup|length + city.not_finished.pedestrian|length) }})</span>
                         </a>
                         {% if city.not_finished.late > 0 %}
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -479,18 +475,27 @@
                     </li>
                     <li>
                         <a href="#city-{{ loop.index }}-canceled">
-                            {{ 'admin.dispatcher.canceled'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.canceled.deliver|length + city.canceled.selfdeliver|length + city.canceled.pickup|length) }})</span>
+                            {{ 'admin.dispatcher.canceled'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.canceled.deliver|length + city.canceled.selfdeliver|length + city.canceled.pickup|length + city.canceled.pedestrian|length) }})</span>
                         </a>
                     </li>
                     <li>
                         <a href="#city-{{ loop.index }}-navproblems">
-                            {{ 'admin.dispatcher.nav_problems'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.nav_problems.deliver|length + city.nav_problems.selfdeliver|length + city.nav_problems.pickup|length) }})</span>
+                            {{ 'admin.dispatcher.nav_problems'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.nav_problems.deliver|length + city.nav_problems.selfdeliver|length + city.nav_problems.pickup|length + city.nav_problems.pedestrian|length) }})</span>
                         </a>
                     </li>
                 </ul>
                 {# unapproved / nepatikrinti #}
                 <div id="city-{{ loop.index }}-unapproved">
                     {{ table.order_table(city.unapproved.deliver, 'unapproved', cityName) }}
+
+                    {% if city.unapproved.pedestrian|length %}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.unapproved.pedestrian, 'unapproved-pedestrian', cityName) }}
+                    {% endif %}
 
                     {% if city.unapproved.selfdeliver|length %}
                     <div style="text-align: center;">
@@ -514,6 +519,14 @@
                 {# unassigned / nepriskirti #}
                 <div id="city-{{ loop.index }}-unassigned">
                     {{ table.order_table(city.unassigned.deliver, 'unassigned', cityName) }}
+                    {% if city.unassigned.pedestrian|length %}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.unassigned.pedestrian, 'unassigned-pedestrian', cityName) }}
+                    {% endif %}
 
                     {% if city.unassigned.selfdeliver|length %}
                     <div style="text-align: center;">
@@ -536,7 +549,18 @@
 
                 {# unconfirmed / nepatvirtinti rest. #}
                 <div id="city-{{ loop.index }}-unconfirmed">
+
                     {{ table.order_table(city.unconfirmed.deliver, 'unconfirmed', cityName) }}
+
+                        {% if city.unconfirmed.pedestrian|length %}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.unconfirmed.pedestrian, 'unconfirmed-pedestrian', cityName) }}
+                        {% endif %}
+
 
                     {% if city.unconfirmed.selfdeliver|length %}
                     <div style="text-align: center;">
@@ -555,11 +579,21 @@
                     </div>
                     {{ table.order_table(city.unconfirmed.pickup, 'unconfirmed-pickup', cityName) }}
                     {% endif %}
+
                 </div>
 
                 {# not_finished / nepristatyti #}
                 <div id="city-{{ loop.index }}-undelivered">
                     {{ table.order_table(city.not_finished.deliver, 'not_finished', cityName) }}
+
+                    {% if city.not_finished.pedestrian|length %}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.not_finished.pedestrian, 'not_finished-pedestrian', cityName) }}
+                    {% endif %}
 
                     {% if city.not_finished.selfdeliver|length %}
                         <div style="text-align: center;">
@@ -584,6 +618,15 @@
                 <div id="city-{{ loop.index }}-canceled">
                     {{ table.order_table(city.canceled.deliver, 'canceled', cityName) }}
 
+                    {% if city.canceled.pedestrian|length %}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.canceled.pedestrian, 'canceled-pedestrian', cityName) }}
+                    {% endif %}
+
                     {% if city.canceled.selfdeliver|length %}
                         <div style="text-align: center;">
                             <br />
@@ -606,6 +649,16 @@
                 {# nav_problems / probleminiai #}
                 <div id="city-{{ loop.index }}-navproblems">
                     {{ table.order_table(city.nav_problems.deliver, 'nav_problems', cityName) }}
+
+                    {% if city.nav_problems.pedestrian|length %}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %} admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.nav_problems.pedestrian, 'nav_problems-selfdeliver', cityName) }}
+                    {% endif %}
+
 
                     {% if city.nav_problems.selfdeliver|length %}
                         <div style="text-align: center;">
@@ -649,7 +702,7 @@
                             {% set type = driver['type'] %}
                             <tr><td colspan="4"><hr/></td></tr>
                         {% endif %}
-                        <tr class="{{ loop.index%2 ? 'odd' : 'even' }}" data-driver-id="{{ driver.id }}">
+                        <tr class="{{ loop.index%2 ? 'odd' : 'even' }} {% if driver.type == 'pedestrian'  %} {{  driver.type }} {% else %} {{ 'normal' }} {% endif %}" data-driver-id="{{ driver.id }}">
                             <td>{{ driver['name'] }}</td>
                             <td><a onclick="Dispatcher.logCallEvent('driver', {{ driver.phone }})" href="callto:{{ driver['phone'] }}">{{ driver['phone'] }}</a></td>
                             {#<td>{{ ('admin.driver.type.' ~ driver.type)|trans({}, 'SonataAdminBundle') }}</td>#}

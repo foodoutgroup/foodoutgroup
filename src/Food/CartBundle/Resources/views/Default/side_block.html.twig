@@ -4,7 +4,11 @@
 {% endif %}
 <div class="check-block" id="cartmnu">
     <div class="restaurant-logo tac">
-        <a class="restaurant_link" href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"><img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{place.getWebPathThumb}}"></a>
+        <a class="restaurant_link"
+           href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"><img itemprop="logo"
+                                                                                                   class="restaurant_image"
+                                                                                                   alt="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}"
+                                                                                                   src="//{{ cloudfront_url }}/{{ place.getWebPathThumb }}"></a>
     </div>
     <h5 class="tac">{% trans %}cart.block.your_order{% endtrans %}</h5>
     {% if list|length > 0 %}
@@ -12,7 +16,8 @@
             <div class="check-item">
                 <div class="edit">
                     {# <a href="{{ path('food_ajax_edit_dish', {'dish': dish.dishId.id, 'cartId':dish.cartId}) }}" href2="#detailed-dish-popup" class="fancybox.ajax fancy-box">{% trans %}cart.block.edit_row{% endtrans %}</a> #}
-                    <a href="{{ path('food_ajax_remove_dish', {'dish': dish.dishId.id, 'cartId':dish.cartId, 'inCart':inCart}) }}" class="fancybox.ajax fancy-box remove">{% trans %}cart.block.remove_row{% endtrans %}</a>
+                    <a href="{{ path('food_ajax_remove_dish', {'dish': dish.dishId.id, 'cartId':dish.cartId, 'inCart':inCart}) }}"
+                       class="fancybox.ajax fancy-box remove">{% trans %}cart.block.remove_row{% endtrans %}</a>
                 </div>
                 <div class="name">{{ dish.dishId.name }}</div>
                 <div class="type">{{ dish.dishSizeId.unit.name }}</div>
@@ -25,7 +30,8 @@
                     {% endif %}
 
                     {% if dish.dishId.showPublicPrice %}
-                        <div class="sum item {% if showDiscount or isFree %}discounted{% endif %}">x {{ currency_display|raw }}{{ dish.dishSizeId.publicPrice|number_format(2, ',', ' ') }}
+                        <div class="sum item {% if showDiscount or isFree %}discounted{% endif %}">
+                            x {{ currency_display|raw }}{{ dish.dishSizeId.publicPrice|number_format(2, ',', ' ') }}
                             {% if currency_alternative %}
                                 <span class="euro">
                                     /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.publicPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
@@ -33,7 +39,8 @@
                             {% endif %}
                         </div>
                     {% else %}
-                        <div class="sum item {% if showDiscount or isFree %}discounted{% endif %}">x {{ currency_display|raw }}{{ dish.dishSizeId.price|number_format(2, ',', ' ') }}
+                        <div class="sum item {% if showDiscount or isFree %}discounted{% endif %}">
+                            x {{ currency_display|raw }}{{ dish.dishSizeId.price|number_format(2, ',', ' ') }}
                             {% if currency_alternative %}
                                 <span class="euro">
                                     /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.price)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
@@ -51,7 +58,8 @@
                             </span>
                         </div>
                     {% elseif showDiscount %}
-                        <div class="sum item discount">x {{ currency_display|raw }}{{ dish.dishSizeId.discountPrice|number_format(2, ',', ' ') }}
+                        <div class="sum item discount">
+                            x {{ currency_display|raw }}{{ dish.dishSizeId.discountPrice|number_format(2, ',', ' ') }}
                             {% if currency_alternative %}
                                 <span class="euro">
                                 /&nbsp;{{ misc_utils.getLitas(dish.dishSizeId.discountPrice)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}
@@ -65,21 +73,22 @@
                     {% set dishOptionsPrices = dish_service.getDishOptionsPrices(dish.dishId) %}
                     {% for option in dish.options %}
                         <div class="clearfix">
-                            <div class="extra" title="{{ option.dishOptionId.name }}">{{ dish.quantity }} {{ option.dishOptionId.name }}</div>
+                            <div class="extra"
+                                 title="{{ option.dishOptionId.name }}">{{ dish.quantity }} {{ option.dishOptionId.name }}</div>
                             <div class="extra sum">x
                                 {% if dish.dishId.showPublicPrice %}
                                     {{ currency_display|raw }}{{ '0'|number_format(2, ',', ' ') }}
                                     {% if currency_alternative %}
-                                        <span class="euro">/&nbsp;{{  '0'|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>
+                                        <span class="euro">/&nbsp;{{ '0'|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>
                                     {% endif %}
                                 {% else %}
                                     {% if dishOptionsPrices[dish.dishSizeId.id] is defined %}
                                         {{ currency_display|raw }}{{ dishOptionsPrices[dish.dishSizeId.id][option.dishOptionId.id]|number_format(2, ',', ' ') }}
                                     {% else %}
-                                    {{ currency_display|raw }}{{ option.dishOptionId.price|number_format(2, ',', ' ') }}
+                                        {{ currency_display|raw }}{{ option.dishOptionId.price|number_format(2, ',', ' ') }}
                                     {% endif %}
                                     {% if currency_alternative %}
-                                        <span class="euro">/&nbsp;{{  misc_utils.getLitas(option.dishOptionId.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>
+                                        <span class="euro">/&nbsp;{{ misc_utils.getLitas(option.dishOptionId.price)|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>
                                     {% endif %}
                                 {% endif %}
                             </div>
@@ -93,7 +102,7 @@
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
                 <div class="fr"> {{ currency_display|raw }}{{ total_cart|number_format(2, ',', ' ') }}
                     {% if currency_alternative %}
-                        <span class="euro">/ {{  misc_utils.getLitas(total_cart)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
+                        <span class="euro">/ {{ misc_utils.getLitas(total_cart)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
                     {% endif %}
                 </div>
             </div>
@@ -101,11 +110,13 @@
                 <div class="delivery-price clearfix">
                     <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
                     {% if freeDelivery %}
-                        <div class="fr">{{ currency_display|raw }}0,00 {% if currency_alternative %}<span class="euro">/ 0,00 {{ display_currency_alternative|raw }}</span>{% endif %}</div>
+                        <div class="fr">{{ currency_display|raw }}0,00 {% if currency_alternative %}<span class="euro">/
+                                0,00 {{ display_currency_alternative|raw }}</span>{% endif %}</div>
                     {% else %}
-                        <div class="fr" data-true="{{ noneWorking }}">{{ currency_display|raw }}{{ total_delivery|number_format(2, ',', ' ') }}
+                        <div class="fr"
+                             data-true="{{ noneWorking }}">{{ currency_display|raw }}{{ total_delivery|number_format(2, ',', ' ') }}
                             {% if currency_alternative %}
-                                <span class="euro">/ {{  misc_utils.getLitas(total_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
+                                <span class="euro">/ {{ misc_utils.getLitas(total_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
                             {% endif %}
                         </div>
                     {% endif %}
@@ -126,7 +137,8 @@
             <div class="total-sum final clearfix">
                 <div class="fl">{% trans %}cart.block.total{% endtrans %}:</div>
                 <div class="fr">{{ currency_display|raw }}{{ total_with_delivery|number_format(2, ',', ' ') }}
-                    {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(total_with_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>{% endif %}
+                    {% if currency_alternative %}<span class="euro">
+                        / {{ misc_utils.getLitas(total_with_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>{% endif %}
                 </div>
             </div>
         </div>
@@ -137,7 +149,8 @@
                 {% if isCallcenter == true %}
                     <a href="#" class="button back_to_dishes show">{{ 'cart.go_back_to_place'|trans }}</a>
                 {% else %}
-                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>
+                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"
+                       class="button">{{ 'cart.go_back_to_place'|trans }}</a>
                 {% endif %}
             </div>
         {% endif %}
@@ -165,48 +178,73 @@
 
         {# Delivery type choice #}
         {% if inCart == false and isCallcenter == false %}
+
             <div class="cart_delivery_type">
-                {% trans %}cart.block.delivery_type{% endtrans %} <span class="delivery-type-tooltip" title="{% trans %}cart.block.delivery_type.tooltip{% endtrans %}">&nbsp;</span><br />
-                <br />
-                <label class="custom-radio{% if place.deliveryOptions == "pickup" %} disabled{% endif %}">
-                    <input type="radio" name="delivery_type" value="deliver" {% if not takeAway %}checked="checked"{% endif %}{% if place.deliveryOptions == "pickup" %} disabled="disabled"{% endif %}>
-                    {% trans %}cart.checkout.delivery_to_home{% endtrans %}
-                </label>
-                <label class="custom-radio{% if place.deliveryOptions == "delivery" %} disabled{% endif %}">
-                    <input type="radio" name="delivery_type" value="pickup" {% if takeAway or place.deliveryOptions == "pickup" %}checked="checked"{% endif %}{% if place.deliveryOptions == "delivery" %} disabled="disabled"{% endif %}>
-                    {% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
-                </label>
-                <br />
+                {% trans %}cart.block.delivery_type{% endtrans %} <span class="delivery-type-tooltip"
+                                                                        title="{% trans %}cart.block.delivery_type.tooltip{% endtrans %}">&nbsp;</span><br/>
+                <br/>
+                {% if place.deliveryOptions != 'pedestrian' %}
+                    <label class="custom-radio{% if place.deliveryOptions == "pickup" %} disabled{% endif %}">
+                        <input type="radio" name="delivery_type" value="deliver"
+                               {% if not takeAway %}checked="checked"{% endif %}{% if place.deliveryOptions == "pickup" %} disabled="disabled"{% endif %}>
+                        {% trans %}cart.checkout.delivery_to_home{% endtrans %}
+                    </label>
+
+                    <label class="custom-radio{% if place.deliveryOptions == "delivery" %} disabled{% endif %}">
+                        <input type="radio" name="delivery_type" value="pickup"
+                               {% if takeAway or place.deliveryOptions == "pickup" %}checked="checked"{% endif %}{% if place.deliveryOptions == "delivery" %} disabled="disabled"{% endif %}>
+                        {% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
+                    </label>
+                {% else %}
+                    <label class="custom-radio{% if place.deliveryOptions == "pedestrian" %} disabled{% endif %}">
+                        <input type="radio" name="delivery_type" value="pedestrian"
+                              checked="checked"  disabled="disabled">
+                        {% trans %}cart.checkout.delivery_by_pedestrian{% endtrans %}
+                    </label>
+                {% endif %}
+
+                <br/>
             </div>
         {% endif %}
 
         {# Order  button #}
         {% if inCart == false %}
-            <a href="{{ path('food_cart', { 'placeId' : place.id, 'takeAway': hide_delivery }) }}" class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
+            <a href="{{ path('food_cart', { 'placeId' : place.id, 'takeAway': hide_delivery }) }}"
+               class="order-button">{% trans %}cart.block.order_btn{% endtrans %}</a>
         {% endif %}
+
         {% if hide_delivery == false %}
-        <div class="delivery-time tac">
-            {% trans %}cart.block.delivery_time{% endtrans %} {{ places_service.getDeliveryTime(place) }}
-            {% if place.deliveryTimeInfo is not empty %}
-                <span class="delivery-time-info-cart ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
-            {% endif %}
-        </div>
+            <div class="delivery-time tac">
+                {% trans %}cart.block.delivery_time{% endtrans %}
+
+                {{ places_service.getDeliveryTime(place,null,place.deliveryOptions) }}
+
+                {% if place.deliveryTimeInfo is not empty %}
+                    <span class="delivery-time-info-cart ui-icon ui-icon-info"
+                          title="{{ place.deliveryTimeInfo }}"></span>
+                {% endif %}
+            </div>
         {% endif %}
         {% if not hide_delivery or place.minimalOnSelfDel %}
-        <div class="delivery-time tac">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br />
-            {% if display_cart_interval %}
-                {% if cart_from_min == cart_from_max %}
-                    {{ currency_display|raw }} {{ cart_from_min }}
+            <div class="delivery-time tac">{% trans %}cart.block.order_sum_minimum{% endtrans %}<br/>
+                {% if display_cart_interval %}
+                    {% if cart_from_min == cart_from_max %}
+                        {{ currency_display|raw }} {{ cart_from_min }}
+                    {% else %}
+                        {{ currency_display|raw }} {{ cart_from_min }} - {{ cart_from_max }} <span
+                            class="delivery-time-tooltip"
+                            title="{% trans %}cart.block.delivery_time.tooltip{% endtrans %}">&nbsp;</span>
+                    {% endif %}
                 {% else %}
-                    {{ currency_display|raw }} {{ cart_from_min }} - {{ cart_from_max }} <span class="delivery-time-tooltip" title="{% trans %}cart.block.delivery_time.tooltip{% endtrans %}">&nbsp;</span>
+                    {{ currency_display|raw }} {{ cart_from_min }}
                 {% endif %}
-            {% else %}
-                {{ currency_display|raw }} {{ cart_from_min }}
-            {% endif %}
 
-            {% if currency_alternative %}<span class="euro">/ {{  misc_utils.getLitas(cart_minimum)|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>{% endif %}.
-            {% if place.minimalOnSelfDel == false %}<br />{% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}{% endif %}
-        </div>
+                {% if currency_alternative %}<span class="euro">
+                / {{ misc_utils.getLitas(cart_minimum)|number_format(2, ',', ' ') }}{{ display_currency_alternative|raw }}</span>{% endif %}
+                .
+                {% if place.minimalOnSelfDel == false %}
+                    <br/>{% trans %}cart.block.order_sum_minimum_take_myself{% endtrans %}{% endif %}
+            </div>
         {% endif %}
     {% else %}
         <div class="check-bottom">
@@ -215,7 +253,7 @@
     {% endif %}
 
     <script type="application/javascript">
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.delivery-time-info-cart, .delivery-type-tooltip, .delivery-time-tooltip').tooltip();
             $('#cartmnu input').iCheck();
 
@@ -225,16 +263,18 @@
                 cartmnu.addClass('overflow_auto');
             }
 
-            $(window).resize(function() {
+            $(window).resize(function () {
                 Place.adjustCartMenuHeight();
             });
         });
         var takeAway = 0;
-        $('#cartmnu').on('ifToggled', '.cart_delivery_type input', function(event) {
+        $('#cartmnu').on('ifToggled', '.cart_delivery_type input', function (event) {
             var hadSticky = $('.check-block').hasClass('sticky');
             if (event.target.checked) {
                 if (event.target.value == 'pickup') {
-                    takeAway = 1;
+//                    console.log(takeAway);
+                    takeAway = 18;
+//                    console.log(takeAway);
                 }
                 $('.check-block').mask();
                 var url = Routing.generate(
@@ -247,7 +287,7 @@
                         take_away: takeAway
                     }
                 );
-                $.post(url, function(response) {
+                $.post(url, function (response) {
                     if (typeof(response.block) != "undefined") {
                         $('.check-block').replaceWith(response.block).unmask();
                         if (hadSticky) {

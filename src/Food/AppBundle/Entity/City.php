@@ -146,4 +146,14 @@ class City implements \JsonSerializable
             'zavalasTime'=> $this->getZavalasTime(),
         ));
     }
+
+    /**
+     * Get zavalasOn
+     *
+     * @return boolean 
+     */
+    public function getZavalasOn()
+    {
+        return $this->zavalasOn;
+    }
 }

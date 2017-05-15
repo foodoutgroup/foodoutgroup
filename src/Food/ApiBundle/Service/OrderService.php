@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints\Date;
 class OrderService extends ContainerAware
 {
     /**
-     * @param Request     $requestOrig
+     * @param Request $requestOrig
      * @param JsonRequest $request
      *
      * @return array
@@ -41,8 +41,7 @@ class OrderService extends ContainerAware
                     FO::$status_assiged
                     //,FO::$status_unapproved
                 ]
-            )
-        ;
+            );
 
         $results = $q->execute();
 
@@ -54,9 +53,9 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param Request     $requestOrig
+     * @param Request $requestOrig
      * @param JsonRequest $request
-     * @param bool        $isThisPre
+     * @param bool $isThisPre
      *
      * @return array
      * @throws ApiException
@@ -93,9 +92,9 @@ class OrderService extends ContainerAware
          * }
          */
         $searchCrit = [
-            'city'    => null,
-            'lat'     => null,
-            'lng'     => null,
+            'city' => null,
+            'lat' => null,
+            'lng' => null,
             'address' => null
         ];
         $googleGisService = $this->container->get('food.googlegis');
@@ -109,7 +108,7 @@ class OrderService extends ContainerAware
                 'Unauthorized',
                 401,
                 [
-                    'error'       => 'Request requires a sesion_token',
+                    'error' => 'Request requires a sesion_token',
                     'description' => $this->container->get('translator')->trans('api.orders.user_not_authorized')
                 ]
             );
@@ -121,7 +120,7 @@ class OrderService extends ContainerAware
                 'Unauthorized',
                 401,
                 [
-                    'error'       => 'Missing phone number',
+                    'error' => 'Missing phone number',
                     'description' => $this->container->get('translator')->trans('api.orders.user_phone_empty')
                 ]
             );
@@ -134,7 +133,7 @@ class OrderService extends ContainerAware
                 'Unauthorized',
                 401,
                 [
-                    'error'       => 'Invalid phone number',
+                    'error' => 'Invalid phone number',
                     'description' => $this->container->get('translator')->trans('api.orders.user_phone_invalid')
                 ]
             );
@@ -142,7 +141,6 @@ class OrderService extends ContainerAware
 
         $em = $this->container->get('doctrine')->getManager();
         $serviceVar = $request->get('service');
-
         $logger->alert('Service var givven: ');
         $logger->alert(var_export($serviceVar, true));
         $pp = null; // placePoint :D - jei automatu - tai NULL :D
@@ -153,6 +151,7 @@ class OrderService extends ContainerAware
             }
             $pp = $em->getRepository('FoodDishesBundle:PlacePoint')->find($serviceVar['location_id']);
         }
+
         $basket = $em->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($request->get('basket_id'));
 
         $place = $basket->getPlaceId();
@@ -180,7 +179,7 @@ class OrderService extends ContainerAware
                 'Basket Not found',
                 404,
                 [
-                    'error'       => 'Basket Not found',
+                    'error' => 'Basket Not found',
                     'description' => $this->container->get('translator')->trans('api.orders.basket_does_not_exists')
                 ]
             );
@@ -200,7 +199,7 @@ class OrderService extends ContainerAware
                     'Unauthorized',
                     401,
                     [
-                        'error'       => 'Missing lastname',
+                        'error' => 'Missing lastname',
                         'description' => $this->container->get('translator')->trans('api.orders.user_lastname_empty')
                     ]
                 );
@@ -217,7 +216,7 @@ class OrderService extends ContainerAware
                     'Coupon Not found',
                     404,
                     [
-                        'error'       => 'Coupon Not found',
+                        'error' => 'Coupon Not found',
                         'description' => $this->container->get('translator')->trans('api.orders.coupon_does_not_exists')
                     ]
                 );
@@ -228,7 +227,7 @@ class OrderService extends ContainerAware
                     'Coupon for web',
                     404,
                     [
-                        'error'       => 'Coupon for web',
+                        'error' => 'Coupon for web',
                         'description' => $this->container->get('translator')->trans('general.coupon.only_web')
                     ]
                 );
@@ -239,7 +238,7 @@ class OrderService extends ContainerAware
                     'Coupon for delivery',
                     404,
                     [
-                        'error'       => 'Coupon only for delivery',
+                        'error' => 'Coupon only for delivery',
                         'description' => $this->container->get('translator')->trans('general.coupon.only_delivery')
                     ]
                 );
@@ -249,7 +248,7 @@ class OrderService extends ContainerAware
                     'Coupon for pickup',
                     404,
                     [
-                        'error'       => 'Coupon only for pickup',
+                        'error' => 'Coupon only for pickup',
                         'description' => $this->container->get('translator')->trans('general.coupon.only_pickup')
                     ]
                 );
@@ -263,7 +262,7 @@ class OrderService extends ContainerAware
                     'Coupon Wrong Place',
                     404,
                     [
-                        'error'       => 'Coupon Wrong Place',
+                        'error' => 'Coupon Wrong Place',
                         'description' => $this->container->get('translator')->trans('general.coupon.wrong_place')
                     ]
                 );
@@ -274,7 +273,7 @@ class OrderService extends ContainerAware
                     'Coupon Online Payments Only',
                     404,
                     [
-                        'error'       => 'Coupon Online Payments Only',
+                        'error' => 'Coupon Online Payments Only',
                         'description' => $this->container->get('translator')->trans('general.coupon.only_web')
                     ]
                 );
@@ -287,7 +286,7 @@ class OrderService extends ContainerAware
                         'Coupon Not Valid Yet',
                         404,
                         [
-                            'error'       => 'Coupon Not Valid Yet',
+                            'error' => 'Coupon Not Valid Yet',
                             'description' => $this->container->get('translator')->trans('api.orders.coupon_too_early')
                         ]
                     );
@@ -297,7 +296,7 @@ class OrderService extends ContainerAware
                         'Coupon Expired',
                         404,
                         [
-                            'error'       => 'Coupon Expired',
+                            'error' => 'Coupon Expired',
                             'description' => $this->container->get('translator')->trans('api.orders.coupon_expired')
                         ]
                     );
@@ -309,7 +308,7 @@ class OrderService extends ContainerAware
                     'Coupon Not Valid Yet',
                     404,
                     [
-                        'error'       => 'Coupon Not Valid Yet',
+                        'error' => 'Coupon Not Valid Yet',
                         'description' => $this->container->get('translator')->trans('api.orders.coupon_too_early')
                     ]
                 );
@@ -319,7 +318,7 @@ class OrderService extends ContainerAware
                     'Coupon Expired',
                     404,
                     [
-                        'error'       => 'Coupon Expired',
+                        'error' => 'Coupon Expired',
                         'description' => $this->container->get('translator')->trans('api.orders.coupon_expired')
                     ]
                 );
@@ -353,7 +352,7 @@ class OrderService extends ContainerAware
                     'Not for business',
                     404,
                     [
-                        'error'       => 'Not for business',
+                        'error' => 'Not for business',
                         'description' => $this->container->get('translator')->trans('general.coupon.not_for_business')
                     ]
                 );
@@ -364,7 +363,7 @@ class OrderService extends ContainerAware
                     'Only for business',
                     404,
                     [
-                        'error'       => 'Only for business',
+                        'error' => 'Only for business',
                         'description' => $this->container->get('translator')->trans('general.coupon.only_for_business')
                     ]
                 );
@@ -375,7 +374,7 @@ class OrderService extends ContainerAware
                     'Not active',
                     404,
                     [
-                        'error'       => 'Not active',
+                        'error' => 'Not active',
                         'description' => $this->container->get('translator')->trans('general.coupon.not_active')
                     ]
                 );
@@ -390,7 +389,7 @@ class OrderService extends ContainerAware
                     'Order Too Small',
                     400,
                     [
-                        'error'       => 'Order Too Small',
+                        'error' => 'Order Too Small',
                         'description' => $this->container->get('translator')->trans('api.orders.order_to_small')
                     ]
                 );
@@ -409,7 +408,7 @@ class OrderService extends ContainerAware
                     'Unavailable Address',
                     400,
                     [
-                        'error'       => 'Unavailable Address',
+                        'error' => 'Unavailable Address',
                         'description' => ''
                     ]
                 );
@@ -419,9 +418,9 @@ class OrderService extends ContainerAware
                     $serviceVar['address']['city']
                 );
                 $searchCrit = [
-                    'city'         => $locationInfo['city'],
-                    'lat'          => $locationInfo['lat'],
-                    'lng'          => $locationInfo['lng'],
+                    'city' => $locationInfo['city'],
+                    'lat' => $locationInfo['lat'],
+                    'lng' => $locationInfo['lng'],
                     'address_orig' => $serviceVar['address']['street'] . " " . $serviceVar['address']['house_number']
                 ];
                 // Append flat if given
@@ -433,15 +432,14 @@ class OrderService extends ContainerAware
                     $basket->getPlaceId()->getId(),
                     $searchCrit,
                     true
-                )
-                ;
+                );
 
                 if (!$placePointId) {
                     throw new ApiException(
                         'Place point not in radius',
                         400,
                         [
-                            'error'       => 'Place point not in radius',
+                            'error' => 'Place point not in radius',
                             'description' => $this->container->get('translator')->trans('cart.checkout.place_point_not_in_radius')
                         ]
                     );
@@ -457,7 +455,7 @@ class OrderService extends ContainerAware
                     'Order Too Small',
                     0,
                     [
-                        'error'       => 'Order Too Small',
+                        'error' => 'Order Too Small',
                         'description' => $this->container->get('translator')->trans('api.orders.order_to_small')
                     ]
                 );
@@ -474,7 +472,7 @@ class OrderService extends ContainerAware
                     'Dish not available',
                     0,
                     [
-                        'error'       => 'Dish not available',
+                        'error' => 'Dish not available',
                         'description' => $this->container->get('translator')->trans('dishes.no_production')
                     ]
                 );
@@ -489,7 +487,10 @@ class OrderService extends ContainerAware
             $user,
             $pp,
             ($serviceVar['type'] == "pickup" ? true : false),
-            $coupon
+            $coupon,
+            null,
+            null,
+            $request->get('service')['type']
         );
 
         $os->setMobileOrder(true);
@@ -510,8 +511,11 @@ class OrderService extends ContainerAware
 
         $os->setPaymentMethod($paymentMethod);
 
+
         if ($serviceVar['type'] == "pickup") {
             $os->setDeliveryType($os::$deliveryPickup);
+        } elseif ($serviceVar['type'] == "pedestrian") {
+            $os->setDeliveryType($os::$deliveryPedestrian);
         } else {
             $os->setDeliveryType($os::$deliveryDeliver);
         }
@@ -536,8 +540,7 @@ class OrderService extends ContainerAware
         if ($isThisPre) {
             $os->getOrder()->setOrderStatus(
                 \Food\OrderBundle\Service\OrderService::$status_pre
-            )
-            ;
+            );
         }
         $os->saveOrder();
         if (!$isThisPre) {
@@ -573,7 +576,7 @@ class OrderService extends ContainerAware
 
         if (!empty($list)) {
             $total_sum = (($this->getCartService()->getCartTotal($list) * 100));
-            $total_sum = $total_sum + ($order->getDeliveryPrice() * 100) + ($order->getAdminFee()*100);
+            $total_sum = $total_sum + ($order->getDeliveryPrice() * 100) + ($order->getAdminFee() * 100);
         } else {
             $order_total = ($order->getTotal() * 100);
             if ($order_total > 0) {
@@ -605,7 +608,7 @@ class OrderService extends ContainerAware
             $productionTime = $order->getPlace()->getProductionTime();
         }
 
-        if($total_sum < 0) {
+        if ($total_sum < 0) {
             $total_sum = 0;
         }
 
@@ -617,11 +620,11 @@ class OrderService extends ContainerAware
 
         $paymentData = $this->container->getParameter('payment');
 
-        if($order->getPaymentStatus() != FO::$paymentStatusComplete && in_array($order->getPaymentMethod(), $paymentData['method'])){
+        if ($order->getPaymentStatus() != FO::$paymentStatusComplete && in_array($order->getPaymentMethod(), $paymentData['method'])) {
             $selectedPayment['name'] = $paymentData['title'][array_search($order->getPaymentMethod(), $paymentData['method'])];
             $selectedPayment['code'] = $order->getPaymentMethod();
 
-            if($order->getPaymentMethod() != "local" && $order->getPaymentMethod() != "local.card") {
+            if ($order->getPaymentMethod() != "local" && $order->getPaymentMethod() != "local.card") {
 
                 try {
                     $orderService = $this->container->get('food.order');
@@ -630,24 +633,24 @@ class OrderService extends ContainerAware
 //                    $paymentService->setLocale($return)
                     $selectedPayment['url'] = $paymentService->bill(); // fix...
                 } catch (\Exception $e) {
-                    $this->container->get('logger')->addDebug("tata".$e->getMessage());
+                    $this->container->get('logger')->addDebug("tata" . $e->getMessage());
                 }
             }
 
         }
 
         $returner = [
-            'order_id'    => $order->getId(),
-            'order_hash'    => $order->getOrderHash(),
+            'order_id' => $order->getId(),
+            'order_hash' => $order->getOrderHash(),
             'total_price' => [
                 //'amount' => $order->getTotal() * 100,
-                'amount'   => $total_sum,
+                'amount' => $total_sum,
                 'currency' => $this->container->getParameter('currency_iso')
             ],
             'delivery_price' => $order->getDeliveryPrice(), //Kode cia ne *100?
             'admin_fee' => $order->getAdminFee() * 100,
             'place_point_self_delivery' => $order->getPlacePointSelfDelivery(),
-            'payment_method' => $this->container->get('translator')->trans('mobile.payment.'.$order->getPaymentMethod()),
+            'payment_method' => $this->container->get('translator')->trans('mobile.payment.' . $order->getPaymentMethod()),
             'order_date' => $order->getOrderDate()->format('H:i'),
             'order_date_full' => $order->getOrderDate(),
             'discount'    => $discount,
@@ -657,21 +660,21 @@ class OrderService extends ContainerAware
                 "info_number" => "+" . $this->container->getParameter('dispatcher_contact_phone'),
 //                'info_number' => '+'.$order->getPlacePoint()->getPhone(),
                 'message' => $message,
-                'picked'  => $order->getOrderPicked()
+                'picked' => $order->getOrderPicked()
             ],
-            'details'     => [
-                'restaurant_id'    => $order->getPlace()->getId(),
+            'details' => [
+                'restaurant_id' => $order->getPlace()->getId(),
                 'restaurant_title' => $order->getPlace()->getName(),
                 'restaurant_only_alcohol' => $order->getPlace()->getOnlyAlcohol(),
                 'production_time' => (!empty($productionTime) && $productionTime > 0 ? $productionTime : 30),
-                'payment_options'  => [
-                    'cash'        => ($order->getPaymentMethod() == "local" ? true : false),
+                'payment_options' => [
+                    'cash' => ($order->getPaymentMethod() == "local" ? true : false),
                     'credit_card' => ($order->getPaymentMethod() == "local.card" ? true : false),
                 ],
                 'payment' => $selectedPayment,
-                'items'            => $this->_getItemsForResponse($order)
+                'items' => $this->_getItemsForResponse($order)
             ],
-            'service'     => $this->_getServiceForResponse($order)
+            'service' => $this->_getServiceForResponse($order)
         ];
 
         return $returner;
@@ -735,14 +738,14 @@ class OrderService extends ContainerAware
     {
         $orderService = $this->container->get('food.order');
         if ($orderService->isValidOrderStatusChange($order->getOrderStatus(), $this->formToEntityStatus($status))) {
-            switch($status) {
+            switch ($status) {
                 case 'confirm':
                     $orderService->statusAccepted('restourant_ng');
                     $orderService->setOrderPrepareTime($request->get('food_prepare_time'));
                     break;
 
                 case 'delay':
-                    $orderService->statusDelayed('restourant_ng', 'delay reason: '.$request->get('delay_reason'));
+                    $orderService->statusDelayed('restourant_ng', 'delay reason: ' . $request->get('delay_reason'));
                     $orderService->getOrder()->setDelayed(true);
                     if (!empty($request)) {
                         $orderService->getOrder()->setDelayReason($request->get('delay_reason'));
@@ -780,7 +783,7 @@ class OrderService extends ContainerAware
     }
 
     /**
-     * @param string$formStatus
+     * @param string $formStatus
      * @return string
      */
     public function formToEntityStatus($formStatus)
@@ -811,8 +814,7 @@ class OrderService extends ContainerAware
          * @var PlacePoint $placePoint
          */
         $placePoint = $this->container->get('doctrine.orm.entity_manager')
-            ->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash])
-        ;
+            ->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash]);
         if (!empty($placePoint)) {
             $ordersData = [
                 'restaurant' => [
@@ -846,8 +848,7 @@ class OrderService extends ContainerAware
             $message = $this->container->get('translator')->trans(
                 'mobile.order_status.order_delayed',
                 ['%delayTime%' => $order->getDelayDuration()]
-            )
-            ;
+            );
         }
 
         return $message;
@@ -901,7 +902,7 @@ class OrderService extends ContainerAware
                 'count' => $detail->getQuantity(),
                 'options' => $options,
                 'price' => [
-                    'amount'   => $sum,
+                    'amount' => $sum,
                     'currency' => $currency
                 ]
             ];
@@ -950,7 +951,7 @@ class OrderService extends ContainerAware
                 'options' => $options,
                 'count' => $detail->getQuantity(),
                 'price' => [
-                    'amount'   => $sum,
+                    'amount' => $sum,
                     'currency' => $currency
                 ]
             ];
@@ -968,6 +969,7 @@ class OrderService extends ContainerAware
     {
         $miscUtil = $this->container->get('food.app.utils.misc');
 
+
         switch ($order->getDeliveryType()) {
             case FO::$deliveryPickup:
                 $deliveryType = 'pickup';
@@ -978,8 +980,15 @@ class OrderService extends ContainerAware
                 break;
 
             case FO::$deliveryDeliver:
-            default:
                 $deliveryType = 'delivery';
+                $time = $order->getPlace()->getDeliveryTime();
+
+            case FO::$deliveryPedestrian:
+                $deliveryType = 'pedestrian';
+                $time = $this->container->get('food.places')->getPedestrianDeliveryTime().' min.';
+
+            default:
+
                 $parsedAddress = $miscUtil->parseAddress(
                 // @TODO check if addressId exists
                     $order->getAddressId()->getAddress()
@@ -989,21 +998,21 @@ class OrderService extends ContainerAware
         }
 
         $returner = [
-            "type"    => $deliveryType,
-            "time"    => $time,
+            "type" => $deliveryType,
+            "time" => $time,
             "address" => [
-                "street"       => $parsedAddress['street'],
+                "street" => $parsedAddress['street'],
                 "house_number" => $parsedAddress['house'],
-                "flat_number"  => $parsedAddress['flat'],
-                "city"         => $order->getPlacePointCity(),
-                "comments"     => $order->getComment()
+                "flat_number" => $parsedAddress['flat'],
+                "city" => $order->getPlacePointCity(),
+                "comments" => $order->getComment()
             ],
         ];
 
         if ($order->getDeliveryType() == FO::$deliveryDeliver) {
             $returner['price'] = [
                 //'amount' => $order->getPlace()->getDeliveryPrice()*100,
-                'amount'   => $order->getDeliveryPrice() * 100,
+                'amount' => $order->getDeliveryPrice() * 100,
                 'currency' => $this->container->getParameter('currency_iso'),
             ];
         }
@@ -1020,21 +1029,21 @@ class OrderService extends ContainerAware
     public function convertOrderStatus($status)
     {
         $statusMap = [
-            FO::$status_preorder           => 'preorder',
-            FO::$status_nav_problems       => 'accepted',
-            FO::$status_new                => 'accepted',
-            FO::$status_unapproved         => 'accepted',
-            FO::$status_accepted           => 'preparing',
-            FO::$status_assiged            => 'preparing',
-            FO::$status_forwarded          => 'preparing',
-            FO::$status_delayed            => 'delayed',
-            FO::$status_completed          => 'completed',
+            FO::$status_preorder => 'preorder',
+            FO::$status_nav_problems => 'accepted',
+            FO::$status_new => 'accepted',
+            FO::$status_unapproved => 'accepted',
+            FO::$status_accepted => 'preparing',
+            FO::$status_assiged => 'preparing',
+            FO::$status_forwarded => 'preparing',
+            FO::$status_delayed => 'delayed',
+            FO::$status_completed => 'completed',
             FO::$status_partialy_completed => 'completed',
-            FO::$status_failed             => 'failed',
-            FO::$status_finished           => 'prepared',
-            FO::$status_canceled           => 'canceled',
-            FO::$status_canceled_produced  => 'canceled_produced',
-            FO::$status_pre                => 'pre'
+            FO::$status_failed => 'failed',
+            FO::$status_finished => 'prepared',
+            FO::$status_canceled => 'canceled',
+            FO::$status_canceled_produced => 'canceled_produced',
+            FO::$status_pre => 'pre'
         ];
 
         if (!isset($statusMap[$status])) {

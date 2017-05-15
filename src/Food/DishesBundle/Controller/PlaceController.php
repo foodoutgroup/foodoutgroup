@@ -49,7 +49,6 @@ class PlaceController extends Controller
         $categoryList = $this->get('food.places')->getActiveCategories($place);
         $placePoints = $this->get('food.places')->getPublicPoints($place);
         $placePointsAll = $this->get('food.places')->getAllPoints($place);
-//        $categoryRepo = $this->getDoctrine()->getRepository('FoodDishesBundle:FoodCategory');
         $dishService = $this->get('food.dishes');
 
         $listType = 'thumbs';
@@ -58,6 +57,7 @@ class PlaceController extends Controller
         if ($cookies->has('restaurant_menu_layout')) {
             $listType = $cookies->get('restaurant_menu_layout');
         }
+
         /**
          * if (!empty($categoryId)) {
          * $activeCategory = $categoryRepo->find($categoryId);
