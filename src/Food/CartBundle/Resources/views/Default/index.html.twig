@@ -3,221 +3,223 @@
 
 {% block jscode %}
     /**
-     * @todo Migrate to JS file
-     */
+    * @todo Migrate to JS file
+    */
     $(document).ready(function(){
-        $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function(event){
-            Cart.submitOrder($(this).closest(".delivery-info-form"));
-            event.stopPropagation();
-            event.preventDefault();
-            return false;
-        });
-
-        $('.address-change').click(function(e){
-            if($(e.target).is('span') || $(e.target).is('input')) {
-                var click_callback, data_callback;
-
-                click_callback = function(options) {
-                    if (options.response.data.success == 1 &&
-                        options.response.data.adr == 1)
-                    {
-                        if (options.response.data.nodelivery == 1) {
-                            options.dialog.unmask();
-                            $.fancybox.close();
-                            toTakeOrNotToTake();
-                        } else {
-                            window.location.reload();
-                        }
-                    } else {
-                        options.dialog.unmask();
-                        options.alert.show();
-                        setTimeout(function(){
-                            options.alert.hide();
-                        }, 5000);
-                    }
-                }
-
-                data_callback = function() {
-                    return { city: $('.city-row select').val(),
-                             address: $('.address-row input').val(),
-                             place: {{ place.id }} };
-                }
-
-                change_location($('#change-address'),
-                                click_callback,
-                                data_callback,
-                                '{% trans %}cart.checkout.address_change_change{% endtrans %}',
-                                '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
-                                '{{ url('food_ajax', {'action': 'find-address-and-recount'}) }}');
-            }
+    $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function(event){
+    Cart.submitOrder($(this).closest(".delivery-info-form"));
+    event.stopPropagation();
+    event.preventDefault();
+    return false;
     });
 
-        function toTakeOrNotToTake() {
-            $('#place-point-not-found').dialog({
-                modal: true,
-                resizable:false,
-                width:360,
-                buttons: {
-                    'i_take_it': {
-                        text: '{% trans %}cart.checkout.i_will_take_it{% endtrans %}',
-                        click: function() {
-                            window.location.href = '{{ path('food_cart', {placeId: place.id, takeAway: 1}) }}';
-                        },
-                    },
-                    'show_the_list': {
-                        text: '{% trans %}cart.checkout.show_me_places{% endtrans %}',
-                        click: function() {
-                            $(this).parent().mask();
-                            window.location.href = '{{ path('food_places_' ~ locale ~ '_main') }}';
-                        }
-                    }
-                }
-            }).siblings('.ui-dialog-titlebar').remove();
-        }
-        $('.tooltip, .checkout-pickup-place-tooltip').tooltip();
+    $('.address-change').click(function(e){
+    if($(e.target).is('span') || $(e.target).is('input')) {
+    var click_callback, data_callback;
 
-        $('#coupon_form').bind('submit', function() {
-            $('.coupon_form_popup .button-submit').trigger('click');
-            return false;
-        });
+    click_callback = function(options) {
+    if (options.response.data.success == 1 &&
+    options.response.data.adr == 1)
+    {
+    if (options.response.data.nodelivery == 1) {
+    options.dialog.unmask();
+    $.fancybox.close();
+    toTakeOrNotToTake();
+    } else {
+    window.location.reload();
+    }
+    } else {
+    options.dialog.unmask();
+    options.alert.show();
+    setTimeout(function(){
+    options.alert.hide();
+    }, 5000);
+    }
+    }
 
-        $('.coupon_form_popup .button-submit').bind('click', function() {
-            var couponField = $('input#coupon_code_popup');
-            var popupInner = $(this).closest('.coupon_inner');
-            var currentUrl  = window.location.href;
-            popupInner.mask();
+    data_callback = function() {
+    return { city: $('.city-row select').val(),
+    address: $('.address-row input').val(),
+    place: {{ place.id }} };
+    }
 
-            $.ajax({
-                type: 'GET',
-                url: '{{ path('food_ajax', {'action': 'check-coupon'}) }}',
-                data:  {
-                            place_id: '{{ place.id }}',
-                            coupon_code: couponField.val(),
-                            currentUrl: currentUrl
-                        },
-                success:  function(resp){
-                    if (resp.status == 1) {
-                        var takeAway = 0;
-                        if ($('input[name="delivery-type"]:checked').val() == 'pickup') {
-                            takeAway = 1;
-                        }
-                        $.post('{{ path('food_cart_action', {'action' : 'refresh'}) }}', { place: {{ place.id }}, in_cart: 1, coupon_code: couponField.val(), take_away: takeAway }, function(response) {
-                            if (typeof(response.block) != "undefined") {
-                                $('.check-block').replaceWith(response.block);
-                            }
-                            popupInner.unmask();
-                            // move data to main form
-                            $('#coupon_code').val(couponField.val());
-                            couponField.val('');
-                            popupInner.find('.alert.alert-danger').remove();
-                            $.fancybox.close();
-                        }, 'json');
-                    } else {
-                        var dangerAlert = popupInner.find('.alert.alert-danger');
-                        $('#coupon_code').val('');
-                        if (dangerAlert.length > 0) {
-                            dangerAlert.html(resp.data.error);
-                        } else {
-                            popupInner.prepend('<div class="alert alert-danger">'+resp.data.error+'</div>');
-                        }
-                        popupInner.unmask();
-                    }
-                }
-            });
-        });
+    change_location($('#change-address'),
+    click_callback,
+    data_callback,
+    '{% trans %}cart.checkout.address_change_change{% endtrans %}',
+    '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
+    '{{ url('food_ajax', {'action': 'find-address-and-recount'}) }}');
+    }
+    });
 
-        $('#company_order').on('ifToggled', function(event){
-            if (event.target.checked) {
-                $('.company_data').removeClass('hidden');
-            } else {
-                $('.company_data').addClass('hidden');
-            }
-        });
+    function toTakeOrNotToTake() {
+    $('#place-point-not-found').dialog({
+    modal: true,
+    resizable:false,
+    width:360,
+    buttons: {
+    'i_take_it': {
+    text: '{% trans %}cart.checkout.i_will_take_it{% endtrans %}',
+    click: function() {
+    window.location.href = '{{ path('food_cart', {placeId: place.id, takeAway: 1}) }}';
+    },
+    },
+    'show_the_list': {
+    text: '{% trans %}cart.checkout.show_me_places{% endtrans %}',
+    click: function() {
+    $(this).parent().mask();
+    window.location.href = '{{ path('food_places_' ~ locale ~ '_main') }}';
+    }
+    }
+    }
+    }).siblings('.ui-dialog-titlebar').remove();
+    }
+    $('.tooltip, .checkout-pickup-place-tooltip').tooltip();
 
-        var orderingHours = [];
-        {% for day, dayInfo in workingHoursForInterval %}
-            orderingHours['{{ day }}'] = [{% for hourInfo in  dayInfo%}{% if loop.index0 != 0 %},{% endif %}'{{ hourInfo }}'{% endfor %}];
-        {% endfor %}
+    $('#coupon_form').bind('submit', function() {
+    $('.coupon_form_popup .button-submit').trigger('click');
+    return false;
+    });
+
+    $('.coupon_form_popup .button-submit').bind('click', function() {
+    var couponField = $('input#coupon_code_popup');
+    var popupInner = $(this).closest('.coupon_inner');
+    var currentUrl  = window.location.href;
+    popupInner.mask();
+
+    $.ajax({
+    type: 'GET',
+    url: '{{ path('food_ajax', {'action': 'check-coupon'}) }}',
+    data:  {
+    place_id: '{{ place.id }}',
+    coupon_code: couponField.val(),
+    currentUrl: currentUrl
+    },
+    success:  function(resp){
+    if (resp.status == 1) {
+    var takeAway = 0;
+    if ($('input[name="delivery-type"]:checked').val() == 'pickup') {
+    takeAway = 1;
+    }
+    $.post('{{ path('food_cart_action', {'action' : 'refresh'}) }}', { place: {{ place.id }}, in_cart: 1, coupon_code: couponField.val(), take_away: takeAway }, function(response) {
+    if (typeof(response.block) != "undefined") {
+    $('.check-block').replaceWith(response.block);
+    }
+    popupInner.unmask();
+    // move data to main form
+    $('#coupon_code').val(couponField.val());
+    couponField.val('');
+    popupInner.find('.alert.alert-danger').remove();
+    $.fancybox.close();
+    }, 'json');
+    } else {
+    var dangerAlert = popupInner.find('.alert.alert-danger');
+    $('#coupon_code').val('');
+    if (dangerAlert.length > 0) {
+    dangerAlert.html(resp.data.error);
+    } else {
+    popupInner.prepend('
+    <div class="alert alert-danger">'+resp.data.error+'</div>');
+    }
+    popupInner.unmask();
+    }
+    }
+    });
+    });
+
+    $('#company_order').on('ifToggled', function(event){
+    if (event.target.checked) {
+    $('.company_data').removeClass('hidden');
+    } else {
+    $('.company_data').addClass('hidden');
+    }
+    });
+
+    var orderingHours = [];
+    {% for day, dayInfo in workingHoursForInterval %}
+        orderingHours['{{ day }}'] = [{% for hourInfo in  dayInfo %}{% if loop.index0 != 0 %},{% endif %}'{{ hourInfo }}'{% endfor %}];
+    {% endfor %}
 
 
-        $("#pre_order_date").on( "selectmenuselect", function( event, ui ) {
-            changeTheTimes(ui.value);
-        });
-        function changeTheTimes(newDate) {
-            var newHtml = "";
-            for (var cnt = 0; cnt < orderingHours[newDate].length; cnt++) {
-                newHtml+='<option value="'+orderingHours[newDate][cnt]+'">'+orderingHours[newDate][cnt]+'</option>' + "\n";
-            }
-            $("#pre_order_time").html(newHtml).selectmenu();
-        }
+    $("#pre_order_date").on( "selectmenuselect", function( event, ui ) {
+    changeTheTimes(ui.value);
+    });
+    function changeTheTimes(newDate) {
+    var newHtml = "";
+    for (var cnt = 0; cnt < orderingHours[newDate].length; cnt++) {
+    newHtml+='
+    <option value="'+orderingHours[newDate][cnt]+'">'+orderingHours[newDate][cnt]+'</option>' + "\n";
+    }
+    $("#pre_order_time").html(newHtml).selectmenu();
+    }
 
     });
 {% endblock %}
 {% block ga_js_code %}
     $(document).ready(
-        function() {
-            $('body .delivery-type-radios .custom-radio, body .delivery-type-radios .custom-radio .iCheck-helper').click(
-                function(){
-                    var opt = "";
-                    if ($(this).is('.custom-radio')) {
-                        opt = $(this).find('input').val();
+    function() {
+    $('body .delivery-type-radios .custom-radio, body .delivery-type-radios .custom-radio .iCheck-helper').click(
+    function(){
+    var opt = "";
+    if ($(this).is('.custom-radio')) {
+    opt = $(this).find('input').val();
 
-                    } else {
-                        opt = $(this).parent().find('input').val();
-                    }
+    } else {
+    opt = $(this).parent().find('input').val();
+    }
 
-                    var nav = '{{ place.navision }}';
+    var nav = '{{ place.navision }}';
 
-                    with ($('.for_hiding')) {
-                        if ('1' === nav) {
-                            if (opt == 'pickup') {
-                                $('.iradio input[type="radio"]', '.select-payment, .select-bank').iCheck('uncheck');
-                                hide();
-                            } else {
-                                show();
-                            }
-                        }
-                    }
+    with ($('.for_hiding')) {
+    if ('1' === nav) {
+    if (opt == 'pickup') {
+    $('.iradio input[type="radio"]', '.select-payment, .select-bank').iCheck('uncheck');
+    hide();
+    } else {
+    show();
+    }
+    }
+    }
 
-                    ga('ec:setAction', 'checkout_option', {'step': 2, 'option': opt});
-                }
-            );
+    ga('ec:setAction', 'checkout_option', {'step': 2, 'option': opt});
+    }
+    );
 
 
-            $('body .cart-rules.custom-checkbox, body .cart-rules.custom-checkbox .iCheck-helper').click(
-                function(){
-                    var opt = "";
-                    if ($(this).is('.custom-radio')) {
-                        opt = $(this).find('input').is(':checked');
+    $('body .cart-rules.custom-checkbox, body .cart-rules.custom-checkbox .iCheck-helper').click(
+    function(){
+    var opt = "";
+    if ($(this).is('.custom-radio')) {
+    opt = $(this).find('input').is(':checked');
 
-                    } else {
-                        opt = $(this).parent().find('input').is(':checked');
-                    }
-                    ga('ec:setAction', 'checkout_option', {'step': 4, 'option': opt});
-                }
-            );
-        }
+    } else {
+    opt = $(this).parent().find('input').is(':checked');
+    }
+    ga('ec:setAction', 'checkout_option', {'step': 4, 'option': opt});
+    }
+    );
+    }
     );
 
     function checkDeliveryPrice(item){
-        var checkIfneeded = $('.delivery-price .fr').attr('data-true')
+    var checkIfneeded = $('.delivery-price .fr').attr('data-true')
 
-        if(checkIfneeded == 1){
-            $.ajax({
-                 type: 'post',
-                 url: '{{ url('food_ajax', {'action': 'delivery-price'}) }}',
-                 data: {
-                        time:$(item).val(),
-                        restaurant:{{ place.id }}
-                       },
-                 success: function (data) {
+    if(checkIfneeded == 1){
+    $.ajax({
+    type: 'post',
+    url: '{{ url('food_ajax', {'action': 'delivery-price'}) }}',
+    data: {
+    time:$(item).val(),
+    restaurant:{{ place.id }}
+    },
+    success: function (data) {
 
-                    if(data){
-                        $('.delivery-price .fr').text('{{ currency_iso}}'+data.toFixed(2));
-                    }
-                 }
-             });
-        }
+    if(data){
+    $('.delivery-price .fr').text('{{ currency_iso }}'+data.toFixed(2));
+    }
+    }
+    });
+    }
     }
 
 {% endblock %}
@@ -228,22 +230,22 @@
     {% include 'FoodDishesBundle:Place:dish_cart_partial.html.twig' %}
 
     {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}
-        <script src="{{ asset_url }}" type="text/javascript"></script>
+    <script src="{{ asset_url }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            Cart.placeId = {{ place.id }};
+            Cart.locale = '{{ app.request.get('_locale') }}';
+            Cart.bindEvents();
+        });
+    </script>
+
+    {% if takeAway and '1' == place.navision %}
         <script type="text/javascript">
-            $(document).ready(function(){
-                Cart.placeId = {{ place.id }};
-                Cart.locale = '{{ app.request.get('_locale') }}';
-                Cart.bindEvents();
+            $(window).load(function () {
+                $('.for_hiding').hide();
             });
         </script>
-
-        {% if takeAway and '1' == place.navision %}
-            <script type="text/javascript">
-                $(window).load(function() {
-                    $('.for_hiding').hide();
-                });
-            </script>
-        {% endif %}
+    {% endif %}
     {% endjavascripts %}
     <div class="site-center">
         <div class="site-block">
@@ -252,53 +254,64 @@
             </div>
             <div class="clearfix">
                 <div class="content-lefter-big">
-                    <form class="delivery-info-form" method="post" action="" data-delivery-action="{{ url('food_cart', {placeId: place.id}) }}" data-pickup-action="{{ url('food_cart', {placeId: place.id, takeAway: 1})}}">
+                    <form class="delivery-info-form" method="post" action=""
+                          data-delivery-action="{{ url('food_cart', {placeId: place.id}) }}"
+                          data-pickup-action="{{ url('food_cart', {placeId: place.id, takeAway: 1}) }}">
                         <div class="delivery-info-form-content">
                             <h2>1. {% trans %}cart.checkout.block_title_delivery{% endtrans %}</h2>
                             {% if formHasErrors %}
-                            <div class="form-row">
-                                <div class="alert alert-warning">
-                                    {% for err in formErrors %}
-                                        {% if err is iterable %}
-                                            <li>{{ err.message|trans({'%text%': err.text})|raw }}</li>
-                                        {% else %}
-                                            <li>{{ err|trans|raw }}</li>
-                                        {% endif %}
-                                    {% endfor %}
+                                <div class="form-row">
+                                    <div class="alert alert-warning">
+                                        {% for err in formErrors %}
+                                            {% if err is iterable %}
+                                                <li>{{ err.message|trans({'%text%': err.text})|raw }}</li>
+                                            {% else %}
+                                                <li>{{ err|trans|raw }}</li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
-                            </div>
-                            <script>
-                                $(document).ready(function() {
-                                    {% for err in formErrors %}
+                                <script>
+                                    $(document).ready(function () {
+                                        {% for err in formErrors %}
                                         {% if err is iterable %}
-                                            ga('ec:setAction', 'checkout_option', {'step': 3, 'option': '{{ err.message|trans({'%text%': err.text})}}'});
+                                        ga('ec:setAction', 'checkout_option', {
+                                            'step': 3,
+                                            'option': '{{ err.message|trans({'%text%': err.text}) }}'
+                                        });
                                         {% else %}
-                                            ga('ec:setAction', 'checkout_option', {'step': 3, 'option': '{{ err|trans }}'});
+                                        ga('ec:setAction', 'checkout_option', {'step': 3, 'option': '{{ err|trans }}'});
                                         {% endif %}
-                                    {% endfor %}
-                                });
-                            </script>
+                                        {% endfor %}
+                                    });
+                                </script>
                             {% endif %}
                             <div class="form-row">
                                 <label><br></label>
                                 <div class="delivery-type-radios clearfix">
 
-                                    {% if place.deliveryOptions == 'pedestrian'%}
+                                    {% if place.deliveryOptions == 'pedestrian' %}
                                         <label class="custom-radio">{% trans %}cart.checkout.pedestrian{% endtrans %}
-                                            <input type="radio" name="delivery-type" value="pedestrian"{% if ((order is not null and order.deliveryType == 'pedestrian') or order is null)%} checked="checked"{% endif %}>
+                                            <input type="radio" name="delivery-type"
+                                                   value="pedestrian"{% if ((order is not null and order.deliveryType == 'pedestrian') or order is null) %} checked="checked"{% endif %}>
                                         </label>
-                                    {% endif %}
+                                    {% else %}
 
-                                    {% if place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'delivery' %}
-                                        <label class="custom-radio">{% trans %}cart.checkout.delivery_to_home{% endtrans %}
-                                            <input type="radio" name="delivery-type" value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
-                                        </label>
-                                    {% endif %}
+                                        {% if place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'delivery' %}
+                                            <label class="custom-radio">{% trans %}
+                                                cart.checkout.delivery_to_home{% endtrans %}
+                                                <input type="radio" name="delivery-type"
+                                                       value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
+                                            </label>
+                                        {% endif %}
 
-                                    {% if (place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'pickup') %}
-                                        <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
-                                            <input type="radio" name="delivery-type" value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
-                                        </label>
+                                        {% if (place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'pickup') %}
+                                            <label class="custom-radio">{% trans %}
+                                                cart.checkout.delivery_i_pickup{% endtrans %}
+                                                <input type="radio" name="delivery-type"
+                                                       value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
+                                            </label>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                             </div>
@@ -309,7 +322,8 @@
                                     <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
                                     <select class="custom-select" disabled="true">
                                         {% for city in available_cities %}
-                                            <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e'})) %}selected{% elseif location.city is not defined and userAddress and userAddress.city is defined and (userAddress.city == city or userAddress.city == city|replace({'ė':'e'})) %}selected{% endif %}>{{ city }}</option>
+                                            <option value="{{ city|trim }}"
+                                                    {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e'})) %}selected{% elseif location.city is not defined and userAddress and userAddress.city is defined and (userAddress.city == city or userAddress.city == city|replace({'ė':'e'})) %}selected{% endif %}>{{ city }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -326,11 +340,15 @@
                             {#% else %#}
                             <div class="takeaway-yep {% if takeAway == true %}show{% endif %}">
                                 <div class="form-row form-row-required">
-                                    <label>{% trans %}cart.checkout.place_point{% endtrans %}: <span class="checkout-pickup-place-tooltip" title="{% trans %}cart.checkout.pickup_tooltip{% endtrans %}">&nbsp;</span></label>
+                                    <label>{% trans %}cart.checkout.place_point{% endtrans %}: <span
+                                                class="checkout-pickup-place-tooltip"
+                                                title="{% trans %}cart.checkout.pickup_tooltip{% endtrans %}">&nbsp;</span></label>
                                     <select class="custom-select" name="place_point">
                                         {% for point in places_service.getPublicPoints(place) %}
                                             {% if point.pickUp %}
-                                                <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}{% if point.additionalInfo %} ({{ point.additionalInfo }}) {% endif %}</option>
+                                                <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %}
+                                                        value="{{ point.id }}">{{ point.city }}
+                                                    , {{ point.address }}{% if point.additionalInfo %} ({{ point.additionalInfo }}) {% endif %}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>
@@ -347,124 +365,169 @@
 
                             <div class="form-row form-row-required custom-checkbox cart-rules">
                                 <label>{% trans %}cart.checkout.cart_rules{% endtrans %}</label>
-                                <input type="checkbox" name="cart_rules" {% if (dataToLoad is empty or (dataToLoad['cart_rules'] is defined and dataToLoad['cart_rules'] is not empty)) %}checked="checked"{% endif %} />
+                                <input type="checkbox" name="cart_rules"
+                                       {% if (dataToLoad is empty or (dataToLoad['cart_rules'] is defined and dataToLoad['cart_rules'] is not empty)) %}checked="checked"{% endif %} />
                             </div>
                             <div class="form-row custom-checkbox newsletter_subscribe">
                                 <label>{% trans %}cart.checkout.newsletter_subscribe{% endtrans %}</label>
-                                <input type="checkbox" name="newsletter_subscribe" {% if (dataToLoad['newsletter_subscribe'] is defined and dataToLoad['newsletter_subscribe'] is not empty) or newsletter_subscribe_tick_by_default %}checked="checked"{% endif %} />
+                                <input type="checkbox" name="newsletter_subscribe"
+                                       {% if (dataToLoad['newsletter_subscribe'] is defined and dataToLoad['newsletter_subscribe'] is not empty) or newsletter_subscribe_tick_by_default %}checked="checked"{% endif %} />
                             </div>
                             <div class="clearfix"></div>
                             <div class="cupon-info">
                                 {% trans %}general.coupon.popup_link{% endtrans %}
-                                <input type="hidden" name="coupon_code" id="coupon_code" value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}" />
-                                <br /><br />
+                                <input type="hidden" name="coupon_code" id="coupon_code"
+                                       value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}"/>
+                                <br/><br/>
                                 <div class="alert alert-info">{% trans %}general.coupon.note_text{% endtrans %}</div>
                             </div>
-                            <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
+                            <h2 class="section-2">2. {% trans %}
+                                cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
-                                {% if app.user.isBussinesClient|default(false) and app.user.allowDelayPayment|default(false) %}<label class="custom-radio">{% trans %}cart.checkout.corporate_pay{% endtrans %}
-                                    <input type="radio" name="payment-type" value="postpaid"{% if (order is not null and order.paymentMethod == 'postpaid') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'postpaid') or (dataToLoad is empty) %} checked="checked"{% endif %}>
-                                </label>
+                                {% if app.user.isBussinesClient|default(false) and app.user.allowDelayPayment|default(false) %}
+                                    <label class="custom-radio">{% trans %}cart.checkout.corporate_pay{% endtrans %}
+                                    <input type="radio" name="payment-type"
+                                           value="postpaid"{% if (order is not null and order.paymentMethod == 'postpaid') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'postpaid') or (dataToLoad is empty) %} checked="checked"{% endif %}>
+                                    </label>
                                 {% endif %}
                                 {% if not place.disabledPaymentOnDelivery %}
                                     <label class="custom-radio">{% if takeAway %}{% if place.cardOnDelivery %}{% trans %}cart.checkout.cash_cc_on_pickup{% endtrans %}{% else %}{% trans %}cart.checkout.cash_on_pickup{% endtrans %}{% endif %}{% else %}{% trans %}cart.checkout.cash_on_delivery{% endtrans %}{% endif %}
-                                        <input type="radio" name="payment-type" value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local') or (dataToLoad is empty) %} checked="checked"{% endif %}>
+                                        <input type="radio" name="payment-type"
+                                               value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local') or (dataToLoad is empty) %} checked="checked"{% endif %}>
                                     </label>
                                     {% if takeAway != true and place.cardOnDelivery %}
-                                    <label class="custom-radio for_hiding">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
-                                        <input type="radio" name="payment-type" value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
-                                    </label>
+                                        <label class="custom-radio for_hiding">{% trans %}
+                                            cart.checkout.card_on_delivery{% endtrans %}
+                                            <input type="radio" name="payment-type"
+                                                   value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
+                                        </label>
                                     {% endif %}
                                 {% endif %}
                             </div>
 
                             {% if places_service.getAllowOnlinePayment(place) %}
-                            {# TODO kolkas viskas rodo i Paysera#}
+                                {# TODO kolkas viskas rodo i Paysera#}
                                 {% if locale == 'lv' %}
-                                <div class="for_hiding">
-                                    <div class="select-payment clearfix">
-                                        <label class="custom-radio wider-radio">
-                                            {{ 'cart.checkout.gateway_cc'|trans }}:
-                                            <img alt="MasterCard" src="//{{ cloudfront_url }}/bundles/foodapp/images/master-card-small.png">
-                                            <img alt="Visa" src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-small.png">
-                                            <img alt="Maestro" src="//{{ cloudfront_url }}/bundles/foodapp/images/maestro-small.png">
-                                            <img alt="Visa Electron" src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-electron-small.png">
-                                            <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}/>
-                                        </label>
+                                    <div class="for_hiding">
+                                        <div class="select-payment clearfix">
+                                            <label class="custom-radio wider-radio">
+                                                {{ 'cart.checkout.gateway_cc'|trans }}:
+                                                <img alt="MasterCard"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/master-card-small.png">
+                                                <img alt="Visa"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-small.png">
+                                                <img alt="Maestro"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/maestro-small.png">
+                                                <img alt="Visa Electron"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-electron-small.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}/>
+                                            </label>
+                                        </div>
+                                        <div class="select-bank clearfix">
+                                            <label class="custom-radio">
+                                                <img alt="Swedbank"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-swb.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}/>
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="select-bank clearfix">
-                                        <label class="custom-radio">
-                                            <img alt="Swedbank" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-swb.png">
-                                            <input type="radio" name="payment-type" value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}/>
-                                        </label>
-                                    </div>
-                                </div>
                                 {% elseif locale == 'ee' %}
-                                <div class="for_hiding">
-                                    <div class="select-bank clearfix">
-                                        <label class="custom-radio">
-                                            <img alt="SEB" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-seb.png">
-                                            <input type="radio" name="payment-type" value="seb-banklink"{% if order is not null and order.paymentMethod == 'seb-banklink' %} checked="checked"{% endif %}/>
-                                        </label>
+                                    <div class="for_hiding">
+                                        <div class="select-bank clearfix">
+                                            <label class="custom-radio">
+                                                <img alt="SEB"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-seb.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="seb-banklink"{% if order is not null and order.paymentMethod == 'seb-banklink' %} checked="checked"{% endif %}/>
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
                                 {% else %}
-                                <div class="for_hiding">
-                                    <div class="select-payment clearfix">
-                                        <label class="custom-radio">
-                                            <img alt="Nordea" src="//{{ cloudfront_url }}/bundles/foodapp/images/nordea-small.png">
-                                            <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}/>
-                                        </label>
+                                    <div class="for_hiding">
+                                        <div class="select-payment clearfix">
+                                            <label class="custom-radio">
+                                                <img alt="Nordea"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/nordea-small.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}/>
+                                            </label>
+                                        </div>
+                                        <div class="select-payment clearfix">
+                                            <label class="custom-radio wider-radio">
+                                                {{ 'cart.checkout.gateway_cc'|trans }}:
+                                                <img alt="MasterCard"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/master-card-small.png">
+                                                <img alt="Visa"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-small.png">
+                                                <img alt="Maestro"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/maestro-small.png">
+                                                <img alt="Visa Electron"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-electron-small.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}/>
+                                            </label>
+                                        </div>
+                                        <div class="select-bank clearfix">
+                                            <label class="custom-radio">
+                                                <img alt="Šiaulių bankas"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-sb.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="SEB"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-seb.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="seb-banklink"{% if order is not null and order.paymentMethod == 'seb-banklink' %} checked="checked"{% endif %}/>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="Danske Bank"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-db.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="Medicinos bankas"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-mb.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="Swedbank"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-swb.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}/>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="DNB"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-dnb.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="Citadelė"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-cit.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="Paysera"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-psr.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                            </label>
+                                        </div>
                                     </div>
-                                    <div class="select-payment clearfix">
-                                        <label class="custom-radio wider-radio">
-                                            {{ 'cart.checkout.gateway_cc'|trans }}:
-                                            <img alt="MasterCard" src="//{{ cloudfront_url }}/bundles/foodapp/images/master-card-small.png">
-                                            <img alt="Visa" src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-small.png">
-                                            <img alt="Maestro" src="//{{ cloudfront_url }}/bundles/foodapp/images/maestro-small.png">
-                                            <img alt="Visa Electron" src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-electron-small.png">
-                                            <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}/>
-                                        </label>
-                                    </div>
-                                    <div class="select-bank clearfix">
-                                        <label class="custom-radio">
-                                            <img alt="Šiaulių bankas" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-sb.png">
-                                            <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
-                                        </label>
-                                        <label class="custom-radio">
-                                            <img alt="SEB" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-seb.png">
-                                            <input type="radio" name="payment-type" value="seb-banklink"{% if order is not null and order.paymentMethod == 'seb-banklink' %} checked="checked"{% endif %}/>
-                                        </label>
-                                        <label class="custom-radio">
-                                            <img alt="Danske Bank" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-db.png">
-                                            <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
-                                        </label>
-                                        <label class="custom-radio">
-                                            <img alt="Medicinos bankas" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-mb.png">
-                                            <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
-                                        </label>
-                                        <label class="custom-radio">
-                                            <img alt="Swedbank" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-swb.png">
-                                            <input type="radio" name="payment-type" value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}/>
-                                        </label>
-                                        <label class="custom-radio">
-                                            <img alt="DNB" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-dnb.png">
-                                            <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
-                                        </label>
-                                        <label class="custom-radio">
-                                            <img alt="Citadelė" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-cit.png">
-                                            <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
-                                        </label>
-                                        <label class="custom-radio">
-                                            <img alt="Paysera" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-psr.png">
-                                            <input type="radio" name="payment-type" value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
-                                        </label>
-                                    </div>
-                                </div>
                                 {% endif %}
                             {% endif %}
                         </div>
-                        <div class="form-controls clearfix"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a href="#" class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a></div>
+                        <div class="form-controls clearfix"><a
+                                    href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"
+                                    class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a
+                                    href="#" class="submit-button"><span>{% trans %}
+                                    cart.checkout.button_order{% endtrans %}</span></a></div>
                     </form>
                 </div>
                 <div class="content-righter-small">
@@ -487,10 +550,13 @@
                 <form id="coupon_form">
                     <div>
                         <div class="the_text">{% trans %}general.coupon.text{% endtrans %}:</div>
-                        <div class="the_input"><input type="text" name="coupon_code_popup" id="coupon_code_popup" value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}" /></div>
+                        <div class="the_input"><input type="text" name="coupon_code_popup" id="coupon_code_popup"
+                                                      value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}"/>
+                        </div>
                     </div>
                     <div class="popup-controls">
-                        <a href="#" class="button-submit"><span>{% trans %}general.coupon.submit_button{% endtrans %}</span></a>
+                        <a href="#" class="button-submit"><span>{% trans %}
+                                general.coupon.submit_button{% endtrans %}</span></a>
                     </div>
                 </form>
             </div>
