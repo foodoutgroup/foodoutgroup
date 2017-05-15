@@ -3,221 +3,221 @@
 
 {% block jscode %}
     /**
-    * @todo Migrate to JS file
-    */
+     * @todo Migrate to JS file
+     */
     $(document).ready(function(){
-    $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function(event){
-    Cart.submitOrder($(this).closest(".delivery-info-form"));
-    event.stopPropagation();
-    event.preventDefault();
-    return false;
+        $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function(event){
+            Cart.submitOrder($(this).closest(".delivery-info-form"));
+            event.stopPropagation();
+            event.preventDefault();
+            return false;
+        });
+
+        $('.address-change').click(function(e){
+            if($(e.target).is('span') || $(e.target).is('input')) {
+                var click_callback, data_callback;
+
+                click_callback = function(options) {
+                    if (options.response.data.success == 1 &&
+                        options.response.data.adr == 1)
+                    {
+                        if (options.response.data.nodelivery == 1) {
+                            options.dialog.unmask();
+                            $.fancybox.close();
+                            toTakeOrNotToTake();
+                        } else {
+                            window.location.reload();
+                        }
+                    } else {
+                        options.dialog.unmask();
+                        options.alert.show();
+                        setTimeout(function(){
+                            options.alert.hide();
+                        }, 5000);
+                    }
+                }
+
+                data_callback = function() {
+                    return { city: $('.city-row select').val(),
+                             address: $('.address-row input').val(),
+                             place: {{ place.id }} };
+                }
+
+                change_location($('#change-address'),
+                                click_callback,
+                                data_callback,
+                                '{% trans %}cart.checkout.address_change_change{% endtrans %}',
+                                '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
+                                '{{ url('food_ajax', {'action': 'find-address-and-recount'}) }}');
+            }
     });
 
-    $('.address-change').click(function(e){
-    if($(e.target).is('span') || $(e.target).is('input')) {
-    var click_callback, data_callback;
+        function toTakeOrNotToTake() {
+            $('#place-point-not-found').dialog({
+                modal: true,
+                resizable:false,
+                width:360,
+                buttons: {
+                    'i_take_it': {
+                        text: '{% trans %}cart.checkout.i_will_take_it{% endtrans %}',
+                        click: function() {
+                            window.location.href = '{{ path('food_cart', {placeId: place.id, takeAway: 1}) }}';
+                        },
+                    },
+                    'show_the_list': {
+                        text: '{% trans %}cart.checkout.show_me_places{% endtrans %}',
+                        click: function() {
+                            $(this).parent().mask();
+                            window.location.href = '{{ path('food_places_' ~ locale ~ '_main') }}';
+                        }
+                    }
+                }
+            }).siblings('.ui-dialog-titlebar').remove();
+        }
+        $('.tooltip, .checkout-pickup-place-tooltip').tooltip();
 
-    click_callback = function(options) {
-    if (options.response.data.success == 1 &&
-    options.response.data.adr == 1)
-    {
-    if (options.response.data.nodelivery == 1) {
-    options.dialog.unmask();
-    $.fancybox.close();
-    toTakeOrNotToTake();
-    } else {
-    window.location.reload();
-    }
-    } else {
-    options.dialog.unmask();
-    options.alert.show();
-    setTimeout(function(){
-    options.alert.hide();
-    }, 5000);
-    }
-    }
+        $('#coupon_form').bind('submit', function() {
+            $('.coupon_form_popup .button-submit').trigger('click');
+            return false;
+        });
 
-    data_callback = function() {
-    return { city: $('.city-row select').val(),
-    address: $('.address-row input').val(),
-    place: {{ place.id }} };
-    }
+        $('.coupon_form_popup .button-submit').bind('click', function() {
+            var couponField = $('input#coupon_code_popup');
+            var popupInner = $(this).closest('.coupon_inner');
+            var currentUrl  = window.location.href;
+            popupInner.mask();
 
-    change_location($('#change-address'),
-    click_callback,
-    data_callback,
-    '{% trans %}cart.checkout.address_change_change{% endtrans %}',
-    '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
-    '{{ url('food_ajax', {'action': 'find-address-and-recount'}) }}');
-    }
-    });
+            $.ajax({
+                type: 'GET',
+                url: '{{ path('food_ajax', {'action': 'check-coupon'}) }}',
+                data:  {
+                            place_id: '{{ place.id }}',
+                            coupon_code: couponField.val(),
+                            currentUrl: currentUrl
+                        },
+                success:  function(resp){
+                    if (resp.status == 1) {
+                        var takeAway = 0;
+                        if ($('input[name="delivery-type"]:checked').val() == 'pickup') {
+                            takeAway = 1;
+                        }
+                        $.post('{{ path('food_cart_action', {'action' : 'refresh'}) }}', { place: {{ place.id }}, in_cart: 1, coupon_code: couponField.val(), take_away: takeAway }, function(response) {
+                            if (typeof(response.block) != "undefined") {
+                                $('.check-block').replaceWith(response.block);
+                            }
+                            popupInner.unmask();
+                            // move data to main form
+                            $('#coupon_code').val(couponField.val());
+                            couponField.val('');
+                            popupInner.find('.alert.alert-danger').remove();
+                            $.fancybox.close();
+                        }, 'json');
+                    } else {
+                        var dangerAlert = popupInner.find('.alert.alert-danger');
+                        $('#coupon_code').val('');
+                        if (dangerAlert.length > 0) {
+                            dangerAlert.html(resp.data.error);
+                        } else {
+                            popupInner.prepend('<div class="alert alert-danger">'+resp.data.error+'</div>');
+                        }
+                        popupInner.unmask();
+                    }
+                }
+            });
+        });
 
-    function toTakeOrNotToTake() {
-    $('#place-point-not-found').dialog({
-    modal: true,
-    resizable:false,
-    width:360,
-    buttons: {
-    'i_take_it': {
-    text: '{% trans %}cart.checkout.i_will_take_it{% endtrans %}',
-    click: function() {
-    window.location.href = '{{ path('food_cart', {placeId: place.id, takeAway: 1}) }}';
-    },
-    },
-    'show_the_list': {
-    text: '{% trans %}cart.checkout.show_me_places{% endtrans %}',
-    click: function() {
-    $(this).parent().mask();
-    window.location.href = '{{ path('food_places_' ~ locale ~ '_main') }}';
-    }
-    }
-    }
-    }).siblings('.ui-dialog-titlebar').remove();
-    }
-    $('.tooltip, .checkout-pickup-place-tooltip').tooltip();
+        $('#company_order').on('ifToggled', function(event){
+            if (event.target.checked) {
+                $('.company_data').removeClass('hidden');
+            } else {
+                $('.company_data').addClass('hidden');
+            }
+        });
 
-    $('#coupon_form').bind('submit', function() {
-    $('.coupon_form_popup .button-submit').trigger('click');
-    return false;
-    });
-
-    $('.coupon_form_popup .button-submit').bind('click', function() {
-    var couponField = $('input#coupon_code_popup');
-    var popupInner = $(this).closest('.coupon_inner');
-    var currentUrl  = window.location.href;
-    popupInner.mask();
-
-    $.ajax({
-    type: 'GET',
-    url: '{{ path('food_ajax', {'action': 'check-coupon'}) }}',
-    data:  {
-    place_id: '{{ place.id }}',
-    coupon_code: couponField.val(),
-    currentUrl: currentUrl
-    },
-    success:  function(resp){
-    if (resp.status == 1) {
-    var takeAway = 0;
-    if ($('input[name="delivery-type"]:checked').val() == 'pickup') {
-    takeAway = 1;
-    }
-    $.post('{{ path('food_cart_action', {'action' : 'refresh'}) }}', { place: {{ place.id }}, in_cart: 1, coupon_code: couponField.val(), take_away: takeAway }, function(response) {
-    if (typeof(response.block) != "undefined") {
-    $('.check-block').replaceWith(response.block);
-    }
-    popupInner.unmask();
-    // move data to main form
-    $('#coupon_code').val(couponField.val());
-    couponField.val('');
-    popupInner.find('.alert.alert-danger').remove();
-    $.fancybox.close();
-    }, 'json');
-    } else {
-    var dangerAlert = popupInner.find('.alert.alert-danger');
-    $('#coupon_code').val('');
-    if (dangerAlert.length > 0) {
-    dangerAlert.html(resp.data.error);
-    } else {
-    popupInner.prepend('<div class="alert alert-danger">'+resp.data.error+'</div>');
-    }
-    popupInner.unmask();
-    }
-    }
-    });
-    });
-
-    $('#company_order').on('ifToggled', function(event){
-    if (event.target.checked) {
-    $('.company_data').removeClass('hidden');
-    } else {
-    $('.company_data').addClass('hidden');
-    }
-    });
-
-    var orderingHours = [];
-    {% for day, dayInfo in workingHoursForInterval %}
-        orderingHours['{{ day }}'] = [{% for hourInfo in  dayInfo%}{% if loop.index0 != 0 %},{% endif %}'{{ hourInfo }}'{% endfor %}];
-    {% endfor %}
+        var orderingHours = [];
+        {% for day, dayInfo in workingHoursForInterval %}
+            orderingHours['{{ day }}'] = [{% for hourInfo in  dayInfo%}{% if loop.index0 != 0 %},{% endif %}'{{ hourInfo }}'{% endfor %}];
+        {% endfor %}
 
 
-    $("#pre_order_date").on( "selectmenuselect", function( event, ui ) {
-    changeTheTimes(ui.value);
-    });
-    function changeTheTimes(newDate) {
-    var newHtml = "";
-    for (var cnt = 0; cnt < orderingHours[newDate].length; cnt++) {
-    newHtml+='<option value="'+orderingHours[newDate][cnt]+'">'+orderingHours[newDate][cnt]+'</option>' + "\n";
-    }
-    $("#pre_order_time").html(newHtml).selectmenu();
-    }
+        $("#pre_order_date").on( "selectmenuselect", function( event, ui ) {
+            changeTheTimes(ui.value);
+        });
+        function changeTheTimes(newDate) {
+            var newHtml = "";
+            for (var cnt = 0; cnt < orderingHours[newDate].length; cnt++) {
+                newHtml+='<option value="'+orderingHours[newDate][cnt]+'">'+orderingHours[newDate][cnt]+'</option>' + "\n";
+            }
+            $("#pre_order_time").html(newHtml).selectmenu();
+        }
 
     });
 {% endblock %}
 {% block ga_js_code %}
     $(document).ready(
-    function() {
-    $('body .delivery-type-radios .custom-radio, body .delivery-type-radios .custom-radio .iCheck-helper').click(
-    function(){
-    var opt = "";
-    if ($(this).is('.custom-radio')) {
-    opt = $(this).find('input').val();
+        function() {
+            $('body .delivery-type-radios .custom-radio, body .delivery-type-radios .custom-radio .iCheck-helper').click(
+                function(){
+                    var opt = "";
+                    if ($(this).is('.custom-radio')) {
+                        opt = $(this).find('input').val();
 
-    } else {
-    opt = $(this).parent().find('input').val();
-    }
+                    } else {
+                        opt = $(this).parent().find('input').val();
+                    }
 
-    var nav = '{{ place.navision }}';
+                    var nav = '{{ place.navision }}';
 
-    with ($('.for_hiding')) {
-    if ('1' === nav) {
-    if (opt == 'pickup') {
-    $('.iradio input[type="radio"]', '.select-payment, .select-bank').iCheck('uncheck');
-    hide();
-    } else {
-    show();
-    }
-    }
-    }
+                    with ($('.for_hiding')) {
+                        if ('1' === nav) {
+                            if (opt == 'pickup') {
+                                $('.iradio input[type="radio"]', '.select-payment, .select-bank').iCheck('uncheck');
+                                hide();
+                            } else {
+                                show();
+                            }
+                        }
+                    }
 
-    ga('ec:setAction', 'checkout_option', {'step': 2, 'option': opt});
-    }
-    );
+                    ga('ec:setAction', 'checkout_option', {'step': 2, 'option': opt});
+                }
+            );
 
 
-    $('body .cart-rules.custom-checkbox, body .cart-rules.custom-checkbox .iCheck-helper').click(
-    function(){
-    var opt = "";
-    if ($(this).is('.custom-radio')) {
-    opt = $(this).find('input').is(':checked');
+            $('body .cart-rules.custom-checkbox, body .cart-rules.custom-checkbox .iCheck-helper').click(
+                function(){
+                    var opt = "";
+                    if ($(this).is('.custom-radio')) {
+                        opt = $(this).find('input').is(':checked');
 
-    } else {
-    opt = $(this).parent().find('input').is(':checked');
-    }
-    ga('ec:setAction', 'checkout_option', {'step': 4, 'option': opt});
-    }
-    );
-    }
+                    } else {
+                        opt = $(this).parent().find('input').is(':checked');
+                    }
+                    ga('ec:setAction', 'checkout_option', {'step': 4, 'option': opt});
+                }
+            );
+        }
     );
 
     function checkDeliveryPrice(item){
-    var checkIfneeded = $('.delivery-price .fr').attr('data-true')
+        var checkIfneeded = $('.delivery-price .fr').attr('data-true')
 
-    if(checkIfneeded == 1){
-    $.ajax({
-    type: 'post',
-    url: '{{ url('food_ajax', {'action': 'delivery-price'}) }}',
-    data: {
-    time:$(item).val(),
-    restaurant:{{ place.id }}
-    },
-    success: function (data) {
+        if(checkIfneeded == 1){
+            $.ajax({
+                 type: 'post',
+                 url: '{{ url('food_ajax', {'action': 'delivery-price'}) }}',
+                 data: {
+                        time:$(item).val(),
+                        restaurant:{{ place.id }}
+                       },
+                 success: function (data) {
 
-    if(data){
-    $('.delivery-price .fr').text('{{ currency_iso}}'+data.toFixed(2));
-    }
-    }
-    });
-    }
+                    if(data){
+                        $('.delivery-price .fr').text('{{ currency_iso}}'+data.toFixed(2));
+                    }
+                 }
+             });
+        }
     }
 
 {% endblock %}
@@ -228,22 +228,22 @@
     {% include 'FoodDishesBundle:Place:dish_cart_partial.html.twig' %}
 
     {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}
-    <script src="{{ asset_url }}" type="text/javascript"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            Cart.placeId = {{ place.id }};
-            Cart.locale = '{{ app.request.get('_locale') }}';
-            Cart.bindEvents();
-        });
-    </script>
-
-    {% if takeAway and '1' == place.navision %}
+        <script src="{{ asset_url }}" type="text/javascript"></script>
         <script type="text/javascript">
-            $(window).load(function() {
-                $('.for_hiding').hide();
+            $(document).ready(function(){
+                Cart.placeId = {{ place.id }};
+                Cart.locale = '{{ app.request.get('_locale') }}';
+                Cart.bindEvents();
             });
         </script>
-    {% endif %}
+
+        {% if takeAway and '1' == place.navision %}
+            <script type="text/javascript">
+                $(window).load(function() {
+                    $('.for_hiding').hide();
+                });
+            </script>
+        {% endif %}
     {% endjavascripts %}
     <div class="site-center">
         <div class="site-block">
@@ -283,21 +283,26 @@
                                 <label><br></label>
                                 <div class="delivery-type-radios clearfix">
 
-                                    {% if place.deliveryOptions == 'pedestrian'%}
+                                    {% if place.deliveryOptions == 'pedestrian' %}
                                         <label class="custom-radio">{% trans %}cart.checkout.pedestrian{% endtrans %}
-                                            <input type="radio" name="delivery-type" value="pedestrian"{% if ((order is not null and order.deliveryType == 'pedestrian') or order is null)%} checked="checked"{% endif %}>
+                                            <input type="radio" name="delivery-type"
+                                                   value="pedestrian"{% if ((order is not null and order.deliveryType == 'pedestrian') or order is null) %} checked="checked"{% endif %}>
                                         </label>
                                     {% else %}
 
                                         {% if place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'delivery' %}
-                                            <label class="custom-radio">{% trans %}cart.checkout.delivery_to_home{% endtrans %}
-                                                <input type="radio" name="delivery-type" value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
+                                            <label class="custom-radio">{% trans %}
+                                                cart.checkout.delivery_to_home{% endtrans %}
+                                                <input type="radio" name="delivery-type"
+                                                       value="deliver"{% if ((order is not null and order.deliveryType == 'deliver') or order is null) and takeAway == false %} checked="checked"{% endif %}>
                                             </label>
                                         {% endif %}
 
                                         {% if (place.deliveryOptions == 'delivery_and_pickup' or place.deliveryOptions == 'pickup') %}
-                                            <label class="custom-radio">{% trans %}cart.checkout.delivery_i_pickup{% endtrans %}
-                                                <input type="radio" name="delivery-type" value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
+                                            <label class="custom-radio">{% trans %}
+                                                cart.checkout.delivery_i_pickup{% endtrans %}
+                                                <input type="radio" name="delivery-type"
+                                                       value="pickup"{% if (order is not null and order.deliveryType == 'pickup') or takeAway == true %} checked="checked"{% endif %}>
                                             </label>
                                         {% endif %}
                                     {% endif %}
