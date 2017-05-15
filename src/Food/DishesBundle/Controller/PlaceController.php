@@ -133,6 +133,7 @@ class PlaceController extends Controller
 
         $util = new Misc($this->container);
         $cityBreadcrumb = $util->getCityBreadcrumbs($locationData['city']);
+        $takeAway = ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup);
 
         return $this->render(
             'FoodDishesBundle:Place:index.html.twig',
@@ -144,6 +145,8 @@ class PlaceController extends Controller
                 'alreadyWrote' => $alreadyWrote,
                 'placeCategories' => $categoryList,
                 'dishService' => $dishService,
+                'location' => $this->get('food.googlegis')->getLocationFromSession(),
+                'takeAway' => $takeAway,
                 // 'selectedCategory' => $activeCategory,
                 'placePoints' => $placePoints,
                 'placePointsAll' => $placePointsAll,
