@@ -299,10 +299,12 @@ class OrderService extends ContainerAware
 
             $timeShift = $miscService->parseTimeToMinutes($placeService->getDeliveryTime($placeRecord));
 
-            if (empty($timeShift) || $timeShift <= 0 && $deliveryType != 'pedestrian') {
+            if (empty($timeShift) || $timeShift <= 0) {
                 $timeShift = 60;
-            }else{
-                $timeShift =  $this->container->get('food.places')->getPedestrianDeliveryTime();
+            }
+
+            if($deliveryType == 'pedestrian') {
+                $timeShift = $this->container->get('food.places')->getPedestrianDeliveryTime();
             }
 
             $deliveryTime = new \DateTime("now");
