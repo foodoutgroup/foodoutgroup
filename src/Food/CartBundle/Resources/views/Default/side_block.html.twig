@@ -168,7 +168,7 @@
         {% endif %}
 
         {# Nemokamas pristatymas nuo XX eur #}
-        {% if place.deliveryOptions != 'pickup' and enable_free_delivery_for_big_basket and not freeDelivery %}
+        {% if place.deliveryOptions != 'pickup' and enable_free_delivery_for_big_basket and not freeDelivery and hide_delivery == false %}
             {% if left_sum > 0 and self_delivery == 0 %}
                 <div class="alert alert-warning text-left left-to-free-message">
                     <span>{% trans with {'%left_sum%': left_sum} %}cart.left_to_free_delivery{% endtrans %}</span>
