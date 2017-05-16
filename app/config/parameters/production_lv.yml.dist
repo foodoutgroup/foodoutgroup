@@ -35,8 +35,6 @@ parameters:
     locales_hidden: ['en','ru']
     available_cities: ["Rīga", "Ogre", "Jurmala", "Jelgava"]
     available_cities_slugs: ["Riga", "Ogre", "Jurmala", "Jelgava"]
-    available_locales: ["lv", "en", "ru"]
-    available_locales_routing: lv | en | ru
     cloudfront_url: foodout.lv
     time_zone: "Europe/Riga"
     sms.sender: "Foodout.lv"

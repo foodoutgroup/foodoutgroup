@@ -1,6 +1,3 @@
-framework:
-    templating:
-        assets_base_urls: { http: ["http://beta.foodout.by"], ssl: ["http://beta.foodout.by"] }
 parameters:
     database_driver: pdo_mysql
     database_host: localhost
@@ -13,23 +10,19 @@ parameters:
     mailer_user: null
     mailer_password: null
     secret: f614a15fb30e99a1da1e364412f96c3f98cdaa1f
-
     aws_key: AKIAJN3454YNXAUSJIRA
     aws_secret: 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
     aws_region: eu-west-1
     s3_bucket: foodout-by-invoice
-
     driver.send_to_external: true
     driver.city_filter: ["Minsk"]
     driver.socket_address: tcp://cl1:7778
     driver.socket_hash: apiby
-
-    locale: by
-    locales: ["by", "en"]
+    locale: ru
+    locales: ["ru",'"by", "en"]
+    locales_hidden: []
     available_cities: ["Minsk"]
     available_cities_slugs: ["Minsk"]
-    available_locales: ["by"]
-    available_locales_routing: by
     cloudfront_url: beta.foodout.by
     time_zone: "Europe/Minsk"
     sms.sender: "Foodout.by"
@@ -126,7 +119,6 @@ parameters:
     newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: true
     default_dish_logo: default-dish-logo.png
-
     # seb banklink
     seb:
         banklink.private_key: "/srv/gluster/banklinks/ee/seb/private.key"
@@ -141,21 +133,24 @@ parameters:
         lang: "EST"
         name: "mychef"
         curr: "EUR"
-
     session_memcached_host:     memcached
     session_memcached_port:     11211
     session_memcached_prefix:   foodoutby
     session_memcached_expire:   3600
-
 pirminis_gateway:
     datacash_url: 'https://mars.transaction.datacash.com/Transaction'
     swedbank:
         vtid: "21911859"
         password: "rMUhc7p7"
-
 #evp omg
 evp_web_to_pay:
     credentials:
         project_id: 97017
         sign_password: 211fa07fbd5ca833b4cfd48c462138a9
     use_sandbox: false
+lexik_translation:
+    fallback_locale: '%locale%'
+    managed_locales: '%locales%'
+    resources_registration:
+        type: all
+        managed_locales_only: true
