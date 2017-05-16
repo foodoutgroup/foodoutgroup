@@ -224,7 +224,7 @@
                                         $(document).on('ifToggled', '.cart_delivery_type input', function (e) {
                                             if(e.target.checked) {
                                                 type = e.target.value;
-                                                if(type == "deliver") {
+                                                if(type == "deliver" || type == "pedestrian") {
                                                     if(!addressFound) {
                                                         $('.alert-no-address').removeClass('hidden');
                                                         requestAddress = true;
@@ -241,7 +241,7 @@
 
                                             type = $('.iradio input[name=delivery_type]:checked');
                                             if(type.length >= 1) {
-                                                requestAddress = type.val() == "deliver";
+                                                requestAddress = type.val() == "deliver" || type.val() == "pedestrian";
                                             }
 
                                             if(requestAddress && !addressFound) {
