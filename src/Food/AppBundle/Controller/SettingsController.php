@@ -49,7 +49,7 @@ class SettingsController extends CRUDController
         $session = $this->get('session');
         $data = [];
         foreach ($this->keywordMapCollection as $keyword) {
-            $data[$keyword] = $paramService->getParam($keyword, '');
+            $data[$keyword] = $paramService->getParam($keyword, NULL);
         }
 
         $form = $this->get('form.factory')->createNamedBuilder('settings', 'form', $data, ['csrf_protection' => false]);
@@ -93,7 +93,7 @@ class SettingsController extends CRUDController
 
         $form->add('page_banned', 'choice', [
             'label' => 'Banned page',
-            'choices' => $pageCollection,
+            'choices' => array_merge(['0' => ''], $pageCollection),
             'attr' => [
                 'group' => 'Info pages',
                 'style' => 'margin-bottom:10px',
@@ -102,30 +102,30 @@ class SettingsController extends CRUDController
 
         $form->add('page_email_banned', 'choice', [
             'label' => 'Banned email page',
-            'choices' => $pageCollection
+            'choices' => array_merge(['0' => ''], $pageCollection)
         ]);
 
         $form->add('page_sitemap', 'choice', [
-            'choices' => $pageCollection
+            'choices' => array_merge(['0' => ''], $pageCollection)
         ]);
 
         $form->add('page_help', 'choice', [
             'label' => 'Help page',
-            'choices' => $pageCollection
+            'choices' => array_merge(['0' => ''], $pageCollection)
         ]);
 
         $form->add('page_best_offer', 'choice', [
             'label' => 'Best offer page',
-            'choices' => $pageCollection
+            'choices' => array_merge(['0' => ''], $pageCollection)
         ]);
         $form->add('page_b2b_rules', 'choice', [
             'label' => 'B2B rules page',
-            'choices' => $pageCollection
+            'choices' => array_merge(['0' => ''], $pageCollection)
         ]);
 
         $form->add('page_privacy', 'choice', [
             'label' => 'Privacy page',
-            'choices' => $pageCollection
+            'choices' => array_merge(['0' => ''], $pageCollection)
         ]);
 
         $form->add('page_blog', 'choice', [
