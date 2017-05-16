@@ -66,7 +66,8 @@
         function showFillAddress(){
             $('.alert-no-address').addClass('hidden');
             $('.restaurants-list-controls').removeClass('nab-visible').addClass('nab-hidden');
-            if($('.delivery-type-filter a[class="selected"]').attr("data-type") == "delivery" && !addressFound){
+            type = $('.delivery-type-filter a[class="selected"]').attr("data-type");
+            if((type == "delivery" || type == "pedestrian") && !addressFound){
                 $('.alert-no-address').show().removeClass('hidden');
                 $('.restaurants-list-controls').removeClass('nab-hidden').addClass('nab-visible');
             }
@@ -222,7 +223,8 @@
         };
 
         $(document).on('click','.restaurants-list a',function(e){
-            if($('.alert-no-address:visible').length && $('.delivery-type-filter a[class="selected"]').attr("data-type") == "delivery") {
+            type = $('.delivery-type-filter a[class="selected"]').attr("data-type");
+            if($('.alert-no-address:visible').length && (type == "delivery" || type == "pedestrian")) {
                 e.preventDefault();
                 $('.alert-no-address').shake(3,20,400);
                 {#$("<div>{% trans %}please.fill.address.first{% endtrans %}</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();#}
@@ -240,7 +242,7 @@
                 var params = { city: $('#address_city').val(), address: $('#address').val(), currentUrl: window.location.href };
                 $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
                     if(response.data.success == 1) {
-                        window.location = window.location.href.split("#")[0];
+                        window.location =  '{{ urlToRedirect }}';
                     } else {
                         $("<div>"+response.data.message+"</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
                         e.preventDefault();

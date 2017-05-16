@@ -79,6 +79,7 @@ class DefaultController extends Controller
         return $this->render(
             'FoodPlacesBundle:Default:index.html.twig',
             array(
+                'urlToRedirect' => $this->get('router')->generate('food_places_'.$this->getRequest()->getLocale().'_main'),
                 'recommended' => $recommended,
                 'zaval' => $zaval,
                 'location' => $locData,
@@ -134,6 +135,7 @@ class DefaultController extends Controller
         return $this->render(
             'FoodPlacesBundle:Default:city.html.twig',
             array(
+                'urlToRedirect' => $this->get('router')->generate('food_places_'.$this->getRequest()->getLocale().'_main'),
                 'recommended' => false,
                 'zaval' => false,
                 'location' => $locData,
