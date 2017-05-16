@@ -315,7 +315,7 @@ class ImportExportService extends BaseService
 
     public function setLocale($locale)
     {
-       $availableLocales = array_flip($this->container->getParameter('available_locales'));
+       $availableLocales = array_flip($this->container->getParameter('locales'));
 
         if (!in_array($locale, $availableLocales))
         {

@@ -12,7 +12,7 @@ class ImportController extends CRUDController
         $request = $this->get('request');
         $serviceResp = '';
         $t = $this->get('translator');
-        $localeCollection = $this->container->getParameter('available_locales');
+        $localeCollection = $this->container->getParameter('locales');
 
         $importExportService = $this->container->get('food.import_export_service');
         $fieldMap = $importExportService->getFieldMapForField();
