@@ -26,7 +26,7 @@
                     {% set smallImgClass = '' %}
                 {% endif %}
                 {% if showByHours %}
-                    <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax fancy-box image">
+                    <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" class="click-this-to-real-click image">
                         <img itemprop="image" alt="{{ dish.name }}" src="//{{ cloudfront_url }}/{{ dish.getWebPathThumb('type1') }}" class="dish_larger{{ largeImgClass }}">
                         <img alt="{{ dish.name }}" src="//{{ cloudfront_url }}/{{ dish.getWebPathThumb('type2') }}" class="dish_smaller{{ smallImgClass }}">
                     </a>
@@ -113,7 +113,8 @@
                     {% endif %}
                 {% endif %}
                 {% if showByHours %}
-                    <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax add-to-cart fancy-box"></a>
+                    <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" class="add-to-cart click-this-to-real-click"></a>
+                    <a href="{{ path('food_ajax_dish', {'dish': dish.id }) }}" href2="#detailed-dish-popup" class="fancybox.ajax add-to-card-real-click hidden fancy-box"></a>
                 {% else %}
                     <span class="add-to-cart got-title disabled" title="{% trans %}dishes.no_production{% endtrans %}"></span>
                 {% endif %}
