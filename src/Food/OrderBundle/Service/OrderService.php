@@ -2709,7 +2709,10 @@ class OrderService extends ContainerAware
             $this->logOrder($order, 'NAV_update_prices');
             $returner = $nav->updatePricesNAV($orderRenew);
             sleep(1);
-            $this->logOrder($order, 'NAV_update_prices_return', 'returner', json_encode($returner));
+
+            $logMessage = getErrorFromNav($order->getId());
+
+            $this->logOrder($order, 'NAV_update_prices_return', $logMessage, json_encode($returner));
             if ($returner->return_value == "TRUE") {
                 $this->logOrder($order, 'NAV_process_order');
                 $returner = $nav->processOrderNAV($orderRenew);
@@ -2730,6 +2733,7 @@ class OrderService extends ContainerAware
                 $this->getEm()->refresh($order);
                 $this->logStatusChange($order, self::$status_nav_problems, 'cili_nav_update_price');
                 $order->setOrderStatus(self::$status_nav_problems);
+
                 $this->getEm()->persist($order);
                 $this->getEm()->flush();
             }
