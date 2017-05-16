@@ -15,7 +15,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 class SlugValidator extends ConstraintValidator
 {
 
-    private $regex = '/^(admin|payment|api|js|user|[\/])$/'; //TODO-ML: SUGALVOT KAZKA
+    private $regex = '/^(admin|payment|api|js|user|[\/])$/';
 
     protected $em;
     private $repository;
