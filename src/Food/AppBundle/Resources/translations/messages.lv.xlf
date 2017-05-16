@@ -1566,11 +1566,11 @@
             </trans-unit>
              <trans-unit id="please.fill.address.message.top">
                 <source>please.fill.address.message.top</source>
-                <target>Please provide your current address and find<![CDATA[<br/>]]>local restaurants that deliver to your doorstep.</target>
+                <target>Ievadi savu adresi un atrodi tuvumā esošos restorānus,<![CDATA[<br/>]]> kas veic piegādi līdz pat Tavas mājas durvīm!</target>
             </trans-unit>
             <trans-unit id="please.fill.address.message.bottom">
                 <source>please.fill.address.message.bottom</source>
-                <target><![CDATA[or <u><b><a href="#" class="pickup_click">Choose pick up at the restaurant</a></b></u>]]></target>
+                <target><![CDATA[Vai <u><b><a href="#" class="pickup_click"> izvēlies līdzņemšanu!</a></b></u>]]></target>
             </trans-unit>
             <trans-unit id="please.fill.address.first">
                 <source>please.fill.address.first</source>
