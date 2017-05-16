@@ -15,7 +15,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 class SlugValidator extends ConstraintValidator
 {
 
-    private $regex = '/^(?!admin|payment|api|js|user)([^\/]*)$/';
+    private $regex = '/^(admin|payment|api|js|user|[\/])$/'; //TODO-ML: SUGALVOT KAZKA
 
     protected $em;
     private $repository;
@@ -38,8 +38,9 @@ class SlugValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        if (preg_match($this->regex, $value, $matches)) {
-
+        if (preg_match($this->regex, $value)) {
+            $this->context->addViolation($constraint->message['regex'],[]);
+        } else {
             /**
              * @var $route Slug
              */
@@ -53,9 +54,6 @@ class SlugValidator extends ConstraintValidator
             } else if(mb_strlen(trim($value)) <= 2) {
                 $this->context->addViolation($constraint->message['length'],[]);
             }
-
-        } else {
-            $this->context->addViolation($constraint->message['regex'],[]);
         }
 
     }
