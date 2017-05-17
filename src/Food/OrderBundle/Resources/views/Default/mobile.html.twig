@@ -38,6 +38,18 @@
 {% endblock %}
 {% block body %}
     <style type="text/css">
+        .pedestrian-template-warning{
+            text-align: center;
+            text-transform: uppercase;
+            background-color: red;
+            border-radius: 10px;
+            padding:15px;
+            font-weight: bold;
+            font-size: 25px;
+            letter-spacing: 1px;
+
+        }
+
         form button.btn {
             font-size: 40px;
             padding: 16px;
@@ -61,8 +73,19 @@
         <tr>
             {#<th {% if site_country == 'LV'%}style="background-color:#cd1d36;"{% endif %} colspan="5"><img style="width: 100px; height: 30px;" {%if site_country == 'LV'%} src="/bundles/foodapp/images/logo_food_easter_lv.png" {% else %} src="/bundles/foodapp/images/logo_food_easter_lt.png"{% endif %}> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>#}
             <th {% if site_country == 'LV'%}style="background-color:#cd1d36;"{% endif %} colspan="5"><img style="width: 100px; height: 30px;" {%if site_country == 'LV'%} src="/bundles/foodapp/images/logo_food2.png" {% else %} src="/bundles/foodapp/images/logo_food.png"{% endif %}> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
-
         </tr>
+
+        {% if order.deliveryType == 'pedestrian' %}
+        <tr>
+            <td colspan="5">
+                <div class="pedestrian-template-warning" >
+
+                    {% trans %}mobile.pedestrian_warning{% endtrans %}
+                </div>
+            </td>
+        </tr>
+        {% endif %}
+
         <tr>
             <th style="width: 30px">#</th>
             <th>{% trans %}mobile.order_dish{% endtrans %}</th>
@@ -246,12 +269,13 @@
         {% endif %}
         {% endfor %}
         </div>
-
+        {% if order.deliveryType != 'pedestrian' %}
         <div class="form-group">
             <div class="col-sm-6">
                 <button type="button" onclick="showPrepareTimePrompt();" class="btn btn-primary btn-block placepointPrepareTime">{% trans %}mobile.order_confirm_prepareTimeOther{% endtrans %}</button>
             </div>
         </div>
+        {% endif %}
 
         {% endif %}
         {% if order.orderStatus == "new" %}

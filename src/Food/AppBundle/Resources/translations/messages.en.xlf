@@ -318,6 +318,10 @@
                 <source>mobile.order_dish</source>
                 <target>Patiekalas</target>
             </trans-unit>
+            <trans-unit id="ceb80ce24895534499f2a5a28a707fbf" resname="mobile.pedestrian_warning">
+                <source>mobile.pedestrian_warning</source>
+                <target>Fast order</target>
+            </trans-unit>
             <trans-unit id="6579716641cda122d1f726af7a28cbb3" resname="mobile.order_quantity">
                 <source>mobile.order_quantity</source>
                 <target>Kiekis</target>
