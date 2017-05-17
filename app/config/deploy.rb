@@ -9,9 +9,9 @@ set :model_manager, "doctrine"
 set :branch, "feature/language_l10n_fix_and_update"
 
 # multi-stage environment
-set :stages,        %w(betalt betalv production production_lv production_ee pipiras)
+set :stages,        %w(betalt betalv betaby production production_lv production_ee pipiras)
 # isijungiam kada reik :)
-set :default_stage, "betalv"
+set :default_stage, "betaby"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 
