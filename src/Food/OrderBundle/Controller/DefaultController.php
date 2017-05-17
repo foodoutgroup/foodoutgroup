@@ -31,7 +31,7 @@ class DefaultController extends Controller
             // Validate stats change, and then perform :P
             $formStatus = $request->get('status');
             if ($orderService->isValidOrderStatusChange($currentOrderStatus, $this->formToEntityStatus($formStatus))) {
-                switch($formStatus) {
+                switch ($formStatus) {
                     case 'confirm':
                         $orderService->statusAccepted('restourant_mobile');
 
@@ -39,24 +39,24 @@ class DefaultController extends Controller
                         break;
 
                     case 'delay':
-                        $orderService->statusDelayed('restourant_mobile', 'delay reason: '.$request->get('delay_reason'));
+                        $orderService->statusDelayed('restourant_mobile', 'delay reason: ' . $request->get('delay_reason'));
                         $orderService->getOrder()->setDelayed(true);
                         $orderService->getOrder()->setDelayReason($request->get('delay_reason'));
                         $orderService->getOrder()->setDelayDuration($request->get('delay_duration'));
                         $orderService->saveDelay();
-                    break;
+                        break;
 
                     case 'cancel':
                         $orderService->statusCanceled('restourant_mobile');
-                    break;
+                        break;
 
                     case 'finish':
                         $orderService->statusFinished('restourant_mobile');
-                    break;
+                        break;
 
                     case 'completed':
                         $orderService->statusCompleted('restourant_mobile');
-                    break;
+                        break;
                 }
 
                 $orderService->saveOrder();
@@ -75,9 +75,18 @@ class DefaultController extends Controller
                 $this->get('logger')->alert($errorMessage);
             }
         }
-        $placepointPrepareTimes = $this->get('food.app.utils.misc')->getParam('placepoint_prepare_times');
+
+        $paramService = $this->get('food.app.utils.misc');
+
+        if ($order->getDeliveryType() == 'pedestrian') {
+            $placepointPrepareTimes = $paramService->getParam('placepoint_prepare_times_pedestrian');
+        } else {
+            $placepointPrepareTimes = $paramService->getParam('placepoint_prepare_times');
+        }
+
         $placepointPrepareTimes = explode(',', $placepointPrepareTimes);
         $dispatcherPhone = $this->container->getParameter('dispatcher_contact_phone');
+
         return $this->render('FoodOrderBundle:Default:mobile.html.twig', array(
             'order' => $order,
             'dispatcherPhone' => $dispatcherPhone,
@@ -101,37 +110,37 @@ class DefaultController extends Controller
         }
 
         if ($request->isMethod('post')) {
-            switch($request->get('status')) {
+            switch ($request->get('status')) {
                 case 'confirm':
                     $orderService->statusAccepted('admin_mobile');
-                break;
+                    break;
 
                 case 'delay':
-                    $orderService->statusDelayed('admin_mobile', 'delay reason: '.$request->get('delay_reason'));
+                    $orderService->statusDelayed('admin_mobile', 'delay reason: ' . $request->get('delay_reason'));
                     $orderService->getOrder()->setDelayed(true);
                     $orderService->getOrder()->setDelayReason($request->get('delay_reason'));
                     $orderService->getOrder()->setDelayDuration($request->get('delay_duration'));
                     $orderService->saveDelay();
                     $orderService->getOrderByHash($hash);
-                break;
+                    break;
 
                 case 'cancel':
                     $orderService->statusCanceled('admin_mobile');
                     // Order has been canceled by admins - inform restourant
                     $orderService->informPlaceCancelAction();
-                break;
+                    break;
 
                 case 'finish':
                     $orderService->statusFinished('admin_mobile');
-                break;
+                    break;
 
                 case 'completed':
                     $orderService->statusCompleted('admin_mobile');
-                break;
+                    break;
 
                 case 'partialy_completed':
                     $orderService->statusPartialyCompleted('admin_mobile');
-                break;
+                    break;
             }
             $orderService->saveOrder();
 
@@ -149,7 +158,7 @@ class DefaultController extends Controller
      */
     public function mobileDriverAction($hash, Request $request)
     {
-        $orderService =  $this->get('food.order');
+        $orderService = $this->get('food.order');
         $order = $orderService->getOrderByHash($hash);
 
         if (!$order instanceof Order) {
@@ -162,20 +171,20 @@ class DefaultController extends Controller
             // Validate stats change, and then perform :P
             $formStatus = $request->get('status');
             if ($formStatus == 'picked-up' || $orderService->isValidOrderStatusChange($currentOrderStatus, $this->formToEntityStatus($formStatus))) {
-                switch($formStatus) {
+                switch ($formStatus) {
                     case 'completed':
                         $orderService->statusCompleted('driver_mobile');
-                    break;
+                        break;
 
                     case 'picked-up':
                         $orderService->statusPicked('driver_mobile');
-                    break;
+                        break;
 
                     case 'partialy_completed':
                         if ($currentOrderStatus != OrderService::$status_partialy_completed) {
                             $orderService->statusPartialyCompleted('driver_mobile');
                         }
-                    break;
+                        break;
                 }
                 $orderService->saveOrder();
 
@@ -223,7 +232,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @param string$formStatus
+     * @param string $formStatus
      * @return string
      */
     public function formToEntityStatus($formStatus)
