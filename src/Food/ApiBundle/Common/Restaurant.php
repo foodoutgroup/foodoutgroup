@@ -112,6 +112,7 @@ class Restaurant extends ContainerAware
      */
     public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false, $locationData = null, $deliveryType = null)
     {
+
         $placeService = $this->container->get('food.places');
         if (empty($placePoint)) {
             foreach ($place->getPoints() as $pp) {
@@ -160,6 +161,7 @@ class Restaurant extends ContainerAware
         } else {
             $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true : false);
             $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true : false);
+            $pedestrian = (isset($deliveryType) && $deliveryType == OrderService::$deliveryPedestrian ? true : false);
         }
 
         $devPrice = 0;
@@ -234,6 +236,7 @@ class Restaurant extends ContainerAware
                 [
                     'pickup'   => $pickUp,
                     'delivery' => $delivery,
+                    'pedestrian' => $pedestrian
                 ]
             )
             ->set(

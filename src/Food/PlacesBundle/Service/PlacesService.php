@@ -721,17 +721,21 @@ class PlacesService extends ContainerAware
      *
      * @return string
      */
-    public function getDeliveryTime(Place $place, PlacePoint $placePoint = null)
+    public function getDeliveryTime(Place $place, PlacePoint $placePoint = null,$type = false)
     {
-        $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
-        if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
-            $zavalasTimeByPlace = $this->container->get('food.zavalas_service')->getRushHourTimeByPlace($place);
-            if ($zavalasTimeByPlace) {
+        if($type && $type == 'pedestrian'){
+            $deliveryTime = $this->getPedestrianDeliveryTime().' min';
+        }else {
+
+            $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
+            if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
+                $zavalasTimeByPlace = $this->container->get('food.zavalas_service')->getRushHourTimeByPlace($place);
+                if ($zavalasTimeByPlace) {
+                    $deliveryTime = $zavalasTimeByPlace;
+                }
                 $deliveryTime = $zavalasTimeByPlace;
             }
-            $deliveryTime = $zavalasTimeByPlace;
         }
-
         return $deliveryTime;
     }
 
@@ -918,6 +922,7 @@ class PlacesService extends ContainerAware
         }
         return (bool)$dontUseFee;
     }
+
     public function getAdminFee(Place $place)
     {
         $feeSize = $place->getAdminFee();
@@ -928,11 +933,15 @@ class PlacesService extends ContainerAware
         return floatval(str_replace(',', '.',  $feeSize));
     }
 
+    public function getPedestrianDeliveryTime()
+    {
+        return $this->container->get('food.app.utils.misc')->getParam('pedestrian_delivery_time');
+    }
 
-
-    public function getCityName($city){
+    public function getCityName($city)
+    {
         $country = $this->container->getParameter('country');
-        if($country == "LV" && $city == 'Rīga'){
+        if ($country == "LV" && $city == 'Rīga') {
             $city = 'Rīga un pierīga';
         }
 

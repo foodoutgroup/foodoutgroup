@@ -105,6 +105,7 @@ class PlaceController extends Controller
         }
 
         $placeService = $this->get('food.places');
+        $takeAway = ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup);
 
         $variableCollection = [
             'place' => $place,
@@ -119,7 +120,8 @@ class PlaceController extends Controller
             'isTodayNoOneWantsToWork' => $this->get('food.order')->isTodayNoOneWantsToWork($place),
             'breadcrumbData' => $breadcrumbData,
             'current_url' => $current_url,
-            'oldFriendIsHere' => $oldFriendIsHere
+            'oldFriendIsHere' => $oldFriendIsHere,
+            'takeAway' => $takeAway
         ];
 
         if($this->get('food.app.utils.misc')->getParam('reviews_enabled', false)) {

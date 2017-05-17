@@ -29,6 +29,7 @@ class Place extends Uploadable implements Translatable
     const OPT_DELIVERY_AND_PICKUP = 'delivery_and_pickup';
     const OPT_ONLY_DELIVERY = 'delivery';
     const OPT_ONLY_PICKUP = 'pickup';
+    const OPT_ONLY_PEDESTRIAN = 'pedestrian';
 
 
 
@@ -1571,7 +1572,7 @@ class Place extends Uploadable implements Translatable
      */
     public function setDeliveryOptions($deliveryOptions)
     {
-        if (!in_array($deliveryOptions, [self::OPT_DELIVERY_AND_PICKUP, self::OPT_ONLY_DELIVERY, self::OPT_ONLY_PICKUP])) {
+        if (!in_array($deliveryOptions, [self::OPT_DELIVERY_AND_PICKUP, self::OPT_ONLY_DELIVERY, self::OPT_ONLY_PICKUP, self::OPT_ONLY_PEDESTRIAN])) {
             throw new \InvalidArgumentException('Unknown delivery opion: ' . $deliveryOptions);
         }
         $this->deliveryOptions = $deliveryOptions;
@@ -2243,14 +2244,14 @@ class Place extends Uploadable implements Translatable
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -2311,5 +2312,13 @@ class Place extends Uploadable implements Translatable
         return $this->cityId;
     }
 
-
+    /**
+     * Get useAdminFee
+     *
+     * @return boolean
+     */
+    public function getUseAdminFee()
+    {
+        return $this->useAdminFee;
+    }
 }

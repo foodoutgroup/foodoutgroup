@@ -45,6 +45,7 @@ class UserAdmin extends SonataUserAdmin {
             ->add('locked', null, array('label' => 'admin.users.locked'))
             ->add('email', null, array('label' => 'admin.users.email'))
             ->add('phone', null, array('label' => 'admin.users.phone'))
+            ->add('createdAt', 'doctrine_orm_date_range', array('label'=>'admin.users.created_at'), null, array('widget' => 'single_text', 'required' => false,  'attr' => array('class' => 'datepicker2')))
             ->add('place')
             ->add('noInvoice', null, array('label' => 'admin.users.no_invoice'))
             ->add('noMinimumCart', null, array('label' => 'admin.users.no_minimum_cart'))

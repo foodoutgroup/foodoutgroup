@@ -53,6 +53,7 @@ class DriverAdmin extends FoodAdmin
                         'outsource' => $this->trans('admin.driver.type.outsource'),
                         'individual' => $this->trans('admin.driver.type.individual'),
                         '00taxify' => 'Taxify',
+                        'pedestrian' => $this->trans('admin.driver.type.pedestrian'),
                     )
                 )
             )

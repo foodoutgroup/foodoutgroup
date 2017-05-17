@@ -1524,6 +1524,14 @@
                 <source>admin.order.details.dish_name</source>
                 <target>Dish</target>
             </trans-unit>
+            <trans-unit id="admin.order.details.all">
+                <source>admin.order.details.all</source>
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.count">
+                <source>admin.order.details.count</source>
+                <target>Quantity</target>
+            </trans-unit>
             <trans-unit id="admin.order.details.price">
                 <source>admin.order.details.price</source>
                 <target>Price</target>
@@ -2232,6 +2240,10 @@
             <trans-unit id="admin.driver.type.local">
                 <source>admin.driver.type.local</source>
                 <target>Companies</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.type.pedestrian">
+                <source>admin.driver.type.pedestrian</source>
+                <target>pedestrian</target>
             </trans-unit>
             <trans-unit id="admin.driver.type.outsource">
                 <source>admin.driver.type.outsource</source>
@@ -3558,6 +3570,10 @@
             <trans-unit id="admin.settings">
                 <source>admin.settings</source>
                 <target>System settings</target>
+            </trans-unit>
+            <trans-unit id="admin.place.pedestrian">
+                <source>admin.place.pedestrian</source>
+                <target>33 mins</target>
             </trans-unit>
         </body>
     </file>

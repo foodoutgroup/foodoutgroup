@@ -17,7 +17,7 @@ class RestaurantsController extends Controller
     {
 
         $startTime = microtime(true);
-        $this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array) $request);
+        $this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array)$request);
         try {
             /**
              * address,city,lat,lng,cuisines,keyword,offset,limit
@@ -72,6 +72,8 @@ class RestaurantsController extends Controller
                 }
             }
 
+            $this->get('session')->set('filter', $filters);
+
             $response = [
                 'restaurants' => [],
                 '_meta' => [
@@ -107,7 +109,7 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getRestaurantsAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Restaurants:getRestaurantsAction Response:' . print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
@@ -121,7 +123,7 @@ class RestaurantsController extends Controller
     public function getRestaurantsFilteredAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Restaurants:getRestaurantsFilteredAction Request:', (array) $request);
+        $this->get('logger')->alert('Restaurants:getRestaurantsFilteredAction Request:', (array)$request);
         try {
             $address = $request->get('address');
             $city = $request->get('city');
@@ -191,7 +193,7 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getRestaurantsFilteredAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Restaurants:getRestaurantsFilteredAction Response:' . print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
@@ -203,8 +205,9 @@ class RestaurantsController extends Controller
      */
     public function getRestaurantAction($id, Request $request)
     {
+
         $startTime = microtime(true);
-        $this->get('logger')->alert('Restaurants:getRestaurantAction Request: id - ' . $id, (array) $request);
+        $this->get('logger')->alert('Restaurants:getRestaurantAction Request: id - ' . $id, (array)$request);
         try {
             $city = $request->get('city');
             if (!empty($city)) {
@@ -239,6 +242,9 @@ class RestaurantsController extends Controller
             }
 
             $place = $this->get('doctrine')->getRepository('FoodDishesBundle:Place')->find(intval($id));
+
+            $deliveryType = $place->getDeliveryOptions();
+
             $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
                 $place->getId(),
                 $searchCrit,
@@ -247,30 +253,40 @@ class RestaurantsController extends Controller
 
             if (!empty($pointId)) {
                 $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
+
                 $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
                     $place,
                     $placePoint,
                     false,
-                    $this->get('food.googlegis')->getLocationFromSession()
+                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $deliveryType
                 );
             } else {
                 $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
                     $place->getId(),
                     $searchCrit
                 );
+
                 if (!empty($pointId)) {
                     $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
                     $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
                         $place,
                         $placePoint,
                         false,
-                        $this->get('food.googlegis')->getLocationFromSession()
+                        $this->get('food.googlegis')->getLocationFromSession(),
+                        $deliveryType
                     );
                 } else {
-                    $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null, true, $this->get('food.googlegis')->getLocationFromSession());
+                    $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
+                        $place,
+                        null,
+                        true,
+                        $this->get('food.googlegis')->getLocationFromSession(),
+                        $deliveryType
+                    );
                 }
             }
-            $response =  $restaurant->data;
+            $response = $restaurant->data;
         } catch (ApiException $e) {
             $this->get('logger')->error('Restaurants:getRestaurantAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Restaurants:getRestaurantAction Trace1:' . $e->getTraceAsString());
@@ -286,7 +302,7 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getRestaurantAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Restaurants:getRestaurantAction Response:' . print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         $realResponse = new JsonResponse($response);
         $responseHeaders = $realResponse->headers;
@@ -305,7 +321,7 @@ class RestaurantsController extends Controller
     public function getMenuAction($id, Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Restaurants:getMenuAction Request: id - ' . $id, (array) $request);
+        $this->get('logger')->alert('Restaurants:getMenuAction Request: id - ' . $id, (array)$request);
         try {
             $updated_at = $request->get('updated_at');
             $menuItems = $this->get('food_api.api')->createMenuByPlaceId($id, $updated_at);
@@ -336,7 +352,7 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getMenuAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Restaurants:getMenuAction Response:' . print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         $resp = new JsonResponse($response);
         $resp->setMaxAge(1);
@@ -372,7 +388,7 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getMenuItemAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Restaurants:getMenuItemAction Response:' . print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         $resp = new JsonResponse($response);
         $resp->setMaxAge(1);
@@ -397,13 +413,13 @@ class RestaurantsController extends Controller
                     'place' => (int)$id,
                     'active' => 1
                 ),
-                array('lineup'=> 'DESC')
+                array('lineup' => 'DESC')
             );
-            foreach ($items as $key=>$item) {
+            foreach ($items as $key => $item) {
                 $response[] = array(
                     'id' => $item->getId(),
                     'name' => $item->getName(),
-                    'precedence' => ($key+1)
+                    'precedence' => ($key + 1)
                 );
             }
         } catch (ApiException $e) {
@@ -421,7 +437,7 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getMenuCategoriesAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Restaurants:getMenuCategoriesAction Response:' . print_r($response, true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }

@@ -604,6 +604,7 @@ class NavService extends ContainerAware
         */
         $desc = str_replace(["'", '"', ',', '(', ')', '`'], '', $desc);
         $desc = "'" . $desc . "'";
+        $mmCode = "'" . $detail->getDishSizeMmCode() . "'";
         $dataToPut = [
             'Order No_'       => $orderNewId,
             'Line No_'        => $key,
@@ -617,7 +618,7 @@ class NavService extends ContainerAware
             'Discount Amount' => "-" . $discountAmount,
             'Payment'         => $amountForInsert - $discountAmount, //$detail->getPrice() * $detail->getQuantity(),
             'Value'           => "''",
-            'Discount No_'    => "''"
+            'Discount No_'    => $mmCode
         ];
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';

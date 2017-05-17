@@ -39,7 +39,7 @@
                 <target>Choose dishes</target>
             </trans-unit>
             <trans-unit id="c1774d38928cffe44ff5fecf48ca395a" resname="cart.block.edit_row">
-                <source>cart.block.edit_row</source>
+                <source>cart.block.edit_row</source>Užsak. adresas
                 <target>Edit</target>
             </trans-unit>
             <trans-unit id="da8a8494c54d8801c5e01d138431577d" resname="cart.block.order_btn">
@@ -54,9 +54,17 @@
                 <source>cart.checkout.delivery_to_home</source>
                 <target>Home delivery</target>
             </trans-unit>
+            <trans-unit id="ab9dbc0e8b931d30795a4bcbeee01532" resname="cart.checkout.pedestrian">
+                <source>cart.checkout.pedestrian</source>
+                <target>Delivery by pedestrian</target>
+            </trans-unit>
             <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1d" resname="cart.checkout.delivery_i_pickup">
                 <source>cart.checkout.delivery_i_pickup</source>
                 <target>Local pick up</target>
+            </trans-unit>
+            <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1f" resname="cart.checkout.delivery_by_pedestrian">
+                <source>cart.checkout.delivery_by_pedestrian</source>
+                <target>Delivery by pedestrian</target>
             </trans-unit>
             <trans-unit id="91a531cac53e76cf23ca76d224b23c27new" resname="cart.checkout.enter_address">
                 <source>cart.checkout.enter_address</source>

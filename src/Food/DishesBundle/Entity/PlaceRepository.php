@@ -72,8 +72,11 @@ class PlaceRepository extends EntityRepository
 
         // Place filters
         $placeFilter = '';
+
         if (!empty($filters) && is_array($filters)) {
+
             foreach ($filters as $filterName => $filterValue) {
+
                 switch ($filterName) {
                     case 'keyword':
                         if (!empty($filterValue)) {
@@ -93,6 +96,8 @@ class PlaceRepository extends EntityRepository
                                 case OrderService::$deliveryPickup:
                                     $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "pickup")';
                                     break;
+                                case OrderService::$deliveryPedestrian:
+                                    $placeFilter .= ' AND p.delivery_options IN ("pedestrian")';
                                 default:
                                     // Do nothing ;)
                             }

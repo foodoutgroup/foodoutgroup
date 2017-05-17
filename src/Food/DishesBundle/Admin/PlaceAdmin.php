@@ -44,7 +44,8 @@ class PlaceAdmin extends FoodAdmin
             Place::OPT_DELIVERY_AND_PICKUP => $trans->trans('admin.place.delivery_option.delivery_and_pickup'),
             Place::OPT_ONLY_DELIVERY       => $trans->trans('admin.place.delivery_option.delivery'),
             Place::OPT_ONLY_PICKUP         => $trans->trans('admin.place.delivery_option.pickup'),
-        ];
+            Place::OPT_ONLY_PEDESTRIAN     => $trans->trans('admin.place.delivery_option.pedestrian'),
+            ];
 
         $alcoholRules = ['label' => 'admin.place.alcohol_rules', 'required' => false];
         if (!$this->getContainer()->getParameter('alcohol_allowed')) {
@@ -115,19 +116,6 @@ class PlaceAdmin extends FoodAdmin
             ->add('file', 'file', $options)
             ->add('apiHash', 'text', ['label' => 'admin.place.api_hash', 'required' => false])
             ->add('couponURL', 'text', ['label' => 'admin.place.coupon_check_url', 'required' => false])
-            /*
-                ->add('photos', 'sonata_type_collection',
-                    array(
-                        //'by_reference' => true,
-                        'max_length' => 2,
-                        'label' => 'admin.place_cover_photos',
-                    ),
-                    array(
-                        'edit' => 'inline',
-                        'inline' => 'table',
-                    )
-                )
-            */
             ->add('points', 'sonata_type_collection',
                 [
                     //'by_reference' => false,

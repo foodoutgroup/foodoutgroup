@@ -137,6 +137,7 @@
                             {% endif %}
                             <li class="last restaurant-info-tab"><a itemprop="menu" href="{{ current_url }}#detailed-restaurant-info">{% trans %}places.information{% endtrans %}</a></li>
                         </ul>
+
                         <div id="detailed-restaurant-menu" class="detailed-restaurant-menu">
                             <div class="clearfix">
                                 <div class="menu-lefter" id="catmnu">
@@ -181,6 +182,122 @@
                                     {# end of related place collection view #}
                                 </div>
                                 <div class="menu-righter">
+
+                                    <script type="text/javascript">
+                                        var addressFound = {% if location != null and not location.not_found and location.street_found %}true{% else %}false{% endif %};
+                                        var requestAddress = {% if takeAway %}false{% else %}true{% endif %};
+                                        var dialogOpts = {
+                                            modal: true,
+                                            resizable: false,
+                                            buttons: {
+                                                'close': {
+                                                    'text': '{% trans %}general.close_btn{% endtrans %}',
+                                                    'click': function() {
+                                                        $(this).dialog('close');
+                                                    }
+                                                }
+                                            }
+                                        };
+
+
+                                        $(document).on('ifToggled', '.cart_delivery_type input', function (e) {
+                                            if(e.target.checked) {
+                                                type = e.target.value;
+                                                if(type == "deliver" || type == "pedestrian") {
+                                                    if(!addressFound) {
+                                                        $('.alert-no-address').removeClass('hidden');
+                                                        requestAddress = true;
+                                                    }
+                                                } else {
+                                                    $('.alert-no-address').addClass('hidden');
+                                                    requestAddress = false;
+                                                }
+                                            }
+                                        });
+
+                                        $(document).on('click', '.click-this-to-real-click', function(e){
+                                            e.preventDefault();
+
+                                            type = $('.iradio input[name=delivery_type]:checked');
+                                            if(type.length >= 1) {
+                                                requestAddress = type.val() == "deliver" || type.val() == "pedestrian";
+                                            }
+
+                                            if(requestAddress && !addressFound) {
+                                                $('.alert-no-address').removeClass('hidden');
+
+                                                $('html,body').animate({scrollTop: $('#detailed-restaurant-menu').offset().top}, 'fast');
+                                                $('.alert-no-address').shake(3,20,400);
+
+                                            } else {
+                                                $(this).parent().find('.add-to-card-real-click').click();
+                                            }
+                                        });
+
+                                        $(document).on('click','.order-button',function(e){
+                                            if(!addressFound || ($('.alert-no-address:visible').length > 0 && $('.iradio input[name=delivery_type]:checked').val() == "deliver")) {
+                                                e.preventDefault();
+                                                $('.alert-no-address').removeClass('hidden');
+                                                $('html,body').animate({scrollTop: $('#detailed-restaurant-menu').offset().top}, 'fast');
+                                                $('.alert-no-address').shake(3,20,400);
+                                            }
+                                        });
+
+                                        $(document).ready(function() {
+
+                                            $('.pickup_click').click(function () {
+                                                $('.alert-no-address').addClass('hidden');
+                                                requestAddress = false;
+                                                type = $('.iradio input[name=delivery_type]');
+                                                if(type.length >= 1) {
+                                                    $('.delivery_type[value=pickup]').iCheck('check');
+                                                }
+                                            });
+
+                                            $('.submit-address-change').click(function () {
+                                                var params = { city: $('#address_city').val(), address: $('#address').val(), currentUrl: window.location.href };
+                                                $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
+                                                    if(response.data.success == 1) {
+                                                        window.location = window.location.href.split("#")[0];
+                                                    } else {
+                                                        $("<div>" + response.data.message + "</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
+                                                    }
+                                                });
+                                            });
+                                        });
+
+                                        jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
+                                            this.each(function() {
+                                                $(this).css("position","relative");
+                                                for (var x=1; x<=intShakes; x++) {
+                                                    $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
+                                                            .animate({left:intDistance}, ((intDuration/intShakes)/2))
+                                                            .animate({left:0}, (((intDuration/intShakes)/4)));
+                                                }
+                                            });
+                                            return this;
+                                        };
+
+                                    </script>
+
+
+                                    <div class="alert-no-address hidden">
+                                        {% trans %}please.fill.address.message.top{% endtrans %}<br/>
+                                        <div class="input-section">
+                                            <select id="address_city" style="width: 120px;" class="custom-select">
+                                                {% for city in available_cities %}
+                                                    <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e','ī':'i'})) %}selected{% endif %}>{{places_service.getCityName(city)}}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <input type="text"
+                                                   id="address"
+                                                   value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
+                                                   placeholder="{{ 'index.street'|trans }}" />
+                                            <button class="submit-address-change">{% trans %}save.button{% endtrans %}</button>
+                                        </div>
+                                        {% trans %}please.fill.address.message.bottom{% endtrans %}<br/>
+                                    </div>
+
                                     {% if placePointsAll|length == 1 %}
                                         {% if isTodayNoOneWantsToWork == true %}
                                             <div class="alert alert-danger">

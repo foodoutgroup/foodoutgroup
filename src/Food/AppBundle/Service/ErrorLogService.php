@@ -7,7 +7,7 @@ use Food\DishesBundle\Entity\Place;
 use Food\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ErrorLogService extends BaseService
+class ErrorLogService extends ContainerAware
 {
     /**
      * @var object|\Symfony\Component\HttpFoundation\Request
@@ -31,12 +31,12 @@ class ErrorLogService extends BaseService
     public function saveErrorLog($userIp,$user,$cart,$place,$createdAt,$url,$source,$description,$debug){
 
         $error = new ErrorLog();
-        $error->setIp($userIp);
+        $error->setIp($this->container->get('request')->getClientIp());
         $error->setCart($cart);
         $error->setCreatedBy($user);
         $error->setPlace($place);
-        $error->setCreatedAt($createdAt);
-        $error->setUrl($url);
+        $error->setCreatedAt(new \DateTime('now'));
+        $error->setUrl($this->container->get('request')->getRequestUri());
         $error->setSource($source);
         $error->setDescription($description);
         $error->setDebug($debug);

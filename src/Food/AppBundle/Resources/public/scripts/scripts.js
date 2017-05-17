@@ -16,7 +16,7 @@
 
         $(".boxer").boxer({
             callback: function(){
-                $("input:not(.no-icheck)").iCheck();
+                $("#boxer input:not(.no-icheck)").iCheck();
                 $('form.login-form input[name=_username]').focus();
             }
         });

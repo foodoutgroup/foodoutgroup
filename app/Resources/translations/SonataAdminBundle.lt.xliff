@@ -419,6 +419,10 @@
                 <source>admin.place.coupon_check_url</source>
                 <target>HTTP kuponų tikrinimo adresas</target>
             </trans-unit>
+            <trans-unit id="admin.place.pedestrian">
+                <source>admin.place.pedestrian</source>
+                <target>33 min</target>
+            </trans-unit>
             <trans-unit id="admin.place.registered">
                 <source>admin.place.registered</source>
                 <target>Registered</target>
@@ -1235,6 +1239,14 @@
                 <source>admin.order.details.dish_name</source>
                 <target>Patiekalas</target>
             </trans-unit>
+            <trans-unit id="admin.order.details.all">
+                <source>admin.order.details.all</source>
+                <target>Viso</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.count">
+                <source>admin.order.details.count</source>
+                <target>Kiekis</target>
+            </trans-unit>
             <trans-unit id="admin.order.details.price">
                 <source>admin.order.details.price</source>
                 <target>Kaina</target>
@@ -1613,6 +1625,10 @@
                 <source>admin.dispatcher.unassigned_pickup</source>
                 <target>Atsiėmimai restorane</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.unassigned_pedestrian">
+                <source>admin.dispatcher.unassigned_pedestrian</source>
+                <target>Pėstukai (per 33 min)</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unapproved">
                 <source>admin.dispatcher.unapproved</source>
                 <target>Nepatikrinti</target>
@@ -1954,6 +1970,10 @@
             <trans-unit id="admin.driver.type.local">
                 <source>admin.driver.type.local</source>
                 <target>Įmonės</target>
+            </trans-unit>
+            <trans-unit id="admin.driver.type.pedestrian">
+                <source>admin.driver.type.pedestrian</source>
+                <target>Pėstysis</target>
             </trans-unit>
             <trans-unit id="admin.driver.type.outsource">
                 <source>admin.driver.type.outsource</source>

@@ -403,7 +403,7 @@ class City implements \JsonSerializable
     /**
      * Get zavalasOn
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getZavalasOn()
     {
@@ -413,7 +413,7 @@ class City implements \JsonSerializable
     /**
      * Get active
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getActive()
     {
@@ -429,7 +429,7 @@ class City implements \JsonSerializable
     public function addBestOffer(\Food\PlacesBundle\Entity\BestOffer $bestOffers)
     {
         $this->bestOffers[] = $bestOffers;
-    
+
         return $this;
     }
 
@@ -446,7 +446,7 @@ class City implements \JsonSerializable
     /**
      * Get bestOffers
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getBestOffers()
     {

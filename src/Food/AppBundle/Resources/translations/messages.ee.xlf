@@ -1325,6 +1325,22 @@
                 <source>mobile.order.admin_fee_no_vat</source>
                 <target>Adminstreerimistasu (KM-ita)</target>
             </trans-unit>
+            <trans-unit id="please.fill.address.message.top">
+                <source>please.fill.address.message.top</source>
+                <target>Palun sisestage oma kohaletoimetamis aadress<![CDATA[<br/>]]> ja valige omale meelepärane restoran*</target>
+            </trans-unit>
+            <trans-unit id="please.fill.address.message.bottom">
+                <source>please.fill.address.message.bottom</source>
+                <target><![CDATA[Kui <u><b><a href="#" class="pickup_click">kohaletoimetamist ei soovi siis valige lähen ise järele!</a></b></u>]]></target>
+            </trans-unit>
+            <trans-unit id="please.fill.address.first">
+                <source>please.fill.address.first</source>
+                <target>Please fill address first</target>
+            </trans-unit>
+           <trans-unit id="save.button">
+                <source>save.button</source>
+                <target>Save</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

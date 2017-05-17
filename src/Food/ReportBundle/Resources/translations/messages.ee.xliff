@@ -11,6 +11,14 @@
             <trans-unit id="admin.report.mobile_orders" resname="admin.report.mobile_orders">
                 <source>admin.report.mobile_orders</source><target>Mobiili kaudu esitatud tellimused</target>
             </trans-unit>
+            <trans-unit id="admin.report.admin_fee" resname="admin.report.admin_fee">
+                <source>admin.report.admin_fee</source>
+                <target>Admin fee</target>
+            </trans-unit>
+            <trans-unit id="admin.report.total_admin_fee" resname="admin.report.total_admin_fee">
+                <source>admin.report.total_admin_fee</source>
+                <target>Admin fee sum</target>
+            </trans-unit>
             <trans-unit id="admin.report.daily_orders_graph" resname="admin.report.daily_orders_graph">
                 <source>admin.report.daily_orders_graph</source><target>Tellimusi päevas</target>
             </trans-unit>

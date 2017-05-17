@@ -95,6 +95,7 @@ class OrderService extends ContainerAware
     public static $deliveryBoth = "delivery_and_pickup";
     public static $deliveryDeliver = "deliver";
     public static $deliveryPickup = "pickup";
+    public static $deliveryPedestrian = "pedestrian";
 
     /**
      * Payment did not start yet
@@ -264,7 +265,7 @@ class OrderService extends ContainerAware
      *
      * @return Order
      */
-    public function createOrder($placeId, $placePoint = null, $fromConsole = false, $orderDate = null)
+    public function createOrder($placeId, $placePoint = null, $fromConsole = false, $orderDate = null,$deliveryType = null)
     {
         $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
         if (empty($placePoint)) {
@@ -304,10 +305,16 @@ class OrderService extends ContainerAware
                 $timeShift = 60;
             }
 
+            if($deliveryType == 'pedestrian') {
+                $timeShift = $this->container->get('food.places')->getPedestrianDeliveryTime();
+            }
+
             $deliveryTime = new \DateTime("now");
             $deliveryTime->modify("+" . $timeShift . " minutes");
+
         } else {
             $deliveryTime = new \DateTime($orderDate);
+
         }
 
         $this->order->setUser($user);
@@ -1253,35 +1260,36 @@ class OrderService extends ContainerAware
      * @param array|null $userData
      * @param string|null $orderDate
      */
-    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null)
+    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null,$deliveryType = null)
     {
         // TODO Fix prices calculation
-        $this->createOrder($place, $placePoint, false, $orderDate);
-        $this->getOrder()->setDeliveryType(($selfDelivery ? 'pickup' : 'deliver'));
+
+        $this->createOrder($place, $placePoint, false, $orderDate,$deliveryType);
+        $this->getOrder()->setDeliveryType($deliveryType);
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
 
 
         $placeObject = $this->container->get('food.places')->getPlace($place);
-        $priceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
-
+        $totalPriceBeforeDiscount = $this->getCartService()->getCartTotal($this->getCartService()->getCartDishes($placeObject));
         $placesService = $this->container->get('food.places');
         $useAdminFee = $placesService->useAdminFee($placeObject);
 
-        $this->getOrder()->setTotalBeforeDiscount($priceBeforeDiscount);
+        $this->getOrder()->setTotalBeforeDiscount($totalPriceBeforeDiscount);
         $itemCollection = $this->getCartService()->getCartDishes($placeObject);
         $enableDiscount = !$placeObject->getOnlyAlcohol();
 
         // PRE ORDER
         if (!empty($orderDate)) {
             $this->getOrder()->setOrderStatus(self::$status_preorder)->setPreorder(true);
+
         } else if (empty($orderDate) && $selfDelivery) {
             // Lets fix pickup situation
             $miscService = $this->container->get('food.app.utils.misc');
 
             $timeShift = $miscService->parseTimeToMinutes($placeObject->getPickupTime());
 
-            if (empty($timeShift) || $timeShift <= 0) {
+            if (empty($timeShift) || $timeShift <= 0 && $deliveryType != 'pedestrian') {
                 $timeShift = 60;
             }
 
@@ -1290,7 +1298,6 @@ class OrderService extends ContainerAware
         }
 
         $this->saveOrder();
-
         // save extra order data to separate table
         $orderExtra = new OrderExtra();
         $orderExtra->setOrder($this->getOrder());
@@ -1371,14 +1378,17 @@ class OrderService extends ContainerAware
          * Na daugiau kintamuju jau nebesugalvojau :/
          */
         $discountOverTotal = 0;
-        if ($discountSum > $priceBeforeDiscount) {
-            $discountOverTotal = $discountSum - $priceBeforeDiscount;
-            $discountSum = $priceBeforeDiscount;
+        if ($discountSum > $totalPriceBeforeDiscount) {
+            $discountOverTotal = $discountSum - $totalPriceBeforeDiscount;
+            $discountSum = $totalPriceBeforeDiscount;
         }
+
         $discountSumLeft = $discountSum;
         $discountSumTotal = $discountSum;
         $discountUsed = 0;
-        $relationPart = $discountSum / $priceBeforeDiscount;
+        $relationPart = $discountSum / $totalPriceBeforeDiscount;
+
+        $sumTotal = $totalPriceBeforeDiscount - $discountSum;
 
         foreach ($itemCollection as $cartDish) {
 
@@ -1391,7 +1401,9 @@ class OrderService extends ContainerAware
                 if (!$this->getCartService()->isAlcohol($cartDish->getDishId()) && $enableDiscount) {
                     if ($priceBeforeDiscount == $price && $discountPercent > 0) { // todo? :::................... $priceBeforeDiscount == $price
                         $price = round($priceBeforeDiscount * ((100 - $discountPercent) / 100), 2);
+
                         $discountPercentForInsert = $discountPercent;
+
                     } elseif ($discountSumLeft > 0) {
 
                         $discountPart = (float)round($price * $cartDish->getQuantity() * $relationPart * 100, 2) / 100;
@@ -1419,6 +1431,7 @@ class OrderService extends ContainerAware
                 ->setOrderId($this->getOrder())
                 ->setQuantity($cartDish->getQuantity())
                 ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
+                ->setDishSizeMmCode($cartDish->getDishSizeId()->getMmCode())
                 ->setPrice($price)
                 ->setOrigPrice($priceBeforeDiscount)
                 ->setPriceBeforeDiscount($priceBeforeDiscount)
@@ -1427,13 +1440,12 @@ class OrderService extends ContainerAware
                 ->setNameToNav(mb_substr($cartDish->getDishId()->getNameToNav() . $cartDish->getDishSizeId()->getUnit()->getNameToNav(), 0, 32, 'UTF-8'))
                 ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
-                ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
-                ->setDishSizeCode($cartDish->getDishSizeId()->getCode())
                 ->setIsFree($cartDish->getIsFree());
             $this->getEm()->persist($dish);
             $this->getEm()->flush();
 
-            $sumTotal += $cartDish->getQuantity() * $price;
+            // negerai uzduotis https://trello.com/c/tnFVYtaE/1393-wrong-discount-calculation
+            // $sumTotal += $cartDish->getQuantity() * $price;
 
             $optionCollection = $this->getCartService()->getCartDishOptions($cartDish);
             $dishOptionPricesBeforeDiscount = $this->container->get('food.dishes')->getDishOptionsPrices($cartDish->getDishId());
@@ -1480,7 +1492,7 @@ class OrderService extends ContainerAware
                 $this->getEm()->persist($orderOpt);
                 $this->getEm()->flush();
 
-                $sumTotal += $cartDish->getQuantity() * $dishOptionPrice;
+//                $sumTotal += $cartDish->getQuantity() * $dishOptionPrice;
             }
         }
 
@@ -2039,7 +2051,7 @@ class OrderService extends ContainerAware
      */
     public function isValidDeliveryType($type)
     {
-        if (in_array($type, [self::$deliveryDeliver, self::$deliveryPickup])) {
+        if (in_array($type, [self::$deliveryDeliver, self::$deliveryPickup, self::$deliveryPedestrian])) {
             return true;
         }
 
@@ -3500,29 +3512,26 @@ class OrderService extends ContainerAware
                     }
                 } else {
 
-                    $checkPoint = $this->checkWorkingPlace($pointRecord);
+                    $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                    $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
+                    $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
 
-                    if (!$checkPoint) {
-                        $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
-                        $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
-                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
-                    } else {
-                        $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
+                    if (empty($pointRecord)) {
+                        $formErrors[] = 'order.form.errors.no_restaurant_to_deliver';
                     }
-
                 }
             } else {
 
-                if($preOrder == 'it-is'){
+                if ($preOrder == 'it-is') {
                     $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
                     $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
-                    if(!empty($pointRecordId)){
+                    if (!empty($pointRecordId)) {
                         $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
-                    }else{
+                    } else {
                         $formErrors[] = 'cart.checkout.place_point_not_in_radius';
                     }
 
-                }else {
+                } else {
                     $formErrors[] = 'cart.checkout.place_point_not_in_radius';
                 }
 

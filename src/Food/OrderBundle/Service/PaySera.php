@@ -168,6 +168,7 @@ class PaySera extends ContainerAware implements BillingInterface {
         $callbackUrl = $router->generate('paysera_callback', array(), true);
 
         $evpParams = array(
+//            'email' => $order->getOrderExtra()->getEmail(), // padaryta bet neisleista nes kazkam px.
             'projectid' => $this->getProjectId(),
             'sign_password' => $this->getSightPassword(),
             'orderid' => $order->getId(),
