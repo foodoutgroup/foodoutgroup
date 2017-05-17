@@ -104,8 +104,8 @@
                     </span>
                     {% endif %}
 
-                    {% if app.user and app.user.isBussinesClient %}
-                        <span class="business" style="color:#373737; clear:both;">
+                    {% if app.user and (app.user.isBussinesClient or is_granted('ROLE_DISPATCHER')) %}
+                        <span class="business" style="clear:both;">
                             {% if place.selfDelivery or place.onlyAlcohol %}
                                 {% trans %}not.work.for.business.client{% endtrans %}
                             {% else %}

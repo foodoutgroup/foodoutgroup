@@ -79,10 +79,6 @@
             {% for hourInfo in  workingHoursForInterval[useDateForPre] %}
                 <option value="{{ hourInfo }}" {% if dataToLoad is not empty and dataToLoad['pre_order_time'] and dataToLoad['pre_order_time'] == hourInfo%}selected{% endif %} >{{ hourInfo }}</option>
             {% endfor %}
-
-            <script type="text/javascript">
-                $(document).tooltip();
-            </script>
             {#
                                                     <div class="today_times" >
             {% for time in workingHoursToday %}
@@ -106,14 +102,10 @@
     </div>
 </div>
 {# Preorder block end #}
-<div class="form-row">
-    <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
-    <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% else %}{{ userAddress.getComment|default('') }}{% endif %}</textarea>
+<div class="form-row custom-checkbox checkbox-right" style="float: left;">
+    <label>{% trans %}cart.checkout.company{% endtrans %}:</label>
+    <input type="checkbox" name="company" id="company_order" {% if (dataToLoad is not empty and dataToLoad['company'] is defined and dataToLoad['company'] is not empty) %}checked="checked"{% endif %} />
 </div>
-    <div class="form-row custom-checkbox checkbox-right" style="float: left;">
-        <label>{% trans %}cart.checkout.company{% endtrans %}:</label>
-        <input type="checkbox" name="company" id="company_order" {% if (dataToLoad is not empty and dataToLoad['company'] is defined and dataToLoad['company'] is not empty) %}checked="checked"{% endif %} />
-    </div>
 {#{%  if not app.user %}#}
 {#<div class="form-row custom-checkbox checkbox-left" style="float: right;">#}
     {#<label style="padding-top: 0px;">{% trans %}cart.checkout.company_contract{% endtrans %}</label>#}
@@ -149,4 +141,8 @@
         <label>{% trans %}cart.checkout.company_address{% endtrans %}:</label>
         <textarea cols="20" rows="3" name="company_address" class="company_address" placeholder="{% trans %}cart.checkout.company_address_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['company_address'] is not empty) %}{{ dataToLoad['company_address'] }}{% endif %}</textarea>
     </div>
+</div>
+<div class="form-row">
+    <label>{% trans %}cart.checkout.delivery_comment{% endtrans %}:</label>
+    <textarea cols="20" rows="4" name="customer-comment" placeholder="{% trans %}cart.checkout.delivery_comment_placeholder{% endtrans %}">{% if (dataToLoad is not empty and dataToLoad['customer-comment'] is not empty) %}{{ dataToLoad['customer-comment'] }}{% else %}{{ userAddress.getComment|default('') }}{% endif %}</textarea>
 </div>

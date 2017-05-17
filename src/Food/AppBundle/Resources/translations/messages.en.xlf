@@ -1602,6 +1602,11 @@
                 <source>cart.checkout.company_contract_number</source>
                 <target>Contract number</target>
             </trans-unit>
+
+            <trans-unit id="this.payment.method.not.alowed.for.this.place">
+                <source>this.payment.method.not.alowed.for.this.place</source>
+                <target>This payment method not allowed for this place</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
