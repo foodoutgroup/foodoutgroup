@@ -1560,6 +1560,14 @@
                 <source>mobile.order.admin_fee</source>
                 <target>Administrēšanas maksa (ar PVN)</target>
             </trans-unit>
+            <trans-unit id="cart.checkout.company_contract">
+                <source>cart.checkout.company_contract</source>
+                <target>Company has contract with foodout</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.company_contract_number">
+                <source>cart.checkout.company_contract_number</source>
+                <target>Contract number</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

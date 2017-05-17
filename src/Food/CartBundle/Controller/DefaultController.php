@@ -396,9 +396,6 @@ class DefaultController extends Controller
 
                 $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
 
-
-
-
                 // Preorder date formation
                 $orderDate = null;
                 $preOrder = $request->get('pre-order');
@@ -412,7 +409,6 @@ class DefaultController extends Controller
                     $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
                 }
             } else {
-                die;
                 $orderService->setOrder($order);
                 if ($takeAway) {
                     $orderService->getOrder()->setPlacePoint($placePoint);

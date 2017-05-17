@@ -136,8 +136,7 @@
             }
         });
 
-        $(document).on('ifToggled', '#company_order_contract', function(event){
-            alert('aa');
+        $('#company_order_contract').on('ifToggled', function(event){
             if (event.target.checked) {
                 $('.company_contract').removeClass('hidden');
             } else {

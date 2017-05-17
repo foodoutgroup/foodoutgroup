@@ -132,6 +132,14 @@
             }
         });
 
+        $('#company_order_contract').on('ifToggled', function(event){
+            if (event.target.checked) {
+                $('.company_contract').removeClass('hidden');
+            } else {
+                $('.company_contract').addClass('hidden');
+            }
+        });
+
         var orderingHours = [];
         {% for day, dayInfo in workingHoursForInterval %}
             orderingHours['{{ day }}'] = [{% for hourInfo in  dayInfo%}{% if loop.index0 != 0 %},{% endif %}'{{ hourInfo }}'{% endfor %}];
