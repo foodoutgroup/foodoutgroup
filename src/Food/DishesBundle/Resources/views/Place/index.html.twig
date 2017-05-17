@@ -279,14 +279,12 @@
                                         };
 
                                     </script>
-
-
                                     <div class="alert-no-address hidden">
                                         {% trans %}please.fill.address.message.top{% endtrans %}<br/>
                                         <div class="input-section">
                                             <select id="address_city" style="width: 120px;" class="custom-select">
-                                                {% for city in available_cities %}
-                                                    <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e','ī':'i'})) %}selected{% endif %}>{{places_service.getCityName(city)}}</option>
+                                                {% for city in cityService.getActiveCity %}
+                                                    <option label="{{ city }}" value="{{ city.id }}">{{ city.title }}</option>
                                                 {% endfor %}
                                             </select>
                                             <input type="text"

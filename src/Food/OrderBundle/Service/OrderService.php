@@ -2162,7 +2162,7 @@ class OrderService extends ContainerAware
         } else if (is_object($debugData)) {
             if (method_exists($debugData, '__toArray')) {
                 $debugData = 'Class: ' . get_class($debugData) . ' Data: '
-                    . \Doctrine\Common\Util\Debug::export($debugData->__toArray(),100);
+                    . var_export(json_decode(json_encode($debugData->__toArray())));
             } else {
                 $debugData = get_class($debugData);
             }
@@ -2387,8 +2387,10 @@ class OrderService extends ContainerAware
         $notifyEmails = $this->container->getParameter('order.notify_emails');
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
         $dispatchers = $this->container->getParameter('order.accept_notify_emails');
-
-        $userAddress = $order->getAddressId()->toString();
+        $userAddress = '';
+        if (is_object($order->getAddressId())) {
+            $userAddress = $order->getAddressId()->toString();
+        }
 
         $newOrderText = $translator->trans('general.new_unapproved_order.title');
 

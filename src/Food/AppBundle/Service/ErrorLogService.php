@@ -5,6 +5,7 @@ use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Entity\ErrorLog;
 use Food\DishesBundle\Entity\Place;
 use Food\UserBundle\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ErrorLogService extends ContainerAware

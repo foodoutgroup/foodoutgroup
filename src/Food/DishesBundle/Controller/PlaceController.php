@@ -121,7 +121,8 @@ class PlaceController extends Controller
             'breadcrumbData' => $breadcrumbData,
             'current_url' => $current_url,
             'oldFriendIsHere' => $oldFriendIsHere,
-            'takeAway' => $takeAway
+            'takeAway' => $takeAway,
+            'location' => $this->get('food.googlegis')->getLocationFromSession()
         ];
 
         if($this->get('food.app.utils.misc')->getParam('reviews_enabled', false)) {

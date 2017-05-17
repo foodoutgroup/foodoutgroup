@@ -414,7 +414,6 @@ class DefaultController extends Controller
                     $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
                 }
             } else {
-                die;
                 $orderService->setOrder($order);
                 if ($takeAway) {
                     $orderService->getOrder()->setPlacePoint($placePoint);
