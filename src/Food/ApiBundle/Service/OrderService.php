@@ -982,10 +982,12 @@ class OrderService extends ContainerAware
             case FO::$deliveryDeliver:
                 $deliveryType = 'delivery';
                 $time = $order->getPlace()->getDeliveryTime();
+                break;
 
             case FO::$deliveryPedestrian:
                 $deliveryType = 'pedestrian';
                 $time = $this->container->get('food.places')->getPedestrianDeliveryTime().' min.';
+                break;
 
             default:
 
