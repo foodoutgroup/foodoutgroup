@@ -5,6 +5,17 @@
 
 {% block body %}
     <style type="text/css">
+        .pedestrian-template-warning{
+            text-align: center;
+            text-transform: uppercase;
+            background-color: red;
+            border-radius: 10px;
+            padding:15px;
+            font-weight: bold;
+            font-size: 25px;
+            letter-spacing: 1px;
+
+        }
         {% if order.orderStatus in ['canceled', 'canceled_produced'] %}
         body {
             background: #f2dbd4;
@@ -21,6 +32,18 @@
             {#<th colspan="5"><img style="width: 100px;height: 30px" src="/bundles/foodapp/images/logo_food_easter_lt.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>#}
             <th colspan="5"><img style="width: 100px;height: 30px" src="/bundles/foodapp/images/logo_food.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
         </tr>
+
+        {% if order.deliveryType == 'pedestrian' %}
+            <tr>
+                <td colspan="5">
+                    <div class="pedestrian-template-warning" >
+
+                        {% trans %}mobile.pedestrian_warning{% endtrans %}
+                    </div>
+                </td>
+            </tr>
+        {% endif %}
+
         <tr>
             <th style="width: 30px">#</th>
             <th>{% trans %}mobile.order_dish{% endtrans %}</th>

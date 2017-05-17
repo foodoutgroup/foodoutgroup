@@ -486,7 +486,6 @@
                 </ul>
                 {# unapproved / nepatikrinti #}
                 <div id="city-{{ loop.index }}-unapproved">
-                    {{ table.order_table(city.unapproved.deliver, 'unapproved', cityName) }}
 
                     {% if city.unapproved.pedestrian|length %}
                         <div style="text-align: center;">
@@ -496,6 +495,8 @@
                         </div>
                         {{ table.order_table(city.unapproved.pedestrian, 'unapproved-pedestrian', cityName) }}
                     {% endif %}
+
+                    {{ table.order_table(city.unapproved.deliver, 'unapproved', cityName) }}
 
                     {% if city.unapproved.selfdeliver|length %}
                     <div style="text-align: center;">
@@ -518,7 +519,7 @@
 
                 {# unassigned / nepriskirti #}
                 <div id="city-{{ loop.index }}-unassigned">
-                    {{ table.order_table(city.unassigned.deliver, 'unassigned', cityName) }}
+
                     {% if city.unassigned.pedestrian|length %}
                         <div style="text-align: center;">
                             <br />
@@ -527,6 +528,8 @@
                         </div>
                         {{ table.order_table(city.unassigned.pedestrian, 'unassigned-pedestrian', cityName) }}
                     {% endif %}
+
+                    {{ table.order_table(city.unassigned.deliver, 'unassigned', cityName) }}
 
                     {% if city.unassigned.selfdeliver|length %}
                     <div style="text-align: center;">
@@ -550,17 +553,17 @@
                 {# unconfirmed / nepatvirtinti rest. #}
                 <div id="city-{{ loop.index }}-unconfirmed">
 
-                    {{ table.order_table(city.unconfirmed.deliver, 'unconfirmed', cityName) }}
-
-                        {% if city.unconfirmed.pedestrian|length %}
+                    {% if city.unconfirmed.pedestrian|length %}
                         <div style="text-align: center;">
                             <br />
                             <br />
                             <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
                         </div>
                         {{ table.order_table(city.unconfirmed.pedestrian, 'unconfirmed-pedestrian', cityName) }}
-                        {% endif %}
+                    {% endif %}
 
+
+                    {{ table.order_table(city.unconfirmed.deliver, 'unconfirmed', cityName) }}
 
                     {% if city.unconfirmed.selfdeliver|length %}
                     <div style="text-align: center;">
@@ -584,7 +587,6 @@
 
                 {# not_finished / nepristatyti #}
                 <div id="city-{{ loop.index }}-undelivered">
-                    {{ table.order_table(city.not_finished.deliver, 'not_finished', cityName) }}
 
                     {% if city.not_finished.pedestrian|length %}
                         <div style="text-align: center;">
@@ -594,6 +596,8 @@
                         </div>
                         {{ table.order_table(city.not_finished.pedestrian, 'not_finished-pedestrian', cityName) }}
                     {% endif %}
+
+                    {{ table.order_table(city.not_finished.deliver, 'not_finished', cityName) }}
 
                     {% if city.not_finished.selfdeliver|length %}
                         <div style="text-align: center;">
@@ -616,7 +620,6 @@
 
                 {# canceled / atšaukti #}
                 <div id="city-{{ loop.index }}-canceled">
-                    {{ table.order_table(city.canceled.deliver, 'canceled', cityName) }}
 
                     {% if city.canceled.pedestrian|length %}
                         <div style="text-align: center;">
@@ -626,6 +629,8 @@
                         </div>
                         {{ table.order_table(city.canceled.pedestrian, 'canceled-pedestrian', cityName) }}
                     {% endif %}
+
+                    {{ table.order_table(city.canceled.deliver, 'canceled', cityName) }}
 
                     {% if city.canceled.selfdeliver|length %}
                         <div style="text-align: center;">
@@ -648,7 +653,6 @@
 
                 {# nav_problems / probleminiai #}
                 <div id="city-{{ loop.index }}-navproblems">
-                    {{ table.order_table(city.nav_problems.deliver, 'nav_problems', cityName) }}
 
                     {% if city.nav_problems.pedestrian|length %}
                         <div style="text-align: center;">
@@ -659,6 +663,7 @@
                         {{ table.order_table(city.nav_problems.pedestrian, 'nav_problems-selfdeliver', cityName) }}
                     {% endif %}
 
+                    {{ table.order_table(city.nav_problems.deliver, 'nav_problems', cityName) }}
 
                     {% if city.nav_problems.selfdeliver|length %}
                         <div style="text-align: center;">

@@ -115,6 +115,9 @@ tr.hesburger_distinct_color.even {
     background-color: #C0DFEE !important;
 }
 
+.unconfirmed-pedestrian, .unapproved-pedestrian, .unassigned-pedestrian, .undelivered-pedestrian, .canceled-pedestrian, .navproblems-pedestrian{
+    margin-bottom: 30px;
+}
 
 
 td.no-wrap {
