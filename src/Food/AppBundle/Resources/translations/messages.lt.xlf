@@ -734,6 +734,10 @@
                 <source>general.profile.button_save</source>
                 <target>Išsaugoti</target>
             </trans-unit>
+            <trans-unit id="6defb486341307b289948eb8fa05624a" resname="general.profile.block_save">
+                <source>general.profile.block_save</source>
+                <target>Saugoti</target>
+            </trans-unit>
             <trans-unit id="9274e23fa49ef791a605538ff3996088" resname="general.profile.home">
                 <source>general.profile.home</source>
                 <target>Pradžia</target>
