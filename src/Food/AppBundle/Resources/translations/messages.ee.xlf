@@ -234,6 +234,10 @@
             <trans-unit id="ceb80ce24895534499f2a5a28a707fbb" resname="mobile.order_dish">
                 <source>mobile.order_dish</source><target>Toit</target>
             </trans-unit>
+            <trans-unit id="ceb80ce24895534499f2a5a28a707fbf" resname="mobile.pedestrian_warning">
+                <source>mobile.pedestrian_warning</source>
+                <target>Kiire, et</target>
+            </trans-unit>
             <trans-unit id="6579716641cda122d1f726af7a28cbb3" resname="mobile.order_quantity">
                 <source>mobile.order_quantity</source><target>Kogus</target>
             </trans-unit>
@@ -589,6 +593,10 @@
             </trans-unit>
             <trans-unit id="6defb486341307b289948eb8fa05624f" resname="general.profile.button_save">
                 <source>general.profile.button_save</source><target>Salvesta</target>
+            </trans-unit>
+            <trans-unit id="6defb486341307b289948eb8fa05624a" resname="general.profile.block_save">
+                <source>general.profile.block_save</source>
+                <target>Salvesta</target>
             </trans-unit>
             <trans-unit id="9274e23fa49ef791a605538ff3996088" resname="general.profile.home">
                 <source>general.profile.home</source><target>Algus</target>
