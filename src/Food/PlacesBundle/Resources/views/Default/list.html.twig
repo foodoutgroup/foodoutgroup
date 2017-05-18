@@ -2,7 +2,7 @@
     {% if delivery_type_filter == 'pedestrian' %}
     <div class="pedestrian-list-info-container">
         <div class="pedestrian-list-info">
-            {{ misc_utils.getParam('pedestrian_list_text') }}
+            {% trans %}place.pedestrian_info{% endtrans %}
         </div>
     </div>
     {% endif %}
