@@ -982,10 +982,20 @@ class OrderService extends ContainerAware
             case FO::$deliveryDeliver:
                 $deliveryType = 'delivery';
                 $time = $order->getPlace()->getDeliveryTime();
+                $parsedAddress = $miscUtil->parseAddress(
+                // @TODO check if addressId exists
+                    $order->getAddressId()->getAddress()
+                );
+                break;
 
             case FO::$deliveryPedestrian:
                 $deliveryType = 'pedestrian';
                 $time = $this->container->get('food.places')->getPedestrianDeliveryTime().' min.';
+                $parsedAddress = $miscUtil->parseAddress(
+                // @TODO check if addressId exists
+                    $order->getAddressId()->getAddress()
+                );
+                break;
 
             default:
 
