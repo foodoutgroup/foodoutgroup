@@ -2940,3 +2940,21 @@ div.coupon_form_popup {
     display: flex;
     align-items: center;
 }
+
+.main-pedestrian-filter a{
+    color:#CF233A;
+}
+
+.pedestrian-list-info-container{
+    background-color: #ddf398;
+}
+
+.pedestrian-list-info{
+    color:black;
+    font-size: 16px;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    text-align: center;
+}

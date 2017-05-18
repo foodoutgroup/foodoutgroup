@@ -135,7 +135,7 @@
                 <source>places.filter_pickup</source><target>Järeletulemine</target>
             </trans-unit>
             <trans-unit id="places.filter_pedestrian" resname="places.filter_pedestrian">
-                <source>places.filter_pedestrian</source><target>33 min</target>
+                <source>places.filter_pedestrian</source><target>33 min.</target>
             </trans-unit>
             <trans-unit id="places.filter_delivery" resname="places.filter_delivery">
                 <source>places.filter_delivery</source><target>Kohaletoomine</target>
