@@ -348,6 +348,11 @@ class PlacesService extends ContainerAware
 
         $sessionService = $this->container->get('session');
 
+        if ($rush_hour) {
+            $deliveryType = '';
+        } else {
+            $deliveryType = $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver);
+        }
 
         $kitchens = empty($kitchens) ? [] : explode(",", $kitchens);
         if (!empty($slug_filter)) {
@@ -365,8 +370,9 @@ class PlacesService extends ContainerAware
             $filters = explode(",", $filters);
         }
 
-        $filters['delivery_type'] = $rush_hour ? '' : $sessionService->get('delivery_type', OrderService::$deliveryDeliver);
-
+        if (!empty($deliveryType)) {
+            $filters['delivery_type'] = $deliveryType;
+        }
 
         foreach ($kitchens as $kkey => &$kitchen) {
             $kitchen = intval($kitchen);
@@ -724,11 +730,7 @@ class PlacesService extends ContainerAware
 
             $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
             if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
-                $zavalasTimeByPlace = $this->container->get('food.zavalas_service')->getRushHourTimeByPlace($place);
-                if ($zavalasTimeByPlace) {
-                    $deliveryTime = $zavalasTimeByPlace;
-                }
-                $deliveryTime = $zavalasTimeByPlace;
+                $deliveryTime = $this->container->get('food.zavalas_service')->getRushHourTimeByPlace($place);
             }
         }
         return $deliveryTime;

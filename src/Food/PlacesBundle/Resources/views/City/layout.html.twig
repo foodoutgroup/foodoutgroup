@@ -421,6 +421,15 @@
                                 <a href="#" data-type="pickup"
                                    {% if delivery_type_filter == 'pickup' %}class="selected"{% endif %}>{% trans %}
                                     places.filter_pickup{% endtrans %}</a>
+                                {% if places_service.getListPedestrianFilter()  %}
+                                    <div class="main-pedestrian-filter">
+
+                                        <a href="#" data-type="pedestrian" {% if delivery_type_filter == 'pedestrian' %}class="selected"{% endif %}>{% trans %}places.filter_pedestrian{% endtrans %}</a>
+                                        <div class="pedestrian-new-container">
+                                            <img src="/bundles/foodapp/images/tag-new.png">
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     {% endif %}
