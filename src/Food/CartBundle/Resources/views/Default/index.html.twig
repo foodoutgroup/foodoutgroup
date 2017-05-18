@@ -283,7 +283,7 @@
                                 <div class="delivery-type-radios clearfix">
 
                                     {% if place.deliveryOptions == 'pedestrian' %}
-                                        <label class="custom-radio">{% trans %}cart.checkout.pedestrian{% endtrans %}
+                                        <label class="custom-radio">{% trans %}cart.checkout.delivery_by_pedestrian{% endtrans %}
                                             <input type="radio" name="delivery-type"
                                                    value="pedestrian"{% if ((order is not null and order.deliveryType == 'pedestrian') or order is null) %} checked="checked"{% endif %}>
                                         </label>

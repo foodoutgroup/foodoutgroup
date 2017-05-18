@@ -1,4 +1,5 @@
 <?php
+
 namespace Food\PlacesBundle\Service;
 
 use Food\AppBundle\Entity\City;
@@ -49,8 +50,7 @@ class PlacesService extends ContainerAware
         }
 
         return $this->em()->getRepository('FoodDishesBundle:Place')
-            ->find($placeId)
-            ;
+            ->find($placeId);
     }
 
 
@@ -123,14 +123,13 @@ class PlacesService extends ContainerAware
         return $this->em()->getRepository('FoodDishesBundle:FoodCategory')
             ->findBy(
                 [
-                    'place'  => $place->getId(),
+                    'place' => $place->getId(),
                     'active' => 1,
                 ],
                 [
                     'lineup' => 'DESC'
                 ]
-            )
-            ;
+            );
     }
 
     /**
@@ -142,12 +141,12 @@ class PlacesService extends ContainerAware
     {
         return $this->em()->getRepository('FoodDishesBundle:PlacePoint')
             ->findBy([
-                'place'  => $place->getId(),
+                'place' => $place->getId(),
                 'public' => 1,
                 'active' => 1,
             ],
                 [
-                    'city'    => 'DESC',
+                    'city' => 'DESC',
                     'address' => 'ASC'
                 ]
             );
@@ -163,8 +162,7 @@ class PlacesService extends ContainerAware
         return $this->em()->getRepository('FoodDishesBundle:PlacePoint')
             ->findBy([
                 'place' => $place->getId()
-            ])
-            ;
+            ]);
     }
 
     /**
@@ -222,8 +220,7 @@ class PlacesService extends ContainerAware
             ->orderBy('p.averageRating', 'DESC')
             ->addOrderBy('p.reviewCount', 'DESC')
             ->setMaxResults($limit)
-            ->getQuery()
-        ;
+            ->getQuery();
 
         return $placesQuery->getResult();
     }
@@ -280,7 +277,7 @@ class PlacesService extends ContainerAware
     }
 
     /**
-     * @param string     $slug_filter
+     * @param string $slug_filter
      * @param            $request
      * @param bool|false $names
      * @deprecated
@@ -305,8 +302,7 @@ class PlacesService extends ContainerAware
                     $kitchens[] = $item_by_slug->getItemId();
                 } else {
                     $kitchen = $this->container->get('doctrine')
-                        ->getRepository('FoodDishesBundle:Kitchen')->find($item_by_slug->getItemId())
-                    ;
+                        ->getRepository('FoodDishesBundle:Kitchen')->find($item_by_slug->getItemId());
                     if (!empty($kitchen)) {
                         $kitchens[] = $kitchen->getName();
                     }
@@ -498,8 +494,7 @@ class PlacesService extends ContainerAware
             $all_user_address = $this->container->get('doctrine')->getRepository('FoodUserBundle:UserAddress')
                 ->findBy([
                     'user' => $current_user,
-                ])
-            ;
+                ]);
         }
 
         return $all_user_address;
@@ -525,9 +520,9 @@ class PlacesService extends ContainerAware
     }
 
     /**
-     * @param Place           $place
+     * @param Place $place
      * @param PlacePoint|null $placePoint
-     * @param string|null     $dateShift
+     * @param string|null $dateShift
      *
      * @return array
      */
@@ -582,7 +577,7 @@ class PlacesService extends ContainerAware
             if (date('w') != $day ||
                 (date('H', strtotime($strtime)) <= $startHour ||
                     date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) < $startMin) ||
-                        (date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) > 30)
+                (date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) > 30)
             ) {
                 // first open on day +1h
                 if ($firstIntervalOnDay) {
@@ -721,11 +716,11 @@ class PlacesService extends ContainerAware
      *
      * @return string
      */
-    public function getDeliveryTime(Place $place, PlacePoint $placePoint = null,$type = false)
+    public function getDeliveryTime(Place $place, PlacePoint $placePoint = null, $type = false)
     {
-        if($type && $type == 'pedestrian'){
-            $deliveryTime = $this->getPedestrianDeliveryTime().' min';
-        }else {
+        if ($type && $type == 'pedestrian') {
+            $deliveryTime = $this->getPedestrianDeliveryTime() . ' min';
+        } else {
 
             $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
             if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
@@ -863,7 +858,7 @@ class PlacesService extends ContainerAware
      */
     public function getPlaceUrlByCity($placeId, $city)
     {
-        $current_place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find((int) $placeId);
+        $current_place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
         if (!empty($current_place) && !empty($city)) {
             $name = $current_place->getName();
             $repo = $this->em()->getRepository('FoodDishesBundle:PlacePoint');
@@ -886,7 +881,7 @@ class PlacesService extends ContainerAware
     public function getCitiesByPlace($placeId)
     {
         $citiesArr = [];
-        $current_place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find((int) $placeId);
+        $current_place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
         if (!empty($current_place)) {
             $name = $current_place->getName();
             $repo = $this->em()->getRepository('FoodDishesBundle:PlacePoint');
@@ -946,5 +941,19 @@ class PlacesService extends ContainerAware
         }
 
         return $city;
+    }
+
+    public function getListPedestrianFilter()
+    {
+        $return = false;
+        $googleGisService = $this->container->get('food.googlegis');
+        $location = $googleGisService->getLocationFromSession();
+        $cityCheck = $this->em()->getRepository('FoodAppBundle:City')->findOneBy(['title'=>$location['city']]);
+
+        if($cityCheck->getPedestrian()){
+            $return = true;
+        };
+
+        return $return;
     }
 }

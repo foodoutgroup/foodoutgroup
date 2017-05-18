@@ -140,6 +140,13 @@ class City implements \JsonSerializable
     {
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
     }
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="pedestrian", type="boolean", nullable=true)
+     */
+    private $pedestrian;
+
 
     /**
      * Get id
@@ -499,5 +506,28 @@ class City implements \JsonSerializable
     public function setEditedBy($editedBy)
     {
         $this->editedBy = $editedBy;
+    }
+
+    /**
+     * Set pedestrian
+     *
+     * @param boolean $pedestrian
+     * @return City
+     */
+    public function setPedestrian($pedestrian)
+    {
+        $this->pedestrian = $pedestrian;
+
+        return $this;
+    }
+
+    /**
+     * Get pedestrian
+     *
+     * @return boolean
+     */
+    public function getPedestrian()
+    {
+        return $this->pedestrian;
     }
 }

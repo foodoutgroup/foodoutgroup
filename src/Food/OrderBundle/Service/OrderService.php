@@ -1386,7 +1386,10 @@ class OrderService extends ContainerAware
         $discountSumLeft = $discountSum;
         $discountSumTotal = $discountSum;
         $discountUsed = 0;
-        $relationPart = $discountSum / $totalPriceBeforeDiscount;
+        $relationPart = 0;
+        if ($totalPriceBeforeDiscount > 0) {
+            $relationPart = $discountSum / $totalPriceBeforeDiscount;
+        }
 
         $sumTotal = $totalPriceBeforeDiscount - $discountSum;
 

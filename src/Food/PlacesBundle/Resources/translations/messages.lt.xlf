@@ -175,7 +175,7 @@
                 <target>Atsiėmimas</target>
             </trans-unit>
             <trans-unit id="places.filter_pedestrian" resname="places.filter_pedestrian">
-                <source>places.filter_pedestrian</source><target>33 min</target>
+                <source>places.filter_pedestrian</source><target>33 min.</target>
             </trans-unit>
             <trans-unit id="places.filter_delivery" resname="places.filter_delivery">
                 <source>places.filter_delivery</source>
@@ -204,6 +204,10 @@
             <trans-unit id="1214eef8a9c606ec44c7e3b97c349bdb" resname="place.delivery_info">
                 <source>place.delivery_info</source>
                 <target>Pristatymas</target>
+            </trans-unit>
+            <trans-unit id="1214eef8a9c606ec44c7e3b97c349bdf" resname="place.pedestrian_info">
+                <source>place.pedestrian_info</source>
+                <target>Nauja! Išalkai? Ne bėda! Nuo šiol restoranas pagamins, o mes pristatysime Tau maistą neįtikėtinai greitai - TIK PER 33 MINUTES!  Išsirink mėgstamą restoraną ir užsisakyk jau dabar! Kol kas užsakymus per 33 min. pristatome tik, jei esi Vilniaus m. širdyje - Gedimino pr. ar šalia jo, bet prižadame - jau netrukus būti ir Tavo kieme!</target>
             </trans-unit>
             <trans-unit id="place.pickup_info" resname="place.pickup_info">
                 <source>place.pickup_info</source>

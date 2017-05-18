@@ -24,6 +24,7 @@ class CityAdmin extends FoodAdmin
             ->add('zavalas_on', 'boolean', array('label' => 'admin.cities.zavalas_on', 'editable' => true))
             ->add('zavalas_time', null, array('label' => 'admin.cities.zavalas_time', 'editable' => true))
             ->add('active', null, array('label' => 'admin.cities.active', 'editable' => true))
+            ->add('pedestrian', null, array('label' => 'admin.cities.pedestrian', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
@@ -58,6 +59,7 @@ class CityAdmin extends FoodAdmin
             ->add('zavalas_time', 'text', array('label' => 'admin.cities.zavalas_time', 'required' => false))
             ->add('position', 'text', array('required' => false))
             ->add('active', 'checkbox', array('required' => false))
+            ->add('pedestrian', 'checkbox', array('label' => 'admin.cities.pedestrian', 'required' => false))
         ;
 
     }

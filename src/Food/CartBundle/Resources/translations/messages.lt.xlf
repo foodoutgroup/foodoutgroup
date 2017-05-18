@@ -64,7 +64,7 @@
             </trans-unit>
             <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1f" resname="cart.checkout.delivery_by_pedestrian">
                 <source>cart.checkout.delivery_by_pedestrian</source>
-                <target>33 min</target>
+                <target>Pristatysime per 33 minutes</target>
             </trans-unit>
             <trans-unit id="91a531cac53e76cf23ca76d224b23c27new" resname="cart.checkout.enter_address">
                 <source>cart.checkout.enter_address</source>

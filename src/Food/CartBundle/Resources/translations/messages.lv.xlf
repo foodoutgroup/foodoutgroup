@@ -64,7 +64,7 @@
             </trans-unit>
             <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1f" resname="cart.checkout.delivery_by_pedestrian">
                 <source>cart.checkout.delivery_by_pedestrian</source>
-                <target>Piegāde ar gājēju</target>
+                <target>Piegāde 33 minūtēs</target>
             </trans-unit>
             <trans-unit id="91a531cac53e76cf23ca76d224b23c27newlv" resname="cart.checkout.enter_address">
                 <source>cart.checkout.enter_address</source>
