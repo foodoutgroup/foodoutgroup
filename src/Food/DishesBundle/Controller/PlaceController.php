@@ -19,8 +19,8 @@ class PlaceController extends Controller
 {
     public function indexAction($id, $slug, Request $request, $oldFriendIsHere = false)
     {
-
         $session = $this->get('session');
+        $location = $this->get('food.googlegis')->getLocationFromSession();
         if ($session->get('isCallcenter')) {
             $session->set('isCallcenter', false);
         }
@@ -122,7 +122,7 @@ class PlaceController extends Controller
             'current_url' => $current_url,
             'oldFriendIsHere' => $oldFriendIsHere,
             'takeAway' => $takeAway,
-            'location' => $this->get('food.googlegis')->getLocationFromSession()
+            'location' => $location
         ];
 
         if($this->get('food.app.utils.misc')->getParam('reviews_enabled', false)) {

@@ -26,7 +26,7 @@ class CityController extends Controller
         $metaTitle = '';
         $metaDescription = '';
 
-        $this->get('food.googlegis')->setCity($city);
+        $this->get('food.googlegis')->setCity($city, false);
 
         $placeService = $this->get('food.places');
         $kitchenCollection = $placeService->getKitchenCollectionFromSlug($params, $request);

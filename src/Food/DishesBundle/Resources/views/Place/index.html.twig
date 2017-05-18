@@ -182,9 +182,9 @@
                                     {# end of related place collection view #}
                                 </div>
                                 <div class="menu-righter">
-
                                     <script type="text/javascript">
                                         var addressFound = {% if location != null and not location.not_found and location.street_found %}true{% else %}false{% endif %};
+                                        console.log(addressFound);
                                         var requestAddress = {% if takeAway %}false{% else %}true{% endif %};
                                         var dialogOpts = {
                                             modal: true,
