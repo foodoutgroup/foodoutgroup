@@ -22,7 +22,7 @@ class CityController extends Controller
                 throw new NotFoundHttpException('City was not found');
             }
         }
-
+        $userLocation = $this->get('food.googlegis')->getLocationFromSession();
         $metaTitle = '';
         $metaDescription = '';
 
@@ -42,7 +42,7 @@ class CityController extends Controller
             array(
                 'recommended' => in_array('recom',$params), // todo MULTI-L param for recommended list
                 'rush_hour' => in_array('rush', $params), // todo MULTI-L param for rush_hour list
-                'location' => $this->get('food.googlegis')->getLocationFromSession(),
+                'location' => $userLocation,
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
                 'slug_filter' => implode("/", $params),

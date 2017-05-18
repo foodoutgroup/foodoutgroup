@@ -67,9 +67,7 @@ class AjaxController extends Controller
             $city = $cityService->getDefaultCity();
         }
 
-
         $locationInfo = $this->get('food.googlegis')->groupData($address, $city->getTitle(),$city->getId());
-
         $respData = [
             'success' => 0,
             'message' => $this->get('translator')->trans('index.address_not_found'),
@@ -86,6 +84,7 @@ class AjaxController extends Controller
         if (!$locationInfo['address_found']) {
             $respData['adr'] = 1;
         }
+
         if (!$locationInfo['street_found']) {
             $respData['str'] = 1;
         }

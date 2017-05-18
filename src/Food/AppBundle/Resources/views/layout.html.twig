@@ -144,7 +144,6 @@
                 <a href="{{ slug.toHomepage() }}" class="main-logo">
                     <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{{ asset(misc_utils.getParam('site_logo_url')) }}"/>
                 </a>
-                {{ dump(localeService.getAvailable()) }}
                 {% if localeService.getAvailable()|length > 1 %}
                 <div class="langSwitcher" >
                     <div class="lang-drop">

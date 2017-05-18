@@ -139,7 +139,6 @@ class GoogleGisService extends ContainerAware
 
         $location = $this->getPlaceData($address . ', ' . $city);
         $returner = $this->parseDataFromLocation($location, $address);
-
         if ($returner['not_found']) {
             @mail('karolis.m@foodout.lt', 'not found address 1', $address . $city, ['from' => 'info@foodout.lt']);
             $location = $this->getPlaceData($address . ', ' . $city, true);
