@@ -76,6 +76,9 @@ class CityController extends Controller
                 case 'pickup':
                     $this->container->get('session')->set('delivery_type', OrderService::$deliveryPickup);
                     break;
+                case 'pedestrian':
+                    $this->container->get('session')->set('delivery_type', OrderService::$deliveryPedestrian);
+                    break;
             }
         }
 
