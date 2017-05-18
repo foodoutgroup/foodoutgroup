@@ -3074,6 +3074,10 @@
                 <source>admin.cities.zavalas_on</source>
                 <target>Zavalas</target>
             </trans-unit>
+            <trans-unit id="admin.cities.pedestrian">
+                <source>admin.cities.pedestrian</source>
+                <target>Pėstukai</target>
+            </trans-unit>
             <trans-unit id="admin.cities.zavalas_time">
                 <source>admin.cities.zavalas_time</source>
                 <target>Zavalo trukmė</target>

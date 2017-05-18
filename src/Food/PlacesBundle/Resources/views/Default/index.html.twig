@@ -325,7 +325,7 @@
                             <a href="#" data-type="delivery" {% if delivery_type_filter == 'deliver' %}class="selected"{% endif %}>{% trans %}places.filter_delivery{% endtrans %}</a>
                             <a href="#" data-type="pickup" {% if delivery_type_filter == 'pickup' %}class="selected"{% endif %}>{% trans %}places.filter_pickup{% endtrans %}</a>
 
-                            {% if misc_utils.getParam('pedestrian_filter_show') == 1 %}
+                            {% if places_service.getListPedestrianFilter()  %}
                                 <div class="main-pedestrian-filter">
 
                                     <a href="#" data-type="pedestrian" {% if delivery_type_filter == 'pedestrian' %}class="selected"{% endif %}>{% trans %}places.filter_pedestrian{% endtrans %}</a>

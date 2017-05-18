@@ -135,7 +135,7 @@
                 <source>places.filter_pickup</source><target>Järeletulemine</target>
             </trans-unit>
             <trans-unit id="places.filter_pedestrian" resname="places.filter_pedestrian">
-                <source>places.filter_pedestrian</source><target>33 min</target>
+                <source>places.filter_pedestrian</source><target>33 min.</target>
             </trans-unit>
             <trans-unit id="places.filter_delivery" resname="places.filter_delivery">
                 <source>places.filter_delivery</source><target>Kohaletoomine</target>
@@ -157,6 +157,9 @@
             </trans-unit>
             <trans-unit id="1214eef8a9c606ec44c7e3b97c349bdb" resname="place.delivery_info">
                 <source>place.delivery_info</source><target>Kohaletoomine</target>
+            </trans-unit>
+            <trans-unit id="1214eef8a9c606ec44c7e3b97c349bdf" resname="place.pedestrian_info">
+                <source>place.pedestrian_info</source><target></target>
             </trans-unit>
             <trans-unit id="place.pickup_info" resname="place.pickup_info">
                 <source>place.pickup_info</source><target>Järeletulemine pärast</target>

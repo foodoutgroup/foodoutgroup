@@ -3435,6 +3435,10 @@
                 <source>admin.cities.zavalas_on</source>
                 <target>Zavalas</target>
             </trans-unit>
+            <trans-unit id="admin.cities.pedestrian">
+                <source>admin.cities.pedestrian</source>
+                <target>Pedestrian</target>
+            </trans-unit>
             <trans-unit id="admin.cities.zavalas_time">
                 <source>admin.cities.zavalas_time</source>
                 <target>Zavalas time</target>
