@@ -197,7 +197,8 @@ class DefaultController extends Controller
         $googleGisService = $this->container->get('food.googlegis');
 
         $country = $this->container->getParameter('country');
-
+        $session = $request->getSession();
+        $locationData = $session->get('locationData');
         /**
          * @var UserManager $fosUserManager
          */
@@ -221,7 +222,7 @@ class DefaultController extends Controller
         $dataToLoad = [];
 
         // Data preparation for form
-        $placePointMap = $this->container->get('session')->get('point_data');
+        $placePointMap = $session->get('point_data');
         if (!empty($placePointMap) && isset($placePointMap[$placeId]) && !empty($placePointMap[$placeId])) {
             $pointRecord = $this->container->get('doctrine')
                 ->getRepository('FoodDishesBundle:PlacePoint')
@@ -290,9 +291,6 @@ class DefaultController extends Controller
 
         // PreLoad UserAddress Begin
         $address = null;
-        $session = $request->getSession();
-        $locationData = $session->get('locationData');
-
 
         $current_user = $this->container->get('security.context')->getToken()->getUser();
 
