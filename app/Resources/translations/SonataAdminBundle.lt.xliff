@@ -1617,6 +1617,10 @@
                 <source>admin.dispatcher.unassigned_pedestrian</source>
                 <target>Pėstukai (per 33 min)</target>
             </trans-unit>
+             <trans-unit id="admin.dispatcher.normal_orders">
+                <source>admin.dispatcher.normal_orders</source>
+                <target>Įprasti užsakymai</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unapproved">
                 <source>admin.dispatcher.unapproved</source>
                 <target>Nepatikrinti</target>

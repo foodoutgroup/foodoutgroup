@@ -3439,6 +3439,10 @@
                 <source>admin.cities.pedestrian</source>
                 <target>Pedestrian</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.normal_orders">
+                <source>admin.dispatcher.normal_orders</source>
+                <target>Regular orders</target>
+            </trans-unit>
             <trans-unit id="admin.cities.zavalas_time">
                 <source>admin.cities.zavalas_time</source>
                 <target>Zavalas time</target>

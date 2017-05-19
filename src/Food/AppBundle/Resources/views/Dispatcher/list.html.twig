@@ -496,7 +496,13 @@
                         {{ table.order_table(city.unapproved.pedestrian, 'unapproved-pedestrian', cityName) }}
                     {% endif %}
 
+                    <div style="text-align: center;">
+                        <br />
+                        <br />
+                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.normal_orders{% endtrans %}:</h4>
+                    </div>
                     {{ table.order_table(city.unapproved.deliver, 'unapproved', cityName) }}
+
 
                     {% if city.unapproved.selfdeliver|length %}
                     <div style="text-align: center;">
@@ -528,6 +534,12 @@
                         </div>
                         {{ table.order_table(city.unassigned.pedestrian, 'unassigned-pedestrian', cityName) }}
                     {% endif %}
+
+                    <div style="text-align: center;">
+                        <br />
+                        <br />
+                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.normal_orders{% endtrans %}:</h4>
+                    </div>
 
                     {{ table.order_table(city.unassigned.deliver, 'unassigned', cityName) }}
 
@@ -562,6 +574,11 @@
                         {{ table.order_table(city.unconfirmed.pedestrian, 'unconfirmed-pedestrian', cityName) }}
                     {% endif %}
 
+                    <div style="text-align: center;">
+                        <br />
+                        <br />
+                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.normal_orders{% endtrans %}:</h4>
+                    </div>
 
                     {{ table.order_table(city.unconfirmed.deliver, 'unconfirmed', cityName) }}
 
@@ -597,6 +614,12 @@
                         {{ table.order_table(city.not_finished.pedestrian, 'not_finished-pedestrian', cityName) }}
                     {% endif %}
 
+                    <div style="text-align: center;">
+                        <br />
+                        <br />
+                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.normal_orders{% endtrans %}:</h4>
+                    </div>
+
                     {{ table.order_table(city.not_finished.deliver, 'not_finished', cityName) }}
 
                     {% if city.not_finished.selfdeliver|length %}
@@ -630,6 +653,12 @@
                         {{ table.order_table(city.canceled.pedestrian, 'canceled-pedestrian', cityName) }}
                     {% endif %}
 
+                    <div style="text-align: center;">
+                        <br />
+                        <br />
+                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.normal_orders{% endtrans %}:</h4>
+                    </div>
+
                     {{ table.order_table(city.canceled.deliver, 'canceled', cityName) }}
 
                     {% if city.canceled.selfdeliver|length %}
@@ -662,6 +691,12 @@
                         </div>
                         {{ table.order_table(city.nav_problems.pedestrian, 'nav_problems-selfdeliver', cityName) }}
                     {% endif %}
+
+                    <div style="text-align: center;">
+                        <br />
+                        <br />
+                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.normal_orders{% endtrans %}:</h4>
+                    </div>
 
                     {{ table.order_table(city.nav_problems.deliver, 'nav_problems', cityName) }}
 
