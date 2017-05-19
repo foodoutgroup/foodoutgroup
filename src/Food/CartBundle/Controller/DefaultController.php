@@ -222,6 +222,10 @@ class DefaultController extends Controller
         $dataToLoad = [];
 
         // Data preparation for form
+        $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $locationData);
+        $placePointMap[$placeId] = $placePointId;
+        $session->set('point_data', $placePointMap);
+
         $placePointMap = $session->get('point_data');
         if (!empty($placePointMap) && isset($placePointMap[$placeId]) && !empty($placePointMap[$placeId])) {
             $pointRecord = $this->container->get('doctrine')
