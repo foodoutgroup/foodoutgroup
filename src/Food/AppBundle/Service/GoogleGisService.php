@@ -221,14 +221,20 @@ class GoogleGisService extends ContainerAware
     public function setCity(City $city, $nullify = true)
     {
         $returner = $this->getLocationFromSession();
-        if ($nullify) {
+        if ($nullify || $city->getTitle() != $returner['city']) {
             $returner['not_found'] = true;
             $returner['street_found'] = false;
             $returner['address_found'] = false;
             $returner['city'] = $city->getTitle();
             $returner['address'] = $city->getTitle();
             $returner['city_only'] = true;
+            $returner['street_short'] = null;
+//            $returner['street'] = null;
+//            $returner['house'] = null;
+            $returner['street_nr'] = null;
+//            $returner['flat'] = null;
         }
+
         $returner['city_id'] = $city->getId();
         $this->currentCity = $city;
         $this->setLocationToSession($returner);
