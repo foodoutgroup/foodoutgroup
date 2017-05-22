@@ -955,7 +955,7 @@ class PlacesService extends ContainerAware
         $return = false;
         $googleGisService = $this->container->get('food.googlegis');
         $location = $googleGisService->getLocationFromSession();
-        $cityCheck = $this->em()->getRepository('FoodAppBundle:City')->findOneBy(['title'=>$location['city']]);
+        $cityCheck = $this->em()->getRepository('FoodAppBundle:City')->find($location['city_id']);
 
         if($cityCheck->getPedestrian()){
             $return = true;
