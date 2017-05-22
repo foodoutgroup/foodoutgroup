@@ -39,15 +39,15 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/preload.css'
-                   'bundles/foodapp/scripts/select2/select2.css'
-                   'bundles/foodapp/scripts/select2/select2-bootstrap.css'
-                   'bundles/foodapp/styles/jquery.loadmask.css'
-                   'bundles/foodapp/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css'
-                   'bundles/foodapp/scripts/boxer/jquery.fs.boxer.css'
-                   'bundles/foodapp/scripts/font-awesome-4.2.0/css/font-awesome.min.css'
-                   'bundles/foodapp/scripts/fancy/jquery.fancybox.css'
-                   'bundles/foodapp/styles/style.css'
-                   'bundles/foodapp/styles/callcenter.css'
+                   '@FoodAppBundle/Resources/public/scripts/select2/select2.css'
+                   '@FoodAppBundle/Resources/public/scripts/select2/select2-bootstrap.css'
+                   '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css'
+                   '@FoodAppBundle/Resources/public/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css'
+                   '@FoodAppBundle/Resources/public/scripts/boxer/jquery.fs.boxer.css'
+                   '@FoodAppBundle/Resources/public/scripts/font-awesome-4.2.0/css/font-awesome.min.css'
+                   '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.css'
+                   '@FoodAppBundle/Resources/public/styles/style.css'
+                   '@FoodAppBundle/Resources/public/styles/callcenter.css'
                    filter="cssrewrite" %}
         <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
