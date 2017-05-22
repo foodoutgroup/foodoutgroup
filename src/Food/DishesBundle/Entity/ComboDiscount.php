@@ -50,6 +50,12 @@ class ComboDiscount
      */
     private $active = true;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="optionals", type="boolean")
+     */
+    private $optionals = true;
 
     /**
      * @var \Food\DishesBundle\Entity\Place
@@ -532,5 +538,28 @@ class ComboDiscount
     public function getApplyBy()
     {
         return $this->applyBy;
+    }
+
+    /**
+     * Set optionals
+     *
+     * @param boolean $optionals
+     * @return ComboDiscount
+     */
+    public function setOptionals($optionals)
+    {
+        $this->optionals = $optionals;
+    
+        return $this;
+    }
+
+    /**
+     * Get optionals
+     *
+     * @return boolean 
+     */
+    public function getOptionals()
+    {
+        return $this->optionals;
     }
 }
