@@ -935,7 +935,12 @@ class PlacesService extends ContainerAware
         return $this->container->get('food.app.utils.misc')->getParam('pedestrian_delivery_time');
     }
 
-    public function getCityName($city)
+    /**
+     * @param string $city
+     * @return string
+     * @deprecated from 2017-05-22
+     */
+    public function getCityName($city) //TODO-ML A tikrai to reik?
     {
         $country = $this->container->getParameter('country');
         if ($country == "LV" && $city == 'Rīga') {

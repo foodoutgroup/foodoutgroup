@@ -397,7 +397,7 @@
                             <select id="address_city" style="width: 120px;" class="custom-select">
                                 {% for city in cityService.getActiveCity() %}
                                     <option data-url="{{ slug.getUrl(city.id, 'city') }}" value="{{ city.id }}"
-                                            {% if location and location.cityId is defined and location.cityId == city.id  %}selected{% endif %}>{{ places_service.getCityName(city) }}</option>
+                                            {% if location and location.cityId is defined and location.cityId == city.id  %}selected{% endif %}>{{ city }}</option>
                                 {% endfor %}
                             </select>
                             <input type="text"
