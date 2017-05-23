@@ -33,10 +33,10 @@ class RegistrationFormHandler extends OriginalHandler
                                 $cart)
     {
         parent::__construct($form,
-                            $request,
-                            $userManager,
-                            $mailer,
-                            $tokenGenerator);
+            $request,
+            $userManager,
+            $mailer,
+            $tokenGenerator);
 
         $this->translator = $translator;
         $this->notifications = $notifications;
@@ -57,10 +57,10 @@ class RegistrationFormHandler extends OriginalHandler
     {
         $existingUser = $this->getUser();
         $fullyRegistered = !!\Maybe($existingUser)->getFullyRegistered()
-                                                  ->val(false);
+            ->val(false);
 
         $user = $this->createUser();
-        
+
         if ($existingUser && !$fullyRegistered) {
             $user = $existingUser;
         }
@@ -96,7 +96,9 @@ class RegistrationFormHandler extends OriginalHandler
             $this->translator->trans('general.successful_user_registration'));
 
         // $d = $this->request->get('fos_user_registration_form');
-        // $this->_notifyNewUser($user, $d['plainPassword']['first']);
+        if($this->container->getParameter('country') == 'LT'){
+            $this->_notifyNewUser($user);
+        }
 
         $this->userManager->updateUser($user);
     }
@@ -115,20 +117,17 @@ class RegistrationFormHandler extends OriginalHandler
      * @param User $user
      * @param $pass
      */
-    protected function _notifyNewUser($user, $pass)
+    protected function _notifyNewUser($user)
     {
-        $variables = [
-            'username' => $user->getUsername(),
-            'password' => $pass,
-            'login_url' => $this->router
-                                ->generate('food_lang_homepage', [], true)
-        ];
+        $ml = $this->container->get('food.mailer');
+        $variables = array(
+            'name' => $user->getUsername(),
+        );
+        $mailTemplate = $this->container->getParameter('mailer_notify_new_user');
 
-        $this->foodMailer
-             ->setVariables($variables)
-             ->setRecipient($user->getEmail(),
-                            $user->getEmail())
-             ->setId($this->container->getParameter('mailer_notify_new_user'))
-             ->send();
+        $ml->setVariables($variables)
+            ->setRecipient($user->getEmail())
+            ->setId($mailTemplate)
+            ->send();
     }
 }
