@@ -164,6 +164,8 @@
                                             {% trans %}general.for{% endtrans %} {{ currency_display|raw }}{{ order.total }}
                                             {% if order.deliveryType == 'deliver' %}
                                                 {% trans %}general.to{% endtrans %} {{ order.addressId.address }}.
+                                            {% elseif order.deliveryType == 'pedestrian' %}
+                                                {% trans %}general.to{% endtrans %} {{ order.addressId.address }}.
                                             {% else %}
                                                 {% if order.orderStatus == 'completed' %}
                                                     {% trans %}general.from{% endtrans %}

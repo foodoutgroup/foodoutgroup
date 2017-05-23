@@ -34,13 +34,16 @@ class KitchenController extends Controller
         }
 
         if ($deliveryType = $request->get('delivery_type', false)) {
-            switch($deliveryType) {
+            switch ($deliveryType) {
                 // @TODO: delivery !== deliver
                 case 'delivery':
                     $this->container->get('session')->set('delivery_type', OrderService::$deliveryDeliver);
                     break;
                 case 'pickup':
                     $this->container->get('session')->set('delivery_type', OrderService::$deliveryPickup);
+                    break;
+                case 'pedestrian':
+                    $this->container->get('session')->set('delivery_type', OrderService::$deliveryPedestrian);
                     break;
                 case 'delivery_and_pickup':
                     $this->container->get('session')->set('delivery_type', 'delivery_and_pickup');
