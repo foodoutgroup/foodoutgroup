@@ -148,12 +148,12 @@
                 <div class="langSwitcher" >
                     <div class="lang-drop">
                         {% set currentLangName = 'language_' ~ app.request.locale  %}
-                        <a class="lang-chose" href="#"> {{ currentLangName|trans() }}</a>
+                        <a class="lang-chose" href="#">{{ currentLangName|trans() }} <span class="arrow-down"></span></a>
                         <ul>
                             {% for locale in localeService.getAvailable() %}
                                 {% set langName = 'language_' ~ locale  %}
                                 <li class="lang-item lang-{{ locale }} {% if locale == app.request.locale %}current-lang{% endif %}">
-                                    <a href="{{ slug.generateUrl('food_lang_homepage_slashSwitch', [{'_locale':locale}]) }}"> {{ langName|trans() }} </a>
+                                    <a href="{{ slug.generateUrl('food_lang_homepage_slashSwitch', [{'_locale':locale}]) }}">{{ langName|trans() }}</a>
                                 </li>
                             {% endfor %}
                         </ul>

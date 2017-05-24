@@ -3001,3 +3001,15 @@ div.coupon_form_popup {
     padding-top: 20px;
     text-align: center;
 }
+
+.arrow-down {
+    position: relative;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #fff;
+    top: 10px;
+    margin-left: 5px;
+}
+
