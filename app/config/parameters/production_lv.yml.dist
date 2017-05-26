@@ -31,7 +31,7 @@ parameters:
     driver.socket_hash: api
 
     locale: lv
-    locales: ["lv", "en", "ru"]
+    locales: [%locale%, "en", "ru"]
     locales_hidden: ['en','ru']
     available_cities: ["Rīga", "Ogre", "Jurmala", "Jelgava"]
     available_cities_slugs: ["Riga", "Ogre", "Jurmala", "Jelgava"]
