@@ -199,6 +199,7 @@ class DefaultController extends Controller
         $country = $this->container->getParameter('country');
         $session = $request->getSession();
         $locationData = $session->get('locationData');
+
         /**
          * @var UserManager $fosUserManager
          */

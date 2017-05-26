@@ -248,6 +248,7 @@ class City implements \JsonSerializable
             'title' => $this->getTitle(),
             'zavalasOn'=> $this->isZavalasOn(),
             'zavalasTime'=> $this->getZavalasTime(),
+            'pedestrian' => $this->getPedestrian()
         ));
     }
 

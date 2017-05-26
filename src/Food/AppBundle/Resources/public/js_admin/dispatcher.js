@@ -117,7 +117,7 @@ var Dispatcher = {
         var checkedBoxes = activeList.find('.order_checkbox:checked');
 
         if(activeList.hasClass('unassigned-pedestrian')){
-            buttons = $('.drivers_list .pedestrian').find('button');
+            buttons = $('.drivers_list').find('button');
         }else{
             buttons = $('.drivers_list .normal').find('button');
 
