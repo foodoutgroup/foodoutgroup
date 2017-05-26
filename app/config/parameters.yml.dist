@@ -11,7 +11,7 @@ parameters:
     locale: lt
     locales: [lt, en, ru]
     locales_hidden: ['en','ru']
-    
+    geo_provider: http://fogeo.dev/app_dev.php
     database_driver: pdo_mysql
     database_host: localhost
     database_port: 3306

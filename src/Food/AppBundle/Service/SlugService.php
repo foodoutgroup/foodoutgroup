@@ -240,17 +240,15 @@ class SlugService
 
     public function generateURL($route, $params = [])
     {
-        if (count($params)){
-            if (array_key_exists('_locale', $params[0])) {
-                $params = $params[0];
-                $recLoc = $this->request->getLocale();
-                $this->request->setLocale($params['_locale']);
-                $default = ['_locale' => $this->getLocale()];
-                $url =  $this->router->generate($route, array_merge($params, $default));
-                $this->request->setLocale($recLoc);
+        if (count($params) && array_key_exists('_locale', $params)){
+            $params = $params[0];
+            $recLoc = $this->request->getLocale();
+            $this->request->setLocale($params['_locale']);
+            $default = ['_locale' => $this->getLocale()];
+            $url =  $this->router->generate($route, array_merge($params, $default));
+            $this->request->setLocale($recLoc);
 
-                return $url;
-            }
+            return $url;
         }
         else {
             $default = ['_locale' => $this->getLocale()];

@@ -2,102 +2,116 @@
 
     {% block jscode %}
         <script type="text/javascript">
-        $(document).ready(function(){
-            $('#index_city').selectmenu();
 
+            (function (form) {
 
-            $('.search-food-form input,.search-food-form select, #index_city-button').click(function(){
-                $(".border-red").removeClass('border-red');
-                $('.border-red-right').removeClass('.border-red-right');
-                $("#errorMessageAddress").html('');
-            });
+                var input_auto_complete = form.find('#address_autocomplete');
+                var button_submit = form.find('#submit');
+                var input_collection = form.find('input');
+                var button_find_me = form.find('#find-me');
+                var div_error = form.find('#error');
 
-            var addrXhr = null;
-            var addrResponse = {};
-            var waitIntervals = null;
-            var currentTime = null;
-            var closeBtnTxt = '{% trans %}general.close_btn{% endtrans %}';
-            var currentUrl  = window.location.href;
+                var resultCollection = [];
+                var selected = null;
 
-            function getCrds() {
-                if (addrXhr != null) {
-                    addrXhr.abort();
+                if (!navigator.geolocation) {
+                    button_find_me.remove();
                 }
-                addrXhr = $.ajax({
-                    type: 'GET',
-                    url: '{{path('food_ajax', {'action': 'find-address'}) }}',
-                    data:  {
-                        city: $('#index_city').val(),
-                        address: $('#index_address').val() + ' ' + $('#index_house').val()
-                    },
-                    success:  function(resp){
-                        if (resp.data.success == 1) {
-                            $('.search-food-form').attr('action',$('#index_city option:selected').data('cityurl'))
-                            $('.search-food-form').trigger('submit');
-                        } else {
-                            var dialogOpts = {
-                                modal: true,
-                                resizable: false,
-                                buttons: {
-                                    'close': {
-                                        'text': closeBtnTxt,
-                                        'click': function() {
-                                            $(this).dialog('close');
-                                        }
-                                    }
-                                }
-                            };
 
-                            $('.search-food-form').shake(3,20,400);
-                            $('.search-field').addClass('border-red');
-                            $('#index_address').addClass('border-red-right');
-                            $('#errorMessageAddress').html(resp.data.message);
-                        }
+                input_auto_complete.autocomplete({
+                    source: input_auto_complete.data('url'),
+                    minLength: 2,
+                    html: true,
+                    position: {
+                        my: "left+0 top-4"
+                    },
+                    response: function( event, ui ) {
+                        resultCollection = ui.content;
+                    },
+                    select: function( event, ui ) {
+                        selected = ui.item;
+                    }
+                }).focusin(function(){
+                    if(resultCollection.length >= 2) {
+                        $(this).autocomplete("search");
+                    }
+                }).focusout(function(){
+                    if(resultCollection.length >= 1) {
+                        selected = resultCollection[0];
+                        input_auto_complete.val(selected.value);
+                    }
+                }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                    return $("<li></li>")
+                            .data("item.autocomplete", item)
+                            .append("<a><img src=\"{{ asset('bundles/foodapp/images/marker_autocomplete.png') }}\"/> " + item.label + "</a>")
+                            .appendTo(ul);
+                };
+
+                button_find_me.click(function () {
+                    if (navigator.geolocation) {
+                       navigator.geolocation.getCurrentPosition(function(position){
+                           if(position.coords.accuracy >= 151) {
+                               throwMapLocationPicker(position);
+                           } else {
+                               $.get("", {"lat" : position.coords.latitude, "lng" : position.coords.longitude}, function (response) {
+
+                               });
+                           }
+                       });
+                    } else {
+                        throwMapLocationPicker(null);
                     }
                 });
-            }
 
-            $('#index_submit').click(function(e){
+                input_collection.on('keyup', function (e) {
+                    if(e.keyCode != 13) {
+                        throwError(null);
+                    }
+                }).on('focusin', function () {
+                    throwError(null);
+                });
 
-            if ($('#index_city').val() !="" && $('#index_city').val() != null && $('#index_address').val()=="") {
+                div_error.click(function () {
+                    throwError(null);
+                });
 
-                window.location.href = $('#index_city option:selected').data('cityurl');
-            } else {
-                getCrds();
-            }
-                e.stopPropagation();
-                e.preventDefault();
-            });
+                button_submit.click(function () {
 
-            function waitForState() {
-                if (waitIntervals < 20) {
-                    if (addrXhr.readyState == 4) {
-                        //$('.search-food-form').trigger('submit');
+                    img = $(this).find('img');
+                    oldval = img.attr('src');
+
+                    img.attr('src', 'http://pizzagiotto.ru/bitrix/templates/giotto/img/preloader.GIF');
+
+                    $.post($(this).data('url'), {"address":selected['id'], "flat" : form.find('#flat').val()} , function (response) {
+
+                    });
+                    img.attr('src', oldval);
+
+                });
+
+
+                function throwMapLocationPicker(position) {
+                    if(position == null) {
+
                     } else {
-                        waitIntervals++;
-                        setTimeout(function() { waitForState(); }, 1000);
+
                     }
                 }
-            }
-            $('#index_city').change(function(){
-                $(this).next('span').find('a').find('span:first').addClass('nodisabled');
 
-            });
-        });
-        initStreetSearch();
-        initStreetHouseSearch();
-
-        jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
-            this.each(function() {
-                $(this).css("position","relative");
-                for (var x=1; x<=intShakes; x++) {
-                    $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
-                            .animate({left:intDistance}, ((intDuration/intShakes)/2))
-                            .animate({left:0}, (((intDuration/intShakes)/4)));
+                function throwError(message){
+                    if(message == null) {
+                        message = '';
+                        input_collection.removeClass('error');
+                    } else {
+                        form.find('form').shake(5, 5, 400);
+                        input_collection.addClass('error');
+                    }
+                    div_error.html(message);
                 }
-            });
-            return this;
-        };
+
+            })($( ".address-search-form" ));
+
+
 
         </script>
     {% endblock %}
@@ -116,28 +130,25 @@
 {% block body %}
     {# image randomization according to country #}
 
+    <div style="background-image: url(//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/title_offer/offer-'~site_country|lower~'-'~random(['2', '3', '4', '5', '6', '9', '10', '14'])~'.jpg') }});" class="site-header special-offer-block">
 
+        <div class="site-block address-search-form">
+            <div class="address-search-form-content">
+                <h1 class="no-wrap">{% trans %}index.title_page_header{% endtrans %}</h1>
+                <form class="search-food-form"  action="#" method="get">
+                    <div class="marker-icon"></div>
 
-    <div style="background-image: url(//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/title_offer/offer'~'-'~random(['2', '3', '4', '5', '6', '9', '10', '14'])~'.jpg') }});" class="site-header special-offer-block">
-        <div class="site-block">
-            <h1 class="no-wrap">{% trans %}index.title_page_header{% endtrans %}</h1>
-            <form class="search-food-form"  action="#" method="get">
-                <p class="title">{% trans %}index.search_form_qlue{% endtrans %}</p>
-                <div class="clearfix">
-
-                    <select id="index_city" class="search-field">
-                        {% for city in cityCollection %}
-                            <option value="{{ city.getId() }}" data-cityurl="{{ slug.getUrl(city.getId(), 'city') }}" {% if formDefaults.city_id == city.getId() %}selected{% endif %}>{{ city.getTitle() }}</option>
-                        {% endfor %}
-                    </select>
-
-                    {# <input type="text" id="index_city" placeholder="{% trans %}index.city{% endtrans %}"  autocomplete="off" > #}
-                    <input type="text" id="index_address" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{{ formDefaults.address }}" />
-                    <input type="text" id="index_house" placeholder="{% trans %}index.house{% endtrans %} - {% trans %}index.flat{% endtrans %}" class="input-house search-field" autocomplete="off" value="{{ formDefaults.house }}{% if formDefaults.flat %} - {{ formDefaults.flat }}{% endif %}" />
-                    <input type="submit" id="index_submit" value="{% trans %}index.findfood{% endtrans %}" />
-                </div>
-                <div style="margin-top: 4px; text-align: center; margin-right:140px; color: red; font-weight: bold; cursor: pointer;" id="errorMessageAddress"></div>
-            </form>
+                    <p class="title">{% trans %}index.search_form_qlue{% endtrans %}</p>
+                    <div class="flex-aligment">
+                        <button id="find-me" class="find-me"></button>
+                        <input type="text" id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{{ formDefaults.address }}" />
+                        <input type="text" id="flat" placeholder="{% trans %}index.flat{% endtrans %}" class="input-house search-field" value="{{ formDefaults.house }}{% if formDefaults.flat %} - {{ formDefaults.flat }}{% endif %}" />
+                        <button class="submit" id="submit" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}"/></button>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div id="error"></div>
+                </form>
+            </div>
         </div>
         <p class="img-description">{# pavadinimas produkto, vietove, kaina #}</p>
     </div>

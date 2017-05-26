@@ -228,6 +228,8 @@ change_location = function(element, click_callback, data_callback, change_text, 
         });
     });
 
+
+
     $.fancybox({
         'autoScale': true,
         'transitionIn': 'elastic',
@@ -241,54 +243,6 @@ change_location = function(element, click_callback, data_callback, change_text, 
     });
 };
 
-initStreetSearch = function(){
-    var streetsUrl = Routing.generate('food_ajax', { '_locale': $('html').attr('lang'), 'action' : 'find-street' });
-    var streets = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: '?city=%CITY&street=%QUERY',
-            replace: function(url, query) {
-                url = url.replace('%CITY', $('#index_city').val());
-                url = url.replace('%QUERY', query);
-                return streetsUrl + url;
-            }
-        }
-    });
-
-    streets.initialize();
-
-    $('#index_address').typeahead(null, {
-        name: 'streets',
-        displayKey: 'value',
-        source: streets.ttAdapter()
-    });
-};
-
-initStreetHouseSearch = function(){
-    var streetsUrl = Routing.generate('food_ajax', { '_locale': $('html').attr('lang'), 'action' : 'find-street-house' });
-    var streets = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: '?city=%CITY&street=%STREET&house=%QUERY',
-            replace: function(url, query) {
-                url = url.replace('%CITY', $('#index_city').val());
-                url = url.replace('%STREET', $('#index_address').val());
-                url = url.replace('%QUERY', query);
-                return streetsUrl + url;
-            }
-        }
-    });
-
-    streets.initialize();
-
-    $('#index_house').typeahead(null, {
-        name: 'houses',
-        displayKey: 'value',
-        source: streets.ttAdapter()
-    });
-};
 
 var registrationForm = {
     showPrivate: function(element) {
@@ -317,4 +271,16 @@ var registrationForm = {
         lefter.hide();
         return false;
     }
+};
+
+jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
+    this.each(function() {
+        $(this).css("position","relative");
+        for (var x=1; x<=intShakes; x++) {
+            $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
+                .animate({left:intDistance}, ((intDuration/intShakes)/2))
+                .animate({left:0}, (((intDuration/intShakes)/4)));
+        }
+    });
+    return this;
 };

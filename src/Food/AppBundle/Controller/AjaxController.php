@@ -42,6 +42,12 @@ class AjaxController extends Controller
             case 'delivery-price':
                 $this->_ajaxGetDeliveryPrice($response,$request->get('restaurant'),$request->get('time'));
                 break;
+            case 'autocomplete-address':
+                $this->_autocompleteAddress($response, $request);
+                break;
+            case 'check-address':
+                $this->_checkAddress($response, $request);
+                break;
             default:
                 $response->setContent(json_encode([
                     'message' => 'Method not found :)',
@@ -380,10 +386,59 @@ class AjaxController extends Controller
                 true
             );
 
-        }else{
+        } else{
             $deliveryPrice = '';
         }
 
         $response->setContent(json_encode($deliveryPrice));
+    }
+
+    private function _autoCompleteAddress(Response $response, Request $request)
+    {
+
+        $addressCollection = [];
+
+        $term = $request->get('term');
+
+        $curl = new \Curl();
+        $rsp = json_decode($curl->get($this->container->getParameter('geo_provider').'/autocomplete', [
+            'input' => $term,
+            'component' => 'country:'.strtoupper($this->container->getParameter('country')),
+            'language' => $request->getLocale(),
+            'types' => 'geocode',
+        ])->body);
+
+//        var_dump($rsp);
+
+        foreach ($rsp->collection as $item) {
+
+            $label = $item->output;
+            $j = null;
+
+            foreach ($item->matched_substrings as $boldRange) {
+                $str = mb_substr($item->output, $boldRange->offset, $boldRange->length, 'UTF-8');
+                $label = str_replace($str, "<b>".$str."</b>", $label);
+            }
+
+
+            $addressCollection[] = [
+                'id' => $item->id,
+                'label' => $label,
+                'value' => $item->output,
+                'data' => $item->matched_substrings
+            ];
+        }
+
+//        var_dump(json_encode($addressCollection));
+//        die;
+
+        $response->setContent(json_encode($addressCollection));
+
+    }
+
+    private function _checkAddress(Response $response, Request $request)
+    {
+
+        $response->setContent(json_encode(['success' => true]));
     }
 }
