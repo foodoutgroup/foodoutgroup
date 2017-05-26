@@ -272,12 +272,13 @@ services:
         class: Food\AppBundle\Service\ImportExportService
         parent: food.base_service
         arguments:
-          - @router
           - @food.app.utils.language
           - @service_container
+          - @filesystem
         calls:
           - [setLocale, [%locale%]]
           - [setFieldMap]
+          - [ setSaveDirectory, ['%kernel.root_dir%/../web/']]
 
     sonata.admin.translations:
       class: Food\AppBundle\Admin\ORMTranslationAdmin

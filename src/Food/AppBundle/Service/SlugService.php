@@ -145,12 +145,13 @@ class SlugService
         return $this->repository->exist($slug);
     }
 
-    public function get($itemId, $type)
+    public function get($itemId, $type, $locale = null)
     {
+
         $item = $this->repository->findOneBy(
             array(
                 'item_id' => $itemId, 'type' => $type,
-                'lang_id' => $this->getLocale(), 'active' => 1
+                'lang_id' => $locale ? $locale : $this->getLocale(), 'active' => 1
             )
         );
 

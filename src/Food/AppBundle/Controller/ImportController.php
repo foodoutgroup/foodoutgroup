@@ -29,7 +29,7 @@ class ImportController extends CRUDController
                 'choices' => $fieldMap,
                 'multiple' => true, 'expanded' => true,
             ])
-            ->add('import', 'submit', ['label' => 'import', 'attr' => ['class' => 'form-control btn btn-primary']])
+            ->add('processImport', 'submit', ['label' => 'import', 'attr' => ['class' => 'form-control btn btn-primary']])
             ->remove('token')
             ->getForm();
 
