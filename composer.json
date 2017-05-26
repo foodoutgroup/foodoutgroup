@@ -13,6 +13,9 @@
         "swedbank-gateway/gateway-bundle/src"
       ]
     },
+    "files": [
+      "vendor/pirminis/maybe-monad/lib/global.php"
+    ],
     "repositories": [
       {
         "type": "package",

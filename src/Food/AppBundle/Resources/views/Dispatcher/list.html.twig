@@ -739,8 +739,7 @@
                         <th></th>
                     </tr>
                     {% for driver in cityDriverCollection %}
-                        <tr class="{{ loop.index%2 ? 'odd' : 'even' }}" data-driver-id="{{ driver.id }}">
-                            <td valign="center">{{ driver['name'] }}</td>
+                        <tr class="{{ loop.index%2 ? 'odd' : 'even' }} {% if driver.type == 'pedestrian'  %} {{  driver.type }} {% else %} {{ 'normal' }} {% endif %}" data-driver-id="{{ driver.id }}">                            <td valign="center">{{ driver['name'] }}</td>
                             <td valign="center"><a onclick="Dispatcher.logCallEvent('driver', {{ driver.phone }})" href="callto:{{ driver['phone'] }}">{{ driver['phone'] }}</a></td>
                             <td valign="center">{{ driver['order_count'] }}</td>
                             <td><button class="assign-driver btn btn-lg" item-id="{{ driver['id'] }}" disabled="disabled">{{ 'admin.dispatcher.assign'|trans({}, 'SonataAdminBundle') }}</button></td>
