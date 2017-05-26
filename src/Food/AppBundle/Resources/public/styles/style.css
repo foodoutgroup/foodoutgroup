@@ -2937,7 +2937,7 @@ div.coupon_form_popup {
 .lang-drop ul li {
     list-style-type: none;
     padding: 5px 10px 5px 10px!important;
-    line-height: 30px;
+    line-height: 20px;
 }
 
 .lang-drop {
@@ -2952,7 +2952,6 @@ div.coupon_form_popup {
     color: #fff;
     font-family: 'avenirbook';
     font-size: 14px;
-    font-weight: bold;
     letter-spacing: 2px;
     text-transform: uppercase;
     z-index: 9999999;

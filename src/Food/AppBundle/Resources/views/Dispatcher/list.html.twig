@@ -485,7 +485,6 @@
                 </ul>
                 {# unapproved / nepatikrinti #}
                 <div id="city-{{ loop.index }}-unapproved">
-                    {{ table.order_table(city.unapproved.deliver, 'unapproved', ID) }}
 
                     {% if city.unapproved.pedestrian|length %}
                         <div style="text-align: center;">
@@ -493,7 +492,7 @@
                             <br />
                             <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
                         </div>
-                        {{ table.order_table(city.unapproved.pedestrian, 'unapproved-pedestrian', cityName) }}
+                        {{ table.order_table(city.unapproved.pedestrian, 'unapproved-pedestrian', ID) }}
                     {% endif %}
 
                     <div style="text-align: center;">
@@ -505,28 +504,27 @@
 
 
                     {% if city.unapproved.selfdeliver|length %}
-                    <div style="text-align: center;">
-                        <br />
-                        <br />
-                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unapproved_selfdeliver{% endtrans %}:</h4>
-                    </div>
-                    {{ table.order_table(city.unapproved.selfdeliver, 'unapproved-selfdeliver', ID) }}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unapproved_selfdeliver{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.unapproved.selfdeliver, 'unapproved-selfdeliver', ID) }}
                     {% endif %}
 
                     {% if city.unapproved.pickup|length %}
-                    <div style="text-align: center;">
-                        <br />
-                        <br />
-                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unapproved_pickup{% endtrans %}:</h4>
-                    </div>
-                    {{ table.order_table(city.unapproved.pickup, 'unapproved-pickup', ID) }}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unapproved_pickup{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.unapproved.pickup, 'unapproved-pickup', ID) }}
                     {% endif %}
                 </div>
 
                 {# unassigned / nepriskirti #}
                 <div id="city-{{ loop.index }}-unassigned">
 
-                    {{ table.order_table(city.unassigned.deliver, 'unassigned', ID) }}
                     {% if city.unassigned.pedestrian|length %}
                         <div style="text-align: center;">
                             <br />
@@ -545,29 +543,28 @@
                     {{ table.order_table(city.unassigned.deliver, 'unassigned', ID) }}
 
                     {% if city.unassigned.selfdeliver|length %}
-                    <div style="text-align: center;">
-                        <br />
-                        <br />
-                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_selfdeliver{% endtrans %}:</h4>
-                    </div>
-                    {{ table.order_table(city.unassigned.selfdeliver, 'unassigned-selfdeliver', ID) }}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_selfdeliver{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.unassigned.selfdeliver, 'unassigned-selfdeliver', ID) }}
                     {% endif %}
 
                     {% if city.unassigned.pickup|length %}
-                    <div style="text-align: center;">
-                        <br />
-                        <br />
-                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pickup{% endtrans %}:</h4>
-                    </div>
-                    {{ table.order_table(city.unassigned.pickup, 'unassigned-pickup', ID) }}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pickup{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.unassigned.pickup, 'unassigned-pickup', ID) }}
                     {% endif %}
                 </div>
 
                 {# unconfirmed / nepatvirtinti rest. #}
                 <div id="city-{{ loop.index }}-unconfirmed">
-                    {{ table.order_table(city.unconfirmed.deliver, 'unconfirmed', ID) }}
 
-                        {% if city.unconfirmed.pedestrian|length %}
+                    {% if city.unconfirmed.pedestrian|length %}
                         <div style="text-align: center;">
                             <br />
                             <br />
@@ -585,28 +582,27 @@
                     {{ table.order_table(city.unconfirmed.deliver, 'unconfirmed', ID) }}
 
                     {% if city.unconfirmed.selfdeliver|length %}
-                    <div style="text-align: center;">
-                        <br />
-                        <br />
-                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unconfirmed_selfdeliver{% endtrans %}:</h4>
-                    </div>
-                    {{ table.order_table(city.unconfirmed.selfdeliver, 'unconfirmed-selfdeliver', ID) }}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unconfirmed_selfdeliver{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.unconfirmed.selfdeliver, 'unconfirmed-selfdeliver', ID) }}
                     {% endif %}
 
                     {% if city.unconfirmed.pickup|length %}
-                    <div style="text-align: center;">
-                        <br />
-                        <br />
-                        <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unconfirmed_pickup{% endtrans %}:</h4>
-                    </div>
-                    {{ table.order_table(city.unconfirmed.pickup, 'unconfirmed-pickup', ID) }}
+                        <div style="text-align: center;">
+                            <br />
+                            <br />
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unconfirmed_pickup{% endtrans %}:</h4>
+                        </div>
+                        {{ table.order_table(city.unconfirmed.pickup, 'unconfirmed-pickup', ID) }}
                     {% endif %}
 
                 </div>
 
                 {# not_finished / nepristatyti #}
                 <div id="city-{{ loop.index }}-undelivered">
-                    {{ table.order_table(city.not_finished.deliver, 'not_finished', ID) }}
 
                     {% if city.not_finished.pedestrian|length %}
                         <div style="text-align: center;">
@@ -646,7 +642,6 @@
 
                 {# canceled / atšaukti #}
                 <div id="city-{{ loop.index }}-canceled">
-                    {{ table.order_table(city.canceled.deliver, 'canceled', ID) }}
 
                     {% if city.canceled.pedestrian|length %}
                         <div style="text-align: center;">
@@ -686,7 +681,6 @@
 
                 {# nav_problems / probleminiai #}
                 <div id="city-{{ loop.index }}-navproblems">
-                    {{ table.order_table(city.nav_problems.deliver, 'nav_problems', ID) }}
 
                     {% if city.nav_problems.pedestrian|length %}
                         <div style="text-align: center;">
