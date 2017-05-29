@@ -356,11 +356,11 @@
                             {# End of different form part #}
 
                             <div class="form-row form-row-required custom-checkbox cart-rules">
-                                <label>{% trans %}cart.checkout.cart_rules{% endtrans %} <a href="#rules" name="order_rules" class="fancy-box">{% trans %}cart.checkout.cart_rules.href{% endtrans %}</a></label>
+                                <label>{% trans %}cart.checkout.cart_rules{% endtrans %} </label>
                                 <input type="checkbox" name="cart_rules" {% if (dataToLoad is empty or (dataToLoad['cart_rules'] is defined and dataToLoad['cart_rules'] is not empty)) %}checked="checked"{% endif %} />
                             </div>
                             <div class="form-row custom-checkbox newsletter_subscribe">
-                                <label>{% trans %}cart.checkout.newsletter_subscribe{% endtrans %} <a href="#privacy" name="newsletter_subscribe" class="fancy-box">{% trans %}cart.checkout.newsletter_subscribe.href{% endtrans %}</a></label>
+                                <label>{% trans %}cart.checkout.newsletter_subscribe{% endtrans %}</label>
                                 <input type="checkbox" name="newsletter_subscribe" {% if (dataToLoad['newsletter_subscribe'] is defined and dataToLoad['newsletter_subscribe'] is not empty) or newsletter_subscribe_tick_by_default %}checked="checked"{% endif %} />
                             </div>
                             <div class="clearfix"></div>
