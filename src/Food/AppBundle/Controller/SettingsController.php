@@ -93,7 +93,7 @@ class SettingsController extends CRUDController
 
         $form->add('page_banned', 'choice', [
             'label' => 'Banned page',
-            'choices' => array_merge(['0' => ''], $pageCollection),
+            'choices' =>  $pageCollection,
             'attr' => [
                 'group' => 'Info pages',
                 'style' => 'margin-bottom:10px',
@@ -102,35 +102,35 @@ class SettingsController extends CRUDController
 
         $form->add('page_email_banned', 'choice', [
             'label' => 'Banned email page',
-            'choices' => array_merge(['0' => ''], $pageCollection)
+            'choices' => $pageCollection
         ]);
 
         $form->add('page_sitemap', 'choice', [
-            'choices' => array_merge(['0' => ''], $pageCollection)
+            'choices' => $pageCollection
         ]);
 
         $form->add('page_help', 'choice', [
             'label' => 'Help page',
-            'choices' => array_merge(['0' => ''], $pageCollection)
+            'choices' =>  $pageCollection
         ]);
 
         $form->add('page_best_offer', 'choice', [
             'label' => 'Best offer page',
-            'choices' => array_merge(['0' => ''], $pageCollection)
+            'choices' =>  $pageCollection
         ]);
         $form->add('page_b2b_rules', 'choice', [
             'label' => 'B2B rules page',
-            'choices' => array_merge(['0' => ''], $pageCollection)
+            'choices' =>  $pageCollection
         ]);
 
         $form->add('page_privacy', 'choice', [
             'label' => 'Privacy page',
-            'choices' => array_merge(['0' => ''], $pageCollection)
+            'choices' =>  $pageCollection
         ]);
 
         $form->add('page_blog', 'choice', [
             'label' => 'Blog page',
-            'choices' => array_merge(['0' => ''], $pageCollection),
+            'choices' =>  $pageCollection
         ]);
 
         $form->add('use_admin_fee_globally', 'boolean', [
