@@ -649,5 +649,9 @@
     </script>
     <!--End of Zendesk Chat Script-->
 {% endif %}
+
+{% if site_country == 'LT' %}
+{{  misc_utils.getParam('tawk_to_live_chat')|raw }}
+{% endif %}
 </body>
 </html>
