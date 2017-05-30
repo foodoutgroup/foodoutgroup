@@ -140,6 +140,13 @@ class Coupon
     private $singleUsePerPerson = false;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="inverse", type="boolean", nullable=true)
+     */
+    private $inverse = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="Food\OrderBundle\Entity\CouponUser", mappedBy="coupon")
      */
     private $couponUsers;
@@ -1136,5 +1143,28 @@ class Coupon
     public function getIncludeDelivery()
     {
         return $this->includeDelivery;
+    }
+
+    /**
+     * Set inverse
+     *
+     * @param boolean $inverse
+     * @return Coupon
+     */
+    public function setInverse($inverse)
+    {
+        $this->inverse = $inverse;
+    
+        return $this;
+    }
+
+    /**
+     * Get inverse
+     *
+     * @return boolean 
+     */
+    public function getInverse()
+    {
+        return $this->inverse;
     }
 }

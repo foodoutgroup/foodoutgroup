@@ -55,6 +55,12 @@ class CouponGenerator
      */
     private $randomize = false;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="inverse", type="boolean")
+     */
+    private $inverse = false;
 
     /**
      * @var int
@@ -1056,4 +1062,27 @@ class CouponGenerator
         return $this->includeDelivery;
     }
 
+
+    /**
+     * Set inverse
+     *
+     * @param boolean $inverse
+     * @return CouponGenerator
+     */
+    public function setInverse($inverse)
+    {
+        $this->inverse = $inverse;
+    
+        return $this;
+    }
+
+    /**
+     * Get inverse
+     *
+     * @return boolean 
+     */
+    public function getInverse()
+    {
+        return $this->inverse;
+    }
 }
