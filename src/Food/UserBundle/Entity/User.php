@@ -221,6 +221,11 @@ class User extends BaseUser
      */
     private $special = false;
 
+     * @var string
+     * @ORM\Column(name="country", type="string", nullable=true)
+     **/
+    private $countryCode;
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
@@ -1153,6 +1158,29 @@ class User extends BaseUser
     public function getSpecial()
     {
         return $this->special;
+    }
+
+    /**
+     * Set countryCode
+     *
+     * @param string $countryCode
+     * @return User
+     */
+    public function setCountryCode($countryCode)
+    {
+        $this->countryCode = $countryCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get countryCode
+     *
+     * @return string 
+     */
+    public function getCountryCode()
+    {
+        return $this->countryCode;
     }
 
     /**

@@ -1373,6 +1373,7 @@ class OrderService extends ContainerAware
         }
 
         $this->saveOrder();
+
         // save extra order data to separate table
         $orderExtra = new OrderExtra();
         $orderExtra->setOrder($this->getOrder());
@@ -3715,28 +3716,12 @@ class OrderService extends ContainerAware
 
         // Validate das phone number :)
         if (0 != strlen($phone)) {
-            $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
-            $country = strtoupper($this->container->getParameter('country'));
+            $validation = $this->container->get('food.phones_code_service')->validatePhoneNumber($phone, $request->get('country'));
 
-            try {
-                $numberProto = $phoneUtil->parse($phone, $country);
-            } catch (\libphonenumber\NumberParseException $e) {
-                // no need for exception
-            }
-
-            if (isset($numberProto)) {
-                $numberType = $phoneUtil->getNumberType($numberProto);
-                $isValid = $phoneUtil->isValidNumber($numberProto);
-            } else {
-                $isValid = false;
-            }
-
-            if (!$isValid) {
-                $formErrors[] = 'order.form.errors.customerphone_format';
-            } else if ($isValid && !in_array($numberType, [\libphonenumber\PhoneNumberType::MOBILE, \libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE])) {
-                $formErrors[] = 'order.form.errors.customerphone_not_mobile';
-            } else {
+            if($validation === true){
                 $phonePass = true;
+            }else{
+                $formErrors = $validation;
             }
         }
 

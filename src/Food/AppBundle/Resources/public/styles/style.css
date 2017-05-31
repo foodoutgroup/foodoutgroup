@@ -2958,3 +2958,25 @@ div.coupon_form_popup {
     padding-top: 20px;
     text-align: center;
 }
+
+phone_code {
+    width: 10%;
+}
+
+#food_user_profile_profile_countryCode {
+    width: 12%;
+}
+
+#food_user_profile_profile_phone {
+    width: 217px;
+    margin-left: 10px;
+}
+
+.form-row-joined {
+    display: flex;
+}
+
+#customer-phone-id {
+    width: 230px;
+    margin-left: 6px;
+}

@@ -311,6 +311,9 @@ class DefaultController extends Controller
         // PreLoad UserAddress End
 
         if ($request->getMethod() == 'POST' && !$formHasErrors) {
+
+            $countryCode = $request->get('country');
+
             // Jei vede kupona - uzsikraunam
             $deliveryType = $request->get('delivery-type');
 
@@ -417,6 +420,12 @@ class DefaultController extends Controller
                 $userPhone = $user->getPhone();
             }
 
+
+
+            if ($countryCode != $user->getCountryCode() && !$user->getIsBussinesClient()) {
+                $user->setCountryCode($countryCode);
+            }
+
             if ($userPhone != $user->getPhone() && !$user->getIsBussinesClient()) {
                 $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
 
@@ -498,6 +507,9 @@ class DefaultController extends Controller
         } else {
             $disabledPreorderDays = array();
         }
+
+
+
 
         $data = [
             'order' => $order,
