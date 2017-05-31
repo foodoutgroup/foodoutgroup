@@ -36,10 +36,12 @@ class UniqueUsersWithPlacepointController extends CRUDController
             $from = "2015-01-01";
         }
 
-        $from = $from + " 00:00:00";
+        $from = $from . " 00:00:00";
 
         $con = $this->container->get('doctrine')->getConnection();
         $activeMembers1sql = "SELECT DISTINCT SUBSTRING(order_date, 1, 7) as date, COUNT(DISTINCT user_id) as count FROM orders WHERE order_date > '$from' GROUP BY 1";
+        var_dump($activeMembers1sql);
+
         $stmt = $con->prepare($activeMembers1sql);
         $stmt->execute();
         $activeMembers1 = $stmt->fetchAll();
