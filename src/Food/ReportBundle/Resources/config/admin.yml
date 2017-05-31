@@ -9,3 +9,14 @@ services:
       - 'FoodReportBundle:OrdersByRestaurantAdmin'
     calls:
       - [ setTranslationDomain, [SonataAdminBundle]]
+
+  sonata.admin.unique_users_with_placepoints:
+      class: Food\ReportBundle\Admin\UniqueUsersWithPlacepointAdmin
+      tags:
+          - { name: sonata.admin, manager_type: orm, group: "Content", label: "report.unique_users_with_placepoints" }
+      arguments:
+          - ~
+          - ~
+          - 'FoodReportBundle:Admin\UniqueUsersWithPlacepoint'
+      calls:
+          - [ setTranslationDomain, [SonataAdminBundle]]

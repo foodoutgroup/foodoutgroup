@@ -383,6 +383,7 @@ sonata_admin:
                       - sonata.admin.combo_discounts
                       - sonata.admin.restaurant_orders
                       - sonata.admin.restaurant_orders_report
+                      - sonata.admin.unique_users_with_placepoints
                   roles: [ ROLE_MARKETING, ROLE_ADMIN ]
               admin.reports:
                   items: ~
