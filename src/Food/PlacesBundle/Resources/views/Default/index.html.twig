@@ -227,6 +227,7 @@
             if($('.alert-no-address:visible').length && (type == "delivery" || type == "pedestrian")) {
                 e.preventDefault();
                 $('.alert-no-address').shake(3,20,400);
+                $("html, body").animate({ scrollTop: 0 }, "fast");
                 {#$("<div>{% trans %}please.fill.address.first{% endtrans %}</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();#}
             }
         });
