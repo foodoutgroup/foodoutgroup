@@ -26,6 +26,7 @@ class CouponAdmin extends FoodAdmin
             ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery', 'required' => false))
             ->add('code', null, array('label' => 'admin.coupon.code', 'required' => true))
             ->add('places', null, array('label' => 'admin.coupon.place',))
+            ->add('inverse','checkbox', array('label'=>'admin.coupon.inverse', 'required' => false))
             ->add('onlyNav', 'checkbox', array('label' => 'admin.coupon.only_nav', 'required' => false))
             ->add('noSelfDelivery','checkbox', array('required' => false))
             ->add('type', 'choice', array('choices' => array(
@@ -79,6 +80,7 @@ class CouponAdmin extends FoodAdmin
             ->add('places', null, array('label' => 'admin.coupon.place'))
             ->add('onlyNav', null, array('label' => 'admin.coupon.only_nav'))
             ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery'))
+            ->add('inverse', null, array('label' => 'admin.coupon.inverse'))
         ;
     }
 
@@ -102,6 +104,7 @@ class CouponAdmin extends FoodAdmin
             ->add('onlyNav', null, array('label' => 'admin.coupon.only_nav', 'editable' => true))
             ->add('active', null, array('label' => 'admin.coupon.active', 'editable' => true))
             ->add('singleUse', null, array('label' => 'admin.coupon.single_use', 'editable' => true))
+            ->add('inverse', null, array('label' => 'admin.coupon.inverse', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
