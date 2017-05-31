@@ -264,12 +264,22 @@ class OrderService extends ContainerAware
      *
      * @return Order
      */
-    public function createOrder($placeId, $placePoint = null, $fromConsole = false, $orderDate = null,$deliveryType = null)
+    public function createOrder($placeId, $placePoint = null, $fromConsole = false, $orderDate = null, $deliveryType = null)
     {
-        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
+
+
         if (empty($placePoint)) {
             $placePointMap = $this->container->get('session')->get('point_data');
-            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$placeId]);
+
+            if (empty($placePointMap[$placeId])) {
+                $sessionLocation = $this->container->get('food.googlegis')->getLocationFromSession();
+                $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
+                $placePointId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $sessionLocation, '', $orderDate);
+            } else {
+                $placePointId = $placePointMap[$placeId];
+            }
+
+            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
         } else {
             $pointRecord = $placePoint;
         }
@@ -303,7 +313,7 @@ class OrderService extends ContainerAware
                 $timeShift = 60;
             }
 
-            if($deliveryType == 'pedestrian') {
+            if ($deliveryType == 'pedestrian') {
                 $timeShift = $this->container->get('food.places')->getPedestrianDeliveryTime();
             }
 
@@ -1325,11 +1335,11 @@ class OrderService extends ContainerAware
      * @param array|null $userData
      * @param string|null $orderDate
      */
-    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null,$deliveryType = null)
+    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null, $deliveryType = null)
     {
         // TODO Fix prices calculation
 
-        $this->createOrder($place, $placePoint, false, $orderDate,$deliveryType);
+        $this->createOrder($place, $placePoint, false, $orderDate, $deliveryType);
         $this->getOrder()->setDeliveryType($deliveryType);
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
@@ -1627,6 +1637,7 @@ class OrderService extends ContainerAware
         if ($useAdminFee) {
             $this->getOrder()->setAdminFee($adminFee);
         }
+
         $this->saveOrder();
     }
 
@@ -3788,7 +3799,7 @@ class OrderService extends ContainerAware
             $this->container->get('food.error_log_service')->saveErrorLog(
                 'checkout_form_page',
                 $formErrors,
-                serialize($request) .'<br><br>'. serialize($debugCartInfo)
+                serialize($request) . '<br><br>' . serialize($debugCartInfo)
             );
         }
     }
