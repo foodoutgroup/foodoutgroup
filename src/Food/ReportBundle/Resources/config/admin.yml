@@ -10,6 +10,17 @@ services:
     calls:
       - [ setTranslationDomain, [SonataAdminBundle]]
 
+  sonata.admin.report:
+      class: Food\ReportBundle\Admin\ReportAdmin
+      tags:
+          - { name: sonata.admin, manager_type: orm, group: "Content", label: "report.all" }
+      arguments:
+          - ~
+          - ~
+          - 'FoodReportBundle:Admin\Report'
+      calls:
+          - [ setTranslationDomain, [SonataAdminBundle]]
+
   sonata.admin.unique_users_with_placepoints:
       class: Food\ReportBundle\Admin\UniqueUsersWithPlacepointAdmin
       tags:
