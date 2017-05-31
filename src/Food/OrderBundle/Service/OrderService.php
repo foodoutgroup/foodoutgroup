@@ -266,10 +266,20 @@ class OrderService extends ContainerAware
      */
     public function createOrder($placeId, $placePoint = null, $fromConsole = false, $orderDate = null, $deliveryType = null)
     {
-        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
+
+
         if (empty($placePoint)) {
             $placePointMap = $this->container->get('session')->get('point_data');
-            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$placeId]);
+
+            if (empty($placePointMap[$placeId])) {
+                $sessionLocation = $this->container->get('food.googlegis')->getLocationFromSession();
+                $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
+                $placePointId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $sessionLocation, '', $orderDate);
+            } else {
+                $placePointId = $placePointMap[$placeId];
+            }
+
+            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
         } else {
             $pointRecord = $placePoint;
         }
@@ -1627,6 +1637,7 @@ class OrderService extends ContainerAware
         if ($useAdminFee) {
             $this->getOrder()->setAdminFee($adminFee);
         }
+
         $this->saveOrder();
     }
 
