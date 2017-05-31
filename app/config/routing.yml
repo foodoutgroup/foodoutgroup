@@ -5,6 +5,10 @@ api_base:
     resource: "@ApiBaseBundle/Resources/config/routing.yml"
     prefix:   /api
 
+food_sms:
+    resource: "@FoodSmsBundle/Resources/config/routing.yml"
+    prefix:   /
+
 food_lang_homepage:
     path: /{_locale}
     defaults: { _controller: FoodAppBundle:Default:index, _locale: %kernel.default_locale% }
@@ -72,5 +76,10 @@ fos_user:
     defaults:
             _locale: %kernel.default_locale%
 
+
 food_app:
     resource: "@FoodAppBundle/Resources/config/routing.yml"
+
+
+
+

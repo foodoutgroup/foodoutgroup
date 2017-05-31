@@ -1,0 +1,30 @@
+{% extends ':Admin:layout.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block sonata_admin_content %}
+
+    <style type="text/css">
+        a {
+            text-decoration: none !important;
+        }
+    </style>
+    <div class="container-fluid">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <h1>
+                    {% trans %}report.all{% endtrans %}
+                </h1>
+            </div>
+        </div>
+        <div class="col-lg-12">
+           {% for item in reportCollection %}
+               {% if item.isGranted(item.getRootCode() ~ '.list') %}
+                   <a href="{{ item.generateUrl('list') }}" style="background: #f2f2f2; margin-top: 10px; padding: 10px; display: block;">
+                       <h4>{{ t.trans(item.label, [], 'SonataAdminBundle') }}</h4>
+                   </a>
+               {% endif %}
+           {% endfor %}
+        </div>
+    </div>
+{% endblock %}

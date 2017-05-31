@@ -1,6 +1,6 @@
-food_sms:
-    resource: "@FoodSmsBundle/Resources/config/routing.yml"
-    prefix:   /
+#food_sms:
+#    resource: "@FoodSmsBundle/Resources/config/routing.yml"
+#    prefix:   /
 
 #food_places:
 #    resource: "@FoodPlacesBundle/Controller/"
