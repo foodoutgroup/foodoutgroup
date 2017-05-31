@@ -229,7 +229,7 @@
                 <source>place_point.pickup_info</source><target>Atsiėmimas</target>
             </trans-unit>
             <trans-unit id="place_point.min_cart_amount" resname="place_point.min_cart_amount">
-                <source>place_point.min_cart_amount</source><target>Min cart amount</target>
+                <source>place_point.min_cart_amount</source><target>Min. krepšelis</target>
             </trans-unit>
         </body>
     </file>
