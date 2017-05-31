@@ -40,7 +40,6 @@ class UniqueUsersWithPlacepointController extends CRUDController
 
         $con = $this->container->get('doctrine')->getConnection();
         $activeMembers1sql = "SELECT DISTINCT SUBSTRING(order_date, 1, 7) as date, COUNT(DISTINCT user_id) as count FROM orders WHERE order_date > '$from' GROUP BY 1";
-        var_dump($activeMembers1sql);
 
         $stmt = $con->prepare($activeMembers1sql);
         $stmt->execute();
