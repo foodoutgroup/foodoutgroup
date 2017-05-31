@@ -27,8 +27,8 @@
         </div>
         {% if resultCollection is not null %}
             {% set keys = resultCollection['keys'] %}
-            <div class="table-responsive">
-                <table class="table table-hover table-bordered">
+            <h4>{% trans %}order.count{% endtrans %}</h4>
+            <table class="table table-hover table-bordered">
                     <tr style="background: #f2f2f2;">
                         <th>{% trans %}order.count{% endtrans %} / {% trans %}date{% endtrans %}</th>
                         {% for key in keys %}
@@ -48,13 +48,28 @@
                         {% endfor %}
                     </tr>
                     <tr>
-                        <td style="background: #f2f2f2;">New placePoints</td>
+                        <td style="background: #f2f2f2;"><b>{% trans %}total{% endtrans %}</b></td>
                         {% for key in keys %}
-                            <td>{% if resultCollection['newPlacePoints'][key] is defined %}{{ resultCollection['newPlacePoints'][key] }}{% endif %}</td>
+                            {% set t = resultCollection['activeMembers2'][key] + resultCollection['activeMembers1'][key] %}
+                            <td>{{ t }}</td>
                         {% endfor %}
                     </tr>
                 </table>
-            </div>
+
+
+            <h4>{% trans %}new.placepoint{% endtrans %}</h4>
+                <table class="table table-hover table-bordered">
+                    <tr style="background: #f2f2f2;">
+                        {% for key in keys %}
+                            <th style="background: #f6f6f6">{{ key }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for key in keys %}
+                            <td>{% if resultCollection['newPlacePoints'][key] is defined %}{{ resultCollection['newPlacePoints'][key] }}{% else %}0{% endif %}</td>
+                        {% endfor %}
+                    </tr>
+                </table>
         {% endif %}
     </div>
 {% endblock %}
