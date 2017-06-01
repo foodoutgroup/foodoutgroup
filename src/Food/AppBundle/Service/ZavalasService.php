@@ -94,7 +94,7 @@ class ZavalasService extends BaseService
         $locationData = $this->locationService->getLocationFromSession();
         $cityObj = $this->em->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
 
-        if (!$cityObj || !$this->isRushHourAtCity($cityObj) || !$this->placesService->isPlaceDeliversToCity($place, $cityObj->getId())) {
+        if (!$cityObj || $this->isRushHourAtCity($cityObj) || !$this->placesService->isPlaceDeliversToCity($place, $cityObj->getId())) {
 
             $placeCityCollection = $this->em->getRepository('FoodDishesBundle:Place')->getCityCollectionByPlace($place);
             $placeCityCollectionOrdered = [];
