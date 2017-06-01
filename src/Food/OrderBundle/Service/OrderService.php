@@ -2710,7 +2710,7 @@ class OrderService extends ContainerAware
             $returner = $nav->updatePricesNAV($orderRenew);
             sleep(1);
 
-            $logMessage = getErrorFromNav($order->getId());
+            $logMessage = $nav->getErrorFromNav($order->getId());
 
             $this->logOrder($order, 'NAV_update_prices_return', $logMessage, json_encode($returner));
             if ($returner->return_value == "TRUE") {
