@@ -28,6 +28,7 @@ class PlaceRepository extends EntityRepository
         $city = null;
         $lat = null;
         $lon = null;
+        $currTime = date('H:i:s');
         if (!empty($locationData) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
             $city = (!empty($locationData['city']) ? $locationData['city'] : null);
             $lat = str_replace(",", ".", $locationData['lat']);
@@ -57,8 +58,8 @@ class PlaceRepository extends EntityRepository
              *  This stuff needs to be deprecated. And parameter removed.
              */
 
-            $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL" . ($zaval ? ' AND ppdzd.active_on_zaval = 1' : '');
-            $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pps.id" . ($zaval ? ' AND ppdz.active_on_zaval = 1' : '');
+            $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point=pps.id" . ($zaval ? ' AND ppdzd.active_on_zaval = 1' : '');
+            $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pps.id AND (time_from <= '" . $currTime . "' AND '" . $currTime . "' <= time_to)" . ($zaval ? ' AND ppdz.active_on_zaval = 1' : '');
 
             $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id
             AND (
@@ -308,11 +309,20 @@ class PlaceRepository extends EntityRepository
     public function getDeliveryPriceForPlacePoint(Place $place, PlacePoint $placePoint, $locationData, $noneWorking = false)
     {
         $data = $this->getPlacePointNearWithDistance($place->getId(), $locationData, false, false, $noneWorking);
-        $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=" . (int)$data['id'] . " AND active=1 AND distance >= " . (float)$data['distance'] . " ORDER BY distance ASC LIMIT 1";
+        $currTime = date('H:i:s');
+        $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=" . (int)$data['id'] . " AND active=1 AND distance >= " . (float)$data['distance'] . " AND (time_from <= '" . $currTime . "' AND '" . $currTime . "' <= time_to) ORDER BY distance ASC LIMIT 1";
         $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
         $stmt->execute();
+        $result = $stmt->fetchColumn();
 
-        return $stmt->fetchColumn();
+        if(empty($result)){
+            $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=" . (int)$data['id'] . " AND active=1 AND distance >= " . (float)$data['distance']." AND time_from IS NULL AND time_to IS NULL";
+            $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
+            $stmt->execute();
+            $result = $stmt->fetchColumn();
+        }
+
+        return $result;
     }
 
     public function getMinimumCartForPlacePoint(Place $place, PlacePoint $placePoint, $locationData)
@@ -344,6 +354,8 @@ class PlaceRepository extends EntityRepository
         $dh = date("H");
         $dm = date("i");
         $wd = date('w');
+        $deliveryTime = date('H:i:s');
+
         if ($wd == 0) $wd = 7;
 
         if (!$noneWorking) {
@@ -355,8 +367,8 @@ class PlaceRepository extends EntityRepository
         }
 
 
-        $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
-        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id";
+        $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point = pp.id";
+        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id AND (time_from <= '" . $deliveryTime . "' AND '" . $deliveryTime . "' <= time_to)";
 
         $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) as distance " . $hours . "
                     FROM place_point pp, place p " . ((!$ignoreWorkTime) ? ", place_point_work_time ppwt" : "") . "
@@ -444,19 +456,22 @@ class PlaceRepository extends EntityRepository
                     $dh = date("H", strtotime($futureTime));
                     $dm = date("i", strtotime($futureTime));
                     $wd = date('w', strtotime($futureTime));
+                    $deliveryTime = date("H:i:s", strtotime($futureTime));
                 } else {
                     $dh = date("H");
                     $dm = date("i");
                     $wd = date('w');
-
+                    $deliveryTime = date('H:i:s');
                 }
+
                 if ($wd == 0) $wd = 7;
                 /**
                  * @todo check the need of self delivery
                  */
 
-                $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
-                $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id";
+
+                $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point = pp.id";
+                $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id AND (time_from <= '" . $deliveryTime . "' AND '" . $deliveryTime . "' <= time_to)";
 
                 $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) )))
                     FROM place_point pp, place p, place_point_work_time ppwt
@@ -539,7 +554,6 @@ class PlaceRepository extends EntityRepository
                     ORDER BY fast DESC, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
 
 
-
                 $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
 
                 $stmt->execute();
@@ -560,8 +574,7 @@ class PlaceRepository extends EntityRepository
     /**
      * @return Place[]
      */
-    public
-    function getRecommendedForTitle($city = null)
+    public function getRecommendedForTitle($city = null)
     {
         $otherFilters = '';
         // 21:30 isjungiame alkoholiku rodyma :)
@@ -602,8 +615,7 @@ class PlaceRepository extends EntityRepository
         return $places;
     }
 
-    public
-    function getMinDeliveryPrice($placeId)
+    public function getMinDeliveryPrice($placeId)
     {
         $minPrice = "SELECT MIN(price) AS price FROM `place_point_delivery_zones` WHERE deleted_at IS NULL AND active=1 AND place=" . (int)$placeId;
         $stmt = $this->getEntityManager()->getConnection()->prepare($minPrice);
@@ -612,8 +624,7 @@ class PlaceRepository extends EntityRepository
         return $stmt->fetchColumn(0);
     }
 
-    public
-    function getMaxDeliveryPrice($placeId)
+    public function getMaxDeliveryPrice($placeId)
     {
         $minPrice = "SELECT MAX(price) AS price FROM `place_point_delivery_zones` WHERE deleted_at IS NULL AND active=1 AND place=" . (int)$placeId;
         $stmt = $this->getEntityManager()->getConnection()->prepare($minPrice);
@@ -622,8 +633,7 @@ class PlaceRepository extends EntityRepository
         return $stmt->fetchColumn(0);
     }
 
-    public
-    function getMinCartSize($placeId)
+    public function getMinCartSize($placeId)
     {
         $minPrice = "SELECT MIN(cart_size) AS price FROM `place_point_delivery_zones` WHERE deleted_at IS NULL AND active=1 AND place=" . (int)$placeId;
         $stmt = $this->getEntityManager()->getConnection()->prepare($minPrice);
@@ -632,8 +642,7 @@ class PlaceRepository extends EntityRepository
         return $stmt->fetchColumn(0);
     }
 
-    public
-    function getMaxCartSize($placeId)
+    public function getMaxCartSize($placeId)
     {
         $minPrice = "SELECT MAX(cart_size) AS price FROM `place_point_delivery_zones` WHERE deleted_at IS NULL AND active=1 AND place=" . (int)$placeId;
         $stmt = $this->getEntityManager()->getConnection()->prepare($minPrice);
@@ -642,8 +651,7 @@ class PlaceRepository extends EntityRepository
         return $stmt->fetchColumn(0);
     }
 
-    public
-    function isPlacePointWorks(PlacePoint $placePoint, $ts = null)
+    public function isPlacePointWorks(PlacePoint $placePoint, $ts = null)
     {
         if (!$ts) {
             $ts = time();
@@ -675,8 +683,7 @@ class PlaceRepository extends EntityRepository
      *
      * @return array
      */
-    public
-    function getCities(Place $place)
+    public function getCities(Place $place)
     {
         if (empty(self::$_citiesCache[$place->getId()])) {
             self::$_citiesCache[$place->getId()] = [];
