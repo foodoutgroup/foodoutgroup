@@ -137,22 +137,24 @@ WHERE driver_id IS NOT NULL
         $stmt->execute();
         $drivers = $stmt->fetchAll();
         $i = 1;
-
-        foreach ($drivers as $driver) {
-            if ($driver['id'] != $i) {
-                $returner = $i;
-                break;
-            } else {
-                $returner = null;
+        if (!empty($drivers)) {
+            foreach ($drivers as $driver) {
+                if ($driver['id'] != $i) {
+                    $returner = $i;
+                    break;
+                } else {
+                    $returner = null;
+                }
+                $i++;
             }
-            $i++;
-        }
 
-        if (empty($returner)) {
-            $returner = end($drivers);
-            $returner = $returner['id'] + 1;
+            if (empty($returner)) {
+                $returner = end($drivers);
+                $returner = $returner['id'] + 1;
+            }
+        } else {
+            $returner = 1;
         }
-
         return $returner;
     }
 }
