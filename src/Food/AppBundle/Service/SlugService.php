@@ -119,10 +119,12 @@ class SlugService
             $origName = $textsForSlugs[$defaultLocale];
         }
 
-        foreach ($object->getTranslations()->getValues() as $row) {
+        if (is_object($object->getTranslations())) {
+            foreach ($object->getTranslations()->getValues() as $row) {
 
-            if ($row->getField() == $slugField) {
-                $textsForSlugs[$row->getLocale()] = $row->getContent();
+                if ($row->getField() == $slugField) {
+                    $textsForSlugs[$row->getLocale()] = $row->getContent();
+                }
             }
         }
 

@@ -40,7 +40,7 @@ class PlacePoint
     /**
      * @var string
      *
-     * @ORM\Column(name="company_code", type="string", length=20)
+     * @ORM\Column(name="company_code", type="string", length=20, nullable=true)
      */
     private $company_code;
 

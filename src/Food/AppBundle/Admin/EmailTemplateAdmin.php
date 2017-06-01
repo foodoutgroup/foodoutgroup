@@ -26,7 +26,7 @@ class EmailTemplateAdmin extends FoodAdmin
             $sourceCollection[$source] = $source;
         }
 
-        $typeCollection = ['pickup' => 'Pickup', 'order' => 'Simple Order'];
+        $typeCollection = ['pickup' => 'Pickup', 'deliver' => 'Simple Order'];
         $orderStatusCollection = [];
         foreach (OrderService::getOrderStatuses() as $os) {
             $orderStatusCollection[$os] = $os;

@@ -105,15 +105,24 @@ class FoodCategoryAdmin extends FoodAdmin
 
             $object->setPlace($place);
         }
-        $this->slug($object);
         parent::prePersist($object);
     }
 
     public function preUpdate($object)
     {
-        $this->slug($object);
         parent::preUpdate($object);
+    }
 
+    function postPersist($object)
+    {
+        $this->slug($object);
+        parent::postPersist($object);
+    }
+
+    function postUpdate($object)
+    {
+        $this->slug($object);
+        parent::postUpdate($object);
     }
 
     private function slug($object)
