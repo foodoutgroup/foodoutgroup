@@ -817,6 +817,8 @@ class OrderService extends ContainerAware
          */
         $placePoint = $this->container->get('doctrine.orm.entity_manager')
             ->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash]);
+
+
         if (!empty($placePoint)) {
             $ordersData = [
                 'restaurant' => [

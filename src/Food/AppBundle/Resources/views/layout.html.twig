@@ -18,6 +18,7 @@
     <meta name="description" content="{% block seo_description %}{% endblock %}">
     <meta name="viewport" content="width=1000">
     <meta name="msapplication-config" content="none"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
 
     {# Chosen CSS Begin #}
     {% stylesheets '@FoodAppBundle/Resources/public/scripts/chosen/chosen.min.css' filter="cssrewrite" %}
@@ -135,7 +136,7 @@
         {% block ga_js_code %}{% endblock %}
     </script>
 </head>
-<body>
+<body class="{{ app.request.locale }}">
     {{ notifications.init|raw }}
     <div class="site">
         <div id="header-ad-container"></div>
