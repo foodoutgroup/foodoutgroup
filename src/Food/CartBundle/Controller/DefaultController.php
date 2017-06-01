@@ -551,7 +551,6 @@ class DefaultController extends Controller
 
         $enableDiscount = !$place->getOnlyAlcohol();
         $placeServ = $this->get('food.places');
-        $em = $this->getDoctrine()->getManager();
 
         $cartFromMin = $placeServ->getMinCartPrice($place->getId());
         $cartFromMax = $placeServ->getMaxCartPrice($place->getId());

@@ -214,10 +214,8 @@
 
                     if(data){
                         var currency =  '{{ currency_display|raw }}';
-                        if(currency == '&euro;'){
-                            currency = '€';
-                        }
-                        $('.delivery-price .fr').text(currency+data.toFixed(2));
+
+                        $('.delivery-price .fr').html(currency+data.toFixed(2));
                     }
                  }
              });
