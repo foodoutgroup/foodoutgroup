@@ -131,7 +131,7 @@ food_api_order_status2:
     defaults: { _controller: FoodApiBundle:Orders:getOrderStatus}
     methods: [GET]
 
-food_api_coupons:
+food_api_coupons_v1:
     path: /coupons
     defaults: { _controller: FoodApiBundle:Orders:getCoupon}
     methods: [POST]

@@ -247,10 +247,13 @@ class OrdersController extends Controller
                 return new JsonResponse(null, 404);
             }
         }  catch (ApiException $e) {
+            var_dump($e->getMessage());die();
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            var_dump($e->getMessage());die();
+
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error2:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace2:' . $e->getTraceAsString());
 
@@ -606,22 +609,14 @@ class OrdersController extends Controller
             }
         }  catch (ApiException $e) {
 
-            $this->container->get('food.error_log_service')->saveErrorLog(
-                'coupon_api_error',
-                $e->getMessage(),
-                serialize($request)
-            );
+            $this->container->get('food.error_log')->write($this->getUser(), null, null, 'coupon_api_error', $e->getMessage());
 
             $this->get('logger')->error('Orders:getOrderStatusAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrderStatusAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
 
-            $this->container->get('food.error_log_service')->saveErrorLog(
-                'coupon_api_error_fatal',
-                $e->getMessage(),
-                serialize($request)
-            );
+            $this->container->get('food.error_log')->write($this->getUser(), null, null, 'coupon_api_error_fatal', $e->getMessage());
 
             $this->get('logger')->error('Orders:getOrderStatusAction Error2:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrderStatusAction Trace2:' . $e->getTraceAsString());
