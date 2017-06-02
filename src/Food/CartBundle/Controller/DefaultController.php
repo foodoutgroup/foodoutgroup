@@ -194,7 +194,7 @@ class DefaultController extends Controller
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
         $miscUtils = $this->get('food.app.utils.misc');
-        $googleGisService = $this->container->get('food.googlegis');
+        $googleGisService = $this->container->get('food.location');
 
         $country = $this->container->getParameter('country');
         $session = $request->getSession();
@@ -476,7 +476,7 @@ class DefaultController extends Controller
 
             // Update order with recent address information. but only if we need to deliver
             if ($deliveryType == $orderService::$deliveryDeliver || $deliveryType == $orderService::$deliveryPedestrian) {
-                $locationData = $googleGisService->getLocationFromSession();
+                $locationData = $googleGisService->getLocation();
                 $em = $this->getDoctrine()->getManager();
                 $address = $orderService->createAddressMagic(
                     $user,
@@ -520,7 +520,7 @@ class DefaultController extends Controller
             'formErrors' => $formErrors,
             'place' => $place,
             'takeAway' => ($takeAway ? true : false),
-            'location' => $this->get('food.googlegis')->getLocationFromSession(),
+            'location' => $this->get('food.location')->get(),
             'dataToLoad' => $dataToLoad,
             'userAddress' => $address,
             'userAllAddress' => $placeService->getCurrentUserAddresses(),
@@ -617,12 +617,12 @@ class DefaultController extends Controller
         } else {
             $placePointMap = $this->container->get('session')->get('point_data');
 
-            $locationData = $this->get('food.googlegis')->getLocationFromSession();
+            $locationData = $this->get('food.location')->get();
 
             if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
                 $deliveryTotal = $place->getDeliveryPrice();
 
-            } elseif (!$locationData['not_found']) {
+            } elseif ($locationData['precision'] >= 1) {
                 // TODO Trying to catch fatal when searching for PlacePoint
                 if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
                     $this->container->get('logger')->error('Trying to find PlacePoint without ID in CartBundle Default controller - sideBlockAction');

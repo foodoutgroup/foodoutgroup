@@ -24,9 +24,9 @@ class AddressController extends Controller
             $street = $request->get('street');
             $houseNumber = $request->get('house_number');
             if (!empty($lat) && !empty($lng)) {
-                $response = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
+                $response = $this->get('food.location')->findAddressByCoords($lat, $lng);
             } elseif (!empty($city) && !empty($street) && !empty($houseNumber)) {
-                $response = $this->get('food.googlegis')->findAddressByCoordsByStuff(
+                $response = $this->get('food.location')->findAddressByCoordsByStuff(
                     $city, $street, $houseNumber
                 );
             } else {

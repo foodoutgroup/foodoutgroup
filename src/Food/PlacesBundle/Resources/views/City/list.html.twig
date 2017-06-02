@@ -143,16 +143,16 @@
                 buffer = ('{% trans %}general.places_found2{% endtrans %}');
             }
 
-            {% if location is not null and placeCollection|length > 0 and location.street is defined %}
+            {% if location is not null and placeCollection|length > 0 and location.precision <= 2 %}
 
                 buffer = buffer + ', {% trans %}places.places_near{% endtrans %}';
-                buffer = buffer + ' {{ location.street_short }}';
+                buffer = buffer + ' {{ location.street }}';
 
-                {% if location.street_nr is defined %}
-                    buffer = buffer + ' {{ location.street_nr }}';
+                {% if location.house is not null %}
+                    buffer = buffer + ' {{ location.house }}';
                 {% endif %}
 
-                {% if location.flat is defined and location.flat is not empty %}
+                {% if location.flat is not null and location.flat %}
                     buffer = buffer + ' - {{ location.flat }}';
                 {% endif %}
 

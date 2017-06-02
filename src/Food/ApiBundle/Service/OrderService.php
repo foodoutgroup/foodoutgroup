@@ -99,7 +99,7 @@ class OrderService extends ContainerAware
             'lng'     => null,
             'address' => null
         ];
-        $googleGisService = $this->container->get('food.googlegis');
+        $googleGisService = $this->container->get('food.location');
 
         $token = $requestOrig->headers->get('X-API-Authorization');
         $this->container->get('food_api.api')->loginByHash($token);

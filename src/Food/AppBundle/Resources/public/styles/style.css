@@ -846,7 +846,6 @@ input.button {}
 }
 
 .alert-no-address .input-section input[type=text]{
-    width: 200px;
     font-size: 15px;
     padding: 8px 12px;
     border: 1px solid #d8d8d8;
@@ -854,22 +853,6 @@ input.button {}
     box-shadow: 0 0 1px #f2f2f2;
     box-shadow: 0 0 2px #d0c8c1;
 }
-
-.alert-no-address .input-section button {
-    font-size: 13px;
-    color: #fff;
-    text-shadow: 0 1px 0 #6d9104;
-    text-transform: uppercase;
-    width: 128px;
-    height: 38px;
-    padding-top: 6px;
-    border-radius: 4px;
-    background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left center;
-    box-shadow: 0 1px 1px #c0c0c0;
-    border: none;
-    letter-spacing: 1px;
-}
-
 
 #address_city-button {
     margin-bottom: -14px !important;
@@ -1430,7 +1413,7 @@ input.button {}
 
 .newsletter-form { }
 .newsletter-form input[type="text"] {float: left; float: left; border: 1px solid #e1ddd6; background: #fff; padding: 8px 16px; line-height: 18px; height: 18px; width: 180px; font-size: 15px; border-radius: 3px; margin-right: 8px; margin-top: 12px;}
-.newsletter-form input[type="submit"] {float: left; float: left; height: 36px; background: url(/bundles/foodapp/images/big-button-2.png) no-repeat right center; border-radius: 3px; box-shadow: 0 1px 2px #769c04; border: none; color: #fff; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; width: 120px; text-shadow: 0 1px 0 #769C03; line-height: 34px; border: 1px solid #88b305; margin-top: 12px;}
+.newsletter-form input[type="submit"] {float: left; float: left; height: 36px; background: url(/bundles/foodapp/images/big-button.png) no-repeat right center; border-radius: 3px; box-shadow: 0 1px 2px #769c04; border: none; color: #fff; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; width: 120px; text-shadow: 0 1px 0 #769C03; line-height: 34px; border: 1px solid #88b305; margin-top: 12px;}
 
 .newsletter-wide {padding-top: 94px; padding-bottom: 62px;}
 .newsletter-wide .newsletter-block {float: none; width: auto; padding: 37px;}
@@ -3116,3 +3099,55 @@ div.coupon_form_popup {
     margin-left: 5px;
 }
 
+.address-search-form-city {
+    position: relative;
+}
+.address-search-form-city #address_autocomplete {
+    width:300px;
+}
+
+.address-search-form-city .input-house {
+    width: 76px;
+}
+
+.address-search-form-city #submit {
+    border: none;
+    width: 54px;
+    background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x center center;
+    border-radius: 6px;
+    height: 40px;
+    padding-top: 3px;
+}
+
+.address-search-form-city #submit img {
+    width: 26px;
+}
+
+.address-search-form-city button.find-me {
+    position: absolute;
+    left: 416px;
+    top: 8px;
+    background: url(/bundles/foodapp/images/find-me.png);
+    width: 24px;
+    height: 24px;
+    border: none;
+
+}
+
+.address-search-form-place button.find-me {
+    left: 300px;
+}
+
+
+.address-search-form-cart #address_autocomplete {
+    width: 310px;
+}
+.address-search-form-cart .input-house {
+    width: 60px !important;
+    margin-left: 10px;
+}
+
+.address-search-form-cart button.find-me {
+    left: 484px;
+    top: 7px;
+}

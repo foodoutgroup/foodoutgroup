@@ -63,7 +63,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
             $navService = $this->getContainer()->get('food.nav');
             $miscUtility = $this->getContainer()->get('food.app.utils.misc');
             $userService = $this->getContainer()->get('fos_user.user_manager');
-            $gisService = $this->getContainer()->get('food.googlegis');
+            $gisService = $this->getContainer()->get('food.location');
             $log = $this->getContainer()->get('logger');
             $country = $this->getContainer()->getParameter('country');
 

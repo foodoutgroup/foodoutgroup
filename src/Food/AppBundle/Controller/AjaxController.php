@@ -23,234 +23,55 @@ class AjaxController extends Controller
         $response->headers->set('Content-Type', 'application/json');
 
         switch ($action) {
-            case 'find-street':
-                $this->_ajaxFindStreet($response, $request->get('city'), $request->get('street'));
-                break;
-            case 'find-street-house':
-                $this->_ajaxFindStreetHouse($response, $request->get('city'), $request->get('street'), $request->get('house'));
-                break;
-            case 'find-address':
-                $this->_ajaxActFindAddress($response, $request->get('city'), $request->get('address'), $request);
-                break;
             case 'find-address-and-recount':
-                $this->_ajaxActFindAddress($response, $request->get('city'), $request->get('address'), $request);
-                $this->_isPlaceInRadius($response, intval($request->get('place')));
+                $collection = $this->_isPlaceInRadius($response->getContent(), intval($request->get('place')));
                 break;
             case 'check-coupon':
-                $this->_ajaxCheckCoupon($response, $request->get('place_id'), $request->get('coupon_code'));
+                $collection = $this->_ajaxCheckCoupon($request->get('place_id'), $request->get('coupon_code'));
                 break;
             case 'delivery-price':
-                $this->_ajaxGetDeliveryPrice($response,$request->get('restaurant'),$request->get('time'));
+                $collection = $this->_ajaxGetDeliveryPrice($request->get('restaurant'),$request->get('time'));
                 break;
             case 'autocomplete-address':
-                $this->_autocompleteAddress($response, $request);
+                $collection = $this->_autoCompleteAddress($request);
                 break;
             case 'check-address':
-                $this->_checkAddress($response, $request);
+                $collection = $this->_checkAddress($request);
+                break;
+            case 'get-address-by-location':
+                $collection = $this->_getAddressByLocation($request);
                 break;
             default:
-                $response->setContent(json_encode([
-                    'message' => 'Method not found :)',
-                ]));
+                $collection = ['message' => 'Method not found :)'];
                 break;
         }
+        $response->setContent(json_encode($collection));
 
         return $response;
     }
 
-    /**
-     * @param Response $response
-     * @param string $city
-     * @param string $address
-     * @param Request $request
-     */
-    private function _ajaxActFindAddress(Response $response, $city, $address, Request $request)
+
+    private function _isPlaceInRadius($content, $placeId)
     {
-
-        $cityService = $this->get('food.city_service');
-
-        if(!$city = $cityService->getCityById($city)){
-            $city = $cityService->getDefaultCity();
-        }
-
-        $locationInfo = $this->get('food.googlegis')->groupData($address, $city->getTitle(),$city->getId());
-        $respData = [
-            'success' => 0,
-            'message' => $this->get('translator')->trans('index.address_not_found'),
-            'adr'     => 1,
-            'str'     => 0,
-            'url'    => $this->get('slug')->getUrl($city->getId(), 'city'),
-        ];
-
-
-        if ((!$locationInfo['not_found'] || $locationInfo['street_found']) && $locationInfo['lng'] > 20 && $locationInfo['lat'] > 50) {
-            $respData['success'] = 1;
-            unset($respData['message']);
-        }
-        if (!$locationInfo['address_found']) {
-            $respData['adr'] = 1;
-        }
-
-        if (!$locationInfo['street_found']) {
-            $respData['str'] = 1;
-        }
-
-
-        if (!empty($respData) && $respData['success'] == 1 && $respData['adr'] == 1) {
-            $session = $request->getSession();
-            $session->set('locationData', ['address' => $address, 'city_id' => $city->getId()]);
-        }
-        $em = $this->container->get('doctrine')->getManager();
-        $cart = $em->getRepository("FoodCartBundle:Cart")->findOneBy(['session' => $request->getSession()->getId()]);
-
-        if (!empty($cart)){
-            $cartSession = $cart->getSession();
-        }else{
-            $cartSession = null;
-        }
-        // Only City Selected
-        $city_only = $request->get('city_only');
-        if ($city && empty($address) && !empty($city_only)) {
-            $this->get('food.googlegis')->setCity($city);
-
-
-            $response->setContent(json_encode([
-                'data' => [
-                    'success' => 1,
-                    'adr'     => 1,
-                    'str'     => 0,
-                    'url'    => $this->get('slug')->getUrl($city->getId(), 'city'),
-                ]
-            ]));
-        } else {
-
-            if (isset($respData['message']) && !empty($respData['message'])) {
-                $placeObj = is_object($cart) ? $cart->getPlaceId() : null;
-                $this->get('food.error_log')->write($this->getUser(), $cartSession, $placeObj, 'adress_change_find', $respData['message']);
-            }
-
-            $response->setContent(json_encode([
-                'data' => $respData
-            ]));
-        }
-    }
-
-
-    public function _ajaxFindStreet(Response $response, $city, $street)
-    {
-        $respData = [];
-        $street = mb_strtoupper($street, 'utf-8');
-        $conn = $this->get('database_connection');
-
-        // protect
-        $street = strip_tags($street);
-        $street = str_replace(['%', '_'], '', $street); // PDO doesn't do dis
-
-        // query
-        $sql = 'SELECT DISTINCT(street_name), `name`
-                FROM nav_streets
-                WHERE delivery_region = ? AND
-                      street_name LIKE ?
-                LIMIT 5';
-
-        // get streets
-        $stmt = $conn->prepare($sql);
-        $stmt->bindValue(1, $city);
-        $stmt->bindValue(2, "%$street%");
-        $stmt->execute();
-        $streets = $stmt->fetchAll();
-        $gs = $this->get('food.googlegis');
-
-        foreach ($streets as $key => &$streetRow) {
-            if (empty($street['name'])) {
-                $gdata = $gs->groupData($streetRow['street_name'], $city);
-                if (isset($gdata['street_short']) && !empty($gdata['street_short'])) {
-                    $streetRow['name'] = $gdata['street_short'];
-                } else {
-
-                }
-                $sql = "UPDATE nav_streets SET `name`='" . $streetRow['name'] . "' WHERE delivery_region='" . $city . "' AND street_name='" . $streetRow['street_name'] . "'";
-                $conn->query($sql);
-            }
-        }
-
-        foreach ($streets as $str) {
-            if (!empty($str['name']) && $str['name'] != "NULL") {
-                $respData[] = ['value' => $str['name']];
-            }
-        }
-        $response->setContent(json_encode($respData));
-    }
-
-    public function _ajaxFindStreetHouse(Response $response, $city, $street, $house)
-    {
-        $conn = $this->get('database_connection');
-
-        $respData = [];
-
-        // protect
-        $street = mb_strtoupper($street, 'utf-8');
-        $house = str_replace(['%', '_'], '', $house); // PDO doesn't do dis
-        $house = htmlentities(addslashes(strip_tags($house)));
-        $street = htmlentities(addslashes(strip_tags($street)));
-        $city = htmlentities(addslashes(strip_tags($city)));
-
-        $cityService = $this->get('food.city_service');
-
-        if(!$city = $cityService->getCityById($city)){
-            $city = $cityService->getDefaultCity();
-        }
-
-
-        // query
-        $sql = 'SELECT DISTINCT(number_from)
-                FROM nav_streets
-                WHERE delivery_region = ? AND
-                      street_name = ? AND
-                      number_from LIKE ?';
-
-        // get streets
-        $stmt = $conn->prepare($sql);
-        $stmt->bindValue(1, $city->getTitle());
-        $stmt->bindValue(2, $street);
-        $stmt->bindValue(3, "$house%");
-        $stmt->execute();
-        $streets = $stmt->fetchAll();
-
-        foreach ($streets as $str) {
-            $respData[] = ['value' => $str['number_from']];
-        }
-        $response->setContent(json_encode($respData));
-    }
-
-    /**
-     * @param Response $response
-     * @param integer $placeId
-     *
-     * @todo dieve atleisk uz mano kaltes del json_encode - reik swiceri pakeisti kad contentas encodinamas priesh pati
-     *     response grazinima
-     */
-    private function _isPlaceInRadius(Response $response, $placeId)
-    {
-        $cont = json_decode($response->getContent());
+        $cont = json_decode($content);
 
         $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithWorkCheck(
             $placeId,
-            $this->get('food.googlegis')->getLocationFromSession()
+            $this->get('food.location')->get()
         );
 
         $this->get('food.places')->saveRelationPlaceToPointSingle($placeId, $pointId);
         $cont->data->{'nodelivery'} = (!empty($pointId) ? 0 : 1);
 
-        $response->setContent(json_encode($cont));
+        return $cont;
     }
 
     /**
-     * @param Response $response
      * @param int $placeId
      * @param string $couponCode
+     * @return array
      */
-    private function _ajaxCheckCoupon(Response $response, $placeId, $couponCode)
+    private function _ajaxCheckCoupon($placeId, $couponCode)
     {
         $trans = $this->get('translator');
         $cont = [
@@ -360,15 +181,15 @@ class AjaxController extends Controller
             );
         }
 
-        $response->setContent(json_encode($cont));
+        return $cont;
     }
 
-    private function _ajaxGetDeliveryPrice(Response $response, $restaurant,$time)
+    private function _ajaxGetDeliveryPrice($restaurant,$time)
     {
         $em = $this->container->get('doctrine')->getManager();
 
         $date = date('Y-m-d ').$time.':00';
-        $location = $this->get('food.googlegis')->getLocationFromSession();
+        $location = $this->get('food.location')->get();
         $placeRepo = $em->getRepository("FoodDishesBundle:Place");
         $place = $placeRepo->find($restaurant);
         $placePointId = $placeRepo->getPlacePointNear($restaurant,$location,false,$date);
@@ -386,14 +207,14 @@ class AjaxController extends Controller
                 true
             );
 
-        } else{
+        } else {
             $deliveryPrice = '';
         }
 
-        $response->setContent(json_encode($deliveryPrice));
+        return $deliveryPrice;
     }
 
-    private function _autoCompleteAddress(Response $response, Request $request)
+    private function _autoCompleteAddress(Request $request)
     {
 
         $addressCollection = [];
@@ -408,8 +229,6 @@ class AjaxController extends Controller
             'types' => 'geocode',
         ])->body);
 
-//        var_dump($rsp);
-
         foreach ($rsp->collection as $item) {
 
             $label = $item->output;
@@ -419,26 +238,89 @@ class AjaxController extends Controller
                 $str = mb_substr($item->output, $boldRange->offset, $boldRange->length, 'UTF-8');
                 $label = str_replace($str, "<b>".$str."</b>", $label);
             }
-
-
+            $imgUrl = $this->get('templating.helper.assets')->getUrl('bundles/foodapp/images/ic_marker.png');
             $addressCollection[] = [
                 'id' => $item->id,
-                'label' => $label,
+                'label' => "<img src=\"$imgUrl\"/> ".$label,
                 'value' => $item->output,
-                'data' => $item->matched_substrings
+                'data' => $item->matched_substrings,
+                'class' => '',
             ];
         }
 
-//        var_dump(json_encode($addressCollection));
-//        die;
+//        //TODO user address;
+//        $addressCollection[] = [
+//            'id' => '',
+//            'label' => "<img src=\"./../bundles/foodapp/images/ic_home.png\"/> ".'Sudu sulnys',
+//            'value' => 'Sudu sulnys',
+//            'data' => null,
+//            'class' => 'user-address',
+//        ];
 
-        $response->setContent(json_encode($addressCollection));
+        return $addressCollection;
 
     }
 
-    private function _checkAddress(Response $response, Request $request)
+    private function _checkAddress(Request $request)
     {
+        $rspDefault = ['success' => false];
 
-        $response->setContent(json_encode(['success' => true]));
+        $curl = new \Curl();
+        $rsp = json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', [
+            'hash' => $request->get('address'),
+            'language' => $request->getLocale(),
+            'types' => 'geocode',
+        ])->body, true);
+
+        $rsp  = array_merge($rspDefault, $rsp);
+        $t = $this->get('translator');
+        if($rsp['success']) {
+
+            $d = $rsp['detail'];
+
+            if(empty($d['house'])) {
+                $rsp['message'] = $t->trans('error.house.not.found');
+                $rsp['success'] = false;
+            } else {
+                $city = $this->get('food.city_service')->getCityByName($d['city']);
+                if(!$city) {
+                    $rsp['success'] = false;
+                    $rsp['message'] = $t->trans('in.this.city.we.have.not.delivered.food');
+                } else {
+                    $rsp['url'] = $this->get('slug')->getUrl($city->getId(), 'city');
+
+                    $flat = $request->get('flat', null);
+                    if(strlen(trim($flat)) == 0) {
+                        $flat = null;
+                    }
+
+                    $this->get('food.location')
+                        ->clearLocation()
+                        ->set($city, $d['country'], $d['street'], $d['house'], $flat, $d['output'], $d['latitude'], $d['longitude']);
+
+                }
+            }
+
+        } else {
+            $rsp['message'] = $t->trans('error.server.problem.').str_replace(" ", ".", strtolower(trim($rsp['message'])));
+        }
+
+        return $rsp;
     }
+
+    private function _getAddressByLocation(Request $request)
+    {
+        $rspDefault = ['success' => false];
+
+        $curl = new \Curl();
+        $rsp = json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', [
+            'lat' => $request->get('lat'),
+            'lng' => $request->get('lng'),
+            'language' => $request->getLocale(),
+            'types' => 'geocode',
+        ])->body, true);
+
+        return array_merge($rspDefault, $rsp);
+    }
+
 }

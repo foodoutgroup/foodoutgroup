@@ -273,6 +273,128 @@ var registrationForm = {
     }
 };
 
+(function (form) {
+
+    var input_auto_complete = form.find('#address_autocomplete');
+    var button_submit = form.find('#submit');
+    var input_collection = form.find('input');
+    var button_find_me = form.find('#find-me');
+    var div_error = form.find('#error');
+
+    var resultCollection = [];
+    var selected = null;
+
+    if (!navigator.geolocation) {
+        button_find_me.remove();
+    }
+
+    input_auto_complete.autocomplete({
+        source: input_auto_complete.data('url'),
+        minLength: 2,
+        html: true,
+        position: {
+            my: "left+0 top-4"
+        },
+        response: function( event, ui ) {
+            resultCollection = ui.content;
+        },
+        select: function( event, ui ) {
+            setSelected(ui.item);
+        }
+    }).focusin(function(){
+        if(resultCollection.length >= 2) {
+            $(this).autocomplete("search");
+        }
+    }).focusout(function(){
+        if(resultCollection.length >= 1) {
+            setSelected(resultCollection[0]);
+        }
+    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+        return $("<li></li>")
+            .data("item.autocomplete", item)
+            .append("<a data-class='" + item.class + "'>" + item.label + "</a>")
+            .appendTo(ul);
+    };
+
+    button_find_me.click(function (e) {
+        e.preventDefault();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position){
+                $.get(button_find_me.data("url"), {"lat" : position.coords.latitude, "lng" : position.coords.longitude}, function (response) {
+                    setSelected({'id' : response.detail.id, 'value' : response.detail.output});
+                });
+            });
+        } else {
+            throwMapLocationPicker(null);
+        }
+    });
+
+
+
+    input_collection.on('keyup', function (e) {
+        if(e.keyCode != 13) {
+            throwError(null);
+        }
+    }).on('focusin', function () {
+        throwError(null);
+    });
+
+    div_error.click(function () {
+        throwError(null);
+    });
+
+    button_submit.click(function (e) {
+        e.preventDefault();
+        img = $(this).find('img');
+        oldval = img.attr('src');
+        input_auto_complete.attr('disabled', true);
+
+        img.attr('src', 'http://pizzagiotto.ru/bitrix/templates/giotto/img/preloader.GIF');
+
+        $.post($(this).data('url'), {"address":input_auto_complete.data('selected'), "flat" : form.find('#flat').val()} , function (response) {
+            if(response.success && typeof response.url != "undefined" ) {
+                if(button_submit.data('redirect') == "self"){
+                    window.location.href = window.location.href;
+                } else {
+                    window.location.href = response.url;
+                }
+            } else {
+                throwError(response.message);
+                input_auto_complete.attr('disabled', false);
+                img.attr('src', oldval);
+            }
+        });
+
+    });
+
+    function setSelected(selected) {
+        input_auto_complete.data('selected', selected.id);
+        input_auto_complete.val(selected.value);
+        form.find('#hidden-field-for-address-id').val(selected.id);
+    }
+
+    function throwMapLocationPicker(position) {
+        if(position == null) {
+
+        } else {
+
+        }
+    }
+
+    function throwError(message){
+        if(message == null) {
+            message = '';
+            input_collection.removeClass('error');
+        } else {
+            form.closest('.shake-me').shake(5, 5, 400);
+            input_collection.addClass('error');
+        }
+        div_error.html(message);
+    }
+
+})($( ".address-search-form-ui" ));
+
+
 jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
     this.each(function() {
         $(this).css("position","relative");
@@ -284,3 +406,5 @@ jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
     });
     return this;
 };
+
+

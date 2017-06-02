@@ -1,89 +1,123 @@
 <?php
 namespace Food\AppBundle\Service;
 
-use Food\AppBundle\Entity\Cities;
-use Food\AppBundle\Entity\Neighbourhood;
-use Food\UserBundle\Entity\User;
+use Doctrine\ORM\EntityManager;
+use Food\AppBundle\Entity\City;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LocationService extends ContainerAware
 {
 
-    public function __construct()
-    {
+    /**
+     * @var EntityManager
+     */
+    private $em;
+    private $currentCity = null;
 
+    private $session;
+
+    public function __construct(EntityManager $em, ContainerInterface $container)
+    {
+        $this->container = $container;
+        $this->em = $em;
+        $this->session = $this->container->get('session');
     }
 
-    /**
-     * Writes city to session
-     *
-     * @param string $city
-     * @param integer $id
-     */
-    public function setCityOnlyToSession($city, $id = 0)
-    {
-        $returner = array();
-        $returner['not_found'] = true;
-        $returner['street_found'] = false;
-        $returner['address_found'] = false;
-        $returner['city'] =  $city;
-        $returner['address'] = $city;
-        $returner['city_only'] = true;
-        $returner['city_id'] = intval($id);
-
-        $this->setLocationToSession($returner);
-    }
 
     /**
-     * sets user address to session
-     * @params User $user
-     *
-     * @return $locationData
+     * @param City $city
+     * @param bool|null $country
+     * @param bool|null $street
+     * @param bool|null $house
+     * @param bool|null $flat
+     * @param bool|null $origin
+     * @param bool|null $latitude
+     * @param bool|null $longitude
+     * @return array
      */
-    public function setLocationFromUser(User $user)
+    public function set(City $city, $country = false, $street = false, $house = false, $flat = false, $origin = false, $latitude = false, $longitude = false)
     {
-        $userAddress = $user->getDefaultAddress();
-        $locationData = $this->getLocationFromSession();
-        $locationData['not_found'] = true;
-        $locationData['found'] = false;
-        $locationData['street_found'] = false;
-        $locationData['address_found'] = false;
-        $locationData['city_only'] = false;
-        $locationData['city'] = null;
-        $locationData['city_id'] = 0;
-        $locationData['address_found'] = true;
-        if ($userAddress) {
+        $current = $this->get();
 
-            if($cityObj = $userAddress->getCityId()) {
-                $locationData['city'] = $cityObj->getTitle();
-                $locationData['city_id'] = $cityObj->getId();
-            }
-
-            $locationData['address'] = $userAddress->getAddress();
-            $locationData['address_orig'] = $userAddress->getAddress();
+        if(!$current) {
+            $current = [];
         }
 
-        $this->setLocationToSession($locationData);
+        // 5 - all not found
+        // 4 - Country found;
+        // 3 - Country, city found;
+        // 2 - Country, city, street found;
+        // 1 - Country, city, street, house found;
+        // 0 - Country, city, street, house, longitude, latitude found;
+
+        $defaultPrecision = 0;
+
+        $locationData = [
+            'precision' => $defaultPrecision,
+            'country' => is_null($country) ? null : (isset($current['country']) && !$country ? $current['country'] : $country),
+            'city' => $city->getTitle(),
+            'city_id' => $city->getId(),
+            'street' => is_null($street) ? null : (isset($current['street']) && !$street ? $current['street'] : $street),
+            'house' => is_null($house) ? null : (isset($current['house']) && !$house ? $current['house'] : $house),
+            'flat' => is_null($flat) ? null : (isset($current['flat']) && !$flat ? $current['flat'] : $flat),
+            'latitude' => is_null($latitude) ? null : (isset($current['latitude']) && !$latitude ? $current['latitude'] : $latitude),
+            'longitude' => is_null($longitude) ? null : (isset($current['longitude']) && !$longitude ? $current['longitude'] : $longitude),
+            'origin' => is_null($origin) ? null : (isset($current['origin']) && !$origin ? $current['origin'] : $origin),
+        ];
+
+        $locationData['hash'] = md5($locationData['origin']);
+
+        if(!$locationData['latitude'] || !$locationData['longitude']) {
+            $defaultPrecision++;
+        }
+
+        if(!$locationData['house']) {
+            $defaultPrecision++;
+        }
+
+        if(!$locationData['street']) {
+            $defaultPrecision++;
+        }
+
+        if(!$locationData['city']) {
+            $defaultPrecision++;
+        }
+
+        if(!$locationData['country']) {
+            $defaultPrecision++;
+        }
+
+        $locationData['precision'] = $defaultPrecision;
+
+        $this->session->set('location', $locationData);
+        $this->currentCity = $city;
         return $locationData;
     }
 
-    /**
-     * Writes location data to session
-     *
-     * @param array $location
-     */
-    public function setLocationToSession($location)
+    public function setCity(City $city)
     {
-        $this->container->get('session')->set('location', $location);
+        $this->set($city, null,null,null,null,null,false,false);
     }
 
     /**
-     * Reads location data from session
-     *
      * @return array
      */
-    public function getLocationFromSession()
+    public function get()
     {
-        return $this->container->get('session')->get('location');
+        return $this->session->get('location');
     }
+    /**
+     * @return null
+     */
+    public function getCityObj(){
+        return $this->currentCity;
+    }
+
+    public function clearLocation()
+    {
+        $this->session->remove('location');
+        return $this;
+    }
+
 }

@@ -33,9 +33,8 @@
 
     <script type="text/javascript">
         // <![CDATA[
-        var addressFound = {% if location != null and not location.not_found and location.street_found %}true{% else %}false{% endif %};
+        var addressFound = {% if location is not null and location.precision == 0 %}true{% else %}false{% endif %};
 
-        console.log(addressFound);
         $(document).ready(function () {
             $(".content-lefter").on('ifChecked', '.filters-list input', function (event) {
                 $(this).attr('checked', true);
@@ -87,23 +86,13 @@
                 }
             };
 
-
-            jQuery.fn.shake = function (intShakes, intDistance, intDuration) {
-                this.each(function () {
-                    $(this).css("position", "relative");
-                    for (var x = 1; x <= intShakes; x++) {
-                        $(this).animate({left: (intDistance * -1)}, (((intDuration / intShakes) / 4)))
-                            .animate({left: intDistance}, ((intDuration / intShakes) / 2))
-                            .animate({left: 0}, (((intDuration / intShakes) / 4)));
-                    }
-                });
-                return this;
-            };
             $(document).on('click', '.restaurants-list a', function (e) {
                 type = $('.delivery-type-filter a[class="selected"]').attr("data-type");
                 if ($('.alert-no-address:visible').length && (type == "delivery" || type == "pedestrian")) {
                     e.preventDefault();
-                    $('.alert-no-address').shake(3, 20, 400);
+                    $('html,body').animate({scrollTop: $('.shake-me').offset().top-10}, 'fast');
+                    $('.alert-no-address').shake(5, 5, 400);
+
                     {#$("<div>{% trans %}please.fill.address.first{% endtrans %}</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();#}
                 }
             });
@@ -262,14 +251,13 @@
             <div class="page-path clearfix">{% block breadcrumb %}{% endblock %}</div>
             <div class="page-title">
                 {% block page_title_h1 %}
-                    <h1>{% trans %}
-                        places.header_main_part{% endtrans %}{% if location is defined and location.city is defined %} {{ city.getTitle() }}{% endif %}</h1>
+                    <h1>{% trans %}places.header_main_part{% endtrans %} {{ city.getTitle() }}</h1>
                 {% endblock %}
                 <h2 class="clearfix">
                     <span class="place-counter"></span>
                     {#<a href="#" id="places-change-location-link">{% trans %}places.change_address{% endtrans %}</a>#}
                 </h2>
-                {% if ( location == null or (location.not_found and location.street_found)) %}
+                {% if ( location is null or location.precision >= 2) %}
                     <div class="alert alert2 alert-warning alert_not_detailed_search">
                         <li>{% trans %}places.is_not_detailed_search{% endtrans %}</li>
                     </div>
@@ -391,22 +379,19 @@
                 </div>
                 {% set showNoAddress  = false %}
                 <div class="content-righter">
-                    <div class="alert-no-address {% if not showNoAddress %}hidden{% endif %}">
+                    <div class="alert-no-address shake-me {% if not showNoAddress %}hidden{% endif %}">
                         {% trans %}please.fill.address.message.top{% endtrans %}<br/>
                         <div class="input-section">
-                            <select id="address_city" style="width: 120px;" class="custom-select">
-                                {% for city in cityService.getActiveCity() %}
-                                    <option data-url="{{ slug.getUrl(city.id, 'city') }}" value="{{ city.id }}"
-                                            {% if location and location.cityId is defined and location.cityId == city.id  %}selected{% endif %}>{{ city }}</option>
-                                {% endfor %}
-                            </select>
-                            <input type="text"
-                                   id="address"
-                                   list="user_address"
-                                   value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
-                                   placeholder="{{ 'index.street'|trans }}"/>
-                            <button class="submit-address-change">{% trans %}
-                                general.profile.block_save{% endtrans %}</button>
+                            <form class="address-search-form-ui address-search-form-city"  action="#" method="get">
+                                <div class="flex-aligment">
+                                    <button id="find-me" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></button>
+                                    <input type="text" {% if location is not null and location.precision == 0 and location.hash is defined %}data-selected="{{ location.hash }}"{% endif %} id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if location is not null %}{{ location.origin }}{% endif %}" />
+                                    <input type="text" id="flat" placeholder="{% trans %}index.flat{% endtrans %}" class="input-house search-field" value="{% if location is not null and location.flat %}{{ location.flat }}{% endif %}" />
+                                    <button class="submit submit-address-change" id="submit" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}"/></button>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div id="error"></div>
+                            </form>
                         </div>
                         {% trans %}please.fill.address.message.bottom{% endtrans %}<br/>
                     </div>
@@ -435,6 +420,7 @@
                     {% endif %}
                     </div>
                     {{ render(controller('FoodPlacesBundle:City:list', {'recommended': recommended, 'slug_filter': slug_filter, 'rush_hour': rush_hour})) }}
+
                 </div>
             </div>
 

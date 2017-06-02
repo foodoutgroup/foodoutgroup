@@ -1,121 +1,5 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
-    {% block jscode %}
-        <script type="text/javascript">
-
-            (function (form) {
-
-                var input_auto_complete = form.find('#address_autocomplete');
-                var button_submit = form.find('#submit');
-                var input_collection = form.find('input');
-                var button_find_me = form.find('#find-me');
-                var div_error = form.find('#error');
-
-                var resultCollection = [];
-                var selected = null;
-
-                if (!navigator.geolocation) {
-                    button_find_me.remove();
-                }
-
-                input_auto_complete.autocomplete({
-                    source: input_auto_complete.data('url'),
-                    minLength: 2,
-                    html: true,
-                    position: {
-                        my: "left+0 top-4"
-                    },
-                    response: function( event, ui ) {
-                        resultCollection = ui.content;
-                    },
-                    select: function( event, ui ) {
-                        selected = ui.item;
-                    }
-                }).focusin(function(){
-                    if(resultCollection.length >= 2) {
-                        $(this).autocomplete("search");
-                    }
-                }).focusout(function(){
-                    if(resultCollection.length >= 1) {
-                        selected = resultCollection[0];
-                        input_auto_complete.val(selected.value);
-                    }
-                }).data("ui-autocomplete")._renderItem = function (ul, item) {
-                    return $("<li></li>")
-                            .data("item.autocomplete", item)
-                            .append("<a><img src=\"{{ asset('bundles/foodapp/images/marker_autocomplete.png') }}\"/> " + item.label + "</a>")
-                            .appendTo(ul);
-                };
-
-                button_find_me.click(function () {
-                    if (navigator.geolocation) {
-                       navigator.geolocation.getCurrentPosition(function(position){
-                           if(position.coords.accuracy >= 151) {
-                               throwMapLocationPicker(position);
-                           } else {
-                               $.get("", {"lat" : position.coords.latitude, "lng" : position.coords.longitude}, function (response) {
-
-                               });
-                           }
-                       });
-                    } else {
-                        throwMapLocationPicker(null);
-                    }
-                });
-
-                input_collection.on('keyup', function (e) {
-                    if(e.keyCode != 13) {
-                        throwError(null);
-                    }
-                }).on('focusin', function () {
-                    throwError(null);
-                });
-
-                div_error.click(function () {
-                    throwError(null);
-                });
-
-                button_submit.click(function () {
-
-                    img = $(this).find('img');
-                    oldval = img.attr('src');
-
-                    img.attr('src', 'http://pizzagiotto.ru/bitrix/templates/giotto/img/preloader.GIF');
-
-                    $.post($(this).data('url'), {"address":selected['id'], "flat" : form.find('#flat').val()} , function (response) {
-
-                    });
-                    img.attr('src', oldval);
-
-                });
-
-
-                function throwMapLocationPicker(position) {
-                    if(position == null) {
-
-                    } else {
-
-                    }
-                }
-
-                function throwError(message){
-                    if(message == null) {
-                        message = '';
-                        input_collection.removeClass('error');
-                    } else {
-                        form.find('form').shake(5, 5, 400);
-                        input_collection.addClass('error');
-                    }
-                    div_error.html(message);
-                }
-
-            })($( ".address-search-form" ));
-
-
-
-        </script>
-    {% endblock %}
-
 {% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}
 {% block seo_description %}{% trans %}general.base_page_description{% endtrans %}{% endblock %}
 
@@ -135,14 +19,14 @@
         <div class="site-block address-search-form">
             <div class="address-search-form-content">
                 <h1 class="no-wrap">{% trans %}index.title_page_header{% endtrans %}</h1>
-                <form class="search-food-form"  action="#" method="get">
+                <form class="search-food-form address-search-form-ui"  action="#" method="get">
                     <div class="marker-icon"></div>
 
                     <p class="title">{% trans %}index.search_form_qlue{% endtrans %}</p>
                     <div class="flex-aligment">
-                        <button id="find-me" class="find-me"></button>
-                        <input type="text" id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{{ formDefaults.address }}" />
-                        <input type="text" id="flat" placeholder="{% trans %}index.flat{% endtrans %}" class="input-house search-field" value="{{ formDefaults.house }}{% if formDefaults.flat %} - {{ formDefaults.flat }}{% endif %}" />
+                        <button id="find-me" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></button>
+                        <input type="text" {% if location is not null and location.precision == 0 and location.hash is defined %}data-selected="{{ location.hash }}"{% endif %} id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if location is not null %}{{ location.origin }}{% endif %}" />
+                        <input type="text" id="flat" placeholder="{% trans %}index.flat{% endtrans %}" class="input-house search-field" value="{% if location is not null and location.flat %}{{ location.flat }}{% endif %}" />
                         <button class="submit" id="submit" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}"/></button>
                     </div>
                     <div class="clearfix"></div>

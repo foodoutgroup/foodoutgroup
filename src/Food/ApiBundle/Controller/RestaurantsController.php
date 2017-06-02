@@ -54,19 +54,19 @@ class RestaurantsController extends Controller
                     $kitchenCollection,
                     $filters,
                     false,
-                    $this->get('food.googlegis')->groupData($address, $city),
+                    $this->get('food.location')->groupData($address, $city),
                     $this->container
                 );
 
             } elseif (!empty($lat) && !empty($lng)) {
-                $locationData = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
+                $locationData = $this->get('food.location')->findAddressByCoords($lat, $lng);
                 $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
                 if($cityObj) {
                     $placeCollection = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                         $kitchenCollection,
                         $filters,
                         false,
-                        $this->get('food.googlegis')->getCityObj(),
+                        $this->get('food.location')->getCityObj(),
                         $this->container
                     );
                 }
@@ -89,7 +89,7 @@ class RestaurantsController extends Controller
                     $place['place'],
                     $place['point'],
                     false,
-                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $this->get('food.location')->get(),
                     $delivery_type
                 );
                 $response['restaurants'][] = $restaurant->data;
@@ -137,25 +137,25 @@ class RestaurantsController extends Controller
 
             if (!empty($address)) {
 
-                $this->get('food.googlegis')->groupData($address, $city);
+                $this->get('food.location')->groupData($address, $city);
 
                 $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                     array(),
                     array(),
                     false,
-                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $this->get('food.location')->get(),
                     $this->container
                 );
             } elseif (!empty($lat) && !empty($lng)) {
 
-                $locationData = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
+                $locationData = $this->get('food.location')->findAddressByCoords($lat, $lng);
                 $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
                 if($cityObj) {
                     $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                         [],
                         [],
                         false,
-                        $this->get('food.googlegis')->setCity($cityObj),
+                        $this->get('food.location')->setCity($cityObj),
                         $this->container
                     );
                 }
@@ -222,7 +222,7 @@ class RestaurantsController extends Controller
                 'lng' => null
             );
             if (!empty($city) && !empty($address)) {
-                $locationInfo = $this->get('food.googlegis')->groupData($address, $city);
+                $locationInfo = $this->get('food.location')->groupData($address, $city);
                 if (isset($locationInfo['city'])) {
                     $searchCrit['city'] = $locationInfo['city'];
                 }
@@ -233,7 +233,7 @@ class RestaurantsController extends Controller
                     $searchCrit['lng'] = $locationInfo['lng'];
                 }
             } elseif (!empty($lat) && !empty($lng)) {
-                $data = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
+                $data = $this->get('food.location')->findAddressByCoords($lat, $lng);
                 $searchCrit = array(
                     'city' => $data['city'],
                     'lat' => $lat,
@@ -258,7 +258,7 @@ class RestaurantsController extends Controller
                     $place,
                     $placePoint,
                     false,
-                    $this->get('food.googlegis')->getLocationFromSession(),
+                    $this->get('food.location')->get(),
                     $deliveryType
                 );
             } else {
@@ -273,7 +273,7 @@ class RestaurantsController extends Controller
                         $place,
                         $placePoint,
                         false,
-                        $this->get('food.googlegis')->getLocationFromSession(),
+                        $this->get('food.location')->get(),
                         $deliveryType
                     );
                 } else {
@@ -281,7 +281,7 @@ class RestaurantsController extends Controller
                         $place,
                         null,
                         true,
-                        $this->get('food.googlegis')->getLocationFromSession(),
+                        $this->get('food.location')->get(),
                         $deliveryType
                     );
                 }

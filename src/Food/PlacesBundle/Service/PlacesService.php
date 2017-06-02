@@ -385,7 +385,7 @@ class PlacesService extends ContainerAware
             $kitchens,
             $filters,
             $recommended,
-            $this->container->get('food.googlegis')->getLocationFromSession(),
+            $this->container->get('food.location')->get(),
             $this->container
         );
 
@@ -752,7 +752,7 @@ class PlacesService extends ContainerAware
         $response = false;
         $rhService = $this->container->get('food.zavalas_service');
         if ($rhService->isRushHourOnGlobal()) {
-            $locationData = $this->container->get('food.location')->getLocationFromSession();
+            $locationData = $this->container->get('food.location')->get();
             $placeCityCollection = $this->em()->getRepository('FoodDishesBundle:Place')->getCityCollectionByPlace($place);
             foreach ($placeCityCollection as $city) {
                 if ($rhService->isRushHourAtCity($city)
@@ -953,8 +953,7 @@ class PlacesService extends ContainerAware
     public function getListPedestrianFilter()
     {
         $return = false;
-        $googleGisService = $this->container->get('food.googlegis');
-        $location = $googleGisService->getLocationFromSession();
+        $location = $this->container->get('food.location')->get();
         $cityCheck = $this->em()->getRepository('FoodAppBundle:City')->find($location['city_id']);
 
         if($cityCheck->getPedestrian()){

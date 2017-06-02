@@ -20,7 +20,7 @@ class PlaceController extends Controller
     public function indexAction($id, $slug, Request $request, $oldFriendIsHere = false)
     {
         $session = $this->get('session');
-        $location = $this->get('food.googlegis')->getLocationFromSession();
+        $location = $this->get('food.location')->get();
         if ($session->get('isCallcenter')) {
             $session->set('isCallcenter', false);
         }
@@ -45,7 +45,7 @@ class PlaceController extends Controller
             $listType = $cookies->get('restaurant_menu_layout');
         }
 
-        $userLocationData = $this->get('food.googlegis')->getLocationFromSession();
+        $userLocationData = $this->get('food.location')->get();
 
         $breadcrumbData = [
             'city' => '',
@@ -332,7 +332,7 @@ class PlaceController extends Controller
                     'city' => $cityObj->getTitle(),
                     'url' =>    $this->get('slug')->getUrl($placeId, Slug::TYPE_PLACE),
                 ];
-                $this->get('food.googlegis')->setCity($cityObj);
+                $this->get('food.location')->setCity($cityObj);
             }
         }
 

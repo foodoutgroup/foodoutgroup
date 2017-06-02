@@ -34,7 +34,7 @@ class PlaceService extends PlacesService
         ];
 
         $addressString = $address." ,".$city." Lithuania"; // todo change lithuania to configuration :)
-        $gis = $this->container->get('food.googlegis');
+        $gis = $this->container->get('food.location');
         $location = $gis->getPlaceData($addressString);
 
         if(count($location->results) >= 1 && strlen($city) >= 3) {

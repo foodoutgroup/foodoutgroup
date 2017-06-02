@@ -142,7 +142,7 @@ class DefaultController extends Controller
         }
 
         // Store UserAddress Begin
-        $gs = $this->get('food.googlegis');
+        $gs = $this->get('food.location');
         $locationInfo = $gs->groupData($form_address, $form_city);
         if (!$locationInfo['not_found']) {
             $orderService->createAddressMagic(

@@ -3147,7 +3147,7 @@ class OrderService extends ContainerAware
     public function isPlaceDeliveringToAddress(Place $place)
     {
         $isDelivering = true;
-        $locationData = $this->container->get('food.googlegis')->getLocationFromSession();
+        $locationData = $this->container->get('food.location')->get();
         $pointId = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')
             ->getPlacePointNear(
                 $place->getId(),
@@ -3405,6 +3405,9 @@ class OrderService extends ContainerAware
                 $locationData = $locationService->setLocationFromUser($user);
                 //@mail("karolis.m@foodout.lt", "order.form.errors.customeraddr2" . date("Y-m-d H:i:s"), print_r($locationData, true) . print_r($user, true) . print_r($placePointMap, true) . print_r($_POST, true) . print_r($_GET, true), "FROM: info@foodout.lt");
             }
+
+            var_dump($request->request->all());
+            die;
             // TODO Trying to catch fatal when searching for PlacePoint
             if (!empty($locationData['address_orig'])) {
                 if (empty($placePointMap[$place->getId()])) {
