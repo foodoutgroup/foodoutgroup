@@ -1320,7 +1320,7 @@ class OrderService extends ContainerAware
         if (!$selfDelivery) {
             $deliveryPrice = $this->getCartService()->getDeliveryPrice(
                 $this->getOrder()->getPlace(),
-                $this->container->get('food.location')->getLocationFromSession(),
+                $this->container->get('food.location')->get(),
                 $this->getOrder()->getPlacePoint()
             );
         }
@@ -3146,18 +3146,12 @@ class OrderService extends ContainerAware
      */
     public function isPlaceDeliveringToAddress(Place $place)
     {
-        $isDelivering = true;
-        $locationData = $this->container->get('food.location')->get();
-        $pointId = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')
-            ->getPlacePointNear(
-                $place->getId(),
-                $locationData,
-                true
-            );
-        if (empty($pointId) && isset($locationData['status'])) {
-            $isDelivering = false;
-        }
-        return $isDelivering;
+
+        $pointId = $this->container->get('doctrine')
+            ->getRepository('FoodDishesBundle:Place')
+            ->getPlacePointNear($place->getId(), $this->container->get('food.location')->get(), true);
+
+        return !empty($pointId);
     }
 
     /**

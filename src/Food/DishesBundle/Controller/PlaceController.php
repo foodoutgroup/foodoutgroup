@@ -20,7 +20,7 @@ class PlaceController extends Controller
     public function indexAction($id, $slug, Request $request, $oldFriendIsHere = false)
     {
         $session = $this->get('session');
-        $location = $this->get('food.location')->get();
+
         if ($session->get('isCallcenter')) {
             $session->set('isCallcenter', false);
         }
@@ -82,9 +82,6 @@ class PlaceController extends Controller
             $breadcrumbData['kitchen_url'] = $breadcrumbData['city_url'].'/'.$kitchenSlug;
         }
 
-
-        $current_url = $request->getSchemeAndHttpHost() . $request->getRequestUri();
-
         $relatedPlaceCollection = [];
 
         // only for LT and only for cili
@@ -105,7 +102,6 @@ class PlaceController extends Controller
         }
 
         $placeService = $this->get('food.places');
-        $takeAway = ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup);
 
         $variableCollection = [
             'place' => $place,
@@ -119,10 +115,10 @@ class PlaceController extends Controller
             'listType' => $listType,
             'isTodayNoOneWantsToWork' => $this->get('food.order')->isTodayNoOneWantsToWork($place),
             'breadcrumbData' => $breadcrumbData,
-            'current_url' => $current_url,
+            'current_url' => $request->getSchemeAndHttpHost() . $request->getRequestUri(),
             'oldFriendIsHere' => $oldFriendIsHere,
-            'takeAway' => $takeAway,
-            'location' => $location
+            'takeAway' => ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup),
+            'location' => $this->get('food.location')->get()
         ];
 
         if($this->get('food.app.utils.misc')->getParam('reviews_enabled', false)) {
