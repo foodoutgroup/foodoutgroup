@@ -185,6 +185,8 @@ class PaymentsController extends Controller
                         $orderService->informPlace();
                     }
 
+                    $orderService->statusNew('paysera accept');
+
                     // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
                     $orderService->deactivateCoupon();
                 }
