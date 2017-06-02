@@ -282,7 +282,9 @@ class OrderService extends ContainerAware
         } else {
             $pointRecord = $placePoint;
         }
+
         $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
+
         $this->order = new Order();
         if (!$fromConsole) {
             $user = $this->container->get('security.context')->getToken()->getUser();
