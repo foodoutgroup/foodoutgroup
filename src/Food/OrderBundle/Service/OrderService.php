@@ -273,7 +273,6 @@ class OrderService extends ContainerAware
 
             if (empty($placePointMap[$placeId])) {
                 $sessionLocation = $this->container->get('food.googlegis')->getLocationFromSession();
-                $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
                 $placePointId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $sessionLocation, '', $orderDate);
             } else {
                 $placePointId = $placePointMap[$placeId];
@@ -283,7 +282,7 @@ class OrderService extends ContainerAware
         } else {
             $pointRecord = $placePoint;
         }
-
+        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
         $this->order = new Order();
         if (!$fromConsole) {
             $user = $this->container->get('security.context')->getToken()->getUser();
@@ -293,6 +292,8 @@ class OrderService extends ContainerAware
         } else {
             $user = null;
         }
+
+
         $this->order->setPlace($placeRecord);
         $this->order->setPlaceName($placeRecord->getName());
         $this->order->setPlacePointSelfDelivery($placeRecord->getSelfDelivery());
