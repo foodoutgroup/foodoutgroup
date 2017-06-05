@@ -15,6 +15,7 @@ class EmailTemplateAdmin extends FoodAdmin
             ->add('preorder', 'boolean', ['label' => 'admin.email.preorder'])
             ->add('type', 'text', ['label' => 'admin.email.type'])
             ->add('source', 'text', ['label' => 'admin.email.source'])
+            ->add('active', 'boolean', ['label' => 'admin.email.active', 'editable' => true])
             ->add('_action', 'actions', ['actions' => ['edit' => [], 'delete' => [],], 'label' => 'admin.actions']);
     }
 

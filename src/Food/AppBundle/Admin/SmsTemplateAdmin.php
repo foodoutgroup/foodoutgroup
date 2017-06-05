@@ -15,6 +15,7 @@ class SmsTemplateAdmin extends FoodAdmin
             ->add('preorder', 'boolean', ['label' => 'admin.sms.preorder'])
             ->add('type', 'text', ['label' => 'admin.sms.type'])
             ->add('source', 'text', ['label' => 'admin.sms.source'])
+            ->add('active', 'boolean', ['label' => 'admin.sms.active', 'editable' => true])
             ->add('_action', 'actions', ['actions' => ['edit' => [], 'delete' => [],], 'label' => 'admin.actions']);
     }
 
