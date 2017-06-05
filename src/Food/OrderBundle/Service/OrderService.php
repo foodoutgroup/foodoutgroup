@@ -542,19 +542,19 @@ class OrderService extends ContainerAware
             }
 
             $variables = [
-                '[place_name]' => $this->getOrder()->getPlace()->getName(),
-                '[place_address]' => $this->getOrder()->getPlacePoint()->getAddress(),
-                '[order_id]' => $this->getOrder()->getId(),
-                '[order_hash]' => $this->getOrder()->getOrderHash(),
-                '[user_address]' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId() : "--"),
-                '[delivery_date]' => $placeService->getDeliveryTime($this->getOrder()->getPlace()),
-                '[total_sum]' => $this->getOrder()->getTotal(),
-                '[total_delivery]' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
-                '[total_card]' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
-                '[invoice]' => $invoice,
-                '[beta_code]' => $betaCode,
-                '[city]' => $order->getCityId()->getTitle(),
-                '[food_review_url]' =>  'http://'.$this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review'
+                'place_name' => $this->getOrder()->getPlace()->getName(),
+                'place_address' => $this->getOrder()->getPlacePoint()->getAddress(),
+                'order_id' => $this->getOrder()->getId(),
+                'order_hash' => $this->getOrder()->getOrderHash(),
+                'user_address' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId() : "--"),
+                'delivery_date' => $placeService->getDeliveryTime($this->getOrder()->getPlace()),
+                'total_sum' => $this->getOrder()->getTotal(),
+                'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
+                'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
+                'invoice' => $invoice,
+                'beta_code' => $betaCode,
+                'city' => $order->getCityId()->getTitle(),
+                'food_review_url' =>  'http://'.$this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review'
             ];
 
 
