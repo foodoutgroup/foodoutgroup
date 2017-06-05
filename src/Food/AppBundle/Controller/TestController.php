@@ -206,6 +206,14 @@ class TestController extends Controller
         );
     }
 
+    //test nav error
+
+    public function navAction(){
+        $logMessage = $this->get('food.nav')->getErrorFromNav(2000570314);
+        $order = $this->container->get('doctrine')->getRepository('FoodOrderBundle:Order')->find(748064);
+        $this->get('food.order')->logOrder($order, 'NAV_update_prices_return', $logMessage, json_encode($logMessage));
+    }
+
     public function corporateInvoiceAction()
     {
         $orderByDivision = array();

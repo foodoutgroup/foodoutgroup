@@ -218,6 +218,14 @@ class CouponRange
      */
     private $includeDelivery = false;
 
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="inverse", type="boolean", nullable=true)
+     */
+    private $inverse = false;
+
     /**
      * Constructor
      */
@@ -1014,4 +1022,27 @@ class CouponRange
         return $this->ignoreCartPrice;
     }
 
+
+    /**
+     * Set inverse
+     *
+     * @param boolean $inverse
+     * @return CouponRange
+     */
+    public function setInverse($inverse)
+    {
+        $this->inverse = $inverse;
+    
+        return $this;
+    }
+
+    /**
+     * Get inverse
+     *
+     * @return boolean 
+     */
+    public function getInverse()
+    {
+        return $this->inverse;
+    }
 }

@@ -195,6 +195,8 @@ class DefaultController extends Controller
         $googleGisService = $this->container->get('food.googlegis');
 
         $country = $this->container->getParameter('country');
+        $session = $request->getSession();
+        $locationData = $session->get('locationData');
 
         /**
          * @var UserManager $fosUserManager
@@ -219,7 +221,11 @@ class DefaultController extends Controller
         $dataToLoad = [];
 
         // Data preparation for form
-        $placePointMap = $this->container->get('session')->get('point_data');
+        $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $locationData);
+        $placePointMap[$placeId] = $placePointId;
+        $session->set('point_data', $placePointMap);
+
+        $placePointMap = $session->get('point_data');
         if (!empty($placePointMap) && isset($placePointMap[$placeId]) && !empty($placePointMap[$placeId])) {
             $pointRecord = $this->container->get('doctrine')
                 ->getRepository('FoodDishesBundle:PlacePoint')
@@ -288,8 +294,6 @@ class DefaultController extends Controller
 
         // PreLoad UserAddress Begin
         $address = null;
-        $session = $request->getSession();
-        $locationData = $session->get('locationData');
         $current_user = $this->container->get('security.context')->getToken()->getUser();
 
         if (!empty($locationData) && !empty($current_user) && is_object($current_user)) {
@@ -307,6 +311,9 @@ class DefaultController extends Controller
         // PreLoad UserAddress End
 
         if ($request->getMethod() == 'POST' && !$formHasErrors) {
+
+            $countryCode = $request->get('country');
+
             // Jei vede kupona - uzsikraunam
             $deliveryType = $request->get('delivery-type');
 
@@ -413,6 +420,12 @@ class DefaultController extends Controller
                 $userPhone = $user->getPhone();
             }
 
+
+
+            if ($countryCode != $user->getCountryCode() && !$user->getIsBussinesClient()) {
+                $user->setCountryCode($countryCode);
+            }
+
             if ($userPhone != $user->getPhone() && !$user->getIsBussinesClient()) {
                 $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
 
@@ -495,6 +508,9 @@ class DefaultController extends Controller
             $disabledPreorderDays = array();
         }
 
+
+
+
         $data = [
             'order' => $order,
             'formHasErrors' => $formHasErrors,
@@ -551,6 +567,7 @@ class DefaultController extends Controller
 
         $enableDiscount = !$place->getOnlyAlcohol();
         $placeServ = $this->get('food.places');
+
         $cartFromMin = $placeServ->getMinCartPrice($place->getId());
         $cartFromMax = $placeServ->getMaxCartPrice($place->getId());
         $useAdminFee = $placeServ->useAdminFee($place);

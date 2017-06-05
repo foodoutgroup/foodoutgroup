@@ -2,9 +2,9 @@ parameters:
     database_driver: pdo_mysql
     database_host: localhost
     database_port: 3306
-    database_name: dev
-    database_user: dev
-    database_password: ooc8Choo5Ohth5Lah6muthoh4baemue
+    database_name: food_lt_staging
+    database_user: food_lt_staging
+    database_password: RpWlcCyWgQYmxXki
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
@@ -15,6 +15,11 @@ parameters:
     aws_secret: vHxRlOq4PUuo067t5xvy8r09lPBIhtb01m5yk4ZA
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
+
+    driver.send_to_external: false
+    driver.city_filter: ["Vilnius"]
+    driver.socket_address: tcp://s2.foodout.lt:7778
+    driver.socket_hash: api
 
     locale: lt
     locales: ["lt", "en", "ru"]
@@ -30,13 +35,38 @@ parameters:
     order.notify_emails: []
     order.city_coordinators:
         vilnius: []
-        kaunas: [karolis.m@foodout.lt]
-        klaipėda: [karolis.m@foodout.lt]
+        kaunas: []
+        klaipėda: []
         ryga: [karolis.m@foodout.lt]
     order.accept_notify_emails: []
-    order.cancel_notify_emails: []
+    order.cancel_notify_emails: [pagalba@foodout.lt]
     accounting_email: "buhalterija@foodout.lt"
     b2b_invoice_email: ""
+    payment:
+        method:
+         - local
+         - local.card
+         - swedbank-gateway
+         - swedbank-credit-card-gateway
+         - seb-banklink
+         - paysera
+         - paysera
+         - paysera
+         - paysera
+         - paysera
+         - paysera
+        title:
+         - '[#cash#]'
+         - '[#credit.card#]'
+         - 'Swedbank'
+         - 'Kreditinės kortelės'
+         - 'SEB bankas'
+         - 'Medicinos bankas'
+         - 'DNB bankas'
+         - 'Citadele bankas'
+         - 'Nordea bankas'
+         - 'Danske bankas'
+         - 'Paysera'
     payment.methods:
         - local
         - local.card
@@ -56,7 +86,7 @@ parameters:
     show_apps_download: true
     show_is_social: true
     show_delfi_banner: false
-    track_conversions: true
+    track_conversions: false
     # naudojam telefonu validacijoms
     country: LT
     country_full: Lithuania
@@ -69,7 +99,9 @@ parameters:
     nav_table_prefix: 'Čilija Skambučių Centras'
     nav_ws_prefix: 'Čilija Skambučių Centras'
     mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
+    mailer_from: info@foodout.lt
     mailer_notify_on_accept: 30010811
+    mailer_notify_pickup_on_accept: 41582385
     mailer_notify_new_user: 30009253
     mailer_user_reset: 30013949
     mailer_partialy_deliverer: 30021995
@@ -78,6 +110,10 @@ parameters:
     mailer_send_corporate_invoice: 41585359
     mailer_send_corporate_changed_password: 41611093
     mailer_send_free_delivery_discount: 41611735
+    mailer_provider: food.mail.mailer
+    mailer_newsletter_provider: food.mail.mailer
+    mailerlite_api_key: "71b32c22e0944db62613e34669489d1a"
+    mailerlite_group_id: 6456020
     yt_video: https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=
     yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
     default_delivery_distance: 7
@@ -86,13 +122,29 @@ parameters:
     send_sms_on_cancel: false
     dispatcher_contact_phone: "37069855544"
     call_centre_phone: "37052195281"
+    week_layout: 1
+    hide_online_payments: false
+    number_format:
+        decimal_places: 2
+        decimal_separator: ','
+        thousands_separator: ' '
+    show_invoice_option: true
+    show_invoice_sum_words: true
+    place_slug_manual: false
+    alcohol_allowed: true
+    place_with_neighbourhood: false
     dispatcher_bell: false
     static_page_privacy_policy: 8
     static_page_b2b_rules: 29
     b2b_first_month_discount: true
     b2b_first_month_discount_percent: 10
-    newsletter_subscribe_tick_by_default: false
+    newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: false
+
+    session_memcached_host:     memcached
+    session_memcached_port:     11211
+    session_memcached_prefix:   food_lt_staging
+    session_memcached_expire:   3600
 
 pirminis_gateway:
     datacash_url: 'https://mars.transaction.datacash.com/Transaction'

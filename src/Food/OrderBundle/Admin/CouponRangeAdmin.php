@@ -1,4 +1,5 @@
 <?php
+
 namespace Food\OrderBundle\Admin;
 
 @ini_set('memory_limit', '2048M');
@@ -10,6 +11,7 @@ use Food\OrderBundle\Entity\CouponRange;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+
 class CouponRangeAdmin extends FoodAdmin
 {
     /**
@@ -32,7 +34,8 @@ class CouponRangeAdmin extends FoodAdmin
             ->add('fullOrderCovers', 'checkbox', array('label' => 'admin.coupon.full_order_cover', 'required' => false))
             ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery', 'required' => false))
             ->add('places', null, array('label' => 'admin.coupon.place', 'required' => false))
-            ->add('noSelfDelivery','checkbox', array('required' => false))
+            ->add('inverse', 'checkbox', array('label' => 'admin.coupon.inverse', 'required' => false))
+            ->add('noSelfDelivery', 'checkbox', array('required' => false))
             ->add('b2b', 'choice', array('choices' => array(
                 Coupon::B2B_BOTH => 'BOTH',
                 Coupon::B2B_YES => 'ONLY B2B',
@@ -53,14 +56,14 @@ class CouponRangeAdmin extends FoodAdmin
             ->add('includeDelivery', 'checkbox', [
                 'required' => false,
             ])
-            ->add('active', 'checkbox', array('label' => 'admin.coupon.active', 'required' => false))
-
-        ;
+            ->add('active', 'checkbox', array('label' => 'admin.coupon.active', 'required' => false));
         if ($this->getContainer()->getParameter('country') == "LT"
-            || $this->getContainer()->getParameter('country')== 'LV') {
+            || $this->getContainer()->getParameter('country') == 'LV'
+        ) {
             $formMapper->add('onlyNav', 'checkbox', array('label' => 'admin.coupon.only_nav', 'required' => false));
         }
     }
+
     /**
      * Fields to be shown on filter forms
      *
@@ -76,12 +79,14 @@ class CouponRangeAdmin extends FoodAdmin
             ->add('singleUse', null, array('label' => 'admin.coupon.single_use'))
             ->add('places', null, array('label' => 'admin.coupon.place'))
             ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery'))
-        ;
+            ->add('inverse', null, array('label' => 'admin.coupon.inverse'));
         if ($this->getContainer()->getParameter('country') == "LT"
-            || $this->getContainer()->getParameter('country')== 'LV') {
+            || $this->getContainer()->getParameter('country') == 'LV'
+        ) {
             $datagridMapper->add('onlyNav', null, array('label' => 'admin.coupon.only_nav'));
         }
     }
+
     /**
      * Fields to be shown on lists
      *
@@ -101,6 +106,7 @@ class CouponRangeAdmin extends FoodAdmin
             ->add('places', null, array('label' => 'admin.coupon.place', 'editable' => false))
             ->add('active', null, array('label' => 'admin.coupon.active', 'editable' => false))
             ->add('singleUse', null, array('label' => 'admin.coupon.single_use', 'editable' => false))
+            ->add('inverse', null, array('label' => 'admin.coupon.inverse', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -110,13 +116,14 @@ class CouponRangeAdmin extends FoodAdmin
                     ),
                 ),
                 'label' => 'admin.actions'
-            ))
-        ;
+            ));
         if ($this->getContainer()->getParameter('country') == "LT"
-            || $this->getContainer()->getParameter('country')== 'LV') {
+            || $this->getContainer()->getParameter('country') == 'LV'
+        ) {
             $listMapper->add('onlyNav', null, array('label' => 'admin.coupon.only_nav', 'editable' => false));
         }
     }
+
     /**
      * {@inheritdoc}
      *
@@ -135,15 +142,16 @@ class CouponRangeAdmin extends FoodAdmin
             ->add('discount', null, array('label' => 'admin.coupon.discount', 'editable' => false))
             ->add('fullOrderCovers', null, array('label' => 'admin.coupon.full_order_cover', 'editable' => false))
             ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery', 'editable' => false))
+            ->add('inverse', null, array('label' => 'admin.coupon.inverse', 'editable' => false))
             ->add('places', null, array('label' => 'admin.coupon.place', 'editable' => false))
             ->add('noSelfDelivery', null, array('editable' => false))
             ->add('singleUse', null, array('label' => 'admin.coupon.single_use', 'editable' => false))
             ->add('enableValidateDate', null, array('editable' => false))
             ->add('validFrom', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.coupon.valid_from'))
             ->add('validTo', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.coupon.valid_to'))
-            ->add('active', null, array('label' => 'admin.coupon.active', 'editable' => false))
-        ;
+            ->add('active', null, array('label' => 'admin.coupon.active', 'editable' => false));
     }
+
     /**
      * @param \Sonata\AdminBundle\Route\RouteCollection $collection
      * @inheritdoc
@@ -153,8 +161,9 @@ class CouponRangeAdmin extends FoodAdmin
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
         $collection->clearExcept(array('list', 'show', 'create', 'delete'))
-            ->add('downloadCoupons', $this->getRouterIdParameter().'/downloadCoupons');
+            ->add('downloadCoupons', $this->getRouterIdParameter() . '/downloadCoupons');
     }
+
     /**
      * @param \Food\OrderBundle\Entity\CouponRange $object
      * @return void
@@ -164,6 +173,7 @@ class CouponRangeAdmin extends FoodAdmin
         $object = $this->generateCouponsRange($object);
         parent::prePersist($object);
     }
+
     /**
      * @param \Food\OrderBundle\Entity\CouponRange $object
      * @return void
@@ -173,6 +183,7 @@ class CouponRangeAdmin extends FoodAdmin
         $object = $this->generateCouponsRange($object);
         parent::preUpdate($object);
     }
+
     /**
      * @param \Food\OrderBundle\Entity\CouponRange $object
      * @return void
@@ -195,6 +206,7 @@ class CouponRangeAdmin extends FoodAdmin
         }
         parent::delete($object);
     }
+
     /**
      * @param $obj CouponRange
      * @return mixed
@@ -204,20 +216,21 @@ class CouponRangeAdmin extends FoodAdmin
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
 
-        $build_code = function(CouponRange $obj, $em) use ($obj, $em) {
+        $build_code = function (CouponRange $obj, $em) use ($obj, $em) {
             do {
                 $new_code = strtoupper($obj->getPrefix() . substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 8) . $obj->getSuffix());
                 $query = "SELECT count(*) FROM `coupons` WHERE `code` = '" . $new_code . "' AND `active` = 1 AND `deleted_at` IS NULL";
                 $stmt = $em->getConnection()->prepare($query);
                 $stmt->execute();
                 $found = $stmt->fetchColumn(0);
-            } while($found);
+            } while ($found);
             return $new_code;
         };
 
         $coupons_qty = $obj->getCouponsQty();
         if (!empty($coupons_qty) && $coupons_qty > 0) {
             for ($i = 1; $i <= $coupons_qty; $i++) {
+                $inverse = $obj->getInverse() ? 1 : 0;
                 $code = $build_code($obj, $em);
                 $coupon = new Coupon();
                 $coupon->setCouponRange($obj);
@@ -245,13 +258,15 @@ class CouponRangeAdmin extends FoodAdmin
                 $coupon->setIgnoreCartPrice($obj->getIgnoreCartPrice());
                 $coupon->setIncludeDelivery($obj->getIncludeDelivery());
                 $coupon->setCode($code);
-                $coupon->setName($obj->getName(). ' - ' . date('Y-m-d'));
+                $coupon->setName($obj->getName() . ' - ' . date('Y-m-d'));
+                $coupon->setInverse($inverse);
                 if ($this->getContainer()->getParameter('country') == "LT"
-                    || $this->getContainer()->getParameter('country')== 'LV') {
+                    || $this->getContainer()->getParameter('country') == 'LV'
+                ) {
                     $coupon->setOnlyNav($obj->getOnlyNav());
                 }
                 if (count($obj->getPlaces()) > 0) {
-                    foreach($obj->getPlaces() as $place) {
+                    foreach ($obj->getPlaces() as $place) {
                         $coupon->addPlace($place);
                     }
                 }

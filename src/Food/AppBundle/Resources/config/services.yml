@@ -189,3 +189,20 @@ services:
       parent: food.base_service
       calls:
         - [setContainer, [@service_container]]
+            class: Food\AppBundle\Service\ErrorLogService
+            parent: food.base_service
+
+    food.phones_code_service:
+                class: Food\AppBundle\Service\RestCountryService
+                parent: food.base_service
+
+    sonata.admin.country_phone:
+          class: Food\AppBundle\Admin\PhoneCodesAdmin
+          tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.phone_codes" }
+          arguments:
+            - ~
+            - Food\AppBundle\Entity\PhoneCodes
+            - ~
+          calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]

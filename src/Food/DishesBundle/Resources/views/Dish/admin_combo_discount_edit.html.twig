@@ -63,7 +63,7 @@ Sonata edit form extension for ajax filtered food categories
 
                     // Update dish options
                     var selectedUnits = [];
-                    units.find('input:checked').each(function(key, element){
+                    units.find('option:selected').each(function(key, element){
                         selectedUnits.push($(element).val());
                     });
                     units.empty();
@@ -72,9 +72,9 @@ Sonata edit form extension for ajax filtered food categories
                     $.post(url, { placeId: placeId, uniqueId: adminUniqId }, function(data){
                         units.empty().append(data);
 
-                        units.find('input').each(function(key, element){
+                        units.find('option').each(function(key, element){
                             if (selectedUnits.indexOf($(element).val()) != -1) {
-                                $(element).attr('checked', true);
+                                $(element).attr('selected', true);
                             }
                         });
 

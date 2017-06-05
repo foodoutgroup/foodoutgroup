@@ -2095,6 +2095,10 @@
                 <source>admin.coupon.free_delivery</source>
                 <target>Free delivery</target>
             </trans-unit>
+            <trans-unit id="admin.coupon.inverse">
+                <source>admin.coupon.inverse</source>
+                <target>Inverse restaurants</target>
+            </trans-unit>
             <trans-unit id="admin.coupon.active">
                 <source>admin.coupon.active</source>
                 <target>Active</target>
@@ -2403,6 +2407,10 @@
             <trans-unit id="btn_filter">
                 <source>btn_filter</source>
                 <target>Filter</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.normal_orders">
+                <source>admin.dispatcher.normal_orders</source>
+                <target>Regular orders</target>
             </trans-unit>
             <trans-unit id="btn_update">
                 <source>btn_update</source>
@@ -3014,6 +3022,10 @@
                 <source>admin.cities.zavalas_on</source>
                 <target>Zavalas</target>
             </trans-unit>
+            <trans-unit id="admin.cities.pedestrian">
+                <source>admin.cities.pedestrian</source>
+                <target>Pedestrian</target>
+            </trans-unit>
             <trans-unit id="admin.cities.zavalas_time">
                 <source>admin.cities.zavalas_time</source>
                 <target>Zavalas time</target>
@@ -3141,6 +3153,22 @@
             <trans-unit id="admin.place.pedestrian">
                 <source>admin.place.pedestrian</source>
                 <target>33 mins</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.country">
+                <source>admin.phone.country</source>
+                <target>Country</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.code">
+                <source>admin.phone.code</source>
+                <target>Country code</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.active">
+                <source>admin.phone.active</source>
+                <target>Active</target>
+            </trans-unit>
+             <trans-unit id="admin.phone_codes">
+                <source>admin.phone_codes</source>
+                <target>Phone codes</target>
             </trans-unit>
         </body>
     </file>

@@ -2,9 +2,9 @@ parameters:
     database_driver: pdo_mysql
     database_host: localhost
     database_port: 3306
-    database_name: betalv
-    database_user: betalv
-    database_password: bhaQFQwdI3PLrvmz
+    database_name: food_lv_beta
+    database_user: food_lv_beta
+    database_password: bq3dIVsOQiqg4PVv
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
@@ -120,7 +120,7 @@ parameters:
 
     session_memcached_host:     memcached
     session_memcached_port:     11211
-    session_memcached_prefix:   betalv
+    session_memcached_prefix:   food_lv_beta
     session_memcached_expire:   3600
 
 pirminis_gateway:

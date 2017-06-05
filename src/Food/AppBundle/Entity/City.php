@@ -43,6 +43,13 @@ class City implements \JsonSerializable
      */
     private $zavalasTime;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="pedestrian", type="boolean", nullable=true)
+     */
+    private $pedestrian;
+
 
     /**
      * Get id
@@ -144,6 +151,7 @@ class City implements \JsonSerializable
             'title' => $this->getTitle(),
             'zavalasOn'=> $this->isZavalasOn(),
             'zavalasTime'=> $this->getZavalasTime(),
+            'pedestrian' => $this->getPedestrian()
         ));
     }
 
@@ -155,5 +163,28 @@ class City implements \JsonSerializable
     public function getZavalasOn()
     {
         return $this->zavalasOn;
+    }
+
+    /**
+     * Set pedestrian
+     *
+     * @param boolean $pedestrian
+     * @return City
+     */
+    public function setPedestrian($pedestrian)
+    {
+        $this->pedestrian = $pedestrian;
+    
+        return $this;
+    }
+
+    /**
+     * Get pedestrian
+     *
+     * @return boolean 
+     */
+    public function getPedestrian()
+    {
+        return $this->pedestrian;
     }
 }
