@@ -120,4 +120,15 @@ class LocationService extends ContainerAware
         return $this;
     }
 
+    public function getByHash($hash)
+    {
+        $curl = new \Curl();
+        return json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', [
+            'hash' => $hash,
+            'language' => $this->container->get('request')->getLocale(),
+            'types' => 'geocode',
+        ])->body, true);
+
+    }
+
 }

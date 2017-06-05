@@ -141,20 +141,29 @@ class DefaultController extends Controller
             $user->addAddress($address);
         }
 
-        // Store UserAddress Begin
-        $gs = $this->get('food.location');
-        $locationInfo = $gs->groupData($form_address, $form_city);
-        if (!$locationInfo['not_found']) {
-            $orderService->createAddressMagic(
-                $user,
-                $locationInfo['city'],
-                $locationInfo['address_orig'],
-                (string)$locationInfo['lat'],
-                (string)$locationInfo['lng'],
-                '',
-                $form_city
-            );
+
+
+        $locationService = $this->get('food.location');
+
+        $addressData = $request->request->get('address');
+
+        if(!empty($addressData['id'])) {
+
+            $addressData = $locationService->getByHash($addressData['id']);
         }
+
+
+        $locationService->set();
+
+//        $orderService->createAddressMagic(
+//            $user,
+//            $locationInfo['city'],
+//            $locationInfo['address_orig'],
+//            (string)$locationInfo['lat'],
+//            (string)$locationInfo['lng'],
+//            '',
+//            $form_city
+//        );
 
         // password validation
         if ($form->get('change_password')->isValid() && $form->isValid()) {
@@ -173,12 +182,12 @@ class DefaultController extends Controller
         return [
             'form' => $form->createView(),
             'profile_errors' => $this->formErrors($form->get('profile')),
-            'address_errors' => $this->formErrors($form->get('address')),
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
             'user' => $user,
-            'discount' => $this->get('food.user')->getDiscount($this->user())
+            'discount' => $this->get('food.user')->getDiscount($this->user()),
+            'location' => $this->get('food.location')->get(),
         ];
     }
 
@@ -206,7 +215,6 @@ class DefaultController extends Controller
         return [
             'form' => $form->createView(),
             'profile_errors' => $this->formErrors($form->get('profile')),
-            'address_errors' => $this->formErrors($form->get('address')),
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'tab' => $tab,
             'orders' => $this->get('food.order')->getUserOrders($user),
@@ -275,12 +283,10 @@ class DefaultController extends Controller
     {
         $type = new ProfileMegaFormType(
             new ProfileFormType(get_class($user)),
-            new UserAddressFormType(),
             new ChangePasswordFormType(get_class($user), $currentPassword)
         );
         $data = array(
             'profile' => $user,
-            'address' => $address,
             'change_password' => $user
         );
 
