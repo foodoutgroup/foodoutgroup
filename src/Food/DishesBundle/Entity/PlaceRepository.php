@@ -59,7 +59,7 @@ class PlaceRepository extends EntityRepository
              */
 
             $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point=pps.id" . ($zaval ? ' AND ppdzd.active_on_zaval = 1' : '');
-            $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pps.id AND (time_from <= '" . $currTime . "' AND '" . $currTime . "' <= time_to)" . ($zaval ? ' AND ppdz.active_on_zaval = 1' : '');
+            $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pps.id AND ((time_from <= '" . $currTime . "' AND '" . $currTime . "' <= time_to) OR (time_from IS NULL AND time_to IS NULL ))" . ($zaval ? ' AND ppdz.active_on_zaval = 1' : '');
 
             $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id
             AND (
@@ -320,6 +320,8 @@ class PlaceRepository extends EntityRepository
             $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
             $stmt->execute();
             $result = $stmt->fetchColumn();
+            var_dump($result);
+            die;
         }
 
         return $result;
@@ -368,7 +370,7 @@ class PlaceRepository extends EntityRepository
 
 
         $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point = pp.id";
-        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id AND (time_from <= '" . $deliveryTime . "' AND '" . $deliveryTime . "' <= time_to)";
+        $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id AND ((time_from <= '" . $deliveryTime . "' AND '" . $deliveryTime . "' <= time_to) OR time_from IS NULL AND time_to IS NULL)";
 
         $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) as distance " . $hours . "
                     FROM place_point pp, place p " . ((!$ignoreWorkTime) ? ", place_point_work_time ppwt" : "") . "
@@ -471,7 +473,7 @@ class PlaceRepository extends EntityRepository
 
 
                 $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point = pp.id";
-                $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id AND (time_from <= '" . $deliveryTime . "' AND '" . $deliveryTime . "' <= time_to)";
+                $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id AND ((time_from <= '" . $deliveryTime . "' AND '" . $deliveryTime . "' <= time_to) OR (time_from IS NULL AND time_to IS NULL))";
 
                 $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) )))
                     FROM place_point pp, place p, place_point_work_time ppwt
