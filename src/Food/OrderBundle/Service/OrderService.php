@@ -564,10 +564,17 @@ class OrderService extends ContainerAware
                 $mailTemplate = 41586573;
             }
 
-            $ml->setVariables($variables)
+            $mailResp = $ml->setVariables($variables)
                 ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
                 ->setId($mailTemplate)
                 ->send();
+
+            if ($mailResp['errors']) {
+                $this->container->get('logger')->error(
+                    $mailResp['errors'][0]
+                );
+                exit($mailResp['errors'][0]);
+            }
 
             $this->logMailSent(
                 $this->getOrder(),
