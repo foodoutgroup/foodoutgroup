@@ -24,7 +24,7 @@
     <label>{% trans %}cart.checkout.phone{% endtrans %}: <span title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip tooltip-icon ui-icon ui-icon-info"></span></label>
     <select id="phone_code" name="phone_code" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" class="custom-select">
         {% for key,item in phone_service.getActiveDropdown(app.user,site_country) %}
-            <option value="{{ key }}" {% if phone_service.getCountryCode == key %} {{ 'selected' }} {% endif %}>{{ item }}</option>
+            <option value="{{ key }}"  {% if countryCode == key %} {{ 'selected' }} {% endif %}>{{ item }}</option>
         {% endfor %}
     </select>
     <input type="text" id="customer-phone-id" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% else %}{% if app.user is not null %}{{phone_service.changePhoneFormat(app.user) }}{% endif %}{% endif %}" />
