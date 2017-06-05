@@ -1,6 +1,6 @@
 framework:
     templating:
-        assets_base_urls: { http: ["http://www.mychef.ee"], ssl: ["http://www.mychef.ee"] }
+        assets_base_urls: { http: ["http://beta.mychef.ee"], ssl: ["http://beta.mychef.ee"] }
 parameters:
     database_driver: pdo_mysql
     database_host: localhost
