@@ -320,8 +320,6 @@ class PlaceRepository extends EntityRepository
             $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
             $stmt->execute();
             $result = $stmt->fetchColumn();
-            var_dump($result);
-            die;
         }
 
         return $result;
