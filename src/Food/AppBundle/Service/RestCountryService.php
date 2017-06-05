@@ -36,6 +36,7 @@ class RestCountryService extends BaseService
 
     public function getActiveDropdown()
     {
+        $result = [];
         $allCodes = $this->em->getRepository('FoodAppBundle:PhoneCodes')->getActive();
 
         foreach ($allCodes as $code) {
