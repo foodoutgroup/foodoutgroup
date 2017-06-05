@@ -573,8 +573,9 @@ class OrderService extends ContainerAware
                 $this->container->get('logger')->error(
                     $mailResp['errors'][0]
                 );
-                exit($mailResp['errors'][0]);
+
             }
+
 
             $this->logMailSent(
                 $this->getOrder(),
