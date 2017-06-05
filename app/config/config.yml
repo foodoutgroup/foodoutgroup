@@ -128,7 +128,7 @@ twig:
         google_maps_api: "%google.maps_api%"
         cloudfront_url: "%cloudfront_url%"
         invoice_series: "%invoice.series%"
-#        show_invoice_sum_words: "%show_invoice_sum_words%"
+        show_invoice_sum_words: "%show_invoice_sum_words%"
         dispatcher_bell: "%dispatcher_bell%"
         static_page_privacy_policy: "%static_page_privacy_policy%"
         static_page_b2b_rules: "%static_page_b2b_rules%"
