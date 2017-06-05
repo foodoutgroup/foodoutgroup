@@ -11,6 +11,8 @@
             return false;
         });
 
+        checkOrderButton();
+
         $('.address-change').click(function(e){
             if($(e.target).is('span') || $(e.target).is('input')) {
                 var click_callback, data_callback;
@@ -48,7 +50,17 @@
                                 '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
                                 '{{ url('food_ajax', {'action': 'find-address-and-recount'}) }}');
             }
-    });
+
+        });
+
+        function checkOrderButton(){
+            if($('.empty-preorder-time').length > 0){
+                var button = $('.submit-button');
+                $(button).attr('disabled','disabled');
+                $(button).addClass('button-disabled');
+            }
+
+        }
 
         function toTakeOrNotToTake() {
             $('#place-point-not-found').dialog({
@@ -475,7 +487,10 @@
                                 {% endif %}
                             {% endif %}
                         </div>
-                        <div class="form-controls clearfix"><a href="{{ slug.getUrl(place.id, 'place') }}" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a href="#" class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a></div>
+                        <div class="form-controls clearfix">
+                            <a href="{{ slug.getUrl(place.id, 'place') }}" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a>
+                            <a class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a>
+                        </div>
                     </form>
                 </div>
                 <div class="content-righter-small">

@@ -81,6 +81,10 @@
                 <source>cart.checkout.delivery_time</source>
                 <target>Pristatymo laikas</target>
             </trans-unit>
+            <trans-unit id="cart.checkout.preorder_form_empty" resname="cart.checkout.preorder_form_empty">
+                <source>cart.checkout.preorder_form_empty</source>
+                <target>Restoran on suletud</target>
+            </trans-unit>
             <trans-unit id="cart.checkout.order_now" resname="cart.checkout.order_now">
                 <source>cart.checkout.order_now</source>
                 <target>Broneeri nüüd</target>
