@@ -127,34 +127,37 @@ class DefaultController extends Controller
         $form = $this->createProfileMegaForm($user, $address, $requestData['change_password']['current_password']);
         $form->handleRequest($request);
 
-        // address validation
-        $form_city = $form->get('address')->get('city_id')->getData();
-        $form_address = $form->get('address')->get('address')->getData();
-        if($form_city != null) {
-            $form_city = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($form_city);
-            $address->setCityId($form_city);
-        }
-        $address->setAddress($form_address);
-
-        if(!$user->getDefaultAddress()){
-            $em->persist($address);
-            $user->addAddress($address);
-        }
-
-
-
         $locationService = $this->get('food.location');
 
         $addressData = $request->request->get('address');
-
         if(!empty($addressData['id'])) {
 
-            $addressData = $locationService->getByHash($addressData['id']);
+            $addressDetail = $locationService->getByHash($addressData['id'])['detail'];
+
+            $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($addressDetail['city']);
+
+            $oldLocationData = $locationService->get();
+
+            $locationService->set(
+                $cityObj,
+                $addressDetail['country'],
+                $addressDetail['street'],
+                $addressDetail['house'],
+                $addressData['flat'],
+                $addressDetail['output'],
+                $addressDetail['latitude'],
+                $addressDetail['longitude']
+            );
+
+            $newLocationData = $locationService->get();
+
+            if($newLocationData['precision'] == 0) {
+                // can be set   :) todo save it,
+            } else {
+                // can not be set :) revert by old one or what?
+            }
+
         }
-
-
-        $locationService->set();
-
 //        $orderService->createAddressMagic(
 //            $user,
 //            $locationInfo['city'],
