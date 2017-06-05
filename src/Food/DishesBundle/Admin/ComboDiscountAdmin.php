@@ -35,6 +35,7 @@ class ComboDiscountAdmin extends FoodAdmin
             ->add('dishUnit', null, array('required' => false))
             ->add('discountType', 'choice', array('required' =>  true, 'choices' => $comboChoices))
             ->add('discountSize')
+            ->add('optionals', null, array('required' => false))
         ;
     }
 
@@ -50,6 +51,7 @@ class ComboDiscountAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('name', 'string')
             ->add('place')
+            ->add('optionals', null, array( 'editable' => true))
             ->add('active', null, array( 'editable' => true))
             //->add('createdBy', 'entity', array('label' => 'admin.created_by'))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s'))

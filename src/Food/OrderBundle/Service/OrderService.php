@@ -938,7 +938,7 @@ class OrderService extends ContainerAware
         // Generuojam SF skaicius tik tada, jei restoranui ijungtas fakturu siuntimas
         if ($order->getPlace()->getSendInvoice()
             && !$order->getPlacePointSelfDelivery()
-            && $order->getDeliveryType() == OrderService::$deliveryDeliver
+            && ($order->getDeliveryType() == OrderService::$deliveryDeliver || $order->getDeliveryType() == OrderService::$deliveryPedestrian)
         ) {
             $mustDoNavDelete = $this->setInvoiceDataForOrder();
 
@@ -1451,7 +1451,10 @@ class OrderService extends ContainerAware
         $discountSumLeft = $discountSum;
         $discountSumTotal = $discountSum;
         $discountUsed = 0;
-        $relationPart = $discountSum / $totalPriceBeforeDiscount;
+        $relationPart = 0;
+        if ($totalPriceBeforeDiscount > 0) {
+            $relationPart = $discountSum / $totalPriceBeforeDiscount;
+        }
 
         $sumTotal = $totalPriceBeforeDiscount - $discountSum;
 
