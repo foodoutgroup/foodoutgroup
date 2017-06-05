@@ -26,6 +26,39 @@ class LocationService extends ContainerAware
         $this->session = $this->container->get('session');
     }
 
+    // 5 - all not found
+    // 4 - Country found;
+    // 3 - Country, city found;
+    // 2 - Country, city, street found;
+    // 1 - Country, city, street, house found;
+    // 0 - Country, city, street, house, longitude, latitude found;
+
+    public function precision($locationData = [])
+    {
+        $precision = 0;
+
+        if(!$locationData['latitude'] || !$locationData['longitude']) {
+            $precision++;
+        }
+
+        if(!$locationData['house']) {
+            $precision++;
+        }
+
+        if(!$locationData['street']) {
+            $precision++;
+        }
+
+        if(!$locationData['city']) {
+            $precision++;
+        }
+
+        if(!$locationData['country']) {
+            $precision++;
+        }
+
+        return $precision;
+    }
 
     /**
      * @param City $city
@@ -46,17 +79,8 @@ class LocationService extends ContainerAware
             $current = [];
         }
 
-        // 5 - all not found
-        // 4 - Country found;
-        // 3 - Country, city found;
-        // 2 - Country, city, street found;
-        // 1 - Country, city, street, house found;
-        // 0 - Country, city, street, house, longitude, latitude found;
-
-        $defaultPrecision = 0;
-
         $locationData = [
-            'precision' => $defaultPrecision,
+            'precision' => 0,
             'country' => is_null($country) ? null : (isset($current['country']) && !$country ? $current['country'] : $country),
             'city' => $city->getTitle(),
             'city_id' => $city->getId(),
@@ -69,28 +93,7 @@ class LocationService extends ContainerAware
         ];
 
         $locationData['hash'] = md5($locationData['origin']);
-
-        if(!$locationData['latitude'] || !$locationData['longitude']) {
-            $defaultPrecision++;
-        }
-
-        if(!$locationData['house']) {
-            $defaultPrecision++;
-        }
-
-        if(!$locationData['street']) {
-            $defaultPrecision++;
-        }
-
-        if(!$locationData['city']) {
-            $defaultPrecision++;
-        }
-
-        if(!$locationData['country']) {
-            $defaultPrecision++;
-        }
-
-        $locationData['precision'] = $defaultPrecision;
+        $locationData['precision'] = $this->precision($locationData);
 
         $this->session->set('location', $locationData);
         $this->currentCity = $city;

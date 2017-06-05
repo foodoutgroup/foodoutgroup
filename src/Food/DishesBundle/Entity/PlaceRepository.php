@@ -441,6 +441,7 @@ class PlaceRepository extends EntityRepository
     public function getPlacePointNear($placeId, $locationData, $ignoreSelfDelivery = false, $futureTime = false)
     {
 
+
         $response = null;
         $cacheKey = $placeId . serialize($locationData) . (int)$ignoreSelfDelivery;
 
@@ -493,6 +494,7 @@ class PlaceRepository extends EntityRepository
                 $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
 
                 $stmt->execute();
+
                 $places = $stmt->fetchAll();
                 if (!empty($places) && !empty($places[0])) {
                     $response = (int)$places[0]['id'];

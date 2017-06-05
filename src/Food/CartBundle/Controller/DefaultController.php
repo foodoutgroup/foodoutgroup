@@ -476,17 +476,10 @@ class DefaultController extends Controller
 
             // Update order with recent address information. but only if we need to deliver
             if ($deliveryType == $orderService::$deliveryDeliver || $deliveryType == $orderService::$deliveryPedestrian) {
-                $locationData = $googleGisService->getLocation();
+                $locationData = $googleGisService->get();
+
                 $em = $this->getDoctrine()->getManager();
-                $address = $orderService->createAddressMagic(
-                    $user,
-                    $locationData['city'],
-                    $locationData['address_orig'],
-                    (string)$locationData['lat'],
-                    (string)$locationData['lng'],
-                    $customerComment,
-                    $locationData['city_id']
-                );
+                $address = $googleGisService->saveAddressFromSessionToUser($user);
                 $orderService->getOrder()->setAddressId($address);
                 // Set user default address
 
@@ -616,6 +609,8 @@ class DefaultController extends Controller
             $deliveryTotal = 0;
         } else {
             $placePointMap = $this->container->get('session')->get('point_data');
+
+
 
             $locationData = $this->get('food.location')->get();
 
