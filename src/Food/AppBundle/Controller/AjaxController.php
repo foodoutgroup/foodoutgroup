@@ -4,6 +4,7 @@ namespace Food\AppBundle\Controller;
 
 use Food\OrderBundle\Entity\Coupon;
 use Food\UserBundle\Entity\User;
+use Food\UserBundle\Entity\UserAddress;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -229,6 +230,8 @@ class AjaxController extends Controller
             'types' => 'geocode',
         ])->body);
 
+        $assets =  $this->get('templating.helper.assets');
+
         foreach ($rsp->collection as $item) {
 
             $label = $item->output;
@@ -238,7 +241,7 @@ class AjaxController extends Controller
                 $str = mb_substr($item->output, $boldRange->offset, $boldRange->length, 'UTF-8');
                 $label = str_replace($str, "<b>".$str."</b>", $label);
             }
-            $imgUrl = $this->get('templating.helper.assets')->getUrl('bundles/foodapp/images/ic_marker.png');
+            $imgUrl = $assets->getUrl('bundles/foodapp/images/ic_marker.png');
             $addressCollection[] = [
                 'id' => $item->id,
                 'label' => "<img src=\"$imgUrl\"/> ".$label,
@@ -248,14 +251,33 @@ class AjaxController extends Controller
             ];
         }
 
-//        //TODO user address;
-//        $addressCollection[] = [
-//            'id' => '',
-//            'label' => "<img src=\"./../bundles/foodapp/images/ic_home.png\"/> ".'Sudu sulnys',
-//            'value' => 'Sudu sulnys',
-//            'data' => null,
-//            'class' => 'user-address',
-//        ];
+        $user = $this->getUser();
+        if($user) {
+            /**
+             * @var $userAddress UserAddress
+             */
+            $userAddress = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user);
+            if($userAddress) {
+                $imgUrlHome = $assets->getUrl('bundles/foodapp/images/ic_home.png');
+
+                $add = true;
+                foreach ($addressCollection as $all) {
+                    if($all['id'] == $userAddress->getAddressId()) {
+                        $add = false;
+                        break;
+                    }
+                }
+                if($add) {
+                    $addressCollection[] = [
+                        'id' => $userAddress->getAddressId(),
+                        'label' => "<img src=\"$imgUrlHome\"/>&nbsp;&nbsp;<u>" . $userAddress->getOrigin() . "</u>",
+                        'value' => $userAddress->getOrigin(),
+                        'data' => null,
+                        'class' => 'user-address',
+                    ];
+                }
+            }
+        }
 
         return $addressCollection;
 

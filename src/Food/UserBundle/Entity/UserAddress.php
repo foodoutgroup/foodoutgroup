@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="user_address")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="UserAddressRepository")
  */
 class UserAddress
 {
@@ -32,6 +32,42 @@ class UserAddress
      * @ORM\Column(name="address", type="string", length=255, nullable=true)
      */
     private $address;
+
+    /**
+     * @var string
+     * @ORM\Column(name="addressId", type="text", nullable=true)
+     */
+    private $addressId = null;
+
+    /**
+     * @var string
+     * @ORM\Column(name="flat", type="text", nullable=true)
+     */
+    private $flat = null;
+
+    /**
+     * @var string
+     * @ORM\Column(name="house", type="text", nullable=true)
+     */
+    private $house = null;
+
+    /**
+     * @var string
+     * @ORM\Column(name="street", type="text", nullable=true)
+     */
+    private $street = null;
+
+    /**
+     * @var string
+     * @ORM\Column(name="country", type="text", nullable=true)
+     */
+    private $country = null;
+
+    /**
+     * @var string
+     * @ORM\Column(name="origin", type="text", nullable=true)
+     */
+    private $origin = null;
 
     /**
      * @var string
@@ -73,6 +109,7 @@ class UserAddress
      * @ORM\JoinColumn(name="city_id", referencedColumnName="id", nullable=true)
      **/
     private $cityId;
+
 
     /**
      * Get id
@@ -341,5 +378,143 @@ class UserAddress
     public function toString()
     {
         return $this->__toString();
+    }
+
+    /**
+     * Set addressId
+     *
+     * @param string $addressId
+     * @return UserAddress
+     */
+    public function setAddressId($addressId)
+    {
+        $this->addressId = $addressId;
+
+        return $this;
+    }
+
+    /**
+     * Get addressId
+     *
+     * @return string 
+     */
+    public function getAddressId()
+    {
+        return $this->addressId;
+    }
+
+    /**
+     * Set flat
+     *
+     * @param string $flat
+     * @return UserAddress
+     */
+    public function setFlat($flat)
+    {
+        $this->flat = $flat;
+
+        return $this;
+    }
+
+    /**
+     * Get flat
+     *
+     * @return string 
+     */
+    public function getFlat()
+    {
+        return $this->flat;
+    }
+
+    /**
+     * Set house
+     *
+     * @param string $house
+     * @return UserAddress
+     */
+    public function setHouse($house)
+    {
+        $this->house = $house;
+
+        return $this;
+    }
+
+    /**
+     * Get house
+     *
+     * @return string 
+     */
+    public function getHouse()
+    {
+        return $this->house;
+    }
+
+    /**
+     * Set street
+     *
+     * @param string $street
+     * @return UserAddress
+     */
+    public function setStreet($street)
+    {
+        $this->street = $street;
+
+        return $this;
+    }
+
+    /**
+     * Get street
+     *
+     * @return string 
+     */
+    public function getStreet()
+    {
+        return $this->street;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     * @return UserAddress
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string 
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set origin
+     *
+     * @param string $origin
+     * @return UserAddress
+     */
+    public function setOrigin($origin)
+    {
+        $this->origin = $origin;
+
+        return $this;
+    }
+
+    /**
+     * Get origin
+     *
+     * @return string 
+     */
+    public function getOrigin()
+    {
+        return $this->origin;
     }
 }

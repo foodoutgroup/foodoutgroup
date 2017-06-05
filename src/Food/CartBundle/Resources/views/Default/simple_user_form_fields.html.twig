@@ -47,7 +47,7 @@
 <div class="preorder_dates {% if dataToLoad is empty or (dataToLoad is not empty and dataToLoad['pre-order'] is not empty and dataToLoad['pre-order'] == "not-this-time") %}hidden{% endif %}" >
     <div class="form-row">
         <label>{% trans %}cart.checkout.delivery_date{% endtrans %}:</label>
-        <select class="custom-select" name="pre_order_date" id="pre_order_date">
+        <select style="width: 235px !important;" class="custom-select" name="pre_order_date" id="pre_order_date">
             {% for dayCounter in 0 .. (workingDaysCount-1) %}
                 {% if "+#{dayCounter} day"|date("Y-m-d") not in disabledPreorderDays %}
                 <option value="{{ "+#{dayCounter} day"|date("Y-m-d") }}" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "+#{dayCounter} day"|date("Y-m-d")) %}selected="selected"{% endif %}>
@@ -55,22 +55,8 @@
                 </option>
                 {% endif %}
             {% endfor %}
-            {#
-            {% if workingHoursToday is not empty%}
-                <option id="today_date" value='{{ "now"|date("Y-m-d") }}' {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "now"|date("Y-m-d")) %}selected="selected"{% endif %}>
-                    {{ "now"|date()|localizeddate('none', 'none', locale, null, 'eeee, MMM d')|capitalize }} d.
-                </option>
-            {% endif %}
-            {% if workingHoursTommorow is not empty%}
-                <option id="tommorow_date" value="{{ "+1 day"|date("Y-m-d") }}" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "+1 day"|date("Y-m-d")) %}selected="selected"{% endif %}>
-                    {{ "+1 day"|date()|localizeddate('none', 'none', locale, null, 'eeee, MMM d')|capitalize }} d.
-                </option>
-            {% endif %}
-            #}
         </select>
-    </div><div class="form-row">
-        <label>{% trans %}cart.checkout.delivery_time{% endtrans %}:</label>
-        <select id="pre_order_time" onchange="checkDeliveryPrice(this)"; class="custom-select today_times {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty ) %}hidden{% endif %}" name="pre_order_time" >
+        <select style="width: 94px !important;" id="pre_order_time" onchange="checkDeliveryPrice(this)"; class="custom-select today_times {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty ) %}hidden{% endif %}" name="pre_order_time" >
             {% if dataToLoad is not empty and dataToLoad['pre_order_date'] %}
                 {% set useDateForPre = dataToLoad['pre_order_date'] %}
             {% else %}
@@ -80,27 +66,7 @@
                 <option value="{{ hourInfo }}" {% if dataToLoad is not empty and dataToLoad['pre_order_time'] and dataToLoad['pre_order_time'] == hourInfo%}selected{% endif %} >{{ hourInfo }}</option>
             {% endfor %}
 
-
-            {#
-                                                    <div class="today_times" >
-            {% for time in workingHoursToday %}
-                {% if time > ("+1 hour")|date("H:i") %}
-                <option value="{{ time }}" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "now"|date("Y-m-d")) %}selected="selected"{% endif %}>
-                    {{ time }}
-                </option>
-                {% endif %}
-            {% endfor %}
-        #}
         </select>
-        {#
-        <select class="custom-select tommorow_times {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "now"|date("Y-m-d")) %}hidden{% endif %}" name="pre_order_time_tommorow" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "now"|date("Y-m-d")) %}disabled="disabled"{% endif %}">
-            {% for time in workingHoursTommorow %}
-                <option value="{{ time }}" {% if (dataToLoad is not empty and dataToLoad['pre_order_date'] is not empty and dataToLoad['pre_order_date'] == "now"|date("Y-m-d")) %}selected="selected"{% endif %}>
-                    {{ time }}
-                </option>
-            {% endfor %}
-        </select>
-        #}
     </div>
 </div>
 {# Preorder block end #}

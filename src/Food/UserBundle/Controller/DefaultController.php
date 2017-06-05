@@ -118,55 +118,63 @@ class DefaultController extends Controller
 
         // data
         $user = $this->user();
-        $address = $this->address($user);
 
         // embedded form
         $requestData = $request->request->get('food_user_profile');
 
         // mega form containts 3 embedded forms
-        $form = $this->createProfileMegaForm($user, $address, $requestData['change_password']['current_password']);
+        $form = $this->createProfileMegaForm($user, $requestData['change_password']['current_password']);
         $form->handleRequest($request);
 
         $locationService = $this->get('food.location');
 
         $addressData = $request->request->get('address');
+
         if(!empty($addressData['id'])) {
 
-            $addressDetail = $locationService->getByHash($addressData['id'])['detail'];
+            $hasAddress = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->findByIdUserFlat($addressData['id'],$user,$addressData['flat']);
 
-            $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($addressDetail['city']);
+            if(!$hasAddress) {
+                $addressDetail = $locationService->getByHash($addressData['id'])['detail'];
 
-            $oldLocationData = $locationService->get();
+                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($addressDetail['city']);
 
-            $locationService->set(
-                $cityObj,
-                $addressDetail['country'],
-                $addressDetail['street'],
-                $addressDetail['house'],
-                $addressData['flat'],
-                $addressDetail['output'],
-                $addressDetail['latitude'],
-                $addressDetail['longitude']
-            );
+                $oldLocationData = $locationService->get();
 
-            $newLocationData = $locationService->get();
+                $locationService->set(
+                    $cityObj,
+                    $addressDetail['country'],
+                    $addressDetail['street'],
+                    $addressDetail['house'],
+                    $addressData['flat'],
+                    $addressDetail['output'],
+                    $addressDetail['latitude'],
+                    $addressDetail['longitude']
+                );
 
-            if($newLocationData['precision'] == 0) {
-                // can be set   :) todo save it,
-            } else {
-                // can not be set :) revert by old one or what?
+                $newLocationData = $locationService->get();
+
+                if ($newLocationData['precision'] == 0) {
+                    $locationService->saveAddressFromSessionToUser($user);
+                } else {
+                    if (!empty($oldLocationData['city_id'])) {
+
+                        $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($oldLocationData['city_id']);
+                        $locationService->set(
+                            $cityObj,
+                            $oldLocationData['country'],
+                            $oldLocationData['street'],
+                            $oldLocationData['house'],
+                            $oldLocationData['flat'],
+                            $oldLocationData['origin'],
+                            $oldLocationData['latitude'],
+                            $oldLocationData['longitude']
+                        );
+                    }
+                }
             }
 
         }
-//        $orderService->createAddressMagic(
-//            $user,
-//            $locationInfo['city'],
-//            $locationInfo['address_orig'],
-//            (string)$locationInfo['lat'],
-//            (string)$locationInfo['lng'],
-//            '',
-//            $form_city
-//        );
 
         // password validation
         if ($form->get('change_password')->isValid() && $form->isValid()) {
@@ -211,15 +219,15 @@ class DefaultController extends Controller
 
         // data
         $user = $this->user();
-        $address = $this->address($user);
 
-        $form = $this->createProfileMegaForm($user, $address, '');
+        $form = $this->createProfileMegaForm($user, '');
 
         return [
             'form' => $form->createView(),
             'profile_errors' => $this->formErrors($form->get('profile')),
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'tab' => $tab,
+            'addressDefault' => $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user),
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
             'profile_updated' => $flashbag->get('profile_updated'),
@@ -266,23 +274,7 @@ class DefaultController extends Controller
         return $sc->getToken()->getUser();
     }
 
-    private function address(User $user)
-    {
-        if ($user->getDefaultAddress()) {
-            return $user->getDefaultAddress();
-        }
-
-        $address = new UserAddress();
-
-        $address
-            ->setUser($user)
-            ->setLat(0)
-            ->setLon(0);
-
-        return $address;
-    }
-
-    private function createProfileMegaForm($user, $address, $currentPassword)
+    private function createProfileMegaForm($user, $currentPassword)
     {
         $type = new ProfileMegaFormType(
             new ProfileFormType(get_class($user)),

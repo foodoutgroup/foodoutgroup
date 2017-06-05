@@ -3,6 +3,8 @@ namespace Food\AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Entity\City;
+use Food\UserBundle\Entity\User;
+use Food\UserBundle\Entity\UserAddress;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -129,6 +131,30 @@ class LocationService extends ContainerAware
             'types' => 'geocode',
         ])->body, true);
 
+    }
+
+    public function saveAddressFromSessionToUser(User $user)
+    {
+        $current = $this->get();
+        $ua = new UserAddress();
+        $addressString = $current['street']. ($current['house'] == null || $current['house'] == false ? "" : " ".$current['house'].($current['flat'] == null || $current['flat'] == false  ? "" : " - ".$current['flat'] ));
+        $ua->setAddress($addressString);
+        $ua->setCityId($this->getCityObj());
+        $ua->setUser($user);
+        $ua->setCity($current['city']);
+        $ua->setCountry($current['country']);
+        $ua->setStreet($current['street']);
+        $ua->setHouse($current['house']);
+        $ua->setFlat($current['flat']);
+        $ua->setLat($current['latitude']);
+        $ua->setLon($current['longitude']);
+        $ua->setOrigin($current['origin']);
+        $ua->setAddressId($current['hash']);
+        $ua->setDefault(1);
+        $this->em->persist($ua);
+        $this->em->flush();
+
+        return $ua;
     }
 
 }
