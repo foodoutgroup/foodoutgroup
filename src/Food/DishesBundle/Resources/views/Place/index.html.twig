@@ -256,7 +256,7 @@
                                         });
 
                                         $(document).on('click','.order-button',function(e){
-                                            if(!addressFound || ($('.alert-no-address:visible').length > 0 && $('.iradio input[name=delivery_type]:checked').val() == "deliver")) {
+                                            if((!addressFound && requestAddress) || ($('.alert-no-address:visible').length > 0 && $('.iradio input[name=delivery_type]:checked').val() == "deliver")) {
                                                 e.preventDefault();
                                                 $('.alert-no-address').removeClass('hidden');
                                                 $('html,body').animate({scrollTop: $('#detailed-restaurant-menu').offset().top}, 'fast');
@@ -267,6 +267,10 @@
                                         $(document).ready(function() {
 
                                             $('.pickup_click').click(function () {
+
+
+                                                $.post('{{ path('food_ajax', {'action' : 'delivery-type'}) }}', {'type' : 'pickup'});
+
                                                 $('.alert-no-address').addClass('hidden');
                                                 requestAddress = false;
                                                 type = $('.iradio input[name=delivery_type]');
@@ -316,7 +320,9 @@
                                                    placeholder="{{ 'index.street'|trans }}" />
                                             <button class="submit-address-change">{% trans %}general.profile.block_save{% endtrans %}</button>
                                         </div>
-                                        {% trans %}please.fill.address.message.bottom{% endtrans %}<br/>
+                                        {% if place.deliveryOptions != "pedestrian" %}
+                                            {% trans %}please.fill.address.message.bottom{% endtrans %}<br/>
+                                        {% endif %}
                                     </div>
 
                                     {% if placePointsAll|length == 1 %}
