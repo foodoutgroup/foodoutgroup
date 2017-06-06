@@ -337,6 +337,8 @@ class PlaceRepository extends EntityRepository
      * @param array|null $locationData
      * @param bool $ignoreSelfDelivery
      *
+     * @param bool $ignoreWorkTime
+     * @param bool $noneWorking
      * @return PlacePoint|null
      */
     public function getPlacePointNearWithDistance($placeId, $locationData, $ignoreSelfDelivery = false, $ignoreWorkTime = false, $noneWorking = false)

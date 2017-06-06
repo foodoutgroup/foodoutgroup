@@ -209,81 +209,59 @@ class RestaurantsController extends Controller
         $startTime = microtime(true);
         $this->get('logger')->alert('Restaurants:getRestaurantAction Request: id - ' . $id, (array)$request);
         try {
+
             $city = $request->get('city');
-            if (!empty($city)) {
-                $city = str_replace("laipeda", "laipėda", $city);
-            }
             $address = $request->get('address');
-            $lat = $request->get('lat');
-            $lng = $request->get('lng');
-            $searchCrit = array(
-                'city' => null,
-                'lat' => null,
-                'lng' => null
-            );
-            if (!empty($city) && !empty($address)) {
-                $locationInfo = $this->get('food.location')->groupData($address, $city);
-                if (isset($locationInfo['city'])) {
-                    $searchCrit['city'] = $locationInfo['city'];
+
+            $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($city);
+            $searchCriteria = [
+                'city' => $cityObj ? $cityObj->getTitle() : null,
+                'city_id' => $cityObj ? $cityObj->getId() : null,
+                'latitude' => $request->get('lat'),
+                'longitude' => $request->get('lng')
+            ];
+
+            $locationService = $this->get('food.location');
+            if ($cityObj && $address) {
+                $locationAddress = $locationService->findByAddress($address . ', ' . $city);
+                if ($locationAddress['success'] && $locationAddress['detail']) {
+                    $searchCriteria['latitude'] = $locationAddress['detail']['latitude'];
+                    $searchCriteria['longitude'] = $locationAddress['detail']['longitude'];
+                    if ($cityObj->getTitle() != $locationAddress['detail']['city']) {
+                        $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($locationAddress['detail']['city']);
+                        if ($cityObj) {
+                            $searchCriteria['city'] = $cityObj->getTitle();
+                            $searchCriteria['city_id'] = $cityObj->getId();
+                        }
+                    }
                 }
-                if (isset($locationInfo['lat'])) {
-                    $searchCrit['lat'] = $locationInfo['lat'];
+            } elseif ($searchCriteria['latitude'] && $searchCriteria['longitude']) {
+                $locationCords = $locationService->findByCords($searchCriteria['latitude'], $searchCriteria['longitude']);
+                if ($locationCords['success'] && $locationCords['detail']) {
+                    $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($locationCords['detail']['city']);
+                    if($cityObj) {
+                        $searchCriteria['latitude'] = $locationCords['detail']['latitude'];
+                        $searchCriteria['longitude'] = $locationCords['detail']['longitude'];
+                        $searchCriteria['city_id'] = $cityObj->getId();
+                        $searchCriteria['city'] = $cityObj->getTitle();
+
+                    }
                 }
-                if (isset($locationInfo['lng'])) {
-                    $searchCrit['lng'] = $locationInfo['lng'];
-                }
-            } elseif (!empty($lat) && !empty($lng)) {
-                $data = $this->get('food.location')->findAddressByCoords($lat, $lng);
-                $searchCrit = array(
-                    'city' => $data['city'],
-                    'lat' => $lat,
-                    'lng' => $lng
-                );
             }
 
             $place = $this->get('doctrine')->getRepository('FoodDishesBundle:Place')->find(intval($id));
-
-            $deliveryType = $place->getDeliveryOptions();
-
-            $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
-                $place->getId(),
-                $searchCrit,
-                true
-            );
+            $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $searchCriteria, true);
 
             if (!empty($pointId)) {
                 $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
-
-                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
-                    $place,
-                    $placePoint,
-                    false,
-                    $this->get('food.location')->get(),
-                    $deliveryType
-                );
+                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, $placePoint);
             } else {
-                $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
-                    $place->getId(),
-                    $searchCrit
-                );
-
+                $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $searchCriteria);
                 if (!empty($pointId)) {
                     $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
-                    $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
-                        $place,
-                        $placePoint,
-                        false,
-                        $this->get('food.location')->get(),
-                        $deliveryType
-                    );
+                    $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, $placePoint);
                 } else {
-                    $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
-                        $place,
-                        null,
-                        true,
-                        $this->get('food.location')->get(),
-                        $deliveryType
-                    );
+                    $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null, true);
                 }
             }
             $response = $restaurant->data;

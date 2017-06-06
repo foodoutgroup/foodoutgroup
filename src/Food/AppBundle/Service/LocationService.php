@@ -136,6 +136,28 @@ class LocationService extends ContainerAware
 
     }
 
+
+    public function findByAddress($address)
+    {
+        $curl = new \Curl();
+        return json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', [
+            'address' => $address,
+            'language' => $this->container->get('request')->getLocale(),
+            'types' => 'geocode',
+        ])->body, true);
+    }
+
+    public function findByCords($lat, $lng)
+    {
+        $curl = new \Curl();
+        return json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', [
+            'lat' => $lat,
+            'lng' => $lng,
+            'language' => $this->container->get('request')->getLocale(),
+            'types' => 'geocode',
+        ])->body, true);
+    }
+
     public function saveAddressFromSessionToUser(User $user)
     {
         $current = $this->get();

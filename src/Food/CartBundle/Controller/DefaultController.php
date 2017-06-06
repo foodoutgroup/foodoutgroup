@@ -3,8 +3,6 @@
 namespace Food\CartBundle\Controller;
 
 use Food\AppBundle\Entity\Slug;
-use Food\CartBundle\Service\CartService;
-use Food\DishesBundle\Admin\DishSizeAdmin;
 use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
@@ -535,10 +533,7 @@ class DefaultController extends Controller
             return $this->render('FoodCartBundle:Default:form.html.twig', $data);
         }
 
-        return $this->render(
-            'FoodCartBundle:Default:index.html.twig',
-            $data
-        );
+        return $this->render('FoodCartBundle:Default:index.html.twig', $data);
     }
 
     /**
