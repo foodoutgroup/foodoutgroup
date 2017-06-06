@@ -34,7 +34,7 @@ class SmsTemplateRepository extends EntityRepository
             ->andWhere('st.preorder = :preorder')
             ->andWhere('st.source = :source')
             ->andWhere('st.type = :type')
-            ->andWhere('et.active = 1')
+            ->andWhere('st.active = 1')
             ->setMaxResults(1);
 
         $result = $qb->getQuery()->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker')
