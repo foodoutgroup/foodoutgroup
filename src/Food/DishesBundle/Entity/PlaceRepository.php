@@ -306,9 +306,9 @@ class PlaceRepository extends EntityRepository
     }
 
 
-    public function getDeliveryPriceForPlacePoint(Place $place, PlacePoint $placePoint, $locationData, $noneWorking = false)
+    public function getDeliveryPriceForPlacePoint(Place $place, PlacePoint $placePoint, $locationData, $noneWorking = false,$fututeDate = false)
     {
-        $data = $this->getPlacePointNearWithDistance($place->getId(), $locationData, false, false, $noneWorking);
+        $data = $this->getPlacePointNearWithDistance($place->getId(), $locationData, false, false, $noneWorking,$fututeDate);
         $currTime = date('H:i:s');
         $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=" . (int)$data['id'] . " AND active=1 AND distance >= " . (float)$data['distance'] . " AND (time_from <= '" . $currTime . "' AND '" . $currTime . "' <= time_to) ORDER BY distance ASC LIMIT 1";
         $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
@@ -342,7 +342,7 @@ class PlaceRepository extends EntityRepository
      *
      * @return PlacePoint|null
      */
-    public function getPlacePointNearWithDistance($placeId, $locationData, $ignoreSelfDelivery = false, $ignoreWorkTime = false, $noneWorking = false)
+    public function getPlacePointNearWithDistance($placeId, $locationData, $ignoreSelfDelivery = false, $ignoreWorkTime = false, $noneWorking = false, $futureTime = false)
     {
         if (empty($locationData['city']) || empty($locationData['lat'])) {
             return null;
@@ -351,9 +351,17 @@ class PlaceRepository extends EntityRepository
         $lat = str_replace(",", ".", $locationData['lat']);
         $lon = str_replace(",", ".", $locationData['lng']);
 
-        $dh = date("H");
-        $dm = date("i");
-        $wd = date('w');
+        if ($futureTime) {
+            $dh = date("H", strtotime($futureTime));
+            $dm = date("i", strtotime($futureTime));
+            $wd = date('w', strtotime($futureTime));
+
+        } else {
+            $dh = date("H");
+            $dm = date("i");
+            $wd = date('w');
+        }
+
         $deliveryTime = date('H:i:s');
 
         if ($wd == 0) $wd = 7;

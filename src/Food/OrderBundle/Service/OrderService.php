@@ -1396,11 +1396,14 @@ class OrderService extends ContainerAware
 
         $this->getOrder()->setOrderExtra($orderExtra);
         $deliveryPrice = 0;
+
         if (!$selfDelivery) {
             $deliveryPrice = $this->getCartService()->getDeliveryPrice(
                 $this->getOrder()->getPlace(),
                 $this->container->get('food.location')->getLocationFromSession(),
-                $this->getOrder()->getPlacePoint()
+                $this->getOrder()->getPlacePoint(),
+                '',
+                $orderDate
             );
         }
 
