@@ -546,7 +546,7 @@ class OrderService extends ContainerAware
                 'place_address' => $this->getOrder()->getPlacePoint()->getAddress(),
                 'order_id' => $this->getOrder()->getId(),
                 'order_hash' => $this->getOrder()->getOrderHash(),
-                'user_address' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId() : "--"),
+                'user_address' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->toString() : "--"),
                 'delivery_date' => $placeService->getDeliveryTime($this->getOrder()->getPlace()),
                 'total_sum' => $this->getOrder()->getTotal(),
                 'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
@@ -569,7 +569,7 @@ class OrderService extends ContainerAware
                 ->setId($mailTemplate)
                 ->send();
 
-            if ($mailResp['errors']) {
+            if (isset($mailResp['errors'])) {
                 $this->container->get('logger')->error(
                     $mailResp['errors'][0]
                 );
@@ -2996,7 +2996,7 @@ class OrderService extends ContainerAware
             ->setEventDate(new \DateTime('now'))
             ->setSource($source)
             ->setTemplate($template)
-            ->setParams(json_decode(json_encode($params)), true);
+            ->setParams(var_export($params, true));
 
         $this->getEm()->persist($log);
         $this->getEm()->flush();
