@@ -13,6 +13,17 @@
 
         checkOrderButton();
 
+        $("#pre-order-checkbox").on('ifChecked', function (ev) {
+            checkOrderButton();
+        });
+
+        $("#order-now-checkbox").on('ifChecked', function (ev) {
+            var button = $('.submit-button');
+            $(button).removeClass('button-disabled');
+            $(button).prop('disabled', false);
+        });
+
+
         $('.address-change').click(function(e){
             if($(e.target).is('span') || $(e.target).is('input')) {
                 var click_callback, data_callback;
@@ -53,11 +64,21 @@
 
         });
 
+
+
+
+
+
         function checkOrderButton(){
-            if($('.empty-preorder-time').length > 0){
-                var button = $('.submit-button');
+            var button = $('.submit-button');
+            var timeButton = $('.empty-preorder-time');
+
+            if( $(timeButton).css('display') != 'none' && $('#pre-order-checkbox').is(':checked')){
                 $(button).attr('disabled','disabled');
                 $(button).addClass('button-disabled');
+            }else{
+                $(button).removeClass('button-disabled');
+                $(button).prop('disabled', false);
             }
 
         }
@@ -154,11 +175,22 @@
             changeTheTimes(ui.value);
         });
         function changeTheTimes(newDate) {
+
             var newHtml = "";
-            for (var cnt = 0; cnt < orderingHours[newDate].length; cnt++) {
-                newHtml+='<option value="'+orderingHours[newDate][cnt]+'">'+orderingHours[newDate][cnt]+'</option>' + "\n";
+
+            if(orderingHours[newDate].length > 0) {
+                for (var cnt = 0; cnt < orderingHours[newDate].length; cnt++) {
+                    newHtml += '<option value="' + orderingHours[newDate][cnt] + '">' + orderingHours[newDate][cnt] + '</option>' + "\n";
+                }
+                $(".pre-order-hours").show();
+                $(".empty-preorder-time").hide();
+                $("#pre_order_time").html(newHtml).selectmenu();
+                checkOrderButton();
+            }else{
+                $(".pre-order-hours").hide();
+                $(".empty-preorder-time").show();
+                checkOrderButton();
             }
-            $("#pre_order_time").html(newHtml).selectmenu();
         }
 
     });
