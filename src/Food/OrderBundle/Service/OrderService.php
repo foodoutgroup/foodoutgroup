@@ -2996,7 +2996,7 @@ class OrderService extends ContainerAware
             ->setEventDate(new \DateTime('now'))
             ->setSource($source)
             ->setTemplate($template)
-            ->setParams(var_export($params, true));
+            ->setParams(json_decode(json_encode($params)), true));
 
         $this->getEm()->persist($log);
         $this->getEm()->flush();
