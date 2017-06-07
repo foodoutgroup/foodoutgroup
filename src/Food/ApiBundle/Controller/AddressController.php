@@ -24,11 +24,21 @@ class AddressController extends Controller
             $street = $request->get('street');
             $houseNumber = $request->get('house_number');
             if (!empty($lat) && !empty($lng)) {
-                $response = $this->get('food.location')->findAddressByCoords($lat, $lng);
+                $response = $this->get('food.location')->findByCords($lat, $lng);
+                if($response) {
+                    $response['house_number'] = $response['house'];
+                } else {
+                    $response = [];
+                }
             } elseif (!empty($city) && !empty($street) && !empty($houseNumber)) {
-                $response = $this->get('food.location')->findAddressByCoordsByStuff(
-                    $city, $street, $houseNumber
-                );
+
+                $response = $this->get('food.location')->findByAddress($street.' '.$houseNumber.' ,'.$city);
+                if($response) {
+                    $response['house_number'] = $response['house'];
+                } else {
+                    $response = [];
+                }
+
             } else {
 
                 $response = [];
