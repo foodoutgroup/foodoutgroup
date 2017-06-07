@@ -188,7 +188,7 @@ class DefaultController extends Controller
     {
         // for now this is relevant for callcenter functionality
         $isCallcenter = $request->isXmlHttpRequest();
-
+        $phoneService = $this->container->get('food.phones_code_service');
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
         $miscUtils = $this->get('food.app.utils.misc');
@@ -258,6 +258,7 @@ class DefaultController extends Controller
         // TODO refactor this nonsense... if is if is if is bullshit...
         // Validate only if post happened
         if ($request->getMethod() == 'POST') {
+
             $couponEnt = null;
             if ($request->get('coupon_code', false)) {
                 $couponEnt = $this->get('doctrine')->getRepository('FoodOrderBundle:Coupon')->findOneBy(['code' => $request->get('coupon_code', '')]);
@@ -335,15 +336,16 @@ class DefaultController extends Controller
             if (empty($order)) {
                 $userEmail = $request->get('customer-email');
                 $userPhone = $request->get('customer-phone');
+
                 $userFirstName = $request->get('customer-firstname');
                 $userLastName = $request->get('customer-lastname', null);
                 if (!empty($userPhone)) {
-                    $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
-
+                    $formatedPhone = $miscUtils->formatPhone($userPhone, $request->get('country'));
                     if (!empty($formatedPhone)) {
                         $userPhone = $formatedPhone;
                     }
                 }
+
                 $userData = [
                     'email' => $userEmail,
                     'phone' => $userPhone,
@@ -427,7 +429,7 @@ class DefaultController extends Controller
             }
 
             if ($userPhone != $user->getPhone() && !$user->getIsBussinesClient()) {
-                $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
+                $formatedPhone = $miscUtils->formatPhone($request->get('customer-phone'), $request->get('country'));
 
                 if (!empty($formatedPhone)) {
                     $user->setPhone($formatedPhone);
@@ -508,8 +510,13 @@ class DefaultController extends Controller
             $disabledPreorderDays = array();
         }
 
+        $currentCountry = $this->container->getParameter('country');
 
+        $countryCode = $this->container->get('food.phones_code_service')->getCountryCode($this->getUser(),$currentCountry);
 
+        if($request->getMethod() == 'POST' && !empty($_POST['country'])){
+            $countryCode = $_POST['country'];
+        }
 
         $data = [
             'order' => $order,
@@ -529,6 +536,7 @@ class DefaultController extends Controller
             'require_lastname' => $require_lastname,
             'pointIsWorking' => $pointIsWorking,
             'disabledPreorderDays' => $disabledPreorderDays,
+            'countryCode' => $countryCode
         ];
 
 

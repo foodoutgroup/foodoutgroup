@@ -1,3 +1,6 @@
+framework:
+    templating:
+        assets_base_urls: { http: ["http://beta.mychef.ee"], ssl: ["http://beta.mychef.ee"] }
 parameters:
     database_driver: pdo_mysql
     database_host: localhost
@@ -14,7 +17,7 @@ parameters:
     aws_key: AKIAJN3454YNXAUSJIRA
     aws_secret: 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
     aws_region: eu-west-1
-    s3_bucket: foodout-invoice
+    s3_bucket: foodout-ee-invoice
 
     driver.send_to_external: true
     driver.city_filter: ["Tallinn"]
@@ -23,15 +26,15 @@ parameters:
 
     locale: ee
     locales: ["ee", "en"]
-    available_cities: ["Tallinn"]
-    available_cities_slugs: ["Tallinn"]
+    available_cities: ["Haabersti", "Järveküla", "Kesklinn", "Kristiine", "Lasnamäe", "Mustamäe", "Nõmme", "Õismäe", "Peetri", "Pirita", "Põhja-Tallinn", "Viimsi"]
+    available_cities_slugs: ["Haabersti", "Jarvekula", "Kesklinn", "Kristiine", "Lasnamae", "Mustamae", "Nomme", "Oismae", "Peetri", "Pirita", "Pohja-Tallinn", "Viimsi"]
     available_locales: ["ee", "en"]
     available_locales_routing: ee | en
-    cloudfront_url: estonia.foodout.lt
+    cloudfront_url: www.mychef.ee
     time_zone: "Europe/Tallinn"
-    sms.sender: "Foodout.ee"
+    sms.sender: "Mychef.ee"
     admin.emails: [karolis@foodout.lt]
-    admin.phones: [37061514333]
+    admin.phones: [37065548266]
     order.notify_emails: []
     order.city_coordinators:
         vilnius: []
@@ -47,9 +50,11 @@ parameters:
            method:
              - local
              - local.card
+             - seb-banklink
            title:
              - '[#cash#]'
              - '[#credit.card#]'
+             - 'Seb Bank'
     payment.methods:
         - local
         - local.card
@@ -64,6 +69,7 @@ parameters:
     display_currency_alternative:  Lt
     currency_alternative: false
     invoice.series: FOE
+    invoice_prefix: mychef
     show_best_offers: true
     show_game: true
     show_apps_download: false
@@ -73,23 +79,24 @@ parameters:
     # naudojam telefonu validacijoms
     country: EE
     country_full: Estonia
-    vat: 21
-    title: "Foodout"
-    domain: "estonia.foodout.lt"
-    publicdomain: "estonia.foodout.lt"
-    google_analytics_uid: "UA-50355577-1"
-    google.analytics.view_id: "85237075"
+    vat: 20
+    title: "Mychef"
+    domain: "www.mychef.ee"
+    publicdomain: "www.mychef.ee"
+    google_analytics_uid: "UA-28260643-1"
+    google.analytics.view_id: "54820476"
+    nav_invoice: false
     nav_table_prefix: 'Čilija kabučių Centras'
     nav_ws_prefix: 'Čilija kabučių Centras'
-    mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
+    mailer_api_key: "NU9PK62W-L10Y-2Y42-UU00-98TX602LXQW7"
     mailer_from: info@mychef.ee
-    mailer_notify_on_accept: 30010811
-    mailer_notify_pickup_on_accept: 41582385
+    mailer_notify_on_accept: template-1489653773
+    mailer_notify_pickup_on_accept: template-1490794197
     mailer_notify_new_user: 30009253
-    mailer_user_reset: 30013949
+    mailer_user_reset: template-1490788361
     mailer_partialy_deliverer: 30021995
-    mailer_rate_your_food: 30009271
-    mailer_send_invoice: 30019657
+    mailer_rate_your_food: template-1490777256
+    mailer_send_invoice: template-1490795681
     mailer_send_corporate_invoice: 41585359
     mailer_send_corporate_changed_password: 41611093
     mailer_send_free_delivery_discount: 41611735
@@ -103,8 +110,8 @@ parameters:
     default_self_delivey_distance: 10
     dispatcher_phones: []
     send_sms_on_cancel: false
-    dispatcher_contact_phone: "37061004970"
-    call_centre_phone: "37052195281"
+    dispatcher_contact_phone: "37256837237"
+    call_centre_phone: "37256837237"
     week_layout: 1
     hide_online_payments: false
     number_format:
@@ -116,13 +123,14 @@ parameters:
     place_slug_manual: false
     alcohol_allowed: true
     place_with_neighbourhood: false
-    dispatcher_bell: false
+    dispatcher_bell: true
     static_page_privacy_policy: 8
     static_page_b2b_rules: 29
-    b2b_first_month_discount: true
+    b2b_first_month_discount: false
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: true
-    show_making_time_deadline: false
+    show_making_time_deadline: true
+    default_dish_logo: default-dish-logo-ee.png
 
     # seb banklink
     seb:

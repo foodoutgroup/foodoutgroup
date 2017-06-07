@@ -2023,7 +2023,7 @@ class NavService extends ContainerAware
     {
 
         $query = sprintf(
-            "SELECT * FROM [skamb_centras].[dbo].[Čilija Skambučių Centras" . '$Web' . " Order Messages] WHERE [Order No_] = " . "$orderId"
+            "SELECT * FROM %s WHERE [Order No_] = %d", $this->getMessagesTable(), $orderId
         );
 
         $result = $this->initSqlConn()->query($query);

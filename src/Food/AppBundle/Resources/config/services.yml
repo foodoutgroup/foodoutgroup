@@ -189,8 +189,6 @@ services:
       parent: food.base_service
       calls:
         - [setContainer, [@service_container]]
-            class: Food\AppBundle\Service\ErrorLogService
-            parent: food.base_service
 
     food.phones_code_service:
                 class: Food\AppBundle\Service\RestCountryService

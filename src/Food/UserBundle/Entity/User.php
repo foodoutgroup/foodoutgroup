@@ -221,6 +221,7 @@ class User extends BaseUser
      */
     private $special = false;
 
+    /**
      * @var string
      * @ORM\Column(name="country", type="string", nullable=true)
      **/
@@ -1146,14 +1147,14 @@ class User extends BaseUser
     public function setSpecial($special)
     {
         $this->special = $special;
-    
+
         return $this;
     }
 
     /**
      * Get special
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getSpecial()
     {
@@ -1169,14 +1170,14 @@ class User extends BaseUser
     public function setCountryCode($countryCode)
     {
         $this->countryCode = $countryCode;
-    
+
         return $this;
     }
 
     /**
      * Get countryCode
      *
-     * @return string 
+     * @return string
      */
     public function getCountryCode()
     {
@@ -1192,7 +1193,7 @@ class User extends BaseUser
     public function addOrderStatusLog(\Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog)
     {
         $this->orderStatusLog[] = $orderStatusLog;
-    
+
         return $this;
     }
 
@@ -1209,7 +1210,7 @@ class User extends BaseUser
     /**
      * Get orderStatusLog
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getOrderStatusLog()
     {
