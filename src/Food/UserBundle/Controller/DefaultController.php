@@ -120,12 +120,6 @@ class DefaultController extends Controller
         $user = $this->user();
         $address = $this->address($user);
 
-        $citiesConfig = $this->container->getParameter('available_cities');
-        $cities = array();
-        foreach ($citiesConfig as $city) {
-            $cities[$city] = $city;
-        }
-
 
         // embedded form
         $requestData = $request->request->get('food_user_profile');
@@ -303,7 +297,7 @@ class DefaultController extends Controller
 
 
         $type = new ProfileMegaFormType(
-            new ProfileFormType(get_class($user)),
+            new ProfileFormType(get_class($user),  $this->container->get('food.phones_code_service'), $this->container->getParameter('country'), $user),
             new UserAddressFormType(),
             new ChangePasswordFormType(get_class($user), $currentPassword)
         );
