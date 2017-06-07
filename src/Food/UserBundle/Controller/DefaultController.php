@@ -300,7 +300,7 @@ class DefaultController extends Controller
 
 
         $type = new ProfileMegaFormType(
-            new ProfileFormType(get_class($user)),
+            new ProfileFormType(get_class($user), $this->container->get('food.phones_code_service'), $this->container->getParameter('country'), $user),
             new ChangePasswordFormType(get_class($user), $currentPassword)
         );
         $data = array(
