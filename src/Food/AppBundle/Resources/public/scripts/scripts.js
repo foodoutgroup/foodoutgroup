@@ -287,7 +287,7 @@ var registrationForm = {
     if (!navigator.geolocation) {
         button_find_me.remove();
     }
-
+    var autoSelect = true;
     input_auto_complete.autocomplete({
         source: input_auto_complete.data('url'),
         minLength: 2,
@@ -300,15 +300,18 @@ var registrationForm = {
         },
         select: function( event, ui ) {
             setSelected(ui.item);
+            autoSelect = false;
         }
     }).focusin(function(){
+        autoSelect = true;
         if(resultCollection.length >= 2) {
             $(this).autocomplete("search");
         }
     }).focusout(function(){
-        if(resultCollection.length >= 1) {
+        if(autoSelect && resultCollection.length >= 1) {
             setSelected(resultCollection[0]);
         }
+        autoSelect = false;
     }).data("ui-autocomplete")._renderItem = function (ul, item) {
         return $("<li></li>")
             .data("item.autocomplete", item)

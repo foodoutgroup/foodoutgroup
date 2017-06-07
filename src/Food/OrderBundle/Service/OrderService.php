@@ -3396,10 +3396,9 @@ class OrderService extends ContainerAware
 
             if ($addressId) {
 
-                $locationData = $locationService->getByHash($request->request->get("addressId"))['detail'];
-                $precision = $locationService->precision($locationData);
+                $locationData = $locationService->findByHash($request->request->get("addressId"));
 
-                if($precision == 0) {
+                if($locationData['precision'] == 0) {
 
                     $cityObj = $this->getEm()->getRepository('FoodAppBundle:City')->getByName($locationData['city']);
 

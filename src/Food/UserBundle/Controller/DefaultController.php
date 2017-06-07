@@ -135,7 +135,7 @@ class DefaultController extends Controller
             $hasAddress = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->findByIdUserFlat($addressData['id'],$user,$addressData['flat']);
 
             if(!$hasAddress) {
-                $addressDetail = $locationService->getByHash($addressData['id'])['detail'];
+                $addressDetail = $locationService->findByHash($addressData['id']);
 
                 $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($addressDetail['city']);
 

@@ -54,19 +54,18 @@ class RestaurantsController extends Controller
                     $kitchenCollection,
                     $filters,
                     false,
-                    $this->get('food.location')->groupData($address, $city),
+                    $this->get('food.location')->findByAddress($address.', '.$city),
                     $this->container
                 );
 
             } elseif (!empty($lat) && !empty($lng)) {
-                $locationData = $this->get('food.location')->findAddressByCoords($lat, $lng);
-                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
-                if($cityObj) {
+                $locationData = $this->get('food.location')->findByCords($lat, $lng);
+                if($locationData && $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($locationData['city'])) {
                     $placeCollection = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                         $kitchenCollection,
                         $filters,
                         false,
-                        $this->get('food.location')->getCityObj(),
+                        $this->get('food.location')->get(),
                         $this->container
                     );
                 }
@@ -85,14 +84,8 @@ class RestaurantsController extends Controller
 
             $placeCollection = $this->get('food.places')->placesPlacePointsWorkInformation($placeCollection);
             foreach ($placeCollection as $place) {
-                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
-                    $place['place'],
-                    $place['point'],
-                    false,
-                    $this->get('food.location')->get(),
-                    $delivery_type
-                );
-                $response['restaurants'][] = $restaurant->data;
+                $response['restaurants'][] = $this->get('food_api.api')
+                    ->createRestaurantFromPlace($place['place'], $place['point'])->data;
             }
         } catch (ApiException $e) {
             $this->get('logger')->error('Restaurants:getRestaurantsAction Error1:' . $e->getMessage());
@@ -151,13 +144,9 @@ class RestaurantsController extends Controller
                 $locationData = $this->get('food.location')->findAddressByCoords($lat, $lng);
                 $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
                 if($cityObj) {
-                    $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-                        [],
-                        [],
-                        false,
-                        $this->get('food.location')->setCity($cityObj),
-                        $this->container
-                    );
+                    $places = $this->getDoctrine()
+                        ->getRepository('FoodDishesBundle:Place')
+                        ->magicFindByKitchensIds([], [], false, $this->get('food.location')->setCity($cityObj), $this->container);
                 }
             }
 
@@ -224,11 +213,11 @@ class RestaurantsController extends Controller
             $locationService = $this->get('food.location');
             if ($cityObj && $address) {
                 $locationAddress = $locationService->findByAddress($address . ', ' . $city);
-                if ($locationAddress['success'] && $locationAddress['detail']) {
-                    $searchCriteria['latitude'] = $locationAddress['detail']['latitude'];
-                    $searchCriteria['longitude'] = $locationAddress['detail']['longitude'];
-                    if ($cityObj->getTitle() != $locationAddress['detail']['city']) {
-                        $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($locationAddress['detail']['city']);
+                if($locationAddress) {
+                    $searchCriteria['latitude'] = $locationAddress['latitude'];
+                    $searchCriteria['longitude'] = $locationAddress['longitude'];
+                    if ($cityObj->getTitle() != $locationAddress['city']) {
+                        $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($locationAddress['city']);
                         if ($cityObj) {
                             $searchCriteria['city'] = $cityObj->getTitle();
                             $searchCriteria['city_id'] = $cityObj->getId();
@@ -237,14 +226,13 @@ class RestaurantsController extends Controller
                 }
             } elseif ($searchCriteria['latitude'] && $searchCriteria['longitude']) {
                 $locationCords = $locationService->findByCords($searchCriteria['latitude'], $searchCriteria['longitude']);
-                if ($locationCords['success'] && $locationCords['detail']) {
-                    $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($locationCords['detail']['city']);
+                if ($locationCords) {
+                    $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($locationCords['city']);
                     if($cityObj) {
-                        $searchCriteria['latitude'] = $locationCords['detail']['latitude'];
-                        $searchCriteria['longitude'] = $locationCords['detail']['longitude'];
+                        $searchCriteria['latitude'] = $locationCords['latitude'];
+                        $searchCriteria['longitude'] = $locationCords['longitude'];
                         $searchCriteria['city_id'] = $cityObj->getId();
                         $searchCriteria['city'] = $cityObj->getTitle();
-
                     }
                 }
             }

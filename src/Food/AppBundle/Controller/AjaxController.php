@@ -287,6 +287,8 @@ class AjaxController extends Controller
     {
         $rspDefault = ['success' => false];
 
+        $locationService = $this->get('food.location');
+
         $curl = new \Curl();
         $rsp = json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', [
             'hash' => $request->get('address'),

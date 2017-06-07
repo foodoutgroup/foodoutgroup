@@ -35,26 +35,33 @@ class LocationService extends ContainerAware
 
     public function precision($locationData = [])
     {
+
         $precision = 0;
 
-        if(!$locationData['latitude'] || !$locationData['longitude']) {
-            $precision++;
-        }
+        if($locationData) {
 
-        if(!$locationData['house']) {
-            $precision++;
-        }
+            if (!$locationData['latitude'] || !$locationData['longitude']) {
+                $precision++;
+            }
 
-        if(!$locationData['street']) {
-            $precision++;
-        }
+            if (!$locationData['house']) {
+                $precision++;
+            }
 
-        if(!$locationData['city']) {
-            $precision++;
-        }
+            if (!$locationData['street']) {
+                $precision++;
+            }
 
-        if(!$locationData['country']) {
-            $precision++;
+            if (!$locationData['city']) {
+                $precision++;
+            }
+
+            if (!$locationData['country']) {
+                $precision++;
+            }
+
+        } else {
+            $precision = 5;
         }
 
         return $precision;
@@ -125,37 +132,49 @@ class LocationService extends ContainerAware
         return $this;
     }
 
-    public function getByHash($hash)
+    private function getGeoCodeCurl($params = [])
     {
-        $curl = new \Curl();
-        return json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', [
-            'hash' => $hash,
+
+        $defaultParams = [
             'language' => $this->container->get('request')->getLocale(),
             'types' => 'geocode',
-        ])->body, true);
+        ];
 
+        $curl = new \Curl();
+        return json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', array_merge($defaultParams, $params))->body, true);
+    }
+
+    public function finishUpData($response = [])
+    {
+        if($response && isset($response['success']) && $response['success']) {
+            $response = $response['detail'];
+            $response['precision'] = $this->precision($response);
+        } else {
+            $response = null;
+        }
+
+        return $response;
+    }
+
+    public function findByHash($hash)
+    {
+        return $this->finishUpData($this->getGeoCodeCurl(['hash' => $hash]));
     }
 
 
     public function findByAddress($address)
     {
-        $curl = new \Curl();
-        return json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', [
-            'address' => $address,
-            'language' => $this->container->get('request')->getLocale(),
-            'types' => 'geocode',
-        ])->body, true);
+        return $this->finishUpData($this->getGeoCodeCurl(['address' => $address]));
+    }
+
+    public function findByIp($ipAddress)
+    {
+        return $this->finishUpData($this->getGeoCodeCurl(['ip' => $ipAddress]));
     }
 
     public function findByCords($lat, $lng)
     {
-        $curl = new \Curl();
-        return json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', [
-            'lat' => $lat,
-            'lng' => $lng,
-            'language' => $this->container->get('request')->getLocale(),
-            'types' => 'geocode',
-        ])->body, true);
+        return $this->finishUpData($this->getGeoCodeCurl(['lat' => $lat, 'lng' => $lng]));
     }
 
     public function saveAddressFromSessionToUser(User $user)
