@@ -29,13 +29,17 @@ class EmailTemplateRepository extends EntityRepository
             $params['type'] = 'pickup';
         }
 
-        $qb = $this->createQueryBuilder('et')
-            ->where('et.status = :order_status')
+        $qb = $this->createQueryBuilder('et');
+        $qb->where('et.status = :order_status')
             ->andWhere('et.preorder = :preorder')
-            ->andWhere('et.source = :source')
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->eq('et.source', ':source'),
+                $qb->expr()->eq('et.useForAll', 1)
+            ))
             ->andWhere('et.active = 1')
             ->andWhere('et.type = :type')
             ->setMaxResults(1);
+
 
         $result = $qb->getQuery()->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker')
             ->setHint(TranslatableListener::HINT_TRANSLATABLE_LOCALE, $order->getLocale())

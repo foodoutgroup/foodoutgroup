@@ -15,6 +15,7 @@ class SmsTemplateAdmin extends FoodAdmin
             ->add('preorder', 'boolean', ['label' => 'admin.sms.preorder'])
             ->add('type', 'text', ['label' => 'admin.sms.type'])
             ->add('source', 'text', ['label' => 'admin.sms.source'])
+            ->add('useForAll', 'boolean', ['label' => 'admin.email.use_for_all', 'editable' => true])
             ->add('active', 'boolean', ['label' => 'admin.sms.active', 'editable' => true])
             ->add('_action', 'actions', ['actions' => ['edit' => [], 'delete' => [],], 'label' => 'admin.actions']);
     }
@@ -47,6 +48,7 @@ class SmsTemplateAdmin extends FoodAdmin
         ->add('preorder', 'boolean', ['label' => 'admin.sms.preorder'])
         ->add('type', 'boolean', ['label' => 'admin.sms.type', 'choices' => $typeCollection])
         ->add('source', 'choice', ['label' => 'admin.sms.source', 'choices' => $sourceCollection])
+        ->add('useForAll', 'boolean', ['label' => 'admin.email.use_for_all'])
         ->add('active', 'boolean');
     }
 

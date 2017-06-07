@@ -127,6 +127,12 @@ class SmsTemplate
      */
     private $deletedBy;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="use_for_all", type="boolean", nullable=true)
+     */
+    private $useForAll;
 
     public function __construct()
     {
@@ -410,6 +416,22 @@ class SmsTemplate
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseForAll()
+    {
+        return $this->useForAll;
+    }
+
+    /**
+     * @param bool $useForAll
+     */
+    public function setUseForAll($useForAll)
+    {
+        $this->useForAll = $useForAll;
     }
 
 }
