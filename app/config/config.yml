@@ -144,6 +144,7 @@ twig:
         notifications: "@food.app.utils.notifications"
         misc_utils: "@food.app.utils.misc"
         user_service: "@food.user"
+        phone_service: "@food.phones_code_service"
 #        image_manager_service: "@food.image_manager_service"
 
 # Assetic Configuration
@@ -436,6 +437,7 @@ sonata_admin:
                       - sonata.admin.cities
                       - sonata.admin.citieslog
                       - sonata.admin.error_log
+                      - sonata.admin.country_phone
                   roles: [ ROLE_DISPATCHER ]
               acme.admin.group.misc: ~
 

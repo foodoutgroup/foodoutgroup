@@ -2,6 +2,7 @@
 
 namespace Food\UserBundle\Service;
 
+use Food\AppBundle\Utils\Language;
 use FOS\UserBundle\Form\Handler\RegistrationFormHandler as OriginalHandler;
 use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Model\UserInterface;
@@ -120,13 +121,18 @@ class RegistrationFormHandler extends OriginalHandler
     protected function _notifyNewUser($user)
     {
         $ml = $this->container->get('food.mailer');
-        $variables = array(
-            'name' => $user->getUsername(),
-        );
         $mailTemplate = $this->container->getParameter('mailer_notify_new_user');
 
+        $locale =  $this->container->getParameter('locale');
+        $utils = new Language($this->container);
+        $name = $utils->getName($user->getFirstname(),$locale);
+
+        $variables = array(
+            'firstname' => $name,
+        );
+
         $ml->setVariables($variables)
-            ->setRecipient($user->getEmail())
+            ->setRecipient($user->getEmail(),$name)
             ->setId($mailTemplate)
             ->send();
     }

@@ -122,66 +122,91 @@ class DefaultController extends Controller
 
         $citiesConfig = $this->container->getParameter('available_cities');
         $cities = array();
+
         foreach ($citiesConfig as $city) {
             $cities[$city] = $city;
         }
-
 
         // embedded form
         $requestData = $request->request->get('food_user_profile');
 
         // mega form containts 3 embedded forms
         $form = $this->createProfileMegaForm($user, $address, $cities, $requestData['change_password']['current_password']);
+
         $form->handleRequest($request);
+        $countryCode = $form->get('profile')->get('countryCode')->getData();
+        $countryNumber = $this->container->get('food.phones_code_service')->getByCountry($countryCode)[0]->getCode();
+        $profilePhone = $form->get('profile')->get('phone')->getData();
 
-        // address validation
-        if ($form->get('address')->isValid()) {
-            $form_city = $form->get('address')->get('city')->getData();
-            $form_address = $form->get('address')->get('address')->getData();
+        $phoneValidation = $this->container->get('food.phones_code_service')->validatePhoneNumber($profilePhone, $countryCode);
 
-            $address
-                ->setCity($form_city)
-                ->setAddress($form_address)
-            ;
+        if ($phoneValidation !== true) {
+            $profileErrors = $this->formErrors($form->get('profile'));
+            $profileErrors['phone'] = $translator->trans($phoneValidation[0]);
 
-            if (!$user->getDefaultAddress()) {
-                $em->persist($address);
-                $user->addAddress($address);
+        } else {
+
+
+
+            // address validation
+            if ($form->get('address')->isValid()) {
+                $form_city = $form->get('address')->get('city')->getData();
+                $form_address = $form->get('address')->get('address')->getData();
+
+                $address
+                    ->setCity($form_city)
+                    ->setAddress($form_address)
+                    ->getUser()->setPhone($countryNumber.$profilePhone);
+
+
+                if (!$user->getDefaultAddress()) {
+                    $em->persist($address);
+                    $user->addAddress($address);
+                }
+
+                // Store UserAddress Begin
+                $gs = $this->get('food.googlegis');
+
+                $locationInfo = $gs->groupData($form_address, $form_city);
+
+                if (!$locationInfo['not_found']) {
+
+                    $orderService->createAddressMagic(
+                        $user,
+                        $locationInfo['city'],
+                        $locationInfo['address_orig'],
+                        (string)$locationInfo['lat'],
+                        (string)$locationInfo['lng'],
+                        ''
+                    );
+                }
+
+                // Store UserAddress End
+            }
+            // password validation
+            if ($form->get('change_password')->isValid() && $form->isValid()) {
+                $userManager->updateUser($user);
             }
 
-            // Store UserAddress Begin
-            $gs = $this->get('food.googlegis');
-            $locationInfo = $gs->groupData($form_address, $form_city);
-            if (!$locationInfo['not_found']) {
-                $orderService->createAddressMagic(
-                    $user,
-                    $locationInfo['city'],
-                    $locationInfo['address_orig'],
-                    (string)$locationInfo['lat'],
-                    (string)$locationInfo['lng'],
-                    ''
-                );
+            // main profile validation
+            $profileErrors = $this->formErrors($form->get('profile'));
+
+            if ($form->isValid()) {
+
+
+                $em->flush();
+
+                $flashbag->set('profile_updated', $translator->trans('general.noty.profile_updated'));
+
+                return $this->redirect($this->generateUrl('user_profile'));
+
+
             }
-            // Store UserAddress End
-        }
-
-        // password validation
-        if ($form->get('change_password')->isValid() && $form->isValid()) {
-            $userManager->updateUser($user);
-        }
-
-        // main profile validation
-        if ($form->isValid()) {
-            $em->flush();
-
-            $flashbag->set('profile_updated', $translator->trans('general.noty.profile_updated'));
-
-            return $this->redirect($this->generateUrl('user_profile'));
         }
 
         return [
             'form' => $form->createView(),
-            'profile_errors' => $this->formErrors($form->get('profile')),
+            'profile_errors' => $profileErrors,
             'address_errors' => $this->formErrors($form->get('address')),
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'orders' => $this->get('food.order')->getUserOrders($user),
@@ -283,16 +308,17 @@ class DefaultController extends Controller
         $address
             ->setUser($user)
             ->setLat(0)
-            ->setLon(0)
-        ;
+            ->setLon(0);
 
         return $address;
     }
 
     private function createProfileMegaForm($user, $address, $cities, $currentPassword)
     {
+
+
         $type = new ProfileMegaFormType(
-            new ProfileFormType(get_class($user)),
+            new ProfileFormType(get_class($user), $this->container->get('food.phones_code_service'), $this->container->getParameter('country'),$user),
             new UserAddressFormType($cities),
             new ChangePasswordFormType(get_class($user), $currentPassword)
         );
@@ -311,7 +337,7 @@ class DefaultController extends Controller
 
         foreach ($form->all() as $element) {
             $array = $element->getName() != 'plainPassword' ? $element->getErrors() : $element->get('first')->getErrors();
-            $callback = function($carry, $item) {
+            $callback = function ($carry, $item) {
                 $carry[] = $item->getMessage();
                 return $carry;
             };

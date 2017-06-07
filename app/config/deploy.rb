@@ -9,9 +9,12 @@ set :model_manager, "doctrine"
 set :branch, "master"
 
 # multi-stage environment
-set :stages,        %w(betalt betalv production production_lv production_ee pipiras)
+set :stages,        %w(lt_beta lt_staging lt_production)
+#~ set :stages,        %w(lv_beta lv_staging lv_production)
+#~ set :stages,        %w(ee_beta ee_staging ee_production)
+#~ set :stages,        %w(by_beta by_staging by_production)
 # isijungiam kada reik :)
-set :default_stage, "betalt"
+set :default_stage, "lt_beta"
 set :stage_dir,     "app/config/deploy"
 require 'capistrano/ext/multistage'
 

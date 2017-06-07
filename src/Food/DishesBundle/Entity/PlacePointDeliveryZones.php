@@ -66,14 +66,14 @@ class PlacePointDeliveryZones
     /**
      * @var string
      *
-     * @ORM\Column(name="time_from", type="string", length=5, nullable=true)
+     * @ORM\Column(name="time_from", type="time", nullable=true)
      */
     private $timeFrom;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="time_to", type="string", length=5, nullable=true)
+     * @ORM\Column(name="time_to", type="time", nullable=true)
      */
     private $timeTo;
 

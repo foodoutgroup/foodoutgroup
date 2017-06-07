@@ -2510,6 +2510,10 @@
                 <source>admin.coupon.free_delivery</source>
                 <target>Free delivery</target>
             </trans-unit>
+            <trans-unit id="admin.coupon.inverse">
+                <source>admin.coupon.inverse</source>
+                <target>Inverse restaurants</target>
+            </trans-unit>
             <trans-unit id="admin.coupon.active">
                 <source>admin.coupon.active</source>
                 <target>Active</target>
@@ -3570,6 +3574,22 @@
             <trans-unit id="admin.place.pedestrian">
                 <source>admin.place.pedestrian</source>
                 <target>33 mins</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.country">
+                <source>admin.phone.country</source>
+                <target>Country</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.code">
+                <source>admin.phone.code</source>
+                <target>Country code</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.active">
+                <source>admin.phone.active</source>
+                <target>Active</target>
+            </trans-unit>
+            <trans-unit id="admin.phone_codes">
+                <source>admin.phone_codes</source>
+                <target>Phone codes</target>
             </trans-unit>
         </body>
     </file>
