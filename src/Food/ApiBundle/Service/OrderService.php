@@ -3,6 +3,7 @@
 namespace Food\ApiBundle\Service;
 
 use Food\ApiBundle\Common\JsonRequest;
+use Food\DishesBundle\Entity\DishSize;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\Coupon;
@@ -869,6 +870,9 @@ class OrderService extends ContainerAware
                 $current_price = $detail->getOrigPrice();
                 $sizes = $detail->getDishId()->getSizes();
                 foreach ($sizes as $size) {
+                    /**
+                     * @var $size DishSize
+                     */
                     if ($size->getUnit()->getId() == $detail->getDishUnitId()) {
                         $current_price = $size->getCurrentPrice();
                     }

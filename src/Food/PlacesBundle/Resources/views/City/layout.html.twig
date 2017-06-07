@@ -227,6 +227,12 @@
                     });
                 });
             }
+
+            $('#places-change-location-link').click(function() {
+                $('.address-block h2').hide();
+                $('.address-quick-search').removeClass('hidden').show();
+            });
+
         });
         // ]]>
     </script>
@@ -249,54 +255,44 @@
     <div class="site-center">
         <div class="site-block">
             <div class="page-path clearfix">{% block breadcrumb %}{% endblock %}</div>
-            <div class="page-title">
+            <div class="page-title" style="display: inline-block">
                 {% block page_title_h1 %}
                     <h1>{% trans %}places.header_main_part{% endtrans %} {{ city.getTitle() }}</h1>
                 {% endblock %}
-                <h2 class="clearfix">
-                    <span class="place-counter"></span>
-                    {#<a href="#" id="places-change-location-link">{% trans %}places.change_address{% endtrans %}</a>#}
-                </h2>
+                <div class="address-block" style="display: inline-block;">
+                    <h2>
+                        <span class="place-counter"></span>
+                        {% if location is not null and location.precision == 0 %}
+                            <a href="#" id="places-change-location-link">Keisti</a>
+                        {% endif %}
+                    </h2>
+                    {% if location is not null and location.precision == 0 %}
+                        <div class="address-quick-search hidden">
+                            <form class="address-search-form-ui"  action="#" method="get">
+                                <div class="flex-aligment shake-me">
+                                    <button id="find-me" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></button>
+                                    <input type="text" {% if location is not null and location.precision == 0 and location.hash is defined %}data-selected="{{ location.hash }}"{% endif %} id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if location is not null %}{{ location.origin }}{% endif %}" />
+                                    <input type="text" id="flat" placeholder="{% trans %}index.flat{% endtrans %}" class="input-house search-field" value="{% if location is not null and location.flat %}{{ location.flat }}{% endif %}" />
+                                    <button class="submit submit-address-change" id="submit" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}"/></button>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div id="error"></div>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+                {#<h2 class="clearfix">#}
+                    {#<span class="place-counter"></span>#}
+                    {#{% if location is not null and location.precision == 0 %}#}
+                        {#<a href="" id="places-change-location-link">Keisti</a>#}
+                    {#{% endif %}#}
+                {#</h2>#}
                 {% if ( location is null or location.precision >= 2) %}
                     <div class="alert alert2 alert-warning alert_not_detailed_search">
                         <li>{% trans %}places.is_not_detailed_search{% endtrans %}</li>
                     </div>
                 {% endif %}
             </div>
-            {% include ':User:change_address.html.twig' with {id: 'places-change-address', hideQlu: false, usr_address: userAllAddress} %}
-            <script type="text/javascript">
-                // <![CDATA[
-                $(document).ready(function () {
-                    $('#places-change-location-link').click(function () {
-                        var data_callback, data_callback;
-
-                        click_callback = function (options) {
-                            if (options.response.data.success == 1 && options.response.data.url != '#error') {
-                                window.location.href = options.response.data.url;
-                            } else {
-                                options.dialog.unmask();
-                                options.alert.show();
-
-                                setTimeout(function () {
-                                    options.alert.hide();
-                                }, 5000);
-                            }
-                        };
-
-                        data_callback = function () {
-                            return {city: $('.city-row select').val(), address: $('.address-row input').val()};
-                        };
-
-                        change_location($('#places-change-address'), click_callback, data_callback,
-                            '{% trans %}cart.checkout.address_change_change{% endtrans %}',
-                            '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
-                            '{{ slug.ajaxURL('food_ajax', {'action': 'find-address'}) }}');
-
-                        return false;
-                    })
-                });
-                // ]]>
-            </script>
 
             <div class="clearfix">
                 <div class="content-lefter">

@@ -878,9 +878,9 @@ input.button {}
 .image-top .page-path a {color: #fff; background-image: url(/bundles/foodapp/images/small-arrow-right-2.png);}
 
 /*Page title*/
-.page-title {padding-bottom: 24px; letter-spacing: -0.7px;}
+.page-title { padding-bottom: 14px; letter-spacing: -0.7px; position: relative;  }
 .page-title.no-page-path {padding-top: 30px;}
-.page-title h1 {font-size: 30px; margin: 0; color: #513d28; font-weight: normal;}
+.page-title h1 {font-size: 30px; margin: 0; color: #513d28; font-weight: normal; }
 .page-title.no-page-path h1 {font-size: 41px;}
 .page-title span {float: left; margin-right: 18px;}
 .page-title a {text-transform: uppercase; float: left; padding-left: 15px; font-size: 10px; color: #b39196; background: url(/bundles/foodapp/images/location-ico.png) no-repeat left center; margin-top: 15px; letter-spacing: 1.7px;}
@@ -3127,7 +3127,7 @@ div.coupon_form_popup {
     position: absolute;
     left: 416px;
     top: 8px;
-    background: url(/bundles/foodapp/images/find-me.png);
+    background: url(/bundles/foodapp/images/find-me.png) #ffffff;
     width: 24px;
     height: 24px;
     border: none;
@@ -3150,4 +3150,59 @@ div.coupon_form_popup {
 .address-search-form-cart button.find-me {
     left: 484px;
     top: 7px;
+}
+
+.address-quick-search input {
+    border: 1px solid #d8d8d8;
+    border-radius: 4px;
+    box-shadow: 0 0 1px #f2f2f2;
+    float: left;
+    font-size: 14px;
+    height: 16px;
+    padding: 10px 12px;
+    width: 310px;
+    box-shadow: 0 0 2px #d0c8c1;
+}
+
+.address-quick-search #address_autocomplete {
+    width: 380px;
+    padding-right: 40px;
+}
+
+.address-quick-search #flat {
+    width: 60px;
+    margin-left: 10px;
+}
+
+.address-quick-search  button.submit-address-change {
+    width: 46px;
+    height: 38px;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+    background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x center center;
+}
+
+.address-quick-search  button.submit-address-change img {
+    height: 27px;
+}
+
+.address-quick-search form {
+    margin-top:6px;
+}
+
+.address-quick-search  button.find-me {
+    position: absolute;
+    left: 403px;
+    top: 54px;
+    background: url(/bundles/foodapp/images/find-me.png);
+    width: 24px;
+    height: 24px;
+    border: none;
+
+}
+
+.address-quick-search #error {
+    color:red;
+    margin-top:2px;
 }
