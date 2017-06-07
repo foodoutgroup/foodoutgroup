@@ -272,7 +272,6 @@ var registrationForm = {
         return false;
     }
 };
-
 (function (form) {
 
     var input_auto_complete = form.find('#address_autocomplete');
@@ -308,7 +307,7 @@ var registrationForm = {
             $(this).autocomplete("search");
         }
     }).focusout(function(){
-        if(autoSelect && resultCollection.length >= 1) {
+        if(autoSelect && resultCollection.length >= 1 && autoSelect) {
             setSelected(resultCollection[0]);
         }
         autoSelect = false;
