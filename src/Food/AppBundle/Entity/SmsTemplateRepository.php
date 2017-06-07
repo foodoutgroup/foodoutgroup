@@ -22,6 +22,7 @@ class SmsTemplateRepository extends EntityRepository
             'order_status' => $order->getOrderStatus(),
             'preorder' => (bool)$order->getPreorder(),
             'source' => $order->getSource(),
+            'defaultSource' => 'All',
             'type' => 'deliver'
         ];
 
@@ -35,7 +36,7 @@ class SmsTemplateRepository extends EntityRepository
             ->andWhere('st.preorder = :preorder')
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->eq('st.source', ':source'),
-                $qb->expr()->eq('st.useForAll', 1)
+                $qb->expr()->eq('st.source', ':defaultSource')
             ))
             ->andWhere('st.type = :type')
             ->andWhere('st.active = 1')

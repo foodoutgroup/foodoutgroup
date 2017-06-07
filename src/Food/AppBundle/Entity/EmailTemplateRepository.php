@@ -22,6 +22,7 @@ class EmailTemplateRepository extends EntityRepository
             'order_status' => $order->getOrderStatus(),
             'preorder' => (bool)$order->getPreorder(),
             'source' => $order->getSource(),
+            'defaultSource' => 'All',
             'type' => 'deliver'
         ];
 
@@ -34,7 +35,7 @@ class EmailTemplateRepository extends EntityRepository
             ->andWhere('et.preorder = :preorder')
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->eq('et.source', ':source'),
-                $qb->expr()->eq('et.useForAll', 1)
+                $qb->expr()->eq('et.source', ':defaultSource')
             ))
             ->andWhere('et.active = 1')
             ->andWhere('et.type = :type')
@@ -44,7 +45,6 @@ class EmailTemplateRepository extends EntityRepository
         $result = $qb->getQuery()->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker')
             ->setHint(TranslatableListener::HINT_TRANSLATABLE_LOCALE, $order->getLocale())
             ->execute($params);
-
         if(count($result)) {
             return $result[0];
         }

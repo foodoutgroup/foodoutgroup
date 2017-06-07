@@ -15,7 +15,6 @@ class EmailTemplateAdmin extends FoodAdmin
             ->add('preorder', 'boolean', ['label' => 'admin.email.preorder'])
             ->add('type', 'text', ['label' => 'admin.email.type'])
             ->add('source', 'text', ['label' => 'admin.email.source'])
-            ->add('useForAll', 'boolean', ['label' => 'admin.email.use_for_all', 'editable' => true])
             ->add('active', 'boolean', ['label' => 'admin.email.active', 'editable' => true])
             ->add('_action', 'actions', ['actions' => ['edit' => [], 'delete' => [],], 'label' => 'admin.actions']);
     }
@@ -23,7 +22,8 @@ class EmailTemplateAdmin extends FoodAdmin
     function configureFormFields(FormMapper $form)
     {
 
-        $sourceCollection = [];
+        $sourceCollection = ['All' => $this->trans('admin.email.use_for_all')];
+
         foreach (Order::$sourceCollection as $source) {
             $sourceCollection[$source] = $source;
         }
@@ -47,7 +47,6 @@ class EmailTemplateAdmin extends FoodAdmin
         ->add('preorder', 'boolean', ['label' => 'admin.email.preorder'])
         ->add('type', 'boolean', ['label' => 'admin.email.type', 'choices' => $typeCollection])
         ->add('source', 'choice', ['label' => 'admin.email.source', 'choices' => $sourceCollection])
-        ->add('useForAll', 'boolean', ['label' => 'admin.email.use_for_all'])
         ->add('active', 'boolean');
     }
 
