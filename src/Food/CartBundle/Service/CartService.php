@@ -440,8 +440,7 @@ class CartService
      * @param \Food\CartBundle\Entity\Cart[] $cartItems
      * @return float|int
      */
-    public
-    function getCartTotalApi($cartItems/*, $place*/)
+    public function getCartTotalApi($cartItems/*, $place*/)
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {
@@ -471,8 +470,7 @@ class CartService
      *
      * @deprecated
      */
-    public
-    function getCartTotalOfNonDiscounted($cartItems)
+    public function getCartTotalOfNonDiscounted($cartItems)
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {
@@ -501,8 +499,7 @@ class CartService
      * @param $discountPercent
      * @return float|int
      */
-    public
-    function getTotalDiscount($cartItems, $discountPercent)
+    public function getTotalDiscount($cartItems, $discountPercent)
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {
@@ -540,8 +537,7 @@ class CartService
      * @param \Food\CartBundle\Entity\Cart[] $cartItems
      * @return float|int
      */
-    public
-    function getCartTotalOld($cartItems)
+    public function getCartTotalOld($cartItems)
     {
         $total = 0;
         foreach ($cartItems as $cartItem) {
@@ -557,8 +553,7 @@ class CartService
      * @param Cart $cartItem
      * @return array|\Food\CartBundle\Entity\CartOption[]
      */
-    public
-    function getCartDishOptions(Cart $cartItem)
+    public function getCartDishOptions(Cart $cartItem)
     {
         $list = $this->getEm()->getRepository('FoodCartBundle:CartOption')->findBy(
             array(
@@ -574,8 +569,7 @@ class CartService
      * @param \Place $place
      * @return array
      */
-    public
-    function getCartDishesForJson($place)
+    public function getCartDishesForJson($place)
     {
         $cartItems = $this->getCartDishes($place);
         $returnData = array();
@@ -596,8 +590,7 @@ class CartService
      * @param Cart $cartItem
      * @return array
      */
-    private
-    function getOptionsForJson(Cart $cartItem)
+    private function getOptionsForJson(Cart $cartItem)
     {
         $returnData = array();
         $options = $this->getCartDishOptions($cartItem);
@@ -614,8 +607,7 @@ class CartService
     /**
      * @param Place $place
      */
-    public
-    function clearCart(Place $place)
+    public function clearCart(Place $place)
     {
         $cartDishes = $this->getEm()->getRepository('FoodCartBundle:Cart')
             ->findBy(
@@ -648,14 +640,14 @@ class CartService
      * @param PlacePoint $placePoint
      * @return int
      */
-    public
-    function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint, $noneWorking = false)
+    public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint, $noneWorking = false,$futureDate = false)
     {
-        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData, $noneWorking);
+        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData, $noneWorking,$futureDate);
 
         if (false === $deliveryTotal) {
             $deliveryTotal = $place->getDeliveryPrice();
         }
+
         return (float)$deliveryTotal;
     }
 
@@ -665,8 +657,7 @@ class CartService
      * @param PlacePoint $placePoint
      * @return float
      */
-    public
-    function getMinimumCart(Place $place, $locData, PlacePoint $placePoint)
+    public function getMinimumCart(Place $place, $locData, PlacePoint $placePoint)
     {
         $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getMinimumCartForPlacePoint($place, $placePoint, $locData);
         if (empty($deliveryTotal)) {
@@ -676,8 +667,7 @@ class CartService
         return $deliveryTotal;
     }
 
-    public
-    function OptionalCheck($cartItems)
+    public function OptionalCheck($cartItems)
     {
         $result = false;
         $place = $cartItems[0]->getPlaceId();
@@ -709,8 +699,7 @@ class CartService
         return $result;
     }
 
-    public
-    function recalculateBundles($placeId)
+    public function recalculateBundles($placeId)
     {
         $place = $this->getContainer()->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
         $cartItems = $this->getCartDishes($place);
@@ -764,8 +753,7 @@ class CartService
      * @param ComboDiscount $bundle
      * @param Cart[] $items
      */
-    private
-    function _applyUnitBundles($bundle, $items)
+    private function _applyUnitBundles($bundle, $items)
     {
         $amount = $bundle->getAmount();
         $totalDishes = 0;
@@ -828,8 +816,7 @@ class CartService
 
     }
 
-    private
-    function _getActiveBundles(Place $place)
+    private function _getActiveBundles(Place $place)
     {
         return $this->getContainer()->get('doctrine')
             ->getRepository('FoodDishesBundle:ComboDiscount')

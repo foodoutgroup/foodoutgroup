@@ -71,6 +71,14 @@ class EmailTemplate
      */
     private $active;
 
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="use_for_all", type="boolean", nullable=true)
+     */
+    private $useForAll;
+
     /**
      * @Gedmo\Locale
      * Used locale to override Translation listener`s locale
@@ -408,6 +416,22 @@ class EmailTemplate
     public function setDeletedBy($deletedBy)
     {
         $this->deletedBy = $deletedBy;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseForAll()
+    {
+        return $this->useForAll;
+    }
+
+    /**
+     * @param bool $useForAll
+     */
+    public function setUseForAll($useForAll)
+    {
+        $this->useForAll = $useForAll;
     }
 
 }

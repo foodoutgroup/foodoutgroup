@@ -1,4 +1,5 @@
 <?php
+
 namespace Food\AppBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
@@ -60,8 +61,7 @@ class DriverAdmin extends FoodAdmin
             ->add('provider', null, array('label' => 'admin.driver.provider'))
             ->add('extId', 'text', array('label' => 'admin.driver.ext_id_long', 'required' => false))
             ->add('token', 'text', array('label' => 'admin.driver.token', 'required' => false))
-            ->add('active', 'checkbox', array('label' => 'admin.driver.active', 'required' => false));
-        ;
+            ->add('active', 'checkbox', array('label' => 'admin.driver.active', 'required' => false));;
     }
 
     /**
@@ -80,8 +80,7 @@ class DriverAdmin extends FoodAdmin
             ->add('provider', null, array('label' => 'admin.driver.provider'))
             ->add('phone', null, array('label' => 'admin.driver.phone'))
             ->add('extId', null, array('label' => 'admin.driver.ext_id'))
-            ->add('active', null, array('label' => 'admin.driver.active'))
-        ;
+            ->add('active', null, array('label' => 'admin.driver.active'));
     }
 
     /**
@@ -121,8 +120,7 @@ class DriverAdmin extends FoodAdmin
                     'delete' => array(),
                 ),
                 'label' => 'admin.actions'
-            ))
-        ;
+            ));
     }
 
     /**
@@ -132,7 +130,8 @@ class DriverAdmin extends FoodAdmin
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
-        $collection->clearExcept(array('list', 'edit', /*'show', */'create', 'delete', 'export'));
+        $collection->clearExcept(array('list', 'edit', /*'show', */
+            'create', 'delete', 'export'));
     }
 
     /**
@@ -153,10 +152,13 @@ class DriverAdmin extends FoodAdmin
     {
         $phone = $this->cleanDaPhone($object->getPhone());
         $object->setPhone($phone);
-
+        $id = $this->getContainer()->get('doctrine.orm.entity_manager')
+            ->getRepository('FoodAppBundle:Driver')->getEmptyId();
         if (!$object->getToken()) {
             $object->setToken($this->generateToken());
         }
+
+        $object->setId($id);
 
         parent::prePersist($object);
     }
@@ -189,7 +191,7 @@ class DriverAdmin extends FoodAdmin
     private function generateToken()
     {
         $chars = 'ABCDEFGHYJKLMNPRSTUVZ';
-        return $chars[rand(0, strlen($chars) - 1)].rand(10000, 99999).$chars[rand(0, strlen($chars) - 1)];
+        return $chars[rand(0, strlen($chars) - 1)] . rand(10000, 99999) . $chars[rand(0, strlen($chars) - 1)];
     }
 
 }

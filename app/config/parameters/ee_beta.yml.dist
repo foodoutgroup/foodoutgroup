@@ -1,0 +1,159 @@
+framework:
+    templating:
+        assets_base_urls: { http: ["http://beta.mychef.ee"], ssl: ["http://beta.mychef.ee"] }
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: 3306
+    database_name: food_ee_beta
+    database_user: food_ee_beta
+    database_password: DjHFNDFgwYQLu7UF
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: f614a15fb30e99a1da1e364412f96c3f98cdaa1f
+
+    aws_key: AKIAJN3454YNXAUSJIRA
+    aws_secret: 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
+    aws_region: eu-west-1
+    s3_bucket: foodout-ee-invoice
+
+    driver.send_to_external: true
+    driver.city_filter: ["Tallinn"]
+    driver.socket_address: tcp://cl1:7778
+    driver.socket_hash: apiee
+
+    locale: ee
+    locales: ["ee", "en"]
+    available_cities: ["Haabersti", "Järveküla", "Kesklinn", "Kristiine", "Lasnamäe", "Mustamäe", "Nõmme", "Õismäe", "Peetri", "Pirita", "Põhja-Tallinn", "Viimsi"]
+    available_cities_slugs: ["Haabersti", "Jarvekula", "Kesklinn", "Kristiine", "Lasnamae", "Mustamae", "Nomme", "Oismae", "Peetri", "Pirita", "Pohja-Tallinn", "Viimsi"]
+    available_locales: ["ee", "en"]
+    available_locales_routing: ee | en
+    cloudfront_url: www.mychef.ee
+    time_zone: "Europe/Tallinn"
+    sms.sender: "Mychef.ee"
+    admin.emails: [karolis@foodout.lt]
+    admin.phones: [37065548266]
+    order.notify_emails: []
+    order.city_coordinators:
+        vilnius: []
+        kaunas: []
+        klaipėda: []
+        ryga: []
+        tallinn: []
+    order.accept_notify_emails: []
+    order.cancel_notify_emails: []
+    accounting_email: ""
+    b2b_invoice_email: ""
+    payment:
+           method:
+             - local
+             - local.card
+             - seb-banklink
+           title:
+             - '[#cash#]'
+             - '[#credit.card#]'
+             - 'Seb Bank'
+    payment.methods:
+        - local
+        - local.card
+        - postpaid
+        - paysera
+        - swedbank-gateway
+        - swedbank-credit-card-gateway
+        - seb-banklink
+        - nordea-banklink
+    currency_display: '&euro;'
+    currency_iso: EUR
+    display_currency_alternative:  Lt
+    currency_alternative: false
+    invoice.series: FOE
+    invoice_prefix: mychef
+    show_best_offers: true
+    show_game: true
+    show_apps_download: false
+    show_is_social: true
+    show_delfi_banner: false
+    track_conversions: true
+    # naudojam telefonu validacijoms
+    country: EE
+    country_full: Estonia
+    vat: 20
+    title: "Mychef"
+    domain: "www.mychef.ee"
+    publicdomain: "www.mychef.ee"
+    google_analytics_uid: "UA-28260643-1"
+    google.analytics.view_id: "54820476"
+    nav_invoice: false
+    nav_table_prefix: 'Čilija kabučių Centras'
+    nav_ws_prefix: 'Čilija kabučių Centras'
+    mailer_api_key: "NU9PK62W-L10Y-2Y42-UU00-98TX602LXQW7"
+    mailer_from: info@mychef.ee
+    mailer_notify_on_accept: template-1489653773
+    mailer_notify_pickup_on_accept: template-1490794197
+    mailer_notify_new_user: 30009253
+    mailer_user_reset: template-1490788361
+    mailer_partialy_deliverer: 30021995
+    mailer_rate_your_food: template-1490777256
+    mailer_send_invoice: template-1490795681
+    mailer_send_corporate_invoice: 41585359
+    mailer_send_corporate_changed_password: 41611093
+    mailer_send_free_delivery_discount: 41611735
+    mailer_provider: food.mail.sendigo
+    mailer_newsletter_provider: food.mail.mailerlite
+    mailerlite_api_key: "71b32c22e0944db62613e34669489d1a"
+    mailerlite_group_id: 4748489
+    yt_video: https://www.youtube.com/v/3zFW6hnuvJY?fs=1&amp;autoplay=
+    yt_embeded: //www.youtube-nocookie.com/embed/3zFW6hnuvJY
+    default_delivery_distance: 7
+    default_self_delivey_distance: 10
+    dispatcher_phones: []
+    send_sms_on_cancel: false
+    dispatcher_contact_phone: "37256837237"
+    call_centre_phone: "37256837237"
+    week_layout: 1
+    hide_online_payments: false
+    number_format:
+        decimal_places: 2
+        decimal_separator: ','
+        thousands_separator: ' '
+    show_invoice_option: true
+    show_invoice_sum_words: false
+    place_slug_manual: false
+    alcohol_allowed: true
+    place_with_neighbourhood: false
+    dispatcher_bell: true
+    static_page_privacy_policy: 8
+    static_page_b2b_rules: 29
+    b2b_first_month_discount: false
+    b2b_first_month_discount_percent: 10
+    newsletter_subscribe_tick_by_default: true
+    show_making_time_deadline: true
+    default_dish_logo: default-dish-logo-ee.png
+
+    # seb banklink
+    seb:
+        banklink.private_key: "/srv/gluster/banklinks/ee/seb/private.key"
+        banklink.bank_key: "/srv/gluster/banklinks/ee/seb/bank.key"
+        REDIRECT_SERVICE: 1011
+        SUCCESS_SERVICE: 1111
+        WAITING_SERVICE: 1211
+        FAILURE_SERVICE: 1911
+        VK_SND_ID: "jtepart"
+        VK_ACC: "EE881010000006537224"
+        entrypoint: "https://www.seb.ee/cgi-bin/unet3.sh/un3min.r"
+        lang: "EST"
+        name: "mychef"
+        curr: "EUR"
+
+    session_memcached_host:     memcached
+    session_memcached_port:     11211
+    session_memcached_prefix:   food_ee_beta
+    session_memcached_expire:   3600
+
+pirminis_gateway:
+    datacash_url: 'https://mars.transaction.datacash.com/Transaction'
+    swedbank:
+        vtid: "21911859"
+        password: "rMUhc7p7"

@@ -265,15 +265,26 @@ class OrderService extends ContainerAware
      *
      * @return Order
      */
-    public function createOrder($placeId, $placePoint = null, $fromConsole = false, $orderDate = null,$deliveryType = null)
+    public function createOrder($placeId, $placePoint = null, $fromConsole = false, $orderDate = null, $deliveryType = null)
     {
-        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
+
+
         if (empty($placePoint)) {
             $placePointMap = $this->container->get('session')->get('point_data');
-            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$placeId]);
+
+            if (empty($placePointMap[$placeId])) {
+                $sessionLocation = $this->container->get('food.googlegis')->getLocationFromSession();
+                $placePointId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $sessionLocation, '', $orderDate);
+            } else {
+                $placePointId = $placePointMap[$placeId];
+            }
+
+            $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
         } else {
             $pointRecord = $placePoint;
         }
+
+        $placeRecord = $this->getEm()->getRepository('FoodDishesBundle:Place')->find($placeId);
 
         $this->order = new Order();
         $this->order->setSource(Order::SOURCE_FOODOUT);
@@ -285,6 +296,8 @@ class OrderService extends ContainerAware
         } else {
             $user = null;
         }
+
+
         $this->order->setPlace($placeRecord);
         $this->order->setPlaceName($placeRecord->getName());
         $this->order->setPlacePointSelfDelivery($placeRecord->getSelfDelivery());
@@ -305,7 +318,7 @@ class OrderService extends ContainerAware
                 $timeShift = 60;
             }
 
-            if($deliveryType == 'pedestrian') {
+            if ($deliveryType == 'pedestrian') {
                 $timeShift = $this->container->get('food.places')->getPedestrianDeliveryTime();
             }
 
@@ -542,19 +555,19 @@ class OrderService extends ContainerAware
             }
 
             $variables = [
-                '[place_name]' => $this->getOrder()->getPlace()->getName(),
-                '[place_address]' => $this->getOrder()->getPlacePoint()->getAddress(),
-                '[order_id]' => $this->getOrder()->getId(),
-                '[order_hash]' => $this->getOrder()->getOrderHash(),
-                '[user_address]' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId() : "--"),
-                '[delivery_date]' => $placeService->getDeliveryTime($this->getOrder()->getPlace()),
-                '[total_sum]' => $this->getOrder()->getTotal(),
-                '[total_delivery]' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
-                '[total_card]' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
-                '[invoice]' => $invoice,
-                '[beta_code]' => $betaCode,
-                '[city]' => $order->getCityId()->getTitle(),
-                '[food_review_url]' =>  'http://'.$this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review'
+                'place_name' => $this->getOrder()->getPlace()->getName(),
+                'place_address' => $this->getOrder()->getPlacePoint()->getAddress(),
+                'order_id' => $this->getOrder()->getId(),
+                'order_hash' => $this->getOrder()->getOrderHash(),
+                'user_address' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->toString() : "--"),
+                'delivery_date' => $placeService->getDeliveryTime($this->getOrder()->getPlace()),
+                'total_sum' => $this->getOrder()->getTotal(),
+                'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
+                'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
+                'invoice' => $invoice,
+                'beta_code' => $betaCode,
+                'city' => $order->getCityId()->getTitle(),
+                'food_review_url' =>  'http://'.$this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review'
             ];
 
 
@@ -564,10 +577,18 @@ class OrderService extends ContainerAware
                 $mailTemplate = 41586573;
             }
 
-            $ml->setVariables($variables)
+            $mailResp = $ml->setVariables($variables)
                 ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
                 ->setId($mailTemplate)
                 ->send();
+
+            if (isset($mailResp['errors'])) {
+                $this->container->get('logger')->error(
+                    $mailResp['errors'][0]
+                );
+
+            }
+
 
             $this->logMailSent(
                 $this->getOrder(),
@@ -1260,11 +1281,11 @@ class OrderService extends ContainerAware
      * @param array|null $userData
      * @param string|null $orderDate
      */
-    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null,$deliveryType = null)
+    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null, $deliveryType = null)
     {
         // TODO Fix prices calculation
 
-        $this->createOrder($place, $placePoint, false, $orderDate,$deliveryType);
+        $this->createOrder($place, $placePoint, false, $orderDate, $deliveryType);
         $this->getOrder()->setDeliveryType($deliveryType);
         $this->getOrder()->setLocale($locale);
         $this->getOrder()->setUser($user);
@@ -1298,6 +1319,7 @@ class OrderService extends ContainerAware
         }
 
         $this->saveOrder();
+
         // save extra order data to separate table
         $orderExtra = new OrderExtra();
         $orderExtra->setOrder($this->getOrder());
@@ -1317,11 +1339,14 @@ class OrderService extends ContainerAware
 
         $this->getOrder()->setOrderExtra($orderExtra);
         $deliveryPrice = 0;
+
         if (!$selfDelivery) {
             $deliveryPrice = $this->getCartService()->getDeliveryPrice(
                 $this->getOrder()->getPlace(),
                 $this->container->get('food.location')->get(),
-                $this->getOrder()->getPlacePoint()
+                $this->getOrder()->getPlacePoint(),
+                '',
+                $orderDate
             );
         }
 
@@ -2657,7 +2682,10 @@ class OrderService extends ContainerAware
             $this->logOrder($order, 'NAV_update_prices');
             $returner = $nav->updatePricesNAV($orderRenew);
             sleep(1);
-            $this->logOrder($order, 'NAV_update_prices_return', 'returner', json_encode($returner));
+
+            $logMessage = $nav->getErrorFromNav($order->getId());
+
+            $this->logOrder($order, 'NAV_update_prices_return', $logMessage, json_encode($returner));
             if ($returner->return_value == "TRUE") {
                 $this->logOrder($order, 'NAV_process_order');
                 $returner = $nav->processOrderNAV($orderRenew);
@@ -2678,6 +2706,7 @@ class OrderService extends ContainerAware
                 $this->getEm()->refresh($order);
                 $this->logStatusChange($order, self::$status_nav_problems, 'cili_nav_update_price');
                 $order->setOrderStatus(self::$status_nav_problems);
+
                 $this->getEm()->persist($order);
                 $this->getEm()->flush();
             }
@@ -3653,28 +3682,12 @@ class OrderService extends ContainerAware
 
         // Validate das phone number :)
         if (0 != strlen($phone)) {
-            $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
-            $country = strtoupper($this->container->getParameter('country'));
+            $validation = $this->container->get('food.phones_code_service')->validatePhoneNumber($phone, $request->get('country'));
 
-            try {
-                $numberProto = $phoneUtil->parse($phone, $country);
-            } catch (\libphonenumber\NumberParseException $e) {
-                // no need for exception
-            }
-
-            if (isset($numberProto)) {
-                $numberType = $phoneUtil->getNumberType($numberProto);
-                $isValid = $phoneUtil->isValidNumber($numberProto);
-            } else {
-                $isValid = false;
-            }
-
-            if (!$isValid) {
-                $formErrors[] = 'order.form.errors.customerphone_format';
-            } else if ($isValid && !in_array($numberType, [\libphonenumber\PhoneNumberType::MOBILE, \libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE])) {
-                $formErrors[] = 'order.form.errors.customerphone_not_mobile';
-            } else {
+            if($validation === true){
                 $phonePass = true;
+            }else{
+                $formErrors = $validation;
             }
         }
 
@@ -4273,6 +4286,7 @@ class OrderService extends ContainerAware
                             $theCode = strtoupper($randomStuff[array_rand($randomStuff)]) . $order->getId();
                         }
                         $newCode = new Coupon;
+                        $inverse = $generator->getInverse() ? 1 : 0;
                         $newCode->setActive(true)
                             ->setCode($theCode)
                             ->setName($generator->getName() . " - #" . $order->getId())
@@ -4293,6 +4307,7 @@ class OrderService extends ContainerAware
                             ->setIgnoreCartPrice($generator->getIgnoreCartPrice())
                             ->setIncludeDelivery($generator->getIncludeDelivery())
                             ->setB2b($generator->getB2b())
+                            ->setInverse($inverse)
                             ->setCreatedAt(new \DateTime('NOW'));
 
                         $this->container->get('food.mailer')
@@ -4392,12 +4407,19 @@ class OrderService extends ContainerAware
     public function validateCouponForPlace(Coupon $coupon, Place $place)
     {
         $couponPlaces = $coupon->getPlaces();
+        $checker = 0;
         if (count($couponPlaces)) {
+
             foreach ($couponPlaces as $couponPlace) {
                 if ($couponPlace->getId() == $place->getId()) {
-                    return true;
+                    $checker++;
                 }
             }
+
+            if ((!$coupon->getInverse() && $checker > 0) || ($checker == 0 && $coupon->getInverse())) {
+                return true;
+            }
+
         } else {
             return true;
         }

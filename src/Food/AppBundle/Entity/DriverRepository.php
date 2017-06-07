@@ -1,6 +1,7 @@
 <?php
 
 namespace Food\AppBundle\Entity;
+
 use Doctrine\ORM\EntityRepository;
 
 class DriverRepository extends EntityRepository
@@ -18,7 +19,7 @@ class DriverRepository extends EntityRepository
         FROM `orders` o
         LEFT JOIN `drivers` d ON d.id = o.`driver_id`
         WHERE
-        o.id = '.$id.'
+        o.id = ' . $id . '
         LIMIT 1
         ';
 
@@ -38,7 +39,7 @@ class DriverRepository extends EntityRepository
         SELECT d.*
         FROM `drivers` d
         WHERE
-          d.deleted_at >= "'.date("Y-m-d 00:00:01", strtotime('-3 month')).'"
+          d.deleted_at >= "' . date("Y-m-d 00:00:01", strtotime('-3 month')) . '"
         ';
 
         $stmt = $this->getEntityManager()->getConnection()
@@ -92,7 +93,7 @@ class DriverRepository extends EntityRepository
     {
         $time = 0;
 
-        if(!$fromDate) {
+        if (!$fromDate) {
             $fromDate = date('Y-m-d');
             $toDate = $fromDate;
         }
@@ -124,7 +125,36 @@ WHERE driver_id IS NOT NULL
                 $time += $result['timeDiff'];
             }
         }
-        $time = number_format($time/3600, 2, '.', '');
+        $time = number_format($time / 3600, 2, '.', '');
         return $time;
+    }
+
+    public function getEmptyId()
+    {
+        $query = "SELECT * FROM drivers ORDER BY id ASC";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+        $drivers = $stmt->fetchAll();
+        $i = 1;
+        if (!empty($drivers)) {
+            foreach ($drivers as $driver) {
+                if ($driver['id'] != $i) {
+                    $returner = $i;
+                    break;
+                } else {
+                    $returner = null;
+                }
+                $i++;
+            }
+
+            if (empty($returner)) {
+                $returner = end($drivers);
+                $returner = $returner['id'] + 1;
+            }
+        } else {
+            $returner = 1;
+        }
+        return $returner;
     }
 }

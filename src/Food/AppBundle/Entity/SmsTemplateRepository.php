@@ -22,6 +22,7 @@ class SmsTemplateRepository extends EntityRepository
             'order_status' => $order->getOrderStatus(),
             'preorder' => (bool)$order->getPreorder(),
             'source' => $order->getSource(),
+            'defaultSource' => 'All',
             'type' => 'deliver'
         ];
 
@@ -29,11 +30,16 @@ class SmsTemplateRepository extends EntityRepository
             $params['type'] = 'pickup';
         }
 
-        $qb = $this->createQueryBuilder('st')
-            ->where('st.status = :order_status')
+        $qb = $this->createQueryBuilder('st');
+
+        $qb->where('st.status = :order_status')
             ->andWhere('st.preorder = :preorder')
-            ->andWhere('st.source = :source')
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->eq('st.source', ':source'),
+                $qb->expr()->eq('st.source', ':defaultSource')
+            ))
             ->andWhere('st.type = :type')
+            ->andWhere('st.active = 1')
             ->setMaxResults(1);
 
         $result = $qb->getQuery()->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker')

@@ -119,12 +119,26 @@ class DefaultController extends Controller
         // data
         $user = $this->user();
 
+
         // embedded form
         $requestData = $request->request->get('food_user_profile');
 
         // mega form containts 3 embedded forms
         $form = $this->createProfileMegaForm($user, $requestData['change_password']['current_password']);
         $form->handleRequest($request);
+        $countryCode = $form->get('profile')->get('countryCode')->getData();
+        $countryNumber = $this->container->get('food.phones_code_service')->getByCountry($countryCode)[0]->getCode();
+        $profilePhone = $form->get('profile')->get('phone')->getData();
+
+        $phoneValidation = $this->container->get('food.phones_code_service')->validatePhoneNumber($profilePhone, $countryCode);
+
+        if ($phoneValidation !== true) {
+            $profileErrors = $this->formErrors($form->get('profile'));
+            $profileErrors['phone'] = $translator->trans($phoneValidation[0]);
+
+        } else {
+
+
 
         $locationService = $this->get('food.location');
 
@@ -181,13 +195,20 @@ class DefaultController extends Controller
             $userManager->updateUser($user);
         }
 
-        // main profile validation
-        if ($form->isValid()) {
-            $em->flush();
+            // main profile validation
+            $profileErrors = $this->formErrors($form->get('profile'));
 
-            $flashbag->set('profile_updated', $translator->trans('general.noty.profile_updated'));
+            if ($form->isValid()) {
 
-            return $this->redirect($this->generateUrl('user_profile'));
+
+                $em->flush();
+
+                $flashbag->set('profile_updated', $translator->trans('general.noty.profile_updated'));
+
+                return $this->redirect($this->generateUrl('user_profile'));
+
+
+            }
         }
 
         return [
@@ -276,6 +297,8 @@ class DefaultController extends Controller
 
     private function createProfileMegaForm($user, $currentPassword)
     {
+
+
         $type = new ProfileMegaFormType(
             new ProfileFormType(get_class($user)),
             new ChangePasswordFormType(get_class($user), $currentPassword)

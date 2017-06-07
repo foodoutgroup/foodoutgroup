@@ -42,6 +42,9 @@ class AjaxController extends Controller
             case 'get-address-by-location':
                 $collection = $this->_getAddressByLocation($request);
                 break;
+            case 'delivery-type':
+                $this->get('session')->set('delivery_type', $request->get('type'));
+                break;
             default:
                 $collection = ['message' => 'Method not found :)'];
                 break;

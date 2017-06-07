@@ -10,9 +10,16 @@
     <label>{% trans %}cart.checkout.email{% endtrans %}:</label>
     <input type="text" name="customer-email" value="{% if (dataToLoad is not empty and dataToLoad['customer-email'] is not empty) %}{{ dataToLoad['customer-email'] }}{% else %}{{ app.user.email|default('') }}{% endif %}" placeholder="{% trans %}general.email.placeholder{% endtrans %}" />
 </div>
-<div class="form-row form-row-required">
+
+<div class="form-row form-row-required form-row-joined">
     <label>{% trans %}cart.checkout.phone{% endtrans %}: <span title="{% trans %}cart.checkout.phone_tooltip{% endtrans %}" class="tooltip tooltip-icon ui-icon ui-icon-info"></span></label>
-    <input type="text" id="customer-phone-id" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% else %}{{ app.user.phone|default('') }}{% endif %}" />
+    <select id="phone_code" name="country" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" class="custom-select">
+        {% for key,item in phone_service.getActiveDropdown %}
+            <option value="{{ key }}" {% if countryCode == key %} {{ 'selected' }} {% endif %}>{{ item }}</option>
+        {% endfor %}
+    </select>
+    <input type="text" id="customer-phone-id" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% else %}{% if app.user is not null %}{{phone_service.changePhoneFormat(app.user) }}{% endif %}{% endif %}" />
+
 </div>
 <script>
     $(document).ready(function(){

@@ -40,6 +40,12 @@ trait PaymentLogDecorator
                 $orderService->informPlace();
             }
 
+            if ($order->getPreorder()) {
+                $orderService->statusNewPreorder('payment accept');
+            } else {
+                $orderService->statusNew('payment accept');
+            }
+
             // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
             $orderService->deactivateCoupon();
 

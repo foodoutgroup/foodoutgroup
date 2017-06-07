@@ -104,6 +104,12 @@ class LocalBiller extends ContainerAware implements BillingInterface
             if ($orderService->getAllowToInform()) {
                 $orderService->informPlace();
             }
+
+            if ($order->getPreorder()) {
+                $orderService->statusNewPreorder('local accept');
+            } else {
+                $orderService->statusNew('local accept');
+            }
         }
 
         return $router->generate('food_cart_success', ['orderHash' => $order->getOrderHash()]);

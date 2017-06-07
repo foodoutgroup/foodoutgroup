@@ -1,4 +1,5 @@
 <?php
+
 namespace Food\OrderBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
@@ -24,11 +25,12 @@ class CouponGeneratorAdmin extends FoodAdmin
             ->add('discountSum')
             ->add('discount', null, array('label' => 'admin.coupon.discount', 'required' => false))
             ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery', 'required' => false))
-            ->add('code', null, array('label' => 'admin.coupon.code', 'required'=> false))
-            ->add('randomize','checkbox', array('label'=>'Randomize code', 'required' => false))
+            ->add('code', null, array('label' => 'admin.coupon.code', 'required' => false))
+            ->add('randomize', 'checkbox', array('label' => 'Randomize code', 'required' => false))
             ->add('places', null, array('label' => 'admin.coupon.place',))
+            ->add('inverse', 'checkbox', array('label' => 'admin.coupon.inverse', 'required' => false))
             ->add('onlyNav', 'checkbox', array('label' => 'admin.coupon.only_nav', 'required' => false))
-            ->add('noSelfDelivery','checkbox', array('required' => false))
+            ->add('noSelfDelivery', 'checkbox', array('required' => false))
             ->add('type', 'choice', array('choices' => array(
                 Coupon::TYPE_BOTH => 'BOTH',
                 Coupon::TYPE_API => 'API',
@@ -61,8 +63,7 @@ class CouponGeneratorAdmin extends FoodAdmin
             ])
             ->add('includeDelivery', 'checkbox', [
                 'required' => false,
-            ])
-        ;
+            ]);
     }
 
     /**
@@ -82,7 +83,7 @@ class CouponGeneratorAdmin extends FoodAdmin
             ->add('places', null, array('label' => 'admin.coupon.place'))
             ->add('onlyNav', null, array('label' => 'admin.coupon.only_nav'))
             ->add('freeDelivery', null, array('label' => 'admin.coupon.free_delivery'))
-        ;
+            ->add('inverse', null, array('label' => 'admin.coupon.inverse'));
     }
 
     /**
@@ -103,6 +104,7 @@ class CouponGeneratorAdmin extends FoodAdmin
             ->add('code', null, array('label' => 'admin.coupon.code', 'editable' => false))
             ->add('places', null, array('label' => 'admin.coupon.place', 'editable' => true))
             ->add('onlyNav', null, array('label' => 'admin.coupon.only_nav', 'editable' => true))
+            ->add('inverse', null, array('label' => 'admin.coupon.inverse', 'editable' => true))
             ->add('active', null, array('label' => 'admin.coupon.active', 'editable' => true))
             ->add('singleUse', null, array('label' => 'admin.coupon.single_use', 'editable' => true))
             ->add('_action', 'actions', array(
@@ -111,8 +113,7 @@ class CouponGeneratorAdmin extends FoodAdmin
                     'delete' => array(),
                 ),
                 'label' => 'admin.actions'
-            ))
-        ;
+            ));
     }
 
     /**

@@ -185,6 +185,12 @@ class PaymentsController extends Controller
                         $orderService->informPlace();
                     }
 
+                    if ($order->getPreorder()) {
+                        $orderService->statusNewPreorder('paysera accept');
+                    } else {
+                        $orderService->statusNew('paysera accept');
+                    }
+
                     // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
                     $orderService->deactivateCoupon();
                 }

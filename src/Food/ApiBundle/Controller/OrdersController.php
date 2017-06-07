@@ -247,10 +247,13 @@ class OrdersController extends Controller
                 return new JsonResponse(null, 404);
             }
         }  catch (ApiException $e) {
+            var_dump($e->getMessage());die();
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
+            var_dump($e->getMessage());die();
+
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error2:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace2:' . $e->getTraceAsString());
 
@@ -261,7 +264,7 @@ class OrdersController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Response:'. print_r($response, true));
+        $this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Response:'. var_export(json_decode(json_encode($response)), true));
         $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
         return new JsonResponse($response);
@@ -446,6 +449,7 @@ class OrdersController extends Controller
         $startTime = microtime(true);
         $this->get('logger')->alert('Orders:getCouponAction Request: ', (array) $request);
         $this->_theJudge($request);
+
         try {
             $place = null;
             $now = date('Y-m-d H:i:s');
@@ -464,8 +468,10 @@ class OrdersController extends Controller
                         )
                     );
                 }
-                $place = $basket->getPlaceId();
             }
+
+
+
             // uncomment after new APP release
 //            else {
 //                throw new ApiException(
@@ -580,11 +586,22 @@ class OrdersController extends Controller
                     }
                 }
 
+                $place = $basket->getPlaceId();
+                $cartService = $this->get('food.cart');
+                $list = $cartService->getCartDishes($place);
+                $coupon = $orderService->getCouponByCode($code);
+                $discount = $cartService->getTotalDiscount($list,$coupon->getDiscount());
+                $cartBeforeDiscount = $cartService->getCartTotal($list);
+                $cartTotal =  $total = sprintf("%01.2f", $cartBeforeDiscount - $discount);
+
                 $response = [
                     'id' => $coupon->getId(),
                     'name' => $coupon->getName(),
                     'code' => $coupon->getCode(),
                     'discount' => $coupon->getDiscount(),
+                    'cart_discount' => $discount,
+                    'cart_before_discount' =>$cartBeforeDiscount,
+                    'total' =>$cartTotal,
                     'discount_sum' => $coupon->getDiscountSum() * 100,
                     'free_delivery' => $coupon->getFreeDelivery(),
                     'single_use' => $coupon->getSingleUse(),
@@ -606,22 +623,14 @@ class OrdersController extends Controller
             }
         }  catch (ApiException $e) {
 
-            $this->container->get('food.error_log_service')->saveErrorLog(
-                'coupon_api_error',
-                $e->getMessage(),
-                serialize($request)
-            );
+            $this->container->get('food.error_log')->write($this->getUser(), null, null, 'coupon_api_error', $e->getMessage());
 
             $this->get('logger')->error('Orders:getOrderStatusAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrderStatusAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
 
-            $this->container->get('food.error_log_service')->saveErrorLog(
-                'coupon_api_error_fatal',
-                $e->getMessage(),
-                serialize($request)
-            );
+            $this->container->get('food.error_log')->write($this->getUser(), null, null, 'coupon_api_error_fatal', $e->getMessage());
 
             $this->get('logger')->error('Orders:getOrderStatusAction Error2:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrderStatusAction Trace2:' . $e->getTraceAsString());

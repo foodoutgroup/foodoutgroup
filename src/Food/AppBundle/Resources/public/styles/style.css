@@ -295,6 +295,10 @@
 .font-2 {font-family: 'avenir_nextbold';}
 .font-3 {font-family: 'avenir_next_condensedbold';}
 
+body.ru .font-1 {font-family: 'Roboto', sans-serif;  }
+body.ru .font-2 {font-family: 'Roboto', serif;}
+body.ru .font-3 {font-family: 'Roboto', serif;}
+
 .site-header h1,
 .search-food-form input[type="submit"],
 .restaurant-menu-item .price,
@@ -321,6 +325,12 @@ button, input, select, textarea,
 body,
 .ui-widget-content,
 .ui-selectmenu-menu li a,.ui-selectmenu-status {font-family: 'avenirbook'; font-size: 12px;}
+
+/*Font declarations*/
+body.ru button, body.ru input, body.ru select, body.ru textarea,
+body.ru,
+body.ru .ui-widget-content,
+body.ru .ui-selectmenu-menu li a, body.ru .ui-selectmenu-status {font-family: 'Roboto', serif; font-weight:300;  }
 
 
 
@@ -3087,6 +3097,29 @@ div.coupon_form_popup {
     padding-top: 20px;
     text-align: center;
 }
+
+#phone_code {
+    width: 10%;
+}
+
+#food_user_profile_profile_countryCode {
+    width: 12%;
+}
+
+#food_user_profile_profile_phone {
+    width: 217px;
+    margin-left: 10px;
+}
+
+.form-row-joined {
+    display: flex;
+}
+
+#customer-phone-id {
+    width: 230px;
+    margin-left: 6px;
+}
+
 
 .arrow-down {
     position: relative;

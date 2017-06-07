@@ -1,11 +1,11 @@
 set :domain,      "d.foodout.lt"
-set :deploy_to,   "/srv/vhosts/foodout.lv/"
+set :deploy_to,   "/srv/vhosts/staging.foodout.lt/"
 
 set :scm,         :git
 set :model_manager, "doctrine"
 
-set :user, "foodoutlv"
-set :password, "RjT8EThq"
+set :user, "foodoutlt"
+set :password, "aZaNFU6b"
 
 set :symfony_env_prod, "prod"
 ssh_options[:keys] = ["C:\Users\drawgas\.ssh\id_rsa"]
@@ -18,10 +18,10 @@ role :db,         domain, :primary => true       # This is where Symfony2 migrat
 #set :skype_topic, "skanu.lt"
 
 # parameters file
-set :parameters_file, "production_lv.yml.dist"
-set :kpi_file, "kpi_production_lv.yml.dist"
-set :robots_file, "robots.prod.txt.dist"
+set :parameters_file, "lt_staging.yml.dist"
+set :kpi_file, "kpi_production.yml.dist"
+set :robots_file, "robots.dev.txt.dist"
 
 after "deploy" do
-    run "~/sync.sh foodout.lv"
+    run "~/sync.sh staging.foodout.lt"
 end

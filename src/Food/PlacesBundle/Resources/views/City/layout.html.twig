@@ -88,7 +88,7 @@
 
             $(document).on('click', '.restaurants-list a', function (e) {
                 type = $('.delivery-type-filter a[class="selected"]').attr("data-type");
-                if ($('.alert-no-address:visible').length && (type == "delivery" || type == "pedestrian")) {
+                if($('.alert-no-address:visible').length && (type == "delivery" || type == "pedestrian")) {
                     e.preventDefault();
                     $('html,body').animate({scrollTop: $('.shake-me').offset().top-10}, 'fast');
                     $('.alert-no-address').shake(5, 5, 400);
@@ -96,6 +96,7 @@
                     {#$("<div>{% trans %}please.fill.address.first{% endtrans %}</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();#}
                 }
             });
+
 
 
             $(document).ready(function () {

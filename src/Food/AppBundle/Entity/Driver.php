@@ -19,7 +19,7 @@ class Driver
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $id;
 
@@ -139,6 +139,19 @@ class Driver
         }
 
         return $this->getName().'-'.$city.'-'.$this->getId();
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Driver
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**

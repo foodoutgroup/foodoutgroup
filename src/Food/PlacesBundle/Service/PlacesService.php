@@ -544,8 +544,14 @@ class PlacesService extends ContainerAware
         if (empty($placePoint)) {
             $placePoints = $place->getPoints();
 
-            $placePoint = $placePoints[0];
+            foreach ($placePoints as $key => $placePoint){
+
+                if($placePoint->getActive() == 1){
+                    $placePoint = $placePoints[$key];
+                }
+            }
         }
+
         $workTime = $placePoint->{'getWd' . $day}();
         $workTime = preg_replace('~\s*-\s*~', '-', $workTime);
         $intervals = explode(' ', $workTime);
