@@ -99,14 +99,16 @@
                 });
                 return this;
             };
-            $(document).on('click', '.restaurants-list a', function (e) {
+
+            $(document).on('click','.restaurants-list a',function(e){
                 type = $('.delivery-type-filter a[class="selected"]').attr("data-type");
-                if ($('.alert-no-address:visible').length && (type == "delivery" || type == "pedestrian")) {
+                if($('.alert-no-address:visible').length && (type == "delivery" || type == "pedestrian")) {
                     e.preventDefault();
-                    $('.alert-no-address').shake(3, 20, 400);
-                    {#$("<div>{% trans %}please.fill.address.first{% endtrans %}</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();#}
+                    $('.alert-no-address').shake(3,20,400);
+                    $("html, body").animate({ scrollTop: 0 }, "fast");
                 }
             });
+
 
 
             $(document).ready(function () {
