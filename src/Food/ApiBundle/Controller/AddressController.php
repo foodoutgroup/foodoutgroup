@@ -25,6 +25,7 @@ class AddressController extends Controller
             $houseNumber = $request->get('house_number');
             if (!empty($lat) && !empty($lng)) {
                 $response = $this->get('food.location')->findByCords($lat, $lng);
+
                 if($response) {
                     $response['house_number'] = $response['house'];
                 } else {

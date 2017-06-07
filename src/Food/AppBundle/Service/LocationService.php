@@ -110,6 +110,8 @@ class LocationService extends ContainerAware
     public function setCity(City $city)
     {
         $this->set($city, null,null,null,null,null,false,false);
+
+        return $this->get();
     }
 
     /**
@@ -146,9 +148,17 @@ class LocationService extends ContainerAware
 
     public function finishUpData($response = [])
     {
+
         if($response && isset($response['success']) && $response['success']) {
+
             $response = $response['detail'];
+
             $response['precision'] = $this->precision($response);
+            $response['city_id'] = null;
+            $cityObj = $this->container->get('doctrine')->getRepository('FoodAppBundle:City')->getByName($response['city']);
+            if($cityObj) {
+                $response['city_id'] = $cityObj->getId();
+            }
         } else {
             $response = null;
         }

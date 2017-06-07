@@ -141,8 +141,9 @@ class OrderService extends ContainerAware
             );
         }
 
-        $em = $this->container->get('doctrine')->getManager();
+        $em = $this->container->get('doctrine');
         $serviceVar = $request->get('service');
+
         $logger->alert('Service var givven: ');
         $logger->alert(var_export($serviceVar, true));
         $pp = null; // placePoint :D - jei automatu - tai NULL :D
@@ -416,14 +417,12 @@ class OrderService extends ContainerAware
                     ]
                 );
             } else {
-                $locationInfo = $googleGisService->groupData(
-                    $serviceVar['address']['street'] . " " . $serviceVar['address']['house_number'],
-                    $serviceVar['address']['city']
-                );
+                $locationInfo = $googleGisService->findByAddress($serviceVar['address']['street'] . " " . $serviceVar['address']['house_number'].", ".$serviceVar['address']['city']);
                 $searchCrit = [
                     'city' => $locationInfo['city'],
-                    'lat' => $locationInfo['lat'],
-                    'lng' => $locationInfo['lng'],
+                    'city_id' => $locationInfo['city_id'],
+                    'latitude' => $locationInfo['latitude'],
+                    'longitude' => $locationInfo['longitude'],
                     'address_orig' => $serviceVar['address']['street'] . " " . $serviceVar['address']['house_number']
                 ];
                 // Append flat if given
@@ -431,11 +430,7 @@ class OrderService extends ContainerAware
                     $searchCrit['address_orig'] .= ' - ' . $serviceVar['address']['flat_number'];
                 }
 
-                $placePointId = $em->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
-                    $basket->getPlaceId()->getId(),
-                    $searchCrit,
-                    true
-                );
+                $placePointId = $em->getRepository('FoodDishesBundle:Place')->getPlacePointNear($basket->getPlaceId()->getId(), $searchCrit, true);
 
                 if (!$placePointId) {
                     throw new ApiException(
@@ -532,8 +527,8 @@ class OrderService extends ContainerAware
                 $user,
                 $searchCrit['city'],
                 $searchCrit['address_orig'],
-                (string)$searchCrit['lat'],
-                (string)$searchCrit['lng'],
+                (string)$searchCrit['latitude'],
+                (string)$searchCrit['longitude'],
                 '',
                 (isset($searchCrit['city_id']) ? $searchCrit['city_id'] : null)
             );

@@ -296,7 +296,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $addressStr = mb_convert_case($addressStr, MB_CASE_TITLE, "UTF-8");
                             $addressStr = str_replace(['G.', 'Pr.'], ['g.', 'pr.'], $addressStr);
                             $output->writeln('Fixed street: '.var_export($addressStr, true));
-                            $gisAddress = $gisService->groupData($addressStr, $fixedCity);
+                            $gisAddress = $gisService->findByAddress($addressStr." ,".$fixedCity);
 
                             $address = $em->getRepository('FoodUserBundle:UserAddress')
                                 ->findOneBy(
