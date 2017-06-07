@@ -453,7 +453,17 @@ class OrdersController extends Controller
             $requestJson = new JsonRequest($request);
             $code = $requestJson->get('code');
             $orderService = $this->get('food.order');
-            if ($basketId = $requestJson->get('basket_id')) {
+
+            if (!$requestJson->get('basket_id')) {
+                throw new ApiException(
+                    'Basket Not found',
+                    404,
+                    array(
+                        'error' => 'Basket Not found',
+                        'description' => $this->container->get('translator')->trans('api.orders.basket_does_not_exists')
+                    )
+                );
+            } elseif ($basketId = $requestJson->get('basket_id')) {
                 $basket = $this->getDoctrine()->getRepository('FoodApiBundle:ShoppingBasketRelation')->find($basketId);
                 if (empty($basket)) {
                     throw new ApiException(
@@ -466,8 +476,6 @@ class OrdersController extends Controller
                     );
                 }
             }
-
-
 
             // uncomment after new APP release
 //            else {
@@ -585,9 +593,16 @@ class OrdersController extends Controller
 
                 $place = $basket->getPlaceId();
                 $cartService = $this->get('food.cart');
+                $cartService->setNewSessionId($basket->getSession());
                 $list = $cartService->getCartDishes($place);
                 $coupon = $orderService->getCouponByCode($code);
-                $discount = $cartService->getTotalDiscount($list,$coupon->getDiscount());
+                if (!$orderService->validateCouponForPlace($coupon, $place)
+                    || $coupon->getOnlyNav() && !$place->getNavision()
+                    || $coupon->getNoSelfDelivery() && $place->getSelfDelivery()) {
+                    $discount = 0;
+                } else {
+                    $discount = $cartService->getTotalDiscount($list, $coupon->getDiscount());
+                }
                 $cartBeforeDiscount = $cartService->getCartTotal($list);
                 $cartTotal =  $total = sprintf("%01.2f", $cartBeforeDiscount - $discount);
 
@@ -598,7 +613,7 @@ class OrdersController extends Controller
                     'discount' => $coupon->getDiscount(),
                     'cart_discount' => $discount,
                     'cart_before_discount' =>$cartBeforeDiscount,
-                    'total' =>$cartTotal,
+                    'total' => $cartTotal,
                     'discount_sum' => $coupon->getDiscountSum() * 100,
                     'free_delivery' => $coupon->getFreeDelivery(),
                     'single_use' => $coupon->getSingleUse(),
