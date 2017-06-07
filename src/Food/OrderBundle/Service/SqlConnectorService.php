@@ -117,4 +117,13 @@ class SqlConnectorService extends ContainerAware
             return mssql_fetch_array($res);
         }
     }
+
+    public function fetchAssoc($res)
+    {
+        if ($this->isWin) {
+            return sqlsrv_fetch_array($res, SQLSRV_FETCH_ASSOC);
+        } else {
+            return mssql_fetch_assoc($res);
+        }
+    }
 }

@@ -199,9 +199,9 @@
     );
 
     function checkDeliveryPrice(item){
-        var checkIfneeded = $('.delivery-price .fr').attr('data-true')
 
-        if(checkIfneeded == 1){
+    var checkIfneeded = $('.delivery-price .fr').attr('data-true')
+
             $.ajax({
                  type: 'post',
                  url: '{{ url('food_ajax', {'action': 'delivery-price'}) }}',
@@ -212,12 +212,14 @@
                  success: function (data) {
 
                     if(data){
-                        $('.delivery-price .fr').text('{{ currency_iso}}'+data.toFixed(2));
+                        var currency =  '{{ currency_display|raw }}';
+
+                        $('.delivery-price .fr').html(currency+data.toFixed(2));
                     }
                  }
              });
         }
-    }
+
 
 {% endblock %}
 {% block body %}

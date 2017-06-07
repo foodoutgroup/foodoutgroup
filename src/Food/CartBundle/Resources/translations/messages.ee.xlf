@@ -90,7 +90,7 @@
                 <target>Broneerige hiljem</target>
             </trans-unit>
             <trans-unit id="72ac47fdc9d8610d13cc86b4dd35e24f" resname="cart.checkout.phone_placeholder">
-                <source>cart.checkout.phone_placeholder</source><target>372 56 837 237</target>
+                <source>cart.checkout.phone_placeholder</source><target> 56 837 237</target>
             </trans-unit>
             <trans-unit id="bc8439664f3800919e17d58ad5eaff4b" resname="cart.checkout.delivery_comment">
                 <source>cart.checkout.delivery_comment</source><target>Lisateave</target>
@@ -249,7 +249,7 @@ Vilnius</target>
                 <target>Dėmesio! Šiame restorane galite pasirinkti ne daugiau kaip %text% gėrimus. Prašome sumažinti gėrimų kiekį arba pasirinkti kitą restoraną iš Foodout.lt . Skanaus pasirinkimo!</target>
             </trans-unit>
             <trans-unit id="order.form.errors.customerphone_format" resname="order.form.errors.customerphone_format">
-                <source>order.form.errors.customerphone_format</source><target>Sisestage mobiiltelefoni number vormingus 37061234567</target>
+                <source>order.form.errors.customerphone_format</source><target>Sisestage mobiiltelefoni number vormingus 61234567</target>
             </trans-unit>
             <trans-unit id="order.form.errors.customerphone_not_mobile" resname="order.form.errors.customerphone_not_mobile">
                 <source>order.form.errors.customerphone_not_mobile</source><target>Sisestatud telefoninumber ei ole mobiilinumber</target>

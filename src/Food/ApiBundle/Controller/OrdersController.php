@@ -449,6 +449,7 @@ class OrdersController extends Controller
         $startTime = microtime(true);
         $this->get('logger')->alert('Orders:getCouponAction Request: ', (array) $request);
         $this->_theJudge($request);
+
         try {
             $place = null;
             $now = date('Y-m-d H:i:s');
@@ -467,8 +468,10 @@ class OrdersController extends Controller
                         )
                     );
                 }
-                $place = $basket->getPlaceId();
             }
+
+
+
             // uncomment after new APP release
 //            else {
 //                throw new ApiException(
@@ -583,11 +586,22 @@ class OrdersController extends Controller
                     }
                 }
 
+                $place = $basket->getPlaceId();
+                $cartService = $this->get('food.cart');
+                $list = $cartService->getCartDishes($place);
+                $coupon = $orderService->getCouponByCode($code);
+                $discount = $cartService->getTotalDiscount($list,$coupon->getDiscount());
+                $cartBeforeDiscount = $cartService->getCartTotal($list);
+                $cartTotal =  $total = sprintf("%01.2f", $cartBeforeDiscount - $discount);
+
                 $response = [
                     'id' => $coupon->getId(),
                     'name' => $coupon->getName(),
                     'code' => $coupon->getCode(),
                     'discount' => $coupon->getDiscount(),
+                    'cart_discount' => $discount,
+                    'cart_before_discount' =>$cartBeforeDiscount,
+                    'total' =>$cartTotal,
                     'discount_sum' => $coupon->getDiscountSum() * 100,
                     'free_delivery' => $coupon->getFreeDelivery(),
                     'single_use' => $coupon->getSingleUse(),

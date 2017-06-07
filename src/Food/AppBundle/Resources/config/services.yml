@@ -329,3 +329,18 @@ services:
     food.error_log:
         class: Food\AppBundle\Service\ErrorLogService
         arguments: ["@doctrine.orm.entity_manager","@service_container"]
+
+    food.phones_code_service:
+                class: Food\AppBundle\Service\RestCountryService
+                parent: food.base_service
+
+    sonata.admin.country_phone:
+          class: Food\AppBundle\Admin\PhoneCodesAdmin
+          tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.phone_codes" }
+          arguments:
+            - ~
+            - Food\AppBundle\Entity\PhoneCodes
+            - ~
+          calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]

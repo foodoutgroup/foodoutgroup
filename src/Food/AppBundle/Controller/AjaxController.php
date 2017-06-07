@@ -42,6 +42,9 @@ class AjaxController extends Controller
             case 'delivery-price':
                 $this->_ajaxGetDeliveryPrice($response,$request->get('restaurant'),$request->get('time'));
                 break;
+            case 'delivery-type':
+                $this->get('session')->set('delivery_type', $request->get('type'));
+                break;
             default:
                 $response->setContent(json_encode([
                     'message' => 'Method not found :)',

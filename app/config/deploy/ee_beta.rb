@@ -1,5 +1,5 @@
 set :domain,      "d.foodout.lt"
-set :deploy_to,   "/srv/vhosts/estonia.foodout.lt/"
+set :deploy_to,   "/srv/vhosts/beta.mychef.ee/"
 
 set :scm,         :git
 set :model_manager, "doctrine"
@@ -18,9 +18,9 @@ role :db,         domain, :primary => true       # This is where Symfony2 migrat
 #set :skype_topic, "skanu.lt"
 
 # parameters file
-set :parameters_file, "production_ee.yml.dist"
-set :robots_file, "robots.prod.txt.dist"
+set :parameters_file, "ee_beta.yml.dist"
+set :robots_file, "robots.dev.txt.dist"
 
 after "deploy" do
-    run "~/sync.sh estonia.foodout.lt"
+    run "~/sync.sh beta.mychef.ee"
 end
