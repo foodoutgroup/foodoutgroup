@@ -187,7 +187,6 @@ class DefaultController extends Controller
     {
 
         // for now this is relevant for callcenter functionality
-        $isCallcenter = $request->isXmlHttpRequest();
         $phoneService = $this->container->get('food.phones_code_service');
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
@@ -271,7 +270,7 @@ class DefaultController extends Controller
                 ($takeAway ? true : false),
                 ($takeAway ? $request->get('place_point') : null),
                 $couponEnt,
-                $isCallCenter
+                false
             );
         }
 
@@ -534,20 +533,11 @@ class DefaultController extends Controller
             'testNordea' => $request->query->get('test_nordea'),
             'workingHoursForInterval' => $workingHoursForInterval,
             'workingDaysCount' => $workingDaysCount,
-            'isCallcenter' => $isCallCenter,
             'require_lastname' => $require_lastname,
             'pointIsWorking' => $pointIsWorking,
             'disabledPreorderDays' => $disabledPreorderDays,
             'countryCode' => $countryCode
         ];
-
-
-        // callcenter functionality
-        if ($isCallCenter) {
-            $data['isCallcenter'] = true;
-
-            return $this->render('FoodCartBundle:Default:form.html.twig', $data);
-        }
 
         return $this->render('FoodCartBundle:Default:index.html.twig', $data);
     }
@@ -570,7 +560,6 @@ class DefaultController extends Controller
         $miscService = $this->get('food.app.utils.misc');
         $session = $this->get('session');
 
-        $isCallCenter = $session->get('isCallcenter');
 
         $enableDiscount = !$place->getOnlyAlcohol();
         $placeServ = $this->get('food.places');
@@ -879,7 +868,7 @@ class DefaultController extends Controller
             'self_delivery' => $self_delivery,
             'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
             'basket_errors' => $basketErrors,
-            'isCallcenter' => $isCallCenter,
+            'isCallcenter' => false,
             'useAdminFee' => $useAdminFee,
             'adminFee' => $adminFee,
             'noneWorking' => $noneWorking

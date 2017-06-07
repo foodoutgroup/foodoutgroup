@@ -3160,7 +3160,7 @@ div.coupon_form_popup {
     position: absolute;
     left: 416px;
     top: 8px;
-    background: url(/bundles/foodapp/images/find-me.png) #ffffff;
+    background: url(/bundles/foodapp/images/find-me.png);
     width: 24px;
     height: 24px;
     border: none;
