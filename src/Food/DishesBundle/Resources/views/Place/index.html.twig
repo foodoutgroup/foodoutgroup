@@ -302,18 +302,19 @@
                                             {% trans %}places.discount_not_for_business_clients{% endtrans %}
                                         </div>
                                     {% endif %}
-                                    <div class="menu-title clearfix">
-                                        {% if place.showNotification %}
-                                            <div class="alert alert-danger" id="notificationNotice">
-                                                {{ place.notificationContent|raw }}
-                                            </div>
-                                            <Script>
-                                                $(document).ready(function(){
-                                                    setTimeout(function(){ $('#notificationNotice').fadeOut();}, 15000);
-                                                });
-                                            </Script>
-                                        {% endif %}
+                                    {% if place.showNotification %}
+                                        <div class="alert alert-danger" id="notificationNotice">
+                                            textas
+                                            {{ place.notificationContent|raw }}
+                                        </div>
+                                        <script type="text/javascript">
+                                            $(document).ready(function(){
+                                                setTimeout(function(){ $('#notificationNotice').fadeOut();}, 15000);
+                                            });
+                                        </script>
+                                    {% endif %}
 
+                                    <div class="menu-title clearfix">
                                         {# Dish Search Begin #}
                                         <div class="dish_search_block">
                                             <select class="dish_category_select" data-placeholder="{% trans %}places.dish_category_select{% endtrans %}">
