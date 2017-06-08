@@ -3319,6 +3319,22 @@
                 <source>admin.settings</source>
                 <target>Sisteminiai nustatymai</target>
             </trans-unit>
+            <trans-unit id="admin.duplicate">
+                <source>admin.duplicate</source>
+                <target>Dublikuoti restoranus</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.place">
+                <source>admin.duplicate.place</source>
+                <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.new_place">
+                <source>admin.duplicate.new_place</source>
+                <target>Dublikuotas restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.user">
+                <source>admin.duplicate.user</source>
+                <target>Sukūrė</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

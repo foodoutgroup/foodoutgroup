@@ -97,6 +97,17 @@ services:
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.restaurant_duplicate:
+          class: Food\DishesBundle\Admin\RestaurantDuplicateAdmin
+          tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.duplicate" }
+          arguments:
+            - ~
+            - Food\DishesBundle\Entity\DuplicatedRestaurant
+            - ~
+          calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.place.pointfull:
         class: Food\DishesBundle\Admin\PlacePointFullAdmin
         tags:

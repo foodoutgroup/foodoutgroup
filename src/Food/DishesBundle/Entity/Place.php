@@ -595,6 +595,20 @@ class Place extends Uploadable implements Translatable
     }
 
     /**
+     * Set id
+     *
+     * @param integer $id
+     *
+     * @return Place
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Set name
      *
      * @param string $name
