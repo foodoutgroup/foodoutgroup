@@ -228,7 +228,7 @@ class AjaxController extends Controller
         $curl = new \Curl();
         $rsp = json_decode($curl->get($this->container->getParameter('geo_provider').'/autocomplete', [
             'input' => $term,
-            'component' => 'country:'.strtoupper($this->container->getParameter('country')),
+            'components' => 'country:'.strtoupper($this->container->getParameter('country')),
             'language' => $request->getLocale(),
             'types' => 'geocode',
         ])->body);

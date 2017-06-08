@@ -189,8 +189,21 @@ class LocationService extends ContainerAware
 
     public function saveAddressFromSessionToUser(User $user)
     {
-        $current = $this->get();
+        return $this->saveAddressFromArrayToUser($this->get(), $user);
+    }
+
+    public function saveAddressFromArrayToUser(array $current, User $user)
+    {
         $ua = new UserAddress();
+
+        if(!isset($current['origin']) && isset($current['output'])){
+            $current['origin'] = $current['output'];
+        }
+
+        if(!isset($current['flat'])) {
+            $current['flat'] = null;
+        }
+
         $addressString = $current['street']. ($current['house'] == null || $current['house'] == false ? "" : " ".$current['house'].($current['flat'] == null || $current['flat'] == false  ? "" : " - ".$current['flat'] ));
         $ua->setAddress($addressString);
         $ua->setCityId($this->getCityObj());
@@ -203,7 +216,7 @@ class LocationService extends ContainerAware
         $ua->setLat($current['latitude']);
         $ua->setLon($current['longitude']);
         $ua->setOrigin($current['origin']);
-        $ua->setAddressId($current['hash']);
+        $ua->setAddressId(isset($current['id']) ? $current['id'] : (isset($current['hash']) ? $current['hash'] : md5($current['origin'])));
         $ua->setDefault(1);
         $this->em->persist($ua);
         $this->em->flush();
