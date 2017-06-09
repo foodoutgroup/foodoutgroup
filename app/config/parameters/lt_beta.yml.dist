@@ -146,7 +146,12 @@ parameters:
     session_memcached_port:     11211
     session_memcached_prefix:   food_lt_beta
     session_memcached_expire:   3600
-
+lexik_translation:
+    fallback_locale: '%locale%'
+    managed_locales: '%locales%'
+    resources_registration:
+        type: all
+        managed_locales_only: true
 pirminis_gateway:
     datacash_url: 'https://mars.transaction.datacash.com/Transaction'
     swedbank:
