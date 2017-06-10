@@ -1971,7 +1971,7 @@ class NavService extends ContainerAware
             $existsInLines = false;
         }
 
-        if ($existsInHeader || $existsInLines) {
+        if (!$existsInHeader || !$existsInLines) {
             return false;
         }
 

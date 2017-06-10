@@ -42,9 +42,8 @@ class RepostOrderToNavOnProblemCommand extends ContainerAwareCommand
         $dateGiven = $input->getOption('date');
 
         if (empty($dateGiven)) {
-            $dateStart = new \DateTime("now");
-            $dateStart->sub(new \DateInterval("PT2H"));
-            $dateEnd = new \DateTime("-5 minute");
+            $dateStart = new \DateTime("-10 minute");
+            $dateEnd = new \DateTime("-2 minute");
         } else {
             $dateStart = new \DateTime($dateGiven);
             $dateStart->setTime('0', '0', '1');
