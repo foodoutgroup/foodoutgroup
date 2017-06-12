@@ -316,6 +316,7 @@ sonata_admin:
                       - sonata.admin.dish.unit.category
                       - sonata.admin.dish.unit
                       - sonata.admin.best_offer
+                      - sonata.admin.place_notification
                   roles: [ ROLE_ADMIN ]
               acme.admin.group.places:
                   label: admin.group.places
