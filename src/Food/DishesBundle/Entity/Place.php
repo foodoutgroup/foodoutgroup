@@ -176,6 +176,11 @@ class Place extends Uploadable implements Translatable
     private $bestOffers;
 
     /**
+     * @ORM\OneToMany(targetEntity="Food\PlacesBundle\Entity\PlaceNotification", mappedBy="place")
+     */
+    private $placeNotification;
+
+    /**
      * @ORM\OneToMany(targetEntity="PlacePoint", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
      *
      * @var ArrayCollection
@@ -1966,6 +1971,40 @@ class Place extends Uploadable implements Translatable
     public function getBestOffers()
     {
         return $this->bestOffers;
+    }
+
+    /**
+     * Get placeNotification
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPlaceNotification()
+    {
+        return $this->placeNotification;
+    }
+
+    /**
+     * Add placeNotification
+     *
+     * @param \Food\PlacesBundle\Entity\PlaceNotification $placeNotification
+     *
+     * @return Place
+     */
+    public function addPlaceNotification(\Food\PlacesBundle\Entity\PlaceNotification $placeNotification)
+    {
+        $this->placeNotification[] = $placeNotification;
+
+        return $this;
+    }
+
+    /**
+     * Remove placeNotification
+     *
+     * @param \Food\PlacesBundle\Entity\PlaceNotification $placeNotification
+     */
+    public function removePlaceNotification(\Food\PlacesBundle\Entity\PlaceNotification $placeNotification)
+    {
+        $this->placeNotification->removeElement($placeNotification);
     }
 
     /**
