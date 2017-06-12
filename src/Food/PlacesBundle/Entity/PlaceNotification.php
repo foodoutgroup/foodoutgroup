@@ -43,6 +43,14 @@ class PlaceNotification extends Uploadable
      */
     private $title;
 
+
+    /**
+     * @var string
+     * @ORM\Column(name="type", type="string", length=255)
+     */
+    private $type;
+
+
     /**
      * @var \Food\DishesBundle\Entity\Place
      *
@@ -96,18 +104,41 @@ class PlaceNotification extends Uploadable
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     * @return PlaceNotification
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**

@@ -25,6 +25,14 @@ class PlaceNotificationAdmin extends FoodAdmin
             ));
 
         $formMapper
+            ->add('type', 'choice', [
+                'choices' => [
+                    'alert' => 'red',
+                    'warning' => 'yellow',
+                    'success' => 'green',
+                    'info' => 'blue',
+                ]
+            ])
             ->add('cityCollection', 'city', ['label' => 'admin.point.city', 'multiple' => true])
             ->add('placeCollection', null, ['label' => 'admin.place', 'required' => false])
             ->add('active', 'checkbox', ['label' => 'admin.active', 'required' => false])
