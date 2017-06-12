@@ -20,21 +20,22 @@ class PlaceNotificationAdmin extends FoodAdmin
             array(
                 'translatable_class' => 'Food\PlacesBundle\Entity\PlaceNotification',
                 'fields' => [
-                    'description' => [],
+                    'description' => ['attr' => ['class' => 'ckeditor_custom'], 'required' => true],
                 ]
             ));
 
         $formMapper
             ->add('type', 'choice', [
                 'choices' => [
-                    'alert' => 'red',
-                    'warning' => 'yellow',
-                    'success' => 'green',
-                    'info' => 'blue',
+                    'alert' => 'alert',
+                    'warning' => 'warning',
+                    'success' => 'success',
+                    'info' => 'info',
                 ]
             ])
             ->add('cityCollection', 'city', ['label' => 'admin.point.city', 'multiple' => true, 'required' => false])
             ->add('placeCollection', null, ['label' => 'admin.place', 'required' => false])
+            ->add('showTill', null, ['label' => 'admin.show_till', 'required' => false])
             ->add('active', 'checkbox', ['label' => 'admin.active', 'required' => false])
             ;
     }
@@ -44,14 +45,17 @@ class PlaceNotificationAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('title', null, ['label' => 'admin.title']);
+            ->add('description', null, ['label' => 'admin.title']);
     }
 
     // Fields to be shown on lists
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('title', 'string', array('label' => 'admin.title'))
+            ->addIdentifier('id', null, array('label' => 'admin.id'))
+            ->add('type', null, array('label' => 'admin.type'))
+            ->add('description', null, array('label' => 'admin.title'))
+            ->add('showTill', null, ['label' => 'admin.show_till'])
             ->add('active', 'boolean', array('label' => 'admin.active', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(

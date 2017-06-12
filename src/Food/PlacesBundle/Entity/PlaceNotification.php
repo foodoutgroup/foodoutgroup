@@ -15,7 +15,6 @@ use Gedmo\Translatable\Translatable;
  *
  * @ORM\Table(name="place_notification")
  * @ORM\Entity(repositoryClass="\Food\PlacesBundle\Entity\PlaceNotificationRepository")
- * @Callback(methods={"isFileSizeValid"})
  * @Gedmo\TranslationEntity(class="Food\PlacesBundle\Entity\PlaceNotificationLocalized")
 
  */
@@ -40,7 +39,7 @@ class PlaceNotification extends Uploadable
     /**
      * @var string
      * @Gedmo\Translatable
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="text")
      */
     private $description;
 
