@@ -19,9 +19,9 @@ class PlaceNotificationAdmin extends FoodAdmin
             'a2lix_translations_gedmo',
             array(
                 'translatable_class' => 'Food\PlacesBundle\Entity\PlaceNotification',
-                'fields' => array(
-                    'title' => [],
-                )
+                'fields' => [
+                    'description' => [],
+                ]
             ));
 
         $formMapper
@@ -33,7 +33,7 @@ class PlaceNotificationAdmin extends FoodAdmin
                     'info' => 'blue',
                 ]
             ])
-            ->add('cityCollection', 'city', ['label' => 'admin.point.city', 'multiple' => true])
+            ->add('cityCollection', 'city', ['label' => 'admin.point.city', 'multiple' => true, 'required' => false])
             ->add('placeCollection', null, ['label' => 'admin.place', 'required' => false])
             ->add('active', 'checkbox', ['label' => 'admin.active', 'required' => false])
             ;

@@ -2,6 +2,7 @@
 
 namespace Food\PlacesBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Food\AppBundle\Entity\Uploadable;
 use Symfony\Component\Validator\Constraints\Callback;
@@ -39,10 +40,9 @@ class PlaceNotification extends Uploadable
     /**
      * @var string
      * @Gedmo\Translatable
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(name="description", type="string", length=255)
      */
-    private $title;
-
+    private $description;
 
     /**
      * @var string
@@ -50,12 +50,11 @@ class PlaceNotification extends Uploadable
      */
     private $type;
 
-
     /**
      * @var \Food\DishesBundle\Entity\Place
      *
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="placeNotification")
-     * @ORM\JoinColumn(name="place_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="place_id", referencedColumnName="id", nullable=true)
      */
     private $placeCollection;
 
@@ -64,6 +63,12 @@ class PlaceNotification extends Uploadable
      * @ORM\JoinTable(name="place_notification_city")
      */
     private $cityCollection;
+
+    /**
+     * @var datetime
+     * @ORM\Column(name="show_till", type="datetime", nullable=true)
+     */
+    private $showTill;
 
     /**
      * @var integer
@@ -96,26 +101,26 @@ class PlaceNotification extends Uploadable
     }
 
     /**
-     * Set title
+     * Set description
      *
-     * @param string $title
+     * @param string $description
      * @return PlaceNotification
      */
-    public function setTitle($title)
+    public function setDescription($description)
     {
-        $this->title = $title;
+        $this->description = $description;
 
         return $this;
     }
 
     /**
-     * Get title
+     * Get description
      *
      * @return string
      */
-    public function getTitle()
+    public function getDescription()
     {
-        return $this->title;
+        return $this->description;
     }
 
     /**
@@ -162,14 +167,6 @@ class PlaceNotification extends Uploadable
     public function getActive()
     {
         return $this->active;
-    }
-
-    public function __toString()
-    {
-        if (!$this->getId()) {
-            return '';
-        }
-        return $this->getTitle();
     }
 
     /**
@@ -291,5 +288,28 @@ class PlaceNotification extends Uploadable
     public function getCityCollection()
     {
         return $this->cityCollection;
+    }
+
+    /**
+     * Set showTill
+     *
+     * @param \DateTime $showTill
+     * @return PlaceNotification
+     */
+    public function setShowTill($showTill)
+    {
+        $this->showTill = $showTill;
+
+        return $this;
+    }
+
+    /**
+     * Get showTill
+     *
+     * @return \DateTime 
+     */
+    public function getShowTill()
+    {
+        return $this->showTill;
     }
 }
