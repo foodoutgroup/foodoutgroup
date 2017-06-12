@@ -601,19 +601,19 @@ class OrdersController extends Controller
                     || $coupon->getNoSelfDelivery() && $place->getSelfDelivery()) {
                     $discount = 0;
                 } else {
-                    $discount = $cartService->getTotalDiscount($list, $coupon->getDiscount());
+                    $discount = $cartService->getTotalDiscount($list, $coupon->getDiscount()) * 100;
                 }
-                $cartBeforeDiscount = $cartService->getCartTotal($list);
-                $cartTotal =  $total = sprintf("%01.2f", $cartBeforeDiscount - $discount);
+                $cartBeforeDiscount = $cartService->getCartTotal($list) * 100;
+                $cartTotal = $cartBeforeDiscount - $discount;
 
                 $response = [
                     'id' => $coupon->getId(),
                     'name' => $coupon->getName(),
                     'code' => $coupon->getCode(),
                     'discount' => $coupon->getDiscount(),
-                    'cart_discount' => $discount,
-                    'cart_before_discount' =>$cartBeforeDiscount,
-                    'total' => $cartTotal,
+                    'cart_discount' => (int)$discount,
+                    'cart_before_discount' => (int)$cartBeforeDiscount,
+                    'total' => (int)$cartTotal,
                     'discount_sum' => $coupon->getDiscountSum() * 100,
                     'free_delivery' => $coupon->getFreeDelivery(),
                     'single_use' => $coupon->getSingleUse(),
