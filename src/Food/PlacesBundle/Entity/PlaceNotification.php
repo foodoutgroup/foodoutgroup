@@ -53,7 +53,7 @@ class PlaceNotification extends Uploadable
 
     /**
      * @ORM\ManyToMany(targetEntity="Food\AppBundle\Entity\City", inversedBy="placeNotificationCollection")
-     * @ORM\JoinTable(name="best_offer_city")
+     * @ORM\JoinTable(name="place_notification_city")
      */
     private $cityCollection;
 
