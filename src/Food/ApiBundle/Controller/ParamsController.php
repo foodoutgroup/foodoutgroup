@@ -16,8 +16,8 @@ class ParamsController extends Controller
 
         $response = ['show' => (bool) $possibleDeliveryDelay];
 
-        $this->get('logger')->alert('Params:showRatingAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Params:showRatingAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 }

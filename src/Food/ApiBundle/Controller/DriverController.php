@@ -19,7 +19,7 @@ class DriverController extends Controller
     public function meAction($token, Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Driver:meAction Request: token - ' . $token, (array) $request);
+        //$this->get('logger')->alert('Driver:meAction Request: token - ' . $token, (array) $request);
         try {
             $driver = $this->get('food_api.api')->getDriverByToken($token);
             $translator = $this->get('translator');
@@ -50,8 +50,8 @@ class DriverController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Driver:meAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Driver:meAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -65,7 +65,7 @@ class DriverController extends Controller
     public function meIdAction($id, Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Driver:meIdAction Request: id - ' . $id, (array) $request);
+        //$this->get('logger')->alert('Driver:meIdAction Request: id - ' . $id, (array) $request);
         try {
             $driver = $this->get('food_api.api')->getDriverById($id);
             $translator = $this->get('translator');
@@ -96,8 +96,8 @@ class DriverController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Driver:meIdAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Driver:meIdAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -113,7 +113,7 @@ class DriverController extends Controller
     {
 
         $startTime = microtime(true);
-        $this->get('logger')->alert('Driver:assignToOrderAction Request: driverId - ' . $driverId . ' / orderId - ' . $orderId, (array) $request);
+        //$this->get('logger')->alert('Driver:assignToOrderAction Request: driverId - ' . $driverId . ' / orderId - ' . $orderId, (array) $request);
         try {
             $apiService = $this->get('food_api.api');
             $orderService = $this->get('food.order');
@@ -137,8 +137,8 @@ class DriverController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Driver:assignToOrderAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Driver:assignToOrderAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -152,7 +152,7 @@ class DriverController extends Controller
     public function pickedAction($orderId, Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Driver:assignToOrderAction Request: orderId - ' . $orderId, (array) $request);
+        //$this->get('logger')->alert('Driver:assignToOrderAction Request: orderId - ' . $orderId, (array) $request);
         try {
             $apiService = $this->get('food_api.api');
             $order = $apiService->getOrderById($orderId);
@@ -178,8 +178,8 @@ class DriverController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Driver:assignToOrderAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Driver:assignToOrderAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -193,7 +193,7 @@ class DriverController extends Controller
     public function completedAction($orderId, Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Driver:assignToOrderAction Request: orderId - ' . $orderId, (array) $request);
+        //$this->get('logger')->alert('Driver:assignToOrderAction Request: orderId - ' . $orderId, (array) $request);
         try {
             $apiService = $this->get('food_api.api');
             $order = $apiService->getOrderById($orderId);
@@ -217,8 +217,8 @@ class DriverController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Driver:assignToOrderAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Driver:assignToOrderAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -233,7 +233,7 @@ class DriverController extends Controller
     public function workingStateAction($id, $state, Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Driver:assignToOrderAction Request: state - ' . $state, (array) $request);
+        //$this->get('logger')->alert('Driver:assignToOrderAction Request: state - ' . $state, (array) $request);
         try {
             $driver = $this->get('food_api.api')->getDriverById($id);
             $driver->setActive($state);
@@ -256,8 +256,8 @@ class DriverController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Driver:assignToOrderAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Driver:assignToOrderAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 }
