@@ -21,14 +21,12 @@ class PlaceNotificationAdmin extends FoodAdmin
                 'translatable_class' => 'Food\PlacesBundle\Entity\PlaceNotification',
                 'fields' => array(
                     'title' => [],
-                    'link' => ['required' => false],
-                    'text' => [],
                 )
             ));
 
         $formMapper
-            ->add('city', 'city', ['label' => 'admin.point.city', 'multiple' => true])
-            ->add('place', null, ['label' => 'admin.place', 'required' => true])
+            ->add('cityCollection', 'city', ['label' => 'admin.point.city', 'multiple' => true])
+            ->add('placeCollection', null, ['label' => 'admin.place', 'required' => false])
             ->add('active', 'checkbox', ['label' => 'admin.active', 'required' => false])
             ;
     }
