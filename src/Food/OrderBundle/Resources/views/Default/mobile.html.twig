@@ -111,12 +111,12 @@
         {% for dish in order.details %}
             <tr>
                 <td>{{ loop.index }}</td>
-                <td>{{ dish.dishName }}</td>
-                <td>{{ dish.dishUnitName }}</td>
+                <td>{{ dish.dishId.name }}</td>
+                <td>{{ dish.dishUnitId.name }}</td>
                 <td>{{ dish.quantity }}</td>
                 <td>
                     {% for option in dish.options %}
-                        <li>{{ option.dishOptionName }}</li>
+                        <li>{{ option.dishOptionId.name }}</li>
                     {% endfor %}
                 </td>
             </tr>
@@ -174,7 +174,7 @@
         </tr>
         <tr>
             <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.cityId.title }}</td>
-        </tr>gi
+        </tr>
         {% if order.deliveryType == 'deliver' %}
             {% if order.placePointSelfDelivery == 1 %}
                 <tr>

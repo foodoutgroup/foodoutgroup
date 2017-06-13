@@ -33,7 +33,8 @@ class OrderDetails
     private $dish_id;
 
     /**
-     * @ORM\Column(name="dish_unit_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishUnit")
+     * @ORM\JoinColumn(name="dish_unit_id", referencedColumnName="id")
      */
     private $dish_unit_id;
 
