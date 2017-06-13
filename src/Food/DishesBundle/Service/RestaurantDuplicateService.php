@@ -2,6 +2,7 @@
 
 namespace Food\DishesBundle\Service;
 
+use Food\AppBundle\Entity\Slug;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlaceLocalized;
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -23,16 +24,17 @@ class RestaurantDuplicateService extends ContainerAware
         $placeRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place');
         $dishRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Dish');
         $seoRepo = $this->container->get('doctrine')->getRepository('FoodAppBundle:SeoRecord');
-
+        $slugRepo = $this->container->get('doctrine')->getRepository('FoodAppBundle:Slug');
         $kitchenRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Kitchen');
 
         $oldPlace = $placeRepo->find($placeId);
-
         $newPlace = $oldPlace;
+        $name = $newPlace->getName() . '-duplicate';
+        $slug = $newPlace->getSlug() . '-' . $newPlace->getId() . uniqid();
+
         $newPlace->setId(null);
         $newPlace->setActive(0);
-        $newPlace->setName($newPlace->getName() . '-duplicate');
-        $slug = $newPlace->getSlug() . '-' . $newPlace->getId() . uniqid();
+        $newPlace->setName($name);
         $newPlace->setSlug($slug);
 
         //kitchens
@@ -48,17 +50,17 @@ class RestaurantDuplicateService extends ContainerAware
         $em->persist($newPlace);
         $em->flush();
 
-        foreach ($oldPlace->getTranslations() as $translation){
+        foreach ($oldPlace->getTranslations() as $translation) {
             $transRecord = new PlaceLocalized();
             $transRecord->setContent($translation->getContent());
             $transRecord->setLocale($translation->getLocale());
             $transRecord->setField($translation->getField());
             $transRecord->setObject($newPlace);
-            if($translation->getField() == 'slug'){
+            if ($translation->getField() == 'slug') {
                 $transRecord->setContent($slug);
             }
             $em->persist($transRecord);
-            $em->flush();
+              $em->flush();
         }
 
 
@@ -67,20 +69,49 @@ class RestaurantDuplicateService extends ContainerAware
         $seoRel = $placeRepo->getRelatedSeoRecords($placeId);
 
         if (!empty($seoRel)) {
-            foreach ($seoRel as $record) {
 
+            foreach ($seoRel as $record) {
                 $seoItem = $seoRepo->find($record['seorecord_id']);
                 $seoItem->addPlace($oldPlace);
-                $em->persist($transRecord);
+                $em->persist($seoItem);
             }
         }
+
+        //common slugs
+
+        $commonSlugs = $slugRepo->findBy(['type' => 'place', 'item_id' => $placeId]);
+
+        if (!empty($commonSlugs)) {
+            foreach ($commonSlugs as $slugItem) {
+                $newSlug = new Slug();
+                $newSlug->setItemId($newPlace->getId());
+                $newSlug->setName($slug);
+                $newSlug->setOrigName($slug);
+                $newSlug->setActive(1);
+                $newSlug->setType('place');
+                $newSlug->setLangId($slugItem->getLangId());
+                $em->persist($newSlug);
+            }
+        }
+
+        //dishes
+
+        $oldDishes = $dishRepo->findBy(['place'=>$placeId]);
+
+        if (!empty($oldDishes)) {
+            foreach ($oldDishes as $key => $dish) {
+                 $oldDishes[$key]->setPlace($placeRepo->find($newPlace->getId()));
+                $em->persist($oldDishes[$key]);
+            }
+        }
+
+
+
 
         $em->flush();
 
 
-
         return $newPlace->getId();
-
 
 
     }
