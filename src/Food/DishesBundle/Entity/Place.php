@@ -1319,6 +1319,14 @@ class Place extends Uploadable implements Translatable
     }
 
     /**
+     * @param mixed translations
+     */
+    public function setTranslations($translations)
+    {
+        $this->translations = $translations;
+    }
+
+    /**
      * Get translations
      *
      * @return \Doctrine\Common\Collections\Collection
