@@ -15,10 +15,9 @@ class LocationController extends Controller
     public function getCityAction($providerHash)
     {
         $response = ['success' => false];
-
         switch ($providerHash) {
             case "3MezrzQPc8gCdXDtpsQETj1qD57iISrd53xMR01UfpIYZU0hxgXioN2QY3GBZo8P": // todo: kazkaip pakeisti cia special for cili
-
+                $foundCity = [];
                 $cityCollection = [];
                 $placeGroupIDs = [63, 143, 85, 105,142,333,302,160];
 
