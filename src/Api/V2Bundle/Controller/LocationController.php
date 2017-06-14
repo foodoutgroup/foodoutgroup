@@ -2,6 +2,8 @@
 
 namespace Api\V2Bundle\Controller;
 
+use Doctrine\ORM\Query\Expr\Join;
+use Food\DishesBundle\Entity\PlacePoint;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -37,14 +39,18 @@ class LocationController extends Controller
 
                 foreach ($result as $placePoint) {
 
-                    if(in_array($placePoint->getCity(), $foundCity)) {
+                    /**
+                     * @var $placePoint PlacePoint
+                     */
+                    $cityObj = $placePoint->getCityId();
+                    if(!$cityObj || in_array($cityObj->getTitle(), $foundCity)) {
                         continue;
                     }
 
-                    $foundCity[] = $placePoint->getCity();
+                    $foundCity[] = $cityObj->getTitle();
                     $place = $placePoint->getPlace();
                     $cityCollection[] = [
-                        'city' => $placePoint->getCity(),
+                        'city' => $cityObj->getTitle(),
                         'hash' => $place->getApiHash(),
 
                     ];
