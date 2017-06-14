@@ -226,7 +226,7 @@ class OrderDetails
      * @param DishUnit $dishUnitId
      * @return OrderDetails
      */
-    public function setDishUnitId($dishUnitId)
+    public function setDishUnitId(DishUnit $dishUnitId)
     {
         $this->dish_unit_id = $dishUnitId;
 
