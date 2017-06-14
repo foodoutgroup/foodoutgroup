@@ -285,6 +285,19 @@ class Dish extends Uploadable implements Translatable
     }
 
     /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Dish
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return integer

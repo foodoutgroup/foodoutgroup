@@ -26,9 +26,10 @@ class RestaurantDuplicateService extends ContainerAware
         $seoRepo = $this->container->get('doctrine')->getRepository('FoodAppBundle:SeoRecord');
         $slugRepo = $this->container->get('doctrine')->getRepository('FoodAppBundle:Slug');
         $kitchenRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Kitchen');
+        $dishSizeRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:DishSize');
 
         $oldPlace = $placeRepo->find($placeId);
-        $newPlace = $oldPlace;
+        $newPlace = clone $oldPlace;
         $name = $newPlace->getName() . '-duplicate';
         $slug = $newPlace->getSlug() . '-' . $newPlace->getId() . uniqid();
 
@@ -37,16 +38,6 @@ class RestaurantDuplicateService extends ContainerAware
         $newPlace->setName($name);
         $newPlace->setSlug($slug);
 
-        //kitchens
-
-        $kitchenRel = $placeRepo->getRelatedKitchens($placeId);
-        if (!empty($kitchenRel)) {
-            foreach ($kitchenRel as $kitchen) {
-                $newPlace->addKitchen($kitchenRepo->find($kitchen['kitchen_id']));
-            }
-        }
-
-        $em->detach($newPlace);
         $em->persist($newPlace);
         $em->flush();
 
@@ -60,7 +51,6 @@ class RestaurantDuplicateService extends ContainerAware
                 $transRecord->setContent($slug);
             }
             $em->persist($transRecord);
-              $em->flush();
         }
 
 
@@ -72,7 +62,7 @@ class RestaurantDuplicateService extends ContainerAware
 
             foreach ($seoRel as $record) {
                 $seoItem = $seoRepo->find($record['seorecord_id']);
-                $seoItem->addPlace($oldPlace);
+                $seoItem->addPlace($newPlace);
                 $em->persist($seoItem);
             }
         }
@@ -96,24 +86,55 @@ class RestaurantDuplicateService extends ContainerAware
 
         //dishes
 
-        $oldDishes = $dishRepo->findBy(['place'=>$placeId]);
+        $oldDishes = $dishRepo->findBy(['place' => $placeId]);
 
         if (!empty($oldDishes)) {
             foreach ($oldDishes as $key => $dish) {
-                 $oldDishes[$key]->setPlace($placeRepo->find($newPlace->getId()));
-                $em->persist($oldDishes[$key]);
+                $newDish = clone $dish;
+                $newDish->setId(null);
+                $newDish->setPlace($newPlace);
+                $em->persist($newDish);
+
+                foreach ($dish->getTranslations() as $translation) {
+                    $newTranslation = clone $translation;
+                    $newTranslation->setId(null);
+                    $newTranslation->setObject($newDish);
+                    $em->persist($newTranslation);
+
+                }
+
+                $dishSize = $dishSizeRepo->findBy(['dish' => $dish]);
+
+                foreach ($dishSize as $size) {
+                    $cloneSize = clone $size;
+                    $cloneSize->setId(null);
+                    $cloneSize->setDish($newDish);
+                    $em->persist($cloneSize);
+                }
+
+                foreach ($dish->getOptions() as $option) {
+                    var_dump($option);
+                    echo '<br>----------------------- end';
+                    $cloneOption = clone $option;
+                    $cloneOption->setId(null);
+                    $cloneOption->setPlace($newPlace);
+                    $em->persist($cloneOption);
+
+//                    foreach ($option->getTranslations() as $optionTranslation) {
+//                        $newOptionTranslation = clone $optionTranslation;
+//                        $newOptionTranslation->setObject($cloneOption);
+//                        $newOptionTranslation->setId(null);
+//                        $em->persist($newOptionTranslation);
+//                    }
+                }
+die;
             }
+
         }
-
-
-
 
         $em->flush();
 
-
         return $newPlace->getId();
-
-
     }
 
 
