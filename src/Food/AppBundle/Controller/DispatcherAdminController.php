@@ -98,6 +98,8 @@ class DispatcherAdminController extends Controller
             $placePoint = $order->getPlacePoint();
             $city = $placePoint->getCityId();
 
+
+
             if(!$city) {
                 continue;
             }
@@ -105,9 +107,9 @@ class DispatcherAdminController extends Controller
             if ($order->getDeliveryType() == OrderService::$deliveryPickup) {
                 $cityOrderCollection[$city->getId()]['unapproved']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
-                $cityOrders[$order->getPlacePointCity()]['unapproved']['selfdeliver'][] = $order;
+                $cityOrderCollection[$city->getId()]['unapproved']['selfdeliver'][] = $order;
             } elseif ($order->getDeliveryType() == OrderService::$deliveryPedestrian) {
-                $cityOrders[$order->getPlacePointCity()]['unapproved']['pedestrian'][] = $order;
+                $cityOrderCollection[$city->getId()]['unapproved']['pedestrian'][] = $order;
             } else {
                 $cityOrderCollection[$city->getId()]['unapproved']['deliver'][] = $order;
             }
@@ -115,6 +117,7 @@ class DispatcherAdminController extends Controller
                 ++$cityOrderCollection[$city->getId()]['unapproved']['late'];
             }
         }
+
 
         foreach ($unassigned as $order) {
 
@@ -235,6 +238,8 @@ class DispatcherAdminController extends Controller
             $driverCollection[$driver['city_id']][] = $driver;
         }
 
+
+
         return $this->render(
             'FoodAppBundle:Dispatcher:list.html.twig',
             [
@@ -245,8 +250,7 @@ class DispatcherAdminController extends Controller
         );
     }
 
-    public
-    function statusPopupAction($orderId)
+    public function statusPopupAction($orderId)
     {
         $orderService = $this->get('food.order');
         $order = $orderService->getOrderById($orderId);
@@ -303,8 +307,7 @@ class DispatcherAdminController extends Controller
         );
     }
 
-    public
-    function approveOrderAction($orderId)
+    public function approveOrderAction($orderId)
     {
         try {
             $orderService = $this->get('food.order');
@@ -333,8 +336,7 @@ class DispatcherAdminController extends Controller
     /**
      * @TODO refactor!!!
      */
-    public
-    function setOrderStatusAction($orderId, $status, $delayDuration = false, Request $request)
+    public function setOrderStatusAction($orderId, $status, $delayDuration = false, Request $request)
     {
         $cancelReason = $request->get('cancelReason');
         $cancelReasonComment = $request->get('cancelReasonComment');
@@ -425,8 +427,7 @@ class DispatcherAdminController extends Controller
         return new Response('OK');
     }
 
-    public
-    function sendOrderMessageAction($orderId, $message)
+    public function sendOrderMessageAction($orderId, $message)
     {
         $orderService = $this->get('food.order');
         $messagingService = $this->get('food.messages');
@@ -452,8 +453,7 @@ class DispatcherAdminController extends Controller
         return new Response('OK');
     }
 
-    public
-    function getDriverListAction($orders)
+    public function getDriverListAction($orders)
     {
         $orderService = $this->get('food.order');
         $logisticsService = $this->get('food.logistics');
@@ -478,8 +478,7 @@ class DispatcherAdminController extends Controller
         );
     }
 
-    public
-    function assignDriverAction(Request $request)
+    public function assignDriverAction(Request $request)
     {
         $driverId = $request->get('driverId');
         $ordersIds = $request->get('orderIds');
@@ -498,8 +497,7 @@ class DispatcherAdminController extends Controller
         return new Response('OK');
     }
 
-    public
-    function assignDispatcherAction(Request $request)
+    public function assignDispatcherAction(Request $request)
     {
         $orderId = $request->get('orderId');
         $orderService = $this->get('food.order');
@@ -519,8 +517,7 @@ class DispatcherAdminController extends Controller
         return new Response('OK');
     }
 
-    private
-    function user()
+    private function user()
     {
         $sc = $this->get('security.context');
 
@@ -531,8 +528,7 @@ class DispatcherAdminController extends Controller
         return $sc->getToken()->getUser();
     }
 
-    public
-    function checkNewOrdersAction(Request $request)
+    public function checkNewOrdersAction(Request $request)
     {
         $repo = $this->get('doctrine')->getManager()->getRepository('FoodOrderBundle:Order');
 
@@ -595,8 +591,7 @@ class DispatcherAdminController extends Controller
         return new JsonResponse(['lastCheck' => date('U'), 'needUpdate' => 'NO']);
     }
 
-    public
-    function markOrderContactedAction(Request $request)
+    public function markOrderContactedAction(Request $request)
     {
         $orderService = $this->get('food.order');
 
@@ -625,8 +620,7 @@ class DispatcherAdminController extends Controller
         return new Response('YES');
     }
 
-    public
-    function markOrderSolvedAction(Request $request)
+    public function markOrderSolvedAction(Request $request)
     {
         $orderService = $this->get('food.order');
 
@@ -660,8 +654,7 @@ class DispatcherAdminController extends Controller
      *
      * @return JsonResponse
      */
-    public
-    function getUserInfoByPhoneAction(Request $request)
+    public function getUserInfoByPhoneAction(Request $request)
     {
         $info = [];
         $phone = $request->get('phone', '');
@@ -679,8 +672,7 @@ class DispatcherAdminController extends Controller
     /**
      * @return array
      */
-    private
-    function _getCancelReasons()
+    private function _getCancelReasons()
     {
         $trans = $this->get('translator');
 
@@ -694,8 +686,7 @@ class DispatcherAdminController extends Controller
         ];
     }
 
-    public
-    function assignPlaceInformedAction(Request $request)
+    public function assignPlaceInformedAction(Request $request)
     {
         $orderId = $request->get('orderId');
         $orderService = $this->get('food.order');
@@ -714,8 +705,7 @@ class DispatcherAdminController extends Controller
         return new Response('OK');
     }
 
-    public
-    function logCallEventAction(Request $request)
+    public function logCallEventAction(Request $request)
     {
         $dispatcherService = $this->get('food.dispatcher_service');
         $dispatcherService->saveCallLog(
