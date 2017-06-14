@@ -531,13 +531,6 @@ Tallinn]]></target>
                 <source>in.this.city.we.have.not.delivered.food</source>
                 <target>Sorry, we can not delivering to this city</target>
             </trans-unit>
-            <trans-unit id="in.this.city.we.have.not.delivered.food">
-                <source>in.this.city.we.have.not.delivered.food</source>
-                <target>Sorry, we can not delivering to this city</target>
-            </trans-unit>
-
-
-
         </body>
     </file>
 </xliff>
