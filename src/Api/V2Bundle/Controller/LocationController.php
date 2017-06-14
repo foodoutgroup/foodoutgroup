@@ -6,6 +6,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Food\DishesBundle\Entity\PlacePoint;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class LocationController extends Controller
 {
@@ -14,7 +15,7 @@ class LocationController extends Controller
      * @param $providerHash
      * @return JsonResponse
      */
-    public function getCityAction($providerHash)
+    public function getCityAction($providerHash, Request $request)
     {
         $response = ['success' => false];
         switch ($providerHash) {
@@ -22,6 +23,11 @@ class LocationController extends Controller
                 $foundCity = [];
                 $cityCollection = [];
                 $placeGroupIDs = [63, 143, 85, 105,142,333,302,160];
+                $placeGroupIDsTakeAway = [];
+
+                if($request->get('version') == 2) {
+                    $placeGroupIDsTakeAway = [142];
+                }
 
                 $repository = $this->getDoctrine()
                     ->getRepository('FoodDishesBundle:PlacePoint');
@@ -33,27 +39,59 @@ class LocationController extends Controller
                     ->andWhere('p.id IN (:ids)')
                     ->andWhere('p.apiHash IS NOT NULL');
 
-                $query = $qb->getQuery()->setParameters(['ids' => $placeGroupIDs]);
+                $query = $qb->getQuery()->setParameters(['ids' => array_merge($placeGroupIDs, $placeGroupIDsTakeAway)]);
 
                 $result = $query->execute();
+                /**
+                 * @var $placePoint PlacePoint
+                 */
+                $version = intval($request->get('version', 0));
 
                 foreach ($result as $placePoint) {
 
-                    /**
-                     * @var $placePoint PlacePoint
-                     */
+                    $place = $placePoint->getPlace();
                     $cityObj = $placePoint->getCityId();
-                    if(!$cityObj || in_array($cityObj->getTitle(), $foundCity)) {
+                    if(!$cityObj) {
                         continue;
                     }
 
-                    $foundCity[] = $cityObj->getTitle();
-                    $place = $placePoint->getPlace();
-                    $cityCollection[] = [
-                        'city' => $cityObj->getTitle(),
-                        'hash' => $place->getApiHash(),
+                    if($version >= 2) {
 
-                    ];
+                        if(!isset($cityCollection[$cityObj->getId()])) {
+                            $cityCollection[$cityObj->getId()] = [
+                                'title' => $cityObj->getTitle(),
+                                'takeaway' => false,
+                                'hash' => false,
+                            ];
+                        }
+                        $key = in_array($place->getId(), $placeGroupIDsTakeAway) ? 'takeaway' : 'hash';
+                        $cityCollection[$cityObj->getId()][$key] = $place->getApiHash();
+
+                    } else {
+
+                        $cityObj = $placePoint->getCityId();
+                        if (!$cityObj || in_array($cityObj->getTitle(), $foundCity)) {
+                            continue;
+                        }
+
+                        $foundCity[] = $cityObj->getTitle();
+                        $place = $placePoint->getPlace();
+                        $cityCollection[] = [
+                            'city' => $cityObj->getTitle(),
+                            'hash' => $place->getApiHash(),
+
+                        ];
+                    }
+                }
+
+                if($version >= 2) {
+                    $realData = [];
+
+                    foreach ($cityCollection as $value) {
+                        $realData[] = $value;
+                    }
+                    $cityCollection = $realData;
+
                 }
 
                 $response['success'] = true;
