@@ -40,7 +40,7 @@
             </tr>
             {% for option in dish.options %}
                 <tr>
-                    <td style="padding-left: 20px;">{{ option.dishOptionName }}</td>
+                    <td style="padding-left: 20px;">{{ option.dishOptionId.name }}</td>
                     <td>{{ option.quantity }}</td>
                     <td>{{ option.price }}</td>
                     <td>{{ option.price * option.quantity }}</td>

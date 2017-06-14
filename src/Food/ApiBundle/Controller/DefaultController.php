@@ -22,7 +22,7 @@ class DefaultController extends Controller
     public function getGlobalParametersAction($appType, Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Default:getGlobalParameters Request: app - ' . $appType, (array) $request);
+        //$this->get('logger')->alert('Default:getGlobalParameters Request: app - ' . $appType, (array) $request);
         try {
             if (!empty($appType)) {
                 $response = [];
@@ -55,8 +55,8 @@ class DefaultController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Default:getGlobalParameters Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Default:getGlobalParameters Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 }

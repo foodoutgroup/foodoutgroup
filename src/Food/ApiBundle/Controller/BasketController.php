@@ -17,7 +17,7 @@ class BasketController extends Controller
     public function createBasketAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('createBasketAction Request:', (array) $request);
+        //$this->get('logger')->alert('createBasketAction Request:', (array) $request);
         try {
             $requestJson = new JsonRequest($request);
 
@@ -44,15 +44,15 @@ class BasketController extends Controller
             );
         }
 
-        $this->get('logger')->alert('createBasketAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('createBasketAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
     public function updateBasketAction($id, Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('updateBasketAction Request: id - '. $id, (array) $request);
+        //$this->get('logger')->alert('updateBasketAction Request: id - '. $id, (array) $request);
         try{
             $requestJson = new JsonRequest($request);
             $response = $this->get('food_api.basket')->updateBasketFromRequest($id, $requestJson);
@@ -71,15 +71,15 @@ class BasketController extends Controller
             );
         }
 
-        $this->get('logger')->alert('updateBasketAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('updateBasketAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
     public function getBasketAction($id)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('getBasketAction Request:' . $id);
+        //$this->get('logger')->alert('getBasketAction Request:' . $id);
         try {
             $basket = $this->get('food_api.basket')->getBasket($id);
             $response = new JsonResponse($basket);
@@ -102,15 +102,15 @@ class BasketController extends Controller
             );
         }
 
-        $this->get('logger')->alert('getBasketAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('getBasketAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return $response;
     }
 
     public function deleteBasketAction($id)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('deleteBasketAction Request: ' . $id);
+        //$this->get('logger')->alert('deleteBasketAction Request: ' . $id);
         try {
             $this->get('food_api.basket')->deleteBasket($id);
             $response = ['status' => true];
@@ -129,15 +129,15 @@ class BasketController extends Controller
             );
         }
 
-        $this->get('logger')->alert('deleteBasketAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('deleteBasketAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response, 204);
     }
 
     public function updateBasketItemAction($id, $basket_item_id, Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('updateBasketItemAction Request: id - '. $id . ', basket_item_id - ' . $basket_item_id, (array) $request);
+        //$this->get('logger')->alert('updateBasketItemAction Request: id - '. $id . ', basket_item_id - ' . $basket_item_id, (array) $request);
         try{
             $requestJson = new JsonRequest($request);
             $this->get('food_api.basket')->updateBasketItem($id, $basket_item_id, $requestJson);
@@ -157,15 +157,15 @@ class BasketController extends Controller
             );
         }
 
-        $this->get('logger')->alert('updateBasketItemAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('updateBasketItemAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
     public function deleteBasketItemAction($id, $basket_item_id, Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('deleteBasketItemAction Request: id - '. $id . ', basket_item_id - ' . $basket_item_id, (array) $request);
+        //$this->get('logger')->alert('deleteBasketItemAction Request: id - '. $id . ', basket_item_id - ' . $basket_item_id, (array) $request);
         try {
             $requestJson = new JsonRequest($request);
             $this->get('food_api.basket')->deleteBasketItem($id, $basket_item_id, $requestJson);
@@ -185,8 +185,8 @@ class BasketController extends Controller
             );
         }
 
-        $this->get('logger')->alert('deleteBasketItemAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('deleteBasketItemAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 

@@ -1075,7 +1075,12 @@ class Order
      */
     public function getPlacePointCity()
     {
-        return $this->place_point_city;
+        $placePointCity = $this->place_point_city;
+        if (!$this->place_point_city) {
+            $placePointCity = $this->getPlacePoint()->getCityId()->name;
+        }
+
+        return $placePointCity;
     }
 
     /**

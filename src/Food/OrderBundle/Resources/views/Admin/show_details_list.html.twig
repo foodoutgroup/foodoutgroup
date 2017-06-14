@@ -17,13 +17,13 @@
                 </tr>
             {% for detail in object.details %}
                 <tr>
-                    <td>{{ detail.getDishName() }}</td>
+                    <td>{{ detail.dishId.name }}</td>
                     <td>{{ detail.getPriceBeforeDiscount() }} {{ currency_display|raw }}</td>
                     <td>{{ detail.getPrice() }} {{ currency_display|raw }}</td>
                     <td>{{ detail.getPriceBeforeDiscount() - detail.getPrice() }} {{ currency_display|raw }}</td>
                     <td>{{ detail.getQuantity() }}</td>
                     <td>{{ detail.getPrice() * detail.getQuantity() }} {{ currency_display|raw }}</td>
-                    <td>{{ detail.getDishUnitName() }}</td>
+                    <td>{{ detail.dishUnitId.name }}</td>
                     <td>{{ detail.getDishSizeCode() }}</td>
                     <td>
                         {% if detail.options is not empty %}
@@ -41,7 +41,7 @@
                                     {% set count = count+1 %}
 
                                 <tr>
-                                    <td>{{ option.dishOptionName }}</td>
+                                    <td>{{ option.dishOptionId.name }}</td>
                                     <td>{{ option.price }} {{ currency_display|raw }}</td>
                                     <td>{{ option.priceBeforeDiscount }} {{ currency_display|raw }}</td>
                                     <td>{{ option.dishOptionCode }}</td>
