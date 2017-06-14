@@ -31,7 +31,7 @@ class DriverController extends Controller
                 'phone' => $driver->getPhone(),
                 'name' => $driver->getName(),
                 'city' => $driver->getCity(),
-                'dispatchPhone' => $translator->trans('general.top_contact.phone'),
+                'dispatchPhone' => $this->container->getParameter('call_centre_phone'),
                 //'bannerUrl' => '',
                 //'timezone' => '2'
             );
@@ -77,7 +77,7 @@ class DriverController extends Controller
                 'phone' => $driver->getPhone(),
                 'name' => $driver->getName(),
                 'city' => $driver->getCity(),
-                'dispatchPhone' => $translator->trans('general.top_contact.phone'),
+                'dispatchPhone' => $this->container->getParameter('call_centre_phone'),
                 //'bannerUrl' => '',
                 //'timezone' => '2'
             ];
