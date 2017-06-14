@@ -4,6 +4,7 @@ namespace Food\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Food\DishesBundle\Entity\Dish;
+use Food\DishesBundle\Entity\DishUnit;
 
 /**
  * @ORM\Table(name="order_details")
@@ -222,7 +223,7 @@ class OrderDetails
     /**
      * Set dish_unit_id
      *
-     * @param integer $dishUnitId
+     * @param DishUnit $dishUnitId
      * @return OrderDetails
      */
     public function setDishUnitId($dishUnitId)
