@@ -703,6 +703,8 @@ class OrderService extends ContainerAware
         // Inform poor user, that his order was accepted
         $order = $this->getOrder();
         $driver = $order->getDriver();
+        $translator = $this->container->get('translator');
+        $translator->setLocale($this->container->getParameter('locale'));
 
         if (!$api) {
             $messagingService = $this->container->get('food.messages');
@@ -731,7 +733,7 @@ class OrderService extends ContainerAware
 
             $messageText = $languageUtil->removeChars(
                 $curr_locale,
-                $this->container->get('translator')->trans(
+                $translator->trans(
                     'general.sms.driver_assigned_order',
                     [
                         'order_id' => $order->getId(),
@@ -805,7 +807,8 @@ class OrderService extends ContainerAware
     public function fitDriverMessage($messageText, $orderId, $restaurantTitle, $restaurantAddress, $pickup_restaurant_address, $deliverTime, $orderRoute, $locale)
     {
         $languageUtil = $this->container->get('food.app.utils.language');
-
+        $translator = $this->container->get('translator');
+        $translator->setLocale($this->container->getParameter('locale'));
         $messageText = $this->correctMessageText($messageText);
 
         $max_len = 160;
@@ -833,7 +836,7 @@ class OrderService extends ContainerAware
 
             return $languageUtil->removeChars(
                 $locale,
-                $this->container->get('translator')->trans(
+                $translator->trans(
                     'general.sms.driver_assigned_order',
                     [
                         'order_id' => $orderId,
@@ -2476,6 +2479,7 @@ class OrderService extends ContainerAware
     {
         $messagingService = $this->container->get('food.messages');
         $translator = $this->container->get('translator');
+        $translator->setLocale($this->container->getParameter('locale'));
         $logger = $this->container->get('logger');
         $miscUtils = $this->container->get('food.app.utils.misc');
         $country = $this->container->getParameter('country');
