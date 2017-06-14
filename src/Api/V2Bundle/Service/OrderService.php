@@ -365,7 +365,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                 ->setPriceBeforeDiscount($priceBeforeDiscount)
                 ->setPercentDiscount($discountPercentForInsert)
                 ->setDishName($dishSize->getDish()->getName())
-                ->setDishUnitId($dishSize->getUnit()->getId())
+                ->setDishUnitId($dishSize->getUnit())
                 ->setDishUnitName($dishSize->getUnit()->getName())
                 ->setDishSizeCode($dishSize->getCode())
                 ->setIsFree(false);
