@@ -189,9 +189,9 @@ class DefaultController extends Controller
     {
 
         // for now this is relevant for callcenter functionality
-        $isCallcenter = $request->isXmlHttpRequest();
+        $isCallCenter = $request->isXmlHttpRequest();
         $phoneService = $this->container->get('food.phones_code_service');
-        $orderService = $this->get('food.order');
+        $orderService = $this->get('food.order');s
         $placeService = $this->get('food.places');
         $miscUtils = $this->get('food.app.utils.misc');
         $googleGisService = $this->container->get('food.googlegis');
