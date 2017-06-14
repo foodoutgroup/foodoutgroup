@@ -67,6 +67,27 @@ class LocationService extends ContainerAware
         return $precision;
     }
 
+    public function setFromArray(array $location)
+    {
+
+        $cityObj = $this->container->get('doctrine')->getRepository('FoodAppBundle:City')->find($location['city_id']);
+        if(!$cityObj) {
+            return null;
+        }
+
+        return $this->set(
+            $cityObj,
+            $location['country'],
+            $location['street'],
+            $location['house'],
+            $location['flat'],
+            $location['origin'],
+            $location['latitude'],
+            $location['longitude']
+        );
+
+    }
+
     /**
      * @param City $city
      * @param bool|null $country
@@ -152,6 +173,16 @@ class LocationService extends ContainerAware
         if($response && isset($response['success']) && $response['success']) {
 
             $response = $response['detail'];
+
+            //todo flat
+
+            if(!isset($response['origin']) && isset($response['output'])){
+                $response['origin'] = $response['output'];
+            }
+
+            if(!isset($response['flat'])) {
+                $response['flat'] = null; // todo flat recognition
+            }
 
             $response['precision'] = $this->precision($response);
             $response['city_id'] = null;

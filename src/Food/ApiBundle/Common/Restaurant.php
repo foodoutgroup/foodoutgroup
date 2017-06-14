@@ -111,11 +111,12 @@ class Restaurant extends ContainerAware
      *
      * @return $this
      */
-    public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false)
+    public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = falsem, $locationData = null)
     {
-
         $placeService = $this->container->get('food.places');
-        $locationData = $this->container->get('food.location')->get();
+        if(!$locationData) {
+            $locationData = $this->container->get('food.location')->get();
+        }
         /**
          * @var $doctrine Registry
          */
@@ -166,6 +167,7 @@ class Restaurant extends ContainerAware
                     break;
                 }
             }
+
         } else {
             $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true : false);
             $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true : false);

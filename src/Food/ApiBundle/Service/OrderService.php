@@ -524,6 +524,7 @@ class OrderService extends ContainerAware
         // Update order with recent address information. but only if we need to deliver
         if ($serviceVar['type'] != "pickup") {
 
+//            ?!???
             $address = $os->createAddressMagic(
                 $user,
                 $searchCrit['city'],
