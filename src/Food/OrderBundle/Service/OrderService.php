@@ -2415,7 +2415,7 @@ class OrderService extends ContainerAware
         $logger->alert('Informing dispatcher and other personel about unapproved order');
 
         $translator = $this->container->get('translator');
-
+        $translator->setLocale($this->container->getParameter('locale'));
         $domain = $this->container->getParameter('domain');
         $notifyEmails = $this->container->getParameter('order.notify_emails');
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
@@ -2719,7 +2719,7 @@ class OrderService extends ContainerAware
         }
 
         $translator = $this->container->get('translator');
-
+        $translator->setLocale($this->container->getParameter('locale'));
         $domain = $this->container->getParameter('domain');
         $notifyEmails = $this->container->getParameter('order.notify_emails');
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
@@ -2806,7 +2806,7 @@ class OrderService extends ContainerAware
         }
 
         $translator = $this->container->get('translator');
-
+        $translator->setLocale($this->container->getParameter('locale'));
         $domain = $this->container->getParameter('domain');
         $notifyEmails = $this->container->getParameter('order.accept_notify_emails');
 
