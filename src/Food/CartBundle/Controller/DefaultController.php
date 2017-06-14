@@ -223,7 +223,7 @@ class DefaultController extends Controller
         $dataToLoad = [];
 
         // Data preparation for form
-        $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $locationData);
+        $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $googleGisService->getLocationFromSession());
         $placePointMap[$placeId] = $placePointId;
         $session->set('point_data', $placePointMap);
 

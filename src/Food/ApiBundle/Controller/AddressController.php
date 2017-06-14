@@ -14,9 +14,7 @@ class AddressController extends Controller
     public function findAddressAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Address:findAddressAction Request:', (array)$request);
-
-
+        //$this->get('logger')->alert('Address:findAddressAction Request:', (array)$request);
         try {
             $lat = $request->get('lat');
             $lng = $request->get('lng');
@@ -49,15 +47,15 @@ class AddressController extends Controller
         }
 
 
-        $this->get('logger')->alert('Address:findAddressAction Response:' . print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Address:findAddressAction Response:' . print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
     public function findStreetAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Address:findStreetAction Request:', (array)$request);
+        //$this->get('logger')->alert('Address:findStreetAction Request:', (array)$request);
         try {
             $queryPart = $request->get('query');
             $response = array();
@@ -88,8 +86,8 @@ class AddressController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Address:findStreetAction Response:' . print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Address:findStreetAction Response:' . print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 }
