@@ -478,8 +478,6 @@ class OrderService extends ContainerAware
      */
     protected function changeOrderStatus($status, $source = null, $message = null)
     {
-
-        $this->informPlace(false);
         // Let's log the shit out of it
         $this->logStatusChange($this->getOrder(), $status, $source, $message);
 
