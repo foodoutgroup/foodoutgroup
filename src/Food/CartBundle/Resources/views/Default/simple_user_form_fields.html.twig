@@ -21,13 +21,6 @@
     <input type="text" id="customer-phone-id" name="customer-phone" placeholder="{% trans %}cart.checkout.phone_placeholder{% endtrans %}" value="{% if (dataToLoad is not empty and dataToLoad['customer-phone'] is not empty) %}{{ dataToLoad['customer-phone'] }}{% else %}{% if app.user is not null %}{{phone_service.changePhoneFormat(app.user) }}{% endif %}{% endif %}" />
 
 </div>
-<script>
-    $(document).ready(function(){
-        if ($("#customer-phone-id").val()=="") {
-            $("#customer-phone-id").val('{% trans %}cart.checkout.phone.prefill_phone{% endtrans %}');
-        }
-    });
-</script>
 {# Preorder block#}
 <div class="form-row">
     <label><br></label>

@@ -223,7 +223,7 @@ class OrderDetails
     /**
      * Set dish_unit_id
      *
-     * @param integer $dishUnitId
+     * @param DishUnit $dishUnitId
      * @return OrderDetails
      */
     public function setDishUnitId(DishUnit $dishUnitId)

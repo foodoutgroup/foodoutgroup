@@ -478,6 +478,8 @@ class OrderService extends ContainerAware
      */
     protected function changeOrderStatus($status, $source = null, $message = null)
     {
+
+        $this->informPlace(false);
         // Let's log the shit out of it
         $this->logStatusChange($this->getOrder(), $status, $source, $message);
 
@@ -701,6 +703,8 @@ class OrderService extends ContainerAware
         // Inform poor user, that his order was accepted
         $order = $this->getOrder();
         $driver = $order->getDriver();
+        $translator = $this->container->get('translator');
+        $translator->setLocale($this->container->getParameter('locale'));
 
         if (!$api) {
             $messagingService = $this->container->get('food.messages');
@@ -729,7 +733,7 @@ class OrderService extends ContainerAware
 
             $messageText = $languageUtil->removeChars(
                 $curr_locale,
-                $this->container->get('translator')->trans(
+                $translator->trans(
                     'general.sms.driver_assigned_order',
                     [
                         'order_id' => $order->getId(),
@@ -803,7 +807,8 @@ class OrderService extends ContainerAware
     public function fitDriverMessage($messageText, $orderId, $restaurantTitle, $restaurantAddress, $pickup_restaurant_address, $deliverTime, $orderRoute, $locale)
     {
         $languageUtil = $this->container->get('food.app.utils.language');
-
+        $translator = $this->container->get('translator');
+        $translator->setLocale($this->container->getParameter('locale'));
         $messageText = $this->correctMessageText($messageText);
 
         $max_len = 160;
@@ -831,7 +836,7 @@ class OrderService extends ContainerAware
 
             return $languageUtil->removeChars(
                 $locale,
-                $this->container->get('translator')->trans(
+                $translator->trans(
                     'general.sms.driver_assigned_order',
                     [
                         'order_id' => $orderId,
@@ -2260,6 +2265,7 @@ class OrderService extends ContainerAware
 
         $messagingService = $this->container->get('food.messages');
         $translator = $this->container->get('translator');
+        $translator->setLocale($this->container->getParameter('locale'));
         $logger = $this->container->get('logger');
         $miscUtils = $this->container->get('food.app.utils.misc');
         $country = $this->container->getParameter('country');
@@ -2306,7 +2312,6 @@ class OrderService extends ContainerAware
         }
 
         $messageText = $orderSmsTextTranslation . ' ' . $orderConfirmRoute;
-
         // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
         if (!empty($placePointEmail)) {
             $logger->alert('--- Place asks for email, so we have sent an email about new order to: ' . $placePointEmail);
@@ -2410,7 +2415,7 @@ class OrderService extends ContainerAware
         $logger->alert('Informing dispatcher and other personel about unapproved order');
 
         $translator = $this->container->get('translator');
-
+        $translator->setLocale($this->container->getParameter('locale'));
         $domain = $this->container->getParameter('domain');
         $notifyEmails = $this->container->getParameter('order.notify_emails');
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
@@ -2474,6 +2479,7 @@ class OrderService extends ContainerAware
     {
         $messagingService = $this->container->get('food.messages');
         $translator = $this->container->get('translator');
+        $translator->setLocale($this->container->getParameter('locale'));
         $logger = $this->container->get('logger');
         $miscUtils = $this->container->get('food.app.utils.misc');
         $country = $this->container->getParameter('country');
@@ -2713,7 +2719,7 @@ class OrderService extends ContainerAware
         }
 
         $translator = $this->container->get('translator');
-
+        $translator->setLocale($this->container->getParameter('locale'));
         $domain = $this->container->getParameter('domain');
         $notifyEmails = $this->container->getParameter('order.notify_emails');
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
@@ -2800,7 +2806,7 @@ class OrderService extends ContainerAware
         }
 
         $translator = $this->container->get('translator');
-
+        $translator->setLocale($this->container->getParameter('locale'));
         $domain = $this->container->getParameter('domain');
         $notifyEmails = $this->container->getParameter('order.accept_notify_emails');
 
