@@ -182,7 +182,18 @@ class ComboDiscount
         return $this->getName();
     }
 
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return ComboDiscount
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
 
+        return $this;
+    }
 
 
     /**
