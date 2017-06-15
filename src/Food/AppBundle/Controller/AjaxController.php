@@ -270,7 +270,7 @@ class AjaxController extends Controller
                         break;
                     }
                 }
-                if($add) {
+                if($add && $userAddress->getAddressId()) {
                     $addressCollection[] = [
                         'id' => $userAddress->getAddressId(),
                         'label' => "<img src=\"$imgUrlHome\"/>&nbsp;&nbsp;<u>" . $userAddress->getOrigin() . "</u>",

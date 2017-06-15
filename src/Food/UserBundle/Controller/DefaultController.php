@@ -147,12 +147,9 @@ class DefaultController extends Controller
         if(!empty($addressData['id'])) {
 
             $hasAddress = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->findByIdUserFlat($addressData['id'],$user,$addressData['flat']);
-
-            if(!$hasAddress) {
-                $addressDetail = $locationService->findByHash($addressData['id']);
-
-                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($addressDetail['city']);
-
+            $addressDetail = $locationService->findByHash($addressData['id']);
+            $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($addressDetail['city']);
+            if(!$hasAddress && $cityObj) {
                 $oldLocationData = $locationService->get();
 
                 $locationService->set(
@@ -169,6 +166,7 @@ class DefaultController extends Controller
                 $newLocationData = $locationService->get();
 
                 if ($newLocationData['precision'] == 0) {
+
                     $locationService->saveAddressFromSessionToUser($user);
                 } else {
                     if (!empty($oldLocationData['city_id'])) {
@@ -220,6 +218,7 @@ class DefaultController extends Controller
             'user' => $user,
             'discount' => $this->get('food.user')->getDiscount($this->user()),
             'location' => $this->get('food.location')->get(),
+            'addressDefault' => $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user) ? : null,
         ];
     }
 
@@ -248,7 +247,7 @@ class DefaultController extends Controller
             'profile_errors' => $this->formErrors($form->get('profile')),
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'tab' => $tab,
-            'addressDefault' => $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user),
+            'addressDefault' => $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user) ? : null,
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
             'profile_updated' => $flashbag->get('profile_updated'),
