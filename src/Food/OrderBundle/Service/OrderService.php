@@ -2259,7 +2259,7 @@ class OrderService extends ContainerAware
         }
 
         $messagingService = $this->container->get('food.messages');
-        $translator = $this->container->get('translator')->setLocale('lv'); //TODO MULTI-L ciuju cia smskes siuntalioja?
+        $translator = $this->container->get('translator');
         $logger = $this->container->get('logger');
         $miscUtils = $this->container->get('food.app.utils.misc');
         $country = $this->container->getParameter('country');
