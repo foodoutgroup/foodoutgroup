@@ -1466,7 +1466,7 @@ class OrderService extends ContainerAware
                 ->setPercentDiscount($discountPercentForInsert)
                 ->setDishName($cartDish->getDishId()->getName())
                 ->setNameToNav(mb_substr($cartDish->getDishId()->getNameToNav() . $cartDish->getDishSizeId()->getUnit()->getNameToNav(), 0, 32, 'UTF-8'))
-                ->setDishUnitId($cartDish->getDishSizeId()->getUnit()->getId())
+                ->setDishUnitId($cartDish->getDishSizeId()->getUnit())
                 ->setDishUnitName($cartDish->getDishSizeId()->getUnit()->getName())
                 ->setIsFree($cartDish->getIsFree());
             $this->getEm()->persist($dish);
