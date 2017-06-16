@@ -45,6 +45,8 @@ class SqlConnectorService extends ContainerAware
 
     private function _initNx($server, $port, $database, $user, $password)
     {
+        ini_set('mssql.charset', 'UTF-8');
+
         // services
         $logger = $this->container->get('logger');
 
