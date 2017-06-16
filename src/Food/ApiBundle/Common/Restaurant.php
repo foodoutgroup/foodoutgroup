@@ -245,7 +245,6 @@ class Restaurant extends ContainerAware
                 [
                     'pickup'   => $pickUp,
                     'delivery' => $delivery,
-                    'pedestrian' => $pedestrian
                 ]
             )
             ->set(

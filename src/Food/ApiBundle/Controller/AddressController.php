@@ -28,18 +28,24 @@ class AddressController extends Controller
                 if($response) {
                     $lService->setFromArray($response);
                     $response['house_number'] = $response['house'];
+                    $response['active_services'] = $lService->getActiveServices($city);
                 } else {
                     $response = [];
                 }
             } elseif (!empty($city) && !empty($street) && !empty($houseNumber)) {
 
                 $response = $lService->findByAddress($street.' '.$houseNumber.' ,'.$city);
+
                 if($response) {
                     $lService->setFromArray($response);
+                    $response['active_services'] = $lService->getActiveServices($city);
                     $response['house_number'] = $response['house'];
+
                 } else {
                     $response = [];
                 }
+
+
 
             } else {
 
