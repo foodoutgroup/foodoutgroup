@@ -702,6 +702,19 @@ class Dish extends Uploadable implements Translatable
     }
 
     /**
+     * set categories
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     * @return Dish
+     */
+    public function setCategory()
+    {
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+
+        return $this;
+    }
+
+    /**
      * Add categories
      *
      * @param \Food\DishesBundle\Entity\FoodCategory $categories

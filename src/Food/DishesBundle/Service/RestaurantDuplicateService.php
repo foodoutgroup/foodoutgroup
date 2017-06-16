@@ -120,7 +120,7 @@ class RestaurantDuplicateService extends ContainerAware
             $cloneFoodCategory->setId(null);
             $cloneFoodCategory->setPlace($newPlace);
             $em->persist($cloneFoodCategory);
-            $foodCategoriesArray[$foodCategory->getId()] = $cloneFoodCategory->getId();
+            $foodCategoriesArray[$foodCategory->getId()] = $cloneFoodCategory;
             $translation = $foodCategory->getTranslations();
             if (!empty($translation)) {
                 foreach ($translation as $FoodCategoryTranslation) {
@@ -191,6 +191,8 @@ class RestaurantDuplicateService extends ContainerAware
                 $newDish = clone $dish;
                 $newDish->setId(null);
                 $newDish->setPlace($newPlace);
+                $newDish->setCategory();
+
                 $em->persist($newDish);
 
                 foreach ($dish->getTranslations() as $translation) {

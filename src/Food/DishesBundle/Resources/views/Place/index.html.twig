@@ -161,7 +161,6 @@
                                             <hr />
                                             <ul class="category-list" aria-labelledby="dLabel">
                                                 {% for category in placeCategories %}
-                                                    {{ dump(dishService.activeDishesByCategory(category.id)) }}
                                                     {% if category.dishes and dishService.activeDishesByCategory(category.id)|length > 0 %}
                                                         <li>
                                                             <a href="#{{ slug_util.slugByItem(category.id, 'food_category') }}">{{ category.name }}<span class="pull-right">{{ category.activeDishesCount }}</span></a>
