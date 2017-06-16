@@ -3,8 +3,6 @@
 namespace Food\CartBundle\Controller;
 
 use Food\AppBundle\Entity\Slug;
-use Food\CartBundle\Service\CartService;
-use Food\DishesBundle\Admin\DishSizeAdmin;
 use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
@@ -189,12 +187,11 @@ class DefaultController extends Controller
     {
 
         // for now this is relevant for callcenter functionality
-        $isCallCenter = $request->isXmlHttpRequest();
         $phoneService = $this->container->get('food.phones_code_service');
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
         $miscUtils = $this->get('food.app.utils.misc');
-        $googleGisService = $this->container->get('food.googlegis');
+        $googleGisService = $this->container->get('food.location');
 
         $country = $this->container->getParameter('country');
         $session = $request->getSession();
@@ -223,7 +220,7 @@ class DefaultController extends Controller
         $dataToLoad = [];
 
         // Data preparation for form
-        $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $googleGisService->getLocationFromSession());
+        $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $googleGisService->get());
         $placePointMap[$placeId] = $placePointId;
         $session->set('point_data', $placePointMap);
 
@@ -273,7 +270,7 @@ class DefaultController extends Controller
                 ($takeAway ? true : false),
                 ($takeAway ? $request->get('place_point') : null),
                 $couponEnt,
-                $isCallCenter
+                false
             );
         }
 
@@ -483,17 +480,10 @@ class DefaultController extends Controller
 
             // Update order with recent address information. but only if we need to deliver
             if ($deliveryType == $orderService::$deliveryDeliver || $deliveryType == $orderService::$deliveryPedestrian) {
-                $locationData = $googleGisService->getLocationFromSession();
+                $locationData = $googleGisService->get();
+
                 $em = $this->getDoctrine()->getManager();
-                $address = $orderService->createAddressMagic(
-                    $user,
-                    $locationData['city'],
-                    $locationData['address_orig'],
-                    (string)$locationData['lat'],
-                    (string)$locationData['lng'],
-                    $customerComment,
-                    $locationData['city_id']
-                );
+                $address = $googleGisService->saveAddressFromSessionToUser($user);
                 $orderService->getOrder()->setAddressId($address);
                 // Set user default address
 
@@ -535,7 +525,7 @@ class DefaultController extends Controller
             'formErrors' => $formErrors,
             'place' => $place,
             'takeAway' => ($takeAway ? true : false),
-            'location' => $this->get('food.googlegis')->getLocationFromSession(),
+            'location' => $this->get('food.location')->get(),
             'dataToLoad' => $dataToLoad,
             'userAddress' => $address,
             'userAllAddress' => $placeService->getCurrentUserAddresses(),
@@ -543,25 +533,13 @@ class DefaultController extends Controller
             'testNordea' => $request->query->get('test_nordea'),
             'workingHoursForInterval' => $workingHoursForInterval,
             'workingDaysCount' => $workingDaysCount,
-            'isCallcenter' => $isCallCenter,
             'require_lastname' => $require_lastname,
             'pointIsWorking' => $pointIsWorking,
             'disabledPreorderDays' => $disabledPreorderDays,
             'countryCode' => $countryCode
         ];
 
-
-        // callcenter functionality
-        if ($isCallCenter) {
-            $data['isCallcenter'] = true;
-
-            return $this->render('FoodCartBundle:Default:form.html.twig', $data);
-        }
-
-        return $this->render(
-            'FoodCartBundle:Default:index.html.twig',
-            $data
-        );
+        return $this->render('FoodCartBundle:Default:index.html.twig', $data);
     }
 
     /**
@@ -582,7 +560,6 @@ class DefaultController extends Controller
         $miscService = $this->get('food.app.utils.misc');
         $session = $this->get('session');
 
-        $isCallCenter = $session->get('isCallcenter');
 
         $enableDiscount = !$place->getOnlyAlcohol();
         $placeServ = $this->get('food.places');
@@ -634,12 +611,14 @@ class DefaultController extends Controller
         } else {
             $placePointMap = $this->container->get('session')->get('point_data');
 
-            $locationData = $this->get('food.googlegis')->getLocationFromSession();
+
+
+            $locationData = $this->get('food.location')->get();
 
             if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
                 $deliveryTotal = $place->getDeliveryPrice();
 
-            } elseif (!$locationData['not_found']) {
+            } elseif ($locationData['precision'] >= 1) {
                 // TODO Trying to catch fatal when searching for PlacePoint
                 if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
                     $this->container->get('logger')->error('Trying to find PlacePoint without ID in CartBundle Default controller - sideBlockAction');
@@ -889,7 +868,7 @@ class DefaultController extends Controller
             'self_delivery' => $self_delivery,
             'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
             'basket_errors' => $basketErrors,
-            'isCallcenter' => $isCallCenter,
+            'isCallcenter' => false,
             'useAdminFee' => $useAdminFee,
             'adminFee' => $adminFee,
             'noneWorking' => $noneWorking

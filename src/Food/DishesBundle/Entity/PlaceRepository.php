@@ -28,26 +28,28 @@ class PlaceRepository extends EntityRepository
 
 
 
-        $city = null;
+        $cityId = null;
         $lat = null;
         $lon = null;
         $currTime = date('H:i:s');
-        if (!empty($locationData) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
-            $city = (!empty($locationData['city_id']) ? $locationData['city_id'] : null);
-            $lat = str_replace(",", ".", $locationData['lat']);
-            $lon = str_replace(",", ".", $locationData['lng']);
-        } elseif (!empty($locationData) && !empty($locationData['city']) && isset($locationData['city_only']) && $locationData['city_only'] === true) {
-            $city = $locationData['city_id'];
+        if (!empty($locationData) && !empty($locationData['latitude']) && !empty($locationData['longitude'])) {
+            $cityId = (!empty($locationData['city_id']) ? $locationData['city_id'] : null);
+            $lat = $locationData['latitude'];
+            $lon = $locationData['longitude'];
+        } else {
+            $cityId = $locationData['city_id'];
         }
+
+
 
         $zaval = 0;
         $pickup = (isset($filters['delivery_type']) && $filters['delivery_type'] == Place::OPT_ONLY_PICKUP);
         if ($pickup ) {
-            $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id ".($city ? ' AND pps.city_id = \'' . $city . '\'' : '')." GROUP BY pps.place";
+            $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id ".($cityId ? ' AND pps.city_id = \'' . $cityId . '\'' : '')." GROUP BY pps.place";
         } else {
             if ($container) {
-                if ($city) {
-                    $zaval = $container->get('food.zavalas_service')->isRushHourAtCityById($city);
+                if ($cityId) {
+                    $zaval = $container->get('food.zavalas_service')->isRushHourAtCityById($cityId);
                 } else {
                     $zaval = $container->get('food.zavalas_service')->isRushHourOnGlobal();
                 }
@@ -125,11 +127,12 @@ class PlaceRepository extends EntityRepository
         if ($recommended) {
             $kitchensQuery .= " AND recommended=1";
             $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";//" AND ppc.city_id=" . $city;
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city_id = " . $city . " " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id ORDER BY p.priority DESC, RAND()";
+
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city_id = " . $cityId . " " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id ORDER BY p.priority DESC, RAND()";
         } elseif ($lat == null || $lon == null) {
-            if ($city) {
-                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city_id = " . $city . " AND ppc.place = p.id";
-                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city_id = " . $city . " " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id";
+            if ($cityId) {
+                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city_id = " . $cityId . " AND ppc.place = p.id";
+                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city_id = " . $cityId . " " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id";
 
             } else {
                 $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
@@ -138,7 +141,7 @@ class PlaceRepository extends EntityRepository
         } else {
 
 
-            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city_id = " . $city . " AND ppc.place = p.id";
+            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city_id = " . $cityId . " AND ppc.place = p.id";
             $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL ". $placeFilter . $otherFilters . " AND pp.id = (" . $subQuery . ") " . $kitchensQuery . " ORDER BY p.priority DESC, RAND()";
         }
 
@@ -343,16 +346,19 @@ class PlaceRepository extends EntityRepository
      * @param array|null $locationData
      * @param bool $ignoreSelfDelivery
      *
+     * @param bool $ignoreWorkTime
+     * @param bool $noneWorking
      * @return PlacePoint|null
      */
     public function getPlacePointNearWithDistance($placeId, $locationData, $ignoreSelfDelivery = false, $ignoreWorkTime = false, $noneWorking = false, $futureTime = false)
     {
-        if (empty($locationData['city']) || empty($locationData['lat'])) {
+        if (empty($locationData['city_id']) || empty($locationData['latitude'])) {
             return null;
         }
-        $city = $locationData['city'];
-        $lat = str_replace(",", ".", $locationData['lat']);
-        $lon = str_replace(",", ".", $locationData['lng']);
+
+        $cityId = $locationData['city_id'];
+        $lat = $locationData['latitude'];
+        $lon = $locationData['longitude'];
 
         if ($futureTime) {
             $dh = date("H", strtotime($futureTime));
@@ -388,7 +394,7 @@ class PlaceRepository extends EntityRepository
                         AND pp.active=1
                         AND pp.deleted_at IS NULL
                         AND p.active=1
-                        AND pp.city='" . $city . "'
+                        AND pp.city_id='" . $locationData['city_id'] . "'
                         AND pp.place = $placeId
             AND (
                 (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
@@ -455,25 +461,24 @@ class PlaceRepository extends EntityRepository
      */
     public function getPlacePointNear($placeId, $locationData, $ignoreSelfDelivery = false, $futureTime = false)
     {
+
+
         $response = null;
         $cacheKey = $placeId . serialize($locationData) . (int)$ignoreSelfDelivery;
-        if (!isset(self::$_getNearCache[$cacheKey])) {
-            if (!empty($locationData['city']) && !empty($locationData['lat'])) {
-                $city = $locationData['city'];
-                $lat = str_replace(",", ".", $locationData['lat']);
-                $lon = str_replace(",", ".", $locationData['lng']);
 
-                if ($futureTime) {
-                    $dh = date("H", strtotime($futureTime));
-                    $dm = date("i", strtotime($futureTime));
-                    $wd = date('w', strtotime($futureTime));
-                    $deliveryTime = date("H:i:s", strtotime($futureTime));
-                } else {
-                    $dh = date("H");
-                    $dm = date("i");
-                    $wd = date('w');
-                    $deliveryTime = date('H:i:s');
+        if (!isset(self::$_getNearCache[$cacheKey])) {
+            if (!empty($locationData['city_id']) && !empty($locationData['latitude'])) {
+
+                $lat = $locationData['latitude'];
+                $lon = $locationData['longitude'];
+
+                if (!$futureTime) {
+                    $futureTime = date("Y-m-d H:i:s");
                 }
+                $dh = date("H", strtotime($futureTime));
+                $dm = date("i", strtotime($futureTime));
+                $wd = date('w', strtotime($futureTime));
+                $deliveryTime = date("H:i:s", strtotime($futureTime));
 
                 if ($wd == 0) $wd = 7;
                 /**
@@ -491,7 +496,7 @@ class PlaceRepository extends EntityRepository
                       AND pp.active=1
                       AND pp.deleted_at IS NULL
                       AND p.active=1
-                      AND pp.city='" . $city . "'
+                      AND pp.city_id='" . $locationData['city_id'] . "'
                       AND pp.place = $placeId
                       AND (
                         (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
@@ -512,6 +517,7 @@ class PlaceRepository extends EntityRepository
                 $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
 
                 $stmt->execute();
+
                 $places = $stmt->fetchAll();
                 if (!empty($places) && !empty($places[0])) {
                     $response = (int)$places[0]['id'];
@@ -530,16 +536,10 @@ class PlaceRepository extends EntityRepository
         $response = null;
         $cacheKey = $placeId . serialize($locationData) . 1;
         if (!isset(self::$_getNearCache[$cacheKey])) {
-            if (!empty($locationData['city']) && !empty($locationData['lat'])) {
-                $city = $locationData['city'];
-                $lat = str_replace(",", ".", $locationData['lat']);
-                $lon = str_replace(",", ".", $locationData['lng']);
-                $wd = date('w');
-
-
-                if ($wd == 0) {
-                    $wd = 7;
-                }
+            if (!empty($locationData['latitude'])) {
+                $lat = $locationData['latitude'];
+                $lon = $locationData['longitude'];
+                $wd = date('w') == 0 ? 7 : date("w");
 
                 /**
                  * @todo check the need of self delivery

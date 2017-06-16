@@ -31,10 +31,10 @@ class ApiService extends ContainerAware
      * @param string|null $deliveryType
      * @return Restaurant
      */
-    public function createRestaurantFromPlace($place, $placePoint, $pickUpOnly = false, $locationData = null, $deliveryType = null)
+    public function createRestaurantFromPlace($place, $placePoint, $pickUpOnly = false, $locationData = null)
     {
         $restaurant = new Restaurant(null, $this->container);
-        return $restaurant->loadFromEntity($place, $placePoint, $pickUpOnly, $locationData, $deliveryType);
+        return $restaurant->loadFromEntity($place, $placePoint, $pickUpOnly, $locationData);
     }
 
     /**

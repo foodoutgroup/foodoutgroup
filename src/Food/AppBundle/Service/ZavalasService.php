@@ -91,7 +91,7 @@ class ZavalasService extends BaseService
      */
     public function getRushHourTimeByPlace(Place $place)
     {
-        $locationData = $this->locationService->getLocationFromSession();
+        $locationData = $this->locationService->get();
         $cityObj = $this->em->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
 
         if (!$cityObj || $this->isRushHourAtCity($cityObj) || !$this->placesService->isPlaceDeliversToCity($place, $cityObj->getId())) {

@@ -228,6 +228,8 @@ change_location = function(element, click_callback, data_callback, change_text, 
         });
     });
 
+
+
     $.fancybox({
         'autoScale': true,
         'transitionIn': 'elastic',
@@ -241,54 +243,6 @@ change_location = function(element, click_callback, data_callback, change_text, 
     });
 };
 
-initStreetSearch = function(){
-    var streetsUrl = Routing.generate('food_ajax', { '_locale': $('html').attr('lang'), 'action' : 'find-street' });
-    var streets = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: '?city=%CITY&street=%QUERY',
-            replace: function(url, query) {
-                url = url.replace('%CITY', $('#index_city').val());
-                url = url.replace('%QUERY', query);
-                return streetsUrl + url;
-            }
-        }
-    });
-
-    streets.initialize();
-
-    $('#index_address').typeahead(null, {
-        name: 'streets',
-        displayKey: 'value',
-        source: streets.ttAdapter()
-    });
-};
-
-initStreetHouseSearch = function(){
-    var streetsUrl = Routing.generate('food_ajax', { '_locale': $('html').attr('lang'), 'action' : 'find-street-house' });
-    var streets = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: '?city=%CITY&street=%STREET&house=%QUERY',
-            replace: function(url, query) {
-                url = url.replace('%CITY', $('#index_city').val());
-                url = url.replace('%STREET', $('#index_address').val());
-                url = url.replace('%QUERY', query);
-                return streetsUrl + url;
-            }
-        }
-    });
-
-    streets.initialize();
-
-    $('#index_house').typeahead(null, {
-        name: 'houses',
-        displayKey: 'value',
-        source: streets.ttAdapter()
-    });
-};
 
 var registrationForm = {
     showPrivate: function(element) {
@@ -318,3 +272,141 @@ var registrationForm = {
         return false;
     }
 };
+(function (form) {
+
+    var input_auto_complete = form.find('#address_autocomplete');
+    var button_submit = form.find('#submit');
+    var input_collection = form.find('input');
+    var button_find_me = form.find('#find-me');
+    var div_error = form.find('#error');
+
+    var resultCollection = [];
+    var selected = null;
+
+    if (!navigator.geolocation) {
+        button_find_me.remove();
+    }
+    var autoSelect = true;
+    input_auto_complete.autocomplete({
+        source: input_auto_complete.data('url'),
+        minLength: 2,
+        html: true,
+        position: {
+            my: "left+0 top-4"
+        },
+        response: function( event, ui ) {
+            resultCollection = ui.content;
+        },
+        select: function( event, ui ) {
+            setSelected(ui.item);
+            autoSelect = false;
+        }
+    }).focusin(function(){
+        autoSelect = true;
+        if(resultCollection.length >= 2) {
+            $(this).autocomplete("search");
+        }
+    }).focusout(function(){
+        if(autoSelect && resultCollection.length >= 1 && autoSelect) {
+            setSelected(resultCollection[0]);
+        }
+        autoSelect = false;
+    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+        return $("<li></li>")
+            .data("item.autocomplete", item)
+            .append("<a data-class='" + item.class + "'>" + item.label + "</a>")
+            .appendTo(ul);
+    };
+
+    button_find_me.click(function (e) {
+        e.preventDefault();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position){
+                $.get(button_find_me.data("url"), {"lat" : position.coords.latitude, "lng" : position.coords.longitude}, function (response) {
+                    setSelected({'id' : response.detail.id, 'value' : response.detail.output});
+                });
+            });
+        } else {
+            throwMapLocationPicker(null);
+        }
+    });
+
+
+
+    input_collection.on('keyup', function (e) {
+        if(e.keyCode != 13) {
+            throwError(null);
+        }
+    }).on('focusin', function () {
+        throwError(null);
+    });
+
+    div_error.click(function () {
+        throwError(null);
+    });
+
+    button_submit.click(function (e) {
+        e.preventDefault();
+        img = $(this).find('img');
+        oldval = img.attr('src');
+        input_auto_complete.attr('disabled', true);
+
+        img.attr('src', 'http://pizzagiotto.ru/bitrix/templates/giotto/img/preloader.GIF');
+
+        $.post($(this).data('url'), {"address":input_auto_complete.data('selected'), "flat" : form.find('#flat').val()} , function (response) {
+            if(response.success && typeof response.url != "undefined" ) {
+                if(button_submit.data('redirect') == "self"){
+                    window.location.href = window.location.href;
+                } else {
+                    window.location.href = response.url;
+                }
+            } else {
+                throwError(response.message);
+                input_auto_complete.attr('disabled', false);
+                img.attr('src', oldval);
+            }
+        });
+
+    });
+
+    function setSelected(selected) {
+        input_auto_complete.data('selected', selected.id);
+        input_auto_complete.val(selected.value);
+        form.find('#hidden-field-for-address-id').val(selected.id);
+    }
+
+    function throwMapLocationPicker(position) {
+        if(position == null) {
+
+        } else {
+
+        }
+    }
+
+    function throwError(message){
+        if(message == null) {
+            message = '';
+            input_collection.removeClass('error');
+        } else {
+            form.closest('.shake-me').shake(5, 5, 400);
+            input_collection.addClass('error');
+        }
+        div_error.html(message);
+    }
+
+})($( ".address-search-form-ui" ));
+
+
+jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
+    this.each(function() {
+        $(this).css("position","relative");
+        for (var x=1; x<=intShakes; x++) {
+            $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
+                .animate({left:intDistance}, ((intDuration/intShakes)/2))
+                .animate({left:0}, (((intDuration/intShakes)/4)));
+        }
+    });
+    return this;
+};
+
+

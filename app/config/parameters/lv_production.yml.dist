@@ -136,6 +136,7 @@ parameters:
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: true
+    geo_provider: https://geoproxy.foodout.lt
 
     session_memcached_host:     memcached
     session_memcached_port:     11211

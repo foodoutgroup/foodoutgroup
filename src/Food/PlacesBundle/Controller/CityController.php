@@ -22,11 +22,10 @@ class CityController extends Controller
                 throw new NotFoundHttpException('City was not found');
             }
         }
-        $userLocation = $this->get('food.googlegis')->getLocationFromSession();
+
         $metaTitle = '';
         $metaDescription = '';
-
-        $this->get('food.googlegis')->setCity($city, false);
+        $this->get('food.location')->set($city);
 
         $placeService = $this->get('food.places');
         $kitchenCollection = $placeService->getKitchenCollectionFromSlug($params, $request);
@@ -42,7 +41,7 @@ class CityController extends Controller
             array(
                 'recommended' => in_array('recom',$params), // todo MULTI-L param for recommended list
                 'rush_hour' => in_array('rush', $params), // todo MULTI-L param for rush_hour list
-                'location' => $userLocation,
+                'location' => $this->get('food.location')->get(),
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
                 'slug_filter' => implode("/", $params),
@@ -90,7 +89,7 @@ class CityController extends Controller
                 'reviewsEnabled' => $this->get('food.app.utils.misc')->getParam('reviews_enabled', 0),
                 'placeCollection' => $placeCollection,
                 'isRecommended' => $isRecommended,
-                'location' => $this->get('food.googlegis')->getLocationFromSession(),
+                'location' => $this->get('food.location')->get(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver)
             )
         );

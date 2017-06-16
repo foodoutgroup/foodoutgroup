@@ -5,6 +5,7 @@ namespace Api\V2Bundle\Service;
 use Api\BaseBundle\Common\JsonRequest;
 use Api\BaseBundle\Exceptions\ApiException;
 use Aws\Route53\Enum\Status;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Food\DishesBundle\Entity\DishOption;
 use Food\DishesBundle\Entity\DishSize;
 use Food\DishesBundle\Entity\Place;
@@ -29,6 +30,9 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
     {
 
         $em = $this->container->get('doctrine')->getManager();
+        /**
+         * @var $doctrine Registry
+         */
         $doctrine = $this->container->get('doctrine');
 
         $deliveryType = ($json->has('type') && $json->get('type', 'deliver') == 'pickup' ? 'pickup' : 'deliver');
@@ -69,7 +73,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
             }
             $order->setPaymentMethod("local.card");
             $addressBuffer = $address['street'] . ' ' . $address['house_number'] . (!empty($address['flat_number']) ? '-' . $address['flat_number'] . '' : '');
-            $location = $this->container->get('food.googlegis')->groupData($addressBuffer, $address['city']);
+            $location = $this->container->get('food.location')->findByAddress($addressBuffer.", ".$address['city']);
             $id = $doctrine->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance($place->getId(), $location, false, true);
             $placePoint = $doctrine->getRepository('FoodDishesBundle:PlacePoint')->find($id);
             $dp = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getDeliveryPriceForPlacePoint($place, $placePoint, $location);

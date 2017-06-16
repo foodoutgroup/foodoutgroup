@@ -21,12 +21,26 @@ class AddressController extends Controller
             $city = $request->get('city');
             $street = $request->get('street');
             $houseNumber = $request->get('house_number');
+            $lService = $response = $this->get('food.location');
             if (!empty($lat) && !empty($lng)) {
-                $response = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
+                $response = $lService->findByCords($lat, $lng);
+
+                if($response) {
+                    $lService->setFromArray($response);
+                    $response['house_number'] = $response['house'];
+                } else {
+                    $response = [];
+                }
             } elseif (!empty($city) && !empty($street) && !empty($houseNumber)) {
-                $response = $this->get('food.googlegis')->findAddressByCoordsByStuff(
-                    $city, $street, $houseNumber
-                );
+
+                $response = $lService->findByAddress($street.' '.$houseNumber.' ,'.$city);
+                if($response) {
+                    $lService->setFromArray($response);
+                    $response['house_number'] = $response['house'];
+                } else {
+                    $response = [];
+                }
+
             } else {
 
                 $response = [];

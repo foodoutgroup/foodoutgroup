@@ -156,7 +156,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle, FoodPlacesBundle, CallCenterBundle,  FoodBlogBundle ]
+    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle, FoodPlacesBundle, FoodBlogBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -402,8 +402,6 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.dispatcher
                       - sonata.admin.drivers
-                      - sonata.admin.params
-                      - sonata.admin.paramslog
                       - sonata.admin.cities
                       - sonata.admin.citieslog
                       - sonata.admin.error_log
