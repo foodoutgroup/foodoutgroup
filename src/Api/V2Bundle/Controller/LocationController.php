@@ -79,7 +79,6 @@ class LocationController extends Controller
                         $cityCollection[] = [
                             'city' => $cityObj->getTitle(),
                             'hash' => $place->getApiHash(),
-
                         ];
                     }
                 }
