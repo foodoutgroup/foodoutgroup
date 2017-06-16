@@ -32,6 +32,7 @@ class RestaurantDuplicateService extends ContainerAware
         $dishUnitsCategoryRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:DishUnitCategory');
         $dishUnitRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:DishUnit');
         $comboDiscountRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:ComboDiscount');
+        $placePointRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:PlacePoint');
 
         $oldPlace = $placeRepo->find($placeId);
         $newPlace = clone $oldPlace;
@@ -112,6 +113,7 @@ class RestaurantDuplicateService extends ContainerAware
 
         $foodCategories = $foodCategoryRepo->findBy(['place' => $placeId]);
         $foodCategoriesArray = [];
+
         foreach ($foodCategories as $foodCategory) {
 
             $cloneFoodCategory = clone $foodCategory;
@@ -119,11 +121,11 @@ class RestaurantDuplicateService extends ContainerAware
             $cloneFoodCategory->setPlace($newPlace);
             $em->persist($cloneFoodCategory);
             $foodCategoriesArray[$foodCategory->getId()] = $cloneFoodCategory->getId();
-            $translation = $option->getTranslations();
+            $translation = $foodCategory->getTranslations();
             if (!empty($translation)) {
                 foreach ($translation as $FoodCategoryTranslation) {
                     $newFoodCategory = clone $FoodCategoryTranslation;
-                    $newFoodCategory->setObject($cloneOption);
+                    $newFoodCategory->setObject($cloneFoodCategory);
                     $newFoodCategory->setId(null);
                     $em->persist($newFoodCategory);
                 }
@@ -153,23 +155,20 @@ class RestaurantDuplicateService extends ContainerAware
             $cloneDishUnit = clone $dishUnit;
             $cloneDishUnit->setId(null);
             $cloneDishUnit->setPlace($newPlace);
-            $exception =
-            if(!empty($dishUnitsCategoryArray[$dishUnit->getUnitCategory()->getId()])){
-
-            }
             $cloneDishUnit->setUnitCategory();
+
             $em->persist($cloneDishUnit);
-            $dishUnitsArray[$dishUnit->getId()] = $cloneDishUnit->getId();
+            $dishUnitsArray[$dishUnit->getId()] = $cloneDishUnit;
 
             foreach ($dishUnit->getTranslations() as $translation) {
                 $newDishUnitTranslation = clone $translation;
-                $newDishUnitTranslation->setObject($dishUnit);
+                $newDishUnitTranslation->setObject($cloneDishUnit);
                 $newDishUnitTranslation->setId(null);
                 $em->persist($newDishUnitTranslation);
             }
 
         }
-die;
+
         $comboDiscounts = $comboDiscountRepo->findBy(['place'=>$placeId]);
 
         foreach ($comboDiscounts as $comboDiscount){
@@ -192,7 +191,6 @@ die;
                 $newDish = clone $dish;
                 $newDish->setId(null);
                 $newDish->setPlace($newPlace);
-                $newDish->setTranslations();
                 $em->persist($newDish);
 
                 foreach ($dish->getTranslations() as $translation) {
@@ -205,18 +203,17 @@ die;
                 $dishSize = $dishSizeRepo->findBy(['dish' => $dish]);
 
                 foreach ($dishSize as $size) {
+
+                    $sizeId = $size->getUnit()->getId();
                     $cloneSize = clone $size;
                     $cloneSize->setId(null);
                     $cloneSize->setDish($newDish);
-                    $cloneSize->setUnit($dishUnitsArray[$size->getId()]);
+                    $cloneSize->setUnit($dishUnitsArray[$sizeId]);
                     $em->persist($cloneSize);
                 }
-
-
             }
 
         }
-
 
         $em->flush();
 
