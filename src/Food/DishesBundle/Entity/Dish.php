@@ -237,6 +237,7 @@ class Dish extends Uploadable implements Translatable
      */
     private $useDateInterval = false;
 
+
     /**
      * @var string
      * @Gedmo\Translatable
