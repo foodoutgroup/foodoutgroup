@@ -512,6 +512,25 @@ Tallinn]]></target>
                 <source>general.delivery_does_not_match</source>
                 <target>Šis restorāns nenodrošina ēdienu ar izvēlēto piegādes iespējas</target>
             </trans-unit>
+
+
+
+            <trans-unit id="label.address">
+                <source>label.address</source>
+                <target>Address</target>
+            </trans-unit>
+            <trans-unit id="error.house.not.found">
+                <source>error.house.not.found</source>
+                <target>House number undefined</target>
+            </trans-unit>
+            <trans-unit id="error.server.problem.city.not.found">
+                <source>error.server.problem.city.not.found</source>
+                <target>Wrong address structure</target>
+            </trans-unit>
+            <trans-unit id="in.this.city.we.have.not.delivered.food">
+                <source>in.this.city.we.have.not.delivered.food</source>
+                <target>Sorry, we can not delivering to this city</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

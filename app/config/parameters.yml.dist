@@ -11,7 +11,7 @@ parameters:
     locale: lt
     locales: [lt, en, ru]
     locales_hidden: ['en','ru']
-    
+    geo_provider: http://fogeo.dev/app_dev.php
     database_driver: pdo_mysql
     database_host: localhost
     database_port: 3306
@@ -154,6 +154,8 @@ parameters:
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: false
+    geo_provider: https://geoproxy.foodout.lt
+
 lexik_translation:
     fallback_locale: %locale%         # (required) default locale(s) to use
     managed_locales: %locales% # (required) locales that the bundle have to manage

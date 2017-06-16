@@ -1077,7 +1077,7 @@ class Order
     {
         $placePointCity = $this->place_point_city;
         if (!$this->place_point_city) {
-            $placePointCity = $this->getPlacePoint()->getCityId()->name;
+            $placePointCity = $this->getPlacePoint()->getCityId()->getTitle();
         }
 
         return $placePointCity;

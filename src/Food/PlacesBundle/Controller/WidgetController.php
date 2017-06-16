@@ -10,7 +10,7 @@ class WidgetController extends Controller
 
     public function recommendedAction()
     {
-        $location = $this->get('food.location')->getLocationFromSession();
+        $location = $this->get('food.location')->get();
         $city = null;
         if (!empty($location['city'])) {
             $city = $location['city'];
@@ -23,7 +23,7 @@ class WidgetController extends Controller
     public function bestOffersAction()
     {
         $cityService = $this->get('food.city_service');
-        $location = $this->get('food.location')->getLocationFromSession();
+        $location = $this->get('food.location')->get();
 
         $city = null;
         if (!empty($location['city'])) {

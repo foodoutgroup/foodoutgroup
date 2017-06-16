@@ -16,6 +16,12 @@ food_ajax:
     options:
         expose: true
 
+food_ajax_request:
+    path: /{action}
+    defaults: { _controller: FoodAppBundle:Ajax:ajax, action: ~}
+    options:
+        expose: true
+
 food_place_point_data:
     path: /place-point/{point_id}
     defaults: { _controller: FoodDishesBundle:Place:placePoint, point_id: ~}

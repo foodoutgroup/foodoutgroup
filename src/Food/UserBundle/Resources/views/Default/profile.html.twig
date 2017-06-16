@@ -27,7 +27,6 @@
 {% endblock %}
 
 {% form_theme form.profile _self %}
-{% form_theme form.address _self %}
 
 {% block form_row %}
 {% spaceless %}
@@ -108,7 +107,8 @@
 
                         <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate" autocomplete="off">
                             {% include 'FoodUserBundle:Default:profile/profile.html.twig' %}
-                            {% include 'FoodUserBundle:Default:profile/address.html.twig' %}
+
+                            {% include 'FoodUserBundle:Default:profile/address.html.twig' with {'current' :  addressDefault } %}
                             {% include 'FoodUserBundle:Default:profile/change_password.html.twig' %}
 
                             {% if not user.getIsBussinesClient() %} <div class="hidden"> {% endif %}

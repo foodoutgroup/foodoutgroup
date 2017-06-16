@@ -3,6 +3,7 @@
 namespace Food\ApiBundle\Service;
 
 use Food\ApiBundle\Common\JsonRequest;
+use Food\DishesBundle\Entity\DishSize;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\Coupon;
@@ -99,7 +100,7 @@ class OrderService extends ContainerAware
             'lng'     => null,
             'address' => null
         ];
-        $googleGisService = $this->container->get('food.googlegis');
+        $googleGisService = $this->container->get('food.location');
 
         $token = $requestOrig->headers->get('X-API-Authorization');
         $this->container->get('food_api.api')->loginByHash($token);
@@ -141,8 +142,9 @@ class OrderService extends ContainerAware
             );
         }
 
-        $em = $this->container->get('doctrine')->getManager();
+        $em = $this->container->get('doctrine');
         $serviceVar = $request->get('service');
+
         $logger->alert('Service var givven: ');
         $logger->alert(var_export($serviceVar, true));
         $pp = null; // placePoint :D - jei automatu - tai NULL :D
@@ -416,14 +418,12 @@ class OrderService extends ContainerAware
                     ]
                 );
             } else {
-                $locationInfo = $googleGisService->groupData(
-                    $serviceVar['address']['street'] . " " . $serviceVar['address']['house_number'],
-                    $serviceVar['address']['city']
-                );
+                $locationInfo = $googleGisService->findByAddress($serviceVar['address']['street'] . " " . $serviceVar['address']['house_number'].", ".$serviceVar['address']['city']);
                 $searchCrit = [
                     'city' => $locationInfo['city'],
-                    'lat' => $locationInfo['lat'],
-                    'lng' => $locationInfo['lng'],
+                    'city_id' => $locationInfo['city_id'],
+                    'latitude' => $locationInfo['latitude'],
+                    'longitude' => $locationInfo['longitude'],
                     'address_orig' => $serviceVar['address']['street'] . " " . $serviceVar['address']['house_number']
                 ];
                 // Append flat if given
@@ -431,11 +431,7 @@ class OrderService extends ContainerAware
                     $searchCrit['address_orig'] .= ' - ' . $serviceVar['address']['flat_number'];
                 }
 
-                $placePointId = $em->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
-                    $basket->getPlaceId()->getId(),
-                    $searchCrit,
-                    true
-                );
+                $placePointId = $em->getRepository('FoodDishesBundle:Place')->getPlacePointNear($basket->getPlaceId()->getId(), $searchCrit, true);
 
                 if (!$placePointId) {
                     throw new ApiException(
@@ -528,12 +524,13 @@ class OrderService extends ContainerAware
         // Update order with recent address information. but only if we need to deliver
         if ($serviceVar['type'] != "pickup") {
 
+//            ?!???
             $address = $os->createAddressMagic(
                 $user,
                 $searchCrit['city'],
                 $searchCrit['address_orig'],
-                (string)$searchCrit['lat'],
-                (string)$searchCrit['lng'],
+                (string)$searchCrit['latitude'],
+                (string)$searchCrit['longitude'],
                 '',
                 (isset($searchCrit['city_id']) ? $searchCrit['city_id'] : null)
             );
@@ -654,6 +651,7 @@ class OrderService extends ContainerAware
             'place_point_self_delivery' => $order->getPlacePointSelfDelivery(),
             'payment_method' => $this->container->get('translator')->trans('mobile.payment.' . $order->getPaymentMethod()),
             'order_date' => $order->getOrderDate()->format('H:i'),
+            'estimated_delivery_time' => $order->getDeliveryTime(),
             'order_date_full' => $order->getOrderDate(),
             'discount'    => $discount,
             'state'       => [
@@ -876,6 +874,9 @@ class OrderService extends ContainerAware
                 $current_price = $detail->getOrigPrice();
                 $sizes = $detail->getDishId()->getSizes();
                 foreach ($sizes as $size) {
+                    /**
+                     * @var $size DishSize
+                     */
                     if ($size->getUnit()->getId() == $detail->getDishUnitId()) {
                         $current_price = $size->getCurrentPrice();
                     }
