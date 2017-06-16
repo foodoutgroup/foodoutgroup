@@ -20,6 +20,7 @@ use PHPExcel_Cell;
 use PHPExcel_Style_Fill;
 use PHPExcel_Style_Protection;
 use PHPExcel_Worksheet;
+use PHPExcel_Writer_CSV;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -281,6 +282,11 @@ class ImportExportService extends BaseService
 
 
             foreach ($collection as $item) {
+                if (method_exists($item, 'getActive')) {
+                    if (!$item->getActive()){ continue; }
+                } elseif (method_exists($item, 'isActive')) {
+                    if (!$item->isActive()){ continue; }
+                }
                 $row++;
                 $col = 'A';
                 foreach ($fields as $field) {
@@ -335,6 +341,8 @@ class ImportExportService extends BaseService
         }
 
         $writer = $this->excelWriter->createWriter($phpExcelObject, 'Excel5');
+        $writer->setPreCalculateFormulas(false);
+
         $response = $this->excelWriter->createStreamedResponse($writer);
 
 
