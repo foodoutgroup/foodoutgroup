@@ -155,11 +155,11 @@ class SettingsController extends CRUDController
         ]);
 
         $form->add('pedestrian_filter_show', 'boolean', [
-            'label' => 'enable pedestrian filter',
+            'label' => 'Enable pedestrian filter',
         ]);
 
         $form->add('pedestrian_delivery_time', 'number', [
-            'label' => 'pedestrian delivery time'
+            'label' => 'Pedestrian delivery time'
         ]);
 
         $form->add('placepoint_prepare_times_pedestrian', 'text');
