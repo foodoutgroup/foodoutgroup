@@ -255,4 +255,21 @@ class LocationService extends ContainerAware
         return $ua;
     }
 
+
+        public function getActiveServices($city)
+        {
+            $activeCities = $this->em->getRepository('FoodAppBundle:City')->findBy(['active' => 1, 'pedestrian' => 1,'title'=>$city]);
+            $activeList = $this->container->get('food.app.utils.misc')->getParam('pedestrian_filter_show');
+
+            $result['pedestrian'] = false;
+            if(!empty($activeCities) && $activeList){
+                $result['pedestrian'] = true;
+            }
+            $result['delivery'] = true;
+            $result['pickup'] = true;
+
+            return $result;
+        }
+
+
 }

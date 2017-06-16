@@ -731,7 +731,7 @@ class PlacesService extends ContainerAware
     public function getDeliveryTime(Place $place, PlacePoint $placePoint = null, $type = false)
     {
         if ($type && $type == 'pedestrian') {
-            $deliveryTime = $this->getPedestrianDeliveryTime() . ' min';
+            $deliveryTime = $place->getDeliveryTime();
         } else {
 
             $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
