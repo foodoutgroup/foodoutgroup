@@ -40,8 +40,8 @@ class AddressController extends Controller
 
                 if($response) {
                     $lService->setFromArray($response);
-                    $response['pedestrian'] = $pedestrianService->getPedestrianByCity($response['city_id']);
                     $response['house_number'] = $response['house'];
+                    $response['pedestrian'] = $pedestrianService->getPedestrianByCity($response['city_id']);
 
                 } else {
                     $response = [];
