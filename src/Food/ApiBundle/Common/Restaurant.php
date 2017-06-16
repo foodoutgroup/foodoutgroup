@@ -152,7 +152,7 @@ class Restaurant extends ContainerAware
         } elseif ($locationData == null) {
             $delivery = false;
             $pickUp = false;
-            $pedestrian = false;
+
             foreach ($place->getPoints() as $tempPP) {
                 if (!$tempPP->getActive()) {
                     continue;
@@ -168,10 +168,13 @@ class Restaurant extends ContainerAware
                 }
             }
 
-        } else {
+        }elseif ($place->getDeliveryOptions() == $place::OPT_ONLY_PEDESTRIAN){
+            $pickUp = false;
+            $delivery = true;
+        }
+        else {
             $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true : false);
             $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true : false);
-            $pedestrian = ($place->getDeliveryOptions() == OrderService::$deliveryPedestrian ? true : false);
         }
 
         $devPrice = 0;
