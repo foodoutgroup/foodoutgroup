@@ -2265,7 +2265,6 @@ class OrderService extends ContainerAware
 
         $messagingService = $this->container->get('food.messages');
         $translator = $this->container->get('translator');
-        $translator->setLocale($this->container->getParameter('locale'));
         $logger = $this->container->get('logger');
         $miscUtils = $this->container->get('food.app.utils.misc');
         $country = $this->container->getParameter('country');

@@ -94,10 +94,10 @@ class OrderService extends ContainerAware
          * }
          */
         $searchCrit = [
-            'city'    => null,
+            'city' => null,
             'city_id' => null,
-            'lat'     => null,
-            'lng'     => null,
+            'lat' => null,
+            'lng' => null,
             'address' => null
         ];
         $googleGisService = $this->container->get('food.location');
@@ -160,12 +160,12 @@ class OrderService extends ContainerAware
 
         $place = $basket->getPlaceId();
 
-        if (strpos($place->getDeliveryOptions(),$serviceVar['type']) === false) {
+        if (strpos($place->getDeliveryOptions(), $serviceVar['type']) === false && $place->getDeliveryOptions() != $os::$deliveryPedestrian) {
             throw new ApiException(
                 'Coupon for delivery',
                 404,
                 [
-                    'error'       => 'Chosen delivery option does not match restaurants delivery',
+                    'error' => 'Chosen delivery option does not match restaurants delivery',
                     'description' => $this->container->get('translator')->trans('general.coupon.only_delivery')
                 ]
             );
@@ -338,8 +338,7 @@ class OrderService extends ContainerAware
                 $useAdminFee = false;
             }
 
-            if ($user->getIsBussinesClient() || ($serviceVar['type'] == "pickup" && !$place->getMinimalOnSelfDel() ))
-            {
+            if ($user->getIsBussinesClient() || ($serviceVar['type'] == "pickup" && !$place->getMinimalOnSelfDel())) {
                 $useAdminFee = false;
             }
 
@@ -388,7 +387,7 @@ class OrderService extends ContainerAware
 
         if ($serviceVar['type'] != "pickup") {
             $placeService = $this->container->get('food.places');
-            if (!$useAdminFee  && ($placeService->getMinCartPrice($place->getId()) - $total_cart) >= 0.00001 ) { //Jei yra admin fee - cart'o minimumo netaikom
+            if (!$useAdminFee && ($placeService->getMinCartPrice($place->getId()) - $total_cart) >= 0.00001) { //Jei yra admin fee - cart'o minimumo netaikom
                 throw new ApiException(
                     'Order Too Small',
                     400,
@@ -418,7 +417,7 @@ class OrderService extends ContainerAware
                     ]
                 );
             } else {
-                $locationInfo = $googleGisService->findByAddress($serviceVar['address']['street'] . " " . $serviceVar['address']['house_number'].", ".$serviceVar['address']['city']);
+                $locationInfo = $googleGisService->findByAddress($serviceVar['address']['street'] . " " . $serviceVar['address']['house_number'] . ", " . $serviceVar['address']['city']);
                 $searchCrit = [
                     'city' => $locationInfo['city'],
                     'city_id' => $locationInfo['city_id'],
@@ -478,6 +477,12 @@ class OrderService extends ContainerAware
             }
         }
 
+        $placeType = $basket->getPlaceId()->getDeliveryOptions();
+
+        if ($placeType != $os::$deliveryPedestrian) {
+            $placeType = $request->get('service')['type'];
+        }
+
         $os->createOrderFromCart(
             $basket->getPlaceId()->getId(),
             $requestOrig->getLocale(),
@@ -487,7 +492,7 @@ class OrderService extends ContainerAware
             $coupon,
             null,
             null,
-            $request->get('service')['type']
+            $placeType
         );
 
         $os->setMobileOrder(true);
@@ -507,13 +512,17 @@ class OrderService extends ContainerAware
 
         $os->setPaymentMethod($paymentMethod);
 
-
-        if ($serviceVar['type'] == "pickup") {
-            $os->setDeliveryType($os::$deliveryPickup);
-        } elseif ($serviceVar['type'] == "pedestrian") {
+        if ($placeType == $os::$deliveryPedestrian) {
             $os->setDeliveryType($os::$deliveryPedestrian);
         } else {
-            $os->setDeliveryType($os::$deliveryDeliver);
+
+
+            if ($serviceVar['type'] == "pickup") {
+                $os->setDeliveryType($os::$deliveryPickup);
+            } else {
+                $os->setDeliveryType($os::$deliveryDeliver);
+            }
+
         }
         $os->setLocale($requestOrig->getLocale());
         if (!empty($customerComment)) {
@@ -651,10 +660,11 @@ class OrderService extends ContainerAware
             'place_point_self_delivery' => $order->getPlacePointSelfDelivery(),
             'payment_method' => $this->container->get('translator')->trans('mobile.payment.' . $order->getPaymentMethod()),
             'order_date' => $order->getOrderDate()->format('H:i'),
+            'estimated_delivery_time' => $order->getDeliveryTime(),
             'order_date_full' => $order->getOrderDate(),
-            'discount'    => $discount,
-            'state'       => [
-                'title'       => $title,
+            'discount' => $discount,
+            'state' => [
+                'title' => $title,
                 // TODO Rodome nebe restorano, o dispeceriu nr
                 "info_number" => "+" . $this->container->getParameter('dispatcher_contact_phone'),
 //                'info_number' => '+'.$order->getPlacePoint()->getPhone(),
@@ -994,7 +1004,7 @@ class OrderService extends ContainerAware
 
             case FO::$deliveryPedestrian:
                 $deliveryType = 'pedestrian';
-                $time = $this->container->get('food.places')->getPedestrianDeliveryTime().' min.';
+                $time = $this->container->get('food.places')->getPedestrianDeliveryTime() . ' min.';
                 $parsedAddress = $miscUtil->parseAddress(
                 // @TODO check if addressId exists
                     $order->getAddressId()->getAddress()
@@ -1024,7 +1034,7 @@ class OrderService extends ContainerAware
         ];
 
 
-        if($cityObj = $order->getPlacePoint()->getCityId()) {
+        if ($cityObj = $order->getPlacePoint()->getCityId()) {
             $returner['address']['city'] = $cityObj->getTitle();
         }
 

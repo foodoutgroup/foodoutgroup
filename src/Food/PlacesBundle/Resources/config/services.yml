@@ -9,3 +9,8 @@ services:
     parent: food.base_service
     calls:
       - [setPlaceService, [@food.places]]
+
+  food.pedestrian_service:
+      class: Food\PlacesBundle\Service\PedestrianService
+      calls:
+        - [setContainer, [@service_container]]

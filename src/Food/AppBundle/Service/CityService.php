@@ -65,6 +65,4 @@ class CityService extends BaseService
         return $bestOffers;
 
     }
-
-
 }

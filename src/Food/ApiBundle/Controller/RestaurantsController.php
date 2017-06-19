@@ -18,6 +18,7 @@ class RestaurantsController extends Controller
     {
 
         $startTime = microtime(true);
+
         $this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array)$request);
         $doctrine = $this->getDoctrine();
         try {
@@ -39,7 +40,7 @@ class RestaurantsController extends Controller
                 'keyword' => $keyword
             );
 
-            if (!empty($delivery_type) && in_array($delivery_type, array('delivery', 'pickup'))) {
+            if (!empty($delivery_type) && in_array($delivery_type, array('delivery', 'pickup','pedestrian'))) {
                 $filters['delivery_type'] = $delivery_type;
             }
 
