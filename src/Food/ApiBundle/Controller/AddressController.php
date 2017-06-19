@@ -28,7 +28,7 @@ class AddressController extends Controller
                 if($response) {
                     $lService->setFromArray($response);
                     $response['house_number'] = $response['house'];
-                    $response['pedestrian'] = $lService->getActiveServices($city);
+                    $response['pedestrian'] = false;
                 } else {
                     $response = [];
                 }
@@ -38,14 +38,12 @@ class AddressController extends Controller
 
                 if($response) {
                     $lService->setFromArray($response);
-                    $response['pedestrian'] = $lService->getActiveServices($city);
+                    $response['pedestrian'] = false;
                     $response['house_number'] = $response['house'];
 
                 } else {
                     $response = [];
                 }
-
-
 
             } else {
 
