@@ -402,8 +402,6 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.dispatcher
                       - sonata.admin.drivers
-                      - sonata.admin.params
-                      - sonata.admin.paramslog
                       - sonata.admin.cities
                       - sonata.admin.citieslog
                       - sonata.admin.error_log

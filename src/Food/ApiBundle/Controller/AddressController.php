@@ -47,8 +47,6 @@ class AddressController extends Controller
                     $response = [];
                 }
 
-
-
             } else {
 
                 $response = [];

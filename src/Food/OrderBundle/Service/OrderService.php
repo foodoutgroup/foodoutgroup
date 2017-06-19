@@ -478,8 +478,6 @@ class OrderService extends ContainerAware
      */
     protected function changeOrderStatus($status, $source = null, $message = null)
     {
-
-        $this->informPlace(false);
         // Let's log the shit out of it
         $this->logStatusChange($this->getOrder(), $status, $source, $message);
 
@@ -2265,6 +2263,7 @@ class OrderService extends ContainerAware
 
         $messagingService = $this->container->get('food.messages');
         $translator = $this->container->get('translator');
+        $translator->setLocale($this->container->getParameter('locale'));
         $logger = $this->container->get('logger');
         $miscUtils = $this->container->get('food.app.utils.misc');
         $country = $this->container->getParameter('country');

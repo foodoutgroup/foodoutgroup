@@ -143,12 +143,17 @@ class DefaultController extends Controller
         $locationService = $this->get('food.location');
 
         $addressData = $request->request->get('address');
-
         if(!empty($addressData['id'])) {
 
             $hasAddress = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->findByIdUserFlat($addressData['id'],$user,$addressData['flat']);
             $addressDetail = $locationService->findByHash($addressData['id']);
             $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($addressDetail['city']);
+
+            if (!is_object($cityObj)) {
+                $flashbag->set('profile_update_errors', $translator->trans('messages.city_doesnt_exist'));
+                return $this->redirect($this->generateUrl('user_profile'));
+            }
+
             if(!$hasAddress && $cityObj) {
                 $oldLocationData = $locationService->get();
 
@@ -251,6 +256,7 @@ class DefaultController extends Controller
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
             'profile_updated' => $flashbag->get('profile_updated'),
+            'profile_update_errors' => $flashbag->get('profile_update_errors'),
             'user' => $this->user(),
             'discount' => $this->get('food.user')->getDiscount($this->user())
         ];
