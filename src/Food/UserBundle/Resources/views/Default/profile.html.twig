@@ -105,6 +105,12 @@
                             </div>
                         {% endif %}
 
+                        {% if profile_update_errors is defined and profile_update_errors is not empty %}
+                            <div class="alert alert-danger">
+                                {{ profile_update_errors.0 }}
+                            </div>
+                        {% endif %}
+
                         <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate" autocomplete="off">
                             {% include 'FoodUserBundle:Default:profile/profile.html.twig' %}
 
