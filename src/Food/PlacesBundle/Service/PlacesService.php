@@ -114,6 +114,21 @@ class PlacesService extends ContainerAware
     }
 
     /**
+     * @param int $dishId
+     *
+     * @return \Food\DishesBundle\Entity\Place|false
+     */
+    public function getPlaceByDish($dishId)
+    {
+        $dish = $this->em()->getRepository('FoodDishesBundle:Dish')->findOneBy(['id' => $dishId]);
+        if (!$dish) {
+            return false;
+        } else {
+            return $dish->getPlace();
+        }
+    }
+
+    /**
      * @param \Food\DishesBundle\Entity\Place $place
      *
      * @return array|\Food\DishesBundle\Entity\FoodCategory[]
