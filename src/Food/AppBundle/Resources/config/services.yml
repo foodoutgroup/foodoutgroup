@@ -22,7 +22,7 @@ services:
 
     validate.slug:
         class: Food\AppBundle\Validator\Constraints\SlugValidator
-        arguments: [@doctrine.orm.entity_manager, %locales%, %kernel.default_locale%]
+        arguments: [@doctrine.orm.entity_manager, %locales%, %kernel.default_locale%, @service_container]
         tags:
           - { name: validator.constraint_validator, alias: validate.slug }
 
