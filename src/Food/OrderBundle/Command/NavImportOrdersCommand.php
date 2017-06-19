@@ -64,7 +64,7 @@ class NavImportOrdersCommand extends ContainerAwareCommand
             $navService = $this->getContainer()->get('food.nav');
             $miscUtility = $this->getContainer()->get('food.app.utils.misc');
             $userService = $this->getContainer()->get('fos_user.user_manager');
-            $gisService = $this->getContainer()->get('food.googlegis');
+            $gisService = $this->getContainer()->get('food.location');
             $log = $this->getContainer()->get('logger');
             $country = $this->getContainer()->getParameter('country');
 
@@ -310,10 +310,10 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                             $addressStr = mb_convert_case($addressStr, MB_CASE_TITLE, "UTF-8");
                             $addressStr = str_replace(['G.', 'Pr.'], ['g.', 'pr.'], $addressStr);
                             $output->writeln('Fixed street: '.var_export($addressStr, true));
-                            $gisAddress = $gisService->groupData($addressStr, $fixedCity);
+                            $gisAddress = $gisService->findByAddress($addressStr." ,".$fixedCity);
 
 
-                            if (isset($gisAddress['not_found']) && is_object($cityObj)) {
+                            if (!$gisAddress) {
                                 $address = $em->getRepository('FoodUserBundle:UserAddress')
                                     ->findOneBy(
                                         array(
@@ -322,20 +322,15 @@ class NavImportOrdersCommand extends ContainerAwareCommand
                                             'user' => $user
                                         )
                                     );
-
-                                $cityId = $cityObj->getId();
-
                             } else {
                                 $address = $em->getRepository('FoodUserBundle:UserAddress')
                                     ->findOneBy(
                                         array(
                                             'cityId' => $gisAddress['city_id'],
-                                            'address' => $addressStr,
+                                            'addressId' => $gisAddress['id'],
                                             'user' => $user
                                         )
                                     );
-
-                                $cityId = $gisAddress['city_id'];
                             }
 
                             if(!$address) {
@@ -351,17 +346,10 @@ class NavImportOrdersCommand extends ContainerAwareCommand
 
 
 
-                            if (!$address instanceof UserAddress || $address->getId() == '') {
-                                $address = new UserAddress();
-                                $address->setUser($user)
-                                    ->setCity($fixedCity)
-                                    ->setCityId($em->getRepository('FoodAppBundle:City')->find($cityId))
-                                    ->setAddress($addressStr)
-                                    ->setLat($gisAddress['lat'])
-                                    ->setLon($gisAddress['lng']);
-                                $em->persist($address);
-                                // Deja sitas ispusins ir orderiu insertus :(
-                                $em->flush();
+                            if (!$address) {
+
+                                $address = $this->getContainer()
+                                    ->get('food.location')->saveAddressFromArrayToUser($gisAddress, $user);
 
                                 $user->addAddress($address);
                                 $userService->updateUser($user);

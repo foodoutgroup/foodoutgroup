@@ -27,11 +27,6 @@ food_dishes:
     type:     annotation
     prefix:   /
 
-food_call_center:
-    resource: "@CallCenterBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 admin_dashboard_redirect:
     path: /
     defaults:

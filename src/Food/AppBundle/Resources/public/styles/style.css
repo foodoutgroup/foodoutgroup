@@ -706,24 +706,126 @@ input.button {}
 .special-offer-block .img-description {position: absolute; margin: 0; right: 12px; bottom: 12px; font-size: 10px; text-transform: uppercase; color: #fff;}
 
 /*Food search form*/
-.search-food-form {background: url(/bundles/foodapp/images/search-bg.png) no-repeat center top; width: 834px; margin: 0 auto; min-height: 172px; padding-top: 46px; padding-left: 27px;}
-.search-food-form .title {font-size: 17px; color: #4d090a; text-align: center; margin: 0; padding-bottom: 15px; padding-right: 63px; letter-spacing: 0.6px;}
-.search-food-form input[type="text"] {float: left; border: 1px solid #e1ddd6; background: #fff; padding: 20px 16px; line-height: 18px; height: 18px; width: 191px; font-size: 15px; border-radius: 5px 0 0 5px;}
-.search-food-form input[type="text"].input-street {margin-right: 13px; border-left: none; border-radius: 0 5px 5px 0; width: 254px;}
-.search-food-form input[type="submit"] {    background: url("/bundles/foodapp/images/big-button.png") no-repeat scroll right top #91c005;
-    border: 1px solid #87b305;
-    border-radius: 5px;
-    box-shadow: 0 1px 2px #b3afad;
-    color: #fff;
-    float: left;
-    font-size: 20px;
-    height: 60px;
-    letter-spacing: 1.5px;
-    padding: 0 55px 0 29px;
-    text-shadow: 0 1px 0 #6e9204;
-    text-transform: uppercase;
+.search-food-form {
+
+    position:relative;
+    border-radius: 2px;
+    background:url("/bundles/foodapp/images/search-form-bg.png");
+    box-shadow: 0 0 0 5px rgba(255,255,255,.50);
+    max-width: 690px;
+    margin: 0 auto;
+    min-height: 50px;
+    padding-top: 10px;
+    margin-top: 16px;
+    padding-bottom: 20px;
 }
 
+.search-food-form .flex-aligment{
+    display: flex;
+    justify-content: center;
+}
+
+.search-food-form button.find-me {
+    position: absolute;
+    left: 400px;
+    top: 82px;
+    background: url(/bundles/foodapp/images/find-me.png);
+    width: 24px;
+    height: 24px;
+    border: none;
+
+}
+
+.search-food-form #error
+{
+    margin-top: 20px;
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.search-food-form .marker-icon {
+    position: absolute;
+    left: 326px;
+    top: -18px;
+    background: url(/bundles/foodapp/images/marker-icon.png) no-repeat;
+    width: 32px;
+    height: 32px;
+    border: none;
+
+}
+
+.search-food-form .title {
+    font-size: 17px;
+    color: #4d090a;
+    text-align: center;
+    margin: 0;
+    padding-top: 20px;
+    padding-bottom: 15px;
+    letter-spacing: 0.6px;
+}
+
+.search-food-form input[type="text"] {
+    float: left;
+    border: 1px solid #e1ddd6;
+    background: #fff;
+    padding: 18px 16px;
+    line-height: 18px;
+    height: 18px;
+    width: 360px;
+    font-size: 15px;
+    border-radius: 5px 5px 0px 5px;
+}
+
+.search-food-form input[type="text"].error {
+    border: 1px solid red;
+}
+
+.search-food-form button.submit {
+    background: url(/bundles/foodapp/images/big-button.png) no-repeat scroll right top #91c005;
+    border: 1px solid #87b305;
+    border-radius: 6px;
+    color: #fff;
+    float: left;
+    height: 53px;
+    padding: 0 18px;
+}
+
+.search-food-form button img {
+    height: 25px;
+}
+
+
+.ui-autocomplete {
+    padding-top: -10px !important;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.ui-autocomplete .ui-menu-item > a.ui-corner-all {
+    display: block;
+    padding: 10px 15px;
+    clear: both;
+    font-size:14px;
+    font-weight: normal;
+    line-height: 18px;
+    color: #555555;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.ui-autocomplete .ui-corner-all {
+    border-radius: 0px;
+    border: none;
+    padding: 5px 15px;
+    background: none;
+}
+
+.ui-autocomplete .ui-state-focus {
+    color: #ffffff;
+    background: #f1eded;
+    margin:0px !important;
+}
 
 /*Center -------------------------------------------*/
 .site-center {background: #f5f0eb; padding-bottom: 98px}
@@ -754,7 +856,6 @@ input.button {}
 }
 
 .alert-no-address .input-section input[type=text]{
-    width: 200px;
     font-size: 15px;
     padding: 8px 12px;
     border: 1px solid #d8d8d8;
@@ -762,22 +863,6 @@ input.button {}
     box-shadow: 0 0 1px #f2f2f2;
     box-shadow: 0 0 2px #d0c8c1;
 }
-
-.alert-no-address .input-section button {
-    font-size: 13px;
-    color: #fff;
-    text-shadow: 0 1px 0 #6d9104;
-    text-transform: uppercase;
-    width: 128px;
-    height: 38px;
-    padding-top: 6px;
-    border-radius: 4px;
-    background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x left center;
-    box-shadow: 0 1px 1px #c0c0c0;
-    border: none;
-    letter-spacing: 1px;
-}
-
 
 #address_city-button {
     margin-bottom: -14px !important;
@@ -803,9 +888,9 @@ input.button {}
 .image-top .page-path a {color: #fff; background-image: url(/bundles/foodapp/images/small-arrow-right-2.png);}
 
 /*Page title*/
-.page-title {padding-bottom: 24px; letter-spacing: -0.7px;}
+.page-title { padding-bottom: 14px; letter-spacing: -0.7px; position: relative;  }
 .page-title.no-page-path {padding-top: 30px;}
-.page-title h1 {font-size: 30px; margin: 0; color: #513d28; font-weight: normal;}
+.page-title h1 {font-size: 30px; margin: 0; color: #513d28; font-weight: normal; }
 .page-title.no-page-path h1 {font-size: 41px;}
 .page-title span {float: left; margin-right: 18px;}
 .page-title a {text-transform: uppercase; float: left; padding-left: 15px; font-size: 10px; color: #b39196; background: url(/bundles/foodapp/images/location-ico.png) no-repeat left center; margin-top: 15px; letter-spacing: 1.7px;}
@@ -1338,7 +1423,7 @@ input.button {}
 
 .newsletter-form { }
 .newsletter-form input[type="text"] {float: left; float: left; border: 1px solid #e1ddd6; background: #fff; padding: 8px 16px; line-height: 18px; height: 18px; width: 180px; font-size: 15px; border-radius: 3px; margin-right: 8px; margin-top: 12px;}
-.newsletter-form input[type="submit"] {float: left; float: left; height: 36px; background: url(/bundles/foodapp/images/big-button-2.png) no-repeat right center; border-radius: 3px; box-shadow: 0 1px 2px #769c04; border: none; color: #fff; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; width: 120px; text-shadow: 0 1px 0 #769C03; line-height: 34px; border: 1px solid #88b305; margin-top: 12px;}
+.newsletter-form input[type="submit"] {float: left; float: left; height: 36px; background: url(/bundles/foodapp/images/big-button.png) no-repeat right center; border-radius: 3px; box-shadow: 0 1px 2px #769c04; border: none; color: #fff; font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; width: 120px; text-shadow: 0 1px 0 #769C03; line-height: 34px; border: 1px solid #88b305; margin-top: 12px;}
 
 .newsletter-wide {padding-top: 94px; padding-bottom: 62px;}
 .newsletter-wide .newsletter-block {float: none; width: auto; padding: 37px;}
@@ -2153,9 +2238,10 @@ div.coupon_form_popup {
 .search-food-form span a { width: 130px !important; }
 #index_city-menu, #index_city-menu li { width: 162px !important; }
 .search-food-form input.input-street[type="text"] {
-    width: 190px;
+    width: 360px;
     margin-right: 0;
     border-radius: 0;
+    border-radius: 5px 0 0 5px;
 }
 .search-food-form input.input-house[type="text"] {
     border-left: medium none;
@@ -2196,6 +2282,7 @@ div.coupon_form_popup {
   margin-left: -3px;
   padding: 0 5px;
 }
+
 .tooltip-inner {
   max-width: 200px;
   padding: 3px 8px;
@@ -3045,3 +3132,110 @@ div.coupon_form_popup {
     margin-left: 5px;
 }
 
+.address-search-form-city {
+    position: relative;
+}
+.address-search-form-city #address_autocomplete {
+    width:300px;
+}
+
+.address-search-form-city .input-house {
+    width: 76px;
+}
+
+.address-search-form-city #submit {
+    border: none;
+    width: 54px;
+    background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x center center;
+    border-radius: 6px;
+    height: 40px;
+    padding-top: 3px;
+}
+
+.address-search-form-city #submit img {
+    width: 26px;
+}
+
+.address-search-form-city button.find-me {
+    position: absolute;
+    left: 416px;
+    top: 8px;
+    background: url(/bundles/foodapp/images/find-me.png);
+    width: 24px;
+    height: 24px;
+    border: none;
+
+}
+
+.address-search-form-place button.find-me {
+    left: 300px;
+}
+
+
+.address-search-form-cart #address_autocomplete {
+    width: 310px;
+}
+.address-search-form-cart .input-house {
+    width: 60px !important;
+    margin-left: 10px;
+}
+
+.address-search-form-cart button.find-me {
+    left: 484px;
+    top: 7px;
+}
+
+.address-quick-search input {
+    border: 1px solid #d8d8d8;
+    border-radius: 4px;
+    box-shadow: 0 0 1px #f2f2f2;
+    float: left;
+    font-size: 14px;
+    height: 16px;
+    padding: 10px 12px;
+    width: 310px;
+    box-shadow: 0 0 2px #d0c8c1;
+}
+
+.address-quick-search #address_autocomplete {
+    width: 380px;
+    padding-right: 40px;
+}
+
+.address-quick-search #flat {
+    width: 60px;
+    margin-left: 10px;
+}
+
+.address-quick-search  button.submit-address-change {
+    width: 46px;
+    height: 38px;
+    border: none;
+    border-radius: 4px;
+    margin-left: 10px;
+    background: url(/bundles/foodapp/images/button-grad-2.png) repeat-x center center;
+}
+
+.address-quick-search  button.submit-address-change img {
+    height: 27px;
+}
+
+.address-quick-search form {
+    margin-top:6px;
+}
+
+.address-quick-search  button.find-me {
+    position: absolute;
+    left: 403px;
+    top: 54px;
+    background: url(/bundles/foodapp/images/find-me.png);
+    width: 24px;
+    height: 24px;
+    border: none;
+
+}
+
+.address-quick-search #error {
+    color:red;
+    margin-top:2px;
+}

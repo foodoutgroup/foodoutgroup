@@ -21,7 +21,7 @@ class PlaceController extends Controller
     public function indexAction($id, $slug, Request $request, $oldFriendIsHere = false)
     {
         $session = $this->get('session');
-        $location = $this->get('food.googlegis')->getLocationFromSession();
+
         if ($session->get('isCallcenter')) {
             $session->set('isCallcenter', false);
         }
@@ -46,7 +46,7 @@ class PlaceController extends Controller
             $listType = $cookies->get('restaurant_menu_layout');
         }
 
-        $userLocationData = $this->get('food.googlegis')->getLocationFromSession();
+        $userLocationData = $this->get('food.location')->get();
 
         $breadcrumbData = [
             'city' => '',
@@ -83,9 +83,6 @@ class PlaceController extends Controller
             $breadcrumbData['kitchen_url'] = $breadcrumbData['city_url'].'/'.$kitchenSlug;
         }
 
-
-        $current_url = $request->getSchemeAndHttpHost() . $request->getRequestUri();
-
         $relatedPlaceCollection = [];
 
         // only for LT and only for cili
@@ -107,7 +104,6 @@ class PlaceController extends Controller
 
 
         $placeService = $this->get('food.places');
-        $takeAway = ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup);
 
         $variableCollection = [
             'place' => $place,
@@ -121,10 +117,10 @@ class PlaceController extends Controller
             'listType' => $listType,
             'isTodayNoOneWantsToWork' => $this->get('food.order')->isTodayNoOneWantsToWork($place),
             'breadcrumbData' => $breadcrumbData,
-            'current_url' => $current_url,
+            'current_url' => $request->getSchemeAndHttpHost() . $request->getRequestUri(),
             'oldFriendIsHere' => $oldFriendIsHere,
-            'takeAway' => $takeAway,
-            'location' => $location,
+            'takeAway' => ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup),
+            'location' => $this->get('food.location')->get(),
             'notificationCollection' => $this->getDoctrine()->getRepository('FoodPlacesBundle:PlaceNotification')->get($cityObj, $place)
         ];
 
@@ -335,7 +331,7 @@ class PlaceController extends Controller
                     'city' => $cityObj->getTitle(),
                     'url' =>    $this->get('slug')->getUrl($placeId, Slug::TYPE_PLACE),
                 ];
-                $this->get('food.googlegis')->setCity($cityObj);
+                $this->get('food.location')->setCity($cityObj);
             }
         }
 

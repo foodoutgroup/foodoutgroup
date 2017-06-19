@@ -62,7 +62,6 @@ class AppKernel extends Kernel
             new Food\ReportBundle\FoodReportBundle(),
             new Ob\HighchartsBundle\ObHighchartsBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
-            new Food\CallCenterBundle\CallCenterBundle(),
             new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Api\V2Bundle\ApiV2Bundle(),
