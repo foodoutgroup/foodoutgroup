@@ -315,15 +315,19 @@
                                         </div>
                                     {% endif %}
                                     <div class="menu-title clearfix">
-                                        {% if place.showNotification %}
-                                            <div class="alert alert-danger" id="notificationNotice">
-                                                {{ place.notificationContent|raw }}
-                                            </div>
+                                        {% if notificationCollection %}
+                                            {% for notification in notificationCollection %}
+                                                <div class="placeNotification alert alert-{{ notification.type|raw }}">
+                                                    {{ notification.description }}
+                                                </div>
                                             <Script>
                                                 $(document).ready(function(){
-                                                    setTimeout(function(){ $('#notificationNotice').fadeOut();}, 15000);
+                                                    setTimeout(function(){
+                                                        $( ".placeNotification" ).each(function( ) {$(this).fadeOut();});
+                                                    }, 15000);
                                                 });
                                             </Script>
+                                            {% endfor %}
                                         {% endif %}
 
                                         {# Dish Search Begin #}

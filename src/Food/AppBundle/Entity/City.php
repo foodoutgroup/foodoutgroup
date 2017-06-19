@@ -30,6 +30,12 @@ class City implements \JsonSerializable
     private $bestOffers;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Food\PlacesBundle\Entity\PlaceNotification", mappedBy="city")
+     */
+
+    private $placeNotificationCollection;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -459,6 +465,39 @@ class City implements \JsonSerializable
     public function getBestOffers()
     {
         return $this->bestOffers;
+    }
+
+    /**
+     * Add bestOffers
+     *
+     * @param \Food\PlacesBundle\Entity\PlaceNotification $placeNotificationCollection
+     * @return City
+     */
+    public function addPlaceNotificationCollection(\Food\PlacesBundle\Entity\PlaceNotification $placeNotificationCollection)
+    {
+        $this->placeNotificationCollection[] = $placeNotificationCollection;
+
+        return $this;
+    }
+
+    /**
+     * Remove bestOffers
+     *
+     * @param \Food\PlacesBundle\Entity\PlaceNotification $placeNotificationCollection
+     */
+    public function removePlaceNotificationCollection(\Food\PlacesBundle\Entity\PlaceNotification $placeNotificationCollection)
+    {
+        $this->placeNotificationCollection->removeElement($placeNotificationCollection);
+    }
+
+    /**
+     * Get placeController
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPlaceNotificationCollection()
+    {
+        return $this->placeNotificationCollection;
     }
 
     /**
