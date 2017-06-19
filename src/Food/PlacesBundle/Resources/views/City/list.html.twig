@@ -133,7 +133,6 @@
 {% if placeCollection|length %}
     <script>
         $(document).ready(function(){
-
             var placeCollectionLength = {{ placeCollection|length }};
             var buffer = '{% trans %}general.places_found3{% endtrans %}';
 
@@ -162,4 +161,13 @@
             $('.delivery-time-info').tooltip();
         });
     </script>
+{% else %}
+    <script>
+        $(document).ready(function(){
+
+            $('.page-title .place-counter').html('');
+            $('.delivery-time-info').tooltip();
+        });
+    </script>
+
 {% endif %}
