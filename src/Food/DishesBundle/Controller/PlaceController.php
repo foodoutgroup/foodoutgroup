@@ -4,6 +4,7 @@ namespace Food\DishesBundle\Controller;
 
 use Food\AppBundle\Entity\Slug;
 use Food\OrderBundle\Service\OrderService;
+use Food\PlacesBundle\Entity\PlaceNotificationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -123,7 +124,8 @@ class PlaceController extends Controller
             'current_url' => $current_url,
             'oldFriendIsHere' => $oldFriendIsHere,
             'takeAway' => $takeAway,
-            'location' => $location
+            'location' => $location,
+            'notificationCollection' => $this->getDoctrine()->getRepository('FoodPlacesBundle:PlaceNotification')->get($cityObj, $place)
         ];
 
         if($this->get('food.app.utils.misc')->getParam('reviews_enabled', false)) {

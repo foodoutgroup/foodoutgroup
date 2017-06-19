@@ -35,7 +35,7 @@ class PlaceNotificationRepository extends EntityRepository
         );
 
         $params['date'] = date("Y-m-d H:i:s");
-
-        return $qb->getQuery()->execute($params);
+        var_dump($qb->getQuery()->getSQL());die();
+//        return $qb->getQuery()->execute($params);
     }
 }
