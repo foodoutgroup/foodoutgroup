@@ -10,32 +10,33 @@ class PlaceNotificationRepository extends EntityRepository
 {
     public function get(City $city = null, Place $place = null)
     {
-        $qb = $this->createQueryBuilder('pn');
-        $qb->where('1=1'); // xDDDDDDDDDDDDDDDDDDDDD
+        $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $params = [];
+        $qb->select('pn')
+            ->from('FoodPlacesBundle:PlaceNotification', 'pn');
 
         if($city != null) {
-            $qb->andWhere('pn.cityCollection = :city');
-            $params['city'] = $city->getId();
+            $qb->join('pn.cityCollection', 'c')
+                ->where('c.id = '.$city->getId());
         }
 
         if($place != null) {
-            $qb->andWhere('pn.placeCollection = :place');
-            $params['place'] = $place->getId();
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->isNull('pn.placeCollection'),
+                    $qb->expr()->eq('pn.placeCollection', ':place')
+                )
+            )->setParameter('place', $place->getId());
         }
-
-        $qb->andWhere('pn.active = 1');
 
         $qb->andWhere(
             $qb->expr()->orX(
                 $qb->expr()->isNull('pn.showTill'),
-                $qb->expr()->lte('pn.showTill', ':date')
+                $qb->expr()->gte('pn.showTill', ':date')
             )
-        );
+        )->setParameter('date', date("Y-m-d H:i:s"));
 
-        $params['date'] = date("Y-m-d H:i:s");
-        var_dump($qb->getQuery()->getSQL());die();
-//        return $qb->getQuery()->execute($params);
+        $qb->andWhere('pn.active = 1');
+        return $qb->getQuery()->execute();
     }
 }

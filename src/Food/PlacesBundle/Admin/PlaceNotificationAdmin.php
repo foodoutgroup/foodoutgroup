@@ -27,7 +27,7 @@ class PlaceNotificationAdmin extends FoodAdmin
         $formMapper
             ->add('type', 'choice', [
                 'choices' => [
-                    'alert' => 'alert',
+                    'danger' => 'alert',
                     'warning' => 'warning',
                     'success' => 'success',
                     'info' => 'info',
