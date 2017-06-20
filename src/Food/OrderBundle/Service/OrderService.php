@@ -3426,10 +3426,14 @@ class OrderService extends ContainerAware
             $placePointMap = $this->container->get('session')->get('point_data');
 
             $addressId = $request->request->get("addressId");
+            $flat = ( $request->request->get('flat') === '' ? null : $request->request->get('flat') );
+            if ($addressId || $flat) {
+                if (!$addressId) {
+                    $oldData = $locationService->get();
+                    $locationService->set($oldData, $flat);
+                }
 
-            if ($addressId) {
-
-                $locationData = $locationService->findByHash($request->request->get("addressId"));
+                $locationData = $locationService->findByHash($request->request->get("addressId"), $flat);
 
                 if($locationData['precision'] == 0) {
 
@@ -3439,16 +3443,10 @@ class OrderService extends ContainerAware
                         $formErrors[] = "order.form.errors.customeraddr.city.not.found";
                     } else {
 
-                        $locationData = $locationService->set(
-                            $cityObj,
-                            $locationData['country'],
-                            $locationData['street'],
-                            $locationData['house'],
-                            $request->request->get('flat'),
-                            $locationData['output'],
-                            $locationData['latitude'],
-                            $locationData['longitude']
-                        );
+                        $locationService->set($locationData, $flat);
+
+                        $locationData = $locationService->get();
+
 
                         if (empty($placePointMap[$place->getId()])) {
                             $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 1');
