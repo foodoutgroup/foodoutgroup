@@ -165,6 +165,9 @@ services:
     hook.sitemap:
         class: Food\AppBundle\Service\HookSitemap
         arguments: ['@templating', '@doctrine.orm.entity_manager', '@service_container']
+    hook.restaurant_list:
+        class: Food\AppBundle\Service\HookRestaurantList
+        arguments: ['@service_container']
 
     food.zavalas_service:
       class: Food\AppBundle\Service\ZavalasService

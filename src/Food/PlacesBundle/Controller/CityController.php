@@ -23,29 +23,36 @@ class CityController extends Controller
             }
         }
 
-        $metaTitle = '';
-        $metaDescription = '';
-        $this->get('food.location')->set($city);
+        $lService = $this->get('food.location');
+
+        $metaTitle = $city->getMetaTitle();
+        $metaDescription = $city->getMetaTitle();
+
+        // TODO: get meta data by kitchen filter :D
+
+        $locationData = $lService->get();
+
+        if(array_key_exists('city_id', $locationData) && $locationData['city_id'] != $city->getId()) {
+            $dataToSet = $lService->findByAddress($city->getTitle().", ".$this->container->getParameter('country_full'));
+            $dataToSet['city_id'] = $city->getId();
+            $dataToSet['city'] = $city->getTitle();
+            $dataToSet['output'] = null;
+            $dataToSet['flat'] = null;
+            $lService->clear()->set($dataToSet);
+        }
 
         $placeService = $this->get('food.places');
-        $kitchenCollection = $placeService->getKitchenCollectionFromSlug($params, $request);
-
-        if (count($kitchenCollection)) {
-            list($first,) = $kitchenCollection;
-            $metaTitle = $first->getMetaTitle();
-            $metaDescription = $first->getMetaDescription();
-        }
 
         return $this->render(
             'FoodPlacesBundle:City:index.html.twig',
             array(
                 'recommended' => in_array('recom',$params), // todo MULTI-L param for recommended list
                 'rush_hour' => in_array('rush', $params), // todo MULTI-L param for rush_hour list
-                'location' => $this->get('food.location')->get(),
+                'location' => $lService->get(),
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
                 'slug_filter' => implode("/", $params),
-                'kitchen_collection' => $kitchenCollection,
+                'kitchen_collection' => [],
                 'meta_title' => $metaTitle,
                 'meta_description' => $metaDescription,
                 'city' => $city,

@@ -22,7 +22,7 @@ class KitchenController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction($recommended = false, $slug_filter = false, Request $request, $rush_hour = false, $city = null)
+    public function listAction($recommended = false, $slug_filter = false, Request $request, $rush_hour = false)
     {
 
         if ($recommendedFromRequest = $request->get('recommended', null) !== null) {
@@ -30,21 +30,17 @@ class KitchenController extends Controller
         }
 
         if ($deliveryType = $request->get('delivery_type', false)) {
+
             switch ($deliveryType) {
                 // @TODO: delivery !== deliver
                 case 'delivery':
-                    $this->container->get('session')->set('delivery_type', OrderService::$deliveryDeliver);
+                    $setDeliveryType = OrderService::$deliveryDeliver;
                     break;
-                case 'pickup':
-                    $this->container->get('session')->set('delivery_type', OrderService::$deliveryPickup);
-                    break;
-                case 'pedestrian':
-                    $this->container->get('session')->set('delivery_type', OrderService::$deliveryPedestrian);
-                    break;
-                case 'delivery_and_pickup':
-                    $this->container->get('session')->set('delivery_type', 'delivery_and_pickup');
+                default:
+                    $setDeliveryType = $deliveryType;
                     break;
             }
+            $this->container->get('session')->set('delivery_type', $setDeliveryType);
         }
 
         if ($rush_hour) {
@@ -73,21 +69,8 @@ class KitchenController extends Controller
                 'list' => $list,
                 'selected_kitchens' => $selectedKitchens,
                 'selected_kitchens_slugs' => $selectedKitchensSlugs,
-                'city' => $city
             )
         );
-    }
-
-    /**
-     * @todo - patikrinti reikalinguma. Nebeliko ikonkiu prie virtuviu
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function kitchenListWithImagesAction()
-    {
-        $list = $this->getKitchens();
-
-        return $this->render('FoodDishesBundle:Kitchen:list_items_with_images.html.twig', array('list' => $list));
     }
 
     /**

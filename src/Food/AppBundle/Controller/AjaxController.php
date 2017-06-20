@@ -2,6 +2,7 @@
 
 namespace Food\AppBundle\Controller;
 
+use Food\AppBundle\Entity\Slug;
 use Food\OrderBundle\Entity\Coupon;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
@@ -301,6 +302,12 @@ class AjaxController extends Controller
 
         $rsp  = array_merge($rspDefault, $rsp);
         $t = $this->get('translator');
+
+        $flat = $request->get('flat', null);
+        if(strlen(trim($flat)) == 0) {
+            $flat = null;
+        }
+
         if($rsp['success']) {
 
             $d = $rsp['detail'];
@@ -311,19 +318,20 @@ class AjaxController extends Controller
             } else {
                 $city = $this->get('food.city_service')->getCityByName($d['city']);
                 if(!$city) {
-                    $rsp['success'] = false;
-                    $rsp['message'] = $t->trans('in.this.city.we.have.not.delivered.food');
-                } else {
-                    $rsp['url'] = $this->get('slug')->getUrl($city->getId(), 'city');
 
-                    $flat = $request->get('flat', null);
-                    if(strlen(trim($flat)) == 0) {
-                        $flat = null;
+                    $settingRestaurantList = (int) $this->get('food.app.utils.misc')->getParam('page_restaurant_list', 0);
+                    if($settingRestaurantList) {
+                        $rsp['url'] = $this->get('slug')->getUrl($settingRestaurantList, Slug::TYPE_PAGE);
+
+                        $locationService->clear()->set($rsp['detail'], $flat);
+
+                    } else {
+                        $rsp['success'] = false;
+                        $rsp['message'] = $t->trans('in.this.city.we.have.not.delivered.food');
                     }
-
-                    $this->get('food.location')
-                        ->clearLocation()
-                        ->set($city, $d['country'], $d['street'], $d['house'], $flat, $d['output'], $d['latitude'], $d['longitude']);
+                } else {
+                    $rsp['url'] = $this->get('slug')->getUrl($city->getId(), Slug::TYPE_CITY);
+                    $locationService->clear()->set($rsp['detail'], $flat);
 
                 }
             }

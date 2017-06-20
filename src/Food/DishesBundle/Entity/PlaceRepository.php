@@ -23,44 +23,35 @@ class PlaceRepository extends EntityRepository
      *
      * @return array
      */
-    public function magicFindByKitchensIds($kitchens, $filters = [], $recommended = false, $locationData = null, $container = null)//, $city, $lat, $long)
+    public function magicFindByKitchensIds($kitchens, $filters = [], $recommended = false, $locationData = null, $container = null)
     {
 
-
-
-        $cityId = null;
-        $lat = null;
-        $lon = null;
         $currTime = date('H:i:s');
-        if (!empty($locationData) && !empty($locationData['latitude']) && !empty($locationData['longitude'])) {
-            $cityId = (!empty($locationData['city_id']) ? $locationData['city_id'] : null);
-            $lat = $locationData['latitude'];
-            $lon = $locationData['longitude'];
-        } else {
-            $cityId = $locationData['city_id'];
+        $lat = $locationData['latitude'];
+        $lon = $locationData['longitude'];
+
+        $rushHour = false;
+        $pickup = (isset($filters['delivery_type']) && $filters['delivery_type'] == Place::OPT_ONLY_PICKUP);
+
+        if($pickup && !isset($locationData['city_id'])) {
+
+            return [];
         }
 
 
-
-        $zaval = 0;
-        $pickup = (isset($filters['delivery_type']) && $filters['delivery_type'] == Place::OPT_ONLY_PICKUP);
-        if ($pickup ) {
-            $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id ".($cityId ? ' AND pps.city_id = \'' . $cityId . '\'' : '')." GROUP BY pps.place";
+        if ($pickup) {
+            $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id AND pps.city_id = ".$locationData['city_id']." GROUP BY pps.place";
         } else {
             if ($container) {
-                if ($cityId) {
-                    $zaval = $container->get('food.zavalas_service')->isRushHourAtCityById($cityId);
-                } else {
-                    $zaval = $container->get('food.zavalas_service')->isRushHourOnGlobal();
-                }
+                $rushHour = $container->get('food.zavalas_service')->isRushHourEnabled();
             }
             /**
              * $container->getParameter('default_delivery_distance')
              *  This stuff needs to be deprecated. And parameter removed.
              */
 
-            $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point=pps.id" . ($zaval ? ' AND ppdzd.active_on_zaval = 1' : '');
-            $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pps.id AND ((time_from <= '" . $currTime . "' AND '" . $currTime . "' <= time_to) OR (time_from IS NULL AND time_to IS NULL ))" . ($zaval ? ' AND ppdz.active_on_zaval = 1' : '');
+            $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point=pps.id" . ($rushHour ? ' AND ppdzd.active_on_zaval = 1' : '');
+            $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pps.id AND ((time_from <= '" . $currTime . "' AND '" . $currTime . "' <= time_to) OR (time_from IS NULL AND time_to IS NULL ))" . ($rushHour ? ' AND ppdz.active_on_zaval = 1' : '');
 
             $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id
             AND (
@@ -126,22 +117,16 @@ class PlaceRepository extends EntityRepository
 
         if ($recommended) {
             $kitchensQuery .= " AND recommended=1";
-            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";//" AND ppc.city_id=" . $city;
+            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
 
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city_id = " . $cityId . " " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id ORDER BY p.priority DESC, RAND()";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id ORDER BY p.priority DESC, RAND()";
         } elseif ($lat == null || $lon == null) {
-            if ($cityId) {
-                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city_id = " . $cityId . " AND ppc.place = p.id";
-                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city_id = " . $cityId . " " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id";
-
-            } else {
                 $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
                 $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id";
-            }
         } else {
 
 
-            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city_id = " . $cityId . " AND ppc.place = p.id";
+            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
             $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL ". $placeFilter . $otherFilters . " AND pp.id = (" . $subQuery . ") " . $kitchensQuery . " ORDER BY p.priority DESC, RAND()";
         }
 
@@ -170,7 +155,6 @@ class PlaceRepository extends EntityRepository
                         AND pps.active=1
                         AND pps.deleted_at is NULL
                         AND pps.place = " . $place['place']->getId() . "
-                        AND pps.city_id = " . $locationData['city_id'] . "
                         AND ppwt.week_day = " . $wd . "
                         AND (
                         (start_hour = 0 OR start_hour < ' . $dh . ' OR

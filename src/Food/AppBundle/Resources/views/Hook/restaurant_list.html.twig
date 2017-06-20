@@ -1,0 +1,22 @@
+{% extends 'FoodAppBundle::layout.html.twig' %}
+
+{% block title %}{% trans %}general.places{% endtrans %} - {{ page_title }}{% endblock %}
+
+{% block jscode %}{% endblock %}
+{% block body %}
+    {# Facebook Lead Begin #}
+    <script>fbq('track', 'Lead');</script>
+    {# Facebook Lead End #}
+    {% javascripts '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.pack.js'
+    '@FoodAppBundle/Resources/public/scripts/fancy/helpers/jquery.fancybox-media.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% stylesheets '@FoodAppBundle/Resources/public/scripts/fancy/jquery.fancybox.css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
+    {% endstylesheets %}
+
+    <div class="site-center">
+
+    </div>
+{% endblock %}
