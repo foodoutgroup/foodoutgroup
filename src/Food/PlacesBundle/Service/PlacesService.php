@@ -360,7 +360,7 @@ class PlacesService extends ContainerAware
      * @param bool $rush_hour
      * @return array|mixed
      */
-    public function getPlacesForList(Request $request, $slug_filter = [], $rush_hour = false)
+    public function getPlacesForList($rush_hour = false, Request $request)
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
