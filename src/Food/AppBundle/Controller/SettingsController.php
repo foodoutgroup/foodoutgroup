@@ -23,6 +23,7 @@ class SettingsController extends CRUDController
         'page_privacy',
         'disabled_preorder_days',
         'zaval_on',
+        'pedestrian_delivery_time',
         'showMobilePopup',
         'enable_free_delivery_for_big_basket',
         'free_delivery_price',
@@ -39,7 +40,9 @@ class SettingsController extends CRUDController
         'reviews_enabled',
         'optin_code',
         'game_revive_zone_id',
-        'footer_social'
+        'footer_social',
+        'pedestrian_filter_show',
+        'placepoint_prepare_times_pedestrian'
     ];
 
     public function listAction( )
@@ -158,6 +161,16 @@ class SettingsController extends CRUDController
         $form->add('zaval_on', 'boolean', [
             'label' => 'Rush hours activated',
         ]);
+
+        $form->add('pedestrian_filter_show', 'boolean', [
+            'label' => 'Enable pedestrian filter',
+        ]);
+
+        $form->add('pedestrian_delivery_time', 'number', [
+            'label' => 'Pedestrian delivery time'
+        ]);
+
+        $form->add('placepoint_prepare_times_pedestrian', 'text');
 
         $form->add('enable_free_delivery_for_big_basket', 'boolean');
 

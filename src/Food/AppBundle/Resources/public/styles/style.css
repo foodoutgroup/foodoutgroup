@@ -726,9 +726,9 @@ input.button {}
 }
 
 .search-food-form button.find-me {
-    position: absolute;
-    left: 400px;
-    top: 82px;
+    position: relative;
+    right: 120px;
+    top: 16px;
     background: url(/bundles/foodapp/images/find-me.png);
     width: 24px;
     height: 24px;
@@ -2238,10 +2238,10 @@ div.coupon_form_popup {
 .search-food-form span a { width: 130px !important; }
 #index_city-menu, #index_city-menu li { width: 162px !important; }
 .search-food-form input.input-street[type="text"] {
-    width: 360px;
-    margin-right: 0;
+    width: 80%;
+    margin: 0px 10px 0px 20px;
     border-radius: 0;
-    border-radius: 5px 0 0 5px;
+    border-radius: 5px 5px 5px 5px;
 }
 .search-food-form input.input-house[type="text"] {
     border-left: medium none;
@@ -3136,7 +3136,7 @@ div.coupon_form_popup {
     position: relative;
 }
 .address-search-form-city #address_autocomplete {
-    width:300px;
+    width:80%;
 }
 
 .address-search-form-city .input-house {
@@ -3157,9 +3157,9 @@ div.coupon_form_popup {
 }
 
 .address-search-form-city button.find-me {
-    position: absolute;
-    left: 416px;
-    top: 8px;
+    position: relative;
+    right: 100px;
+    top: 7px;
     background: url(/bundles/foodapp/images/find-me.png);
     width: 24px;
     height: 24px;
@@ -3181,7 +3181,7 @@ div.coupon_form_popup {
 }
 
 .address-search-form-cart button.find-me {
-    left: 484px;
+    right: 130px;
     top: 7px;
 }
 

@@ -20,3 +20,8 @@ services:
           - ~
       calls:
           - [ setTranslationDomain, [SonataAdminBundle]]
+
+  food.pedestrian_service:
+      class: Food\PlacesBundle\Service\PedestrianService
+      calls:
+        - [setContainer, [@service_container]]

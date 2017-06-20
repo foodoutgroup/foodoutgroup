@@ -22,21 +22,27 @@ class AddressController extends Controller
             $street = $request->get('street');
             $houseNumber = $request->get('house_number');
             $lService = $response = $this->get('food.location');
+            $pedestrianService = $this->get('food.pedestrian_service');
+
             if (!empty($lat) && !empty($lng)) {
                 $response = $lService->findByCords($lat, $lng);
 
                 if($response) {
                     $lService->setFromArray($response);
                     $response['house_number'] = $response['house'];
+                    $response['pedestrian'] = $pedestrianService->getPedestrianByCity($response['city_id']);
                 } else {
                     $response = [];
                 }
             } elseif (!empty($city) && !empty($street) && !empty($houseNumber)) {
 
                 $response = $lService->findByAddress($street.' '.$houseNumber.' ,'.$city);
+
                 if($response) {
                     $lService->setFromArray($response);
                     $response['house_number'] = $response['house'];
+                    $response['pedestrian'] = $pedestrianService->getPedestrianByCity($response['city_id']);
+
                 } else {
                     $response = [];
                 }

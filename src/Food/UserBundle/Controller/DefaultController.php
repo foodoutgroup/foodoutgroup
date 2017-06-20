@@ -132,69 +132,69 @@ class DefaultController extends Controller
 
         $phoneValidation = $this->container->get('food.phones_code_service')->validatePhoneNumber($profilePhone, $countryCode);
 
-        if ($phoneValidation !== true) {
-            $profileErrors = $this->formErrors($form->get('profile'));
-            $profileErrors['phone'] = $translator->trans($phoneValidation[0]);
-
+        $formError = [];
+        if (!$phoneValidation || isset($phoneValidation[0])) {
+            $formError = $this->formErrors($form->get('profile'));
+            $formError['phone'] = $translator->trans($phoneValidation[0]);
         } else {
 
 
+            $locationService = $this->get('food.location');
 
-        $locationService = $this->get('food.location');
+            $addressData = $request->request->get('address');
+            if (!empty($addressData['id'])) {
 
-        $addressData = $request->request->get('address');
+                $hasAddress = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->findByIdUserFlat($addressData['id'], $user, $addressData['flat']);
+                $addressDetail = $locationService->findByHash($addressData['id']);
+                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($addressDetail['city']);
 
-        if(!empty($addressData['id'])) {
+                if (!is_object($cityObj)) {
+                    $flashbag->set('profile_update_errors', $translator->trans('messages.city_doesnt_exist'));
+                    return $this->redirect($this->generateUrl('user_profile'));
+                }
 
-            $hasAddress = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->findByIdUserFlat($addressData['id'],$user,$addressData['flat']);
-            $addressDetail = $locationService->findByHash($addressData['id']);
-            $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($addressDetail['city']);
-            if(!$hasAddress && $cityObj) {
-                $oldLocationData = $locationService->get();
+                if ($cityObj) {
+                    $oldLocationData = $locationService->get();
+                    $locationService->set(
+                        $cityObj,
+                        $addressDetail['country'],
+                        $addressDetail['street'],
+                        $addressDetail['house'],
+                        ( $addressData['flat'] === '' ? null : $addressData['flat'] ),
+                        $addressDetail['output'],
+                        $addressDetail['latitude'],
+                        $addressDetail['longitude']
+                    );
 
-                $locationService->set(
-                    $cityObj,
-                    $addressDetail['country'],
-                    $addressDetail['street'],
-                    $addressDetail['house'],
-                    $addressData['flat'],
-                    $addressDetail['output'],
-                    $addressDetail['latitude'],
-                    $addressDetail['longitude']
-                );
+                    $newLocationData = $locationService->get();
 
-                $newLocationData = $locationService->get();
+                    if ($newLocationData['precision'] == 0) {
+                        $locationService->saveAddressFromSessionToUser($user);
+                    } else {
+                        if (!empty($oldLocationData['city_id'])) {
 
-                if ($newLocationData['precision'] == 0) {
-
-                    $locationService->saveAddressFromSessionToUser($user);
-                } else {
-                    if (!empty($oldLocationData['city_id'])) {
-
-                        $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($oldLocationData['city_id']);
-                        $locationService->set(
-                            $cityObj,
-                            $oldLocationData['country'],
-                            $oldLocationData['street'],
-                            $oldLocationData['house'],
-                            $oldLocationData['flat'],
-                            $oldLocationData['origin'],
-                            $oldLocationData['latitude'],
-                            $oldLocationData['longitude']
-                        );
+                            $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($oldLocationData['city_id']);
+                            $locationService->set(
+                                $cityObj,
+                                $oldLocationData['country'],
+                                $oldLocationData['street'],
+                                $oldLocationData['house'],
+                                $oldLocationData['flat'],
+                                $oldLocationData['origin'],
+                                $oldLocationData['latitude'],
+                                $oldLocationData['longitude']
+                            );
+                        }
                     }
                 }
+
             }
 
-        }
+            // password validation
+            if ($form->get('change_password')->isValid() && $form->isValid()) {
+                $userManager->updateUser($user);
+            }
 
-        // password validation
-        if ($form->get('change_password')->isValid() && $form->isValid()) {
-            $userManager->updateUser($user);
-        }
-
-            // main profile validation
-            $profileErrors = $this->formErrors($form->get('profile'));
 
             if ($form->isValid()) {
 
@@ -211,14 +211,14 @@ class DefaultController extends Controller
 
         return [
             'form' => $form->createView(),
-            'profile_errors' => $this->formErrors($form->get('profile')),
+            'profile_errors' => $formError,
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
             'user' => $user,
             'discount' => $this->get('food.user')->getDiscount($this->user()),
             'location' => $this->get('food.location')->get(),
-            'addressDefault' => $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user) ? : null,
+            'addressDefault' => $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user) ?: null,
         ];
     }
 
@@ -247,10 +247,11 @@ class DefaultController extends Controller
             'profile_errors' => $this->formErrors($form->get('profile')),
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'tab' => $tab,
-            'addressDefault' => $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user) ? : null,
+            'addressDefault' => $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user) ?: null,
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
             'profile_updated' => $flashbag->get('profile_updated'),
+            'profile_update_errors' => $flashbag->get('profile_update_errors'),
             'user' => $this->user(),
             'discount' => $this->get('food.user')->getDiscount($this->user())
         ];

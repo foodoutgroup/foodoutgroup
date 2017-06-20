@@ -234,5 +234,4 @@ class LocationService extends ContainerAware
 
         return $ua;
     }
-
 }

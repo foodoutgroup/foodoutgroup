@@ -114,6 +114,21 @@ class PlacesService extends ContainerAware
     }
 
     /**
+     * @param int $dishId
+     *
+     * @return \Food\DishesBundle\Entity\Place|false
+     */
+    public function getPlaceByDish($dishId)
+    {
+        $dish = $this->em()->getRepository('FoodDishesBundle:Dish')->findOneBy(['id' => $dishId]);
+        if (!$dish) {
+            return false;
+        } else {
+            return $dish->getPlace();
+        }
+    }
+
+    /**
      * @param \Food\DishesBundle\Entity\Place $place
      *
      * @return array|\Food\DishesBundle\Entity\FoodCategory[]
@@ -735,7 +750,7 @@ class PlacesService extends ContainerAware
     public function getDeliveryTime(Place $place, PlacePoint $placePoint = null, $type = false)
     {
         if ($type && $type == 'pedestrian') {
-            $deliveryTime = $this->getPedestrianDeliveryTime() . ' min';
+            $deliveryTime = $place->getDeliveryTime();
         } else {
 
             $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();

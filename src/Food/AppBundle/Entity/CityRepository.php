@@ -60,4 +60,9 @@ class CityRepository extends EntityRepository
 
         return $this->findOneBy(['title' => $cityName]);
     }
+
+    public function getActivePedestrianCityByLocation($id)
+    {
+        return $this->findBy(['active' => 1, 'pedestrian' => 1,'id'=>$id]);
+    }
 }
