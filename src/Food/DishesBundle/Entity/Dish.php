@@ -702,12 +702,12 @@ class Dish extends Uploadable implements Translatable
     }
 
     /**
-     * set categories
+     * remove categories
      *
      * @param \Food\DishesBundle\Entity\FoodCategory $categories
      * @return Dish
      */
-    public function setCategory()
+    public function removeAllCategories()
     {
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
 

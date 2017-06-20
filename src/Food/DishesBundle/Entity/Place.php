@@ -1321,9 +1321,9 @@ class Place extends Uploadable implements Translatable
     /**
      * @param mixed translations
      */
-    public function setTranslations($translations)
+    public function removeAllTranslations()
     {
-        $this->translations = $translations;
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();;
     }
 
     /**
