@@ -155,16 +155,7 @@ class DefaultController extends Controller
 
                 if ($cityObj) {
                     $oldLocationData = $locationService->get();
-                    $locationService->set(
-                        $cityObj,
-                        $addressDetail['country'],
-                        $addressDetail['street'],
-                        $addressDetail['house'],
-                        ( $addressData['flat'] === '' ? null : $addressData['flat'] ),
-                        $addressDetail['output'],
-                        $addressDetail['latitude'],
-                        $addressDetail['longitude']
-                    );
+                    $locationService->parseLocation($addressDetail, $addressData['flat'] === '' ? null : $addressData['flat']);
 
                     $newLocationData = $locationService->get();
 
