@@ -150,10 +150,8 @@
                     selectedKitchensNames += ',' + $($filters[i]).data('name');
                 }
                 params['delivery_type'] = $(".site-block .restaurants-list-top-filters .delivery-type-filter a.selected").attr('data-type');
-                params['recommended'] = '{{ recommended }}';
 
                 var kitchenParams = {
-                    'recommended': '{{ recommended }}',
                     'delivery_type': params['delivery_type'],
                     'selected_kitchens': selectedKitchens,
                     'selected_kitchens_slugs': selectedKitchensSlugs
@@ -291,7 +289,7 @@
 
             <div class="clearfix">
                 <div class="content-lefter">
-                    {{ render(controller('FoodDishesBundle:Kitchen:list', {'recommended': recommended, 'slug_filter': slug_filter, 'rush_hour': rush_hour })) }}
+                    {{ render(controller('FoodDishesBundle:Kitchen:list', {'slug_filter': slug_filter, 'rush_hour': rush_hour })) }}
                     <div class="banners">
                         {% if site_country == 'LT' %}
                             <div>
@@ -396,7 +394,7 @@
                         </div>
                     {% endif %}
                     </div>
-                    {{ render(controller('FoodPlacesBundle:City:list', {'recommended': recommended, 'slug_filter': slug_filter, 'rush_hour': rush_hour})) }}
+                    {{ render(controller('FoodPlacesBundle:City:list', {'slug_filter': slug_filter, 'rush_hour': rush_hour})) }}
 
                 </div>
             </div>

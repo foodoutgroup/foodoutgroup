@@ -40,7 +40,6 @@ class HookRestaurantList {
             'template' => 'FoodPlacesBundle:City:index.html.twig',
             'params' => [
                 'city' => null,
-                'recommended' => in_array('recofafsm',$params), // todo MULTI-L param for recommended list
                 'rush_hour' => in_array('asfasfas', $params), // todo MULTI-L param for rush_hour list
                 'location' => $this->container->get('food.location')->get(),
                 'userAllAddress' => $this->container->get('food.places')->getCurrentUserAddresses(),

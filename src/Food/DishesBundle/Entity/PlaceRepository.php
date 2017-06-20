@@ -23,7 +23,7 @@ class PlaceRepository extends EntityRepository
      *
      * @return array
      */
-    public function magicFindByKitchensIds($kitchens, $filters = [], $recommended = false, $locationData = null, $container = null)
+    public function magicFindByKitchensIds($kitchens, $filters = [], $locationData = null, $container = null)
     {
 
         $currTime = date('H:i:s');
@@ -181,7 +181,7 @@ class PlaceRepository extends EntityRepository
         return $places;
     }
 
-    public function simpleFindByNeighbourhood($kitchens, $filters = [], $recommended = false, $locationData = null, $container = null)
+    public function simpleFindByNeighbourhood($kitchens, $filters = [], $locationData = null, $container = null)
     {
         $neighbourhoodId = $locationData['neighbourhood_id'];
         $kitchensQuery = "";
@@ -231,40 +231,25 @@ class PlaceRepository extends EntityRepository
             $otherFilters .= ' AND p.only_alcohol != 1';
         }
 
-        if ($recommended) {
-            $ppCounter = "SELECT COUNT(*)
-                         FROM place_point ppc
-                         WHERE ppc.active=1
-                          AND ppc.deleted_at IS NULL
-                          AND ppc.place = p.id";
 
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp
-                     WHERE pp.place = p.id
-                        AND p.active=1
-                        AND pp.active = 1
-                        AND pp.deleted_at IS NULL " . $placeFilter . $otherFilters . $kitchensQuery . "
-                        AND recommended=1
-                     GROUP BY p.id
-                     ORDER BY p.priority DESC, RAND()";
-        } else {
-            $ppCounter = "SELECT COUNT(*)
-                              FROM place_point ppc
-                              INNER JOIN neighbourhood_place_point npp ON npp.place_point_id = ppc.id
-                              WHERE ppc.active=1
-                                AND ppc.deleted_at IS NULL
-                                AND npp.neighbourhood_id='" . $neighbourhoodId . "'
-                                AND ppc.place = p.id";
+        $ppCounter = "SELECT COUNT(*)
+                          FROM place_point ppc
+                          INNER JOIN neighbourhood_place_point npp ON npp.place_point_id = ppc.id
+                          WHERE ppc.active=1
+                            AND ppc.deleted_at IS NULL
+                            AND npp.neighbourhood_id='" . $neighbourhoodId . "'
+                            AND ppc.place = p.id";
 
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision
-                            FROM place p, place_point pp, neighbourhood_place_point npp
-                            WHERE pp.place = p.id
-                                AND pp.id = npp.place_point_id
-                                AND p.active=1
-                                AND pp.active = 1
-                                AND pp.deleted_at IS NULL
-                                AND npp.neighbourhood_id='" . $neighbourhoodId . "' " . $placeFilter . $otherFilters . $kitchensQuery . "
-                                GROUP BY p.id";
-        }
+        $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision
+                        FROM place p, place_point pp, neighbourhood_place_point npp
+                        WHERE pp.place = p.id
+                            AND pp.id = npp.place_point_id
+                            AND p.active=1
+                            AND pp.active = 1
+                            AND pp.deleted_at IS NULL
+                            AND npp.neighbourhood_id='" . $neighbourhoodId . "' " . $placeFilter . $otherFilters . $kitchensQuery . "
+                            GROUP BY p.id";
+
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
@@ -436,7 +421,7 @@ class PlaceRepository extends EntityRepository
         $cacheKey = $placeId . serialize($locationData) . (int)$ignoreSelfDelivery;
 
         if (!isset(self::$_getNearCache[$cacheKey])) {
-            if (!empty($locationData['city_id']) && !empty($locationData['latitude'])) {
+            if (!empty($locationData['latitude'])) {
 
                 $lat = $locationData['latitude'];
                 $lon = $locationData['longitude'];
@@ -455,7 +440,6 @@ class PlaceRepository extends EntityRepository
                  */
 
 
-                $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point = pp.id";
                 $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id AND ((time_from <= '" . $deliveryTime . "' AND '" . $deliveryTime . "' <= time_to) OR (time_from IS NULL AND time_to IS NULL))";
 
                 $subQuery = "SELECT pp.id, (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) )))
@@ -465,11 +449,10 @@ class PlaceRepository extends EntityRepository
                       AND pp.active=1
                       AND pp.deleted_at IS NULL
                       AND p.active=1
-                      AND pp.city_id='" . $locationData['city_id'] . "'
                       AND pp.place = $placeId
                       AND (
                         (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
-                        IF(($maxDistance) IS NULL, ($defaultZone), ($maxDistance))
+                      ($maxDistance)
                         " . (!$ignoreSelfDelivery ? "" : "") . "
                     )
                       AND ppwt.week_day = " . $wd . "

@@ -22,12 +22,8 @@ class KitchenController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction($recommended = false, $slug_filter = false, Request $request, $rush_hour = false)
+    public function listAction($slug_filter = false, Request $request, $rush_hour = false)
     {
-
-        if ($recommendedFromRequest = $request->get('recommended', null) !== null) {
-            $recommended = (bool)$recommendedFromRequest;
-        }
 
         if ($deliveryType = $request->get('delivery_type', false)) {
 
@@ -61,7 +57,7 @@ class KitchenController extends Controller
             $selectedKitchensSlugs = array();
         }
 
-        $list = $this->getKitchens($recommended, $request);
+        $list = $this->getKitchens($request);
 
         return $this->render(
             'FoodDishesBundle:Kitchen:list_items.html.twig',
@@ -76,11 +72,11 @@ class KitchenController extends Controller
     /**
      * @return array|\Food\DishesBundle\Entity\Kitchen[]
      */
-    private function getKitchens($recommended, Request $request)
+    private function getKitchens(Request $request)
     {
         $returnList = array();
         $placeCountArr = array();
-        $list = $this->get('food.places')->getPlacesForList($recommended, $request);
+        $list = $this->get('food.places')->getPlacesForList($request);
 
         foreach ($list as $placeRow) {
             foreach ($placeRow['place']->getKitchens() as $kitchen) {

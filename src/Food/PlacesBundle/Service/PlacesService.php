@@ -355,13 +355,12 @@ class PlacesService extends ContainerAware
     }
 
     /**
-     * @param $recommended
      * @param Request $request
      * @param array $slug_filter
      * @param bool $rush_hour
      * @return array|mixed
      */
-    public function getPlacesForList($recommended, Request $request, $slug_filter = [], $rush_hour = false)
+    public function getPlacesForList(Request $request, $slug_filter = [], $rush_hour = false)
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
@@ -398,7 +397,6 @@ class PlacesService extends ContainerAware
         $places = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
             $kitchens,
             $filters,
-            $recommended,
             $this->container->get('food.location')->get(),
             $this->container
         );

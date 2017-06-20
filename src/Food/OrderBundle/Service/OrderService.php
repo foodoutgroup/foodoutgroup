@@ -3201,7 +3201,7 @@ class OrderService extends ContainerAware
                 if ($this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->isPlacePointWorks($point)) {
                     $returner .= '<span class="work-green">' . $this->getTodayWork($point, false) . "</span>";
                 } else {
-                    $returner .= '<span class="work-red">' . $this->getTodayWork($point, false) . "</span> " . $this->container->get('translator')->trans($this->workTimeErrorsReturn($point));
+                    $returner .= '<span class="work-red">' . $this->getTodayWork($point, false) . "</span>" . $this->container->get('translator')->trans($this->workTimeErrorsReturn($point));
                 }
                 $returner .= "<br />";
             }
