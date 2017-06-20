@@ -65,20 +65,4 @@ class CityService extends BaseService
         return $bestOffers;
 
     }
-
-    public function getActivePedestrianCity()
-    {
-        $activeCities = $this->em->getRepository('FoodAppBundle:City')->findBy(['active' => 1, 'pedestrian' => 1]);
-        $result = array();
-        if(!empty($activeCities)){
-
-            foreach ($activeCities as $activeCity){
-                $result[] = $activeCity->getTitle();
-            }
-        }
-
-        return $result;
-    }
-
-
 }

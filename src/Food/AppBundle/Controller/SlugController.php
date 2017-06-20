@@ -96,7 +96,12 @@ class SlugController extends Controller
             case Slug::TYPE_CITY:
                 return $this->forward('FoodPlacesBundle:City:index', $dataOptions);
             case Slug::TYPE_DISH:
-                die("todo dish page");
+                $place = $this->get('food.places')->getPlaceByDish($slugRow->getItemId());
+                $slugUtele = $this->get('food.dishes.utils.slug');
+                $placeSlug = $slugUtele->getSlugByItem($place->getId(), Slug::TYPE_PLACE);
+                $url = $this->generateUrl('food_slug', ['slug' => $placeSlug], true);
+                $queryString = $request->getQueryString().'#'.$slug;
+                return new RedirectResponse(sprintf('%s%s', $url, !empty($queryString) ? '?' . $queryString : ''), 301);
                 break;
             case Slug::TYPE_KITCHEN:
                 return $this->forward('FoodDishesBundle:Kitchen:index', $dataOptions);

@@ -27,20 +27,24 @@ class PlaceService extends PlacesService
     {
         $response = [
             'found' => false,
-            'lat' => 0,
-            'lng' => 0,
+            'latitude' => 0,
+            'longitude' => 0,
             'street' => false,
             'house' => false,
         ];
 
-        $addressString = $address." ,".$city." Lithuania"; // todo change lithuania to configuration :)
+        if(empty($address)){
+            $address = "Gedimino pr. 10"; // TODO: fix it asap
+        }
+
+        $addressString = $address." ,".$city;
 
         $location = $this->container->get('food.location')->findByAddress($addressString);
 
         if($location && $location['precision'] == 0) {
             $response['found'] = true;
-            $response['lat'] = $location['latitude'];
-            $response['lng'] = $location['longitude'];
+            $response['latitude'] = $location['latitude'];
+            $response['longitude'] = $location['longitude'];
             $response['street'] = $location['street'];
             $response['house'] = $location['house'];
         }
@@ -58,11 +62,11 @@ class PlaceService extends PlacesService
 
             $response = [];
             $cacheKey = $placeId . serialize($locationData) . (int)$ignoreSelfDelivery;
-            if (!isset(self::$_getNearCache[$cacheKey])) {
 
+            if (!isset(self::$_getNearCache[$cacheKey])) {
                 if (!empty($locationData['latitude'])) {
-                    $lat = str_replace(",", ".", $locationData['latitude']);
-                    $lon = str_replace(",", ".", $locationData['longitude']);
+                    $lat = $locationData['latitude'];
+                    $lon = $locationData['longitude'];
 
                     $dh = date("H");
                     $dm = date("i");
@@ -82,7 +86,6 @@ class PlaceService extends PlacesService
                       AND (
                         (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
                         IF(($maxDistance) IS NULL, ($defaultZone), ($maxDistance))
-                        " . (!$ignoreSelfDelivery ? "" : "") . "
                     )
                       AND ppwt.week_day = " . $wd . "
                       AND (
