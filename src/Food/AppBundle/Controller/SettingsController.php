@@ -32,6 +32,7 @@ class SettingsController extends CRUDController
         'late_time_to_delivery',
         'sf_next_number',
         'footer_scripts',
+        'fb_meta_tag',
         'extra_group',
         'free_delivery_discount_code_generation_enable',
         'free_delivery_discount_code_generation_after_completed_orders',
@@ -205,6 +206,12 @@ class SettingsController extends CRUDController
             'label' => 'Footer Scripts',
             'required' => false,
             'attr' => ['style' => 'width:100%;', 'group' => 'Content', 'rows' => 20]
+        ]);
+
+        $form->add('fb_meta_tag', 'textarea', [
+            'label' => 'Facebook meta tag',
+            'required' => false,
+            'attr' => ['style' => 'width:100%;', 'rows' => 20]
         ]);
 
         $form->add('optin_code', 'textarea', [
