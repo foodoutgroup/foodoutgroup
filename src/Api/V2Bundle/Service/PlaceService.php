@@ -33,15 +33,11 @@ class PlaceService extends PlacesService
             'house' => false,
         ];
 
-        if(empty($address)){
-            $address = "Gedimino pr. 10"; // TODO: fix it asap
-        }
-
         $addressString = $address." ,".$city;
 
         $location = $this->container->get('food.location')->findByAddress($addressString);
 
-        if($location && $location['precision'] == 0) {
+        if($location && is_array($location)) {
             $response['found'] = true;
             $response['latitude'] = $location['latitude'];
             $response['longitude'] = $location['longitude'];
