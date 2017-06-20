@@ -153,15 +153,14 @@ class DefaultController extends Controller
                     return $this->redirect($this->generateUrl('user_profile'));
                 }
 
-                if (!$hasAddress && $cityObj) {
+                if ($cityObj) {
                     $oldLocationData = $locationService->get();
-
                     $locationService->set(
                         $cityObj,
                         $addressDetail['country'],
                         $addressDetail['street'],
                         $addressDetail['house'],
-                        $addressData['flat'],
+                        ( $addressData['flat'] === '' ? null : $addressData['flat'] ),
                         $addressDetail['output'],
                         $addressDetail['latitude'],
                         $addressDetail['longitude']
@@ -170,7 +169,6 @@ class DefaultController extends Controller
                     $newLocationData = $locationService->get();
 
                     if ($newLocationData['precision'] == 0) {
-
                         $locationService->saveAddressFromSessionToUser($user);
                     } else {
                         if (!empty($oldLocationData['city_id'])) {
@@ -197,8 +195,6 @@ class DefaultController extends Controller
                 $userManager->updateUser($user);
             }
 
-            // main profile validation
-            $profileErrors = $this->formErrors($form->get('profile'));
 
             if ($form->isValid()) {
 

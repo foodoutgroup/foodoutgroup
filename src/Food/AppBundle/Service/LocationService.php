@@ -106,7 +106,6 @@ class LocationService extends ContainerAware
         if(!$current) {
             $current = [];
         }
-
         $locationData = [
             'precision' => 0,
             'country' => is_null($country) ? null : (isset($current['country']) && !$country ? $current['country'] : $country),
