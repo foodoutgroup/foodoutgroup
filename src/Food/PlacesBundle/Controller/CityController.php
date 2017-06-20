@@ -85,7 +85,7 @@ class CityController extends Controller
             }
         }
 
-        $placeCollection = $this->get('food.places')->getPlacesForList($request, $slug_filter, $rush_hour);
+        $placeCollection = $this->get('food.places')->getPlacesForList($rush_hour, $request);
 
         return $this->render(
             'FoodPlacesBundle:City:list.html.twig',
