@@ -46,8 +46,8 @@ class CityController extends Controller
         return $this->render(
             'FoodPlacesBundle:City:index.html.twig',
             array(
-                'recommended' => in_array('recom',$params), // todo MULTI-L param for recommended list
-                'rush_hour' => in_array('rush', $params), // todo MULTI-L param for rush_hour list
+                'recommended' => in_array('recom564fsa564fsa564fsa564f5s6a4',$params), // todo MULTI-L param for recommended list
+                'rush_hour' => in_array('recom564fsa564fsa564fsa564f5s6a4', $params), // todo MULTI-L param for rush_hour list
                 'location' => $lService->get(),
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),

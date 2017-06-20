@@ -88,7 +88,7 @@ class SettingsController extends CRUDController
     {
         $static = $this->getDoctrine()->getRepository('FoodAppBundle:StaticContent');
         $pageCollection = [];
-
+        $pageCollection[] = ' - ';
         foreach ($static->findAll() as $page) {
             $pageCollection[$page->getId()] = $page->getTitle();
         }
@@ -137,11 +137,10 @@ class SettingsController extends CRUDController
             'choices' =>  $pageCollection
         ]);
 
-        $emptyFirst = array_merge([0 => "-"], $pageCollection);
 
         $form->add('page_restaurant_list', 'choice', [
             'label' => 'Restaurant list',
-            'choices' =>  $emptyFirst
+            'choices' =>  $pageCollection
         ]);
 
         $form->add('use_admin_fee_globally', 'boolean', [

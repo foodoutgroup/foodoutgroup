@@ -142,7 +142,7 @@
                 buffer = ('{% trans %}general.places_found2{% endtrans %}');
             }
 
-            {% if location is not null and placeCollection|length > 0 and location.precision <= 2 %}
+            {% if location is not null and placeCollection|length > 0 and location.precision <= 3 %}
 
                 buffer = buffer + ', {% trans %}places.places_near{% endtrans %}';
                 buffer = buffer + ' {{ location.street }}';
@@ -165,7 +165,7 @@
     <script>
         $(document).ready(function(){
 
-            $('.page-title .place-counter').html('');
+            $('.page-title .place-counter').html('{% trans %}general.no_restaurant_found{% endtrans %}');
             $('.delivery-time-info').tooltip();
         });
     </script>

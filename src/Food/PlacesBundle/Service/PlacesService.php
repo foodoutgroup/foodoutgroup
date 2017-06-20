@@ -374,11 +374,6 @@ class PlacesService extends ContainerAware
         }
 
         $kitchens = empty($kitchens) ? [] : explode(",", $kitchens);
-        if (!empty($slug_filter)) {
-
-          $kitchens = $this->getKitchenCollectionFromSlug($slug_filter, $request);
-        }
-
         // TODO lets debug this strange scenario :(
         if (empty($filters)) {
             $filters = [];
@@ -407,6 +402,8 @@ class PlacesService extends ContainerAware
             $this->container->get('food.location')->get(),
             $this->container
         );
+
+
 
         $this->container->get('food.places')->saveRelationPlaceToPoint($places);
         $places = $this->container->get('food.places')->placesPlacePointsWorkInformation($places);
