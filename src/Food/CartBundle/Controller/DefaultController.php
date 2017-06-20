@@ -185,7 +185,6 @@ class DefaultController extends Controller
 
     public function indexAction($placeId, $takeAway = null, Request $request)
     {
-
         // for now this is relevant for callcenter functionality
         $phoneService = $this->container->get('food.phones_code_service');
         $orderService = $this->get('food.order');
