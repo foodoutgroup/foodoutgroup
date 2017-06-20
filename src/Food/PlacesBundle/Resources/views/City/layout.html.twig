@@ -264,7 +264,7 @@
                     <h2>
                         <span class="place-counter"></span>
                         {% if location is not null and location.precision == 0 %}
-                            <a href="#" id="places-change-location-link">Keisti</a>
+                            <a href="#" id="places-change-location-link">{% trans %}change.address{% endtrans %}</a>
                         {% endif %}
                     </h2>
                     {% if location is not null and location.precision == 0 %}
