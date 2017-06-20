@@ -28,9 +28,16 @@ class RestaurantsController extends Controller
              */
             $address = $request->get('address');
             $city = $request->get('city');
-            if (!empty($city)) {
-                $city = str_replace("laipeda", "laipėda", $city);
+            $cityDoc = $doctrine->getRepository('FoodAppBundle:City')->getByName($city);
+            if (!$cityDoc) {
+                $this->get('logger')->error('Restaurants:getRestaurantsAction CityNotFound:' . $city);
+                return new JsonResponse(
+                    ['error' => $this->get('translator')->trans('messages.city_not_found')],
+                    500,
+                    array('error' => 'server error', 'description' => null)
+                );
             }
+
             $lat = $request->get('lat');
             $lng = $request->get('lng');
             $keyword = $request->get('keyword', '');
@@ -57,7 +64,7 @@ class RestaurantsController extends Controller
                     $kitchenCollection,
                     $filters,
                     false,
-                    $this->get('food.location')->findByAddress($address.', '.$city),
+                    $this->get('food.location')->findByAddress($address.', '.$cityDoc->getTitle()),
                     $this->container
                 );
 
