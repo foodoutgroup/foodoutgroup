@@ -3140,6 +3140,11 @@ div.coupon_form_popup {
     width:80%;
 }
 
+.address-search-form-place #address_autocomplete {
+    width: 70%!important;
+}
+
+
 .address-search-form-city .input-house {
     width: 76px;
 }
@@ -3168,9 +3173,7 @@ div.coupon_form_popup {
 
 }
 
-.address-search-form-place button.find-me {
-    left: 300px;
-}
+
 
 
 .address-search-form-cart #address_autocomplete {
