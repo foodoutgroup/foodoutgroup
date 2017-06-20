@@ -29,9 +29,8 @@ class LocationService extends ContainerAware
     public function parseLocation($location = [], $flat = null)
     {
         $locationData = null;
-
         if($location != null && is_array($location)) {
-
+            if (isset($location['flat']) && !$flat) { $flat = $location['flat'] ; }
 
             if(!is_null($flat) || (isset($location['output']) && !is_null($flat = $this->parseFlat($location['output'])))) {
                 preg_match('/(.*?\s+\d{1,3}(\pL|\s\pL)?)([-|\s]{0,4}[\d\pL]{0,3})(.*)$/ium', $location['output'], $response);
@@ -73,8 +72,8 @@ class LocationService extends ContainerAware
      */
     public function set($location = [], $flat = null)
     {
-
         $dataParsed = $this->parseLocation($location, $flat);
+
         if($dataParsed) {
             $this->session->set('location', $dataParsed);
         }
