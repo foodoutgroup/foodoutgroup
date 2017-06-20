@@ -116,12 +116,7 @@ var Dispatcher = {
         var buttons = $('.drivers_list .city_drivers:visible').find('button');
         var checkedBoxes = activeList.find('.order_checkbox:checked');
 
-        if(activeList.hasClass('unassigned-pedestrian')){
-            buttons = $('.drivers_list').find('button');
-        }else{
-            buttons = $('.drivers_list .normal').find('button');
-
-        }
+        buttons = $('.drivers_list').find('button');
 
         if (checkedBoxes.size() > 0) {
             buttons.attr('disabled', false);
