@@ -22,21 +22,21 @@
 
     {# Chosen CSS Begin #}
     {% stylesheets '@FoodAppBundle/Resources/public/scripts/chosen/chosen.min.css' filter="cssrewrite" %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
     {# Chosen CSS End #}
 
     {% stylesheets '@FoodAppBundle/Resources/public/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css' filter="cssrewrite" %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/scripts/boxer/jquery.fs.boxer.css*' %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/style.css' %}
-    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css' %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
 
     {% block javascripts %}

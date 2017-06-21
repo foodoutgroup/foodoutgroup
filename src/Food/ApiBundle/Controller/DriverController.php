@@ -30,9 +30,9 @@ class DriverController extends Controller
                 'extId' => $driver->getExtId(),
                 'phone' => $driver->getPhone(),
                 'name' => $driver->getName(),
-                'city' => $driver->getCityId()->getTitle(),
-                'city_id' => $driver->getCityId(),
-                'dispatchPhone' => $translator->trans('general.top_contact.phone'),
+                'city' => $driver->getCity(),
+                'dispatchPhone' => $this->container->getParameter('call_centre_phone'),
+                'city_id' => $driver->getCityId()
                 //'bannerUrl' => '',
                 //'timezone' => '2'
             );
@@ -79,8 +79,8 @@ class DriverController extends Controller
                 'extId' => $driver->getExtId(),
                 'phone' => $driver->getPhone(),
                 'name' => $driver->getName(),
-                'city' => $driver->getCityId()->getTitle(),
-                'dispatchPhone' => $translator->trans('general.top_contact.phone'),
+                'city' => $driver->getCity(),
+                'dispatchPhone' => $this->container->getParameter('call_centre_phone'),
                 //'bannerUrl' => '',
                 //'timezone' => '2'
             ];

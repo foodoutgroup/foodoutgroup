@@ -725,7 +725,7 @@ input.button {}
     justify-content: center;
 }
 
-.search-food-form button.find-me {
+.search-food-form span.find-me {
     position: relative;
     right: 120px;
     top: 16px;
@@ -860,6 +860,7 @@ input.button {}
     padding: 8px 12px;
     border: 1px solid #d8d8d8;
     border-radius: 3px;
+    margin-left: 30px;
     box-shadow: 0 0 1px #f2f2f2;
     box-shadow: 0 0 2px #d0c8c1;
 }
@@ -3139,6 +3140,11 @@ div.coupon_form_popup {
     width:80%;
 }
 
+.address-search-form-place #address_autocomplete {
+    width: 70%!important;
+}
+
+
 .address-search-form-city .input-house {
     width: 76px;
 }
@@ -3156,7 +3162,7 @@ div.coupon_form_popup {
     width: 26px;
 }
 
-.address-search-form-city button.find-me {
+.address-search-form-city span.find-me {
     position: relative;
     right: 100px;
     top: 7px;
@@ -3167,9 +3173,7 @@ div.coupon_form_popup {
 
 }
 
-.address-search-form-place button.find-me {
-    left: 300px;
-}
+
 
 
 .address-search-form-cart #address_autocomplete {
@@ -3180,7 +3184,7 @@ div.coupon_form_popup {
     margin-left: 10px;
 }
 
-.address-search-form-cart button.find-me {
+.address-search-form-cart span.find-me {
     right: 130px;
     top: 7px;
 }
@@ -3224,7 +3228,7 @@ div.coupon_form_popup {
     margin-top:6px;
 }
 
-.address-quick-search  button.find-me {
+.address-quick-search  span.find-me {
     position: absolute;
     left: 403px;
     top: 54px;

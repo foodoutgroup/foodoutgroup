@@ -220,18 +220,24 @@ class AjaxController extends Controller
 
     private function _autoCompleteAddress(Request $request)
     {
-
         $addressCollection = [];
 
         $term = $request->get('term');
 
         $curl = new \Curl();
-        $rsp = json_decode($curl->get($this->container->getParameter('geo_provider').'/autocomplete', [
-            'input' => $term,
-            'components' => 'country:'.strtoupper($this->container->getParameter('country')),
-            'language' => $request->getLocale(),
-            'types' => 'geocode',
-        ])->body);
+        try {
+            $rsp = json_decode($curl->get($this->container->getParameter('geo_provider') . '/autocomplete', [
+                'input' => $term,
+                'components' => 'country:' . strtoupper($this->container->getParameter('country')),
+                'language' => $request->getLocale(),
+                'types' => 'geocode',
+            ])->body);
+        } catch (\Exception $e)
+        {
+            var_dump($e->getMessage());
+            var_dump(json_last_error());
+            die();
+        }
 
         $assets =  $this->get('templating.helper.assets');
 
