@@ -223,17 +223,9 @@ class AjaxController extends Controller
         $addressCollection = [];
 
         $term = $request->get('term');
-        echo '0';
 
         $curl = new \Curl();
-        echo '1';
-        echo $this->container->getParameter('geo_provider') . '/autocomplete';
-        var_dump([
-            'input' => $term,
-            'components' => 'country:' . strtoupper($this->container->getParameter('country')),
-            'language' => $request->getLocale(),
-            'types' => 'geocode',
-        ]);
+
         try {
             $rsp = json_decode($curl->get($this->container->getParameter('geo_provider') . '/autocomplete', [
                 'input' => $term,
@@ -268,8 +260,6 @@ class AjaxController extends Controller
                 'class' => '',
             ];
         }
-        echo '3';
-        die('ok');
 
         $user = $this->getUser();
         if($user) {
