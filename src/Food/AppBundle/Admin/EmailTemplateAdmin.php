@@ -11,6 +11,7 @@ class EmailTemplateAdmin extends FoodAdmin
     function configureListFields(ListMapper $list)
     {
         $list->add('templateId', null, ['label' => 'admin.email.text'])
+            ->add('name', 'text', ['label' => 'admin.email.name'])
             ->add('status', 'text', ['label' => 'admin.email.status'])
             ->add('preorder', 'boolean', ['label' => 'admin.email.preorder'])
             ->add('type', 'text', ['label' => 'admin.email.type'])
@@ -37,17 +38,18 @@ class EmailTemplateAdmin extends FoodAdmin
         $templateHelp = $this->getContainer()->get('templating')->render('@FoodApp/Admin/Custom/email_template_help.html.twig', []);
 
         $form->add('translations', 'a2lix_translations_gedmo', [
-                'translatable_class' => 'Food\AppBundle\Entity\EmailTemplate',
-                'cascade_validation' => true,
+            'translatable_class' => 'Food\AppBundle\Entity\EmailTemplate',
+            'cascade_validation' => true,
             'fields' => [
                 'templateId' => ['required' => true, 'label' => 'Template ID', 'attr' => ['help' => $templateHelp]]
             ]
         ])
-        ->add('status', 'choice', ['label' => 'admin.email.status', 'choices' => $orderStatusCollection])
-        ->add('preorder', 'boolean', ['label' => 'admin.email.preorder'])
-        ->add('type', 'boolean', ['label' => 'admin.email.type', 'choices' => $typeCollection])
-        ->add('source', 'choice', ['label' => 'admin.email.source', 'choices' => $sourceCollection])
-        ->add('active', 'boolean');
+            ->add('status', 'choice', ['label' => 'admin.email.status', 'choices' => $orderStatusCollection])
+            ->add('name', 'text', ['label' => 'admin.email.name'])
+            ->add('preorder', 'boolean', ['label' => 'admin.email.preorder'])
+            ->add('type', 'boolean', ['label' => 'admin.email.type', 'choices' => $typeCollection])
+            ->add('source', 'choice', ['label' => 'admin.email.source', 'choices' => $sourceCollection])
+            ->add('active', 'boolean');
     }
 
 }
