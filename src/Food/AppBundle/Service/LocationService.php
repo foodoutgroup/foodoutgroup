@@ -69,8 +69,10 @@ class LocationService extends ContainerAware
 
     public function setFromArray(array $location)
     {
+        if (isset($location['city_id'])) {
+            $cityObj = $this->container->get('doctrine')->getRepository('FoodAppBundle:City')->find($location['city_id']);
+        }
 
-        $cityObj = $this->container->get('doctrine')->getRepository('FoodAppBundle:City')->find($location['city_id']);
         if(!$cityObj) {
             return null;
         }
