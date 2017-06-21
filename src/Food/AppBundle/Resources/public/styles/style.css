@@ -733,6 +733,7 @@ input.button {}
     width: 24px;
     height: 24px;
     border: none;
+    cursor:pointer;
 
 }
 
@@ -3163,6 +3164,7 @@ div.coupon_form_popup {
 }
 
 .address-search-form-city span.find-me {
+    cursor: pointer;
     position: absolute;
     right: 85px;
     top: 8px;
