@@ -3163,9 +3163,9 @@ div.coupon_form_popup {
 }
 
 .address-search-form-city span.find-me {
-    position: relative;
+    position: absolute;
     right: 100px;
-    top: 7px;
+    top: 8px;
     background: url(/bundles/foodapp/images/find-me.png);
     width: 24px;
     height: 24px;
