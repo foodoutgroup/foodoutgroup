@@ -39,7 +39,7 @@ class AddressController extends Controller
                 $response = $lService->findByAddress($street.' '.$houseNumber.' ,'.$city);
 
                 if($response) {
-                    $lService->setFromArray($response);
+                    $lService->set($response);
                     $response['house_number'] = $response['house'];
                     $response['pedestrian'] = $pedestrianService->getPedestrianByCity($response['city_id']);
 
