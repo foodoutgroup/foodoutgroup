@@ -335,7 +335,7 @@ class AjaxController extends Controller
             }
 
         } else {
-            $rsp['message'] = $t->trans('error.server.problem.').str_replace(" ", ".", strtolower(trim($rsp['message'])));
+            $rsp['message'] = $t->trans('error.server.problem.'.str_replace(" ", ".", strtolower(trim($rsp['message']))));
         }
 
         return $rsp;
