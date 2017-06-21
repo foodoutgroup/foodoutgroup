@@ -32,7 +32,7 @@ class CityController extends Controller
 
         $locationData = $lService->get();
 
-        if(array_key_exists('city_id', $locationData) && $locationData['city_id'] != $city->getId()) {
+        if($locationData == null || (array_key_exists('city_id', $locationData) && $locationData['city_id'] != $city->getId())) {
             $dataToSet = $lService->findByAddress($city->getTitle().", ".$this->container->getParameter('country_full'));
             $dataToSet['city_id'] = $city->getId();
             $dataToSet['city'] = $city->getTitle();

@@ -725,7 +725,7 @@ input.button {}
     justify-content: center;
 }
 
-.search-food-form button.find-me {
+.search-food-form span.find-me {
     position: relative;
     right: 120px;
     top: 16px;
@@ -3162,7 +3162,7 @@ div.coupon_form_popup {
     width: 26px;
 }
 
-.address-search-form-city button.find-me {
+.address-search-form-city span.find-me {
     position: relative;
     right: 100px;
     top: 7px;
@@ -3184,7 +3184,7 @@ div.coupon_form_popup {
     margin-left: 10px;
 }
 
-.address-search-form-cart button.find-me {
+.address-search-form-cart span.find-me {
     right: 130px;
     top: 7px;
 }
@@ -3228,7 +3228,7 @@ div.coupon_form_popup {
     margin-top:6px;
 }
 
-.address-quick-search  button.find-me {
+.address-quick-search  span.find-me {
     position: absolute;
     left: 403px;
     top: 54px;

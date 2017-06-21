@@ -351,7 +351,7 @@ var registrationForm = {
         oldval = img.attr('src');
         input_auto_complete.attr('disabled', true);
 
-        img.attr('src', 'http://pizzagiotto.ru/bitrix/templates/giotto/img/preloader.GIF');
+        img.attr('src', img.attr('img-loader'));
 
         $.post($(this).data('url'), {"address":input_auto_complete.data('selected'), "flat" : form.find('#flat').val()} , function (response) {
             if(response.success && typeof response.url != "undefined" ) {
