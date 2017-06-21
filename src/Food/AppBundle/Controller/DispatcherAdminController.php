@@ -410,7 +410,6 @@ class DispatcherAdminController extends Controller
             }
             $orderService->saveOrder();
         };
-        $setOrderStatus($orderId, $status, $delayDuration, $cancelReason, $cancelReasonComment, $request);
 
         try {
             $setOrderStatus($orderId, $status, $delayDuration, $cancelReason, $cancelReasonComment, $request);
