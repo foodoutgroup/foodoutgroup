@@ -220,7 +220,7 @@ class AjaxController extends Controller
 
     private function _autoCompleteAddress(Request $request)
     {
-
+die('test');
         $addressCollection = [];
 
         $term = $request->get('term');
