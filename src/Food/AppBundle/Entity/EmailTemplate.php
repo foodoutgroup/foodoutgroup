@@ -47,6 +47,12 @@ class EmailTemplate
 
     /**
      * @var string
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     */
+    private $name;
+
+    /**
+     * @var string
      * @ORM\Column(name="source", type="string", length=255, nullable=true)
      */
     private $source;
@@ -434,4 +440,57 @@ class EmailTemplate
         $this->useForAll = $useForAll;
     }
 
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return EmailTemplate
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get preorder
+     *
+     * @return boolean 
+     */
+    public function getPreorder()
+    {
+        return $this->preorder;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Get useForAll
+     *
+     * @return boolean 
+     */
+    public function getUseForAll()
+    {
+        return $this->useForAll;
+    }
 }
