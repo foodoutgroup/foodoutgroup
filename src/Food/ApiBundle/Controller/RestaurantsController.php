@@ -19,7 +19,7 @@ class RestaurantsController extends Controller
 
         $startTime = microtime(true);
 
-        $this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array)$request);
+        //$this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array)$request);
         $doctrine = $this->getDoctrine();
         try {
             /**
