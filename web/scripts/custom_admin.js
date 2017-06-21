@@ -1,14 +1,22 @@
 $(document).ready(function () {
 
-    var inputs =  $("input[name$='[" + $("input[data-slugify]").attr('data-slugify') + "]'");
+    var inputs = $("input[name$='[" + $("input[data-slugify]").attr('data-slugify') + "]'");
     var outputs = $("input[data-slugify]");
 
     outputs.each(function () {
         $(this).data('old-val', $(this).val());
     });
 
-    inputs.on('keyup',function () {
-        slugGenerator(outputs, inputs);
+    inputs.on('keyup', function (e) {
+        var position = this.selectionStart;
+        e.preventDefault();
+        if (e.keyCode === 37 || e.keyCode === 39) {
+            return false;
+
+        } else {
+            slugGenerator(outputs, inputs);
+            this.selectionEnd = position;
+        }
     });
 
     inputs.on('focusout', function () {
@@ -18,7 +26,6 @@ $(document).ready(function () {
     });
 
 });
-
 
 
 function slugGenerator(outputs, inputs) {
