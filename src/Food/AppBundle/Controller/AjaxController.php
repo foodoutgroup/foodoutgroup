@@ -327,7 +327,13 @@ class AjaxController extends Controller
 
                     $settingRestaurantList = (int) $this->get('food.app.utils.misc')->getParam('page_restaurant_list', 0);
                     if($settingRestaurantList) {
-                        $rsp['url'] = $this->get('slug')->getUrl($settingRestaurantList, Slug::TYPE_PAGE);
+
+                        $citySlug = '';
+                        if(!empty($rsp['detail']['city'])) {
+                            $this->get('food.app.utils.misc')->
+                            $citySlug = '/'.$this->get('slug')->stringParse($rsp['detail']['city']);
+                        }
+                        $rsp['url'] = $this->get('slug')->getUrl($settingRestaurantList, Slug::TYPE_PAGE).$citySlug;
 
                         $locationService->clear()->set($rsp['detail'], $flat);
 
