@@ -255,7 +255,7 @@ class AjaxController extends Controller
                 'class' => '',
             ];
         }
-        echo '3'
+        echo '3';
         die('ok');
 
         $user = $this->getUser();
