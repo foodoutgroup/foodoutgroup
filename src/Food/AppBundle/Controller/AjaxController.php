@@ -225,7 +225,6 @@ class AjaxController extends Controller
         $term = $request->get('term');
 
         $curl = new \Curl();
-        $curl->headers[] = CURLOPT_FOLLOWLOCATION;
         try {
             $rsp = json_decode($curl->get($this->container->getParameter('geo_provider') . '/autocomplete', [
                 'input' => $term,
