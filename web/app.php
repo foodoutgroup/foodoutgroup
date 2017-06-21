@@ -1,7 +1,7 @@
 <?php
 //~ @ini_set('memory_limit', '512M');
 // Ijungti kai reikia laikinai stabdyti svetaines veikima del kokiu nors priezasciu
-//require 'maintenance.php';
+require 'maintenance.php';
 
 
 // The redirect test from one way to another... or how foodout was sold to delfi
