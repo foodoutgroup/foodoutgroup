@@ -92,21 +92,23 @@ class ZavalasService extends BaseService
     public function getRushHourTimeByPlace(Place $place)
     {
         $locationData = $this->locationService->get();
-        $cityObj = $this->em->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
+        if ($locationData['city_id']) {
+            $cityObj = $this->em->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
 
-        if (!$cityObj || $this->isRushHourAtCity($cityObj) || !$this->placesService->isPlaceDeliversToCity($place, $cityObj->getId())) {
+            if (!$cityObj || $this->isRushHourAtCity($cityObj) || !$this->placesService->isPlaceDeliversToCity($place, $cityObj->getId())) {
 
-            $placeCityCollection = $this->em->getRepository('FoodDishesBundle:Place')->getCityCollectionByPlace($place);
-            $placeCityCollectionOrdered = [];
-            foreach ($placeCityCollection as $placeCity) {
-                $placeCityKey = $this->em->getRepository('FoodAppBundle:City')->find($placeCity->getId())->getZavalasTime();
-                $placeCityCollectionOrdered[$placeCityKey] = $placeCity;
-            }
-            krsort($placeCityCollectionOrdered);
-            $placeCityCollection = $placeCityCollectionOrdered;
-            foreach ($placeCityCollection as $placeCity) {
-                if ($this->isRushHourAtCity($placeCity)) {
-                    return $this->getRushHourTimeAtCity($placeCity);
+                $placeCityCollection = $this->em->getRepository('FoodDishesBundle:Place')->getCityCollectionByPlace($place);
+                $placeCityCollectionOrdered = [];
+                foreach ($placeCityCollection as $placeCity) {
+                    $placeCityKey = $this->em->getRepository('FoodAppBundle:City')->find($placeCity->getId())->getZavalasTime();
+                    $placeCityCollectionOrdered[$placeCityKey] = $placeCity;
+                }
+                krsort($placeCityCollectionOrdered);
+                $placeCityCollection = $placeCityCollectionOrdered;
+                foreach ($placeCityCollection as $placeCity) {
+                    if ($this->isRushHourAtCity($placeCity)) {
+                        return $this->getRushHourTimeAtCity($placeCity);
+                    }
                 }
             }
         }
