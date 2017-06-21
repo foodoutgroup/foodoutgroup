@@ -32,6 +32,7 @@ class CityRepository extends EntityRepository
         }
 
         $result->setParameters($params);
+        $result->distinct('b.id');
         $return = $result->getQuery()->getResult();
 
         $return = array_slice($return,0,5);
