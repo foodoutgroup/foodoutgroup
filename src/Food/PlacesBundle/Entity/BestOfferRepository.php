@@ -46,8 +46,6 @@ class BestOfferRepository extends EntityRepository
 
     public function getBestOffersByIds($ids)
     {
-
-
         $result = $this->findBy(['id' => $ids]);
 
         return $result;
