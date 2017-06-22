@@ -37,27 +37,18 @@ class LocationService extends ContainerAware
     {
 
         $precision = 0;
-
         if($locationData) {
 
             if (!$locationData['latitude'] || !$locationData['longitude']) {
-                $precision++;
-            }
-
-            if (!$locationData['house']) {
-                $precision++;
-            }
-
-            if (!$locationData['street']) {
-                $precision++;
-            }
-
-            if (!$locationData['city']) {
-                $precision++;
-            }
-
-            if (!$locationData['country']) {
-                $precision++;
+                $precision = 1;
+            } else if (!$locationData['house']) {
+                $precision = 2;
+            } else if (!$locationData['street']) {
+                $precision = 3;
+            } else if (!$locationData['city']) {
+                $precision = 4;
+            } else if (!$locationData['country']) {
+                $precision = 5;
             }
 
         } else {
