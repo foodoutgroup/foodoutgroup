@@ -26,6 +26,11 @@ class RestaurantsController extends Controller
              */
             $address = $request->get('address');
             $city = $request->get('city');
+            $cityDoc = $doctrine->getRepository('FoodAppBundle:City')->getByName($city);
+            if (!$cityDoc) {
+                $this->get('logger')->error('Restaurants:getRestaurantsAction CityNotFound:' . $city);
+            }
+
             $lat = $request->get('lat');
             $lng = $request->get('lng');
             $keyword = $request->get('keyword', '');

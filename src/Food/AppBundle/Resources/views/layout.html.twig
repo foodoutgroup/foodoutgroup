@@ -211,8 +211,8 @@
     </div>
 
     {{ include('FoodAppBundle:Default:login_register.html.twig') }}
-    <script src="{{ asset('bundles/foodapp/scripts/common.js')}}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/scripts.js')}}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/common.js')}}?{{ "now"|date("YmdH") }}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/scripts.js')}}?{{ "now"|date("YmdH") }}"></script>
     {% block jscode %}{% endblock %}
     {{ misc_utils.param('footer_scripts', true)|raw }}
 </body>
