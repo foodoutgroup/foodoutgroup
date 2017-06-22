@@ -70,7 +70,7 @@ class LocationService extends ContainerAware
     public function setFromArray(array $location)
     {
 
-        if (!empty($location['city_id'])) {
+        if (!(int) $location['city_id']) {
             return null;
         }
 
