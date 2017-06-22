@@ -3,6 +3,7 @@
 namespace Food\AppBundle\Controller;
 
 use Food\AppBundle\Entity\Slug;
+use Food\DishesBundle\Entity\PlaceRepository;
 use Food\OrderBundle\Entity\Coupon;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
@@ -45,6 +46,7 @@ class AjaxController extends Controller
                 break;
             case 'delivery-type':
                 $this->get('session')->set('delivery_type', $request->get('type'));
+                $collection = [];
                 break;
             default:
                 $collection = ['message' => 'Method not found :)'];
@@ -191,27 +193,20 @@ class AjaxController extends Controller
 
     private function _ajaxGetDeliveryPrice($restaurant,$time)
     {
-        $em = $this->container->get('doctrine')->getManager();
 
         $date = date('Y-m-d ').$time.':00';
         $location = $this->get('food.location')->get();
-        $placeRepo = $em->getRepository("FoodDishesBundle:Place");
-        $place = $placeRepo->find($restaurant);
+        /**
+         * @var $placeRepo PlaceRepository
+         */
+        $placeRepo = $this->getDoctrine()->getRepository("FoodDishesBundle:Place");
+
+
         $placePointId = $placeRepo->getPlacePointNear($restaurant,$location,false,$date);
-
         if(!empty($placePointId)) {
-            $placePointRepo = $em->getRepository("FoodDishesBundle:PlacePoint");
-            $cartService = $this->container->get('food.cart');
-
-            $placePoint = $placePointRepo->find($placePointId);
-
-            $deliveryPrice = $cartService->getDeliveryPrice(
-                $place,
-                $location,
-                $placePoint,
-                true
-            );
-
+            $place = $placeRepo->find($restaurant);
+            $placePoint = $this->getDoctrine()->getRepository("FoodDishesBundle:PlacePoint")->find($placePointId);
+            $deliveryPrice = $this->container->get('food.cart')->getDeliveryPrice($place, $location, $placePoint, true);
         } else {
             $deliveryPrice = '';
         }
@@ -226,20 +221,12 @@ class AjaxController extends Controller
         $term = $request->get('term');
 
         $curl = new \Curl();
-        try {
-            $rsp = json_decode($curl->get($this->container->getParameter('geo_provider') . '/autocomplete', [
-                'input' => $term,
-                'components' => 'country:' . strtoupper($this->container->getParameter('country')),
-                'language' => $request->getLocale(),
-                'types' => 'geocode',
-            ])->body);
-        } catch (\Exception $e)
-        {
-            var_dump($e->getMessage());
-            var_dump(json_last_error());
-            die();
-        }
-
+        $rsp = json_decode($curl->get($this->container->getParameter('geo_provider') . '/autocomplete', [
+            'input' => $term,
+            'components' => 'country:' . strtoupper($this->container->getParameter('country')),
+            'language' => $request->getLocale(),
+            'types' => 'geocode',
+        ])->body);
         $assets =  $this->get('templating.helper.assets');
 
         foreach ($rsp->collection as $item) {
@@ -295,55 +282,29 @@ class AjaxController extends Controller
 
     private function _checkAddress(Request $request)
     {
-        $rspDefault = ['success' => false];
 
-        $locationService = $this->get('food.location');
+        $rsp = ['success' => false];
 
-        $curl = new \Curl();
-        $rsp = json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', [
-            'hash' => $request->get('address'),
-            'language' => $request->getLocale(),
-            'types' => 'geocode',
-        ])->body, true);
+        $lService = $this->get('food.location');
+        $response = $lService->findByHash($request->get("address"));
 
-        $rsp  = array_merge($rspDefault, $rsp);
         $t = $this->get('translator');
-
-        $flat = $request->get('flat', null);
-        if(strlen(trim($flat)) == 0) {
-            $flat = null;
-        }
-
-        if($rsp['success']) {
-
-            $d = $rsp['detail'];
-
-            if(empty($d['house'])) {
+        if($response) {
+            if (empty($response['house'])) {
                 $rsp['message'] = $t->trans('error.house.not.found');
-                $rsp['success'] = false;
+            } elseif(!is_null($response['city_id'])) {
+                $rsp['success'] = true;
+                $rsp['url'] = $this->get('slug')->get($response['city_id'], Slug::TYPE_CITY);
+                $lService->clear()->set($response);
+            } elseif($settingRestaurantList = (int) $this->get('food.app.utils.misc')->getParam('page_restaurant_list', 0)){
+                $rsp['success'] = true;
+                $rsp['url'] = $this->get('slug')->getUrl($settingRestaurantList, Slug::TYPE_PAGE);
+                $lService->clear()->set($response);
             } else {
-                $city = $this->get('food.city_service')->getCityByName($d['city']);
-                if(!$city) {
-
-                    $settingRestaurantList = (int) $this->get('food.app.utils.misc')->getParam('page_restaurant_list', 0);
-                    if($settingRestaurantList) {
-
-                        $rsp['url'] = $this->get('slug')->getUrl($settingRestaurantList, Slug::TYPE_PAGE);
-                        $locationService->clear()->set($rsp['detail'], $flat);
-
-                    } else {
-                        $rsp['success'] = false;
-                        $rsp['message'] = $t->trans('in.this.city.we.have.not.delivered.food');
-                    }
-                } else {
-                    $rsp['url'] = $this->get('slug')->getUrl($city->getId(), Slug::TYPE_CITY);
-                    $locationService->clear()->set($rsp['detail'], $flat);
-
-                }
+                $rsp['message'] = $t->trans('in.this.city.we.have.not.delivered.food');
             }
-
         } else {
-            $rsp['message'] = $t->trans('error.server.problem.'.str_replace(" ", ".", strtolower(trim($rsp['message']))));
+            $rsp['message'] = $t->trans('address.not.found.please.contact.us');
         }
 
         return $rsp;
@@ -351,17 +312,18 @@ class AjaxController extends Controller
 
     private function _getAddressByLocation(Request $request)
     {
-        $rspDefault = ['success' => false];
+        $rsp = ['success' => false, 'detail' => null];
+        $lService = $this->get('food.location');
+        $response = $lService->findByCords($request->get('lat'), $request->get('lng'));
+        if($response) {
+            $rsp['success'] = true;
+            $rsp['detail'] = $response;
+        } else {
+            $t = $this->get('translator');
+            $rsp['message'] = $t->trans('cant.get.your.location');
+        }
 
-        $curl = new \Curl();
-        $rsp = json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', [
-            'lat' => $request->get('lat'),
-            'lng' => $request->get('lng'),
-            'language' => $request->getLocale(),
-            'types' => 'geocode',
-        ])->body, true);
-
-        return array_merge($rspDefault, $rsp);
+        return $rsp;
     }
 
 }
