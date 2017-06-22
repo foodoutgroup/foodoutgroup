@@ -2,6 +2,7 @@
 
 namespace Food\UserBundle\Form\Type;
 
+use Guzzle\Http\Message\Request;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use FOS\UserBundle\Form\Type\RegistrationFormType as BaseType;
@@ -13,6 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class RegistrationFormType extends BaseType
 {
     private $class;
+    private $locale;
 
     /**
      * @param string $class The User class name
@@ -34,18 +36,23 @@ class RegistrationFormType extends BaseType
             'csrf_protection' => false,
             'validation_groups' => array(
                 'Registration'
+
             )
         ));
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+
         $attributes = array('rel' => 'tooltip',
                             'data-toggle' => 'tooltip',
                             'data-placement' => 'right',
                             'data-trigger' => 'focus');
 
         $builder
+            ->add('locale','hidden',array(
+                'data' => $this->locale))
             ->add('firstname',
                   null,
                   array('error_bubbling' => false,

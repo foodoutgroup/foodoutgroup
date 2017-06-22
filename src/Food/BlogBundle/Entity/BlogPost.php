@@ -3,12 +3,18 @@
 namespace Food\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * BlogPost
  *
  * @ORM\Table(name="blog_post")
  * @ORM\Entity(repositoryClass="Food\BlogBundle\Entity\BlogPostRepository")
+ * @UniqueEntity(
+ *     fields={"slug", "language"},
+ *     errorPath="slug",
+ *     message="This slug is already in use on this language."
+ * )
  */
 class BlogPost
 {
@@ -118,6 +124,12 @@ class BlogPost
      * @ORM\Column(name="seo_description", type="text", nullable=true)
      */
     private $seo_description = null;
+
+    /**
+     * @var string
+     * @ORM\Column(name="slug", type="text", nullable=true)
+     */
+    private $slug = null;
 
     /**
      * @return string
@@ -370,5 +382,20 @@ class BlogPost
         $this->seo_description = $seo_description;
     }
 
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
 
 }

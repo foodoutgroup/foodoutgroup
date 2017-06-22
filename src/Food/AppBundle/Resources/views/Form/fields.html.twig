@@ -1,0 +1,47 @@
+{% block groupped_checkbox_widget %}
+     {% if expanded %}
+        <div {{ block('widget_container_attributes') }} id='groupped-container'>
+            <div class="row-fluid">
+            {% set columnWidth = (12 / choices|length)|round %}
+                {% if columnWidth < 2 %}{% set columnWidth = 2 %}{% endif %}
+            {% set perRow = 12 / columnWidth %}
+
+            {% for group_label, group in choices %}
+                {% if loop.index0 is divisible by(perRow) %}
+                    </div><div class="row-fluid">
+                {% endif %}
+                {% if group is iterable %}
+                    <div class="span{{ columnWidth }} groupCheck">
+                        <label><b><input type="checkbox" class="" id="{{ group_label }}" value="{{ group_label }}"/> {{ group_label|trans }}</b></label>
+                            {% for key, choice in group %}
+                                <div class="row-fluid" data-parent="{{ group_label }}">
+                                    <div class="span1"> {{ form_widget(form[key]) }} </div>
+                                    <div class="span11">{{ form_label(form[key]) }}</div>
+                                </div>
+                            {% endfor %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            </div>
+        </div>
+
+         <script type="text/javascript">
+             $(".groupCheck").find('input:first').on('change',function(){
+                 var children = $(this).parents('div.groupCheck').find('.span1').find('input');
+                 if($(this).is(':checked'))
+                 {
+                     children.prop('disabled',false).prop('checked',true);
+                 }
+                 else
+                 {
+                     children.prop('disabled',true).prop('checked',false);
+                 }
+             }).trigger('change');
+         </script>
+
+
+     {% else %}
+        {{ form_widget(form) }}
+     {% endif %}
+{% endblock %}
+

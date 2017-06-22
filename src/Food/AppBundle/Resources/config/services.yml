@@ -1,4 +1,31 @@
 services:
+
+    request_listener:
+        class: Food\AppBundle\EventListener\RequestListener
+        arguments: [ @service_container ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.request, method: onLateKernelRequest, priority: -10 }
+
+    gedmo.listener.translatable:
+        class: Gedmo\Translatable\TranslatableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ]
+            - [ setDefaultLocale, [ %locale% ] ]
+            - [ setTranslationFallback, [ true ] ]
+
+    slug:
+        class: Food\AppBundle\Service\SlugService
+        arguments: ["@doctrine.orm.entity_manager", @service_container, @router, %locales%, %kernel.default_locale%]
+
+    validate.slug:
+        class: Food\AppBundle\Validator\Constraints\SlugValidator
+        arguments: [@doctrine.orm.entity_manager, %locales%, %kernel.default_locale%, @service_container]
+        tags:
+          - { name: validator.constraint_validator, alias: validate.slug }
+
     food.app.utils.language:
         class: Food\AppBundle\Utils\Language
         calls:
@@ -33,15 +60,9 @@ services:
         calls:
             - [setContainer, [@service_container]]
 
-    food.googlegis:
-        class: Food\AppBundle\Service\GoogleGisService
-        calls:
-            - [setContainer, [@service_container]]
-
     food.location:
         class: Food\AppBundle\Service\LocationService
-        calls:
-            - [setContainer, [@service_container]]
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
 
     food.mail:
         class: Food\AppBundle\Service\MailService
@@ -109,10 +130,41 @@ services:
         parent: food.base_service
         arguments:
           - @router
-          - @food.app.utils.language
-        calls:
-          - [setAvailableCitiesSlugs, [%available_cities_slugs%]]
-          - [setLocale, [%locale%]]
+          - @service_container
+    food.page_service:
+        class: Food\AppBundle\Service\PageService
+        arguments:
+          - @doctrine.orm.entity_manager
+          - @router
+
+    food.locale_service:
+        class: Food\AppBundle\Service\LocaleService
+        arguments:
+          - @doctrine.orm.entity_manager
+          - @router
+          - @service_container
+
+    hook.free_delivery_restaurant:
+        class: Food\AppBundle\Service\HookFreeDeliveryRestaurant
+        arguments: ["@templating", "@doctrine.orm.entity_manager"]
+
+    hook.best_offer:
+        class: Food\AppBundle\Service\HookBestOffer
+        arguments: ["@templating", "@doctrine.orm.entity_manager"]
+
+    hook.b2b_client:
+        class: Food\AppBundle\Service\HookB2BClient
+        arguments: ['@service_container']
+
+    hook.application:
+        class: Food\AppBundle\Service\HookApplication
+
+    hook.meet:
+        class: Food\AppBundle\Service\HookMeet
+
+    hook.sitemap:
+        class: Food\AppBundle\Service\HookSitemap
+        arguments: ['@templating', '@doctrine.orm.entity_manager', '@service_container']
 
     food.zavalas_service:
       class: Food\AppBundle\Service\ZavalasService
@@ -124,15 +176,39 @@ services:
         - @food.places
 
     sonata.admin.cities:
-      class: Food\AppBundle\Admin\CityAdmin
-      tags:
-        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.cities" }
-      arguments:
-        - ~
-        - Food\AppBundle\Entity\City
-        - ~
-      calls:
-        - [ setTranslationDomain, [SonataAdminBundle]]
+         class: Food\AppBundle\Admin\CityAdmin
+         tags:
+           - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.cities" }
+         arguments:
+           - ~
+           - Food\AppBundle\Entity\City
+           - ~
+         calls:
+           - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.sms.template:
+        class: Food\AppBundle\Admin\SmsTemplateAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "Editor", label: "admin.sms.template" }
+        arguments:
+          - ~
+          - Food\AppBundle\Entity\SmsTemplate
+          - ~
+        calls:
+          - [ setTranslationDomain, [SonataAdminBundle]]
+
+
+    sonata.admin.email.template:
+        class: Food\AppBundle\Admin\EmailTemplateAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "Editor", label: "admin.email.template" }
+        arguments:
+          - ~
+          - Food\AppBundle\Entity\EmailTemplate
+          - ~
+        calls:
+          - [ setTranslationDomain, [SonataAdminBundle]]
+
 
     sonata.admin.citieslog:
       class: Food\AppBundle\Admin\CityLogAdmin
@@ -166,12 +242,49 @@ services:
         - ~
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]
-
     food.dispatcher_service:
       class: Food\AppBundle\Service\DispatcherService
       parent: food.base_service
       calls:
         - [ setSecurityContext, [@security.context]]
+    app.form.type.gender:
+        class: Food\AppBundle\Form\Type\CityType
+        tags:
+            - { name: form.type, alias: city }
+
+    app.form.type.boolean:
+        class: Food\AppBundle\Form\Type\BooleanType
+        tags:
+            - { name: form.type, alias: boolean }
+
+    app.form.type.groupped_checkbox:
+        class: Food\AppBundle\Form\Type\GrouppedCheckboxType
+        tags:
+            - { name: form.type, alias: groupped_checkbox }
+
+    food.import_export_service:
+        class: Food\AppBundle\Service\ImportExportService
+        parent: food.base_service
+        arguments:
+          - @food.app.utils.language
+          - @service_container
+          - @filesystem
+        calls:
+          - [setLocale, [%locale%]]
+          - [setFieldMap]
+          - [ setSaveDirectory, ['%kernel.root_dir%/../web/']]
+
+    sonata.admin.translations:
+      class: Food\AppBundle\Admin\ORMTranslationAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "group.translation", label: "admin.translations" }
+      arguments: ['', Lexik\Bundle\TranslationBundle\Entity\TransUnit, 'FoodAppBundle:TranslationCRUD']
+      calls:
+        - [ setEditableOptions, [%editable%]]
+        - [ setTranslationDomain, [SonataAdminBundle]]
+        - [ setManagedLocales, [%lexik_translation.managed_locales%]]
+        - [ setDefaultSelections, [%defaultSelections%]]
+        - [ setEmptyPrefixes, [%emptyPrefixes%]]
 
     sonata.admin.error_log:
       class: Food\AppBundle\Admin\ErrorLogAdmin
@@ -184,11 +297,32 @@ services:
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]
 
-    food.error_log_service:
-      class: Food\AppBundle\Service\ErrorLogService
-      parent: food.base_service
-      calls:
-        - [setContainer, [@service_container]]
+    sonata.admin.settings:
+        class: Food\AppBundle\Admin\SettingsAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.settings" }
+        arguments:
+            - ~
+            - ~
+            - 'FoodAppBundle:Settings'
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+
+    sonata.admin.import_export:
+        class: Food\AppBundle\Admin\ImportAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.import_export" }
+        arguments:
+            - ~
+            - ~
+            - 'FoodAppBundle:Import'
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
+    food.error_log:
+        class: Food\AppBundle\Service\ErrorLogService
+        arguments: ["@doctrine.orm.entity_manager","@service_container"]
 
     food.phones_code_service:
                 class: Food\AppBundle\Service\RestCountryService

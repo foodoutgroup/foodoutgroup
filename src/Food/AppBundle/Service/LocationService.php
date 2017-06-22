@@ -1,129 +1,261 @@
 <?php
 namespace Food\AppBundle\Service;
 
-use Food\AppBundle\Entity\Cities;
-use Food\AppBundle\Entity\Neighbourhood;
+use Doctrine\ORM\EntityManager;
+use Food\AppBundle\Entity\City;
 use Food\UserBundle\Entity\User;
+use Food\UserBundle\Entity\UserAddress;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LocationService extends ContainerAware
 {
 
-    public function __construct()
-    {
-
-    }
-
     /**
-     * Writes city to session
-     *
-     * @param string $city
-     * @param integer $id
+     * @var EntityManager
      */
-    public function setCityOnlyToSession($city, $id = 0)
+    private $em;
+    private $currentCity = null;
+
+    private $session;
+
+    public function __construct(EntityManager $em, ContainerInterface $container)
     {
-        $returner = array();
-        $returner['not_found'] = true;
-        $returner['street_found'] = false;
-        $returner['address_found'] = false;
-        $returner['city'] =  $city;
-        $returner['address'] = $returner['city'];
-        $returner['city_only'] = true;
-        if ($id > 0) {
-            $returner['city_id'] = intval($id);
+        $this->container = $container;
+        $this->em = $em;
+        $this->session = $this->container->get('session');
+    }
+
+    // 5 - all not found
+    // 4 - Country found;
+    // 3 - Country, city found;
+    // 2 - Country, city, street found;
+    // 1 - Country, city, street, house found;
+    // 0 - Country, city, street, house, longitude, latitude found;
+
+    public function precision($locationData = [])
+    {
+
+        $precision = 0;
+
+        if($locationData) {
+
+            if (!$locationData['latitude'] || !$locationData['longitude']) {
+                $precision++;
+            }
+
+            if (!$locationData['house']) {
+                $precision++;
+            }
+
+            if (!$locationData['street']) {
+                $precision++;
+            }
+
+            if (!$locationData['city']) {
+                $precision++;
+            }
+
+            if (!$locationData['country']) {
+                $precision++;
+            }
+
+        } else {
+            $precision = 5;
         }
-        $this->setLocationToSession($returner);
+
+        return $precision;
+    }
+
+    public function setFromArray(array $location)
+    {
+
+        if (!(int) $location['city_id']) {
+            return null;
+        }
+
+        $cityObj = $this->container->get('doctrine')->getRepository('FoodAppBundle:City')->find($location['city_id']);
+
+        if(!$cityObj) {
+            return null;
+        }
+
+        return $this->set(
+            $cityObj,
+            $location['country'],
+            $location['street'],
+            $location['house'],
+            $location['flat'],
+            $location['origin'],
+            $location['latitude'],
+            $location['longitude']
+        );
+
     }
 
     /**
-     * Parse City, Neighbourhood, address and writes to session
-     * Works only with parameter: maps_enabled = false
-     *
-     * @param Cities $city
-     * @param Neighbourhood $neighbourhood
-     * @param string $address
-     *
+     * @param City $city
+     * @param bool|null $country
+     * @param bool|null $street
+     * @param bool|null $house
+     * @param bool|null $flat
+     * @param bool|null $origin
+     * @param bool|null $latitude
+     * @param bool|null $longitude
      * @return array
      */
-    public function parseParamsToLocation(Cities $city = null, Neighbourhood $neighbourhood = null, $address = null)
+    public function set(City $city, $country = false, $street = false, $house = false, $flat = false, $origin = false, $latitude = false, $longitude = false)
     {
-        $locData = $this->getLocationFromSession();
-        $locData['not_found'] = true;
-        $locData['found'] = false;
-        $locData['street_found'] = false;
-        $locData['address_found'] = false;
-        $locData['city_only'] = false;
-        $locData['city'] = null;
+        $current = $this->get();
 
-        if (!$this->container->getParameter('maps_enabled')) {
-            $locData['not_found'] = false;
-            $locData['found'] = true;
-            if (!is_null($address)) {
-                $locData['address_found'] = true;
-                $locData['address'] = $address;
-                $locData['address_orig'] = $address;
-            }
-
-            if ($neighbourhood) {
-                $locData['city_id'] = $neighbourhood->getCities()->getId();
-                $locData['city'] = $neighbourhood->getCities()->getName();
-                $locData['neighbourhood_id'] = $neighbourhood->getId();
-                $locData['neighbourhood'] = $neighbourhood->getName();
-            } elseif ($city) {
-                $locData['city_id'] = $city->getId();
-                $locData['city'] = $city->getName();
-            }
+        if(!$current) {
+            $current = [];
         }
+        $locationData = [
+            'precision' => 0,
+            'country' => is_null($country) ? null : (isset($current['country']) && !$country ? $current['country'] : $country),
+            'city' => $city->getTitle(),
+            'city_id' => $city->getId(),
+            'street' => is_null($street) ? null : (isset($current['street']) && !$street ? $current['street'] : $street),
+            'house' => is_null($house) ? null : (isset($current['house']) && !$house ? $current['house'] : $house),
+            'flat' => is_null($flat) ? null : (isset($current['flat']) && !$flat ? $current['flat'] : $flat),
+            'latitude' => is_null($latitude) ? null : (isset($current['latitude']) && !$latitude ? $current['latitude'] : $latitude),
+            'longitude' => is_null($longitude) ? null : (isset($current['longitude']) && !$longitude ? $current['longitude'] : $longitude),
+            'origin' => is_null($origin) ? null : (isset($current['origin']) && !$origin ? $current['origin'] : $origin),
+        ];
 
-        $this->setLocationToSession($locData);
+        $locationData['hash'] = md5($locationData['origin']);
+        $locationData['precision'] = $this->precision($locationData);
 
-        return $locData;
-    }
-
-    /**
-     * sets user address to session
-     * @params User $user
-     *
-     * @return $locationData
-     */
-    public function setLocationFromUser(User $user)
-    {
-        $userAddress = $user->getDefaultAddress();
-        $locationData = $this->getLocationFromSession();
-        $locationData['not_found'] = true;
-        $locationData['found'] = false;
-        $locationData['street_found'] = false;
-        $locationData['address_found'] = false;
-        $locationData['city_only'] = false;
-        $locationData['city'] = null;
-        $locationData['address_found'] = true;
-        if ($userAddress) {
-            $locationData['city'] = $userAddress->getCity();
-            $locationData['address'] = $userAddress->getAddress();
-            $locationData['address_orig'] = $userAddress->getAddress();
-        }
-
-        $this->setLocationToSession($locationData);
+        $this->session->set('location', $locationData);
+        $this->currentCity = $city;
         return $locationData;
     }
 
-    /**
-     * Writes location data to session
-     *
-     * @param array $location
-     */
-    public function setLocationToSession($location)
+    public function setCity(City $city)
     {
-        $this->container->get('session')->set('location', $location);
+        $this->set($city, null,null,null,null,null,false,false);
+
+        return $this->get();
     }
 
     /**
-     * Reads location data from session
-     *
      * @return array
      */
-    public function getLocationFromSession()
+    public function get()
     {
-        return $this->container->get('session')->get('location');
+        return $this->session->get('location');
+    }
+    /**
+     * @return null
+     */
+    public function getCityObj(){
+        return $this->currentCity;
+    }
+
+    public function clearLocation()
+    {
+        $this->session->remove('location');
+        return $this;
+    }
+
+    private function getGeoCodeCurl($params = [])
+    {
+
+        $defaultParams = [
+            'language' => $this->container->get('request')->getLocale(),
+            'types' => 'geocode',
+        ];
+
+        $curl = new \Curl();
+        return json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', array_merge($defaultParams, $params))->body, true);
+    }
+
+    public function finishUpData($response = [])
+    {
+
+        if($response && isset($response['success']) && $response['success']) {
+
+            $response = $response['detail'];
+
+            //todo flat
+
+            if(!isset($response['origin']) && isset($response['output'])){
+                $response['origin'] = $response['output'];
+            }
+
+            if(!isset($response['flat'])) {
+                $response['flat'] = null; // todo flat recognition
+            }
+
+            $response['precision'] = $this->precision($response);
+            $response['city_id'] = null;
+            $cityObj = $this->container->get('doctrine')->getRepository('FoodAppBundle:City')->getByName($response['city']);
+            if($cityObj) {
+                $response['city_id'] = $cityObj->getId();
+            }
+        } else {
+            $response = null;
+        }
+
+        return $response;
+    }
+
+    public function findByHash($hash)
+    {
+        return $this->finishUpData($this->getGeoCodeCurl(['hash' => $hash]));
+    }
+
+
+    public function findByAddress($address)
+    {
+        return $this->finishUpData($this->getGeoCodeCurl(['address' => $address]));
+    }
+
+    public function findByIp($ipAddress)
+    {
+        return $this->finishUpData($this->getGeoCodeCurl(['ip' => $ipAddress]));
+    }
+
+    public function findByCords($lat, $lng)
+    {
+        return $this->finishUpData($this->getGeoCodeCurl(['lat' => $lat, 'lng' => $lng]));
+    }
+
+    public function saveAddressFromSessionToUser(User $user)
+    {
+        return $this->saveAddressFromArrayToUser($this->get(), $user);
+    }
+
+    public function saveAddressFromArrayToUser(array $current, User $user)
+    {
+        $ua = new UserAddress();
+
+        if(!isset($current['origin']) && isset($current['output'])){
+            $current['origin'] = $current['output'];
+        }
+
+        if(!isset($current['flat'])) {
+            $current['flat'] = null;
+        }
+
+        $addressString = $current['street']. ($current['house'] == null || $current['house'] == false ? "" : " ".$current['house'].($current['flat'] == null || $current['flat'] == false  ? "" : " - ".$current['flat'] ));
+        $ua->setAddress($addressString);
+        $ua->setCityId($this->getCityObj());
+        $ua->setUser($user);
+        $ua->setCity($current['city']);
+        $ua->setCountry($current['country']);
+        $ua->setStreet($current['street']);
+        $ua->setHouse($current['house']);
+        $ua->setFlat($current['flat']);
+        $ua->setLat($current['latitude']);
+        $ua->setLon($current['longitude']);
+        $ua->setOrigin($current['origin']);
+        $ua->setAddressId(isset($current['id']) ? $current['id'] : (isset($current['hash']) ? $current['hash'] : md5($current['origin'])));
+        $ua->setDefault(1);
+        $this->em->persist($ua);
+        $this->em->flush();
+
+        return $ua;
     }
 }

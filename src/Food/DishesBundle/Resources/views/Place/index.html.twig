@@ -36,6 +36,7 @@
 {% endblock %}
 
 {% block body %}
+
     {% if oldFriendIsHere == 1 %}
         <script type="text/javascript">
             $(document).ready(function() {
@@ -48,9 +49,9 @@
                     var cities_form = $(this);
                     var city = cities_form.find('#region_select').val();
 
-                    if (city == 'Vilnius' || city == 'Kaunas' || city == 'Klaipėda') {
-                        $.fancybox.close();
-                    } else if (city != '') {
+//                    if (city == 'Vilnius' || city == 'Kaunas' || city == 'Klaipėda') {
+//                        $.fancybox.close();
+//                    } else if (city != '') {
                         $.get("{{ path('food_place_url_by_city', { 'placeId': place.getId }) }}", { city: city }).done(function(data) {
                             if (data && data.url && data.status == 'success') {
                                 window.location = data.url;
@@ -58,7 +59,7 @@
                                 $.fancybox.close();
                             }
                         });
-                    }
+//                    }
                     return false;
                 });
 
@@ -81,8 +82,8 @@
                 <h1>{% trans %}places.region_select{% endtrans %}</h1>
                 <select id="region_select">
                     <option label="" value=""></option>
-                    {% for city in available_cities %}
-                        <option label="{{ city }}" value="{{ city }}">{{ city }}</option>
+                    {% for city in cityService.getActiveCity %}
+                        <option label="{{ city }}" value="{{ city.id }}">{{ city.title }}</option>
                     {% endfor %}
                 </select>
                 <button type="submit" class="button-normal submit">{% trans %}places.region_confirm{% endtrans %}</button>
@@ -110,10 +111,11 @@
 
     <div style="background-image: url(/bundles/foodapp/images/inner-bg.jpg);" class="site-center image-top">
         <div class="site-block" itemscope itemtype="http://schema.org/Restaurant">
+
             <div class="page-path clearfix">
-                <a href="{{ path('food_homepage') }}">{% trans %}places.home{% endtrans %}</a>
+                <a href="{{ slug.toHomepage() }}">{% trans %}places.home{% endtrans %}</a>
                 {% if breadcrumbData.city is not empty %}
-                    <a href="{{ breadcrumbData.city_url }}">{{ city_breadcrumb }}</a>
+                    <a href="{{ breadcrumbData.city_url }}">{{ breadcrumbData.city }}</a>
                     {% if breadcrumbData.kitchen is not empty %}
                         <a href="{{ breadcrumbData.kitchen_url }}">{{ breadcrumbData.kitchen }}</a>
                     {% endif %}
@@ -130,7 +132,9 @@
                         <div id="detailed-restaurant" class="detailed-resturant">
                         <ul>
                             <li><a href="#detailed-restaurant-menu">{% trans %}places.menu{% endtrans %}</a></li>
-                             {#<li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>#}
+                            {% if placeReviewCollection is defined %}
+                                <li><a href="#detailed-restaurant-review">{% trans %}places.reviews{% endtrans %}</a></li>
+                            {% endif %}
                             <li class="last restaurant-info-tab"><a itemprop="menu" href="{{ current_url }}#detailed-restaurant-info">{% trans %}places.information{% endtrans %}</a></li>
                         </ul>
 
@@ -167,46 +171,20 @@
                                         </div>
                                     {% endif %}
 
-                                    {% if site_country == 'LT' %}
-                                        {% if place.id in [63, 85, 302, 333] %}
-                                            {# Link to Cili Express #}
-                                            <br />
-                                            <a class="btn-walk" href="{{ path('food_cili_greita') }}">
-                                                <span><i class="icon-walk"></i><b>Eiti į Čili Take Away</b><i class="icon-arrow"></i></span>
-                                                <img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
-                                            </a>
-                                        {% elseif place.id == 142 %}
-                                            {# Link to Cili #}
-                                            <br />
-                                            <a class="btn-walk" href="{{ path('food_1822_cili') }}">
-                                                <span><i class="icon-walk"></i><b>Eiti į Čili Pica</b><i class="icon-arrow"></i></span>
-                                                <img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
-                                            </a>
-                                        {% endif %}
-                                    {% elseif site_country == 'LV' %}
-                                        {% if place.id in [1, 35] %}
-                                            {# Link to Cili Express #}
-                                            <br />
-                                            <a class="btn-walk" href="{{ path('food_cili_greita_lv') }}">
-                                                <span><i class="icon-walk"></i><b>Iet uz Čili Take Away</b><i class="icon-arrow"></i></span>
-                                                <img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
-                                            </a>
-                                        {% elseif place.id == 36 %}
-                                            {# Link to Cili #}
-                                            <br />
-                                            <a class="btn-walk" href="{{ path('food_cili_lv') }}">
-                                                <span><i class="icon-walk"></i><b>Iet uz Čili Pizza</b><i class="icon-arrow"></i></span>
-                                                <img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': relatedPlace.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
-                                            </a>
-                                        {% endif %}
-                                    {% endif %}
+                                    {#Related place collection view#}
+                                    {% for relatedPlace in relatedPlaceCollection %}
+                                        <br />
+                                        <a class="btn-walk" href="{{ slug.getUrl(relatedPlace.id, 'place') }}">
+                                            <span><i class="icon-walk"></i><b>{% trans %}related.place.go.to{% endtrans %} {{ relatedPlace.name }}</b><i class="icon-arrow"></i></span>
+                                            <img itemprop="logo" class="restaurant_image" alt="general.restaurant_logo_alt" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
+                                        </a>
+                                    {% endfor %}
+                                    {# end of related place collection view #}
                                 </div>
-                        {# Meniu #}
                                 <div class="menu-righter">
-
                                     <script type="text/javascript">
-                                        var addressFound = {% if location != null and not location.not_found and location.street_found %}true{% else %}false{% endif %};
-                                        var requestAddress = {% if takeAway %}false{% else %}true{% endif %};
+                                        var addressFound = {% if location is not null and location.precision == 0 %}true{% else %}false{% endif %};
+                                        var requestAddress = {% if takeAway or place.deliveryOptions == "pickup" %}false{% else %}true{% endif %};
                                         var dialogOpts = {
                                             modal: true,
                                             resizable: false,
@@ -248,7 +226,7 @@
                                                 $('.alert-no-address').removeClass('hidden');
 
                                                 $('html,body').animate({scrollTop: $('#detailed-restaurant-menu').offset().top}, 'fast');
-                                                $('.alert-no-address').shake(3,20,400);
+                                                $('.alert-no-address').shake(5, 5, 400);
 
                                             } else {
                                                 $(this).parent().find('.add-to-card-real-click').click();
@@ -260,7 +238,7 @@
                                                 e.preventDefault();
                                                 $('.alert-no-address').removeClass('hidden');
                                                 $('html,body').animate({scrollTop: $('#detailed-restaurant-menu').offset().top}, 'fast');
-                                                $('.alert-no-address').shake(3,20,400);
+                                                $('.alert-no-address').shake(5, 5, 400);
                                             }
                                         });
 
@@ -291,36 +269,22 @@
                                             });
                                         });
 
-                                        jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
-                                            this.each(function() {
-                                                $(this).css("position","relative");
-                                                for (var x=1; x<=intShakes; x++) {
-                                                    $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
-                                                            .animate({left:intDistance}, ((intDuration/intShakes)/2))
-                                                            .animate({left:0}, (((intDuration/intShakes)/4)));
-                                                }
-                                            });
-                                            return this;
-                                        };
 
                                     </script>
-
-
-                                    <div class="alert-no-address hidden">
+                                    <div class="alert-no-address hidden shake-me">
                                         {% trans %}please.fill.address.message.top{% endtrans %}<br/>
                                         <div class="input-section">
-                                            <select id="address_city" style="width: 120px;" class="custom-select">
-                                                {% for city in available_cities %}
-                                                    <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e','ī':'i'})) %}selected{% endif %}>{{places_service.getCityName(city)}}</option>
-                                                {% endfor %}
-                                            </select>
-                                            <input type="text"
-                                                   id="address"
-                                                   value="{% if location and location.address_orig is defined %}{{ location.address_orig }}{% endif %}"
-                                                   placeholder="{{ 'index.street'|trans }}" />
-                                            <button class="submit-address-change">{% trans %}general.profile.block_save{% endtrans %}</button>
+                                            <form class="address-search-form-ui address-search-form-city address-search-form-place"  action="#" method="get">
+                                                <div class="flex-aligment">
+                                                    <input type="text" {% if location is not null and location.precision == 0 and location.hash is defined %}data-selected="{{ location.hash }}"{% endif %} id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if location is not null %}{{ location.origin }}{% endif %}" />
+                                                    <button class="submit submit-address-change" id="submit" data-redirect="self" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}" img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/></button>
+                                                    <span id="find-me" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <div id="error"></div>
+                                            </form>
                                         </div>
-                                        {% if place.deliveryOptions != "pedestrian" %}
+                                        {% if place.deliveryOptions == "delivery_and_pickup" %}
                                             {% trans %}please.fill.address.message.bottom{% endtrans %}<br/>
                                         {% endif %}
                                     </div>
@@ -338,15 +302,19 @@
                                         </div>
                                     {% endif %}
                                     <div class="menu-title clearfix">
-                                        {% if place.showNotification %}
-                                            <div class="alert alert-danger" id="notificationNotice">
-                                                {{ place.notificationContent|raw }}
-                                            </div>
+                                        {% if notificationCollection %}
+                                            {% for notification in notificationCollection %}
+                                                <div class="placeNotification alert alert-{{ notification.type|raw }}">
+                                                    {{ notification.description }}
+                                                </div>
                                             <Script>
                                                 $(document).ready(function(){
-                                                    setTimeout(function(){ $('#notificationNotice').fadeOut();}, 15000);
+                                                    setTimeout(function(){
+                                                        $( ".placeNotification" ).each(function( ) {$(this).fadeOut();});
+                                                    }, 15000);
                                                 });
                                             </Script>
+                                            {% endfor %}
                                         {% endif %}
 
                                         {# Dish Search Begin #}
@@ -380,35 +348,37 @@
                             </div>
                         </div>
                         {# Atsiliepimai #}
-                        {# <div id="detailed-restaurant-review" class="detailed-restaurant-review">
-                            <div class="review-title clearfix">
-                                {% if placeReviews %}
-                                <h3>{{ placeReviews|length }} {% transchoice placeReviews|length %}places.review_choice{% endtranschoice %}</h3>
-                                {% else %}
-                                <h3>{% trans %}general.no_place_reviews{% endtrans %}</h3>
-                                {% endif %}
-                            </div>
-                            <div class="review-list">
-                                {% for review in placeReviews %}
-                                <div class="review-item clearfix">
-                                    <div class="review-person"><img src="/bundles/foodapp/images/person.png">
-                                        <p class="name">{{ review.createdBy.getFirstname }}</p>
-                                        {% if review.createdBy.getDefaultAddress %}
-                                            <p class="location">{{ review.createdBy.getDefaultAddress.city }}</p>
-                                        {% endif %}
-                                    </div>
-                                    <div class="review-baloon">
-                                        <div class="nip"></div>
-                                        <p class="text">{{ review.review }}</p>
-                                        <div class="clearfix">
-                                            <div data-stars="{{ review.rate }}" class="restoran-rating fl"></div>
-                                            <div class="date fr">{{ review.createdAt|localizeddate('medium', 'none', locale) }}</div>
+                        {% if placeReviewCollection is defined %}
+                            <div id="detailed-restaurant-review" class="detailed-restaurant-review">
+                                <div class="review-title clearfix">
+                                    {% if placeReviewCollection %}
+                                        <h3>{{ placeReviewCollection|length }} {% transchoice placeReviewCollection|length %}places.review_choice{% endtranschoice %}</h3>
+                                        {% else %}
+                                        <h3>{% trans %}general.no_place_reviews{% endtrans %}</h3>
+                                    {% endif %}
+                                </div>
+                                <div class="review-list">
+                                    {% for review in placeReviewCollection %}
+                                    <div class="review-item clearfix">
+                                        <div class="review-person"><img src="/bundles/foodapp/images/person.png">
+                                            <p class="name">{{ review.createdBy.getFirstname }}</p>
+                                            {% if review.createdBy.getDefaultAddress %}
+                                                <p class="location">{{ review.createdBy.getDefaultAddress.city }}</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="review-baloon">
+                                            <div class="nip"></div>
+                                            <p class="text">{{ review.review }}</p>
+                                            <div class="clearfix">
+                                                <div data-stars="{{ review.rate }}" class="restoran-rating fl"></div>
+                                                <div class="date fr">{{ review.createdAt|localizeddate('medium', 'none', locale) }}</div>
+                                            </div>
                                         </div>
                                     </div>
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
                             </div>
-                        </div> #}
+                        {% endif %}
                         {# Restorano informacija #}
                         <div id="detailed-restaurant-info" class="detailed-restaurant-info">
                             <h3>{% trans %}places.about_place{% endtrans %}</h3>
@@ -461,7 +431,7 @@
                                         <label for="place-select">{% trans %}places.select_place_point{% endtrans %}:</label>
                                         <select id="place-select" class="custom-select">
                                             {% for point in placePoints %}
-                                                <option itemprop="address" value="{{ point.id }}">{{ point.address }}, {{ point.city }}{% if point.getAdditionalInfo %} ({{ point.getAdditionalInfo }}){% endif %}</option>
+                                                <option itemprop="address" value="{{ point.id }}">{{ point}} {% if point.getAdditionalInfo %} ({{ point.getAdditionalInfo }}){% endif %}</option>
                                             {% endfor %}
                                         </select>
                                         <div class="location-work-hours clearfix">
@@ -528,15 +498,7 @@
     </script>
     {# Zavalas Popup Begin #}
     {% if places_service.isShowZavalDeliveryTime(place) %}
-        {% if site_country == 'LT' %}
-            <!-- This site is converting visitors into subscribers and customers with OptinMonster - http://optinmonster.com :: Campaign Title: [LT] Zavalas -->
-            <div id="om-nkcu3qstsjxkdv12-holder"></div><script>var nkcu3qstsjxkdv12,nkcu3qstsjxkdv12_poll=function(){var r=0;return function(n,l){clearInterval(r),r=setInterval(n,l)}}();!function(e,t,n){if(e.getElementById(n)){nkcu3qstsjxkdv12_poll(function(){if(window['om_loaded']){if(!nkcu3qstsjxkdv12){nkcu3qstsjxkdv12=new OptinMonsterApp();return nkcu3qstsjxkdv12.init({"u":"11462.367922","staging":0,"dev":0,"beta":0});}}},25);return;}var d=false,o=e.createElement(t);o.id=n,o.src="//a.optnmnstr.com/app/js/api.min.js",o.onload=o.onreadystatechange=function(){if(!d){if(!this.readyState||this.readyState==="loaded"||this.readyState==="complete"){try{d=om_loaded=true;nkcu3qstsjxkdv12=new OptinMonsterApp();nkcu3qstsjxkdv12.init({"u":"11462.367922","staging":0,"dev":0,"beta":0});o.onload=o.onreadystatechange=null;}catch(t){}}}};(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(o)}(document,"script","omapi-script");</script>
-            <!-- / OptinMonster -->
-        {% elseif site_country == 'LV' %}
-            <!-- This site is converting visitors into subscribers and customers with OptinMonster - http://optinmonster.com :: Campaign Title: [LV] Zavalas -->
-            <div id="om-xx1z1otqbssjrm1t-holder"></div><script>var xx1z1otqbssjrm1t,xx1z1otqbssjrm1t_poll=function(){var r=0;return function(n,l){clearInterval(r),r=setInterval(n,l)}}();!function(e,t,n){if(e.getElementById(n)){xx1z1otqbssjrm1t_poll(function(){if(window['om_loaded']){if(!xx1z1otqbssjrm1t){xx1z1otqbssjrm1t=new OptinMonsterApp();return xx1z1otqbssjrm1t.init({"u":"11462.367923","staging":0,"dev":0,"beta":0});}}},25);return;}var d=false,o=e.createElement(t);o.id=n,o.src="//a.optnmnstr.com/app/js/api.min.js",o.onload=o.onreadystatechange=function(){if(!d){if(!this.readyState||this.readyState==="loaded"||this.readyState==="complete"){try{d=om_loaded=true;xx1z1otqbssjrm1t=new OptinMonsterApp();xx1z1otqbssjrm1t.init({"u":"11462.367923","staging":0,"dev":0,"beta":0});o.onload=o.onreadystatechange=null;}catch(t){}}}};(document.getElementsByTagName("head")[0]||document.documentElement).appendChild(o)}(document,"script","omapi-script");</script>
-            <!-- / OptinMonster -->
-        {% endif %}
+        {{ misc_utils.getParam('optin_code')|raw }}
     {% endif %}
     {# Zavalas Popup End #}
 {% endblock %}

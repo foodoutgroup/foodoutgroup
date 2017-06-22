@@ -83,8 +83,6 @@ class LocalBiller extends ContainerAware implements BillingInterface
         $orderService->setPaymentStatus($orderService::$paymentStatusComplete);
         $orderService->saveOrder();
 
-        // Send Message To User About Successfully Created Order
-        $orderService->sendOrderCreatedMessage();
 
         // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
         $orderService->deactivateCoupon();
@@ -105,6 +103,12 @@ class LocalBiller extends ContainerAware implements BillingInterface
             // If pre order - do not inform (only if it is a NAV order - the NAV is responsible for pre)
             if ($orderService->getAllowToInform()) {
                 $orderService->informPlace();
+            }
+
+            if ($order->getPreorder()) {
+                $orderService->statusNewPreorder('local accept');
+            } else {
+                $orderService->statusNew('local accept');
             }
         }
 

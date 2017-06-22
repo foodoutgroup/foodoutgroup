@@ -40,4 +40,18 @@ class PlacePointRepository extends EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
+    public function isDeliverToCity(Place $place, $cityId)
+    {
+
+        $query = $this->createQueryBuilder('pp')
+            ->where('pp.place = :placeId')
+            ->andWhere("pp.cityId = :cityId")
+            ->andWhere('pp.active = 1')
+            ->setParameters(['placeId' => $place->getId(), 'cityId' => $cityId])->getQuery()->execute();
+
+        return count($query);
+
+    }
 }

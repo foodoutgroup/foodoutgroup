@@ -391,6 +391,10 @@
                 <source>Place</source>
                 <target>Vieta</target>
             </trans-unit>
+            <trans-unit id="import">
+                <source>import</source>
+                <target>Importuoti</target>
+            </trans-unit>
             <trans-unit id="admin.group.places">
                 <source>admin.group.places</source>
                 <target>Vietos</target>
@@ -822,6 +826,10 @@
                 <source>admin.users.bussines_client</source>
                 <target>Verslo klientas</target>
             </trans-unit>
+            <trans-unit id="admin.users.locale">
+                <source>admin.users.locale</source>
+                <target>Vartotojo kalba</target>
+            </trans-unit>
             <trans-unit id="admin.users.division_codes">
                 <source>admin.users.division_codes</source>
                 <target>Padalinių kodai</target>
@@ -1078,6 +1086,10 @@
             <trans-unit id="admin.order.delivery_address">
                 <source>admin.order.delivery_address</source>
                 <target>Užsak. adresas</target>
+            </trans-unit>
+            <trans-unit id="admin.order.locale">
+                <source>admin.order.locale</source>
+                <target>Užsakymo kalba</target>
             </trans-unit>
             <trans-unit id="admin.order.user_ip">
                 <source>admin.order.user_ip</source>
@@ -3230,6 +3242,10 @@
                 <source>admin.category</source>
                 <target>Kategorija</target>
             </trans-unit>
+            <trans-unit id="admin.import_export">
+                <source>admin.import_export</source>
+                <target>Duomenų eksportavimas/importavimas</target>
+            </trans-unit>
             <trans-unit id="admin.error.source">
                 <source>admin.error.source</source>
                 <target>Šaltinis</target>
@@ -3277,6 +3293,31 @@
             <trans-unit id="admin.phone_codes">
                 <source>admin.phone_codes</source>
                 <target>Telefonų kodai</target>
+            </trans-unit>
+
+            <trans-unit id="0d02bb7fd4c07249c1c2b4236a7621bb" resname="admin.dispatcher.delivery_time">
+                <source>admin.dispatcher.delivery_time</source>
+                <target>Prist. iki</target>
+            </trans-unit>
+            <trans-unit id="0ec0b2be2b04f6575267da2994969fad" resname="admin.dispatcher.delayed">
+                <source>admin.dispatcher.delayed</source>
+                <target>Atidėta</target>
+            </trans-unit>
+            <trans-unit id="admin.point.phone_send" resname="admin.point.phone_send">
+                <source>admin.point.phone_send</source>
+                <target>Siųsti užsakymus šiuo tel. nr.?</target>
+            </trans-unit>
+            <trans-unit id="admin.point.email_send" resname="admin.point.email_send">
+                <source>admin.point.email_send</source>
+                <target>Siųsti užsakymus šiuo el. paštu?</target>
+            </trans-unit>
+            <trans-unit id="admin.place.api_hash" resname="admin.place.api_hash">
+                <source>admin.place.api_hash</source>
+                <target>Restorano API kodas (WL)</target>
+            </trans-unit>
+            <trans-unit id="admin.settings">
+                <source>admin.settings</source>
+                <target>Sisteminiai nustatymai</target>
             </trans-unit>
         </body>
     </file>

@@ -1,10 +1,13 @@
 <div class="form-row">
-    {{ form_label(form.address.city) }}
-    {{ form_widget(form.address.city) }}
-</div>
-<div class="form-row">
-    {% set placeholder = 'index.street'|trans %}
-    {{ form_label(form.address.address) }}
-    {{ form_widget(form.address.address, {'attr': {'placeholder': placeholder}}) }}
+    <label>{% trans %}label.address{% endtrans %}</label>
+    <div class="address-search-form-ui address-search-form-city address-search-form-cart ">
+        <div class="flex-aligment">
+            <input type="hidden" id="hidden-field-for-address-id" value="{% if addressDefault is not null %}{{ current.addressId }}{% endif %}" name="address[id]"/>
+            <input type="text" id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if current is not null %}{{ current.origin }}{% endif %}" />
+            <input type="text" name="address[flat]" id="flat" placeholder="{% trans %}index.flat{% endtrans %}" class="input-house search-field" value="{% if addressDefault is not null %}{{ current.flat }}{% endif %}" />
+        </div>
+        <div class="clearfix"></div>
+        <div id="error"></div>
+    </div>
 </div>
 <hr/>

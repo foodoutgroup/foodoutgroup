@@ -43,6 +43,7 @@ class DishOption implements Translatable
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=60)
+     * @Gedmo\Translatable
      */
     private $name;
 
@@ -83,6 +84,7 @@ class DishOption implements Translatable
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
+     * @Gedmo\Translatable
      */
     private $description;
 
@@ -176,6 +178,22 @@ class DishOption implements Translatable
      * @ORM\OneToMany(targetEntity="DishOptionSizePrice", mappedBy="dish_option", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $sizesPrices;
+
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+
+    /**
+     * @param $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
 
     /**
      * Returns the name

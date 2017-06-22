@@ -1612,6 +1612,14 @@
                 <source>mobile.order.admin_fee_no_vat</source>
                 <target>Administracinis mokestis (be PVM)</target>
             </trans-unit>
+              <trans-unit id="import">
+                  <source>import</source>
+                  <target>Importuoti</target>
+              </trans-unit>
+            <trans-unit id="export">
+                <source>export</source>
+                <target>Eksportuoti</target>
+            </trans-unit>
              <trans-unit id="please.fill.address.message.top">
                 <source>please.fill.address.message.top</source>
                 <target>Įveskite pristatymo adresą ir sužinokite,<![CDATA[<br/>]]> iš kurių restoranų galite užsisakyti*</target>

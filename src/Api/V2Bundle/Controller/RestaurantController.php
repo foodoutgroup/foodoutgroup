@@ -5,14 +5,13 @@ namespace Api\V2Bundle\Controller;
 use Api\BaseBundle\Exceptions\ApiException;
 use Api\BaseBundle\Helper\ResponseInterpreter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+
 use Symfony\Component\HttpFoundation\Request;
 
 class RestaurantController extends Controller
 {
 
     public function getMenuAction($placeHash, Request $request){
-
 
         try {
             $ps = $this->get('api.v2.place');

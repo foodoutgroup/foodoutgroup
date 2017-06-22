@@ -6,10 +6,12 @@ use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
 use FOS\UserBundle\Entity\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass="UserRepository")
  * @ORM\Table(name="fos_user")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt")
  */
 class User extends BaseUser
 {
@@ -216,10 +218,23 @@ class User extends BaseUser
     private $paramLog;
 
     /**
+     * @var string
+     * @ORM\Column(name="locale", type="string", length=24, nullable=true)
+     */
+    private $locale;
+
+    /**
      * @var boolean
      * @ORM\Column(name="special", type="boolean", nullable=true)
      */
     private $special = false;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
 
     /**
      * @var string
@@ -1197,6 +1212,7 @@ class User extends BaseUser
         return $this;
     }
 
+
     /**
      * Remove orderStatusLog
      *
@@ -1216,4 +1232,47 @@ class User extends BaseUser
     {
         return $this->orderStatusLog;
     }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return User
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param \DateTime $deletedAt
+     * @return $this
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
+        return $this;
+    }
+
+
 }

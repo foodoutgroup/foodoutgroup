@@ -126,6 +126,8 @@ class OrderAccData
      */
     private $city;
 
+
+
     /**
      * @var string
      *
@@ -298,6 +300,14 @@ class OrderAccData
      * @ORM\Version @ORM\Column(type="integer")
      */
     private $version;
+
+    /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id", nullable=true)
+     **/
+    private $cityId;
 
     /**
      * Get id
@@ -631,27 +641,31 @@ class OrderAccData
         return $this->delivery_address;
     }
 
+
     /**
      * Set city
      *
      * @param string $city
      * @return OrderAccData
+     * @deprecated from 2017-05-03
      */
     public function setCity($city)
     {
         $this->city = $city;
-    
+
         return $this;
     }
 
     /**
      * Get city
      *
-     * @return string 
+     * @return string
+     * @deprecated from 2017-05-03
      */
     public function getCity()
     {
-        return $this->city;
+        throw new \Exception('This method was changed by getCityId()');
+//        return $this->city;
     }
 
     /**
@@ -1227,5 +1241,28 @@ class OrderAccData
     public function getVersion()
     {
         return $this->version;
+    }
+
+    /**
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return OrderAccData
+     */
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
+    {
+        $this->cityId = $cityId;
+    
+        return $this;
+    }
+
+    /**
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City 
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
     }
 }

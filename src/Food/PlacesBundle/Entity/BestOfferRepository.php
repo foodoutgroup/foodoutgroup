@@ -6,38 +6,6 @@ use Doctrine\ORM\EntityRepository;
 
 class BestOfferRepository extends EntityRepository
 {
-    /**
-     * @param int $amount
-     * @param string|null $city
-     * @return BestOffer[]|array
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    public function getRandomBestOffers($amount, $city = null)
-    {
-        $where = '';
-        if ($city) {
-            $where = ' AND text LIKE "%'.$city.'%" ';
-        }
-        $query = "SELECT id FROM best_offer WHERE active=1 {$where} ORDER BY RAND() LIMIT 5";
-        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
-        $stmt->execute();
-        $activeIds = array();
-        $offers = $stmt->fetchAll();
-        foreach ($offers as $off) {
-            $activeIds[] = $off['id'];
-        }
-        $items = array();
-        if (!empty($activeIds)) {
-            $queryBuilder = $this->createQueryBuilder('best_offer')
-                ->where('best_offer.id IN (:ids)')
-                ->setParameter('ids', $activeIds);
-
-            $items = $queryBuilder->getQuery()->getResult();
-            shuffle($items);
-        }
-
-        return $items;
-    }
 
     /**
      * @param string|null $city
@@ -46,37 +14,25 @@ class BestOfferRepository extends EntityRepository
      */
     public function getActiveOffers($city = null, $forMobile = false)
     {
-        $qb = $this->createQueryBuilder('o')
-            ->where('o.active = :activity');
-
-        $params = ['activity' => true];
-
-        if ($forMobile) {
-            $qb->andWhere('o.useUrl != :use_url');
-            $params['use_url'] = true;
-        }
+        $bestOffers = $this->findBy(['active' => 1, 'useUrl' => $forMobile ? true : false]);
 
         if (!empty($city)) {
 
-            $city = strtolower($city);
 
-            $city = str_replace('klaipeda', 'klaipėda', $city);
-            $city = str_replace('marijampole', 'marijampolė', $city);
-            $city = str_replace('siauliai', 'šiauliai', $city);
-            $city = str_replace('plunge', 'plungė', $city);
-            $city = str_replace('panevežys', 'panevezys', $city);
-            $city = str_replace('panevėzys', 'panevezys', $city);
-            $city = str_replace('panevezys', 'panevėžys', $city);
-            $city = str_replace('mažeikiai', 'mazeikiai', $city);
-            $city = ucfirst($city);
-
-            $qb->andWhere($qb->expr()->like('o.text', ':city_filter'));
-            $params['city_filter'] = '%'.$city.'%';
+            foreach ($bestOffers as $key => $offer) {
+                $checker = false;
+                foreach ($offer->getOfferCity() as $city_val) {
+                    if ($city_val->getId() == $city) {
+                        $checker = true;
+                    }
+                }
+                if ($checker === false) {
+                    unset($bestOffers[$key]);
+                }
+            }
         }
 
-        return $qb->setParameters($params)
-            ->getQuery()
-            ->getResult();
+        return $bestOffers;
     }
 
     /**
@@ -86,5 +42,12 @@ class BestOfferRepository extends EntityRepository
     private function filterIds($element)
     {
         return $element['id'];
+    }
+
+    public function getBestOffersByIds($ids)
+    {
+        $result = $this->findBy(['id' => $ids]);
+
+        return $result;
     }
 }

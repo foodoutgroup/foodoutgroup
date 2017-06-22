@@ -11,6 +11,19 @@ use Food\AppBundle\Entity\Driver;
  */
 class Order
 {
+
+    const SOURCE_NAV = "nav";
+    const SOURCE_APIV1 = "apiv1";
+    const SOURCE_APIV2 = "apiv2";
+    const SOURCE_FOODOUT = "foodout";
+
+    public static $sourceCollection = [
+        Order::SOURCE_FOODOUT,
+        Order::SOURCE_NAV,
+        Order::SOURCE_APIV1,
+        Order::SOURCE_APIV2,
+    ];
+
     /**
      * @var integer
      *
@@ -114,7 +127,6 @@ class Order
      * @ORM\Column(name="total", type="decimal", precision=8, scale=2, nullable=true)
      */
     private $total;
-
 
     /**
      * @var decimal
@@ -497,10 +509,18 @@ class Order
     private $foodPrepareDate;
 
     /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     **/
+    private $cityId;
+
+    /**
      * @var string
      * @ORM\Column(name="source", type="string", length=20, nullable=true)
      */
-    private $source;
+    private $source = Order::SOURCE_FOODOUT;
 
     /**
      * @return string
@@ -874,15 +894,10 @@ class Order
             $lastUpdated = null;
         }
 
-        $addressId = null;
-        if ($userAddress = $this->getAddressId()) {
-            $addressId = $userAddress->getAddress().', '.$userAddress->getCity();
-        }
-
         return array(
             'id' => $this->getId(),
             'userId' => $userId,
-            'addressId' => $addressId,
+            'addressId' => $this->getAddressId(),
             'userIp' => $this->getUserIp(),
             'details' => 'TODO', // TODO
             'orderStatus' => $this->getOrderStatus(),
@@ -1060,7 +1075,12 @@ class Order
      */
     public function getPlacePointCity()
     {
-        return $this->place_point_city;
+        $placePointCity = $this->place_point_city;
+        if (!$this->place_point_city) {
+            $placePointCity = $this->getPlacePoint()->getCityId()->getTitle();
+        }
+
+        return $placePointCity;
     }
 
     /**
@@ -2366,7 +2386,6 @@ class Order
         return $this->getTotal() - $this->getTotalWithoutVat();
     }
 
-
     public function getDeliveryWithoutVat()
     {
         if ($this->getVat()) {
@@ -2378,7 +2397,7 @@ class Order
 
     public function getDishesWithoutVat()
     {
-        return $this->getTotalWithoutVat() - $this->getDeliveryWithoutVat() - $this->getAdminFeeWithoutVat();
+        return $this->getTotalWithoutVat() - $this->getDeliveryWithoutVat();
     }
 
     public function getFoodTotal()
@@ -2615,20 +2634,26 @@ class Order
     }
 
     /**
-     * @return String
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return Order
      */
-    public function getSource()
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
     {
-        return $this->source;
+        $this->cityId = $cityId;
+
+        return $this;
     }
 
     /**
-     * @param String $source
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City
      */
-    public function setSource($source)
+    public function getCityId()
     {
-        $this->source = $source;
-        return $this;
+        return $this->cityId;
     }
 
     /**
@@ -2638,7 +2663,6 @@ class Order
     {
         return $this->adminFee;
     }
-
     /**
      * @param decimal $adminFee
      */
@@ -2646,4 +2670,24 @@ class Order
     {
         $this->adminFee = $adminFee;
     }
+
+    /**
+     * @return String
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param String $source
+     * @return $this
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
+        return $this;
+    }
+
+
 }

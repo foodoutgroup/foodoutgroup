@@ -4,12 +4,18 @@ namespace Food\BlogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * BlogCategory
  *
  * @ORM\Table(name="blog_category")
  * @ORM\Entity(repositoryClass="Food\BlogBundle\Entity\BlogCategoryRepository")
+ * @UniqueEntity(
+ *     fields={"slug", "language"},
+ *     errorPath="slug",
+ *     message="This slug is already in use on this language."
+ * )
  */
 class BlogCategory
 {
@@ -111,6 +117,12 @@ class BlogCategory
      * @ORM\Column(name="order_no", type="integer")
      */
     private $orderNo = 1;
+
+    /**
+     * @var string
+     * @ORM\Column(name="slug", type="text", nullable=true)
+     */
+    private $slug = null;
 
     public function __construct()
     {
@@ -337,4 +349,23 @@ class BlogCategory
     {
         $this->orderNo = $orderNo;
     }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
+
+
+
 }

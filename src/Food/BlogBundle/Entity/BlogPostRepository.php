@@ -15,4 +15,9 @@ class BlogPostRepository extends EntityRepository
     {
         return $this->findBy(['category' => $blogCategory, 'active' => 1], ['createdAt' => 'DESC']);
     }
+
+    public function getBySlug($postSlug)
+    {
+        return $this->findOneBy(['slug' => $postSlug, 'active' => 1]);
+    }
 }

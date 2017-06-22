@@ -9,9 +9,13 @@ use Food\OrderBundle\Service\NavService\OrderDataForNav;
 
 trait OrderDataForNavDecorator
 {
+    /**
+     * @param Order $order
+     * @return \Food\OrderBundle\Service\NavService\OrderDataForNav
+     */
     public function getOrderDataForNav(Order $order)
     {
-        $orderService = $this->container->get('food.order');
+        $orderService = $this->getContainer()->get('food.order');
 
         $order = \Maybe($order);
         $driver = $order->getDriver();
@@ -46,7 +50,7 @@ trait OrderDataForNavDecorator
             $this->cleanChars($user->getLastname()->val('')));
         $data->isDelivered = in_array($order->getOrderStatus()->val(''), [$orderService::$status_completed, $orderService::$status_canceled_produced]) ? 'yes' : 'no';
         $data->deliveryAddress = $this->cleanChars($address->getAddress()->val(''));
-        $data->city = $address->getCity()->val('');
+        $data->city = $address->getCityId()->getTitle()->val('');
         $data->country = '';
         $data->paymentType = $order->getPaymentMethod()->val('');
         $data->foodAmount = (double)$foodTotal;
@@ -84,7 +88,7 @@ trait OrderDataForNavDecorator
     public function getOrderDataForNavLocally($orderId)
     {
         // services
-        $em = $this->container->get('doctrine.orm.entity_manager');
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $orderAccData = $this->findOrderAccData($orderId);
         $order = $em->getRepository('FoodOrderBundle:Order')->find($orderAccData->getOrderId());
@@ -112,7 +116,8 @@ trait OrderDataForNavDecorator
         $data->clientName = $orderAccData->getClientName();
         $data->isDelivered = $orderAccData->getIsDelivered() ? 'yes' : 'no';
         $data->deliveryAddress = $orderAccData->getDeliveryAddress();
-        $data->city = $orderAccData->getCity();
+        $data->city = $orderAccData->getCityId()->getTitle();
+        $data->cityId = $orderAccData->getCityId();
         $data->country = $orderAccData->getCountry();
         $data->paymentType = $orderAccData->getPaymentType();
         $data->foodAmount = (double)$orderAccData->getFoodAmount();
@@ -140,7 +145,7 @@ trait OrderDataForNavDecorator
         if ($order->getPlacePoint()) {
             $data->productionPointCode = $order->getPlacePoint()->getCompanyCode();
         } else {
-            $this->container->get('logger')->error('Order id: ' . $order->getId() . ' has no place point');
+            $this->getContainer()->get('logger')->error('Order id: ' . $order->getId() . ' has no place point');
         }
 
         return $data;
@@ -153,7 +158,7 @@ trait OrderDataForNavDecorator
         if (empty($conn)) return false;
 
         $query = $this->constructInsertOrderQuery($data);
-        $logger = $this->container->get('logger');
+        $logger = $this->getContainer()->get('logger');
         $logger->alert('--- NAV INSERT DATA ---');
         $logger->alert(var_export($data, true));
         $logger->alert('--- NAV INSERT QUERY ---');
@@ -172,7 +177,7 @@ trait OrderDataForNavDecorator
         if (empty($conn)) return false;
 
         $query = $this->constructUpdateOrderQuery($data);
-        $logger = $this->container->get('logger');
+        $logger = $this->getContainer()->get('logger');
         $logger->alert('--- NAV UPDATE DATA ---');
         $logger->alert(var_export($data, true));
         $logger->alert('--- NAV UPDATE QUERY ---');
@@ -196,7 +201,7 @@ trait OrderDataForNavDecorator
         if (is_null($order->getId())) return;
 
         // services
-        $em = $this->container->get('doctrine.orm.entity_manager');
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         // check if OrderAccData in question already exists
         $maybeDataExists = \Maybe(
@@ -233,6 +238,7 @@ trait OrderDataForNavDecorator
             ->setIsDelivered($data->isDelivered == 'yes' ? true : false)
             ->setDeliveryAddress($data->deliveryAddress)
             ->setCity($data->city)
+            ->setCityId($data->cityId) // todo MULTI-L bbz
             ->setCountry($data->country)
             ->setPaymentType($data->paymentType)
             ->setFoodAmount($data->foodAmount)
@@ -268,7 +274,7 @@ trait OrderDataForNavDecorator
      */
     public function getUnsyncedOrderData()
     {
-        return $this->container
+        return $this->getContainer()
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FoodOrderBundle:OrderAccData')
             ->findBy(['is_synced' => 0])
@@ -334,7 +340,7 @@ trait OrderDataForNavDecorator
     {
         // return '[prototipas6].[dbo].[PROTOTIPAS$FoodOut Order]';
         //return $this->orderTable;
-        return $this->container->get('food.nav')->getOrderTable();
+        return $this->getContainer()->get('food.nav')->getOrderTable();
     }
 
     protected function getOrderFieldNames()
@@ -441,7 +447,7 @@ trait OrderDataForNavDecorator
 
     protected function findOrderAccData($orderId)
     {
-        $rows = $this->container
+        $rows = $this->getContainer()
             ->get('doctrine.orm.entity_manager')
             ->getRepository('FoodOrderBundle:OrderAccData')
             ->findBy(['order_id' => $orderId])
@@ -454,7 +460,7 @@ trait OrderDataForNavDecorator
 
     protected function isCompleted(Order $order)
     {
-        $orderService = $this->container->get('food.order');
+        $orderService = $this->getContainer()->get('food.order');
 
         return $order->getPaymentStatus() ==
         $orderService::$paymentStatusComplete ? true : false;
@@ -491,7 +497,7 @@ trait OrderDataForNavDecorator
      */
     public function cleanChars($value)
     {
-        $language = $this->container->get('food.app.utils.language');
+        $language = $this->getContainer()->get('food.app.utils.language');
 
         $newValue = $language->removeChars('ru', $value, false);
 

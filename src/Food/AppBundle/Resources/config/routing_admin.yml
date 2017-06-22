@@ -1,0 +1,66 @@
+#food_sms:
+#    resource: "@FoodSmsBundle/Resources/config/routing.yml"
+#    prefix:   /
+
+#food_places:
+#    resource: "@FoodPlacesBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
+
+food_order:
+    resource: "@FoodOrderBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+food_cart:
+    resource: "@FoodCartBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+food_app:
+    resource: "@FoodAppBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+food_dishes:
+    resource: "@FoodDishesBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+admin_dashboard_redirect:
+    path: /
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: sonata_admin_dashboard
+        permanent: true
+
+soanata_user:
+    resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+    prefix: /
+
+admin_routes:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /
+    requirements:
+        _locale:  "[a-z]{2}"
+
+food_admin_assign_dispatcher:
+    path: /dispatcher/assign-dispacher/
+    defaults: {_controller: FoodAppBundle:DispatcherAdmin:assignDispatcher}
+    options:
+        expose: true
+    requirements:
+          method:  POST
+
+lexik_translation_edition:
+    resource: "@LexikTranslationBundle/Resources/config/routing.yml"
+    prefix:   /trans
+
+ajax_admin:
+    resource: "routing_admin_ajax.yml"
+    prefix:   /ajax

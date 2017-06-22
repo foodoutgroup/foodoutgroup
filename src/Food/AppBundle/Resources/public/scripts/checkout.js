@@ -46,6 +46,7 @@ bind_address_change = function(place_id,
         if (!target_is_span && !target_is_input) return false;
 
         click_callback = function(options) {
+
             if (options.response.data.success == 1 &&
                 options.response.data.adr == 1)
             {
@@ -167,7 +168,7 @@ bind_coupon_submit_button = function(place_id,
 
         couponField = $('input#coupon_code_popup');
         popupInner = $('.coupon_inner');
-        
+
         popupInner.mask();
 
         options = {
@@ -180,7 +181,7 @@ bind_coupon_submit_button = function(place_id,
 
         $.ajax(options);
     };
-    
+
     $(subject).bind('click', callback);
 }
 

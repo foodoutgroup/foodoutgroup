@@ -23,7 +23,7 @@ use Food\OrderBundle\Service\OrderService;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/{_locale}/register/create", name="user_register_create")
+     * @Route("/register/create", name="user_register_create")
      * @Template()
      * @Method("POST")
      */
@@ -61,7 +61,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/register", name="user_register")
+     * @Route("/register", name="user_register")
      * @Template("FoodUserBundle:Default:register.html.twig")
      */
     public function registerAction(Request $request)
@@ -80,7 +80,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/login", name="user_login")
+     * @Route("/login", name="user_login")
      * @Template("FoodUserBundle:Default:login.html.twig")
      */
     public function loginAction(Request $request)
@@ -103,7 +103,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/profile/update", name="user_profile_update")
+     * @Route("/profile/update", name="user_profile_update")
      * @Template("FoodUserBundle:Default:profile.html.twig")
      * @Method("POST")
      */
@@ -118,21 +118,13 @@ class DefaultController extends Controller
 
         // data
         $user = $this->user();
-        $address = $this->address($user);
 
-        $citiesConfig = $this->container->getParameter('available_cities');
-        $cities = array();
-
-        foreach ($citiesConfig as $city) {
-            $cities[$city] = $city;
-        }
 
         // embedded form
         $requestData = $request->request->get('food_user_profile');
 
         // mega form containts 3 embedded forms
-        $form = $this->createProfileMegaForm($user, $address, $cities, $requestData['change_password']['current_password']);
-
+        $form = $this->createProfileMegaForm($user, $requestData['change_password']['current_password']);
         $form->handleRequest($request);
         $countryCode = $form->get('profile')->get('countryCode')->getData();
         $countryNumber = $this->container->get('food.phones_code_service')->getByCountry($countryCode)[0]->getCode();
@@ -140,56 +132,69 @@ class DefaultController extends Controller
 
         $phoneValidation = $this->container->get('food.phones_code_service')->validatePhoneNumber($profilePhone, $countryCode);
 
-        if ($phoneValidation !== true) {
-            $profileErrors = $this->formErrors($form->get('profile'));
-            $profileErrors['phone'] = $translator->trans($phoneValidation[0]);
-
+        $formError = [];
+        if (!$phoneValidation || isset($phoneValidation[0])) {
+            $formError = $this->formErrors($form->get('profile'));
+            $formError['phone'] = $translator->trans($phoneValidation[0]);
         } else {
 
 
+            $locationService = $this->get('food.location');
 
-            // address validation
-            if ($form->get('address')->isValid()) {
-                $form_city = $form->get('address')->get('city')->getData();
-                $form_address = $form->get('address')->get('address')->getData();
+            $addressData = $request->request->get('address');
+            if (!empty($addressData['id'])) {
 
-                $address
-                    ->setCity($form_city)
-                    ->setAddress($form_address)
-                    ->getUser()->setPhone($countryNumber.$profilePhone);
+                $hasAddress = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->findByIdUserFlat($addressData['id'], $user, $addressData['flat']);
+                $addressDetail = $locationService->findByHash($addressData['id']);
+                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($addressDetail['city']);
 
-
-                if (!$user->getDefaultAddress()) {
-                    $em->persist($address);
-                    $user->addAddress($address);
+                if (!is_object($cityObj)) {
+                    $flashbag->set('profile_update_errors', $translator->trans('messages.city_doesnt_exist'));
+                    return $this->redirect($this->generateUrl('user_profile'));
                 }
 
-                // Store UserAddress Begin
-                $gs = $this->get('food.googlegis');
-
-                $locationInfo = $gs->groupData($form_address, $form_city);
-
-                if (!$locationInfo['not_found']) {
-
-                    $orderService->createAddressMagic(
-                        $user,
-                        $locationInfo['city'],
-                        $locationInfo['address_orig'],
-                        (string)$locationInfo['lat'],
-                        (string)$locationInfo['lng'],
-                        ''
+                if ($cityObj) {
+                    $oldLocationData = $locationService->get();
+                    $locationService->set(
+                        $cityObj,
+                        $addressDetail['country'],
+                        $addressDetail['street'],
+                        $addressDetail['house'],
+                        ( $addressData['flat'] === '' ? null : $addressData['flat'] ),
+                        $addressDetail['output'],
+                        $addressDetail['latitude'],
+                        $addressDetail['longitude']
                     );
+
+                    $newLocationData = $locationService->get();
+
+                    if ($newLocationData['precision'] == 0) {
+                        $locationService->saveAddressFromSessionToUser($user);
+                    } else {
+                        if (!empty($oldLocationData['city_id'])) {
+
+                            $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($oldLocationData['city_id']);
+                            $locationService->set(
+                                $cityObj,
+                                $oldLocationData['country'],
+                                $oldLocationData['street'],
+                                $oldLocationData['house'],
+                                $oldLocationData['flat'],
+                                $oldLocationData['origin'],
+                                $oldLocationData['latitude'],
+                                $oldLocationData['longitude']
+                            );
+                        }
+                    }
                 }
 
-                // Store UserAddress End
             }
+
             // password validation
             if ($form->get('change_password')->isValid() && $form->isValid()) {
                 $userManager->updateUser($user);
             }
 
-            // main profile validation
-            $profileErrors = $this->formErrors($form->get('profile'));
 
             if ($form->isValid()) {
 
@@ -206,18 +211,19 @@ class DefaultController extends Controller
 
         return [
             'form' => $form->createView(),
-            'profile_errors' => $profileErrors,
-            'address_errors' => $this->formErrors($form->get('address')),
+            'profile_errors' => $formError,
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
             'user' => $user,
-            'discount' => $this->get('food.user')->getDiscount($this->user())
+            'discount' => $this->get('food.user')->getDiscount($this->user()),
+            'location' => $this->get('food.location')->get(),
+            'addressDefault' => $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user) ?: null,
         ];
     }
 
     /**
-     * @Route("/{_locale}/profile/{tab}", name="user_profile", defaults={"tab" = ""})
+     * @Route("/profile/{tab}", name="user_profile", defaults={"tab" = ""})
      * @Template("FoodUserBundle:Default:profile.html.twig")
      */
     public function profileAction($tab)
@@ -233,27 +239,19 @@ class DefaultController extends Controller
 
         // data
         $user = $this->user();
-        $address = $this->address($user);
 
-        $citiesConfig = $this->container->getParameter('available_cities');
-        $cities = array();
-        foreach ($citiesConfig as $city) {
-            $cities[$city] = $city;
-        }
-
-
-        // mega form containts 3 embedded forms
-        $form = $this->createProfileMegaForm($user, $address, $cities, '');
+        $form = $this->createProfileMegaForm($user, '');
 
         return [
             'form' => $form->createView(),
             'profile_errors' => $this->formErrors($form->get('profile')),
-            'address_errors' => $this->formErrors($form->get('address')),
             'change_password_errors' => $this->formErrors($form->get('change_password')),
             'tab' => $tab,
+            'addressDefault' => $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user) ?: null,
             'orders' => $this->get('food.order')->getUserOrders($user),
             'submitted' => $form->isSubmitted(),
             'profile_updated' => $flashbag->get('profile_updated'),
+            'profile_update_errors' => $flashbag->get('profile_update_errors'),
             'user' => $this->user(),
             'discount' => $this->get('food.user')->getDiscount($this->user())
         ];
@@ -297,34 +295,16 @@ class DefaultController extends Controller
         return $sc->getToken()->getUser();
     }
 
-    private function address(User $user)
-    {
-        if ($user->getDefaultAddress()) {
-            return $user->getDefaultAddress();
-        }
-
-        $address = new UserAddress();
-
-        $address
-            ->setUser($user)
-            ->setLat(0)
-            ->setLon(0);
-
-        return $address;
-    }
-
-    private function createProfileMegaForm($user, $address, $cities, $currentPassword)
+    private function createProfileMegaForm($user, $currentPassword)
     {
 
 
         $type = new ProfileMegaFormType(
-            new ProfileFormType(get_class($user), $this->container->get('food.phones_code_service'), $this->container->getParameter('country'),$user),
-            new UserAddressFormType($cities),
+            new ProfileFormType(get_class($user), $this->container->get('food.phones_code_service'), $this->container->getParameter('country'), $user),
             new ChangePasswordFormType(get_class($user), $currentPassword)
         );
         $data = array(
             'profile' => $user,
-            'address' => $address,
             'change_password' => $user
         );
 

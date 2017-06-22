@@ -8,9 +8,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 
 class AuthenticationHandler implements AuthenticationFailureHandlerInterface,
-                                       AuthenticationSuccessHandlerInterface
+    AuthenticationSuccessHandlerInterface,
+    LogoutSuccessHandlerInterface
 {
     protected $cartService;
 
@@ -36,8 +40,8 @@ class AuthenticationHandler implements AuthenticationFailureHandlerInterface,
 
         if (!empty($oldSessionId) && $currentSessionId != $oldSessionId) {
             $this->cartService
-                 ->migrateCartBetweenSessionIds($oldSessionId,
-                                                $currentSessionId);
+                ->migrateCartBetweenSessionIds($oldSessionId,
+                    $currentSessionId);
         }
 
         if ($request->isXmlHttpRequest()) {
@@ -45,5 +49,18 @@ class AuthenticationHandler implements AuthenticationFailureHandlerInterface,
         }
 
         return new JsonResponse([]);
+    }
+
+    public function onLogoutSuccess(Request $request)
+    {
+        $locale = $request->getLocale();
+        $default = $request->getDefaultLocale();
+
+        if ($default == $locale) {
+            return new RedirectResponse('/');
+        } else {
+            return new RedirectResponse('/' . $locale);
+        }
+
     }
 }

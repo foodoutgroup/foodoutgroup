@@ -1,0 +1,173 @@
+<div class="restaurants-list">
+    {% if delivery_type_filter == 'pedestrian' %}
+        <div class="pedestrian-list-info-container">
+            <div class="pedestrian-list-info">
+                {% trans %}place.pedestrian_info{% endtrans %}
+            </div>
+        </div>
+    {% endif %}
+    {% for place_point in placeCollection %}
+
+        {% set place = place_point.place %}
+        {% set url = slug.getUrl(place.id, 'place') %}
+
+        <div class="restaurant-item clearfix">
+            <div class="logo">
+                <div class="logo-wrap"><a href="{{ url }}"><img src="//{{ cloudfront_url }}/uploads/places/thumb_{{ place.logo }}"></a></div>
+            </div>
+            <div class="item-center">
+                <h2 class="name clearfix">
+                    <span class="text"><a href="{{ url }}">{{ place.name }}</a></span>
+                    {% if place_point.point.fast %}
+                        <span class="tag">
+                            <img src="/bundles/foodapp/images/tag-speed.png">
+                        </span>
+                    {% endif %}
+                    {% if place.new %}
+                        <span class="tag">
+                            <img src="/bundles/foodapp/images/tag-new.png">
+                        </span>
+                    {% endif %}
+
+                    {% if place_point.is_work == 1 %}
+                        {# IT WORKS. Everything works :) #}
+                        {% if not place_point.is_delivering %}
+                            <span class="tag">
+                                <span class="partial-work"></span>
+                                <div class="time-popup time-popup2">{{ 'general.restaurant_not_delivering_to_address'|trans }}
+                                    <div class="nip"></div>
+                                </div>
+                            </span>
+                        {% endif %}
+                    {% elseif place_point.is_work == 2 %}
+                        {# IT WORKS. Well some of the points do :D :) #}
+                        <span class="tag">
+                            <span class="partial-work{% if locale == 'lv' %} partial-work-lv{% elseif locale == 'ee' %} partial-work-ee{% endif %}"></span>
+                            <div class="time-popup time-popup2">{{ order_service.notWorkingPlacesPoints(place)|raw }}
+                                <div class="nip"></div>
+                            </div>
+                        </span>
+                    {% else %}
+                        {# NAH non of it works :) #}
+                        {% if place_point.pp_count == 1 %}
+                            <span class="tag">
+                                <img src="/bundles/foodapp/images/tag-not-working{% if locale == 'lv' %}_lv{% elseif locale == 'ee' %}_ee{% endif %}.png">
+                                <div class="time-popup">{{ order_service.getTodayWork(place_point.point) }}
+                                    <div class="nip"></div>
+                                </div>
+                            </span>
+                        {% else %}
+                            <span class="tag">
+                                <img src="/bundles/foodapp/images/tag-not-working{% if locale == 'lv' %}_lv{% elseif locale == 'ee' %}_ee{% endif %}.png">
+                                <div class="time-popup">{{ order_service.notWorkingPlacesPoints(place)|raw }}
+                                    <div class="nip"></div>
+                                </div>
+                            </span>
+                        {% endif %}
+                    {% endif %}
+                </h2>
+                <p class="desc">
+                    {% for kitchen in place.kitchens %}
+                        {{kitchen.name}}{% if loop.last == false %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <div class="details">
+                    {% if place.deliveryOptions == 'delivery' %}
+                        <span class="delivery">{% trans %}place_point.delivery_info{% endtrans %}:
+                            <span>
+                                {{ places_service.getDeliveryTime(place) }}
+                                {% if place.deliveryTimeInfo is not empty %}
+                                    <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
+                                {% endif %}
+                            </span>
+                        </span>
+                    {% elseif place.deliveryOptions == 'pickup' %}
+                        <span class="pickup">{% trans %}place_point.pickup_info{% endtrans %}: {{ place.pickupTime }}
+                            <span></span>
+                        </span>
+                    {% elseif place.deliveryOptions == 'delivery_and_pickup' %}
+                        <span class="pickup">{% trans %}place_point.pickup_info{% endtrans %}: {{ place.pickupTime }}
+                            <span></span>
+                        </span>
+                        <span class="delivery">{% trans %}place_point.delivery_info{% endtrans %}:
+                            <span>
+                                {{ places_service.getDeliveryTime(place) }}
+                                {% if place.deliveryTimeInfo is not empty %}
+                                    <span class="delivery-time-info ui-icon ui-icon-info" title="{{ place.deliveryTimeInfo }}"></span>
+                                {% endif %}
+                            </span>
+                        </span>
+                    {% endif %}
+
+                    {% if (delivery_type_filter != 'deliver' and place.minimalOnSelfDel) or (delivery_type_filter == 'deliver' and place.deliveryOptions != 'pickup') or (place.deliveryOptions == 'pickup' and place.minimalOnSelfDel) %}
+                    <span class="min-cart-size">{% trans %}place_point.min_cart_amount{% endtrans %}:
+                        {% set minCart = places_service.minCartPrice(place.id) %}
+                        {% set maxCart = places_service.maxCartPrice(place.id) %}
+                        {% if minCart == maxCart %}
+                            <span>{{ currency_display|raw }}{{ minCart }}</span>
+                        {% else %}
+                            <span>{{ currency_display|raw }}{{ minCart }}-{{ maxCart }}</span>
+                        {% endif %}
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="item-righter">
+                <div class="clearfix">
+                    {#todo:fix this god damn link#}
+                    {% if reviewsEnabled == 1 %}
+                        <div data-stars="{{ place.rating }}" class="restoran-rating fl"></div>
+                        {% if place.reviewCount != 0 %}
+                            <div class="rating-count fr"><a href="{{ url }}#detailed-restaurant-review">{{ place.reviewCount }} {% transchoice place.reviewCount %}places.reviews_count{% endtranschoice %}</a></div>
+                        {% endif %}
+                    {% endif %}
+                </div><a href="{{ url }}" class="button"><span>{% trans %}places.watch_menu{% endtrans %}</span></a>
+            </div>
+        </div>
+    {% else %}
+    <div class="restaurant-item clearfix">
+        <p align="center">{% trans %}restaurant.not_found{% endtrans %}</p>
+    </div>
+    {% endfor %}
+</div>
+{% if placeCollection|length %}
+    <script>
+        $(document).ready(function(){
+            var placeCollectionLength = {{ placeCollection|length }};
+            var buffer = '{% trans %}general.places_found3{% endtrans %}';
+
+            if (placeCollectionLength == 1) {
+                buffer = '{% trans %}general.places_found1{% endtrans %}';
+            } else if (placeCollectionLength < 10) {
+                buffer = ('{% trans %}general.places_found2{% endtrans %}');
+            }
+
+            {% if location is not null and placeCollection|length > 0 and location.precision <= 2 %}
+
+                buffer = buffer + ', {% trans %}places.places_near{% endtrans %}';
+                buffer = buffer + ' {{ location.street }}';
+
+                {% if location.house is not null %}
+                    buffer = buffer + ' {{ location.house }}';
+                {% endif %}
+
+                {% if location.flat is not null and location.flat %}
+                    buffer = buffer + ' - {{ location.flat }}';
+                {% endif %}
+
+            {% endif %}
+
+            $('.page-title .place-counter').html(buffer.replace("%1", placeCollectionLength));
+            $('.delivery-time-info').tooltip();
+        });
+    </script>
+{% else %}
+    <script>
+        $(document).ready(function(){
+
+            $('.page-title .place-counter').html('');
+            $('.delivery-time-info').tooltip();
+        });
+    </script>
+
+{% endif %}

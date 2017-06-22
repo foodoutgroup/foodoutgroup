@@ -22,14 +22,10 @@ class KitchenController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function kitchenlistAction($recommended = false, $slug_filter = false, Request $request, $zaval = false)
+    public function listAction($recommended = false, $slug_filter = false, Request $request, $rush_hour = false, $city = null)
     {
-        if ($recommended) {
-            $recommended = true;
-        }
 
-        $recommendedFromRequest = $request->get('recommended', null);
-        if ($recommendedFromRequest !== null) {
+        if ($recommendedFromRequest = $request->get('recommended', null) !== null) {
             $recommended = (bool)$recommendedFromRequest;
         }
 
@@ -51,7 +47,7 @@ class KitchenController extends Controller
             }
         }
 
-        if ($zaval) {
+        if ($rush_hour) {
             $this->container->get('session')->set('delivery_type', '');
         }
 
@@ -59,7 +55,7 @@ class KitchenController extends Controller
         if (!empty($selectedKitchens)) {
             $selectedKitchens = explode(',', $selectedKitchens);
         } else {
-            $selectedKitchens = $this->get('food.places')->getKitchensFromSlug($slug_filter, $request);
+            $selectedKitchens = $this->get('food.places')->getKitchenCollectionFromSlug($slug_filter, $request);
         }
 
         $selectedKitchensSlugs = $request->get('selected_kitchens_slugs', '');
@@ -71,16 +67,13 @@ class KitchenController extends Controller
 
         $list = $this->getKitchens($recommended, $request);
 
-        $currentCity = $this->get('food.location')->getLocationFromSession();
-        $currentCity = $this->get('food.city_service')->getCityInfo($currentCity['city']);
-
         return $this->render(
             'FoodDishesBundle:Kitchen:list_items.html.twig',
             array(
                 'list' => $list,
                 'selected_kitchens' => $selectedKitchens,
                 'selected_kitchens_slugs' => $selectedKitchensSlugs,
-                'city' => $currentCity
+                'city' => $city
             )
         );
     }

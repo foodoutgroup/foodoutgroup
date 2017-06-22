@@ -156,7 +156,7 @@ class LogisticsService extends ContainerAware
         $em = $this->container->get('doctrine')->getManager();
         $drivers = $em->getRepository('Food\AppBundle\Entity\Driver')
             ->createQueryBuilder('d')
-            ->select('d.id, d.name, d.phone, d.city, d.type, COUNT(o.id) AS order_count')
+            ->select('d.id, d.name, d.phone, d.type, IDENTITY(d.cityId) as city_id, COUNT(o.id) AS order_count')
             ->leftJoin('FoodOrderBundle:Order', 'o', 'WITH', 'o.driver = d.id AND o.order_status IN (:order_statuses)')
             ->where('d.active = 1')
             ->setParameter('order_statuses', array(OrderService::$status_assiged))
@@ -301,7 +301,7 @@ class LogisticsService extends ContainerAware
         // Delivery block
         $writer->startElement("Delivery");
         $writer->writeElement('Address', $order->getAddressId()->getAddress());
-        $writer->writeElement('City', $this->convertCityForLogTime($order->getAddressId()->getCity()));
+        $writer->writeElement('City', $this->convertCityForLogTime($order->getAddressId()->getCityId()->getTitle()));
         $writer->writeElement('AddressId', $order->getAddressId()->getId());
         $writer->startElement("Coordinates");
         $writer->writeElement('Long', $order->getAddressId()->getLon());
@@ -394,7 +394,7 @@ class LogisticsService extends ContainerAware
             $writer->writeElement('Id', $driver->getId());
             $writer->writeElement('Phone', $driver->getPhone());
             $writer->writeElement('Name', $driver->getName());
-            $writer->writeElement('City', $driver->getCity());
+            $writer->writeElement('City', $driver->getCityId()->getTitle());
             $writer->writeElement('Active', ($driver->getActive() ? 'Y' : 'N'));
             $writer->endElement();
         }

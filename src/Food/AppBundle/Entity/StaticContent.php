@@ -5,6 +5,8 @@ namespace Food\AppBundle\Entity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
+use Symfony\Component\Validator\Constraints as Assert;
+use Food\AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Static page content
@@ -16,6 +18,13 @@ use Gedmo\Translatable\Translatable;
  */
 class StaticContent implements Translatable
 {
+    /**
+     * @var string
+     * @Gedmo\Translatable
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true, unique=true)
+     */
+    private $slug;
+
     /**
      * @var integer
      *
@@ -519,5 +528,28 @@ class StaticContent implements Translatable
     public function getSeoDescription()
     {
         return $this->seo_description;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return StaticContent
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

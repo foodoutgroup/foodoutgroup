@@ -5,6 +5,7 @@ namespace Api\V2Bundle\Service;
 use Api\BaseBundle\Common\JsonRequest;
 use Api\BaseBundle\Exceptions\ApiException;
 use Aws\Route53\Enum\Status;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Food\DishesBundle\Entity\DishOption;
 use Food\DishesBundle\Entity\DishSize;
 use Food\DishesBundle\Entity\Place;
@@ -29,8 +30,10 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
     {
 
         $em = $this->container->get('doctrine')->getManager();
+        /**
+         * @var $doctrine Registry
+         */
         $doctrine = $this->container->get('doctrine');
-
 
         $deliveryType = ($json->has('type') && $json->get('type', 'deliver') == 'pickup' ? 'pickup' : 'deliver');
         $os = $this->container->get('food.order');
@@ -70,7 +73,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
             }
             $order->setPaymentMethod("local.card");
             $addressBuffer = $address['street'] . ' ' . $address['house_number'] . (!empty($address['flat_number']) ? '-' . $address['flat_number'] . '' : '');
-            $location = $this->container->get('food.googlegis')->groupData($addressBuffer, $address['city']);
+            $location = $this->container->get('food.location')->findByAddress($addressBuffer.", ".$address['city']);
             $id = $doctrine->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance($place->getId(), $location, false, true);
             $placePoint = $doctrine->getRepository('FoodDishesBundle:PlacePoint')->find($id);
             $dp = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getDeliveryPriceForPlacePoint($place, $placePoint, $location);
@@ -80,17 +83,17 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
 
         $deliveryTotal = $deliveryPrice = $order->getDeliveryPrice();
 
-        $order->setSource("APIv2");
+        $order->setSource(Order::SOURCE_APIV2);
         $order->setPlace($place);
         $order->setPlaceName($place->getName());
         $order->setPlacePointSelfDelivery($place->getSelfDelivery());
         $order->setPlacePoint($placePoint);
-        $order->setPlacePointCity($placePoint->getCity());
+        $order->setCityId($placePoint->getCityId());
         $order->setPlacePointAddress($placePoint->getAddress());
-        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($placePoint->getCity())) {
+        if ($this->container->get('food.zavalas_service')->isRushHourAtCity($placePoint->getCityId())) {
             $order->setDuringZavalas(true);
         }
-        $order->setOrderDate(new \DateTime("now"));
+        $order->setOrderDate(new \DateTime());
 
         $orderDate = ($json->has('preorder') ? $json->get("preorder") : null);
 
@@ -116,7 +119,6 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         $order->setOrderHash(
             $os->generateOrderHash($order)
         );
-
 
         /**
          * @var User $user
@@ -185,7 +187,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
 
         $order->setUserIp('');
 
-        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($order->getPlacePointCity())) {
+        if ($this->container->get('food.zavalas_service')->isRushHourAtCity($order->getCityId())) {
             $order->setDuringZavalas(true);
         }
 
@@ -367,7 +369,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                 ->setPriceBeforeDiscount($priceBeforeDiscount)
                 ->setPercentDiscount($discountPercentForInsert)
                 ->setDishName($dishSize->getDish()->getName())
-                ->setDishUnitId($dishSize->getUnit()->getId())
+                ->setDishUnitId($dishSize->getUnit())
                 ->setDishUnitName($dishSize->getUnit()->getName())
                 ->setDishSizeCode($dishSize->getCode())
                 ->setIsFree(false);

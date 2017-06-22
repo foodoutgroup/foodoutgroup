@@ -1,0 +1,18 @@
+{% extends 'FoodPlacesBundle:City:layout.html.twig' %}
+
+{% block title %}{% if meta_title is not empty %}{{ meta_title }}. {% endif %}{% trans %}places.header_main_part{% endtrans %}{{ city.getTitle()  }}{% endblock %}
+{% block seo_description %}{% if meta_description is not empty %}{{ meta_description }}{% else %}{% trans %}places.header_main_part{% endtrans %} {{ city.getTitle() }}{% endif %}{% endblock %}
+
+{% block breadcrumb %}
+    <a href="{{ path('food_lang_homepage') }}">{% trans %}general.profile.home{% endtrans %}</a>
+    <a href="{{ current_url_path }}"> {{ city.getTitle() }}</a>
+
+    {% if kitchen_collection is not empty %}
+        {% set kitchen = kitchen_collection|first %}
+        <a href="{{ current_url }}"> {{ kitchen.name }}</a>
+    {% endif %}
+{% endblock %}
+
+{% block page_title_h1 %}
+    <h1>{% if meta_title is not empty %}{{ meta_title }}. {% endif %}{% trans %}places.header_main_part{% endtrans %} {{ city.getTitle() }}</h1>
+{% endblock %}

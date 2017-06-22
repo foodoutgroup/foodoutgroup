@@ -38,6 +38,16 @@
 {% endblock %}
 {% block body %}
     <style type="text/css">
+
+        .headerLogoMobile {
+            background: #cd1d36;
+        }
+
+        .headerLogoMobile img
+        {
+            max-height: 50px;
+        }
+
         .pedestrian-template-warning{
             text-align: center;
             text-transform: uppercase;
@@ -71,8 +81,11 @@
     <table class="table table-bordered table condensed" id="maintable">
         <thead>
         <tr>
-            {#<th {% if site_country == 'LV'%}style="background-color:#cd1d36;"{% endif %} colspan="5"><img style="width: 100px; height: 30px;" {%if site_country == 'LV'%} src="/bundles/foodapp/images/logo_food_easter_lv.png" {% else %} src="/bundles/foodapp/images/logo_food_easter_lt.png"{% endif %}> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>#}
-            <th {% if site_country == 'LV'%}style="background-color:#cd1d36;"{% endif %} colspan="5"><img style="width: 100px; height: 30px;" {%if site_country == 'LV'%} src="/bundles/foodapp/images/logo_food2.png" {% else %} src="/bundles/foodapp/images/logo_food.png"{% endif %}> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
+            <th class="headerLogoMobile" colspan="5">
+                <img src="{{ asset(misc_utils.getParam('site_logo_url')) }}" style="float: left;">
+                <img src="//{{ cloudfront_url }}/{{order.place.getWebPathThumb}}" style="float: right">
+            </th>
+
         </tr>
 
         {% if order.deliveryType == 'pedestrian' %}
@@ -98,12 +111,12 @@
         {% for dish in order.details %}
             <tr>
                 <td>{{ loop.index }}</td>
-                <td>{{ dish.dishName }}</td>
-                <td>{{ dish.dishUnitName }}</td>
+                <td>{{ dish.dishId.name }}</td>
+                <td>{{ dish.dishUnitId.name }}</td>
                 <td>{{ dish.quantity }}</td>
                 <td>
                     {% for option in dish.options %}
-                        <li>{{ option.dishOptionName }}</li>
+                        <li>{{ option.dishOptionId.name }}</li>
                     {% endfor %}
                 </td>
             </tr>
@@ -160,7 +173,7 @@
             <th colspan="5">{% trans %}mobile.restourant_place_point_address{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.city }}</td>
+            <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.cityId.title }}</td>
         </tr>
         {% if order.deliveryType == 'deliver' %}
             {% if order.placePointSelfDelivery == 1 %}
@@ -174,7 +187,7 @@
                     <th colspan="5">{% trans %}mobile.delivery_destination{% endtrans %}</th>
                 </tr>
                 <tr>
-                    <td colspan="5">{{ order.addressId.address }}, {{ order.addressId.city }}</td>
+                    <td colspan="5">{{ order.addressId.address }}, {{ order.addressId.cityId.title }}</td>
                 </tr>
             {% else %}
                 <tr>
@@ -205,7 +218,7 @@
                             {{ order.orderExtra.firstname }}, {{ order.orderExtra.lastname }}
                             {% if order.deliveryType == 'deliver' %}
                                 <br />
-                                {{ order.addressId.address }}, {{ order.addressId.city }}
+                                {{ order.addressId.address }}, {{ order.addressId.cityId.title }}
                             {% endif %}
 
                 {% endif %}

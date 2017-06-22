@@ -1,24 +1,13 @@
-(function($, window){
+(function($){
     $(function() {
-        var $window = $(window);
 
         /*Placeholder for old browsers*/
         $('input[placeholder], textarea[placeholder]').placeholder();
-
-        /*JS PIE. Fetures and usage: http://css3pie.com/documentation/supported-css3-features/*/
         if (window.PIE) {
             $('.rounded').each(function() {
                 PIE.attach(this);
             });
         }
-
-        resizeSensitive();
-
-        $window.resize(function () {
-            resizeSensitive();
-        });
-
-        // Boxer lightbox plugin
 
         bind_custom_select();
 
@@ -39,7 +28,6 @@
             }
         });
 
-
         $('.restoran-rating').raty({
             readOnly: true,
             score: function() {
@@ -47,10 +35,6 @@
             },
             path: '/bundles/foodapp/images/'
         });
-
-        function resizeSensitive() {
-
-        }
 
         bind_registration_form();
         bind_login_form();
@@ -60,39 +44,35 @@
         bind_password_resetting_form();
     });
 
-})(jQuery, window);
+    $('.lang-chose').click(function (event) {
+        $('.lang-drop ul').slideToggle(500);
+        event.preventDefault();
+        return false;
+    });
+
+    $(document).bind('click', function (e) {
+        if (!$(e.target).parents().hasClass("lang-drop"))
+            $(".lang-drop ul").hide();
+    });
+
+})(jQuery);
 
 bind_custom_select = function() {
-    var custom_select;
-
-    custom_select = $('.custom-select');
+    var custom_select = $('.custom-select');
     custom_select.selectmenu();
-}
+};
 
 init_raty = function() {
-    var selector, options;
-
-    selector = '.place-review-popup-wrapper .rate-review:empty';
-    options = {
-        path: '/bundles/foodapp/images/'
-    };
-
-    $(selector).raty(options);
-}
+    $('.place-review-popup-wrapper .rate-review:empty').raty({path: '/bundles/foodapp/images/'});
+};
 
 bind_registration_form = function() {
-    $('body').on('submit', '.righter.register-form', function(e) {
-        var callback, data, form, url;
-
-        form = $(this);
-        submit_btn = form.find('input[type=submit]');
-        url = form.attr('action');
-        data = form.serialize();
-
+    $('body').on('submit', '.righter.register-form', function() {
+        var  form = $(this);
         form.mask();
-
-        callback = function(response) {
+        $.post(form.attr('action'), form.serialize(), function(response) {
             if (response.length > 0) {
+
                 $('.registration_form_wrapper:visible').html(response);
                 form.unmask();
 
@@ -104,9 +84,7 @@ bind_registration_form = function() {
             } else {
                 top.location.href = top.location.href.replace('#', '');
             }
-        };
-
-        $.post(url, data, callback);
+        });
 
         return false;
     });
@@ -114,20 +92,15 @@ bind_registration_form = function() {
 
 bind_login_form = function() {
     $('body').on('submit', '.lefter.login-form', function(e) {
-        var callback, data, form, url, error;
+        var form, error, form_login_rows;
 
         form = $(this);
-        url = form.attr('action');
-        data = form.serialize();
         form_login_rows = $('.login-form-row');
-        error = form.find('.login-error')
-        dataType = 'json';
-
-        error.hide();
+        error = form.find('.login-error').hide();
         form_login_rows.removeClass('error');
         form.closest('.login-register-popup').mask();
 
-        callback = function(response) {
+        $.post(form.attr('action'), form.serialize(), function(response) {
             if (response.success == 1) {
                 top.location.href = top.location.href.replace('#', '');
             } else {
@@ -136,56 +109,44 @@ bind_login_form = function() {
                 error.show();
                 form.closest('.login-register-popup').unmask();
             }
-        };
-
-        $.post(url, data, callback, dataType);
+        }, 'json');
 
         return false;
     });
-}
+};
 
 bind_profile_menu_items = function() {
-    var menu_items, content_items;
-
-    menu_items = $('.user-page .user-menu .menu-item');
-    content_items = $('.user-page .content-item');
+    var menu_items = $('.user-page .user-menu .menu-item');
 
     menu_items.click(function() {
         menu_items.removeClass('active');
-        content_items.hide();
+        $('.user-page .content-item').hide();
 
         $(this).addClass('active');
         $($(this).attr('data-target')).show();
 
         return false;
     });
-}
+};
 
 bind_review_form = function() {
     $('body').on('submit', '.review-form', function(e) {
-        var callback, data, form, url, form_rows, data_type;
+        var form, form_rows;
 
         form = $(this);
-        url = form.attr('action');
-        data = form.serialize();
-        form_rows = $('.review-form .form-row');
-        data_type = 'json';
+        form_rows = $('.review-form .form-row').removeClass('error');
 
-        form_rows.removeClass('error');
-
-        callback = function(response) {
+        $.post(form.attr('action'),  form.serialize(), function(response) {
             if (response.success == 1) {
                 top.location.reload();
             } else {
                 form_rows.addClass('error');
             }
-        };
-
-        $.post(url, data, callback, data_type);
+        }, 'json');
 
         return false;
     });
-}
+};
 
 bind_show_password_resetting_form = function() {
     $('body').on('click', '.reset_password_btn', function(e) {
@@ -206,85 +167,44 @@ bind_show_password_resetting_form = function() {
 };
 
 bind_password_resetting_form = function() {
+
     $('body').on('submit', '.resetting_form_wrapper form', function(e) {
-        var callback, data, form, popup, url, form_rows, data_type;
+        var data, form, popup, form_rows;
 
         form = $(this);
-        popup = $('.popup.login-register-popup')
-        url = form.attr('action');
+        popup = $('.popup.login-register-popup');
         data = form.serialize();
         form_rows = $('.resetting_form_wrapper form .form-row');
-        data_type = 'json';
-
         form_rows.removeClass('error');
         popup.mask();
 
-        callback = function(response) {
+        $.post(form.attr('action'), form.serialize(), function(response) {
             if (response.success == 1) {
                 top.location = form.attr('data-redirect-target');
             } else {
                 form_rows.addClass('error');
                 popup.unmask();
             }
-        };
-
-        $.post(url, data, callback, data_type);
-
+        }, 'json');
         return false;
     });
-}
+};
 
-// 'click_callback' is needed since it's function may differ from page to page.
-// 'data_callback' is needed since we need to lazy evaluate data from inputs at
-// the very last moment.
-change_location = function(element,
-                           click_callback,
-                           data_callback,
-                           change_text,
-                           cancel_text,
-                           request_url)
-{
-    var dialog_options,
-        change_options,
-        cancel_options;
 
-    change_options = {
+change_location = function(element, click_callback, data_callback, change_text, cancel_text, request_url) {
+
+    var change_options = {
         text: change_text,
         click: function() {
-            var dialog,
-                options,
-                alert;
-
-            dialog = $(this);
-            dialog.parent().mask();
-
-            alert = element.find('.alert');
-
-            options = {
-                type: 'GET',
-                url: request_url,
-                data: data_callback(),
-                success: function(response){
-                    click_callback({response: response,
-                                    dialog: dialog,
-                                    alert: alert});
+            var dialog = $(this);
+            $.ajax({type: 'GET', url: request_url, data: data_callback(), success: function(response){
+                    click_callback({response: response, dialog: dialog.parent().mask(), alert: element.find('.alert')});
                 }
-            }
-
-            $.ajax(options);
+            });
         }
     };
 
-    /*
-    cancel_options = {
-        text: cancel_text,
-        click: function() {
-            $(this).dialog('close');
-        }
-    };
-    */
     if (element.find('.submit').size() == 0) {
-        //element.append('<a href="#" class="submit-button btn-cancel no-arrow no-arrow-second"><span>'+ cancel_options.text +'</span></a>');
         element.append('<div class="form-row address-row width463"><label></label><button class="button-normal submit">'+ change_options.text +'</button></div>');
     }
 
@@ -294,21 +214,21 @@ change_location = function(element,
 
     element.find('.submit').unbind('click').bind('click', function(){
         element.mask();
-        alert = element.find('.alert');
-
-        options = {
+        $.ajax({
             type: 'GET',
             url: request_url,
             data: data_callback(),
             success: function(response){
-                click_callback({response: response,
+                click_callback({
+                    response: response,
                     dialog: element,
-                    alert: alert}
-                );
+                    alert: element.find('.alert')
+                });
             }
-        }
-        $.ajax(options);
+        });
     });
+
+
 
     $.fancybox({
         'autoScale': true,
@@ -321,76 +241,8 @@ change_location = function(element,
         //'modal': true,
         'content' : element
     });
+};
 
-    /*
-    dialog_options = {
-        modal: true,
-        resizeable: false,
-        width: 360,
-        buttons: {
-            'change': change_options,
-            'cancel': cancel_options
-        }
-    };
-
-    element.dialog(dialog_options)
-           .siblings('.ui-dialog-titlebar')
-           .remove();
-    */
-}
-
-
-
-
-
-initStreetSearch = function(){
-
-    var streetsUrl = Routing.generate('food_ajax', { '_locale': 'lt', 'action' : 'find-street' });
-    var streets = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: '?city=%CITY&street=%QUERY',
-            replace: function(url, query) {
-                url = url.replace('%CITY', $('#index_city').val());
-                url = url.replace('%QUERY', query);
-                return streetsUrl + url;
-            }
-        }
-    });
-
-    streets.initialize();
-
-    $('#index_address').typeahead(null, {
-        name: 'streets',
-        displayKey: 'value',
-        source: streets.ttAdapter()
-    });
-}
-initStreetHouseSearch = function(){
-    var streetsUrl = Routing.generate('food_ajax', { '_locale': 'lt', 'action' : 'find-street-house' });
-    var streets = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: '?city=%CITY&street=%STREET&house=%QUERY',
-            replace: function(url, query) {
-                url = url.replace('%CITY', $('#index_city').val());
-                url = url.replace('%STREET', $('#index_address').val());
-                url = url.replace('%QUERY', query);
-                return streetsUrl + url;
-            }
-        }
-    });
-
-    streets.initialize();
-
-    $('#index_house').typeahead(null, {
-        name: 'houses',
-        displayKey: 'value',
-        source: streets.ttAdapter()
-    });
-}
 
 var registrationForm = {
     showPrivate: function(element) {
@@ -420,3 +272,141 @@ var registrationForm = {
         return false;
     }
 };
+(function (form) {
+
+    var input_auto_complete = form.find('#address_autocomplete');
+    var button_submit = form.find('#submit');
+    var input_collection = form.find('input');
+    var button_find_me = form.find('#find-me');
+    var div_error = form.find('#error');
+
+    var resultCollection = [];
+    var selected = null;
+
+    if (!navigator.geolocation) {
+        button_find_me.remove();
+    }
+    var autoSelect = true;
+    input_auto_complete.autocomplete({
+        source: input_auto_complete.data('url'),
+        minLength: 2,
+        html: true,
+        position: {
+            my: "left+0 top-4"
+        },
+        response: function( event, ui ) {
+            resultCollection = ui.content;
+        },
+        select: function( event, ui ) {
+            setSelected(ui.item);
+            autoSelect = false;
+        }
+    }).focusin(function(){
+        autoSelect = true;
+        if(resultCollection.length >= 2) {
+            $(this).autocomplete("search");
+        }
+    }).focusout(function(){
+        if(autoSelect && resultCollection.length >= 1 && autoSelect) {
+            setSelected(resultCollection[0]);
+        }
+        autoSelect = false;
+    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+        return $("<li></li>")
+            .data("item.autocomplete", item)
+            .append("<a data-class='" + item.class + "'>" + item.label + "</a>")
+            .appendTo(ul);
+    };
+
+    button_find_me.click(function (e) {
+        e.preventDefault();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position){
+                $.get(button_find_me.data("url"), {"lat" : position.coords.latitude, "lng" : position.coords.longitude}, function (response) {
+                    setSelected({'id' : response.detail.id, 'value' : response.detail.output});
+                });
+            });
+        } else {
+            throwMapLocationPicker(null);
+        }
+    });
+
+
+
+    input_collection.on('keyup', function (e) {
+        if(e.keyCode != 13) {
+            throwError(null);
+        }
+    }).on('focusin', function () {
+        throwError(null);
+    });
+
+    div_error.click(function () {
+        throwError(null);
+    });
+
+    button_submit.click(function (e) {
+        e.preventDefault();
+        img = $(this).find('img');
+        oldval = img.attr('src');
+        input_auto_complete.attr('disabled', true);
+
+        img.attr('src', img.attr('img-loader'));
+
+        $.post($(this).data('url'), {"address":input_auto_complete.data('selected'), "flat" : form.find('#flat').val()} , function (response) {
+            if(response.success && typeof response.url != "undefined" ) {
+                if(button_submit.data('redirect') == "self"){
+                    window.location.href = window.location.href;
+                } else {
+                    window.location.href = response.url;
+                }
+            } else {
+                throwError(response.message);
+                input_auto_complete.attr('disabled', false);
+                img.attr('src', oldval);
+            }
+        });
+
+    });
+
+    function setSelected(selected) {
+        input_auto_complete.data('selected', selected.id);
+        input_auto_complete.val(selected.value);
+        form.find('#hidden-field-for-address-id').val(selected.id);
+    }
+
+    function throwMapLocationPicker(position) {
+        if(position == null) {
+
+        } else {
+
+        }
+    }
+
+    function throwError(message){
+        if(message == null) {
+            message = '';
+            input_collection.removeClass('error');
+        } else {
+            form.closest('.shake-me').shake(5, 5, 400);
+            input_collection.addClass('error');
+        }
+        div_error.html(message);
+    }
+
+})($( ".address-search-form-ui" ));
+
+
+jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
+    this.each(function() {
+        $(this).css("position","relative");
+        for (var x=1; x<=intShakes; x++) {
+            $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
+                .animate({left:intDistance}, ((intDuration/intShakes)/2))
+                .animate({left:0}, (((intDuration/intShakes)/4)));
+        }
+    });
+    return this;
+};
+
+

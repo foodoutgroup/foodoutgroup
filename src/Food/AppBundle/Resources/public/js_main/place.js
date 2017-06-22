@@ -389,6 +389,7 @@ var Place = {
         } else {
             w_height = $(window).height();
         }
+        // todo cia padaryt fixus del cart scrill :)
         var new_height = (w_height >= top_margin ? w_height - top_margin : w_height);
         $("#cartmnu").height(new_height);
     }

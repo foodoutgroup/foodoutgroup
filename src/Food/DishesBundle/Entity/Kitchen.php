@@ -6,6 +6,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
 use Food\AppBundle\Entity\Uploadable;
+use Symfony\Component\Validator\Constraints as Assert;
+use Food\AppBundle\Validator\Constraints as AppAssert;
 
 use Doctrine\ORM\EntityManager;
 
@@ -19,6 +21,9 @@ use Doctrine\ORM\EntityManager;
  */
 class Kitchen extends Uploadable implements Translatable
 {
+
+    const SLUG_TYPE = 'kitchen';
+
     /**
      * @var integer
      *
@@ -138,6 +143,14 @@ class Kitchen extends Uploadable implements Translatable
      * @ORM\Column(name="meta_title", type="text", nullable=true)
      */
     private $metaTitle = null;
+
+    /**
+     * @var string
+     * @Gedmo\Translatable
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true, unique=true)
+     */
+    private $slug;
+
 
     /**
      * Convert object to string
@@ -598,5 +611,28 @@ class Kitchen extends Uploadable implements Translatable
     public function setMetaTitle($metaTitle)
     {
         $this->metaTitle = $metaTitle;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Kitchen
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

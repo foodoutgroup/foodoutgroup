@@ -7,7 +7,7 @@ services:
 
     food_user.registration.form.type:
         class: Food\UserBundle\Form\Type\RegistrationFormType
-        arguments: [Food\UserBundle\Entity\User]
+        arguments: [Food\UserBundle\Entity\User, %locale%]
         tags:
             - { name: form.type, alias: food_user_registration }
 

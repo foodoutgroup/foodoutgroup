@@ -21,12 +21,32 @@ class AddressController extends Controller
             $city = $request->get('city');
             $street = $request->get('street');
             $houseNumber = $request->get('house_number');
+            $lService = $response = $this->get('food.location');
+            $pedestrianService = $this->get('food.pedestrian_service');
+
             if (!empty($lat) && !empty($lng)) {
-                $response = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
+                $response = $lService->findByCords($lat, $lng);
+
+                if($response) {
+                    $lService->setFromArray($response);
+                    $response['house_number'] = $response['house'];
+                    $response['pedestrian'] = $pedestrianService->getPedestrianByCity($response['city_id']);
+                } else {
+                    $response = [];
+                }
             } elseif (!empty($city) && !empty($street) && !empty($houseNumber)) {
-                $response = $this->get('food.googlegis')->findAddressByCoordsByStuff(
-                    $city, $street, $houseNumber
-                );
+
+                $response = $lService->findByAddress($street.' '.$houseNumber.' ,'.$city);
+
+                if($response) {
+                    $lService->setFromArray($response);
+                    $response['house_number'] = $response['house'];
+                    $response['pedestrian'] = $pedestrianService->getPedestrianByCity($response['city_id']);
+
+                } else {
+                    $response = [];
+                }
+
             } else {
 
                 $response = [];
@@ -43,17 +63,7 @@ class AddressController extends Controller
         }
 
         if (empty($response)) {
-            $description = 'City:'. (!empty($city) ? $city :'empty').
-                           ', Street:'. (!empty($street) ? $street :'empty').
-                           ', House number:'. (!empty($houseNumber) ? $houseNumber :'empty').
-                           ', Lat:'. (!empty($lat) ? $lat : 'empty').
-                           ', Lng:'. (!empty($lng) ? $lng : 'empty');
-
-            $this->get('food.error_log_service')->saveErrorLog(
-                'api_adress_change_find',
-                $description,
-                serialize($request)
-            );
+            $this->get('food.error_log')->write($this->getUser(), null, null, 'api_adress_change_find', 'api_null_request');
         }
 
 
@@ -75,10 +85,13 @@ class AddressController extends Controller
 
                 if (!empty($streets)) {
                     foreach ($streets as $street) {
-                        $response[] = array(
-                            'street' => $street->getStreet(),
-                            'city' => $street->getCity(),
-                        );
+                        if ($cityObj = $street->getCityId()) {
+                            $response[] = [
+                                'street' => $street->getStreet(),
+                                'city' => $cityObj->getTitle(),
+                                'city_id' => $cityObj->getId()
+                            ];
+                        }
                     }
                 }
             }

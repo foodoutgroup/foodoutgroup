@@ -15,9 +15,25 @@ class Slug
     const TYPE_KITCHEN = 'kitchen';
     const TYPE_PLACE = 'place';
     const TYPE_FOOD_CATEGORY = 'food_category';
-    const TYPE_TEXT = 'text';
+
+    const SLUG_LIFETIME = 1814400; // Three weeks (86400 * 21);
+
+
     const TYPE_BLOG_CATEGORY = 'blog_category';
+    const TYPE_PAGE = 'page';
+    const TYPE_CITY = 'city';
     const TYPE_BLOG_POST = 'blog_post';
+    const TYPE_DISH = 'dish';
+
+    public static $typeCollection = [
+        self::TYPE_KITCHEN,
+        self::TYPE_PLACE,
+        self::TYPE_FOOD_CATEGORY,
+        self::TYPE_PAGE,
+        self::TYPE_CITY,
+        self::TYPE_BLOG_POST,
+        self::TYPE_DISH
+    ];
 
 
     /**
@@ -71,6 +87,11 @@ class Slug
      */
     private $active = true;
 
+    /**
+     * @var \DateTime $deactivated_at
+     * @ORm\Column(name="deactivated_at", type="datetime", nullable=true)
+     */
+    private $deactivated_at;
 
     /**
      * Get id
@@ -137,16 +158,8 @@ class Slug
      */
     public function setType($type)
     {
-        $allowedTypes = [
-            self::TYPE_KITCHEN,
-            self::TYPE_FOOD_CATEGORY,
-            self::TYPE_PLACE,
-            self::TYPE_TEXT,
-            self::TYPE_BLOG_CATEGORY,
-            self::TYPE_BLOG_POST
-        ];
 
-        if (!in_array($type, $allowedTypes)) {
+        if (!in_array($type, self::$typeCollection)) {
             throw new \InvalidArgumentException('Invalid $type value.');
         }
 
@@ -242,5 +255,23 @@ class Slug
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeactivatedAt()
+    {
+        return $this->deactivated_at;
+    }
+
+    /**
+     * @param \DateTime $deactivated_at
+     * @return $this
+     */
+    public function setDeactivatedAt($deactivated_at)
+    {
+        $this->deactivated_at = $deactivated_at;
+        return $this;
     }
 }

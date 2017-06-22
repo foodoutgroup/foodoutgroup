@@ -4,62 +4,65 @@ namespace Food\AppBundle\Service;
 use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Utils\Language;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CityService extends BaseService
 {
     protected $router;
-    protected $availableCitiesSlugs;
     protected $locale;
-    protected $language;
+    protected $request;
 
-    public function __construct(EntityManager $em, Router $router, Language $language)
+    public function __construct(EntityManager $em, Router $router, ContainerInterface $container)
     {
         parent::__construct($em);
         $this->router = $router;
-        $this->language = $language;
+        $this->request = $container->get('request');
+        $this->locale= $this->request->getLocale();
+    }
+    public function getActiveCity()
+    {
+        return $this->em->getRepository('FoodAppBundle:City')->getActive();
     }
 
-    /**
-     * @param string $cityString
-     * @return array
-     */
-    public function getCityInfo($cityString)
+    public function getDefaultCity()
     {
-        $cityInfo = array();
-        $availableCitiesSlugs = array_map("mb_strtolower", $this->availableCitiesSlugs);
+        return $this->em->getRepository('FoodAppBundle:City')->findOneBy([], ['position' => 'ASC']);
+    }
 
-        $cityString = $this->language->removeChars($this->locale, $cityString, true, false);
-        $city = str_replace(array("#", "-",";","'",'"',":", ".", ",", "/", "\\"), "", ucfirst($cityString));
-        $cityInfo['city_slug_lower'] = strtolower($city);
+    public function getCityById($cityId)
+    {
+        return $this->em->getRepository('FoodAppBundle:City')->findOneBy(['id' => $cityId]);
+    }
 
-        if (!empty($city) && in_array(mb_strtolower($city), $availableCitiesSlugs)) {
-            $city_url = $this->router->generate('food_city_' . lcfirst($city), [], true);
-        } else {
-            $city_name = lcfirst(reset($availableCitiesSlugs));
-            $city = ucfirst($city_name);
-            $city_url = $this->router->generate('food_city_' . (!empty($city_name) ? $city_name : 'vilnius'), [], true);
-            $cityInfo['city_slug_lower'] = strtolower($city);
+    public function getCityBySlug($slug)
+    {
+        return $this->em->getRepository('FoodAppBundle:City')->findOneBy(['slug' => $slug]);
+    }
+
+    public function getCityByName($name)
+    {
+        return $this->em->getRepository('FoodAppBundle:City')->findOneBy(['title' => $name]);
+    }
+
+    public function getRandomBestOffers($cityId){
+
+        $bestOfferIds = $this->em->getRepository('FoodAppBundle:City')->getBestOffersByCity($cityId);
+
+        if (!empty($bestOfferIds)) {
+
+
+            foreach ($bestOfferIds as $item) {
+                $tmpOfferIds[] = $item['id'];
+            }
+
+            shuffle($tmpOfferIds);
+
+            $bestOfferIds = array_slice($tmpOfferIds, 0, 5);
+            $bestOffers = $this->em->getRepository('FoodPlacesBundle:BestOffer')->getBestOffersByIds($bestOfferIds);
+        }else{
+            $bestOffers = null;
         }
+        return $bestOffers;
 
-        $cityInfo['city_url'] = $city_url;
-        $cityInfo['city'] = $city;
-
-        return $cityInfo;
-    }
-
-    /**
-     * @param mixed $availableCitiesSlugs
-     */
-    public function setAvailableCitiesSlugs($availableCitiesSlugs)
-    {
-        $this->availableCitiesSlugs = $availableCitiesSlugs;
-    }
-
-    /**
-     * @param mixed $locale
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
     }
 }

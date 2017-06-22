@@ -1,10 +1,13 @@
 <?php
 namespace Food\AppBundle\Service;
 
+use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Traits;
 
 class StaticService {
     use Traits\Service;
+
+
 
     /**
      * @var Container
@@ -65,8 +68,7 @@ class StaticService {
             throw new \InvalidArgumentException('Sorry, no ID - no information. Get lucky!');
         }
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $staticPage = $em->getRepository('Food\AppBundle\Entity\StaticContent')->find($id);
+        $staticPage = $this->getContainer()->get('doctrine')->getRepository('Food\AppBundle\Entity\StaticContent')->find($id);
 
         if (!$staticPage) {
             return false;
@@ -82,11 +84,38 @@ class StaticService {
      */
     public function getActivePages($limit=10, $onlyVisible=true)
     {
-        $pagesQueryBuilder = $this->em()->getRepository('FoodAppBundle:StaticContent')
-            ->createQueryBuilder('s')
-        // TODO active-not active ir positioning (top, bottom menu, hidden)
-            ->where('s.active = 1')
-            ->orderBy('s.order', 'ASC')
+
+        $excludePageCollection = [];
+        $keywordMapCollection = [
+            'page_banned',
+            'page_email_banned',
+            'page_sitemap'
+        ];
+
+        /**
+         * @var $paramService \Food\AppBundle\Utils\Misc
+         */
+        $paramService = $this->getContainer()->get('food.app.utils.misc');
+        foreach ($keywordMapCollection as $keyword) {
+
+            $data = (int)$paramService->getParam($keyword, true);
+            if($data != 0) {
+                $excludePageCollection[] = $data;
+            }
+        }
+
+
+        /**
+         * $qb Doctrine\ORM\EntityManager
+         */
+        $qb = $this->em()->getRepository('FoodAppBundle:StaticContent')
+            ->createQueryBuilder('s');
+
+        $pagesQueryBuilder = $qb->where('s.active = 1');
+        if (count($excludePageCollection)) {
+            $pagesQueryBuilder->andWhere($qb->expr()->notIn('s.id', $excludePageCollection));
+        }
+        $pagesQueryBuilder->orderBy('s.order', 'ASC')
             ->setMaxResults($limit);
 
         if ($onlyVisible) {
@@ -101,27 +130,10 @@ class StaticService {
     /**
      * @param bool $cities
      * @return mixed
+     * @deprecated from 2017-04-26
      */
-    public function getPlacesWithOurLogistic($cities = false)
+    public function getPlacesWithOurLogistic()
     {
-        if ($cities) {
-            $fields = "distinct(pp.city)";
-            $group = "1";
-        } else {
-            $fields = "pp.city, p.id, p.name";
-            $group = "1, 2";
-        }
-        $query = "
-            SELECT " . $fields . "
-            FROM place_point pp, place p
-            WHERE pp.place = p.id
-            AND p.self_delivery = 0
-            AND pp.active = 1
-            AND p.active = 1
-            GROUP BY " . $group
-        ;
-        $stmt = $this->em()->getConnection()->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll();
+       return [];
     }
 }
