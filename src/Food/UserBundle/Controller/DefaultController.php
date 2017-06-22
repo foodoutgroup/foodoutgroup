@@ -137,21 +137,18 @@ class DefaultController extends Controller
             $formError['phone'] = $translator->trans($phoneValidation[0]);
         } else {
 
-
             $lService = $this->get('food.location');
-            $oldLocation = $lService->get();
             $addressData = $request->request->get('address');
+            $oldLocation = $lService->get();
             if (!empty($addressData['id'])) {
-
-                $locationFindByHash = $lService->findByHash($addressData['id']);
-                // for future generations
-                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($locationFindByHash['city_id']);
-                if ($cityObj) {
-                    $lService->set($locationFindByHash, $addressData['flat'] === '' ? null : $addressData['flat']);
-                    $newLocationData = $lService->get();
-                    if ($newLocationData['precision'] == 0) {
-                        $lService->saveAddressFromArrayToUser($newLocationData, $user);
-                    } else if(!empty($oldLocationData['city_id'])) {
+                $address = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user);
+                if(!$address || $address->getAddressId() != $addressData['id'] || $address->getFlat() != $addressData['flat']) {
+                    $locationFindByString = $lService->findByAddress($addressData['autocomplete']);
+                    // jei tikslumas geras ir miestas rastas sistemoje bandom saugot :)
+                    if($locationFindByString['precision'] == 0 && !is_null($locationFindByString['city_id'])) {
+                        $lService->set($locationFindByString, empty(trim($addressData['flat'])) ? null : $addressData['flat']);
+                        $lService->saveAddressFromArrayToUser($lService->get(), $user);
+                    } else {
                         $lService->set($oldLocation);
                     }
                 }
