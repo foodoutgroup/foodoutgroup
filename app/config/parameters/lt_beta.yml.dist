@@ -1,6 +1,6 @@
 parameters:
     database_driver: pdo_mysql
-    database_host: localhost
+    database_host: maindb
     database_port: 3306
     database_name: food_lt_beta
     database_user: food_lt_beta
@@ -14,10 +14,10 @@ parameters:
     defaultSelections: [messages]
     emptyPrefixes: []
     editable:
-        mode: inline		 # Mode of editable, can be popup or inline
-        type: textarea		 # Type of input. Can be text|textarea|select|date|checklist and more
-        emptytext: Empty 	 # text to display on empty translations
-        placement: top		 # ingnored for inline mode
+        mode: inline         # Mode of editable, can be popup or inline
+        type: textarea       # Type of input. Can be text|textarea|select|date|checklist and more
+        emptytext: Empty     # text to display on empty translations
+        placement: top       # ingnored for inline mode
     aws_key: AKIAJN3454YNXAUSJIRA
     aws_secret: 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
     aws_region: eu-west-1
@@ -25,16 +25,17 @@ parameters:
 
     driver.send_to_external: false
     driver.city_filter: ["Vilnius"]
-    driver.socket_address: tcp://s2.foodout.lt:7778
+    driver.socket_address: tcp://cl1:7778
     driver.socket_hash: api
 
     locale: lt
     locales: ["lt", "en", "ru"]
-    available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Utena", "Plungė"]
-    available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda", "Siauliai", "Panevezys", "Alytus", "Utena", "Plunge"]
+    locales_hidden: []
+    available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Marijampolė", "Utena", "Kėdainiai", "Plungė", "Palanga", "Mažeikiai"]
+    available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda", "Siauliai", "Panevezys", "Alytus", "Marijampole", "Utena", "Kedainiai", "Plunge", "Palanga", "Mazeikiai"]
     available_locales: ["lt", "en", "ru"]
     available_locales_routing: lt | en | ru
-    cloudfront_url: images.foodout.lt
+    cloudfront_url: foodout.lt
     time_zone: "Europe/Vilnius"
     sms.sender: "Foodout.lt"
     admin.emails: [karolis.m@foodout.lt]
@@ -44,36 +45,36 @@ parameters:
         vilnius: []
         kaunas: []
         klaipėda: []
-        ryga: [karolis.m@foodout.lt]
+        ryga: []
     order.accept_notify_emails: []
-    order.cancel_notify_emails: [pagalba@foodout.lt]
+    order.cancel_notify_emails: []
     accounting_email: "buhalterija@foodout.lt"
     b2b_invoice_email: ""
     payment:
-        method:
-         - local
-         - local.card
-         - swedbank-gateway
-         - swedbank-credit-card-gateway
-         - seb-banklink
-         - paysera
-         - paysera
-         - paysera
-         - paysera
-         - paysera
-         - paysera
-        title:
-         - '[#cash#]'
-         - '[#credit.card#]'
-         - 'Swedbank'
-         - 'Kreditinės kortelės'
-         - 'SEB bankas'
-         - 'Medicinos bankas'
-         - 'DNB bankas'
-         - 'Citadele bankas'
-         - 'Nordea bankas'
-         - 'Danske bankas'
-         - 'Paysera'
+           method:
+             - local
+             - local.card
+             - swedbank-gateway
+             - swedbank-credit-card-gateway
+             - seb-banklink
+             - paysera
+             - paysera
+             - paysera
+             - paysera
+             - paysera
+             - paysera
+           title:
+             - '[#cash#]'
+             - '[#credit.card#]'
+             - 'Swedbank'
+             - 'Kreditinės kortelės'
+             - 'SEB bankas'
+             - 'Medicinos bankas'
+             - 'DNB bankas'
+             - 'Citadele bankas'
+             - 'Nordea bankas'
+             - 'Danske bankas'
+             - 'Paysera'
     payment.methods:
         - local
         - local.card
@@ -143,11 +144,26 @@ parameters:
     dispatcher_bell: false
     static_page_privacy_policy: 8
     static_page_b2b_rules: 29
-    b2b_first_month_discount: true
+    b2b_first_month_discount: false
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: false
     geo_provider: https://geoproxy.foodout.lt
+
+    # seb banklink
+    seb:
+        banklink.private_key: "/srv/gluster/banklinks/seb/private.key"
+        banklink.bank_key: "/srv/gluster/banklinks/seb/bank.key"
+        REDIRECT_SERVICE: 1001
+        SUCCESS_SERVICE: 1101
+        WAITING_SERVICE: 1201
+        FAILURE_SERVICE: 1901
+        VK_SND_ID: "EM0489"
+        VK_ACC: "LT197044060007974514"
+        entrypoint: "https://e.seb.lt/banklink/in"
+        lang: "LIT"
+        name: "UAB Foodout.lt"
+        curr: "EUR"
 
     session_memcached_host:     memcached
     session_memcached_port:     11211
