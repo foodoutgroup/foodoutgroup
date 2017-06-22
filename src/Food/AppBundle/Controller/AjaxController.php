@@ -62,8 +62,7 @@ class AjaxController extends Controller
     {
         $cont = json_decode($content);
 
-        $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithWorkCheck(
-            $placeId,
+        $pointId = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithWorkCheck($placeId,
             $this->get('food.location')->get()
         );
 
