@@ -56,6 +56,9 @@
                                     <div class="not-working-text">
                                         {% trans %}place_point.tag-not-working{% endtrans %}
                                     </div>
+                                     <div class="list-questionmark">
+                                         ?
+                                     </div>
                              </div>
                     </span>
                     <div class="time-popup time-popup2">{{ order_service.notWorkingPlacesPoints(place)|raw }}
@@ -70,6 +73,9 @@
                                     <div class="not-working-text">
                                        {% trans %}place_point.tag-not-working{% endtrans %}
                                     </div>
+                                    <div class="list-questionmark">
+                                         ?
+                                     </div>
                                  </div>
                                 <div class="time-popup">{{ order_service.getTodayWork(place_point.point) }}
                                     <div class="nip"></div>
@@ -82,7 +88,9 @@
                                     <div class="not-working-text">
                                         {% trans %}place_point.tag-not-working{% endtrans %}
                                     </div>
-
+                                    <div class="list-questionmark">
+                                         ?
+                                     </div>
                                 </div>
                                 <div class="time-popup">{{ order_service.notWorkingPlacesPoints(place)|raw }}
                                     <div class="nip"></div>

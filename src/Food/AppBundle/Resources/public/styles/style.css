@@ -6026,10 +6026,7 @@ div.coupon_form_popup {
     display: flex;
     color: white;
     margin-bottom:5px;
-}
-
-.not-working-container img {
-    width: 20px;
+    border-radius:10px;
 }
 
 .not-working-text {
@@ -6042,7 +6039,10 @@ div.coupon_form_popup {
     padding-top: 3px;
     padding-bottom: 2px;
     text-align: center;
-    border-radius: 5px;
+    border-right: 1px solid white;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    white-space: nowrap;
 }
 
 .list-title-container {
@@ -6056,10 +6056,13 @@ div.coupon_form_popup {
 }
 
 .list-questionmark {
-    width: 25%;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    width: 22px;
+    font-size: 13px;
 }
 
 .restaurant-item .item-center .desc{
@@ -6069,4 +6072,9 @@ div.coupon_form_popup {
 .tag-not-working{
     position: relative;
     display: flex;
+}
+
+.list-questionmark{
+    background-color: #cc1f36;
+    font-size: 15px;
 }
