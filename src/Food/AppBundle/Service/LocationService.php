@@ -216,7 +216,7 @@ class LocationService extends ContainerAware
         $ua->setFlat($location['flat']);
         $ua->setLat($location['latitude']);
         $ua->setLon($location['longitude']);
-        $ua->setOrigin($location['origin']);
+        $ua->setOrigin($location['output']);
         $ua->setAddressId($location['id']);
         $ua->setDefault(1);
         $this->em->persist($ua);

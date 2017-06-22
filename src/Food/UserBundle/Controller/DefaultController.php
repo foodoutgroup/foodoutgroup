@@ -111,7 +111,6 @@ class DefaultController extends Controller
     {
         // services
         $userManager = $this->container->get('fos_user.user_manager');
-        $orderService = $this->get('food.order');
         $em = $this->getDoctrine()->getManager();
         $translator = $this->get('translator');
         $flashbag = $this->get('session')->getFlashBag();

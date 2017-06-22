@@ -3683,7 +3683,7 @@ class OrderService extends ContainerAware
         }
 
         // Validate das phone number :)
-        if (0 != strlen($phone)) {
+        if (strlen($phone)) {
             $validation = $this->container->get('food.phones_code_service')->validatePhoneNumber($phone, $request->get('country'));
 
             if($validation === true){
