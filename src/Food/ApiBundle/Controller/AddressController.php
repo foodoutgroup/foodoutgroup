@@ -28,7 +28,7 @@ class AddressController extends Controller
                 $response = $lService->findByCords($lat, $lng);
 
                 if($response) {
-                    $lService->setFromArray($response);
+                    $lService->set($response);
                     $response['house_number'] = $response['house'];
                     $response['pedestrian'] = $pedestrianService->getPedestrianByCity($response['city_id']);
                 } else {
@@ -74,7 +74,7 @@ class AddressController extends Controller
 
     public function findStreetAction(Request $request)
     {
-        $startTime = microtime(true);
+
         //$this->get('logger')->alert('Address:findStreetAction Request:', (array)$request);
         try {
             $queryPart = $request->get('query');
