@@ -482,7 +482,7 @@ class DefaultController extends Controller
                 $locationData = $googleGisService->get();
 
                 $em = $this->getDoctrine()->getManager();
-                $address = $googleGisService->saveAddressFromSessionToUser($user);
+                $address = $googleGisService->saveAddressFromArrayToUser($googleGisService->get(), $user);
                 $orderService->getOrder()->setAddressId($address);
                 // Set user default address
 

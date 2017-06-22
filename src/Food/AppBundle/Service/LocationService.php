@@ -197,36 +197,27 @@ class LocationService extends ContainerAware
         return $this->finishUpData($this->getGeoCodeCurl(['lat' => $lat, 'lng' => $lng]));
     }
 
-    public function saveAddressFromSessionToUser(User $user)
-    {
-        return $this->saveAddressFromArrayToUser($this->get(), $user);
-    }
-
-    public function saveAddressFromArrayToUser(array $current, User $user)
+    public function saveAddressFromArrayToUser(array $location, User $user)
     {
         $ua = new UserAddress();
 
-        if(!isset($current['origin']) && isset($current['output'])){
-            $current['origin'] = $current['output'];
+        if($location['city_id']) {
+            $cityObj = $this->container->get('doctrine')->getRepository('FoodAppBundle:City')->find($location['city_id']);
+            if ($cityObj) {
+                $ua->setCityId($cityObj);
+            }
         }
 
-        if(!isset($current['flat'])) {
-            $current['flat'] = null;
-        }
-
-        $addressString = $current['street']. ($current['house'] == null || $current['house'] == false ? "" : " ".$current['house'].($current['flat'] == null || $current['flat'] == false  ? "" : " - ".$current['flat'] ));
-        $ua->setAddress($addressString);
-        $ua->setCityId($this->getCityObj());
         $ua->setUser($user);
-        $ua->setCity($current['city']);
-        $ua->setCountry($current['country']);
-        $ua->setStreet($current['street']);
-        $ua->setHouse($current['house']);
-        $ua->setFlat($current['flat']);
-        $ua->setLat($current['latitude']);
-        $ua->setLon($current['longitude']);
-        $ua->setOrigin($current['origin']);
-        $ua->setAddressId(isset($current['id']) ? $current['id'] : (isset($current['hash']) ? $current['hash'] : md5($current['origin'])));
+        $ua->setCity($location['city']);
+        $ua->setCountry($location['country']);
+        $ua->setStreet($location['street']);
+        $ua->setHouse($location['house']);
+        $ua->setFlat($location['flat']);
+        $ua->setLat($location['latitude']);
+        $ua->setLon($location['longitude']);
+        $ua->setOrigin($location['origin']);
+        $ua->setAddressId($location['id']);
         $ua->setDefault(1);
         $this->em->persist($ua);
         $this->em->flush();

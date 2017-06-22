@@ -139,45 +139,23 @@ class DefaultController extends Controller
         } else {
 
 
-            $locationService = $this->get('food.location');
-
+            $lService = $this->get('food.location');
+            $oldLocation = $lService->get();
             $addressData = $request->request->get('address');
             if (!empty($addressData['id'])) {
 
-                $hasAddress = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->findByIdUserFlat($addressData['id'], $user, $addressData['flat']);
-                $addressDetail = $locationService->findByHash($addressData['id'], $addressData['flat']);
-                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($addressDetail['city']);
-
-                if (!is_object($cityObj)) {
-                    $flashbag->set('profile_update_errors', $translator->trans('messages.city_doesnt_exist'));
-                    return $this->redirect($this->generateUrl('user_profile'));
-                }
+                $locationFindByHash = $lService->findByHash($addressData['id']);
+                // for future generations
+                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($locationFindByHash['city_id']);
                 if ($cityObj) {
-                    $oldLocationData = $locationService->get();
-                    $locationService->set($addressDetail, $addressData['flat'] === '' ? null : $addressData['flat']);
-
-                    $newLocationData = $locationService->get();
-
+                    $lService->set($locationFindByHash, $addressData['flat'] === '' ? null : $addressData['flat']);
+                    $newLocationData = $lService->get();
                     if ($newLocationData['precision'] == 0) {
-                        $locationService->saveAddressFromSessionToUser($user);
-                    } else {
-                        if (!empty($oldLocationData['city_id'])) {
-
-                            $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($oldLocationData['city_id']);
-                            $locationService->set(
-                                $cityObj,
-                                $oldLocationData['country'],
-                                $oldLocationData['street'],
-                                $oldLocationData['house'],
-                                $oldLocationData['flat'],
-                                $oldLocationData['origin'],
-                                $oldLocationData['latitude'],
-                                $oldLocationData['longitude']
-                            );
-                        }
+                        $lService->saveAddressFromArrayToUser($newLocationData, $user);
+                    } else if(!empty($oldLocationData['city_id'])) {
+                        $lService->set($oldLocation);
                     }
                 }
-
             }
 
             // password validation
@@ -187,18 +165,12 @@ class DefaultController extends Controller
 
 
             if ($form->isValid()) {
-
-
                 $em->flush();
-
                 $flashbag->set('profile_updated', $translator->trans('general.noty.profile_updated'));
-
                 return $this->redirect($this->generateUrl('user_profile'));
-
 
             }
         }
-
         return [
             'form' => $form->createView(),
             'profile_errors' => $formError,
