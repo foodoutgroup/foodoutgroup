@@ -41,7 +41,7 @@
                                     {% set count = count+1 %}
 
                                 <tr>
-                                    <td>{{ option.dishOptionId.name }}</td>
+                                    <td>{% if option.dishOptionId %}{{ option.dishOptionId.name }}{% else %}{{ option.name }}{% endif %}</td>
                                     <td>{{ option.price }} {{ currency_display|raw }}</td>
                                     <td>{{ option.priceBeforeDiscount }} {{ currency_display|raw }}</td>
                                     <td>{{ option.dishOptionCode }}</td>
