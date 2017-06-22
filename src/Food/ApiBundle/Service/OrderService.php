@@ -3,6 +3,7 @@
 namespace Food\ApiBundle\Service;
 
 use Food\ApiBundle\Common\JsonRequest;
+use Food\DishesBundle\Entity\DishSize;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Entity\Coupon;
@@ -11,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerAware;
 use Symfony\Component\HttpFoundation\Request;
 use Food\OrderBundle\Service\OrderService as FO;
 use Food\ApiBundle\Exceptions\ApiException;
-use Symfony\Component\Validator\Constraints\Date;
+
 
 class OrderService extends ContainerAware
 {
@@ -78,6 +79,7 @@ class OrderService extends ContainerAware
          * "house_number": 3,
          * "flat_number": 2,
          * "city": "Vilnius",
+         * "city_id" "1", // optional
          * "comments": "Duru kodas 1234"
          * },
          * "discount": {
@@ -93,11 +95,12 @@ class OrderService extends ContainerAware
          */
         $searchCrit = [
             'city' => null,
+            'city_id' => null,
             'lat' => null,
             'lng' => null,
             'address' => null
         ];
-        $googleGisService = $this->container->get('food.googlegis');
+        $googleGisService = $this->container->get('food.location');
 
         $token = $requestOrig->headers->get('X-API-Authorization');
         $this->container->get('food_api.api')->loginByHash($token);
@@ -139,8 +142,9 @@ class OrderService extends ContainerAware
             );
         }
 
-        $em = $this->container->get('doctrine')->getManager();
+        $em = $this->container->get('doctrine');
         $serviceVar = $request->get('service');
+
         $logger->alert('Service var givven: ');
         $logger->alert(var_export($serviceVar, true));
         $pp = null; // placePoint :D - jei automatu - tai NULL :D
@@ -156,12 +160,12 @@ class OrderService extends ContainerAware
 
         $place = $basket->getPlaceId();
 
-        if (strpos($place->getDeliveryOptions(),$serviceVar['type']) === false) {
+        if (strpos($place->getDeliveryOptions(), $serviceVar['type']) === false && $place->getDeliveryOptions() != $os::$deliveryPedestrian) {
             throw new ApiException(
                 'Coupon for delivery',
                 404,
                 [
-                    'error'       => 'Chosen delivery option does not match restaurants delivery',
+                    'error' => 'Chosen delivery option does not match restaurants delivery',
                     'description' => $this->container->get('translator')->trans('general.coupon.only_delivery')
                 ]
             );
@@ -334,8 +338,7 @@ class OrderService extends ContainerAware
                 $useAdminFee = false;
             }
 
-            if ($user->getIsBussinesClient() || ($serviceVar['type'] == "pickup" && !$place->getMinimalOnSelfDel() ))
-            {
+            if ($user->getIsBussinesClient() || ($serviceVar['type'] == "pickup" && !$place->getMinimalOnSelfDel())) {
                 $useAdminFee = false;
             }
 
@@ -384,7 +387,7 @@ class OrderService extends ContainerAware
 
         if ($serviceVar['type'] != "pickup") {
             $placeService = $this->container->get('food.places');
-            if (!$useAdminFee  && ($placeService->getMinCartPrice($place->getId()) - $total_cart) >= 0.00001 ) { //Jei yra admin fee - cart'o minimumo netaikom
+            if (!$useAdminFee && ($placeService->getMinCartPrice($place->getId()) - $total_cart) >= 0.00001) { //Jei yra admin fee - cart'o minimumo netaikom
                 throw new ApiException(
                     'Order Too Small',
                     400,
@@ -401,6 +404,7 @@ class OrderService extends ContainerAware
              * "house_number": 3,
              * "flat_number": 2,
              * "city": "Vilnius",
+             * "city_id" : "1", // optional
              * "comments": "Duru kodas 1234"
              */
             if (empty($serviceVar['address']) || empty($serviceVar['address']['street'])) {
@@ -413,14 +417,12 @@ class OrderService extends ContainerAware
                     ]
                 );
             } else {
-                $locationInfo = $googleGisService->groupData(
-                    $serviceVar['address']['street'] . " " . $serviceVar['address']['house_number'],
-                    $serviceVar['address']['city']
-                );
+                $locationInfo = $googleGisService->findByAddress($serviceVar['address']['street'] . " " . $serviceVar['address']['house_number'] . ", " . $serviceVar['address']['city']);
                 $searchCrit = [
                     'city' => $locationInfo['city'],
-                    'lat' => $locationInfo['lat'],
-                    'lng' => $locationInfo['lng'],
+                    'city_id' => $locationInfo['city_id'],
+                    'latitude' => $locationInfo['latitude'],
+                    'longitude' => $locationInfo['longitude'],
                     'address_orig' => $serviceVar['address']['street'] . " " . $serviceVar['address']['house_number']
                 ];
                 // Append flat if given
@@ -428,11 +430,7 @@ class OrderService extends ContainerAware
                     $searchCrit['address_orig'] .= ' - ' . $serviceVar['address']['flat_number'];
                 }
 
-                $placePointId = $em->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
-                    $basket->getPlaceId()->getId(),
-                    $searchCrit,
-                    true
-                );
+                $placePointId = $em->getRepository('FoodDishesBundle:Place')->getPlacePointNear($basket->getPlaceId()->getId(), $searchCrit, true);
 
                 if (!$placePointId) {
                     throw new ApiException(
@@ -479,7 +477,11 @@ class OrderService extends ContainerAware
             }
         }
 
+        $placeType = $basket->getPlaceId()->getDeliveryOptions();
 
+        if ($placeType != $os::$deliveryPedestrian) {
+            $placeType = $request->get('service')['type'];
+        }
 
         $os->createOrderFromCart(
             $basket->getPlaceId()->getId(),
@@ -490,7 +492,7 @@ class OrderService extends ContainerAware
             $coupon,
             null,
             null,
-            $request->get('service')['type']
+            $placeType
         );
 
         $os->setMobileOrder(true);
@@ -508,16 +510,19 @@ class OrderService extends ContainerAware
                 break;
         }
 
-
         $os->setPaymentMethod($paymentMethod);
 
-
-        if ($serviceVar['type'] == "pickup") {
-            $os->setDeliveryType($os::$deliveryPickup);
-        } elseif ($serviceVar['type'] == "pedestrian") {
+        if ($placeType == $os::$deliveryPedestrian) {
             $os->setDeliveryType($os::$deliveryPedestrian);
         } else {
-            $os->setDeliveryType($os::$deliveryDeliver);
+
+
+            if ($serviceVar['type'] == "pickup") {
+                $os->setDeliveryType($os::$deliveryPickup);
+            } else {
+                $os->setDeliveryType($os::$deliveryDeliver);
+            }
+
         }
         $os->setLocale($requestOrig->getLocale());
         if (!empty($customerComment)) {
@@ -527,13 +532,16 @@ class OrderService extends ContainerAware
 
         // Update order with recent address information. but only if we need to deliver
         if ($serviceVar['type'] != "pickup") {
-            // $locationData = $googleGisService->getLocationFromSession();
+
+//            ?!???
             $address = $os->createAddressMagic(
                 $user,
                 $searchCrit['city'],
                 $searchCrit['address_orig'],
-                (string)$searchCrit['lat'],
-                (string)$searchCrit['lng']
+                (string)$searchCrit['latitude'],
+                (string)$searchCrit['longitude'],
+                '',
+                (isset($searchCrit['city_id']) ? $searchCrit['city_id'] : null)
             );
             $os->getOrder()->setAddressId($address);
         }
@@ -652,10 +660,11 @@ class OrderService extends ContainerAware
             'place_point_self_delivery' => $order->getPlacePointSelfDelivery(),
             'payment_method' => $this->container->get('translator')->trans('mobile.payment.' . $order->getPaymentMethod()),
             'order_date' => $order->getOrderDate()->format('H:i'),
+            'estimated_delivery_time' => $order->getDeliveryTime(),
             'order_date_full' => $order->getOrderDate(),
-            'discount'    => $discount,
-            'state'       => [
-                'title'       => $title,
+            'discount' => $discount,
+            'state' => [
+                'title' => $title,
                 // TODO Rodome nebe restorano, o dispeceriu nr
                 "info_number" => "+" . $this->container->getParameter('dispatcher_contact_phone'),
 //                'info_number' => '+'.$order->getPlacePoint()->getPhone(),
@@ -815,6 +824,8 @@ class OrderService extends ContainerAware
          */
         $placePoint = $this->container->get('doctrine.orm.entity_manager')
             ->getRepository('FoodDishesBundle:PlacePoint')->findOneBy(['hash' => $hash]);
+
+
         if (!empty($placePoint)) {
             $ordersData = [
                 'restaurant' => [
@@ -872,6 +883,9 @@ class OrderService extends ContainerAware
                 $current_price = $detail->getOrigPrice();
                 $sizes = $detail->getDishId()->getSizes();
                 foreach ($sizes as $size) {
+                    /**
+                     * @var $size DishSize
+                     */
                     if ($size->getUnit()->getId() == $detail->getDishUnitId()) {
                         $current_price = $size->getCurrentPrice();
                     }
@@ -990,7 +1004,7 @@ class OrderService extends ContainerAware
 
             case FO::$deliveryPedestrian:
                 $deliveryType = 'pedestrian';
-                $time = $this->container->get('food.places')->getPedestrianDeliveryTime().' min.';
+                $time = $this->container->get('food.places')->getPedestrianDeliveryTime() . ' min.';
                 $parsedAddress = $miscUtil->parseAddress(
                 // @TODO check if addressId exists
                     $order->getAddressId()->getAddress()
@@ -1018,6 +1032,11 @@ class OrderService extends ContainerAware
                 "comments" => $order->getComment()
             ],
         ];
+
+
+        if ($cityObj = $order->getPlacePoint()->getCityId()) {
+            $returner['address']['city'] = $cityObj->getTitle();
+        }
 
         if ($order->getDeliveryType() == FO::$deliveryDeliver) {
             $returner['price'] = [

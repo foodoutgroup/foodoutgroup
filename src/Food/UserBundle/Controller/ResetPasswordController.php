@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use FOS\UserBundle\Model\UserInterface;
@@ -26,7 +27,6 @@ class ResetPasswordController extends Controller
 
     /**
      * @Route("/send-email", name="food_user_resetting_send_email")
-     * @Method("POST")
      */
     public function sendEmailAction(Request $request)
     {

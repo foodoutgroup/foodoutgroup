@@ -307,13 +307,9 @@ class NavService extends ContainerAware
             'values' => implode(',', $values)
         ];
     }
-
+//todo MULTI-L BBZ
     public function putTheOrderToTheNAV(Order $order)
     {
-        //~ $dbgEmail = date("Y-m-d H:i:s") . "\n\n\n" . print_r($_SERVER, true) . "\n\n\n" . print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 0), true);
-        //~ $logger = $this->getContainer()->get('logger');
-        //~ $logger->alert("putTheOrderToTheNAV backtrace #" . $order->getId());
-        //~ $logger->alert($dbgEmail);
 
         $orderNewId = $this->getNavOrderId($order);
 
@@ -327,30 +323,12 @@ class NavService extends ContainerAware
             $street = trim(str_replace($errz[0], '', $target));
             $houseNr = (!empty($errz[2]) ? $errz[2] : '');
             $flatNr = (!empty($errz[3]) ? $errz[3] : '');
-            /*
-            $orderRow = $this->container->get('doctrine')->getRepository('FoodAppBundle:Streets')->findOneBy(
-                array(
-                    'name' => $street,
-                    'numberFrom' => $houseNr,
-                    'deliveryRegion' => $order->getAddressId()->getCity()
-                )
-            );
-            */
-            //$this->container->get('doctrine')->getManager()->refresh($orderRow);
         }
 
-        $city = $order->getPlacePoint()->getCity();
-        $city = str_replace("ė", "e", $city);
-        $city = str_replace("ī", "i", $city);
-        $city = mb_strtoupper($city);
-        $region = mb_strtoupper($city);
-        if ($region == "RIGA") {
-            $region = "RYGA";
-        }
+        $cityObj = $order->getPlacePoint()->getCityId();
 
-        if ($city == "RIGA") {
-            $city = "RYGA";
-        }
+        $city = $cityObj->getTitle();
+        $region = $cityObj->getCode();
 
         $orderDate = $order->getOrderDate();
         $orderDate->add(new \DateInterval('P0DT0H'));
@@ -368,27 +346,33 @@ class NavService extends ContainerAware
         $comment = $order->getComment();
 
         if ($order->getPaymentMethod() == "local.card") {
-            $comment .= ". KREDITKARTE";
-//            $comment.=". Mokesiu kortele";
+            if($this->container->getParameter('country') == 'LV'){
+                $comment .= ". KREDITKARTE";
+            } else {
+                $comment.=". Mokesiu kortele";
+            }
         } elseif ($order->getPaymentMethod() == "local") {
-            $comment .= ". SKAIDRA NAUDA";
-//            $comment.=". Mokesiu grynais";
+            if($this->container->getParameter('country') == 'LV') {
+                $comment .= ". SKAIDRA NAUDA";
+            } else {
+                $comment .= ". Mokesiu grynais";
+            }
         } else {
             $comment .= ". " . $order->getPaymentMethod();
         }
 
         $dataToPut = [
-            'Order No_' => $orderNewId,
-            'Phone' => str_replace(['370', '371'], '8', $order->getOrderExtra()->getPhone()),
-            'ZipCode' => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getZipCode() : ''),
-            'City' => $city,
-            'Street' => $street, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
-            'Street No_' => $houseNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getNumberFrom(): ''),
-            'Floor' => '',
-            'Grid' => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getGrid(): ''),
-            'Chain' => $order->getPlace()->getChain(),
-            'Name' => 'FO:' . $order->getUser()->getFirstname(),
-            'Delivery Type' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
+            'Order No_'          => $orderNewId,
+            'Phone'              => str_replace(['370', '371'], '8', $order->getOrderExtra()->getPhone()), //TODO: create standart at params
+            'ZipCode'            => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getZipCode() : ''),
+            'City'               => $city,
+            'Street'             => $street, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getStreetName(): ''),
+            'Street No_'         => $houseNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getNumberFrom(): ''),
+            'Floor'              => '',
+            'Grid'               => '', // ($order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getGrid(): ''),
+            'Chain'              => $order->getPlace()->getChain(),
+            'Name'               => 'FO:' . $order->getUser()->getFirstname(),
+            'Delivery Type'      => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
             //'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '':  $order->getPlacePoint()->getInternalCode()),
             'Restaurant No_' => $order->getPlacePoint()->getInternalCode(),
             'Order Date' => $orderDate->format("Y-m-d"),
@@ -398,13 +382,13 @@ class NavService extends ContainerAware
             'Discount Card No_' => '',
             'Order Status' => 4,
             'Delivery Order No_' => '',
-            'Error Description' => '',
-            'Flat No_' => $flatNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
-            'Entrance Code' => '',
-            'Region Code' => $region, //$order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''),
-            'Delivery Status' => 12,
-            'In Use By User' => '',
-            'Loyalty Card No_' => '',
+            'Error Description'  => '',
+            'Flat No_'           => $flatNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
+            'Entrance Code'      => '',
+            'Region Code'        => $region, //$order->getDeliveryType() == OrderService::$deliveryDeliver ? $orderRow->getDeliveryRegion() : ''), // TODO: MULTI-L REGION UPPER CASE ??
+            'Delivery Status'    => 12,
+            'In Use By User'     => '',
+            'Loyalty Card No_'   => '',
             'Order with Alcohol' => '0'
         ];
         $queryPart = $this->generateQueryPart($dataToPut);
@@ -1573,7 +1557,7 @@ class NavService extends ContainerAware
             $this->getContractTable(),
             $this->getCustomerTable(),
             $datePart,
-            "'Vilnius', 'Kaunas', 'Klaipeda','Ryga'"
+            "'Vilnius', 'Kaunas', 'Klaipeda','Ryga'" //todo MULTI-L a čia viskas ok?
         );
 
         $this->container->get("logger")->alert('Nav import query: ' . $query);

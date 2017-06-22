@@ -65,12 +65,10 @@ class SendEmailCommand extends ContainerAwareCommand
                             switch ($mail->getType()) {
                                 case MailService::$typeCompleted:
                                     $orderService->setOrder($mail->getOrder());
-                                    $orderService->sendCompletedMail();
                                     break;
 
                                 case MailService::$typePartialyCompleted:
                                     $orderService->setOrder($mail->getOrder());
-                                    $orderService->sendCompletedMail(true);
                                     break;
 
                                 default:

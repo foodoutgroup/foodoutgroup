@@ -154,6 +154,7 @@ addToCart = function() {
                 if (typeof(resp.block) != "undefined") {
                     $('.check-block').replaceWith(resp.block);
                 }
+                console.log("a","-");
                 dish_block.unmask();
                 $.fancybox.close();
             }, 'json');

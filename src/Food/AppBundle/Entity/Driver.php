@@ -62,7 +62,7 @@ class Driver
 
     /**
      * @var string
-     * @ORM\Column(name="city", type="string", length=64)
+     * @ORM\Column(name="city", type="string", length=64, nullable=true)
      */
     private $city;
 
@@ -118,15 +118,27 @@ class Driver
     private $deletedBy;
 
     /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id", nullable=true)
+     **/
+    private $cityId;
+
+    /**
      * @return string
      */
     public function __toString()
     {
-        if ($this->getId()) {
-            return $this->getName().'-'.$this->getCity().'-'.$this->getId();
+        if (!$this->getId()) {
+            return '';
         }
 
-        return '';
+        if($cityObj = $this->getCityId()) {
+            $city = $cityObj->getTitle();
+        }
+
+        return $this->getName().'-'.$city.'-'.$this->getId();
     }
 
     /**
@@ -284,9 +296,11 @@ class Driver
      * Get city
      *
      * @return string
+     * @deprecated from 2015-05-04
      */
     public function getCity()
     {
+        throw new \Exception('Method getCity() is deprecated. Use getCityId() instead.');
         return $this->city;
     }
 
@@ -495,5 +509,28 @@ class Driver
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return Driver
+     */
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
+    {
+        $this->cityId = $cityId;
+    
+        return $this;
+    }
+
+    /**
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City 
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
     }
 }

@@ -4,8 +4,7 @@
 
 {% block body %}
     <div>
-        {#<div><img src="/bundles/foodapp/images/{{ asset('bundles/foodapp/images/logo_food_easter_lt.png') }}.png" alt="{{ page_title }}" title="{{ page_title }}" /></div>#}
-        <div><img src="/bundles/foodapp/images/{{ asset('bundles/foodapp/images/logo_food.png') }}.png" alt="{{ page_title }}" title="{{ page_title }}" /></div>
+        <div><img src="{{ asset(misc_utils.getParam('site_logo_url')) }}" /></div>
         <div><b>{% trans %}mobile.invoice_driver{% endtrans %}</b></div>
         <br />
         <table class="table condensed" style="width: 310px;">
@@ -51,7 +50,7 @@
             </tr>
             {% for option in dish.options %}
                 <tr>
-                    <td style="padding-left: 20px;">{{ option.dishOptionName }}</td>
+                    <td style="padding-left: 20px;">{{ option.dishOptionId.name }}</td>
                     <td>{{ option.quantity }}</td>
                     <td>{{ option.price }}</td>
                     <td>{{ option.price * option.quantity }}</td>
@@ -112,7 +111,7 @@
     {# Customer information#}
     <div>
         {% trans %}mobile.invoice.customer{% endtrans %}:<br />
-        {% trans %}mobile.invoice.customer_phone{% endtrans %}: {{ order.orderExtra.phone }}, {{ order.addressId.address }}, {{ order.addressId.city }}, {{ order.comment }}<br />
+        {% trans %}mobile.invoice.customer_phone{% endtrans %}: {{ order.orderExtra.phone }}, {{ order.addressId.address }}, {{ order.addressId.cityId.title }}, {{ order.comment }}<br />
         {% trans %}mobile.payment{% endtrans %}: {{ ('mobile.payment.' ~ order.paymentMethod)|trans }}
     </div>
     <br />
@@ -143,7 +142,7 @@
         </tr>
         <tr>
             <td>{% trans %}order.invoice.foodout_address{% endtrans %}</td>
-            <td>{{ order.addressId.address }}, {{ order.addressId.city }}</td>
+            <td>{{ order.addressId.address }}, {{ order.addressId.cityId.title }}</td>
         </tr>
         </tbody>
     </table>

@@ -1,3 +1,19 @@
+food_order_nav_test1:
+    path: /nav_test1
+    defaults: { _controller: FoodOrderBundle:Default:testNav1 }
+
+food_order_nav_test2:
+    path: /nav_test2
+    defaults: { _controller: FoodOrderBundle:Default:testNav2 }
+
+food_order_nav_post:
+    path: /post/{id}
+    defaults: { _controller: FoodOrderBundle:Default:postToNav }
+
+food_order_nav_update_prices:
+    path: /update_prices/{id}
+    defaults: { _controller: FoodOrderBundle:Default:updatePricesNav }
+
 food_order_invoice_fixer:
     pattern: /fix-no-invoice/{date}
     defaults: { _controller: FoodOrderBundle:Fixer:noInvoice, date: ~}

@@ -104,6 +104,9 @@ class Slug
      */
     public function getOneByName($slug, $lang)
     {
+
+
+
         $item = $this->repo('FoodAppBundle:Slug')->findOneBy(['name' => $slug, 'lang_id' => $lang ]);
         return $item;
     }
@@ -117,45 +120,45 @@ class Slug
      */
     public function stringToSlug($text)
     {
-        $removableChars = array(
-            '"' => '',
-            '„' => '',
-            '“' => '',
-            '+' => '-',
-            '(' => '',
-            ')' => '',
-            '.' => '',
-            '!' => '',
-            '?' => '',
-            ',' => '',
-            '*' => '',
-            '%' => '',
-            '#' => '',
-            '{' => '',
-            '}' => '',
-            '|' => '',
-            '<' => '',
-            '>' => '',
-            "\\" => '',
-            '/' => '',
-            '^' => '',
-            '~' => '',
-            '[' => '',
-            ']' => '',
-            '`' => '',
-            "'" => '',
-            ';' => '',
-            ':' => '',
-            '=' => '-',
-            '@' => '',
-            '$' => '',
-            '&' => '',
-            'ø' => '',
-            'Ø' => '',
-            'â€”' => '',
-            'â€“' => '',
-        );
-        $text = strtr($text, $removableChars);
+//        $removableChars = array(
+//            '"' => '',
+//            '„' => '',
+//            '“' => '',
+//            '+' => '-',
+//            '(' => '',
+//            ')' => '',
+//            '.' => '',
+//            '!' => '',
+//            '?' => '',
+//            ',' => '',
+//            '*' => '',
+//            '%' => '',
+//            '#' => '',
+//            '{' => '',
+//            '}' => '',
+//            '|' => '',
+//            '<' => '',
+//            '>' => '',
+//            "\\" => '',
+//            '/' => '',
+//            '^' => '',
+//            '~' => '',
+//            '[' => '',
+//            ']' => '',
+//            '`' => '',
+//            "'" => '',
+//            ';' => '',
+//            ':' => '',
+//            '=' => '-',
+//            '@' => '',
+//            '$' => '',
+//            '&' => '',
+//            'ø' => '',
+//            'Ø' => '',
+//            'â€”' => '',
+//            'â€“' => '',
+//        );
+//        $text = strtr($text, $removableChars);
         $text = preg_replace('#\s+#u', '-', $text);
 
         $text = preg_replace('~-{2,}~', '-', $text);
@@ -205,6 +208,19 @@ class Slug
     {
         $strategy = new TextStrategy($this->container());
         $strategy->setType(SlugEntity::TYPE_BLOG_POST);
+        $context = new SlugGenerator($strategy);
+        $context->generate($langId, $itemId, $itemText);
+    }
+
+    public function generateSlug($langId, $itemId, $itemText, $type = SlugEntity::TYPE_PAGE)
+    {
+
+        if(!in_array($type, SlugEntity::$typeCollection)) {
+            throw new \Exception('Slug type was not found');
+        }
+
+        $strategy = new TextStrategy($this->container());
+        $strategy->setType($type);
         $context = new SlugGenerator($strategy);
         $context->generate($langId, $itemId, $itemText);
     }

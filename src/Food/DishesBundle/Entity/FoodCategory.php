@@ -16,6 +16,10 @@ use Gedmo\Translatable\Translatable;
  */
 class FoodCategory implements Translatable
 {
+
+
+    const SLUG_TYPE = 'food_category';
+
     /**
      * @var integer
      *
@@ -142,6 +146,14 @@ class FoodCategory implements Translatable
     private $locale;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string")
+     */
+    private $slug;
+
+
+    /**
      * @return string
      */
     public function __toString()
@@ -179,7 +191,7 @@ class FoodCategory implements Translatable
 
     public function getSlug()
     {
-        return "Zebra";
+        return $this->slug;
     }
     
     /**
@@ -597,5 +609,18 @@ class FoodCategory implements Translatable
     public function getTextsOnly()
     {
         return $this->textsOnly;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return FoodCategory
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    
+        return $this;
     }
 }

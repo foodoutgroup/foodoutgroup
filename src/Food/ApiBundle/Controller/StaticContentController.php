@@ -3,6 +3,7 @@
 namespace Food\ApiBundle\Controller;
 
 use Food\ApiBundle\Exceptions\ApiException;
+use Food\AppBundle\Entity\Slug;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +15,7 @@ class StaticContentController extends Controller
     /**
      * @param int $id
      * @param Request $request
-     * @return JsonResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function processAction($id, Request $request)
     {
@@ -24,8 +25,8 @@ class StaticContentController extends Controller
         $ip = $request->getClientIp();
         // Dude is banned - hit him
         if ($this->get('food.app.utils.misc')->isIpBanned($ip)) {
-            //$this->get('logger')->alert('StaticContent:processAction Request:', (array) $request);
-            return $this->redirect($this->generateUrl('banned'), 302);
+           // $this->get('logger')->alert('StaticContent:processAction Request:', (array) $request);
+            return $this->redirect($this->get('slug')->urlFromParam('page_banned', Slug::TYPE_PAGE), 302);
         }
 
         try {

@@ -4,6 +4,7 @@ namespace Food\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Food\DishesBundle\Entity\Dish;
+use Food\DishesBundle\Entity\DishUnit;
 
 /**
  * @ORM\Table(name="order_details")
@@ -33,7 +34,8 @@ class OrderDetails
     private $dish_id;
 
     /**
-     * @ORM\Column(name="dish_unit_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishUnit")
+     * @ORM\JoinColumn(name="dish_unit_id", referencedColumnName="id")
      */
     private $dish_unit_id;
 
@@ -221,10 +223,10 @@ class OrderDetails
     /**
      * Set dish_unit_id
      *
-     * @param integer $dishUnitId
+     * @param DishUnit $dishUnitId
      * @return OrderDetails
      */
-    public function setDishUnitId($dishUnitId)
+    public function setDishUnitId(DishUnit $dishUnitId)
     {
         $this->dish_unit_id = $dishUnitId;
 

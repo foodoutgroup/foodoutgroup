@@ -10,7 +10,14 @@ parameters:
     mailer_user: null
     mailer_password: null
     secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
-
+    defaultDomain: messages
+    defaultSelections: [messages]
+    emptyPrefixes: []
+    editable:
+        mode: inline         # Mode of editable, can be popup or inline
+        type: textarea       # Type of input. Can be text|textarea|select|date|checklist and more
+        emptytext: Empty     # text to display on empty translations
+        placement: top       # ingnored for inline mode
     aws_key: AKIAJN3454YNXAUSJIRA
     aws_secret: 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
     aws_region: eu-west-1
@@ -23,6 +30,7 @@ parameters:
 
     locale: lt
     locales: ["lt", "en", "ru"]
+    locales_hidden: ['en','ru']
     available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Marijampolė", "Utena", "Kėdainiai", "Plungė", "Palanga", "Mažeikiai"]
     available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda", "Siauliai", "Panevezys", "Alytus", "Marijampole", "Utena", "Kedainiai", "Plunge", "Palanga", "Mazeikiai"]
     available_locales: ["lt", "en", "ru"]
@@ -37,7 +45,7 @@ parameters:
         vilnius: []
         kaunas: []
         klaipėda: []
-        ryga: [karolis.m@foodout.lt]
+        ryga: []
     order.accept_notify_emails: []
     order.cancel_notify_emails: []
     accounting_email: "buhalterija@foodout.lt"
@@ -140,6 +148,7 @@ parameters:
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: false
+    geo_provider: https://geoproxy.foodout.lt
 
     # seb banklink
     seb:
@@ -160,7 +169,12 @@ parameters:
     session_memcached_port:     11211
     session_memcached_prefix:   foodoutlt
     session_memcached_expire:   3600
-
+lexik_translation:
+    fallback_locale: '%locale%'
+    managed_locales: '%locales%'
+    resources_registration:
+        type: all
+        managed_locales_only: true
 pirminis_gateway:
     datacash_url: 'https://mars.transaction.datacash.com/Transaction'
     swedbank:

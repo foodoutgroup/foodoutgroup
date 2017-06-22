@@ -62,11 +62,12 @@ class AppKernel extends Kernel
             new Food\ReportBundle\FoodReportBundle(),
             new Ob\HighchartsBundle\ObHighchartsBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
-            new Food\CallCenterBundle\CallCenterBundle(),
+            new Lexik\Bundle\TranslationBundle\LexikTranslationBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Api\V2Bundle\ApiV2Bundle(),
             new Api\BaseBundle\ApiBaseBundle(),
             new Food\BlogBundle\FoodBlogBundle(),
+            new Liuggio\ExcelBundle\LiuggioExcelBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -86,5 +87,13 @@ class AppKernel extends Kernel
     public function getCharset()
     {
         return 'UTF-8';
+    }
+
+    protected function initializeContainer() {
+        parent::initializeContainer();
+        if (PHP_SAPI == 'cli') {
+            $this->getContainer()->enterScope('request');
+            $this->getContainer()->set('request', new \Symfony\Component\HttpFoundation\Request(), 'request');
+        }
     }
 }

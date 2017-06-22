@@ -8,6 +8,8 @@ use Food\DishesBundle\Entity\PlacePointWorkTime;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use \Food\AppBundle\Entity\Slug as SlugEntity;
+use Food\AppBundle\Validator\Constraints\Slug;
 
 class PlaceAdmin extends FoodAdmin
 {
@@ -57,13 +59,17 @@ class PlaceAdmin extends FoodAdmin
                 'a2lix_translations_gedmo',
                 [
                     'translatable_class' => 'Food\DishesBundle\Entity\Place',
+                    'cascade_validation'=>true,
                     'fields'             => [
-                        'slogan'       => ['label' => 'admin.place.slogan', 'required' => false,],
-                        'description'  => ['label' => 'admin.place.description', 'required' => false,],
+                        'slogan'       => ['label' => 'admin.place.slogan', 'required' => false],
+                        'description'  => ['label' => 'admin.place.description', 'required' => false],
                         'alcoholRules' => $alcoholRules,
+                        'slug' => [
+                            'constraints' => new Slug(SlugEntity::TYPE_PLACE, $formMapper),
+                            'attr'=>['data-slugify'=>'name']
+                        ]
                     ]
-                ])
-        ;
+                ]);
 
         if ($this->getContainer()->getParameter('place_slug_manual')) {
             $formMapper->add('slug', null, ['required' => true]);
@@ -77,9 +83,8 @@ class PlaceAdmin extends FoodAdmin
                     'label'         => 'admin.place.kitchens']
             )
             ->add('active', 'checkbox', ['label' => 'admin.active', 'required' => false,])
-            ->add('showNotification', 'checkbox', ['label' => 'admin.place.show_notification', 'required' => false,])
-            ->add('notificationContent', null, ['label' => 'admin.place.notification_content', 'attr' => ['class' => 'ckeditor_custom']])
             ->add('new', 'checkbox', ['label' => 'admin.is_new', 'required' => false,])
+            ->add('notificationContent', null, ['label' => 'admin.place.notification_content', 'attr' => ['class' => 'ckeditor_custom']])
             ->add('recommended', 'checkbox', ['label' => 'admin.place.recommended', 'required' => false,])
             ->add('top', 'checkbox', ['label' => 'TOP', 'required' => false,])
             ->add('discountPricesEnabled', 'checkbox', ['label' => 'admin.place.discount_prices_enabled', 'required' => false,])
@@ -167,7 +172,7 @@ class PlaceAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('name', 'string', ['label' => 'admin.place.name'])
             ->add('image', 'string', [
-                'template' => 'FoodDishesBundle:Default:list_image.html.twig',
+                'template' => ':Element:list_image.html.twig',
                 'label'    => 'admin.place.logo'
             ])
             ->add('selfDelivery', null, ['label' => 'admin.place.self_delivery'])
@@ -346,12 +351,14 @@ class PlaceAdmin extends FoodAdmin
      *
      * @return void
      */
+
     public function postPersist($object)
     {
         $securityContext = $this->getContainer()->get('security.context');
         $user = $securityContext->getToken()->getUser();
         $this->_fixPoints($object, $user);
-        $this->fixSlugs($object);
+//        $this->fixSlugs($object);
+        $this->slug($object);
         parent::postPersist($object);
     }
 
@@ -360,10 +367,11 @@ class PlaceAdmin extends FoodAdmin
      *
      * @return void
      */
+
     public function postUpdate($object)
     {
         if ($object->getDeletedAt() == null) {
-            $this->fixSlugs($object);
+//            $this->fixSlugs($object);
             $this->synchDaPlacePoints($object);
         } else {
             // find and soft-delete other stuff
@@ -419,8 +427,11 @@ class PlaceAdmin extends FoodAdmin
                 }
                 $em->flush();
             }
-        }
 
+
+
+        }
+        $this->slug($object);
         $securityContext = $this->getContainer()->get('security.context');
         $user = $securityContext->getToken()->getUser();
         $this->_fixPoints($object, $user);
@@ -432,21 +443,27 @@ class PlaceAdmin extends FoodAdmin
      *
      * @param \Food\DishesBundle\Entity\Place $object
      */
-    private function fixSlugs($object)
-    {
-        $origName = $object->getOrigName($this->modelManager->getEntityManager('FoodDishesBundle:Place'));
-        $locales = $this->getContainer()->getParameter('available_locales');
-        $textsForSlugs = [];
-        foreach ($locales as $loc) {
-            if (!isset($textsForSlugs[$loc])) {
-                $textsForSlugs[$loc] = $origName;
-            }
-        }
+//    private function fixSlugs($object)
+//    {
+//        $origName = $object->getOrigName($this->modelManager->getEntityManager('FoodDishesBundle:Place'));
+//        $locales = $this->getContainer()->getParameter('available_locales');
+//        $textsForSlugs = [];
+//        foreach ($locales as $loc) {
+//            if (!isset($textsForSlugs[$loc])) {
+//                $textsForSlugs[$loc] = $origName;
+//            }
+//        }
+//
+//        $languages = $this->getContainer()->get('food.app.utils.language')->getAll();
+//        $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
+//        foreach ($languages as $loc) {
+//            $slugUtelyte->generateEntityForPlace($loc, $object->getId(), $textsForSlugs[$loc]);
+//        }
+//    }
 
-        $languages = $this->getContainer()->get('food.app.utils.language')->getAll();
-        $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
-        foreach ($languages as $loc) {
-            $slugUtelyte->generateEntityForPlace($loc, $object->getId(), $textsForSlugs[$loc]);
-        }
+    private function slug($object)
+    {
+        $slugService = $this->getContainer()->get('slug');
+        $slugService->generate($object, 'slug', SlugEntity::TYPE_PLACE);
     }
 }

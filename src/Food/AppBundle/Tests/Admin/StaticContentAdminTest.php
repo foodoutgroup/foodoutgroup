@@ -110,7 +110,7 @@ class StaticContentAdminTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('available_locales')
+            ->with('locales')
             ->will($this->returnValue($locales));
 
         $object->expects($this->once())
@@ -203,7 +203,7 @@ class StaticContentAdminTest extends \PHPUnit_Framework_TestCase
 
         $container->expects($this->once())
             ->method('getParameter')
-            ->with('available_locales')
+            ->with('locales')
             ->will($this->returnValue($locales));
 
         $object->expects($this->once())

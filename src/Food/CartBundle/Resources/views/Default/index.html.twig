@@ -2,9 +2,7 @@
 
 
 {% block jscode %}
-    /**
-     * @todo Migrate to JS file
-     */
+    <script type="text/javascript">
     $(document).ready(function(){
         $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function(event){
             Cart.submitOrder($(this).closest(".delivery-info-form"));
@@ -12,45 +10,6 @@
             event.preventDefault();
             return false;
         });
-
-        $('.address-change').click(function(e){
-            if($(e.target).is('span') || $(e.target).is('input')) {
-                var click_callback, data_callback;
-
-                click_callback = function(options) {
-                    if (options.response.data.success == 1 &&
-                        options.response.data.adr == 1)
-                    {
-                        if (options.response.data.nodelivery == 1) {
-                            options.dialog.unmask();
-                            $.fancybox.close();
-                            toTakeOrNotToTake();
-                        } else {
-                            window.location.reload();
-                        }
-                    } else {
-                        options.dialog.unmask();
-                        options.alert.show();
-                        setTimeout(function(){
-                            options.alert.hide();
-                        }, 5000);
-                    }
-                }
-
-                data_callback = function() {
-                    return { city: $('.city-row select').val(),
-                             address: $('.address-row input').val(),
-                             place: {{ place.id }} };
-                }
-
-                change_location($('#change-address'),
-                                click_callback,
-                                data_callback,
-                                '{% trans %}cart.checkout.address_change_change{% endtrans %}',
-                                '{% trans %}cart.checkout.address_change_cancel{% endtrans %}',
-                                '{{ url('food_ajax', {'action': 'find-address-and-recount'}) }}');
-            }
-    });
 
         function toTakeOrNotToTake() {
             $('#place-point-not-found').dialog({
@@ -68,7 +27,7 @@
                         text: '{% trans %}cart.checkout.show_me_places{% endtrans %}',
                         click: function() {
                             $(this).parent().mask();
-                            window.location.href = '{{ path('food_places_' ~ locale ~ '_main') }}';
+                            window.location.href = '{{ path('food_places') }}';
                         }
                     }
                 }
@@ -152,6 +111,7 @@
         }
 
     });
+    </script>
 {% endblock %}
 {% block ga_js_code %}
     $(document).ready(
@@ -313,21 +273,18 @@
                             {# Pristatysime i namus - duodam susitvarkyti adresus #}
                             {#% if takeAway == false %#}
                             <div class="takeaway-not {% if takeAway == true %}hide{% endif %}">
-                                <div class="form-row form-row-required address-change">
-                                    <label>{% trans %}cart.checkout.city{% endtrans %}:</label>
-                                    <select class="custom-select" disabled="true">
-                                        {% for city in available_cities %}
-                                            <option value="{{ city|trim }}" {% if location and location.city is defined and (location.city == city or location.city == city|replace({'ė':'e'})) %}selected{% elseif location.city is not defined and userAddress and userAddress.city is defined and (userAddress.city == city or userAddress.city == city|replace({'ė':'e'})) %}selected{% endif %}>{{ city }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="form-row form-row-required address-change">
-                                    <label>{% trans %}cart.checkout.address{% endtrans %}:</label>
-                                    <input type="text"
-                                           id="address"
-                                           value="{% if location and  location.address_orig is defined %}{{ location.address_orig }}{% else %}{{ userAddress.address|default('') }}{% endif %}"
-                                           placeholder="{{ 'index.street'|trans }}"
-                                           readonly>
+                                <div class="form-row  form-row-required">
+                                    <label>{% trans %}label.address{% endtrans %}</label>
+                                    <div class="address-search-form-ui address-search-form-city address-search-form-cart ">
+                                        <div class="flex-aligment">
+                                            <input type="hidden" id="hidden-field-for-address-id" {% if location is not null and location.precision == 0 and location.hash is defined %}value="{{ location.hash }}"{% endif %} name="addressId"/>
+                                            <span id="find-me" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
+                                            <input type="text" {% if location is not null and location.precision == 0 and location.hash is defined %}data-selected="{{ location.hash }}"{% endif %} id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if location is not null %}{{ location.origin }}{% endif %}" />
+                                            <input type="text" name="flat" id="flat" placeholder="{% trans %}index.flat{% endtrans %}" class="input-house search-field" value="{% if location is not null and location.flat %}{{ location.flat }}{% endif %}" />
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div id="error"></div>
+                                    </div>
                                 </div>
                             </div>
                             {# Atsiims pats - leidziame pasirinkti padalini #}
@@ -337,8 +294,12 @@
                                     <label>{% trans %}cart.checkout.place_point{% endtrans %}: <span class="checkout-pickup-place-tooltip" title="{% trans %}cart.checkout.pickup_tooltip{% endtrans %}">&nbsp;</span></label>
                                     <select class="custom-select" name="place_point">
                                         {% for point in places_service.getPublicPoints(place) %}
+                                            {#{{  dump(point)}}#}
+
+                                            {% set cityObj = point.cityId %}
+
                                             {% if point.pickUp %}
-                                                <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point.city }}, {{ point.address }}{% if point.additionalInfo %} ({{ point.additionalInfo }}) {% endif %}</option>
+                                                <option {% if (order is not null and order.placePoint.id == point.id) or (dataToLoad is not empty and dataToLoad.place_point == point.id) %}selected{% endif %} value="{{ point.id }}">{{ point }}{% if point.additionalInfo %} ({{ point.additionalInfo }}) {% endif %}</option>
                                             {% endif %}
                                         {% endfor %}
                                     </select>
@@ -354,7 +315,7 @@
                             {# End of different form part #}
 
                             <div class="form-row form-row-required custom-checkbox cart-rules">
-                                <label>{% trans %}cart.checkout.cart_rules{% endtrans %}</label>
+                                <label>{% trans %}cart.checkout.cart_rules{% endtrans %} </label>
                                 <input type="checkbox" name="cart_rules" {% if (dataToLoad is empty or (dataToLoad['cart_rules'] is defined and dataToLoad['cart_rules'] is not empty)) %}checked="checked"{% endif %} />
                             </div>
                             <div class="form-row custom-checkbox newsletter_subscribe">
@@ -387,35 +348,36 @@
                             </div>
 
                             {% if places_service.getAllowOnlinePayment(place) %}
-                                {# TODO kolkas viskas rodo i Paysera#}
-                                {% if locale == 'lv' %}
-                                    <div class="for_hiding">
-                                        <div class="select-payment clearfix">
-                                            <label class="custom-radio wider-radio">
-                                                {{ 'cart.checkout.gateway_cc'|trans }}:
-                                                <img alt="MasterCard" src="//{{ cloudfront_url }}/bundles/foodapp/images/master-card-small.png">
-                                                <img alt="Visa" src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-small.png">
-                                                <img alt="Maestro" src="//{{ cloudfront_url }}/bundles/foodapp/images/maestro-small.png">
-                                                <img alt="Visa Electron" src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-electron-small.png">
-                                                <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}/>
-                                            </label>
-                                        </div>
-                                        <div class="select-bank clearfix">
-                                            <label class="custom-radio">
-                                                <img alt="Swedbank" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-swb.png">
-                                                <input type="radio" name="payment-type" value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}/>
-                                            </label>
-                                        </div>
+                            {# TODO kolkas viskas rodo i Paysera#}
+                                {# bbd su jusu tokiu hardcode.. bl nx stengtis jei tokius s daro zmones.#}
+                                {% if site_country == 'LV' %}
+                                <div class="for_hiding">
+                                    <div class="select-payment clearfix">
+                                        <label class="custom-radio wider-radio">
+                                            {{ 'cart.checkout.gateway_cc'|trans }}:
+                                            <img alt="MasterCard" src="//{{ cloudfront_url }}/bundles/foodapp/images/master-card-small.png">
+                                            <img alt="Visa" src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-small.png">
+                                            <img alt="Maestro" src="//{{ cloudfront_url }}/bundles/foodapp/images/maestro-small.png">
+                                            <img alt="Visa Electron" src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-electron-small.png">
+                                            <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}/>
+                                        </label>
                                     </div>
-                                {% elseif locale == 'ee' %}
-                                    <div class="for_hiding">
-                                        <div class="select-bank clearfix">
-                                            <label class="custom-radio">
-                                                <img alt="SEB" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-seb.png">
-                                                <input type="radio" name="payment-type" value="seb-banklink"{% if order is not null and order.paymentMethod == 'seb-banklink' %} checked="checked"{% endif %}/>
-                                            </label>
-                                        </div>
+                                    <div class="select-bank clearfix">
+                                        <label class="custom-radio">
+                                            <img alt="Swedbank" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-swb.png">
+                                            <input type="radio" name="payment-type" value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}/>
+                                        </label>
                                     </div>
+                                </div>
+                                {% elseif site_country == 'EE' %}
+                                <div class="for_hiding">
+                                    <div class="select-bank clearfix">
+                                        <label class="custom-radio">
+                                            <img alt="SEB" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-seb.png">
+                                            <input type="radio" name="payment-type" value="seb-banklink"{% if order is not null and order.paymentMethod == 'seb-banklink' %} checked="checked"{% endif %}/>
+                                        </label>
+                                    </div>
+                                </div>
                                 {% else %}
                                     <div class="for_hiding">
                                         <div class="select-payment clearfix">
@@ -472,7 +434,7 @@
                                 {% endif %}
                             {% endif %}
                         </div>
-                        <div class="form-controls clearfix"><a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a href="#" class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a></div>
+                        <div class="form-controls clearfix"><a href="{{ slug.getUrl(place.id, 'place') }}" class="button-back">{% trans %}cart.checkout.button_get_back{% endtrans %}</a><a href="#" class="submit-button"><span>{% trans %}cart.checkout.button_order{% endtrans %}</span></a></div>
                     </form>
                 </div>
                 <div class="content-righter-small">
@@ -482,14 +444,20 @@
             </div>
         </div>
     </div>
-    {% include 'FoodPlacesBundle:Default:change_address.html.twig' with {id: 'change-address', hideQlu: true, usr_address: userAllAddress} %}
+
     <div class="hidden">
-        <div id="rules" class="cart_rules_content">
-            <div class="cart_rules_inner">{{ static_service.getPage(slug_util.oneByName('ordering_rules', locale).itemId).content|raw }}</div>
-        </div>
-        <div id="privacy" class="privacy_content">
-            <div class="privacy_inner">{{ static_service.getPage(static_page_privacy_policy).content|raw }}</div>
-        </div>
+        {% set page = pageService.getByParam('page_b2b_rules') %}
+        {% if page %}
+            <div id="rules" class="cart_rules_content">
+                <div class="cart_rules_inner">{{ page.content|raw }}</div>
+            </div>
+        {% endif %}
+        {% set page = pageService.getByParam('page_privacy') %}
+        {% if page %}
+            <div id="privacy" class="privacy_content">
+                <div class="privacy_inner">{{ page.content|raw }}</div>
+            </div>
+        {% endif %}
         <div id="coupon" class="coupon_form_popup">
             <div class="coupon_inner">
                 <form id="coupon_form">

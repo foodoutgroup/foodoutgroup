@@ -26,8 +26,11 @@ $output = <<<HTML
     <body>
         <table id="wrapper">
             <tr>
-                <td><img src="foodout.png" alt="" /></td>
+                <td><img src="favicon.png" alt="" /></td>
             </tr>
+               <tr>
+                <td><h1>Uzturēšana.  <br> Mēs drīz būsim atpakaļ.</h1></td>
+            </tr>         
         </table>
     </body>
 </html>

@@ -39,7 +39,7 @@ class ParamLogAdmin extends FoodAdmin
             ->add('oldValue', 'string', array('label' => 'admin.paramlog.old_value', 'editable' => false))
             ->add('newValue', 'string', array('label' => 'admin.paramlog.new_value', 'editable' => false))
             ->add('event_date', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.paramlog.event_date'))
-            ->add('user', 'string', array('label' => 'admin.paramlog.user', 'editable' => false))
+            ->add('user', 'string', array('label' => 'admin.paramlog.user', 'editable' => false, 'template' => ':Element:list_orm_many_to_one.html.twig'))
         ;
     }
 

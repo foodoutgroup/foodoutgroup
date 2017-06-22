@@ -4,11 +4,7 @@
 {% endif %}
 <div class="check-block" id="cartmnu">
     <div class="restaurant-logo tac">
-        <a class="restaurant_link"
-           href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"><img itemprop="logo"
-                                                                                                   class="restaurant_image"
-                                                                                                   alt="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}"
-                                                                                                   src="//{{ cloudfront_url }}/{{ place.getWebPathThumb }}"></a>
+        <a class="restaurant_link" href="{{ slug.getUrl(place.id, 'place') }}"><img itemprop="logo" class="restaurant_image" alt="{% trans with {'%restaurant_name%': place.name} %}general.restaurant_logo_alt{% endtrans %}" src="//{{ cloudfront_url }}/{{place.getWebPathThumb}}"></a>
     </div>
     <h5 class="tac">{% trans %}cart.block.your_order{% endtrans %}</h5>
     {% if list|length > 0 %}
@@ -148,8 +144,7 @@
                 {% if isCallcenter == true %}
                     <a href="#" class="button back_to_dishes show">{{ 'cart.go_back_to_place'|trans }}</a>
                 {% else %}
-                    <a href="{{ path('food_slug', {'slug': slug_util.slugByItem(place.id, 'place') }) }}"
-                       class="button">{{ 'cart.go_back_to_place'|trans }}</a>
+                    <a href="{{ slug.getUrl(place.id, 'place') }}" class="button">{{ 'cart.go_back_to_place'|trans }}</a>
                 {% endif %}
             </div>
         {% endif %}
@@ -262,9 +257,11 @@
                 cartmnu.addClass('overflow_auto');
             }
 
-            $(window).resize(function () {
-                Place.adjustCartMenuHeight();
-            });
+            if(typeof Place !== 'undefined') {
+                $(window).resize(function () {
+                    Place.adjustCartMenuHeight();
+                });
+            }
         });
         var takeAway = 0;
         $('#cartmnu').on('ifToggled', '.cart_delivery_type input', function (event) {

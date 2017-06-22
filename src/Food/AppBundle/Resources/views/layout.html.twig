@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ locale }}">
+<html lang="{{ app.request.locale }}">
 <head>
     <meta charset="utf-8">
     <meta name="verify-webtopay" content="461551ad8deddc3ad0975adb27d1eff4"/>
@@ -18,28 +18,30 @@
     <meta name="description" content="{% block seo_description %}{% endblock %}">
     <meta name="viewport" content="width=1000">
     <meta name="msapplication-config" content="none"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
 
     {# Chosen CSS Begin #}
     {% stylesheets '@FoodAppBundle/Resources/public/scripts/chosen/chosen.min.css' filter="cssrewrite" %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
     {# Chosen CSS End #}
 
-    {% stylesheets 'bundles/foodapp/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css' filter="cssrewrite" %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    {% stylesheets '@FoodAppBundle/Resources/public/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css' filter="cssrewrite" %}
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/scripts/boxer/jquery.fs.boxer.css*' %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/style.css' %}
-    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css' %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
 
     {% block javascripts %}
 
+        <script src="{{ asset('bundles/foodapp/scripts/top_head.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery-1.10.2.min.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery.cycle2.min.js') }}"></script>
         <script src="{{ asset('bundles/foodapp/scripts/jquery-ui/jquery-ui-1.10.3.custom.min.js') }}"></script>
@@ -91,150 +93,46 @@
         {# Chosen JS End #}
 
     {% endblock %}
-    {# Facebook retargeting script for Inspired #}
-    {#<script>(function() {
-            var _fbq = window._fbq || (window._fbq = []);
-            if (!_fbq.loaded) {
-                var fbds = document.createElement('script');
-                fbds.async = true;
-                fbds.src = '//connect.facebook.net/en_US/fbds.js';
-                var s = document.getElementsByTagName('script')[0];
-                s.parentNode.insertBefore(fbds, s);
-                _fbq.loaded = true;
-            }
-            _fbq.push(['addPixelId', '1000570273293239']);
-        })();
-        window._fbq = window._fbq || [];
-        window._fbq.push(['track', 'PixelInitialized', {}]);
-    </script>
-    <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=1000570273293239&ev=PixelInitialized" /></noscript>#}
 
-    {% if site_country == 'LT'%}
-        <!-- Google Tag Manager -->
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-PNDJF9');</script>
-        <!-- End Google Tag Manager -->
-    {% endif %}
-
-    {# Facebook Pixel Code Begin #}
-
-    {{  misc_utils.getParam('facebook_pixel_code_'~site_country|lower)|raw }}
-
-    {#<script>#}
-        {#!function (f, b, e, v, n, t, s) {#}
-            {#if (f.fbq)return;#}
-            {#n = f.fbq = function () {#}
-                {#n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments)#}
-            {#};#}
-            {#if (!f._fbq) f._fbq = n;#}
-            {#n.push = n;#}
-            {#n.loaded = !0;#}
-            {#n.version = '2.0';#}
-            {#n.queue = [];#}
-            {#t = b.createElement(e);#}
-            {#t.async = !0;#}
-            {#t.src = v;#}
-            {#s = b.getElementsByTagName(e)[0];#}
-            {#s.parentNode.insertBefore(t, s)#}
-        {#}(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');#}
-        {#fbq('init', '901898153179068');#}
-        {#fbq('track', "PageView");#}
-
-        {#$(document).ready(function () {#}
-            {#$('.holiday-time').tooltip({#}
-                {#placement: 'bottom'#}
-            {#});#}
-        {#});#}
-    {#</script>#}
-    {#<noscript><img height="1" width="1" style="display:none"#}
-                   {#src="https://www.facebook.com/tr?id=901898153179068&ev=PageView&noscript=1"/></noscript>#}
-     {#Facebook Pixel Code End #}
-
-
-
-    {% block adnet_retargeting %}
-        <!-- Adform Tracking Code BEGIN -->
-        <script type="text/javascript">
-            var _adftrack = {
-                pm: 314127,
-                divider: encodeURIComponent('|'),
-                pagename: encodeURIComponent('Foodout.lt|Pagrindinis')
-            };
-            (function () {
-                var s = document.createElement('script');
-                s.type = 'text/javascript';
-                s.async = true;
-                s.src = 'https://track.adform.net/serving/scripts/trackpoint/async/';
-                var x = document.getElementsByTagName('script')[0];
-                x.parentNode.insertBefore(s, x);
-            })();
-
-        </script>
-        <noscript>
-            <p style="margin:0;padding:0;border:0;">
-                <img src="https://track.adform.net/Serving/TrackPoint/?pm=314127&ADFPageName=Foodout.lt|Pagrindinis&ADFdivider=|"
-                     width="1" height="1" alt=""/>
-            </p>
-        </noscript>
-        <!-- Adform Tracking Code END -->
-    {% endblock %}
-    {% block delfi_js %}{% endblock %}
-
-    <!-- mailersoft begin -->
     <script type="text/javascript">
-        var _ml = _ml || [];
-        _ml.push({account_code: 'x8e0d0o9o9y6t6n7'});
-        (function () {
-            var mlo = document.createElement('script');
-            mlo.type = 'text/javascript';
-            mlo.async = true;
-            mlo.src = '//app.mailersoft.com/ecommerce/v4/track.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(mlo, s);
-        })();
-    </script>
-    <!-- mailersoft end -->
+        // facebook pixel
+        {% set FBpixelCode = misc_utils.getParam('facebook_pixel_code', null) %}
+        {% if FBpixelCode is not null %}
+        fbq('init', '{{ FBpixelCode }}');
+        {% endif %}
+        fbq('track', "PageView");
 
-    {# TODO Pasalinti jei neveiks vis dar.. Revive Single page load multiple banners #}
-    {#{% if site_country == 'LT' %}
-        &#123;&#35; Revive Ads init for foodout.lt &#35;&#125;
-        <script type="text/javascript">
-            var OA_zones = {
-                'zone-22' : 14, 'zona-a': 8,'zone-1' : 13, 'zona-3' : 15
-            };
-//            console.log('preloadinam zonu identifikatorius');
-//            console.log(OA_zones);
-//            console.log('bandom uzsikraut revive single page loader scripta');
-        </script>
-        &#123;&#35;<script type='text/javascript' src='//ads.foodout.lt/delivery/spcjs.php'></script>&#35;&#125;
-    {% elseif site_country == 'LV' %}
-        &#123;&#35; Revive Ads init for foodout.lv &#35;&#125;
-    {% endif %}#}
-    <script type="text/javascript">
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
+        // google analytic
         ga('create', '{{ google_analytics_uid }}', 'auto', {'allowLinker': true});
         ga('require', 'displayfeatures');
         ga('require', 'linker');
         ga('send', 'pageview');
         ga('require', 'ec');
-        {# ga('linker:autoLink', ['{{ publicdomain }}', '1000receptu.lt']); #}
-        var dimensionValue = new Date().getTime() + '.' + Math.random().toString(36).substring(5);
-        ga('set', 'dimension1', dimensionValue);
+        ga('set', 'dimension1', new Date().getTime() + '.' + Math.random().toString(36).substring(5));
 
+
+        // adform
+        var _adftrack = {
+            pm: 314127,
+            divider: encodeURIComponent('|'),
+            pagename: encodeURIComponent('Foodout.lt|Pagrindinis')
+        };
+
+        //mailersoft
+        var _ml = _ml || [];
+        _ml.push({account_code: 'x8e0d0o9o9y6t6n7'});
+    </script>
+
+    <noscript>
+        <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=901898153179068&ev=PageView&noscript=1"/>
+    </noscript>
+    <noscript>
+        <p style="margin:0;padding:0;border:0;">
+            <img src="https://track.adform.net/Serving/TrackPoint/?pm=314127&ADFPageName=Foodout.lt|Pagrindinis&ADFdivider=|" width="1" height="1" alt=""/>
+        </p>
+    </noscript>
+
+    <script type="text/javascript">
         {% block ga_js_code %}{% endblock %}
     </script>
 
@@ -246,400 +144,76 @@
     {% endif %}
 
 </head>
-<body>
-{{ notifications.init|raw }}
-<div class="site">
-    {% block delfi_banner %}{% endblock %}
-    <div class="site-top">
-        <div class="site-block clearfix">
-            <a href="{{ path('food_lang_homepage') }}" class="main-logo">
-                <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}"
-
-                     src="{% if site_country == 'LT' %}{{ asset('bundles/foodapp/images/logo_food.png') }}{% elseif site_country == 'LV' %}{{ asset('bundles/foodapp/images/logo_food2.png') }}{% elseif site_country == 'EE' %}{{ asset('bundles/foodapp/images/logo_food_ee.png') }}{% endif %}"/>
-
-                     {#src="{% if site_country == 'LT' %}{{ asset('bundles/foodapp/images/logo_food_easter_lt.png') }}{% elseif site_country == 'LV' %}{{ asset('bundles/foodapp/images/logo_food_easter_lv.png') }}{% elseif site_country == 'EE' %}{{ asset('bundles/foodapp/images/logo_food_ee.png') }}{% endif %}" />#}
-            </a>
-
-            {# <p class="contact-phone">1822 <span>užsakymas telefonu</span></p> #}
-            <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content=""
-                data-position-fix="840">
-                <li><a href="{{ path('food_slug', {'slug': ('general.help_slug'|trans())}) }}"><span>{% trans %}
-                            general.help_button{% endtrans %}</span></a></li>
-            </ul>
-            <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content=""
-                data-position-fix="840">
-                <li class="login-ico">
-                    {% render(controller('FoodUserBundle:Default:loginButton')) %}
-                </li>
-            </ul>
-            <div class="separator"></div>
-            <div class="top-contact-block">
-                {#
-                {% if ("now"|date('d') == 31 or "now"|date('d') == 1) and site_country == 'LT' %}
-                <span class="work-time" style="text-align: right">
-                    12.31 10:00-18:00<br/>
-                    01.01 12:00-21:00
-                </span>
-                {% elseif ("now"|date('d') == 24 or "now"|date('d') == 25) and site_country == 'LV' %}
-                <span class="work-time" style="text-align: right">
-                    12.24 11:00-00:00<br/>
-                    12.25-26 11:00-23:00
-                </span>
-                {% else %}
-                #}
-                <span class="work-time">
-                    <span>{% trans %}general.top_contact.worktime_days{% endtrans %}</span>
-                    <span>{% trans %}general.top_contact.worktime{% endtrans %}</span>
-                    {% if misc_utils.getparam('holiday_working_time_active') == 1 %}
-                        <br>
-                        <span class="holiday-time" title="{{ misc_utils.getparam('holiday_working_time') }}">{% trans %}
-                            general.top_contact.worktime_holiday{% endtrans %}</span>
-                    {% endif %}
-                </span>
-                {#
-                {% endif %}
-                #}
-                {% if site_country != 'EE' %}
-                    <span class="phone"><a href="callto:{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}"
-                                           title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    {% block body %}{% endblock %}
-    <div class="site-center site-center-bottom">
-        <div class="site-block">
-            <div class="clearfix bottom-blocks">
-
-                {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
-
-                {% if show_apps_download %}
-                    <div class="app-block clearfix"><img
-                                src="//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-view.png') }}">
-                        <div class="app-block-inner">
-                            <h3>{% trans %}general.app_block.header{% endtrans %}</h3>
-                            <p>{% trans %}general.app_block.promo_text{% endtrans %}</p>
-                            <div><a target="_BLANK" href="https://itunes.apple.com/us/app/foodout/id919992168"><img
-                                            src="//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/app-store.png') }}"></a><a
-                                        target="_BLANK"
-                                        href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout#"><img
-                                            src="//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/g-store.png') }}"></a>
-                            </div>
-                        </div>
+<body class="{{ app.request.locale }}">
+    {{ notifications.init|raw }}
+    <div class="site">
+        <div id="header-ad-container"></div>
+        <div class="site-top">
+            <div class="site-block clearfix">
+                <a href="{{ slug.toHomepage() }}" class="main-logo">
+                    <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{{ asset(misc_utils.getParam('site_logo_url')) }}"/>
+                </a>
+                {% if localeService.getAvailable()|length > 1 %}
+                <div class="langSwitcher" >
+                    <div class="lang-drop">
+                        {% set currentLangName = 'language_' ~ app.request.locale  %}
+                        <a class="lang-chose" href="#">{{ currentLangName|trans() }} <span class="arrow-down"></span></a>
+                        <ul>
+                            {% for locale in localeService.getAvailable() %}
+                                {% set langName = 'language_' ~ locale  %}
+                                <li class="lang-item lang-{{ locale }} {% if locale == app.request.locale %}current-lang{% endif %}">
+                                    <a href="{{ slug.generateUrl('food_lang_homepage_slashSwitch', [{'_locale':locale}]) }}">{{ langName|trans() }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </div>
+                </div>
+                <div class="separator forLang"></div>
                 {% endif %}
+
+                {% set pageH = pageService.getByParam('page_help') %}
+                {% if pageH %}
+                <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
+                    <li><a href="{{ slug.getUrl(pageH.getId(), 'page')}}"><span> {{ pageH.getTitle() }}</span></a></li>
+                </ul>
+                {% endif %}
+                {% if not slug.isBanned() %}
+                <ul class="menu top-menu clearfix" data-toggle="popover" data-placement="bottom" data-content="" data-position-fix="840">
+                    <li class="login-ico">
+                        {% render(controller('FoodUserBundle:Default:loginButton')) %}
+                    </li>
+                </ul>
+
+                <div class="separator"></div>
+                {% endif %}
+                <div class="top-contact-block">
+                    <span class="work-time">
+                        <span>{% trans %}general.top_contact.worktime_days{% endtrans %}</span>
+                        <span>{% trans %}general.top_contact.worktime{% endtrans %}</span>
+                    </span>
+
+                    {% if site_country != 'EE' %}
+                    <span class="phone"><a href="callto:{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}" title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>
+                    {% endif %}
+                </div>
+
+
+
             </div>
         </div>
+
+        {% block body %}{% endblock %}
+        {% block bottom_block %}
+            {% include 'FoodAppBundle:Default:bottom_block.html.twig' %}
+        {% endblock %}
+
+        {{ render(controller('FoodAppBundle:Default:footer')) }}
     </div>
 
-    {{ render(controller('FoodAppBundle:Default:footer')) }}
-</div>
-
-{{ include('FoodAppBundle:Default:login_register.html.twig') }}
-
-<script src="{{ asset('bundles/foodapp/scripts/common.js') }}"></script>
-<script src="{{ asset('bundles/foodapp/scripts/scripts.js') }}"></script>
-<script type="text/javascript">
-    {# var mediator = new Mediator(); #}
+    {{ include('FoodAppBundle:Default:login_register.html.twig') }}
+    <script src="{{ asset('bundles/foodapp/scripts/common.js')}}?{{ "now"|date("YmdH") }}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/scripts.js')}}?{{ "now"|date("YmdH") }}"></script>
     {% block jscode %}{% endblock %}
-</script>
-<script>
-    {#
-        {% render(controller('FoodAppBundle:Default:showVideo')) %}
-    #}
-
-    {% if track_conversions %}
-    (function () {
-        var a = document.createElement("iframe");
-        a.style.cssText = "width: 0; height: 0; border: 0; display: none;";
-        a.src = "javascript:false";
-        var b = function () {
-            setTimeout(function () {
-                var b = a.contentDocument || a.contentWindow.document, c = b.createElement("script");
-                c.src = "//static-trackers.adtarget.me/javascripts/pixel.min.js";
-                c.id = "GIHhtQfW-atm-pixel";
-                c["data-pixel"] = "990d8a91b1fde610d377fae55d911552";
-                c["allow-flash"] = true;
-                b.body.appendChild(c);
-            }, 0);
-        };
-        a.addEventListener ? a.addEventListener("load", b, !1) : a.attachEvent ? a.attachEvent("onload", b) : a.onload = b;
-        document.body.appendChild(a);
-    })();
-    {% endif %}
-
-</script>
-{# Google Tag Manager Begin #}
-{% if site_country == 'LV' %}
-    <!-- Google Tag Manager -->
-    <noscript>
-        <iframe src="//www.googletagmanager.com/ns.html?id=GTM-M8KG3X" height="0" width="0"
-                style="display:none;visibility:hidden"></iframe>
-    </noscript>
-    <script>(function (w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
-            var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
-            j.async = true;
-            j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, 'script', 'dataLayer', 'GTM-M8KG3X');</script>
-    <!-- End Google Tag Manager -->
-{% endif %}
-{# Google Tag Manager End #}
-{# OptinMonster Begin #}
-{% if site_country == 'LT' %}
-    <div id="om-gmssbdmvmkpglj50-holder"></div>
-    <script>var gmssbdmvmkpglj50, gmssbdmvmkpglj50_poll = function () {
-            var r = 0;
-            return function (n, l) {
-                clearInterval(r), r = setInterval(n, l)
-            }
-        }();
-        !function (e, t, n) {
-            if (e.getElementById(n)) {
-                gmssbdmvmkpglj50_poll(function () {
-                    if (window['om_loaded']) {
-                        if (!gmssbdmvmkpglj50) {
-                            gmssbdmvmkpglj50 = new OptinMonsterApp();
-                            return gmssbdmvmkpglj50.init({u: "11462.303554", staging: 0, dev: 0});
-                        }
-                    }
-                }, 25);
-                return;
-            }
-            var d = false, o = e.createElement(t);
-            o.id = n, o.src = "//a.optnmnstr.com/app/js/api.min.js", o.onload = o.onreadystatechange = function () {
-                if (!d) {
-                    if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
-                        try {
-                            d = om_loaded = true;
-                            gmssbdmvmkpglj50 = new OptinMonsterApp();
-                            gmssbdmvmkpglj50.init({u: "11462.303554", staging: 0, dev: 0});
-                            o.onload = o.onreadystatechange = null;
-                        } catch (t) {
-                        }
-                    }
-                }
-            };
-            (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(o)
-        }(document, "script", "omapi-script");</script>
-    <div id="om-fyi02zidebhgsg8v-holder"></div>
-    <script>var fyi02zidebhgsg8v, fyi02zidebhgsg8v_poll = function () {
-            var r = 0;
-            return function (n, l) {
-                clearInterval(r), r = setInterval(n, l)
-            }
-        }();
-        !function (e, t, n) {
-            if (e.getElementById(n)) {
-                fyi02zidebhgsg8v_poll(function () {
-                    if (window['om_loaded']) {
-                        if (!fyi02zidebhgsg8v) {
-                            fyi02zidebhgsg8v = new OptinMonsterApp();
-                            return fyi02zidebhgsg8v.init({u: "11462.218873", staging: 0, dev: 0});
-                        }
-                    }
-                }, 25);
-                return;
-            }
-            var d = false, o = e.createElement(t);
-            o.id = n, o.src = "//a.optinmonster.com/app/js/api.min.js", o.onload = o.onreadystatechange = function () {
-                if (!d) {
-                    if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
-                        try {
-                            d = om_loaded = true;
-                            fyi02zidebhgsg8v = new OptinMonsterApp();
-                            fyi02zidebhgsg8v.init({u: "11462.218873", staging: 0, dev: 0});
-                            o.onload = o.onreadystatechange = null;
-                        } catch (t) {
-                        }
-                    }
-                }
-            };
-            (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(o)
-        }(document, "script", "omapi-script");</script>
-    <div id="om-gmssbdmvmkpglj50-holder"></div>
-    <script>var gmssbdmvmkpglj50, gmssbdmvmkpglj50_poll = function () {
-            var r = 0;
-            return function (n, l) {
-                clearInterval(r), r = setInterval(n, l)
-            }
-        }();
-        !function (e, t, n) {
-            if (e.getElementById(n)) {
-                gmssbdmvmkpglj50_poll(function () {
-                    if (window['om_loaded']) {
-                        if (!gmssbdmvmkpglj50) {
-                            gmssbdmvmkpglj50 = new OptinMonsterApp();
-                            return gmssbdmvmkpglj50.init({u: "11462.303554", staging: 0, dev: 0});
-                        }
-                    }
-                }, 25);
-                return;
-            }
-            var d = false, o = e.createElement(t);
-            o.id = n, o.src = "//a.optnmnstr.com/app/js/api.min.js", o.onload = o.onreadystatechange = function () {
-                if (!d) {
-                    if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
-                        try {
-                            d = om_loaded = true;
-                            gmssbdmvmkpglj50 = new OptinMonsterApp();
-                            gmssbdmvmkpglj50.init({u: "11462.303554", staging: 0, dev: 0});
-                            o.onload = o.onreadystatechange = null;
-                        } catch (t) {
-                        }
-                    }
-                }
-            };
-            (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(o)
-        }(document, "script", "omapi-script");</script>
-    <!-- This site is converting visitors into subscribers and customers with OptinMonster - http://optinmonster.com :: Campaign Title: Šventinės pristatymo kainos -->
-    <div id="om-ls3pvgrofjrl9i0x-holder"></div>
-    <script>var ls3pvgrofjrl9i0x, ls3pvgrofjrl9i0x_poll = function () {
-            var r = 0;
-            return function (n, l) {
-                clearInterval(r), r = setInterval(n, l)
-            }
-        }();
-        !function (e, t, n) {
-            if (e.getElementById(n)) {
-                ls3pvgrofjrl9i0x_poll(function () {
-                    if (window['om_loaded']) {
-                        if (!ls3pvgrofjrl9i0x) {
-                            ls3pvgrofjrl9i0x = new OptinMonsterApp();
-                            return ls3pvgrofjrl9i0x.init({"u": "11462.479048", "staging": 0, "dev": 0, "beta": 0});
-                        }
-                    }
-                }, 25);
-                return;
-            }
-            var d = false, o = e.createElement(t);
-            o.id = n, o.src = "//a.optnmnstr.com/app/js/api.min.js", o.async = true, o.onload = o.onreadystatechange = function () {
-                if (!d) {
-                    if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
-                        try {
-                            d = om_loaded = true;
-                            ls3pvgrofjrl9i0x = new OptinMonsterApp();
-                            ls3pvgrofjrl9i0x.init({"u": "11462.479048", "staging": 0, "dev": 0, "beta": 0});
-                            o.onload = o.onreadystatechange = null;
-                        } catch (t) {
-                        }
-                    }
-                }
-            };
-            (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(o)
-        }(document, "script", "omapi-script");</script><!-- / OptinMonster -->
-    {% elseif site_country =='LV' %}
-    <!-- This site is converting visitors into subscribers and customers with OptinMonster - http://optinmonster.com -->
-    <script>var om5608e71652d84, om5608e71652d84_poll = function () {
-            var r = 0;
-            return function (n, l) {
-                clearInterval(r), r = setInterval(n, l)
-            }
-        }();
-        !function (e, t, n) {
-            if (e.getElementById(n)) {
-                om5608e71652d84_poll(function () {
-                    if (window['om_loaded']) {
-                        if (!om5608e71652d84) {
-                            om5608e71652d84 = new OptinMonsterApp();
-                            return om5608e71652d84.init({
-                                "s": "11462.5608e71652d84",
-                                "staging": 0,
-                                "dev": 0,
-                                "beta": 0
-                            });
-                        }
-                    }
-                }, 25);
-                return;
-            }
-            var d = false, o = e.createElement(t);
-            o.id = n, o.src = "//a.optnmnstr.com/app/js/api.min.js", o.async = true, o.onload = o.onreadystatechange = function () {
-                if (!d) {
-                    if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
-                        try {
-                            d = om_loaded = true;
-                            om5608e71652d84 = new OptinMonsterApp();
-                            om5608e71652d84.init({"s": "11462.5608e71652d84", "staging": 0, "dev": 0, "beta": 0});
-                            o.onload = o.onreadystatechange = null;
-                        } catch (t) {
-                        }
-                    }
-                }
-            };
-            (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(o)
-        }(document, "script", "omapi-script");</script><!-- / OptinMonster -->
-    <div id="om-uthsh0y0gpo4qpoz-holder"></div>
-    <script>var uthsh0y0gpo4qpoz, uthsh0y0gpo4qpoz_poll = function () {
-            var r = 0;
-            return function (n, l) {
-                clearInterval(r), r = setInterval(n, l)
-            }
-        }();
-        !function (e, t, n) {
-            if (e.getElementById(n)) {
-                uthsh0y0gpo4qpoz_poll(function () {
-                    if (window['om_loaded']) {
-                        if (!uthsh0y0gpo4qpoz) {
-                            uthsh0y0gpo4qpoz = new OptinMonsterApp();
-                            return uthsh0y0gpo4qpoz.init({u: "11462.236385", staging: 0, dev: 0});
-                        }
-                    }
-                }, 25);
-                return;
-            }
-            var d = false, o = e.createElement(t);
-            o.id = n, o.src = "//a.optnmnstr.com/app/js/api.min.js", o.onload = o.onreadystatechange = function () {
-                if (!d) {
-                    if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
-                        try {
-                            d = om_loaded = true;
-                            uthsh0y0gpo4qpoz = new OptinMonsterApp();
-                            uthsh0y0gpo4qpoz.init({u: "11462.236385", staging: 0, dev: 0});
-                            o.onload = o.onreadystatechange = null;
-                        } catch (t) {
-                        }
-                    }
-                }
-            };
-            (document.getElementsByTagName("head")[0] || document.documentElement).appendChild(o)
-        }(document, "script", "omapi-script");</script>
-{% endif %}
-{# OptinMonster End #}
-
-{# LiveChat Begin #}
-{% if site_country == 'LT' %}
-    {{  misc_utils.getParam('tawk_to_live_chat')|raw }}
-{% endif %}
-{# LiveChat End #}
-{% if site_country == 'LV' %}
-    <!--Start of Zendesk Chat Script-->
-    <script type="text/javascript">
-        window.$zopim || (function (d, s) {
-            var z = $zopim = function (c) {
-                    z._.push(c)
-                },
-                $ = z.s =
-                    d.createElement(s), e = d.getElementsByTagName(s)[0];
-            z.set = function (o) {
-                z.set._.push(o)
-            };
-            z._ = [];
-            z.set._ = [];
-            $.async = !0;
-            $.setAttribute('charset', 'utf-8');
-            $.src = 'https://v2.zopim.com/?4gTVKUaBMddLvvaZIm6XPHb3uKUBhT9n';
-            z.t = +new Date;
-            $.type = 'text/javascript';
-            e.parentNode.insertBefore($, e)
-        })(document, 'script');
-    </script>
-    <!--End of Zendesk Chat Script-->
-{% endif %}
-
-
+    {{ misc_utils.param('footer_scripts', true)|raw }}
 </body>
 </html>

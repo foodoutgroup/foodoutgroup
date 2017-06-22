@@ -1,0 +1,47 @@
+{% extends ':Admin:layout.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block sonata_admin_content %}
+    {% for flash_message in flash_messages %}
+
+        <div class="flash-{{ type }}">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
+    <div class="container-fluid">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <h1>
+                    {% trans %}Settings{% endtrans %}<small>{% trans %}Change base system settings{% endtrans %}</small>
+                </h1>
+            </div>
+        </div>
+    </div>
+    {{ form_start(form) }}
+        <div class="container-fluid">
+            {% set currentGroup = null %}
+            {% for element in form %}
+
+                {% if element.vars.attr.group is defined %}
+                    {% if not loop.first %}<hr/>{% endif %}
+                    {% if element.vars.attr.group is not empty  %}
+                        <h4>{{ element.vars.attr.group }}</h4>
+                        <hr/>
+                    {% endif %}
+                    {% set currentGroup = null %}
+
+                {% endif %}
+
+                <div class="control-group  clearfix">
+                    <div class="span2" >
+                        {{ form_label(element)|raw }}
+                    </div>
+                    <div class="span10">
+                        {{ form_widget(element) }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

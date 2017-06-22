@@ -27,7 +27,6 @@
 {% endblock %}
 
 {% form_theme form.profile _self %}
-{% form_theme form.address _self %}
 
 {% block form_row %}
 {% spaceless %}
@@ -57,7 +56,7 @@
     {% endmacro %}
     {% import _self as tip %}
 
-    {% stylesheets 'bundles/foodapp/scripts/jquery-qtip/jquery.qtip.min.css' filter="cssrewrite" %}
+    {% stylesheets '@FoodAppBundle/Resources/public/scripts/jquery-qtip/jquery.qtip.min.css' filter="cssrewrite" %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css"  />
     {% endstylesheets %}
     <div class="site-center">
@@ -75,7 +74,7 @@
                         <div class="active-user"><img src="{{ asset('bundles/foodapp/images/person.png') }}">
                             {#<a href="#" class="edit"></a>#}
                             <div class="user-name">{{ user.firstname }}</div>
-                            <div class="user-location">{% if user.defaultAddress %}{{ user.defaultAddress.city }}{% endif %}</div>
+                            <div class="user-location">{% if user.defaultAddress %}{{ user.defaultAddress.cityId.title }}{% endif %}</div>
                         </div>
                         <ul class="menu user-menu">
                             <li class="menu-item user-ico active" data-target=".user-page .content-item.user">
@@ -106,9 +105,16 @@
                             </div>
                         {% endif %}
 
+                        {% if profile_update_errors is defined and profile_update_errors is not empty %}
+                            <div class="alert alert-danger">
+                                {{ profile_update_errors.0 }}
+                            </div>
+                        {% endif %}
+
                         <form class="user-details-form" action="{{ path('user_profile_update') }}" method="POST" novalidate="novalidate" autocomplete="off">
                             {% include 'FoodUserBundle:Default:profile/profile.html.twig' %}
-                            {% include 'FoodUserBundle:Default:profile/address.html.twig' %}
+
+                            {% include 'FoodUserBundle:Default:profile/address.html.twig' with {'current' :  addressDefault } %}
                             {% include 'FoodUserBundle:Default:profile/change_password.html.twig' %}
 
                             {% if not user.getIsBussinesClient() %} <div class="hidden"> {% endif %}

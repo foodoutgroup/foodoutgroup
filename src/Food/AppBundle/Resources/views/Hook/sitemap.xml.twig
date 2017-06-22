@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    {% set homepage = 'http://' ~ domain ~ slug.toHomepage() %}
+    {% if homepage|last == "/" %}
+        {% set homepage = homepage|trim('/') %}
+    {% endif %}
+    <url>
+        <loc>{{ homepage }}</loc>
+        <changefreq>hourly</changefreq>
+    </url>
+    {#<url>#}
+        {#<loc>http://{{ domain }}{{ path('food_places_lt_recommended', {}, false) }}</loc>#}
+        {#<changefreq>hourly</changefreq>#}
+    {#</url>#}
+    {# todo MULTI-L reikia padaryti recommended nuorodas ir rush_hour nuorodas , igyvendinimas per hook ir page funkcionaluma :) #}
+
+    {% for place in placeCollection %}
+        {% set placeSlug = slug.getUrl(place.id, 'place') %}
+        {% if placeSlug != "error" or dev %}
+            <url>
+                <loc>http://{{ domain }}{{ placeSlug }}</loc>
+                <changefreq>daily</changefreq>
+            </url>
+        {% endif %}
+    {% endfor %}
+    {% for city in cityCollection %}
+        <url>
+            <loc>http://{{ domain }}{{ slug.getUrl(city.id, 'city') }}</loc>
+            <changefreq>daily</changefreq>
+        </url>
+    {% endfor %}
+    {% for cityId, kitchenCollection in cityKitchenCollection %}
+
+        {% for kitchen in kitchenCollection %}
+            <url>
+                <loc>http://{{ domain }}/{{ slug.path(cityId, 'city') }}/{{ slug.path(kitchen.id, 'kitchen') }}</loc>
+                <changefreq>daily</changefreq>
+            </url>
+        {% endfor %}
+    {% endfor %}
+
+    {% for page in pageCollection %}
+        {% set pageSlug = slug.getUrl(page.id, 'page') %}
+        {% if pageSlug != "error" or dev %}
+            <url>
+                <loc>http://{{ domain }}{{ slug.getUrl(page.id, 'page') }}</loc>
+                <changefreq>monthly</changefreq>
+            </url>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_block_config != 0 %}
+        {% set blogPathStart = homepage ~ '/' ~ slug.path(page_block_config, 'page') %}
+        <url>
+            <loc>{{ blogPathStart }}</loc>
+            <changefreq>weekly</changefreq>
+        </url>
+        {% for blogCategory in blogCollection %}
+            {% set category = blogCategory['category'] %}
+            {% set postCollection = blogCategory['postCollection'] %}
+            <url>
+                <loc>{{ blogPathStart }}/{{ category.slug }}</loc>
+                <changefreq>weekly</changefreq>
+            </url>
+            {% for post in postCollection %}
+                <url>
+                    <loc>{{ blogPathStart }}/{{ category.slug }}/{{ post.slug }}</loc>
+                    <changefreq>monthly</changefreq>
+                </url>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+</urlset>

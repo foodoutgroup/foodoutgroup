@@ -25,34 +25,35 @@ class PlaceRepository extends EntityRepository
      */
     public function magicFindByKitchensIds($kitchens, $filters = [], $recommended = false, $locationData = null, $container = null)//, $city, $lat, $long)
     {
-        $city = null;
+
+
+
+        $cityId = null;
         $lat = null;
         $lon = null;
         $currTime = date('H:i:s');
-        if (!empty($locationData) && !empty($locationData['lat']) && !empty($locationData['lng'])) {
-            $city = (!empty($locationData['city']) ? $locationData['city'] : null);
-            $lat = str_replace(",", ".", $locationData['lat']);
-            $lon = str_replace(",", ".", $locationData['lng']);
-        } elseif (!empty($locationData) && !empty($locationData['city']) && isset($locationData['city_only']) && $locationData['city_only'] === true) {
-            $city = $locationData['city'];
+        if (!empty($locationData) && !empty($locationData['latitude']) && !empty($locationData['longitude'])) {
+            $cityId = (!empty($locationData['city_id']) ? $locationData['city_id'] : null);
+            $lat = $locationData['latitude'];
+            $lon = $locationData['longitude'];
+        } else {
+            $cityId = $locationData['city_id'];
         }
+
+
 
         $zaval = 0;
         $pickup = (isset($filters['delivery_type']) && $filters['delivery_type'] == Place::OPT_ONLY_PICKUP);
-        if ($pickup) {
-            $cityWhere = '';
-            if (!empty($city)) {
-                $cityWhere = ' AND pps.city = \'' . $city . '\'';
-            }
-            $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id $cityWhere GROUP BY pps.place";
+        if ($pickup ) {
+            $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id ".($cityId ? ' AND pps.city_id = \'' . $cityId . '\'' : '')." GROUP BY pps.place";
         } else {
             if ($container) {
-                $zaval = $container->get('food.zavalas_service')->isZavalasTurnedOnGlobal();
-                if (!empty($city)) {
-                    $zaval = $container->get('food.zavalas_service')->isZavalasTurnedOnByCity($city);
+                if ($cityId) {
+                    $zaval = $container->get('food.zavalas_service')->isRushHourAtCityById($cityId);
+                } else {
+                    $zaval = $container->get('food.zavalas_service')->isRushHourOnGlobal();
                 }
             }
-
             /**
              * $container->getParameter('default_delivery_distance')
              *  This stuff needs to be deprecated. And parameter removed.
@@ -86,12 +87,13 @@ class PlaceRepository extends EntityRepository
                         break;
 
                     case 'delivery_type':
+
                         if (!empty($filterValue)) {
                             switch ($filterValue) {
                                 case OrderService::$deliveryBoth:
                                     $placeFilter .= ' AND p.delivery_options = "delivery_and_pickup"';
                                     break;
-                                case OrderService::$deliveryDeliver:
+                                case 'delivery':
                                     $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "delivery")';
                                     break;
                                 case OrderService::$deliveryPickup:
@@ -124,25 +126,26 @@ class PlaceRepository extends EntityRepository
         }
 
         if ($recommended) {
-//            if (!empty($kitchensQuery)) {
             $kitchensQuery .= " AND recommended=1";
-//            } else {
-//                $kitchensQuery.= " recommended=1";
-//            }
-            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id ORDER BY p.priority DESC, RAND()";
+            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";//" AND ppc.city_id=" . $city;
+
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city_id = " . $cityId . " " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id ORDER BY p.priority DESC, RAND()";
         } elseif ($lat == null || $lon == null) {
-            if ($city == null) {
+            if ($cityId) {
+                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city_id = " . $cityId . " AND ppc.place = p.id";
+                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city_id = " . $cityId . " " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id";
+
+            } else {
                 $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
                 $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id";
-            } else {
-                $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='" . $city . "' AND ppc.place = p.id";
-                $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL AND pp.city='" . $city . "' " . $placeFilter . $otherFilters . $kitchensQuery . " GROUP BY p.id";
             }
         } else {
-            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city='" . $city . "' AND ppc.place = p.id";
-            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL " . $placeFilter . $otherFilters . " AND pp.id = (" . $subQuery . ") " . $kitchensQuery . " ORDER BY p.priority DESC, RAND()";
+
+
+            $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.city_id = " . $cityId . " AND ppc.place = p.id";
+            $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL ". $placeFilter . $otherFilters . " AND pp.id = (" . $subQuery . ") " . $kitchensQuery . " ORDER BY p.priority DESC, RAND()";
         }
+
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
@@ -167,8 +170,8 @@ class PlaceRepository extends EntityRepository
                         AND pps.id = ppwt.place_point
                         AND pps.active=1
                         AND pps.deleted_at is NULL
-                        AND pps.city='" . $city . "'
                         AND pps.place = " . $place['place']->getId() . "
+                        AND pps.city_id = " . $locationData['city_id'] . "
                         AND ppwt.week_day = " . $wd . "
                         AND (
                         (start_hour = 0 OR start_hour < ' . $dh . ' OR
@@ -188,10 +191,13 @@ class PlaceRepository extends EntityRepository
                 $defaultPlacePoint = false;
             }
 
+
+
             if ($defaultPlacePoint) {
                 $stmt = $this->getEntityManager()->getConnection()->prepare($placePointQuery);
                 $stmt->execute();
                 $placesPInfo = $stmt->fetchColumn(0);
+
                 if ($placesPInfo) {
                     $place['point'] = $this->getEntityManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placesPInfo);
                 } else {
@@ -202,6 +208,7 @@ class PlaceRepository extends EntityRepository
             }
 
         }
+
 
         return $places;
     }
@@ -340,16 +347,19 @@ class PlaceRepository extends EntityRepository
      * @param array|null $locationData
      * @param bool $ignoreSelfDelivery
      *
+     * @param bool $ignoreWorkTime
+     * @param bool $noneWorking
      * @return PlacePoint|null
      */
     public function getPlacePointNearWithDistance($placeId, $locationData, $ignoreSelfDelivery = false, $ignoreWorkTime = false, $noneWorking = false, $futureTime = false)
     {
-        if (empty($locationData['city']) || empty($locationData['lat'])) {
+        if (empty($locationData['city_id']) || empty($locationData['latitude'])) {
             return null;
         }
-        $city = $locationData['city'];
-        $lat = str_replace(",", ".", $locationData['lat']);
-        $lon = str_replace(",", ".", $locationData['lng']);
+
+        $cityId = $locationData['city_id'];
+        $lat = $locationData['latitude'];
+        $lon = $locationData['longitude'];
 
         if ($futureTime) {
             $dh = date("H", strtotime($futureTime));
@@ -385,7 +395,7 @@ class PlaceRepository extends EntityRepository
                         AND pp.active=1
                         AND pp.deleted_at IS NULL
                         AND p.active=1
-                        AND pp.city='" . $city . "'
+                        AND pp.city_id='" . $locationData['city_id'] . "'
                         AND pp.place = $placeId
             AND (
                 (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
@@ -452,25 +462,24 @@ class PlaceRepository extends EntityRepository
      */
     public function getPlacePointNear($placeId, $locationData, $ignoreSelfDelivery = false, $futureTime = false)
     {
+
+
         $response = null;
         $cacheKey = $placeId . serialize($locationData) . (int)$ignoreSelfDelivery;
-        if (!isset(self::$_getNearCache[$cacheKey])) {
-            if (!empty($locationData['city']) && !empty($locationData['lat'])) {
-                $city = $locationData['city'];
-                $lat = str_replace(",", ".", $locationData['lat']);
-                $lon = str_replace(",", ".", $locationData['lng']);
 
-                if ($futureTime) {
-                    $dh = date("H", strtotime($futureTime));
-                    $dm = date("i", strtotime($futureTime));
-                    $wd = date('w', strtotime($futureTime));
-                    $deliveryTime = date("H:i:s", strtotime($futureTime));
-                } else {
-                    $dh = date("H");
-                    $dm = date("i");
-                    $wd = date('w');
-                    $deliveryTime = date('H:i:s');
+        if (!isset(self::$_getNearCache[$cacheKey])) {
+            if (!empty($locationData['city_id']) && !empty($locationData['latitude'])) {
+
+                $lat = $locationData['latitude'];
+                $lon = $locationData['longitude'];
+
+                if (!$futureTime) {
+                    $futureTime = date("Y-m-d H:i:s");
                 }
+                $dh = date("H", strtotime($futureTime));
+                $dm = date("i", strtotime($futureTime));
+                $wd = date('w', strtotime($futureTime));
+                $deliveryTime = date("H:i:s", strtotime($futureTime));
 
                 if ($wd == 0) $wd = 7;
                 /**
@@ -488,6 +497,7 @@ class PlaceRepository extends EntityRepository
                       AND pp.active=1
                       AND pp.deleted_at IS NULL
                       AND p.active=1
+                      AND pp.city_id='" . $locationData['city_id'] . "'
                       AND pp.place = $placeId
                       AND (
                         (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
@@ -508,6 +518,7 @@ class PlaceRepository extends EntityRepository
                 $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
 
                 $stmt->execute();
+
                 $places = $stmt->fetchAll();
                 if (!empty($places) && !empty($places[0])) {
                     $response = (int)$places[0]['id'];
@@ -526,16 +537,10 @@ class PlaceRepository extends EntityRepository
         $response = null;
         $cacheKey = $placeId . serialize($locationData) . 1;
         if (!isset(self::$_getNearCache[$cacheKey])) {
-            if (!empty($locationData['city']) && !empty($locationData['lat'])) {
-                $city = $locationData['city'];
-                $lat = str_replace(",", ".", $locationData['lat']);
-                $lon = str_replace(",", ".", $locationData['lng']);
-                $wd = date('w');
-
-
-                if ($wd == 0) {
-                    $wd = 7;
-                }
+            if (!empty($locationData['latitude'])) {
+                $lat = $locationData['latitude'];
+                $lon = $locationData['longitude'];
+                $wd = date('w') == 0 ? 7 : date("w");
 
                 /**
                  * @todo check the need of self delivery
@@ -598,6 +603,7 @@ class PlaceRepository extends EntityRepository
             $where = ' AND pp.active = 1 AND pp.city = "' . $city . '" AND pp.deleted_at IS NULL ';
         }
 
+
         $query = "SELECT p.id
                 FROM place p
                 {$join}
@@ -611,6 +617,7 @@ class PlaceRepository extends EntityRepository
                 ORDER BY p.navision DESC, RAND()
                 LIMIT 5";
 
+
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $placesIds = $stmt->fetchAll();
@@ -621,6 +628,8 @@ class PlaceRepository extends EntityRepository
         }
 
         return $places;
+
+
     }
 
     public function getMinDeliveryPrice($placeId)
@@ -686,22 +695,46 @@ class PlaceRepository extends EntityRepository
         return (boolean)$stmt->fetchColumn(0);
     }
 
+
     /**
      * @param Place $place
-     *
-     * @return array
+     * @return mixed
+     * @description metodas dubliuotas nes keiciamas jo pavadinimas :) tas kitas zemiau deprecated :)
      */
-    public function getCities(Place $place)
+    public function getCityCollectionByPlace(Place $place)
     {
         if (empty(self::$_citiesCache[$place->getId()])) {
             self::$_citiesCache[$place->getId()] = [];
             foreach ($place->getPoints() as $placePoint) {
-                if ($placePoint->getActive() && !in_array($placePoint->getCity(), self::$_citiesCache[$place->getId()])) {
-                    self::$_citiesCache[$place->getId()][] = $placePoint->getCity();
+                if ($placePoint && $placePoint->getActive() && !in_array($placePoint->getCityId(), self::$_citiesCache[$place->getId()], true)) {
+                    $cityObj =  $placePoint->getCityId();
+                    if($cityObj) {
+                        self::$_citiesCache[$place->getId()][] = $cityObj;
+                    }
                 }
             }
         }
 
+        return self::$_citiesCache[$place->getId()];
+    }
+
+        /**
+     * @param Place $place
+     * @deprecated from 2017-04-12
+     * @return array
+     */
+    public function getCities(Place $place)
+    {
+
+        if (empty(self::$_citiesCache[$place->getId()])) {
+            self::$_citiesCache[$place->getId()] = [];
+            foreach ($place->getPoints() as $placePoint) {
+
+                if ($placePoint->getActive() && !in_array($placePoint->getCityId(), self::$_citiesCache[$place->getId()], true)) {
+                    self::$_citiesCache[$place->getId()][] = $placePoint->getCityId();
+                }
+            }
+        }
         return self::$_citiesCache[$place->getId()];
     }
 }

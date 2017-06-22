@@ -115,7 +115,7 @@ class WebTestCase extends SymfonyWebTestCase
         $order->setOrderDate(new \DateTime("now"))
             ->setPlace($place)
             ->setPlacePoint($placePoint)
-            ->setPlacePointCity($placePoint->getCity())
+            ->setCityId($placePoint->getCityId())
             ->setPlacePointAddress($placePoint->getAddress())
             ->setOrderStatus($status)
             ->setVat('21')

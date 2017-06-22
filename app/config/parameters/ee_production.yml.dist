@@ -2,6 +2,14 @@ framework:
     templating:
         assets_base_urls: { http: ["http://www.mychef.ee"], ssl: ["http://www.mychef.ee"] }
 parameters:
+    defaultDomain: messages
+    defaultSelections: [messages]
+    emptyPrefixes: []
+    editable:
+        mode: inline		 # Mode of editable, can be popup or inline
+        type: textarea		 # Type of input. Can be text|textarea|select|date|checklist and more
+        emptytext: Empty 	 # text to display on empty translations
+        placement: top		 # ingnored for inline mode
     database_driver: pdo_mysql
     database_host: localhost
     database_port: 3306
@@ -28,6 +36,7 @@ parameters:
     locales: ["ee", "en"]
     available_cities: ["Haabersti", "Järveküla", "Kesklinn", "Kristiine", "Lasnamäe", "Mustamäe", "Nõmme", "Õismäe", "Peetri", "Pirita", "Põhja-Tallinn", "Viimsi"]
     available_cities_slugs: ["Haabersti", "Jarvekula", "Kesklinn", "Kristiine", "Lasnamae", "Mustamae", "Nomme", "Oismae", "Peetri", "Pirita", "Pohja-Tallinn", "Viimsi"]
+    locales_hidden: ['en']
     available_locales: ["ee", "en"]
     available_locales_routing: ee | en
     cloudfront_url: www.mychef.ee
@@ -131,6 +140,7 @@ parameters:
     newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: true
     default_dish_logo: default-dish-logo-ee.png
+    geo_provider: https://geoproxy.foodout.lt
 
     # seb banklink
     seb:

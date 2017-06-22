@@ -5,6 +5,8 @@ use Food\AppBundle\Admin\Admin as FoodAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Food\AppBundle\Validator\Constraints\Slug;
+use \Food\AppBundle\Entity\Slug as SlugEntity;
 
 class StaticContentAdmin extends FoodAdmin
 {
@@ -17,22 +19,29 @@ class StaticContentAdmin extends FoodAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+
+        $hookDescription = $this->getContainer()->get('templating')->render('@FoodApp/Admin/Custom/static_page_hook_description.html.twig', []);
+
         $formMapper->add(
             'translations',
             'a2lix_translations_gedmo',
             array(
                 'translatable_class' => 'Food\AppBundle\Entity\StaticContent',
                 'fields' => array(
-                    'title' => array('label' => 'admin.static.title'),
-                    'content' => array('label' => 'admin.static.content', 'attr' => array('class' => 'ckeditor_custom'), ),
+                    'title' => array('label' => 'admin.static.title','attr'=>['data-slugify'=>'title']),
+                    'content' => array('label' => 'admin.static.content', 'attr' => ['help' => $hookDescription, 'class' => 'ckeditor_custom']),
                     'seo_title' => array('label' => 'admin.static.seo_title', 'required' => false,),
-                    'seo_description' => array('label' => 'admin.static.seo_description', 'required' => false,)
+                    'seo_description' => array('label' => 'admin.static.seo_description', 'attr' => ['rows' => 4, 'style' => 'width:610px !important;'], 'required' => false),
+                    'slug' => [
+                        'constraints' => new Slug(SlugEntity::TYPE_PAGE, $formMapper),
+                        'attr'=>['data-slugify'=>'title']
+
+                    ]
                 )
             ))
             ->add('order', 'integer', array('label' => 'admin.static.order_no'))
             ->add('active', 'checkbox', array('label' => 'admin.static.active', 'required' => false))
             ->add('visible', 'checkbox', array('label' => 'admin.static.visible', 'required' => false));
-        ;
     }
 
     /**
@@ -48,8 +57,7 @@ class StaticContentAdmin extends FoodAdmin
             ->add('title', null, array('label' => 'admin.static.title'))
             ->add('editedAt', null, array('label' => 'admin.edited_at'))
             ->add('active', null, array('label' => 'admin.static.active'))
-            ->add('visible', null, array('label' => 'admin.static.visible'))
-        ;
+            ->add('visible', null, array('label' => 'admin.static.visible'));
     }
 
     /**
@@ -75,8 +83,7 @@ class StaticContentAdmin extends FoodAdmin
                     'delete' => array(),
                 ),
                 'label' => 'admin.actions'
-            ))
-        ;
+            ));
     }
 
     /**
@@ -98,8 +105,7 @@ class StaticContentAdmin extends FoodAdmin
     {
         $showMapper
             ->add('title', null, array('label' => 'admin.static.title'))
-            ->add('content', null, array('label' => 'admin.static.content'))
-        ;
+            ->add('content', null, array('label' => 'admin.static.content'));
     }
 
     /**
@@ -110,7 +116,7 @@ class StaticContentAdmin extends FoodAdmin
      */
     public function postPersist($object)
     {
-        $this->fixSlugs($object);
+        $this->slug($object);
 
         parent::postPersist($object);
     }
@@ -122,36 +128,16 @@ class StaticContentAdmin extends FoodAdmin
      */
     public function postUpdate($object)
     {
-        $this->fixSlugs($object);
+        $this->slug($object);
 
         parent::postUpdate($object);
     }
 
-    /**
-     * Lets fix da stufffff.... Slugs for Static :)
-     *
-     * @param \Food\AppBundle\Entity\StaticContent $object
-     */
-    private function fixSlugs($object)
+    private function slug($object)
     {
-        $origName = $object->getTitle();
-        $locales = $this->getContainer()->getParameter('available_locales');
-        $textsForSlugs = array();
-        // Neprognozuojamas veikimas.. ima content fielda, o ne title... nenurodom pagal ka generuoti..
-        $translations = $object->getTranslations();
-
-        foreach($translations->getValues() as $row) {
-            if ($row->getField() == 'title') {
-                $textsForSlugs[$row->getLocale()] = $row->getContent();
-            }
-        }
-
-        $slugUtelyte = $this->getContainer()->get('food.dishes.utils.slug');
-        foreach ($locales as $loc) {
-            if (!isset($textsForSlugs[$loc])) {
-                $textsForSlugs[$loc] = $origName;
-            }
-            $slugUtelyte->generateForTexts($loc, $object->getId(), $textsForSlugs[$loc]);
-        }
+        $slugService = $this->getContainer()->get('slug');
+        $slugService->generate($object, 'slug', SlugEntity::TYPE_PAGE);
     }
+
+
 }

@@ -3,6 +3,7 @@
 namespace Api\V2Bundle\Controller;
 
 use Api\BaseBundle\Exceptions\ApiException;
+use Api\V2Bundle\Service\PlaceService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,10 +49,13 @@ class PlaceController extends Controller
 
         $return = ['success' => false];
         try {
-
+            /**
+             * @var $ps PlaceService
+             */
             $ps = $this->get('api.v2.place');
             $place = $ps->getPlaceByHash($placeHash);
-            $locationData  = $ps->getLocationData($city, $address, true);
+            $locationData  = $ps->getLocationData($city, $address);
+
 
             $return['location'] = $locationData;
             $return['placepoint'] = $ps->getPlacesByLocation($place, $locationData, $request->get("version", 1));

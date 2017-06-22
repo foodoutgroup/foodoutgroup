@@ -62,13 +62,13 @@ class OrderRepository extends EntityRepository
             $filter['place_point_city'] = $city;
         }
 
-        $orders = $this->getOrdersByFilter($filter, 'list');
+        $orderCollection = $this->getOrdersByFilter($filter, 'list');
 
-        if (!$orders) {
-            return array();
+        if (!$orderCollection) {
+            return [];
         }
 
-        return $orders;
+        return $orderCollection;
     }
 
     /**

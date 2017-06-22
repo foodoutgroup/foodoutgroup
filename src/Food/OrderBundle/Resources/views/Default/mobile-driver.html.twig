@@ -16,6 +16,18 @@
             letter-spacing: 1px;
 
         }
+
+        .headerLogoMobile {
+            background: #cd1d36;
+        }
+
+        .headerLogoMobile img
+        {
+            max-height: 50px;
+        }
+
+
+
         {% if order.orderStatus in ['canceled', 'canceled_produced'] %}
         body {
             background: #f2dbd4;
@@ -29,8 +41,10 @@
     <table class="table table-bordered table condensed">
         <thead>
         <tr>
-            {#<th colspan="5"><img style="width: 100px;height: 30px" src="/bundles/foodapp/images/logo_food_easter_lt.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>#}
-            <th colspan="5"><img style="width: 100px;height: 30px" src="/bundles/foodapp/images/logo_food.png"> <img src="/{{order.place.getWebPathThumb}}" style="float: right"></th>
+            <th class="headerLogoMobile" colspan="5">
+                <img src="{{ asset(misc_utils.getParam('site_logo_url')) }}" style="float: left;">
+                <img src="//{{ cloudfront_url }}/{{order.place.getWebPathThumb}}" style="float: right">
+            </th>
         </tr>
 
         {% if order.deliveryType == 'pedestrian' %}
@@ -56,12 +70,12 @@
         {% for dish in order.details %}
             <tr>
                 <td>{{ loop.index }}</td>
-                <td>{{ dish.dishName }}</td>
-                <td>{{ dish.dishUnitName }}</td>
+                <td>{{ dish.dishId.name }}</td>
+                <td>{{ dish.dishUnitId.name }}</td>
                 <td>{{ dish.quantity }}</td>
                 <td>
                     {% for option in dish.options %}
-                        <li>{{ option.dishOptionName }}</li>
+                        <li>{{ option.dishOptionId.name }}</li>
                     {% endfor %}
                 </td>
             </tr>
@@ -142,7 +156,7 @@
             <th colspan="5">{% trans %}mobile.place_point_address{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5"><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr={{ order.placePoint.address }}, {{ order.placePoint.city }}" target="_blank">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.city }}</a></td>
+            <td colspan="5"><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr={{ order.placePoint.address }}, {{ order.placePoint.cityId.title }}" target="_blank">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.cityId.title }}</a></td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.place_point_phone{% endtrans %}</th>
@@ -154,7 +168,7 @@
             <th colspan="5">{% trans %}mobile.delivery_destination{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5"><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr={{ order.addressId.address }}, {{ order.addressId.city }}" target="_blank">{{ order.addressId.address }}, {{ order.addressId.city }}</a></td>
+            <td colspan="5"><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr={{ order.addressId.address }}, {{ order.addressId.cityId.title }}" target="_blank">{{ order.addressId.address }}, {{ order.addressId.cityId.title }}</a></td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.customer_phone{% endtrans %}</th>

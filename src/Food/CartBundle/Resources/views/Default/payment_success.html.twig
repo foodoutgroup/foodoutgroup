@@ -28,6 +28,7 @@
 {% endblock %}
 
 {% block jscode %}
+    <script type="text/javascript">
     $(document).ready(function(){
         $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function(event){
         Cart.submitOrder($(this).closest(".delivery-info-form"));
@@ -36,6 +37,7 @@
         return false;
         });
     });
+    </script>
 {% endblock %}
 
 {% block ga_js_code %}

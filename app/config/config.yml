@@ -95,14 +95,17 @@ framework:
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:
-        handler_id: session.handler.memcached
+#        handler_id: session.handler.memcached
         name: skaniSesija2014PerkamPicasUrmu
-        #~ save_path: %kernel.root_dir%/var/sessions
+        save_path: %kernel.root_dir%/var/sessions
     fragments:       ~
     http_method_override: true
 
 # Twig Configuration
 twig:
+    form:
+        resources:
+            - 'FoodAppBundle:Form:fields.html.twig'
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
@@ -115,15 +118,12 @@ twig:
         display_currency_alternative: "%display_currency_alternative%"
         currency_alternative: %currency_alternative%
         show_best_offers: %show_best_offers%
-        show_delfi_banner: %show_delfi_banner%
         show_game: %show_game%
         show_apps_download: %show_apps_download%
         show_is_social: %show_is_social%
         track_conversions: %track_conversions%
         publicdomain: "%publicdomain%"
         google_analytics_uid: "%google_analytics_uid%"
-        available_cities: %available_cities%
-        available_cities_slugs: %available_cities_slugs%
         vat_size: "%vat%"
         google_maps_api: "%google.maps_api%"
         cloudfront_url: "%cloudfront_url%"
@@ -146,12 +146,17 @@ twig:
         user_service: "@food.user"
         phone_service: "@food.phones_code_service"
 #        image_manager_service: "@food.image_manager_service"
+        cityService: "@food.city_service"
+        pageService: "@food.page_service"
+        localeService: "@food.locale_service"
+        slug: "@slug"
+
 
 # Assetic Configuration
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle, FoodPlacesBundle, CallCenterBundle, FoodBlogBundle ]
+    bundles:        [ FoodAppBundle, FoodDishesBundle, FoodOrderBundle, FoodCartBundle, FoodUserBundle, FoodPlacesBundle, FoodBlogBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -234,12 +239,16 @@ fos_user:
         type: food_user_registration
 
 services:
+
   gedmo.listener.softdeleteable:
     class: Gedmo\SoftDeleteable\SoftDeleteableListener
     tags:
         - { name: doctrine.event_subscriber, connection: default }
     calls:
         - [ setAnnotationReader, [ @annotation_reader ] ]
+
+  authentication_handler:
+    class: Food\UserBundle\Handler\AuthenticationHandler
 
   twig.extension.intl:
     class: Twig_Extensions_Extension_Intl
@@ -260,11 +269,11 @@ services:
     #~ arguments:
         #~ persistent_id: %session_memcached_prefix%
     calls:
-        - [ addServer, [ %session_memcached_host%, %session_memcached_port% ]]
+#        - [ addServer, [ %session_memcached_host%, %session_memcached_port% ]]
 
-  session.handler.memcached:
-    class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler
-    arguments: [@session.memcached, { prefix: %session_memcached_prefix%, expiretime: %session_memcached_expire% }]
+#  session.handler.memcached:
+#    class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler
+#    arguments: [@session.memcached, { prefix: %session_memcached_prefix%, expiretime: %session_memcached_expire% }]
 
 
 sonata_doctrine_orm_admin:
@@ -287,13 +296,14 @@ sonata_admin:
     title_logo: /bundles/foodapp/images/logo_food_small.png
     templates:
       #layout: SonataAdminBundle::standard_layout.html.twig
-      layout: FoodAppBundle::admin_layout.html.twig
+      layout: :Admin:layout.html.twig
       ajax:   SonataAdminBundle::ajax_layout.html.twig
-      dashboard: FoodAppBundle::dashboard.html.twig
+      dashboard: :Admin:dashboard.html.twig
 
       list: SonataAdminBundle:CRUD:list.html.twig
       show: SonataAdminBundle:CRUD:show.html.twig
       edit: SonataAdminBundle:CRUD:edit.html.twig
+#      list_orm_many_to_one: SonataAdminBundle:CRUD:edit.html.twig
     dashboard:
           groups:
               acme.admin.group.first:
@@ -316,13 +326,7 @@ sonata_admin:
                       - sonata.admin.place.pointdeliveryzones
                       - sonata.admin.place.reviews
                       - sonata.admin.place.coverphoto
-                      #- sonata.admin.dish.unit
-                      #- sonata.admin.dish.size
-                      #- sonata.admin.food.category
-                      #- sonata.admin.dish.unit.category
-                      #- sonata.admin.coupon
-                      #- sonata.admin.coupon_generator
-                      #- sonata.admin.combo_discounts
+                      - sonata.admin.place_notification
                   roles: [ ROLE_DISPATCHER ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers
@@ -331,8 +335,6 @@ sonata_admin:
                       - sonata.admin.food.category
                       - sonata.admin.dish
                       - sonata.admin.dish.option
-#                      kolkas neveikia
-#                      - sonata.admin.place.pointfull
                       - sonata.admin.place.reviews
                   roles: [ ROLE_DISPATCHER, ROLE_MODERATOR ]
               admin.orders:
@@ -343,46 +345,16 @@ sonata_admin:
                       - sonata.admin.order.data_import
                   roles: [ ROLE_ADMIN, ROLE_DISPATCHER, ROLE_MODERATOR ]
               admin.system:
-                  items: ~
-                  item_adds:
+                  items:
                       - sonata.admin.users
                       - sonata.admin.sms
-                      - sonata.admin.static
                       - sonata.admin.newsletter_subscribers
                       - sonata.admin.banned_ips
                       - sonata.admin.banned_email
-                      #~ - sonata.admin.street
                       - sonata.admin.unused_sf_numbers
-                      - sonata.admin.seorecords
-                      - sonata.admin.blog_category
-                      - sonata.admin.blog_post
+#                      - food_admin_import_export
+#                      - sonata.admin.import_export
                   roles: [ ROLE_ADMIN ]
-#              admin.support:
-#                  items: ~
-#                  item_adds:
-#                      - sonata.admin.support
-#                  roles: [ ROLE_SUPPORT ]
-#              acme.admin.group.first:
-#                  label: admin.group.first
-#                  label_catalogue: SonataAdminBundle
-#                  items:
-#                      - sonata.admin.kitchen
-#                      - sonata.admin.place
-#                      - sonata.admin.food.category
-#                      - sonata.admin.dish
-#                      - sonata.admin.dish.option
-#                      - sonata.admin.dish.unit.category
-#                      - sonata.admin.dish.unit
-#                      - sonata.admin.best_offer
-#                      - sonata.admin.place.pointdeliveryzones
-#                      - sonata.admin.place.reviews
-#                      - sonata.admin.place.coverphoto
-#                      - sonata.admin.order
-#                      - sonata.admin.static
-#                      - sonata.admin.newsletter_subscribers
-#                      - sonata.admin.unused_sf_numbers
-#                      - sonata.admin.seorecords
-#                  roles: [ ROLE_EDITOR, ROLE_MARKETING, ROLE_ADMIN ]
               admin.editor:
                   label: admin.group.editor
                   label_catalogue: SonataAdminBundle
@@ -390,8 +362,15 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.users
                       - sonata.admin.banned_ips
-                      #~ - sonata.admin.street
-                      - sonata.admin.params
+                      - sonata.admin.static
+                      - sonata.admin.seorecords
+                      - sonata.admin.blog_category
+                      - sonata.admin.blog_post
+                      - sonata.admin.sms.template
+                      - sonata.admin.email.template
+                      - sonata.admin.translations
+                      - sonata.admin.import_export
+                      - sonata.admin.settings
                       - sonata.admin.paramslog
                   roles: [ ROLE_EDITOR, ROLE_ADMIN ]
               admin.marketing:
@@ -404,22 +383,14 @@ sonata_admin:
                       - sonata.admin.coupon_generator
                       - sonata.admin.coupon_range
                       - sonata.admin.combo_discounts
-                      - sonata.admin.restaurant_orders
-                      #~ - sonata.admin.latency
-                      #~ - sonata.admin.driver_latency
-                      - sonata.admin.restaurant_orders_report
+                      - sonata.admin.report
                   roles: [ ROLE_MARKETING, ROLE_ADMIN ]
               admin.reports:
                   items: ~
                   item_adds:
-                      - sonata.admin.restaurant_orders
-                      #~ - sonata.admin.latency
-                      #~ - sonata.admin.driver_latency
-                      - sonata.admin.driver_worktime
                       - sonata.admin.marketing_user
                       - sonata.admin.rfm
                       - sonata.admin.rfm_status
-                      - sonata.admin.report.orders_by_restaurant
                       - sonata.admin.call_log
                   roles: [ ROLE_ADMIN ]
               admin.restaurant:
@@ -432,8 +403,6 @@ sonata_admin:
                   item_adds:
                       - sonata.admin.dispatcher
                       - sonata.admin.drivers
-                      - sonata.admin.params
-                      - sonata.admin.paramslog
                       - sonata.admin.cities
                       - sonata.admin.citieslog
                       - sonata.admin.error_log
@@ -448,10 +417,10 @@ stof_doctrine_extensions:
             translatable: true
 
 a2lix_translation_form:
-    locales: %available_locales%
+    locales: %locales%
     default_required: true
     manager_registry: doctrine
-    templating: "A2lixTranslationFormBundle::default.html.twig"
+    templating: ":gedmo:default.html.twig"
 
 #evp omg
 evp_web_to_pay:
@@ -499,7 +468,7 @@ knp_snappy:
 
 nelmio_cors:
     paths:
-        '^/api/v1/':
+        '^/api/':
             allow_origin: ['*']
             allow_headers: ['*']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']

@@ -78,6 +78,7 @@ class OrderDataForNav
     protected $isDelivered;
     protected $deliveryAddress;
     protected $city;
+    protected $cityId;
     protected $country;
     protected $paymentType;
     protected $foodAmount;

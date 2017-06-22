@@ -1,4 +1,12 @@
 parameters:
+    defaultDomain: messages
+    defaultSelections: [messages]
+    emptyPrefixes: []
+    editable:
+        mode: inline		 # Mode of editable, can be popup or inline
+        type: textarea		 # Type of input. Can be text|textarea|select|date|checklist and more
+        emptytext: Empty 	 # text to display on empty translations
+        placement: top		 # ingnored for inline mode
     database_driver: pdo_mysql
     database_host: localhost
     database_port: 3306
@@ -21,14 +29,14 @@ parameters:
     driver.socket_address: tcp://s2.foodout.lt:7778
     driver.socket_hash: api
 
-    locale: lt
-    locales: ["lt", "en", "ru"]
-    available_cities: ["Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys", "Alytus", "Utena", "Plungė"]
-    available_cities_slugs: ["Vilnius", "Kaunas", "Klaipeda", "Siauliai", "Panevezys", "Alytus", "Utena", "Plunge"]
+    locale: ru
+    locales: ["ru",'"by", "en"]
+    available_cities: ["Minsk"]
+    available_cities_slugs: ["Minsk"]
     available_locales: ["lt", "en", "ru"]
     available_locales_routing: lt | en | ru
     cloudfront_url: images.foodout.lt
-    time_zone: "Europe/Vilnius"
+    time_zone: "Europe/Minsk"
     sms.sender: "Foodout.lt"
     admin.emails: [karolis.m@foodout.lt]
     admin.phones: [37061514333]
@@ -77,7 +85,7 @@ parameters:
         - seb-banklink
         - nordea-banklink
     currency_display: '&euro;'
-    currency_iso: EUR
+    currency_iso: BYN
     display_currency_alternative:  Lt
     currency_alternative: false
     invoice.series: FOO
@@ -88,9 +96,9 @@ parameters:
     show_delfi_banner: false
     track_conversions: false
     # naudojam telefonu validacijoms
-    country: LT
-    country_full: Lithuania
-    vat: 21
+    country: BY
+    country_full: Belarus
+    vat: 20
     title: "Foodout"
     domain: "foodout.lt"
     publicdomain: "foodout.lt"
@@ -140,6 +148,7 @@ parameters:
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: true
     show_making_time_deadline: false
+    geo_provider: https://geoproxy.foodout.lt
 
     session_memcached_host:     memcached
     session_memcached_port:     11211

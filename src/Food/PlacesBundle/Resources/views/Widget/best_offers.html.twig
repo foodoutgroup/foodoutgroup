@@ -1,0 +1,30 @@
+{% if best_offers %}
+    {#<div class="items-list-title clearfix">
+        <h2>{% trans %}places.best_offers_block_title{% endtrans %}</h2>
+    </div>#}
+
+    <div class="items-list clearfix best-offers-top-line">
+        {% for best_offer in best_offers %}
+            <div class="items-list-col">
+                <a href="{% if best_offer.place is not null and not best_offer.useUrl %}{{ slug.getUrl(best_offer.place.id, 'place') }}{% else %}{{ best_offer.link }}{% endif %}" class="cupom-item">
+
+                <div class="cupon-top">
+                    <img src="//{{ cloudfront_url }}{{ asset(best_offer.getWebPathThumb("type1")) }}" width="180" height="177">
+                    <p class="cupon-name" style="margin: 0;">{{ best_offer.title }}</p>
+                    <p class="cupon-desc" style="margin: 0;">{{ best_offer.text }}</p>
+                </div>
+
+                <div class="cupon-bottom">
+                    <div class="button">{% trans %}index.get_this_offer{% endtrans %}</div>
+                </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    {% set pageBF = pageService.getByParam('page_best_offer') %}
+    {% if pageBF %}
+        <div class="all-best-offers-link clearfix text-center">
+            <a class="cupon-name" href="{{ slug.getUrl(pageBF.getId(), 'page') }}">{{ pageBF.getTitle() }}</a>
+        </div>
+    {% endif %}
+{% endif %}

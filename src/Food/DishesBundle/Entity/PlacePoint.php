@@ -40,7 +40,7 @@ class PlacePoint
     /**
      * @var string
      *
-     * @ORM\Column(name="company_code", type="string", length=20)
+     * @ORM\Column(name="company_code", type="string", length=20, nullable=true)
      */
     private $company_code;
 
@@ -239,6 +239,14 @@ class PlacePoint
      */
     private $syncUrl;
 
+    /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     **/
+    private $cityId;
+
 //    /**
 //     * @var string
 //     * @ORM\Column(name="sync_format", type="string",  nullable=true)
@@ -435,9 +443,11 @@ class PlacePoint
      * Get city
      *
      * @return string
+     * @deprecated from 2017-05-04
      */
     public function getCity()
     {
+        throw new \Exception('on PlacePoint.php: Method getCity() is deprecated. Use getCityId() instead.');
         return $this->city;
     }
 
@@ -587,7 +597,12 @@ class PlacePoint
         if (!$this->getId()) {
             return '';
         }
-        return $this->getAddress().', '.$this->getCity();
+        $buffer = $this->getAddress().', ';
+        if($city = $this->getCityId()) {
+            $buffer = $buffer.$city->getTitle();
+        }
+
+        return $buffer;
     }
 
     public function getToString()
@@ -605,12 +620,16 @@ class PlacePoint
         }
 
         // TODO - kam ko reik - patys pasipildot!
+
+        $cityObj = $this->getCityId();
+
         return array(
             'id' => $this->getId(),
             'placeId' => $this->getPlace()->getId(),
             'placeName' => $this->getPlace()->getName(),
             'address' => $this->getAddress(),
-            'city' => $this->getCity(),
+            'city' => $cityObj ? $cityObj->getTitle() : '',
+            'cityId' => $cityObj ? $cityObj->getId() : null,
             'active' => $this->getActive(),
             'public' => $this->getPublic(),
             'delivery' => $this->getDelivery(),
@@ -1556,14 +1575,14 @@ class PlacePoint
     public function setPhoneSend($phoneSend)
     {
         $this->phoneSend = $phoneSend;
-    
+
         return $this;
     }
 
     /**
      * Get phoneSend
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPhoneSend()
     {
@@ -1579,14 +1598,14 @@ class PlacePoint
     public function setAltPhone1Send($altPhone1Send)
     {
         $this->altPhone1Send = $altPhone1Send;
-    
+
         return $this;
     }
 
     /**
      * Get altPhone1Send
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAltPhone1Send()
     {
@@ -1602,14 +1621,14 @@ class PlacePoint
     public function setAltPhone2Send($altPhone2Send)
     {
         $this->altPhone2Send = $altPhone2Send;
-    
+
         return $this;
     }
 
     /**
      * Get altPhone2Send
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAltPhone2Send()
     {
@@ -1625,14 +1644,14 @@ class PlacePoint
     public function setEmailSend($emailSend)
     {
         $this->emailSend = $emailSend;
-    
+
         return $this;
     }
 
     /**
      * Get emailSend
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getEmailSend()
     {
@@ -1648,14 +1667,14 @@ class PlacePoint
     public function setAltEmail1Send($altEmail1Send)
     {
         $this->altEmail1Send = $altEmail1Send;
-    
+
         return $this;
     }
 
     /**
      * Get altEmail1Send
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAltEmail1Send()
     {
@@ -1671,17 +1690,40 @@ class PlacePoint
     public function setAltEmail2Send($altEmail2Send)
     {
         $this->altEmail2Send = $altEmail2Send;
-    
+
         return $this;
     }
 
     /**
      * Get altEmail2Send
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getAltEmail2Send()
     {
         return $this->altEmail2Send;
     }
+
+    /**
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return PlacePoint
+     */
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
+    {
+        $this->cityId = $cityId;
+
+        return $this;
+    }
+    /**
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
+    }
+
 }

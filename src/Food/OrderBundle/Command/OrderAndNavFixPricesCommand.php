@@ -119,7 +119,7 @@ class OrderAndNavFixPricesCommand extends ContainerAwareCommand
     {
         $qb = $services->em->createQueryBuilder();
 
-        $params = ['from' => $from, 'to' => $to, 'city' => 'Vilnius'];
+        $params = ['from' => $from, 'to' => $to, 'city' => 'Vilnius']; //todo MULTI-L Kodėl tik Vilnius?
 
         $result = $qb->select('o.id, p.total AS posted_total, p.delivery, p.tender_type')
                      ->from('FoodOrderBundle:Order', 'o')

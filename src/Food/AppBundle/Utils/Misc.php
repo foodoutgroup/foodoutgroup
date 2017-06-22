@@ -24,6 +24,8 @@ class Misc
      */
     private $accountingEuroRate = 3.4528;
 
+    private static $paramCollection = [];
+
     /**
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
@@ -68,6 +70,7 @@ class Misc
      */
     public function isMobilePhone($phone, $country)
     {
+
         $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
         try {
             $numberProto = $phoneUtil->parse($phone, $country);
@@ -216,26 +219,29 @@ class Misc
     }
 
     /**
-     * @param string  $name
-     * @param boolean $noException
-     *
+     * @param string $name
+     * @param null $default
      * @return string
-     * @throws \Exception
+     * @internal param bool $noException
+     *
      */
-    public function getParam($name, $noException = false)
+    public function getParam($name, $default = null)
     {
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(['param' => $name]);
+        if (isset(self::$paramCollection[$name])) {
+            return self::$paramCollection[$name];
+        }
+        else {
+            $em = $this->getContainer()->get('doctrine')->getManager();
+            $parameter = $em->getRepository('Food\AppBundle\Entity\Param')->findOneBy(['param' => $name]);
 
-        if ($noException && !$parameter instanceof Param) {
-            return null;
+            if (!$parameter instanceof Param) {
+                self::$paramCollection[$name] = $default;
+                return $default;
+            }
+            self::$paramCollection[$name] = $parameter->getValue();
+            return $parameter->getValue();
         }
 
-        if (!$parameter instanceof Param) {
-            throw new \Exception('Parameter "' . $name . '" not found');
-        }
-
-        return $parameter->getValue();
     }
 
     /**
@@ -447,26 +453,5 @@ class Misc
         $minutes = (preg_match($pattern, $time)) ? $floatValue * 60 : $floatValue;
 
         return $minutes;
-    }
-
-    public function getCityBreadcrumbs($city){
-       $cityBreadcrumbs = [
-            'Klaipeda' => 'Klaipėda',
-            'Siauliai' => 'Šiauliai',
-            'Panevezys' => 'Panevėžys',
-            'Marijampole' => 'Marijampolė',
-            'Kedainiai' => 'Kėdainiai',
-            'Plunge' => 'Plungė',
-            'Mazeikiai' => 'Mažeikiai',
-            'Riga' => 'Rīga',
-       ];
-
-        if(array_key_exists($city,$cityBreadcrumbs)){
-            $cityBreadcrub = $cityBreadcrumbs[$city];
-        }else{
-            $cityBreadcrub = $city;
-        }
-
-        return $cityBreadcrub;
     }
 }

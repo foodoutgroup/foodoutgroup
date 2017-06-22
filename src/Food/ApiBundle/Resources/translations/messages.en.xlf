@@ -1,83 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-    <file source-language="en" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.basket_does_not_exists" resname="api.orders.basket_does_not_exists">
-                <source>api.orders.basket_does_not_exists</source>
-                <target>Cart does not exists</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="en" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_does_not_exists">
-                <source>api.orders.coupon_does_not_exists</source>
-                <target>Sorry, code is not valid</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="en" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_too_early">
-                <source>api.orders.coupon_too_early</source>
-                <target>Sorry, the code you entered is not valid yet.</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="en" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.coupon_does_not_exists" resname="api.orders.coupon_expired">
-                <source>api.orders.coupon_expired</source>
-                <target>Sorry, code is expired</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="en" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.coupon_empty" resname="api.orders.coupon_empty">
-                <source>api.orders.coupon_empty</source>
-                <target>There is no such code</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="en" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.user_not_authorized" resname="api.orders.user_not_authorized">
-                <source>api.orders.user_not_authorized</source>
-                <target>User Not Authorized</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="en" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.user_phone_empty" resname="api.orders.user_phone_empty">
-                <source>api.orders.user_phone_empty</source>
-                <target>User phone is empty</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="en" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.user_lastname_empty" resname="api.orders.user_lastname_empty">
-                <source>api.orders.user_lastname_empty</source>
-                <target>User lastname is empty</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="en" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.user_phone_invalid" resname="api.orders.user_phone_invalid">
-                <source>api.orders.user_phone_invalid</source>
-                <target>User phone is invalid</target>
-            </trans-unit>
-        </body>
-    </file>
-    <file source-language="en" datatype="plaintext" original="file.ext">
-        <body>
-            <trans-unit id="api.orders.order_to_small" resname="api.orders.order_to_small">
-                <source>api.orders.order_to_small</source>
-                <target>Order To Small</target>
-            </trans-unit>
-        </body>
-    </file>
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="1">
+        <source><![CDATA[api.orders.basket_does_not_exists]]></source>
+        <target><![CDATA[Cart does not exists]]></target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source><![CDATA[api.orders.coupon_does_not_exists]]></source>
+        <target><![CDATA[Sorry, code is not valid]]></target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source><![CDATA[api.orders.coupon_too_early]]></source>
+        <target><![CDATA[Sorry, the code you entered is not valid yet.]]></target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source><![CDATA[api.orders.coupon_expired]]></source>
+        <target><![CDATA[Sorry, code is expired]]></target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source><![CDATA[api.orders.coupon_empty]]></source>
+        <target><![CDATA[There is no such code]]></target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source><![CDATA[api.orders.user_not_authorized]]></source>
+        <target><![CDATA[User Not Authorized]]></target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source><![CDATA[api.orders.user_phone_empty]]></source>
+        <target><![CDATA[User phone is empty]]></target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source><![CDATA[api.orders.user_lastname_empty]]></source>
+        <target><![CDATA[User lastname is empty]]></target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source><![CDATA[api.orders.user_phone_invalid]]></source>
+        <target><![CDATA[User phone is invalid]]></target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source><![CDATA[api.orders.order_to_small]]></source>
+        <target><![CDATA[Order To Small]]></target>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

@@ -219,7 +219,7 @@ class PlaceReviewsAdmin extends FoodAdmin
         {
             $addressCheck = $userCheck->getDefaultAddress();
 
-            if ($addressCheck && $addressCheck->getCity() != $newCity) {
+            if ($addressCheck && $addressCheck->getCityId()->getTitle() != $newCity) {
                 $exists = true;
             } else {
                 $exists = false;

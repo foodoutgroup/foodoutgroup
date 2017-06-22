@@ -9,3 +9,19 @@ services:
     parent: food.base_service
     calls:
       - [setPlaceService, [@food.places]]
+
+  sonata.admin.place_notification:
+      class: Food\PlacesBundle\Admin\PlaceNotificationAdmin
+      tags:
+          - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.place_notification" }
+      arguments:
+          - ~
+          - Food\PlacesBundle\Entity\PlaceNotification
+          - ~
+      calls:
+          - [ setTranslationDomain, [SonataAdminBundle]]
+
+  food.pedestrian_service:
+      class: Food\PlacesBundle\Service\PedestrianService
+      calls:
+        - [setContainer, [@service_container]]

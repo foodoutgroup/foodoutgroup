@@ -9,6 +9,8 @@ use Food\AppBundle\Entity\Uploadable;
 use Gedmo\Translatable\Translatable;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Food\AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Client
@@ -28,6 +30,10 @@ class Place extends Uploadable implements Translatable
     const OPT_ONLY_DELIVERY = 'delivery';
     const OPT_ONLY_PICKUP = 'pickup';
     const OPT_ONLY_PEDESTRIAN = 'pedestrian';
+
+
+
+    const SLUG_TYPE = 'place';
 
     // megabytes
     protected $maxFileSize = 1.9;
@@ -168,6 +174,11 @@ class Place extends Uploadable implements Translatable
      * @ORM\OneToMany(targetEntity="Food\PlacesBundle\Entity\BestOffer", mappedBy="place")
      */
     private $bestOffers;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Food\PlacesBundle\Entity\PlaceNotification", mappedBy="place")
+     */
+    private $placeNotification;
 
     /**
      * @ORM\OneToMany(targetEntity="PlacePoint", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -463,6 +474,13 @@ class Place extends Uploadable implements Translatable
     private $translations;
 
     /**
+     * @var string
+     * @Gedmo\Translatable
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true, unique=true)
+     */
+    private $slug;
+
+    /**
      * @var float
      *
      * @ORM\Column(name="admin_fee", type="decimal",scale=2, nullable=true)
@@ -475,6 +493,15 @@ class Place extends Uploadable implements Translatable
      * @ORM\Column(name="use_admin_fee", type="boolean", nullable=true, options={"default": false})
      */
     private $useAdminFee;
+
+    /**
+     * @var \Food\AppBundle\Entity\City
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\AppBundle\Entity\City")
+     * @ORM\JoinColumn(name="city_id", referencedColumnName="id")
+     **/
+    private $cityId;
+
 
     /**
      * Returns place name
@@ -1300,6 +1327,12 @@ class Place extends Uploadable implements Translatable
         $this->locale = $locale;
     }
 
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+
     /**
      * @return mixed
      */
@@ -1941,6 +1974,40 @@ class Place extends Uploadable implements Translatable
     }
 
     /**
+     * Get placeNotification
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPlaceNotification()
+    {
+        return $this->placeNotification;
+    }
+
+    /**
+     * Add placeNotification
+     *
+     * @param \Food\PlacesBundle\Entity\PlaceNotification $placeNotification
+     *
+     * @return Place
+     */
+    public function addPlaceNotification(\Food\PlacesBundle\Entity\PlaceNotification $placeNotification)
+    {
+        $this->placeNotification[] = $placeNotification;
+
+        return $this;
+    }
+
+    /**
+     * Remove placeNotification
+     *
+     * @param \Food\PlacesBundle\Entity\PlaceNotification $placeNotification
+     */
+    public function removePlaceNotification(\Food\PlacesBundle\Entity\PlaceNotification $placeNotification)
+    {
+        $this->placeNotification->removeElement($placeNotification);
+    }
+
+    /**
      * Set pickupTime
      *
      * @param string $pickupTime
@@ -2208,6 +2275,29 @@ class Place extends Uploadable implements Translatable
     }
 
     /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Place
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
      * @return float
      */
     public function getAdminFee()
@@ -2240,9 +2330,31 @@ class Place extends Uploadable implements Translatable
     }
 
     /**
+     * Set cityId
+     *
+     * @param \Food\AppBundle\Entity\City $cityId
+     * @return PlacePoint
+     */
+    public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
+    {
+        $this->cityId = $cityId;
+
+        return $this;
+    }
+    /**
+     * Get cityId
+     *
+     * @return \Food\AppBundle\Entity\City
+     */
+    public function getCityId()
+    {
+        return $this->cityId;
+    }
+
+    /**
      * Get useAdminFee
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getUseAdminFee()
     {

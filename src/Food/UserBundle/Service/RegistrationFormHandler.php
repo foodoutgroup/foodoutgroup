@@ -65,8 +65,8 @@ class RegistrationFormHandler extends OriginalHandler
         if ($existingUser && !$fullyRegistered) {
             $user = $existingUser;
         }
-
         $user->setUsername($user->getEmail());
+
         $user->setEnabled(true);
 
         $this->form->setData($user);
@@ -75,6 +75,9 @@ class RegistrationFormHandler extends OriginalHandler
             $this->form->bind($this->request);
 
             if ($this->form->isValid()) {
+
+                $user->setLocale($this->request->getLocale());
+
                 $this->onSuccess($user, $confirmation);
 
                 return true;
