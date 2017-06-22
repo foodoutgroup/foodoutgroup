@@ -23,5 +23,4 @@ services:
 
   food.pedestrian_service:
       class: Food\PlacesBundle\Service\PedestrianService
-      calls:
-        - [setContainer, [@service_container]]
+      arguments: {"@doctrine.orm.entity_manager", "@food.app.utils.misc"}
