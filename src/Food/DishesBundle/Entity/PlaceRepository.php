@@ -30,6 +30,10 @@ class PlaceRepository extends EntityRepository
         $lat = $locationData['latitude'];
         $lon = $locationData['longitude'];
 
+        if (!$lat || !$lon) {
+            return [];
+        }
+
         $rushHour = false;
         $pickup = (isset($filters['delivery_type']) && $filters['delivery_type'] == Place::OPT_ONLY_PICKUP);
 
@@ -55,7 +59,7 @@ class PlaceRepository extends EntityRepository
             $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id
             AND ((6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) <= ($maxDistance))
             AND pps.delivery=1
-            ORDER BY fast DESC, 
+            ORDER BY fast DESC,
             (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pps.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pps.lat) * pi()/180) * POWER(SIN(($lon - pps.lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
         }
 
@@ -138,7 +142,7 @@ class PlaceRepository extends EntityRepository
                         AND pps.active=1
                         AND pps.deleted_at is NULL
                         AND pps.place = " . $place['place']->getId() . "
-                      
+
                         AND ppwt.week_day = " . $wd . "
                         AND (
                         (start_hour = 0 OR start_hour < ' . $dh . ' OR
@@ -181,6 +185,10 @@ class PlaceRepository extends EntityRepository
         return $places;
     }
 
+    /**
+     * @deprecated
+     * Required for neighbourhood logic in Iran
+     */
     public function simpleFindByNeighbourhood($kitchens, $filters = [], $locationData = null, $container = null)
     {
         $neighbourhoodId = $locationData['neighbourhood_id'];

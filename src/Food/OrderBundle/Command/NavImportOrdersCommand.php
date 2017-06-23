@@ -347,6 +347,9 @@ class NavImportOrdersCommand extends ContainerAwareCommand
 
 
                             if (!$address) {
+                                if (empty($gisAddress['city_id'])) {
+                                    $gisAddress['city_id'] = $cityObj->getId();
+                                }
 
                                 $address = $this->getContainer()
                                     ->get('food.location')->saveAddressFromArrayToUser($gisAddress, $user);
