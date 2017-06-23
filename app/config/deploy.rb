@@ -10,7 +10,7 @@ set :branch, "feature/language_l10n_fix_and_update"
 
 # multi-stage environment
 set :stages,        %w(lt_beta lt_staging lt_production)
-#~ set :stages,        %w(lv_beta lv_staging lv_production)
+#set :stages,        %w(lv_beta lv_staging lv_production)
 #~ set :stages,        %w(ee_beta ee_staging ee_production)
 #~ set :stages,        %w(by_beta by_staging by_production)
 # isijungiam kada reik :)

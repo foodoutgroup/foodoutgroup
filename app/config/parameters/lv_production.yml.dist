@@ -138,6 +138,21 @@ parameters:
     show_making_time_deadline: true
     geo_provider: https://geoproxy.foodout.lt
 
+    # seb banklink
+    seb:
+        banklink.private_key: "/srv/gluster/banklinks/seb/private.key"
+        banklink.bank_key: "/srv/gluster/banklinks/seb/bank.key"
+        REDIRECT_SERVICE: 1001
+        SUCCESS_SERVICE: 1101
+        WAITING_SERVICE: 1201
+        FAILURE_SERVICE: 1901
+        VK_SND_ID: "EM0489"
+        VK_ACC: "LT197044060007974514"
+        entrypoint: "https://e.seb.lt/banklink/in"
+        lang: "LIT"
+        name: "UAB Foodout.lt"
+        curr: "EUR"
+
     session_memcached_host:     memcached
     session_memcached_port:     11211
     session_memcached_prefix:   foodoutlv

@@ -35,7 +35,8 @@ class SlugController extends Controller
 
         $params = explode("/", $slug);
 
-        $slug = $params[0];
+        $slug = strtolower($params[0]);
+
         unset($params[0]);
         $qb = $this->getDoctrine()
             ->getRepository('FoodAppBundle:Slug')
@@ -57,7 +58,6 @@ class SlugController extends Controller
             $query
                 ->orderBy('s.id', 'DESC')
                 ->setMaxResults(1);
-
             $result = $query->getQuery()->execute();
             $slugRow = null;
             if(count($result)) {

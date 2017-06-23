@@ -1,12 +1,4 @@
 parameters:
-    defaultDomain: messages
-    defaultSelections: [messages]
-    emptyPrefixes: []
-    editable:
-        mode: inline		 # Mode of editable, can be popup or inline
-        type: textarea		 # Type of input. Can be text|textarea|select|date|checklist and more
-        emptytext: Empty 	 # text to display on empty translations
-        placement: top		 # ingnored for inline mode
     database_driver: pdo_mysql
     database_host: maindb
     database_port: 3306
@@ -18,7 +10,14 @@ parameters:
     mailer_user: null
     mailer_password: null
     secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
-
+    defaultDomain: messages
+    defaultSelections: [messages]
+    emptyPrefixes: []
+    editable:
+        mode: inline         # Mode of editable, can be popup or inline
+        type: textarea       # Type of input. Can be text|textarea|select|date|checklist and more
+        emptytext: Empty     # text to display on empty translations
+        placement: top       # ingnored for inline mode
     aws_key: AKIAJN3454YNXAUSJIRA
     aws_secret: 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
     aws_region: eu-west-1
@@ -46,7 +45,7 @@ parameters:
         vilnius: []
         kaunas: []
         klaipėda: []
-        ryga: [karolis.m@foodout.lt]
+        ryga: []
     order.accept_notify_emails: []
     order.cancel_notify_emails: []
     accounting_email: "buhalterija@foodout.lt"
@@ -170,7 +169,12 @@ parameters:
     session_memcached_port:     11211
     session_memcached_prefix:   foodoutlt
     session_memcached_expire:   3600
-
+lexik_translation:
+    fallback_locale: '%locale%'
+    managed_locales: '%locales%'
+    resources_registration:
+        type: all
+        managed_locales_only: true
 pirminis_gateway:
     datacash_url: 'https://mars.transaction.datacash.com/Transaction'
     swedbank:
