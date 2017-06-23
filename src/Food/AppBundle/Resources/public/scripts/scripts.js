@@ -278,6 +278,7 @@ var registrationForm = {
     var button_submit = form.find('#submit');
     var input_collection = form.find('input');
     var button_find_me = form.find('#find-me');
+    var button_do_pickup = form.find('#do-pickup');
     var div_error = form.find('#error');
 
     var resultCollection = [];
@@ -329,6 +330,22 @@ var registrationForm = {
         } else {
             throwMapLocationPicker(null);
         }
+    });
+
+    button_do_pickup.click(function (e) {
+        e.preventDefault();
+        img = $(this).find('img');
+        oldval = img.attr('src');
+        img.attr('src', img.attr('img-loader'));
+        $.get($(this).data("url"), {"redirect" : true, "type" : "delivery", "address": input_auto_complete.data("selected") }, function (response) {
+            if(response.success) {
+                window.location.href = response.url;
+            } else {
+                throwError(response.message);
+            }
+            img.attr('src', oldval);
+        });
+
     });
 
 

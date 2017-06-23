@@ -26,6 +26,8 @@
                     <div class="flex-aligment">
                         <input type="text" {% if location is not null and location.precision == 0 and location.id is defined %}data-selected="{{ location.id }}"{% endif %} id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if location is not null and location.output is defined %}{{ location.output }}{% endif %}" />
                         <button class="submit" id="submit" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}"  img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/></button>
+                        <label>/</label>
+                        <button class="submit do-pickup" title="{% trans %}label.pickup{% endtrans %}" id="do-pickup" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'delivery-type'}) }}"><img src="{{ asset('bundles/foodapp/images/go-pickup.png') }}"  img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/></button>
                         <span id="find-me" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
                     </div>
                     <div class="clearfix"></div>

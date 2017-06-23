@@ -45,8 +45,28 @@ class AjaxController extends Controller
                 $collection = $this->_getAddressByLocation($request);
                 break;
             case 'delivery-type':
-                $this->get('session')->set('delivery_type', $request->get('type'));
-                $collection = [];
+                $collection = ['success' => false];
+
+                    $this->get('session')->set('delivery_type', $request->get('type'));
+
+                    if ($request->get('redirect')) {
+
+                        if($request->get('address') != "") {
+                            $collection = $this->_checkAddress($request);
+                        } else {
+                            $lService = $this->get('food.location');
+                            $findAddress = $lService->findByIp($request->getClientIp());
+                            if ($findAddress['precision'] != 1) {
+                                $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findNearestCity();
+                                $lService->set($findAddress);
+                                $collection['success'] = true;
+                            } else {
+                                $collection['message'] = $this->get('translator')->trans('location.cant.be.located');
+                            }
+                        }
+
+                    }
+
                 break;
             default:
                 $collection = ['message' => 'Method not found :)'];
