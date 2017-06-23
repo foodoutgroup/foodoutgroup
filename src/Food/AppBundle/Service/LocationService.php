@@ -118,7 +118,19 @@ class LocationService extends ContainerAware
      */
     public function get()
     {
-        return $this->session->get('location');
+        $current = $this->session->get('location');
+        // TODO: remove after week (added 2017-06-23)
+        if($current && is_array($current)) {
+            if(!isset($current['output']) && isset($current['origin'])) {
+                $current['output'] = $current['origin'];
+            }
+
+            if(!isset($current['id']) && isset($current['hash'])) {
+                $current['id'] = $current['hash'];
+            }
+        }
+
+        return $current;
     }
     /**
      * @return null
