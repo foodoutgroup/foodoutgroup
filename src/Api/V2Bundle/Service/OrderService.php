@@ -112,7 +112,6 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         } else {
             $deliveryTime = new \DateTime($orderDate);
         }
-
         $order->setDeliveryTime($deliveryTime);
         $order->setDeliveryPrice($deliveryTotal); // todo
         $order->setVat($this->container->getParameter('vat'));
@@ -152,14 +151,14 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
             $user->setPassword(md5(time()));
             $user->setFullyRegistered(true);
             $em->persist($user);
+            $em->flush();
 
-            if($location) {
-                $this->container->get('food.location')->saveAddressFromArrayToUser($location, $user);
+            if ($location) {
+               $address =  $this->container->get('food.location')->saveAddressFromArrayToUser($location, $user);
             }
-
         } else {
             if($location) {
-               $this->container->get('food.location')->saveAddressFromArrayToUser($location, $user);
+                $address = $this->container->get('food.location')->saveAddressFromArrayToUser($location, $user);
             }
         }
         if(isset($address)) {
