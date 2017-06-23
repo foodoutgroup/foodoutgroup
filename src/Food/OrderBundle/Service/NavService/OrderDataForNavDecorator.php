@@ -116,8 +116,7 @@ trait OrderDataForNavDecorator
         $data->clientName = $orderAccData->getClientName();
         $data->isDelivered = $orderAccData->getIsDelivered() ? 'yes' : 'no';
         $data->deliveryAddress = $orderAccData->getDeliveryAddress();
-        $data->city = $orderAccData->getCityId()->getTitle();
-        $data->cityId = $orderAccData->getCityId();
+        $data->city = $orderAccData->getCity();
         $data->country = $orderAccData->getCountry();
         $data->paymentType = $orderAccData->getPaymentType();
         $data->foodAmount = (double)$orderAccData->getFoodAmount();
@@ -238,7 +237,6 @@ trait OrderDataForNavDecorator
             ->setIsDelivered($data->isDelivered == 'yes' ? true : false)
             ->setDeliveryAddress($data->deliveryAddress)
             ->setCity($data->city)
-            ->setCityId($data->cityId) // todo MULTI-L bbz
             ->setCountry($data->country)
             ->setPaymentType($data->paymentType)
             ->setFoodAmount($data->foodAmount)

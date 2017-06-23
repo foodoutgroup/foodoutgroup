@@ -16,6 +16,7 @@ class SettingsController extends CRUDController
         'page_help',
         'page_best_offer',
         'page_blog',
+        'page_restaurant_list',
         'use_admin_fee_globally',
         'admin_fee_size',
         'page_b2b_rules',
@@ -87,7 +88,7 @@ class SettingsController extends CRUDController
     {
         $static = $this->getDoctrine()->getRepository('FoodAppBundle:StaticContent');
         $pageCollection = [];
-
+        $pageCollection[] = ' - ';
         foreach ($static->findAll() as $page) {
             $pageCollection[$page->getId()] = $page->getTitle();
         }
@@ -133,6 +134,12 @@ class SettingsController extends CRUDController
 
         $form->add('page_blog', 'choice', [
             'label' => 'Blog page',
+            'choices' =>  $pageCollection
+        ]);
+
+
+        $form->add('page_restaurant_list', 'choice', [
+            'label' => 'Restaurant list',
             'choices' =>  $pageCollection
         ]);
 

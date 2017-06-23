@@ -112,7 +112,6 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
         } else {
             $deliveryTime = new \DateTime($orderDate);
         }
-
         $order->setDeliveryTime($deliveryTime);
         $order->setDeliveryPrice($deliveryTotal); // todo
         $order->setVat($this->container->getParameter('vat'));
@@ -152,32 +151,14 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
             $user->setPassword(md5(time()));
             $user->setFullyRegistered(true);
             $em->persist($user);
+            $em->flush();
 
-            if($location !== false) {
-                $address = new UserAddress();
-                $address->setCity($location['city']);
-                $address->setUser($user);
-                $address->setLat($location['lat']);
-                $address->setLon($location['lng']);
-                $address->setAddress($location['address_orig']);
-                $address->setDefault(true);
-                $em->persist($address);
+            if ($location) {
+               $address =  $this->container->get('food.location')->saveAddressFromArrayToUser($location, $user);
             }
-
         } else {
-
-            if($location !== false) {
-                $address = $em->getRepository('FoodUserBundle:UserAddress')->findOneBy(['user' => $user->getId(), 'address' => $location['address_orig']]);
-                if (!$address) {
-                    $address = new UserAddress();
-                    $address->setCity($location['city']);
-                    $address->setUser($user);
-                    $address->setLat($location['lat']);
-                    $address->setLon($location['lng']);
-                    $address->setAddress($location['address_orig']);
-                    $address->setDefault(true);
-                    $em->persist($address);
-                }
+            if($location) {
+                $address = $this->container->get('food.location')->saveAddressFromArrayToUser($location, $user);
             }
         }
         if(isset($address)) {

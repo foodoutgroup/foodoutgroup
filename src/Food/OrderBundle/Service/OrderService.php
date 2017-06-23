@@ -3202,7 +3202,7 @@ class OrderService extends ContainerAware
                 if ($this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->isPlacePointWorks($point)) {
                     $returner .= '<span class="work-green">' . $this->getTodayWork($point, false) . "</span>";
                 } else {
-                    $returner .= '<span class="work-red">' . $this->getTodayWork($point, false) . "</span> " . $this->container->get('translator')->trans($this->workTimeErrorsReturn($point));
+                    $returner .= '<span class="work-red">' . $this->getTodayWork($point, false) . "</span>" . $this->container->get('translator')->trans($this->workTimeErrorsReturn($point));
                 }
                 $returner .= "<br />";
             }
@@ -3427,10 +3427,14 @@ class OrderService extends ContainerAware
             $placePointMap = $this->container->get('session')->get('point_data');
 
             $addressId = $request->request->get("addressId");
+            $flat = ( $request->request->get('flat') === '' ? null : $request->request->get('flat') );
+            if ($addressId || $flat) {
+                if (!$addressId) {
+                    $oldData = $locationService->get();
+                    $locationService->set($oldData, $flat);
+                }
 
-            if ($addressId) {
-
-                $locationData = $locationService->findByHash($request->request->get("addressId"));
+                $locationData = $locationService->findByHash($request->request->get("addressId"), $flat);
 
                 if($locationData['precision'] == 0) {
 
@@ -3440,16 +3444,10 @@ class OrderService extends ContainerAware
                         $formErrors[] = "order.form.errors.customeraddr.city.not.found";
                     } else {
 
-                        $locationData = $locationService->set(
-                            $cityObj,
-                            $locationData['country'],
-                            $locationData['street'],
-                            $locationData['house'],
-                            $request->request->get('flat'),
-                            $locationData['output'],
-                            $locationData['latitude'],
-                            $locationData['longitude']
-                        );
+                        $locationService->set($locationData, $flat);
+
+                        $locationData = $locationService->get();
+
 
                         if (empty($placePointMap[$place->getId()])) {
                             $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 1');
@@ -3686,7 +3684,7 @@ class OrderService extends ContainerAware
         }
 
         // Validate das phone number :)
-        if (0 != strlen($phone)) {
+        if (strlen($phone)) {
             $validation = $this->container->get('food.phones_code_service')->validatePhoneNumber($phone, $request->get('country'));
 
             if($validation === true){

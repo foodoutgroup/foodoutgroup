@@ -448,11 +448,18 @@ class User extends BaseUser
     /**
      * Get address
      *
-     * @return UserAddress
+     * @return UserAddress|null
      */
     public function getDefaultAddress()
     {
-        return $this->address[0];
+        if (!empty($this->address)) {
+            foreach($this->address as $address) {
+                if ($address->getDefault()) {
+                    return $address;
+                }
+            }
+        }
+        return null;
     }
 
     public function getCurrentDefaultAddress()

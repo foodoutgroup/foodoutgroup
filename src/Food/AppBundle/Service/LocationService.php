@@ -26,6 +26,61 @@ class LocationService extends ContainerAware
         $this->session = $this->container->get('session');
     }
 
+    public function parseLocation($location = [], $flat = null)
+    {
+        $locationData = null;
+        if($location != null && is_array($location)) {
+            if (isset($location['flat']) && !$flat) { $flat = $location['flat'] ; }
+
+            if(!is_null($flat) || (isset($location['output']) && !is_null($flat = $this->parseFlat($location['output'])))) {
+                preg_match('/(.*?\s+\d{1,3}(\pL|\s\pL)?)([-|\s]{0,4}[\d\pL]{0,3})(.*)$/ium', $location['output'], $response);
+                $location['output'] = str_replace($response[3], "", $location['output']);
+            }
+
+            $locationData = [
+                'id' => isset($location['id']) ? $location['id'] : null,
+                'output' => isset($location['output']) ? $location['output'] : null,
+                'country' => isset($location['country']) ? $location['country'] : null,
+                'city' => isset($location['city']) ? $location['city'] : null,
+                'city_id' => null,
+                'street' => isset($location['street']) ? $location['street'] : null,
+                'house' => isset($location['house']) ? $location['house'] : null,
+                'flat' => $flat,
+                'latitude' => isset($location['latitude']) ? $location['latitude'] : null,
+                'longitude' => isset($location['longitude']) ? $location['longitude'] : null,
+                'precision' => 0,
+            ];
+
+            if($locationData['city'] != null) {
+                $cityObj = $this->em->getRepository('FoodAppBundle:City')->getByName($locationData['city']);
+                if($cityObj) {
+                    $locationData['city_id'] = $cityObj->getId();
+                }
+            }
+
+            $locationData['precision'] = $this->precision($locationData);
+        }
+
+        return $locationData;
+    }
+    
+    /**
+     * @param array $location
+     * @param null $flat
+     * @return LocationService
+     * @internal param bool $writeToSession
+     */
+    public function set($location = [], $flat = null)
+    {
+        $dataParsed = $this->parseLocation($location, $flat);
+
+        if($dataParsed) {
+            $this->session->set('location', $dataParsed);
+        }
+
+        return $this;
+    }
+
     // 5 - all not found
     // 4 - Country found;
     // 3 - Country, city found;
@@ -58,84 +113,24 @@ class LocationService extends ContainerAware
         return $precision;
     }
 
-    public function setFromArray(array $location)
-    {
-
-        if (!(int) $location['city_id']) {
-            return null;
-        }
-
-        $cityObj = $this->container->get('doctrine')->getRepository('FoodAppBundle:City')->find($location['city_id']);
-
-        if(!$cityObj) {
-            return null;
-        }
-
-        return $this->set(
-            $cityObj,
-            $location['country'],
-            $location['street'],
-            $location['house'],
-            $location['flat'],
-            $location['origin'],
-            $location['latitude'],
-            $location['longitude']
-        );
-
-    }
-
-    /**
-     * @param City $city
-     * @param bool|null $country
-     * @param bool|null $street
-     * @param bool|null $house
-     * @param bool|null $flat
-     * @param bool|null $origin
-     * @param bool|null $latitude
-     * @param bool|null $longitude
-     * @return array
-     */
-    public function set(City $city, $country = false, $street = false, $house = false, $flat = false, $origin = false, $latitude = false, $longitude = false)
-    {
-        $current = $this->get();
-
-        if(!$current) {
-            $current = [];
-        }
-        $locationData = [
-            'precision' => 0,
-            'country' => is_null($country) ? null : (isset($current['country']) && !$country ? $current['country'] : $country),
-            'city' => $city->getTitle(),
-            'city_id' => $city->getId(),
-            'street' => is_null($street) ? null : (isset($current['street']) && !$street ? $current['street'] : $street),
-            'house' => is_null($house) ? null : (isset($current['house']) && !$house ? $current['house'] : $house),
-            'flat' => is_null($flat) ? null : (isset($current['flat']) && !$flat ? $current['flat'] : $flat),
-            'latitude' => is_null($latitude) ? null : (isset($current['latitude']) && !$latitude ? $current['latitude'] : $latitude),
-            'longitude' => is_null($longitude) ? null : (isset($current['longitude']) && !$longitude ? $current['longitude'] : $longitude),
-            'origin' => is_null($origin) ? null : (isset($current['origin']) && !$origin ? $current['origin'] : $origin),
-        ];
-
-        $locationData['hash'] = md5($locationData['origin']);
-        $locationData['precision'] = $this->precision($locationData);
-
-        $this->session->set('location', $locationData);
-        $this->currentCity = $city;
-        return $locationData;
-    }
-
-    public function setCity(City $city)
-    {
-        $this->set($city, null,null,null,null,null,false,false);
-
-        return $this->get();
-    }
-
     /**
      * @return array
      */
     public function get()
     {
-        return $this->session->get('location');
+        $current = $this->session->get('location');
+        // TODO: remove after week (added 2017-06-23)
+        if($current && is_array($current)) {
+            if(!isset($current['output']) && isset($current['origin'])) {
+                $current['output'] = $current['origin'];
+            }
+
+            if(!isset($current['id']) && isset($current['hash'])) {
+                $current['id'] = $current['hash'];
+            }
+        }
+
+        return $current;
     }
     /**
      * @return null
@@ -144,7 +139,7 @@ class LocationService extends ContainerAware
         return $this->currentCity;
     }
 
-    public function clearLocation()
+    public function clear()
     {
         $this->session->remove('location');
         return $this;
@@ -158,33 +153,14 @@ class LocationService extends ContainerAware
             'types' => 'geocode',
         ];
 
-        $curl = new \Curl();
-        return json_decode($curl->get($this->container->getParameter('geo_provider').'/geocode', array_merge($defaultParams, $params))->body, true);
+        return json_decode((new \Curl())->get($this->container->getParameter('geo_provider').'/geocode', array_merge($defaultParams, $params))->body, true);
     }
 
     public function finishUpData($response = [])
     {
 
         if($response && isset($response['success']) && $response['success']) {
-
-            $response = $response['detail'];
-
-            //todo flat
-
-            if(!isset($response['origin']) && isset($response['output'])){
-                $response['origin'] = $response['output'];
-            }
-
-            if(!isset($response['flat'])) {
-                $response['flat'] = null; // todo flat recognition
-            }
-
-            $response['precision'] = $this->precision($response);
-            $response['city_id'] = null;
-            $cityObj = $this->container->get('doctrine')->getRepository('FoodAppBundle:City')->getByName($response['city']);
-            if($cityObj) {
-                $response['city_id'] = $cityObj->getId();
-            }
+            $response = $this->parseLocation($response['detail']);
         } else {
             $response = null;
         }
@@ -197,6 +173,17 @@ class LocationService extends ContainerAware
         return $this->finishUpData($this->getGeoCodeCurl(['hash' => $hash]));
     }
 
+    public function parseFlat($address)
+    {
+        $flat = null;
+        if (!empty($address)) {
+            preg_match('/(([0-9]{1,3}\s?[a-z]?)[-|\s]{0,4}([\d\w]{0,3}))/i', $address, $addrData);
+            if (isset($addrData[0])) {
+                $flat = (!empty($addrData[3]) ? $addrData[3] : null);
+            }
+        }
+        return $flat;
+    }
 
     public function findByAddress($address)
     {
@@ -213,36 +200,27 @@ class LocationService extends ContainerAware
         return $this->finishUpData($this->getGeoCodeCurl(['lat' => $lat, 'lng' => $lng]));
     }
 
-    public function saveAddressFromSessionToUser(User $user)
-    {
-        return $this->saveAddressFromArrayToUser($this->get(), $user);
-    }
-
-    public function saveAddressFromArrayToUser(array $current, User $user)
+    public function saveAddressFromArrayToUser(array $location, User $user)
     {
         $ua = new UserAddress();
 
-        if(!isset($current['origin']) && isset($current['output'])){
-            $current['origin'] = $current['output'];
+        if($location['city_id']) {
+            $cityObj = $this->container->get('doctrine')->getRepository('FoodAppBundle:City')->find($location['city_id']);
+            if ($cityObj) {
+                $ua->setCityId($cityObj);
+            }
         }
 
-        if(!isset($current['flat'])) {
-            $current['flat'] = null;
-        }
-
-        $addressString = $current['street']. ($current['house'] == null || $current['house'] == false ? "" : " ".$current['house'].($current['flat'] == null || $current['flat'] == false  ? "" : " - ".$current['flat'] ));
-        $ua->setAddress($addressString);
-        $ua->setCityId($this->getCityObj());
         $ua->setUser($user);
-        $ua->setCity($current['city']);
-        $ua->setCountry($current['country']);
-        $ua->setStreet($current['street']);
-        $ua->setHouse($current['house']);
-        $ua->setFlat($current['flat']);
-        $ua->setLat($current['latitude']);
-        $ua->setLon($current['longitude']);
-        $ua->setOrigin($current['origin']);
-        $ua->setAddressId(isset($current['id']) ? $current['id'] : (isset($current['hash']) ? $current['hash'] : md5($current['origin'])));
+        $ua->setCity($location['city']);
+        $ua->setCountry($location['country']);
+        $ua->setStreet($location['street']);
+        $ua->setHouse($location['house']);
+        $ua->setFlat($location['flat']);
+        $ua->setLat($location['latitude']);
+        $ua->setLon($location['longitude']);
+        $ua->setOrigin($location['output']);
+        $ua->setAddressId($location['id']);
         $ua->setDefault(1);
         $this->em->persist($ua);
         $this->em->flush();

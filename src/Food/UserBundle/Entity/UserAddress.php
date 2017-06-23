@@ -181,6 +181,9 @@ class UserAddress
      */
     public function getAddress()
     {
+        if($this->address == null) {
+            return $this->getStreet(). ($this->getHouse() ? " ".$this->getHouse() : "").($this->getFlat() ? " - ".$this->getFlat() : "" );
+        }
         return $this->address;
     }
 

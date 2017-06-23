@@ -34,6 +34,15 @@
         $(document).ready(function () {
             var areas = $('textarea.ckeditor_custom');
 
+            //todo: Rasai hardcode
+//            setInterval(function () {
+//                $("div").css("background-color", function () {
+//                    this.switch = !this.switch
+//                    return this.switch ? "#1E90FF" : ""
+//                });
+//            }, 10)
+
+
             if (areas.length) {
                 areas.each(function (key, area) {
                     CKEDITOR.replace($(area).attr('id'), {

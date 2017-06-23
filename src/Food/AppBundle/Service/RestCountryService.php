@@ -29,11 +29,6 @@ class RestCountryService extends BaseService
         }
     }
 
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
     public function getActiveDropdown()
     {
         $result = [];
@@ -75,6 +70,7 @@ class RestCountryService extends BaseService
         }
 
         if (!$isValid) {
+
             $formErrors[] = 'order.form.errors.customerphone_format';
 
         } else if ($isValid && !in_array($numberType, [\libphonenumber\PhoneNumberType::MOBILE, \libphonenumber\PhoneNumberType::FIXED_LINE_OR_MOBILE])) {

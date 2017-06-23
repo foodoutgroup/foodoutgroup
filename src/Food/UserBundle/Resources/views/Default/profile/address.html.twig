@@ -3,7 +3,7 @@
     <div class="address-search-form-ui address-search-form-city address-search-form-cart ">
         <div class="flex-aligment">
             <input type="hidden" id="hidden-field-for-address-id" value="{% if addressDefault is not null %}{{ current.addressId }}{% endif %}" name="address[id]"/>
-            <input type="text" id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if current is not null %}{{ current.origin }}{% endif %}" />
+            <input type="text" name="address[autocomplete]" id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if current is not null %}{{ current.origin }}{% endif %}" />
             <input type="text" name="address[flat]" id="flat" placeholder="{% trans %}index.flat{% endtrans %}" class="input-house search-field" value="{% if addressDefault is not null %}{{ current.flat }}{% endif %}" />
         </div>
         <div class="clearfix"></div>
