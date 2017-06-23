@@ -232,7 +232,7 @@ class DefaultController extends Controller
         if ($pointRecord) {
             $orderService->workTimeErrors($pointRecord, $pointWorkingErrors);
         }
-        if (!$pointRecord || !empty($pointWorkingErrors)) {
+        if (!$pointRecord && !$takeAway || !empty($pointWorkingErrors)) {
             $pointIsWorking = false;
         }
 
