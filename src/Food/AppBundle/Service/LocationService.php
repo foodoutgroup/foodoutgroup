@@ -149,7 +149,7 @@ class LocationService extends ContainerAware
     {
 
         $defaultParams = [
-            'language' => $this->container->get('request')->getLocale(),
+//            'language' => $this->container->get('request')->getLocale(),
             'types' => 'geocode',
         ];
 
