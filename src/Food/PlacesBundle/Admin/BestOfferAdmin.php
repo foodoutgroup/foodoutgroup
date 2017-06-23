@@ -60,7 +60,8 @@ class BestOfferAdmin extends FoodAdmin
         $datagridMapper
             ->add('title', null, ['label' => 'admin.best_offers.title'])
             ->add('text', null, ['label' => 'admin.best_offers.text'])
-            ->add('useUrl', null, ['label' => 'admin.best_offers.use_url']);
+            ->add('useUrl', null, ['label' => 'admin.best_offers.use_url'])
+            ->add('active', null, ['label' => 'admin.best_offers.active']);
     }
 
     // Fields to be shown on lists
