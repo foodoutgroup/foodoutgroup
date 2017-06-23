@@ -273,8 +273,8 @@ class OrderService extends ContainerAware
             $placePointMap = $this->container->get('session')->get('point_data');
 
             if (empty($placePointMap[$placeId])) {
-                $sessionLocation = $this->container->get('food.googlegis')->getLocationFromSession();
-                $placePointId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $sessionLocation, '', $orderDate);
+                $locationService = $this->container->get('food.location');
+                $placePointId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $locationService->get(), '', $orderDate);
             } else {
                 $placePointId = $placePointMap[$placeId];
             }
