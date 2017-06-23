@@ -202,20 +202,20 @@ class DefaultController extends Controller
         $formHasErrors = false;
         $formErrors = [];
         $dataToLoad = [];
+        $placePointMap = [];
 
-        // Data preparation for form
         /**
          * @var $doctrine Registry
-         *
          */
         $doctrine = $this->container->get('doctrine');
         $placePointId = $doctrine->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $lService->get());
         $placePointMap[$placeId] = $placePointId;
         $session->set('point_data', $placePointMap);
 
-        $placePointMap = $session->get('point_data');
-        if (!empty($placePointMap) && isset($placePointMap[$placeId]) && !empty($placePointMap[$placeId])) {
-            $pointRecord = $doctrine->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$placeId]);
+        if (!empty($placePointMap[$placeId])) {
+            $pointRecord = $this->container->get('doctrine')
+                ->getRepository('FoodDishesBundle:PlacePoint')
+                ->find($placePointMap[$placeId]);
         } else {
             $pointRecord = null;
         }
@@ -232,7 +232,7 @@ class DefaultController extends Controller
         if ($pointRecord) {
             $orderService->workTimeErrors($pointRecord, $pointWorkingErrors);
         }
-        if (!empty($pointWorkingErrors)) {
+        if (!$pointRecord || !empty($pointWorkingErrors)) {
             $pointIsWorking = false;
         }
 
@@ -266,10 +266,6 @@ class DefaultController extends Controller
             $require_lastname = $this->getCartService()->isAlcoholInCart($dishes);
         }
 
-        if ($formHasErrors) {
-            $dataToLoad = $request->request->all();
-        }
-
         // PreLoad UserAddress Begin
         $address = null;
 
@@ -293,168 +289,165 @@ class DefaultController extends Controller
         // PreLoad UserAddress End
 
         if ($request->getMethod() == 'POST' && !$formHasErrors) {
+            try {
+                $countryCode = $request->get('country');
 
-            $countryCode = $request->get('country');
+                // Jei vede kupona - uzsikraunam
+                $deliveryType = $request->get('delivery-type');
 
-            // Jei vede kupona - uzsikraunam
-            $deliveryType = $request->get('delivery-type');
-
-            $couponCode = $request->get('coupon_code');
-            if (!empty($couponCode)) {
-                $coupon = $orderService->getCouponByCode($couponCode);
-            } else {
-                $coupon = null;
-            }
-
-            // Jeigu atsiima pats - dedam gamybos taska, kuri jis pats pasirinko, o ne mes Pauliaus magic find funkcijoje
-            if ($takeAway) {
-                $placePointId = $request->get('place_point');
-                $placePoint = $placeService->getPlacePointData($placePointId);
-            } else {
-                $placePoint = null;
-            }
-
-            if (empty($order)) {
-
-                $userEmail = $request->get('customer-email');
-                $userPhone = $request->get('customer-phone');
-
-                $userFirstName = $request->get('customer-firstname');
-                $userLastName = $request->get('customer-lastname', null);
-                if (!empty($userPhone)) {
-                    $formatedPhone = $miscUtils->formatPhone($userPhone, $request->get('country'));
-                    if (!empty($formatedPhone)) {
-                        $userPhone = $formatedPhone;
-                    }
+                $couponCode = $request->get('coupon_code');
+                if (!empty($couponCode)) {
+                    $coupon = $orderService->getCouponByCode($couponCode);
+                } else {
+                    $coupon = null;
                 }
 
-                $userData = [
-                    'email' => $userEmail,
-                    'phone' => $userPhone,
-                    'firstname' => $userFirstName,
-                    'lastname' => $userLastName,
-                ];
-
-                $user = $fosUserManager->findUserByEmail($userEmail);
-
-                // If bussines user - load it from here please
-                try {
-                    $tmpUser = $this->container->get('security.context')->getToken()->getUser();
-
-                    if ($tmpUser instanceof User && $tmpUser->getId() && $tmpUser->getIsBussinesClient()) {
-                        $user = $tmpUser;
-                    }
-                } catch (\Exception $e) {
-                    $this->get('logger')->error($e->getTraceAsString());
-                    $this->get('logger')->error($e->getMessage());
+                // Jeigu atsiima pats - dedam gamybos taska, kuri jis pats pasirinko, o ne mes Pauliaus magic find funkcijoje
+                if ($takeAway) {
+                    $placePointId = $request->get('place_point');
+                    $placePoint = $placeService->getPlacePointData($placePointId);
+                } else {
+                    $placePoint = null;
                 }
 
-                if (empty($user) || !$user->getId()) {
-                    /**
-                     * @var User $user
-                     */
-                    $user = $fosUserManager->createUser();
-                    $user->setUsername($userEmail);
-                    $user->setEmail($userEmail);
-                    $user->setFullyRegistered(false);
-                    $user->setFirstname($userFirstName);
-                    $user->setLastname($userLastName);
+                if (empty($order)) {
+
+                    $userEmail = $request->get('customer-email');
+                    $userPhone = $request->get('customer-phone');
+
+                    $userFirstName = $request->get('customer-firstname');
+                    $userLastName = $request->get('customer-lastname', null);
                     if (!empty($userPhone)) {
+                        $formatedPhone = $miscUtils->formatPhone($userPhone, $request->get('country'));
+                        if (!empty($formatedPhone)) {
+                            $userPhone = $formatedPhone;
+                        }
+                    }
+
+                    $userData = [
+                        'email' => $userEmail,
+                        'phone' => $userPhone,
+                        'firstname' => $userFirstName,
+                        'lastname' => $userLastName,
+                    ];
+
+                    $user = $fosUserManager->findUserByEmail($userEmail);
+
+                    // If bussines user - load it from here please
+                    try {
+                        $tmpUser = $this->container->get('security.context')->getToken()->getUser();
+
+                        if ($tmpUser instanceof User && $tmpUser->getId() && $tmpUser->getIsBussinesClient()) {
+                            $user = $tmpUser;
+                        }
+                    } catch (\Exception $e) {
+                        $this->get('logger')->error($e->getTraceAsString());
+                        $this->get('logger')->error($e->getMessage());
+                    }
+
+                    if (empty($user) || !$user->getId()) {
+                        /**
+                         * @var User $user
+                         */
+                        $user = $fosUserManager->createUser();
+                        $user->setUsername($userEmail);
+                        $user->setEmail($userEmail);
+                        $user->setFullyRegistered(false);
+                        $user->setFirstname($userFirstName);
+                        $user->setLastname($userLastName);
+                        if (!empty($userPhone)) {
+                            $user->setPhone($userPhone);
+                        }
+
+                        // TODO gal cia normaliai generuosim desra-sasyskos-random krap ir siusim useriui emailu ir dar iloginsim
+                        $user->setPlainPassword('new-user');
+                        $user->addRole('ROLE_USER');
+                        $user->setEnabled(true);
+
+                        $fosUserManager->updateUser($user);
+                    }
+
+                    $blockedEmails = $this->getDoctrine()
+                        ->getRepository('FoodAppBundle:BannedEmail')->findByEmail($userEmail);
+                    if (!empty($blockedEmails) || !$user->isAccountNonLocked() || !$user->isEnabled()) {
+                        return $this->redirect($this->get('slug')->urlFromParam('page_email_banned', Slug::TYPE_PAGE));
+                    }
+
+                    $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
+
+                    // Preorder date formation
+                    $orderDate = null;
+                    $preOrder = $request->get('pre-order');
+                    if ($preOrder == 'it-is') {
+                        $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                    }
+
+                    $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate, $deliveryType);
+                    $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
+                    if ($preOrder == 'it-is') {
+                        $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
+                    }
+                } else {
+                    $orderService->setOrder($order);
+                    if ($takeAway) {
+                        $orderService->getOrder()->setPlacePoint($placePoint);
+                        $orderService->getOrder()->setCityId($placePoint->getCityId());
+                        $orderService->getOrder()->setPlacePointAddress($placePoint->getAddress());
+                    }
+                    $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
+
+                    $user = $order->getUser();
+                    $userPhone = $user->getPhone();
+                }
+
+
+
+                if ($countryCode != $user->getCountryCode() && !$user->getIsBussinesClient()) {
+                    $user->setCountryCode($countryCode);
+                }
+
+                if ($userPhone != $user->getPhone() && !$user->getIsBussinesClient()) {
+                    $formatedPhone = $miscUtils->formatPhone($request->get('customer-phone'), $request->get('country'));
+
+                    if (!empty($formatedPhone)) {
+                        $user->setPhone($formatedPhone);
+                    } else {
                         $user->setPhone($userPhone);
                     }
-
-                    // TODO gal cia normaliai generuosim desra-sasyskos-random krap ir siusim useriui emailu ir dar iloginsim
-                    $user->setPlainPassword('new-user');
-                    $user->addRole('ROLE_USER');
-                    $user->setEnabled(true);
-
                     $fosUserManager->updateUser($user);
                 }
 
-                $blockedEmails = $this->getDoctrine()
-                    ->getRepository('FoodAppBundle:BannedEmail')->findByEmail($userEmail);
-                if (!empty($blockedEmails) || !$user->isAccountNonLocked() || !$user->isEnabled()) {
-                    return $this->redirect($this->get('slug')->urlFromParam('page_email_banned', Slug::TYPE_PAGE));
+                $paymentMethod = $request->get('payment-type');
+
+                $customerComment = $request->get('customer-comment');
+                $orderService->setPaymentMethod($paymentMethod);
+                $orderService->setDeliveryType($deliveryType);
+                $orderService->setLocale($request->getLocale());
+                if (!empty($customerComment)) {
+                    $orderService->getOrder()->setComment($customerComment);
+                }
+                $orderService->setPaymentStatus($orderService::$paymentStatusWait);
+
+                // I R big bussines
+                if ($request->get('company') == 'on') {
+                    $orderService->getOrder()
+                        ->setCompany(true)
+                        ->setCompanyName($request->get('company_name'))
+                        ->setCompanyCode($request->get('company_code'))
+                        ->setVatCode($request->get('vat_code'))
+                        ->setCompanyAddress($request->get('company_address'));
                 }
 
-                $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
-
-
-
-
-                // Preorder date formation
-                $orderDate = null;
-                $preOrder = $request->get('pre-order');
-                if ($preOrder == 'it-is') {
-                    $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                if ($user->getIsBussinesClient()) {
+                    $orderService->getOrder()
+                        ->setIsCorporateClient(true)
+                        ->setDivisionCode($request->get('company_division_code'))
+                        ->setCompany(true)
+                        ->setCompanyName($user->getCompanyName())
+                        ->setCompanyCode($user->getCompanyCode())
+                        ->setVatCode($user->getVatCode())
+                        ->setCompanyAddress($user->getCompanyAddress());
                 }
-
-                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate,$deliveryType);
-                $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
-                if ($preOrder == 'it-is') {
-                    $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
-                }
-            } else {
-                $orderService->setOrder($order);
-                if ($takeAway) {
-                    $orderService->getOrder()->setPlacePoint($placePoint);
-                    $orderService->getOrder()->setCityId($placePoint->getCityId());
-                    $orderService->getOrder()->setPlacePointAddress($placePoint->getAddress());
-                }
-                $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
-
-                $user = $order->getUser();
-                $userPhone = $user->getPhone();
-            }
-
-
-
-            if ($countryCode != $user->getCountryCode() && !$user->getIsBussinesClient()) {
-                $user->setCountryCode($countryCode);
-            }
-
-            if ($userPhone != $user->getPhone() && !$user->getIsBussinesClient()) {
-                $formatedPhone = $miscUtils->formatPhone($request->get('customer-phone'), $request->get('country'));
-
-                if (!empty($formatedPhone)) {
-                    $user->setPhone($formatedPhone);
-                } else {
-                    $user->setPhone($userPhone);
-                }
-                $fosUserManager->updateUser($user);
-            }
-
-            $paymentMethod = $request->get('payment-type');
-
-            $customerComment = $request->get('customer-comment');
-            $orderService->setPaymentMethod($paymentMethod);
-            $orderService->setDeliveryType($deliveryType);
-            $orderService->setLocale($request->getLocale());
-            if (!empty($customerComment)) {
-                $orderService->getOrder()->setComment($customerComment);
-            }
-            $orderService->setPaymentStatus($orderService::$paymentStatusWait);
-
-            // I R big bussines
-            if ($request->get('company') == 'on') {
-                $orderService->getOrder()
-                    ->setCompany(true)
-                    ->setCompanyName($request->get('company_name'))
-                    ->setCompanyCode($request->get('company_code'))
-                    ->setVatCode($request->get('vat_code'))
-                    ->setCompanyAddress($request->get('company_address'));
-            }
-
-            if ($user->getIsBussinesClient()) {
-                $orderService->getOrder()
-                    ->setIsCorporateClient(true)
-                    ->setDivisionCode($request->get('company_division_code'))
-                    ->setCompany(true)
-                    ->setCompanyName($user->getCompanyName())
-                    ->setCompanyCode($user->getCompanyCode())
-                    ->setVatCode($user->getVatCode())
-                    ->setCompanyAddress($user->getCompanyAddress());
-            }
 
             // Update order with recent address information. but only if we need to deliver
             if ($deliveryType == $orderService::$deliveryDeliver || $deliveryType == $orderService::$deliveryPedestrian) {
@@ -464,21 +457,27 @@ class DefaultController extends Controller
                 $orderService->getOrder()->setAddressId($address);
                 // Set user default address
 
-                if (!$user->getDefaultAddress()) {
-                    $em->persist($address);
-                    $user->addAddress($address);
+                    if (!$user->getDefaultAddress()) {
+                        $em->persist($address);
+                        $user->addAddress($address);
+                    }
                 }
+
+                $orderService->getOrder()->setNewsletterSubscribe((boolean)$request->get('newsletter_subscribe'));
+
+                $orderService->saveOrder();
+
+                $billingUrl = $orderService->billOrder();
+                if (!empty($billingUrl)) {
+                    return new RedirectResponse($billingUrl);
+                }
+                // TODO Crap happened?
+            } catch (\Exception $e) {
+                $this->container->get('logger')->critical($e->getMessage());
+                $translator = $this->container->get('translator');
+                $formErrors = [$translator->trans('system.error_on_order')];
+                $formHasErrors = true;
             }
-
-            $orderService->getOrder()->setNewsletterSubscribe((boolean)$request->get('newsletter_subscribe'));
-
-            $orderService->saveOrder();
-
-            $billingUrl = $orderService->billOrder();
-            if (!empty($billingUrl)) {
-                return new RedirectResponse($billingUrl);
-            }
-            // TODO Crap happened?
         }
 
         $disabledPreorderDaysParam = $this->get('food.app.utils.misc')->getParam('disabled_preorder_days');
@@ -494,6 +493,10 @@ class DefaultController extends Controller
 
         if($request->getMethod() == 'POST' && !empty($_POST['country'])){
             $countryCode = $_POST['country'];
+        }
+
+        if ($formHasErrors) {
+            $dataToLoad = $request->request->all();
         }
 
         $data = [
@@ -595,7 +598,7 @@ class DefaultController extends Controller
             if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
                 $deliveryTotal = $place->getDeliveryPrice();
 
-            } elseif ($locationData['precision'] >= 1) {
+            } elseif ($locationData['precision'] >= 0) {
                 // TODO Trying to catch fatal when searching for PlacePoint
                 if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
                     $this->container->get('logger')->error('Trying to find PlacePoint without ID in CartBundle Default controller - sideBlockAction');

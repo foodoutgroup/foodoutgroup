@@ -6,7 +6,7 @@ set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
-set :branch, "feature/language_l10n_fix_and_update"
+set :branch, "master"
 
 # multi-stage environment
 set :stages,        %w(lt_beta lt_staging lt_production)
