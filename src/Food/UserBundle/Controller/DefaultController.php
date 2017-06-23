@@ -146,7 +146,11 @@ class DefaultController extends Controller
                     $locationFindByString = $lService->findByAddress($addressData['autocomplete']);
                     // jei tikslumas geras ir miestas rastas sistemoje bandom saugot :)
                     if($locationFindByString['precision'] == 0 && !is_null($locationFindByString['city_id'])) {
-                        $lService->set($locationFindByString, empty(trim($addressData['flat'])) ? null : $addressData['flat']);
+                        $flat = trim($addressData['flat']);
+                        if(empty($flat)) {
+                            $flat = null;
+                        }
+                        $lService->set($locationFindByString, $flat);
                         $lService->saveAddressFromArrayToUser($lService->get(), $user);
                     } else {
                         $lService->set($oldLocation);
