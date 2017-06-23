@@ -749,7 +749,6 @@ class PlacesService extends ContainerAware
         if ($type && $type == 'pedestrian') {
             $deliveryTime = $place->getDeliveryTime();
         } else {
-
             $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
             if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
                 $deliveryTime = $this->container->get('food.zavalas_service')->getRushHourTimeByPlace($place);
@@ -773,7 +772,7 @@ class PlacesService extends ContainerAware
     {
         $response = false;
         $rhService = $this->container->get('food.zavalas_service');
-        if ($rhService->isRushHourOnGlobal()) {
+        if ($rhService->isRushHourEnabled()) {
             $locationData = $this->container->get('food.location')->get();
             $placeCityCollection = $this->em()->getRepository('FoodDishesBundle:Place')->getCityCollectionByPlace($place);
             foreach ($placeCityCollection as $city) {

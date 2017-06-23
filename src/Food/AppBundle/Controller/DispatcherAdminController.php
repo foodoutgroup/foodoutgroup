@@ -349,14 +349,13 @@ class DispatcherAdminController extends Controller
             $method = 'status' . ucfirst($status);
             $order = $orderService->getOrder();
             if (method_exists($orderService, $method)) {
-                $orderService->$method('dispatcher');
                 $orderDelayed = $order->getDelayed();
                 if ($method == 'statusDelayed' && !empty($delayDuration)) {
-                    $orderService->statusDelayed('dispatcher', 'delay duration: ' . $delayDuration);
                     $order->setDelayed(true);
                     $order->setDelayReason('Delayed');
                     $order->setDelayDuration($delayDuration);
                     $orderService->saveDelay();
+                    $orderService->statusDelayed('dispatcher', 'delay duration: ' . $delayDuration);
                 } else if ($orderDelayed) {
                     $order->setDelayed(false);
                     $order->setDelayReason(null);
@@ -407,6 +406,8 @@ class DispatcherAdminController extends Controller
                         $orderService->informPlace();
                     }
                 }
+                $orderService->$method('dispatcher');
+
             }
             $orderService->saveOrder();
         };

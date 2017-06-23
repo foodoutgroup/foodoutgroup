@@ -488,7 +488,6 @@ class OrderService extends ContainerAware
         $order = $this->getOrder();
         $place = $order->getPlace();
         $placeService = $this->container->get('food.places');
-
         if($smsObj) {
             $smsText = str_replace(
                 [
@@ -496,12 +495,14 @@ class OrderService extends ContainerAware
                     '[restaurant_name]',
                     '[delivery_time]',
                     '[pre_delivery_time]',
+                    '[delay_time]',
                 ],
                 [
                     $order->getId(),
                     $place->getName(),
                     ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
                     $order->getDeliveryTime()->format('m-d H:i'),
+                    $order->getDelayDuration(),
                 ],
                 $smsObj->getText()
             );
@@ -3946,7 +3947,7 @@ class OrderService extends ContainerAware
         $this->getOrder()->setDeliveryTime($oTimeClone);
         $this->saveOrder();
 
-        $this->sendOrderDelayedMessage($diffInMinutes);
+
     }
 
     /**
@@ -4483,6 +4484,7 @@ class OrderService extends ContainerAware
     }
 
     /**
+     * @deprecated from 2017-06-23
      * Send Message To User About Restaurant delayed order
      */
     public function sendOrderDelayedMessage($diffInMinutes)
