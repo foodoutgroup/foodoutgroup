@@ -690,7 +690,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                 $current_price = $detail->getOrigPrice();
                 $sizes = $detail->getDishId()->getSizes();
                 foreach ($sizes as $size) {
-                    if ($size->getUnit()->getId() == $detail->getDishUnitId()) {
+                    if ($size->getUnit()->getId() == $detail->getDishUnitId()->getId()) {
                         $current_price = $size->getCurrentPrice();
                     }
                 }
@@ -747,7 +747,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                 $current_price = $detail->getOrigPrice();
                 $sizes = $detail->getDishId()->getSizes();
                 foreach ($sizes as $size) {
-                    if ($size->getUnit()->getId() == $detail->getDishUnitId()) {
+                    if ($size->getUnit()->getId() == $detail->getDishUnitId()->getId()) {
                         $current_price = $size->getCurrentPrice();
                     }
                 }

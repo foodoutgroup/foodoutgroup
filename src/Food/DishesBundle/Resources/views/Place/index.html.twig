@@ -304,16 +304,16 @@
                                     <div class="menu-title clearfix">
                                         {% if notificationCollection %}
                                             {% for notification in notificationCollection %}
-                                                <div class="placeNotification alert alert-{{ notification.type|raw }}">
-                                                    {{ notification.description }}
+                                                <div class="placeNotification alert alert-{{ notification.type}}">
+                                                    {{ notification.description|raw  }}
                                                 </div>
-                                            <Script>
-                                                $(document).ready(function(){
-                                                    setTimeout(function(){
-                                                        $( ".placeNotification" ).each(function( ) {$(this).fadeOut();});
-                                                    }, 15000);
-                                                });
-                                            </Script>
+                                            {#<Script>#}
+                                                {#$(document).ready(function(){#}
+                                                    {#setTimeout(function(){#}
+                                                        {#$( ".placeNotification" ).each(function( ) {$(this).fadeOut();});#}
+                                                    {#}, 15000);#}
+                                                {#});#}
+                                            {#</Script>#}
                                             {% endfor %}
                                         {% endif %}
 

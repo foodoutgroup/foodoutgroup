@@ -878,7 +878,7 @@ class OrderService extends ContainerAware
                     /**
                      * @var $size DishSize
                      */
-                    if ($size->getUnit()->getId() == $detail->getDishUnitId()) {
+                    if ($size->getUnit()->getId() == $detail->getDishUnitId()->getId()) {
                         $current_price = $size->getCurrentPrice();
                     }
                 }
@@ -934,7 +934,7 @@ class OrderService extends ContainerAware
                 $current_price = $detail->getOrigPrice();
                 $sizes = $detail->getDishId()->getSizes();
                 foreach ($sizes as $size) {
-                    if ($size->getUnit()->getId() == $detail->getDishUnitId()) {
+                    if ($size->getUnit()->getId() == $detail->getDishUnitId()->getId()) {
                         $current_price = $size->getCurrentPrice();
                     }
                 }
