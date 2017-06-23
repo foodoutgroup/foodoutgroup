@@ -2,7 +2,9 @@
 
 namespace Food\CartBundle\Controller;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Food\AppBundle\Entity\Slug;
+use Food\CartBundle\Service\CartService;
 use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
@@ -16,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller
 {
     /**
-     * @var CartServiceworkingHoursToday
+     * @var CartService
      */
     private $cartService;
 
@@ -29,7 +31,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @return \Food\CartBundle\Service\CartService
+     * @return CartService
      */
     public function getCartService()
     {
@@ -72,30 +74,15 @@ class DefaultController extends Controller
             case 'refresh':
                 break;
         }
-        /*
-        $jsonResponseData['items'] = $this->getCartService()->getCartDishesForJson(
-            $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
-                $this->getRequest()->get('place')
-            )
-        );
-        */
 
-        $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
-            $request->get('place', 0)
-        );
+        $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($request->get('place', 0));
 
         // Somehow we've lost the place.. dont crash.. better show nothing
         if (!$place) {
             return new Response('');
         }
 
-        $jsonResponseData['block'] = $this->sideBlockAction(
-            $place,
-            true,
-            $request->get('in_cart', false),
-            null,
-            $request->get('coupon_code', null)
-        );
+        $jsonResponseData['block'] = $this->sideBlockAction($place, true, $request->get('in_cart', false), null, $request->get('coupon_code', null));
 
         $response->setContent(json_encode($jsonResponseData));
 
@@ -185,15 +172,12 @@ class DefaultController extends Controller
 
     public function indexAction($placeId, $takeAway = null, Request $request)
     {
-
         // for now this is relevant for callcenter functionality
-        $phoneService = $this->container->get('food.phones_code_service');
+        $pService = $this->container->get('food.phones_code_service');
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
         $miscUtils = $this->get('food.app.utils.misc');
-        $locationService = $this->container->get('food.location');
-
-        $country = $this->container->getParameter('country');
+        $lService = $this->container->get('food.location');
         $session = $request->getSession();
         $locationData = $session->get('locationData');
 
@@ -218,10 +202,13 @@ class DefaultController extends Controller
         $formHasErrors = false;
         $formErrors = [];
         $dataToLoad = [];
-
-        // Data preparation for form
         $placePointMap = [];
-        $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $locationService->get());
+
+        /**
+         * @var $doctrine Registry
+         */
+        $doctrine = $this->container->get('doctrine');
+        $placePointId = $doctrine->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $lService->get());
         $placePointMap[$placeId] = $placePointId;
         $session->set('point_data', $placePointMap);
 
@@ -262,16 +249,7 @@ class DefaultController extends Controller
             if ($request->get('coupon_code', false)) {
                 $couponEnt = $this->get('doctrine')->getRepository('FoodOrderBundle:Coupon')->findOneBy(['code' => $request->get('coupon_code', '')]);
             }
-            $this->get('food.order')->validateDaGiantForm(
-                $place,
-                $request,
-                $formHasErrors,
-                $formErrors,
-                ($takeAway ? true : false),
-                ($takeAway ? $request->get('place_point') : null),
-                $couponEnt,
-                false
-            );
+            $this->get('food.order')->validateDaGiantForm($place, $request, $formHasErrors, $formErrors, $takeAway, ($takeAway ? $request->get('place_point') : null), $couponEnt, false);
         }
 
         // Empty dish protection
@@ -471,14 +449,13 @@ class DefaultController extends Controller
                         ->setCompanyAddress($user->getCompanyAddress());
                 }
 
-                // Update order with recent address information. but only if we need to deliver
-                if ($deliveryType == $orderService::$deliveryDeliver || $deliveryType == $orderService::$deliveryPedestrian) {
-                    $locationData = $locationService->get();
+            // Update order with recent address information. but only if we need to deliver
+            if ($deliveryType == $orderService::$deliveryDeliver || $deliveryType == $orderService::$deliveryPedestrian) {
 
-                    $em = $this->getDoctrine()->getManager();
-                    $address = $locationService->saveAddressFromSessionToUser($user);
-                    $orderService->getOrder()->setAddressId($address);
-                    // Set user default address
+                $em = $this->getDoctrine()->getManager();
+                $address = $lService->saveAddressFromArrayToUser($lService->get(), $user);
+                $orderService->getOrder()->setAddressId($address);
+                // Set user default address
 
                     if (!$user->getDefaultAddress()) {
                         $em->persist($address);
@@ -512,7 +489,7 @@ class DefaultController extends Controller
 
         $currentCountry = $this->container->getParameter('country');
 
-        $countryCode = $this->container->get('food.phones_code_service')->getCountryCode($this->getUser(),$currentCountry);
+        $countryCode = $pService->getCountryCode($this->getUser(),$currentCountry);
 
         if($request->getMethod() == 'POST' && !empty($_POST['country'])){
             $countryCode = $_POST['country'];
@@ -635,23 +612,10 @@ class DefaultController extends Controller
                     $noneWorking = true;
                 }
 
-                $pointRecord = $em
-                    ->getRepository('FoodDishesBundle:PlacePoint')
-                    ->find($placePointMap[$place->getId()]);
-
-                $deliveryTotal = $this->getCartService()->getDeliveryPrice(
-                    $place,
-                    $locationData,
-                    $pointRecord,
-                    $noneWorking
-                );
-
+                $pointRecord = $em->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+                $deliveryTotal = $this->getCartService()->getDeliveryPrice($place, $locationData, $pointRecord, $noneWorking);
                 $displayCartInterval = false;
-                $cartFromMin = $this->getCartService()->getMinimumCart(
-                    $place,
-                    $locationData,
-                    $pointRecord
-                );
+                $cartFromMin = $this->getCartService()->getMinimumCart($place, $locationData, $pointRecord);
             }
 
             // Check cart limits

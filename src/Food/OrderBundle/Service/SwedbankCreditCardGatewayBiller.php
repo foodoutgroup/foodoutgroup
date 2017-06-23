@@ -45,7 +45,7 @@ class SwedbankCreditCardGatewayBiller extends ContainerAware
 
         $redirectUrl = 'http://'.$this->container->getParameter('domain').$router->generate(
             'swedbank_credit_card_gateway_redirect',
-            array('id' => $order->getId()));
+            ['id' => $order->getId()]);
 
         return $redirectUrl;
     }

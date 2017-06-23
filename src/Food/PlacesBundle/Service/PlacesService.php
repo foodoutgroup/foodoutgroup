@@ -327,6 +327,12 @@ class PlacesService extends ContainerAware
         return $kitchens;
     }
 
+    /**
+     * @param array $slugCollection
+     * @param $request
+     * @return array
+     * @deprecated todo: change or redactor 2017-06-20
+     */
     public function getKitchenCollectionFromSlug($slugCollection = [], $request)
     {
         if(!is_array($slugCollection)) {
@@ -335,8 +341,8 @@ class PlacesService extends ContainerAware
 
         $kitchenCollection = [];
 
-//        $slugService = $this->getContainer()->get('slug');
-
+        $slugService = $this->getContainer()->get('slug');
+//
 //        // todo MULTI-L perdaryti i viena select :)
 //        foreach ($slugCollection as $key => $value) {
 //            $item = $slugService->getObjBySlug($value, Slug::TYPE_KITCHEN);
@@ -349,19 +355,16 @@ class PlacesService extends ContainerAware
     }
 
     /**
-     * @param $recommended
      * @param Request $request
      * @param array $slug_filter
      * @param bool $rush_hour
      * @return array|mixed
      */
-    public function getPlacesForList($recommended, Request $request, $slug_filter = [], $rush_hour = false)
+    public function getPlacesForList($rush_hour = false, Request $request)
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
 
-
-        $sessionService = $this->container->get('session');
 
         if ($rush_hour) {
             $deliveryType = '';
@@ -370,11 +373,6 @@ class PlacesService extends ContainerAware
         }
 
         $kitchens = empty($kitchens) ? [] : explode(",", $kitchens);
-        if (!empty($slug_filter)) {
-
-          $kitchens = $this->getKitchenCollectionFromSlug($slug_filter, $request);
-        }
-
         // TODO lets debug this strange scenario :(
         if (empty($filters)) {
             $filters = [];
@@ -399,10 +397,11 @@ class PlacesService extends ContainerAware
         $places = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
             $kitchens,
             $filters,
-            $recommended,
             $this->container->get('food.location')->get(),
             $this->container
         );
+
+
 
         $this->container->get('food.places')->saveRelationPlaceToPoint($places);
         $places = $this->container->get('food.places')->placesPlacePointsWorkInformation($places);
@@ -976,11 +975,12 @@ class PlacesService extends ContainerAware
     {
         $return = false;
         $location = $this->container->get('food.location')->get();
-        $cityCheck = $this->em()->getRepository('FoodAppBundle:City')->find($location['city_id']);
-
-        if($cityCheck->getPedestrian()){
-            $return = true;
-        };
+        if($location['city_id']) {
+            $cityCheck = $this->em()->getRepository('FoodAppBundle:City')->find($location['city_id']);
+            if ($cityCheck && $cityCheck->getPedestrian()) {
+                $return = true;
+            }
+        }
 
         return $return;
     }

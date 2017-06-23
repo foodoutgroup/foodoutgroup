@@ -17,9 +17,7 @@ class RestaurantsController extends Controller
     public function getRestaurantsAction(Request $request)
     {
 
-        $startTime = microtime(true);
-
-        //$this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array)$request);
+        $this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array)$request);
         $doctrine = $this->getDoctrine();
         try {
             /**
@@ -58,8 +56,7 @@ class RestaurantsController extends Controller
                 $placeCollection = $doctrine->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                     $kitchenCollection,
                     $filters,
-                    false,
-                    $this->get('food.location')->findByAddress($address.', '.$cityDoc->getTitle()),
+                    $this->get('food.location')->findByAddress($address.', '.$city),
                     $this->container
                 );
 
@@ -69,7 +66,6 @@ class RestaurantsController extends Controller
                     $placeCollection = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                         $kitchenCollection,
                         $filters,
-                        false,
                         $this->get('food.location')->get(),
                         $this->container
                     );
@@ -135,7 +131,7 @@ class RestaurantsController extends Controller
             if (!empty($address)) {
                 $locationData = $lService->findByAddress($address.', '.$city);
                 $places = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')
-                    ->magicFindByKitchensIds([], [], false, $locationData, $this->container);
+                    ->magicFindByKitchensIds([], [], $locationData, $this->container);
 
             } elseif (!empty($lat) && !empty($lng)) {
 
@@ -144,7 +140,7 @@ class RestaurantsController extends Controller
                 if($cityObj) {
                     $places = $this->getDoctrine()
                         ->getRepository('FoodDishesBundle:Place')
-                        ->magicFindByKitchensIds([], [], false, $locationData, $this->container);
+                        ->magicFindByKitchensIds([], [], $locationData, $this->container);
                 }
             }
 

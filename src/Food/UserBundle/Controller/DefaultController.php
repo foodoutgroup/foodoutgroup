@@ -111,7 +111,6 @@ class DefaultController extends Controller
     {
         // services
         $userManager = $this->container->get('fos_user.user_manager');
-        $orderService = $this->get('food.order');
         $em = $this->getDoctrine()->getManager();
         $translator = $this->get('translator');
         $flashbag = $this->get('session')->getFlashBag();
@@ -138,56 +137,25 @@ class DefaultController extends Controller
             $formError['phone'] = $translator->trans($phoneValidation[0]);
         } else {
 
-
-            $locationService = $this->get('food.location');
-
+            $lService = $this->get('food.location');
             $addressData = $request->request->get('address');
+            $oldLocation = $lService->get();
             if (!empty($addressData['id'])) {
-
-                $hasAddress = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->findByIdUserFlat($addressData['id'], $user, $addressData['flat']);
-                $addressDetail = $locationService->findByHash($addressData['id']);
-                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->getByName($addressDetail['city']);
-
-                if (!is_object($cityObj)) {
-                    $flashbag->set('profile_update_errors', $translator->trans('messages.city_doesnt_exist'));
-                    return $this->redirect($this->generateUrl('user_profile'));
-                }
-
-                if ($cityObj) {
-                    $oldLocationData = $locationService->get();
-                    $locationService->set(
-                        $cityObj,
-                        $addressDetail['country'],
-                        $addressDetail['street'],
-                        $addressDetail['house'],
-                        ( $addressData['flat'] === '' ? null : $addressData['flat'] ),
-                        $addressDetail['output'],
-                        $addressDetail['latitude'],
-                        $addressDetail['longitude']
-                    );
-
-                    $newLocationData = $locationService->get();
-
-                    if ($newLocationData['precision'] == 0) {
-                        $locationService->saveAddressFromSessionToUser($user);
-                    } else {
-                        if (!empty($oldLocationData['city_id'])) {
-
-                            $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($oldLocationData['city_id']);
-                            $locationService->set(
-                                $cityObj,
-                                $oldLocationData['country'],
-                                $oldLocationData['street'],
-                                $oldLocationData['house'],
-                                $oldLocationData['flat'],
-                                $oldLocationData['origin'],
-                                $oldLocationData['latitude'],
-                                $oldLocationData['longitude']
-                            );
+                $address = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user);
+                if(!$address || $address->getAddressId() != $addressData['id'] || $address->getFlat() != $addressData['flat']) {
+                    $locationFindByString = $lService->findByAddress($addressData['autocomplete']);
+                    // jei tikslumas geras ir miestas rastas sistemoje bandom saugot :)
+                    if($locationFindByString['precision'] == 0 && !is_null($locationFindByString['city_id'])) {
+                        $flat = trim($addressData['flat']);
+                        if(empty($flat)) {
+                            $flat = null;
                         }
+                        $lService->set($locationFindByString, $flat);
+                        $lService->saveAddressFromArrayToUser($lService->get(), $user);
+                    } else {
+                        $lService->set($oldLocation);
                     }
                 }
-
             }
 
             // password validation
@@ -197,18 +165,12 @@ class DefaultController extends Controller
 
 
             if ($form->isValid()) {
-
-
                 $em->flush();
-
                 $flashbag->set('profile_updated', $translator->trans('general.noty.profile_updated'));
-
                 return $this->redirect($this->generateUrl('user_profile'));
-
 
             }
         }
-
         return [
             'form' => $form->createView(),
             'profile_errors' => $formError,

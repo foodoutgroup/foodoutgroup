@@ -33,20 +33,16 @@ class PlaceService extends PlacesService
             'house' => false,
         ];
 
-        if(empty($address)){
-            $address = "Gedimino pr. 10"; // TODO: fix it asap
-        }
-
         $addressString = $address." ,".$city;
 
         $location = $this->container->get('food.location')->findByAddress($addressString);
 
-        if($location && $location['precision'] == 0) {
+        if($location && is_array($location)) {
             $response['found'] = true;
             $response['latitude'] = $location['latitude'];
             $response['longitude'] = $location['longitude'];
-            $response['street'] = $location['street'];
-            $response['house'] = $location['house'];
+            $response['street'] = $location['street'] ? true : false;
+            $response['house'] = $location['house'] ? true : false;
         }
 
         return $response;
@@ -72,7 +68,6 @@ class PlaceService extends PlacesService
                     $dm = date("i");
                     $wd = date('w') == 0 ? 7 : date('w');
 
-                    $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
                     $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id";
 
                     $subQuery = "SELECT pp.id, pp.address, pp.city, pp.delivery, pp.public,  (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) AS distance
@@ -84,8 +79,7 @@ class PlaceService extends PlacesService
                       AND p.active=1
                       AND pp.place = $placeId
                       AND (
-                        (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
-                        IF(($maxDistance) IS NULL, ($defaultZone), ($maxDistance))
+                        (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= ($maxDistance)
                     )
                       AND ppwt.week_day = " . $wd . "
                       AND (

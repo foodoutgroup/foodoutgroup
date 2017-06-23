@@ -100,7 +100,7 @@ class OrderService extends ContainerAware
             'lng' => null,
             'address' => null
         ];
-        $googleGisService = $this->container->get('food.location');
+        $lService = $this->container->get('food.location');
 
         $token = $requestOrig->headers->get('X-API-Authorization');
         $this->container->get('food_api.api')->loginByHash($token);
@@ -342,14 +342,6 @@ class OrderService extends ContainerAware
                 $useAdminFee = false;
             }
 
-//            var_dump($total_cart);echo 'Naujas:';
-//
-//            if ($useAdminFee && $total_cart < $place->getCartMinimum()) {
-//                $total_cart += $adminFee;
-//            }
-//
-//            var_dump($total_cart);die();
-
             if ($user->getIsBussinesClient() && $coupon->getB2b() == Coupon::B2B_NO) {
                 throw new ApiException(
                     'Not for business',
@@ -417,7 +409,7 @@ class OrderService extends ContainerAware
                     ]
                 );
             } else {
-                $locationInfo = $googleGisService->findByAddress($serviceVar['address']['street'] . " " . $serviceVar['address']['house_number'] . ", " . $serviceVar['address']['city']);
+                $locationInfo = $lService->findByAddress($serviceVar['address']['street'] . " " . $serviceVar['address']['house_number'] . ", " . $serviceVar['address']['city']);
                 $searchCrit = [
                     'city' => $locationInfo['city'],
                     'city_id' => $locationInfo['city_id'],

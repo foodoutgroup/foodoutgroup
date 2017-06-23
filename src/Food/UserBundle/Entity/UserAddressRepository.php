@@ -16,6 +16,11 @@ class UserAddressRepository extends EntityRepository
         return $this->findOneBy($params);
     }
 
+    /**
+     * @param User $user
+     * @return UserAddress|null
+     */
+
     public function getDefault(User $user)
     {
         $qb = $this->createQueryBuilder('ua')
