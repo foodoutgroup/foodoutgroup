@@ -640,9 +640,9 @@ class CartService
      * @param PlacePoint $placePoint
      * @return int
      */
-    public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint, $noneWorking = false,$futureDate = false)
+    public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint, $noneWorking = false, $futureDate = false)
     {
-        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData, $noneWorking,$futureDate);
+        $deliveryTotal = $this->container->get('doctrine')->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData, $noneWorking, $futureDate);
 
         if (false === $deliveryTotal) {
             $deliveryTotal = $place->getDeliveryPrice();
@@ -659,7 +659,7 @@ class CartService
      */
     public function getMinimumCart(Place $place, $locData, PlacePoint $placePoint)
     {
-        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getMinimumCartForPlacePoint($place, $placePoint, $locData);
+        $deliveryTotal = $this->container->get('doctrine')->getRepository("FoodDishesBundle:Place")->getMinimumCartForPlacePoint($place, $placePoint, $locData);
         if (empty($deliveryTotal)) {
             $deliveryTotal = $place->getCartMinimum();
         }

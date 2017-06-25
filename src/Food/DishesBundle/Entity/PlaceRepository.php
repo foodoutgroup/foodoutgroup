@@ -274,17 +274,17 @@ class PlaceRepository extends EntityRepository
     }
 
 
-    public function getDeliveryPriceForPlacePoint(Place $place, PlacePoint $placePoint, $locationData, $noneWorking = false,$fututeDate = false)
+    public function getDeliveryPriceForPlacePoint(Place $place, PlacePoint $placePoint, $locationData, $noneWorking = false, $fututeDate = false)
     {
-        $data = $this->getPlacePointNearWithDistance($place->getId(), $locationData, false, false, $noneWorking,$fututeDate);
+        $data = $this->getPlacePointNearWithDistance($place->getId(), $locationData, false, false, $noneWorking, $fututeDate);
         $currTime = date('H:i:s');
-        $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=" . (int)$data['id'] . " AND active=1 AND distance >= " . (float)$data['distance'] . " AND (time_from <= '" . $currTime . "' AND '" . $currTime . "' <= time_to) ORDER BY distance ASC LIMIT 1";
+        $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=" . (int)$data['id'] . " AND active=1 AND distance >= " . (float)$data['distance'] . " AND (time_from <= '" . $currTime . "' AND '" . $currTime . "' <= time_to) AND deleted_at IS NULL ORDER BY distance ASC LIMIT 1";
         $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
         $stmt->execute();
         $result = $stmt->fetchColumn();
 
-        if(empty($result)){
-            $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=" . (int)$data['id'] . " AND active=1 AND distance >= " . (float)$data['distance']." AND time_from IS NULL AND time_to IS NULL";
+        if (empty($result)) {
+            $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=" . (int)$data['id'] . " AND active=1 AND distance >= " . (float)$data['distance']." AND time_from IS NULL AND time_to IS NULL AND deleted_at IS NULL";
             $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
             $stmt->execute();
             $result = $stmt->fetchColumn();
