@@ -29,7 +29,7 @@ class LocationService extends ContainerAware
     public function parseLocation($location = [], $flat = null)
     {
         $locationData = null;
-        if($location != null && is_array($location)) {
+        if ($location != null && is_array($location)) {
             if (isset($location['flat']) && !$flat) { $flat = $location['flat'] ; }
 
             if(!is_null($flat) || (isset($location['output']) && !is_null($flat = $this->parseFlat($location['output'])))) {
@@ -51,9 +51,9 @@ class LocationService extends ContainerAware
                 'precision' => 0,
             ];
 
-            if($locationData['city'] != null) {
+            if ($locationData['city']) {
                 $cityObj = $this->em->getRepository('FoodAppBundle:City')->getByName($locationData['city']);
-                if($cityObj) {
+                if ($cityObj) {
                     $locationData['city_id'] = $cityObj->getId();
                 }
             }
@@ -63,7 +63,7 @@ class LocationService extends ContainerAware
 
         return $locationData;
     }
-    
+
     /**
      * @param array $location
      * @param null $flat
