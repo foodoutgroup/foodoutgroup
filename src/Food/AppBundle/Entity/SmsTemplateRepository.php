@@ -25,7 +25,7 @@ class SmsTemplateRepository extends EntityRepository
             'defaultSource' => 'All',
             'type' => 'deliver'
         ];
-        if($order->getOrderPicked()) {
+        if ('pickup' == $order->getDeliveryType()) {
             $params['type'] = 'pickup';
         }
 
