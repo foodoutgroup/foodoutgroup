@@ -54,4 +54,25 @@ class PlacePointRepository extends EntityRepository
         return count($query);
 
     }
+
+    public function findNearestCity($locationData)
+    {
+
+        $lat = $locationData['latitude'];
+        $lon = $locationData['longitude'];
+
+        $subQuery = "SELECT city_id FROM place_point
+                        WHERE active=1 
+                        AND deleted_at IS NULL 
+                        ORDER BY (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - ABS(lat)) * pi()/180 / 2), 2) + COS(ABS($lat) * pi()/180 ) * COS(abs(lat) * pi()/180) * POWER(SIN(($lon - lon) * pi()/180 / 2), 2) ))) ASC LIMIT 1";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($subQuery);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        return count($result) >= 1 ? $result[0]['city_id'] : null;
+
+
+    }
+
 }

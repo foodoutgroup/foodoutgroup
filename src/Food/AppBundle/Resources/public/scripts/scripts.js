@@ -337,7 +337,7 @@ var registrationForm = {
         img = $(this).find('img');
         oldval = img.attr('src');
         img.attr('src', img.attr('img-loader'));
-        $.get($(this).data("url"), {"redirect" : true, "type" : "delivery", "address": input_auto_complete.data("selected") }, function (response) {
+        $.get($(this).data("url"), {"redirect" : true, "type" : "pickup", "address": input_auto_complete.data("selected") }, function (response) {
             if(response.success) {
                 window.location.href = response.url;
             } else {

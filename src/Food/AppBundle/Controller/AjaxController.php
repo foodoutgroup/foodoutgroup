@@ -5,6 +5,7 @@ namespace Food\AppBundle\Controller;
 use Food\AppBundle\Entity\Slug;
 use Food\DishesBundle\Entity\PlaceRepository;
 use Food\OrderBundle\Entity\Coupon;
+use Food\OrderBundle\Service\OrderService;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -48,18 +49,27 @@ class AjaxController extends Controller
                 $collection = ['success' => false];
 
                     $this->get('session')->set('delivery_type', $request->get('type'));
-
                     if ($request->get('redirect')) {
-
                         if($request->get('address') != "") {
                             $collection = $this->_checkAddress($request);
                         } else {
                             $lService = $this->get('food.location');
-                            $findAddress = $lService->findByIp($request->getClientIp());
+
+                            $ip = $request->getClientIp();
+                            if($ip == "127.0.0.1"){
+                                $ip = "88.119.11.173";
+                            }
+
+                            $findAddress = $lService->findByIp($ip);
                             if ($findAddress['precision'] != 1) {
-                                $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findNearestCity();
-                                $lService->set($findAddress);
-                                $collection['success'] = true;
+                                try {
+                                    $cityId = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findNearestCity($findAddress);
+                                    $collection['success'] = true;
+                                    $collection['url'] = $this->get('slug')->getUrl($cityId, Slug::TYPE_CITY);
+                                } catch (\Exception $e) {
+                                    $collection['success'] = false;
+                                    $collection['message'] = $this->get('translator')->trans('location.cant.be.located');
+                                }
                             } else {
                                 $collection['message'] = $this->get('translator')->trans('location.cant.be.located');
                             }
