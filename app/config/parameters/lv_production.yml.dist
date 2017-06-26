@@ -3,13 +3,13 @@ parameters:
     defaultSelections: [messages]
     emptyPrefixes: []
     editable:
-        mode: inline		 # Mode of editable, can be popup or inline
-        type: textarea		 # Type of input. Can be text|textarea|select|date|checklist and more
-        emptytext: Empty 	 # text to display on empty translations
-        placement: top		 # ingnored for inline mode
+        mode: inline         # Mode of editable, can be popup or inline
+        type: textarea       # Type of input. Can be text|textarea|select|date|checklist and more
+        emptytext: Empty     # text to display on empty translations
+        placement: top       # ingnored for inline mode
     slug_regex: "^(?!admin|cart|login|logout|invoice|payments|newsletter|ajax|js|routing|banned)([\pL0-9-\/\__\"„“\.\+]+)"
     database_driver: pdo_mysql
-    database_host: localhost
+    database_host: maindb
     database_port: 3306
     database_name: foodoutlv
     database_user: foodoutlv
@@ -31,8 +31,8 @@ parameters:
     driver.socket_hash: api
 
     locale: lv
-    locales: [%locale%, "en", "ru"]
-    locales_hidden: ['en','ru']
+    locales: [%locale%, "en", "ru" ]
+    locales_hidden: ['en']
     available_cities: ["Rīga", "Ogre", "Jurmala", "Jelgava"]
     available_cities_slugs: ["Riga", "Ogre", "Jurmala", "Jelgava"]
     cloudfront_url: foodout.lv
