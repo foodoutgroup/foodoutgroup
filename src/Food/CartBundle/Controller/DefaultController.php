@@ -402,8 +402,6 @@ class DefaultController extends Controller
                 $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
 
 
-
-
                 // Preorder date formation
                 $orderDate = null;
                 $preOrder = $request->get('pre-order');
@@ -411,7 +409,7 @@ class DefaultController extends Controller
                     $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
                 }
 
-                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate,$deliveryType);
+                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate, $deliveryType);
                 $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
                 if ($preOrder == 'it-is') {
                     $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
@@ -428,7 +426,6 @@ class DefaultController extends Controller
                 $user = $order->getUser();
                 $userPhone = $user->getPhone();
             }
-
 
 
             if ($countryCode != $user->getCountryCode() && !$user->getIsBussinesClient()) {
@@ -513,9 +510,9 @@ class DefaultController extends Controller
 
         $currentCountry = $this->container->getParameter('country');
 
-        $countryCode = $this->container->get('food.phones_code_service')->getCountryCode($this->getUser(),$currentCountry);
+        $countryCode = $this->container->get('food.phones_code_service')->getCountryCode($this->getUser(), $currentCountry);
 
-        if($request->getMethod() == 'POST' && !empty($_POST['country'])){
+        if ($request->getMethod() == 'POST' && !empty($_POST['country'])) {
             $countryCode = $_POST['country'];
         }
 
@@ -612,7 +609,6 @@ class DefaultController extends Controller
             $placePointMap = $this->container->get('session')->get('point_data');
 
 
-
             $locationData = $this->get('food.location')->get();
 
             if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
@@ -700,6 +696,7 @@ class DefaultController extends Controller
         $applyDiscount = $freeDelivery = $discountInSum = false;
         $discountSize = null;
         $discountSum = null;
+        $useTotal = false;
 
         // If coupon in use
         if (!empty($couponCode)) {
@@ -740,6 +737,15 @@ class DefaultController extends Controller
                     $discountSum = $otherPriceTotal;
                 }
 
+                if ($coupon->getFullOrderCovers()) {
+                    if ($discountSum < $coupon->getDiscountSum()) {
+                        $discountSum = $coupon->getDiscountSum();
+                        if($coupon->getIncludeDelivery()){
+                            $useTotal = true;
+                        }
+
+                    }
+                }
 
                 if ($enableDiscount) {
                     $total_cart -= $discountSum;
@@ -747,16 +753,10 @@ class DefaultController extends Controller
                     $discountSum = 0;
                 }
 
-                if ($total_cart <= 0) {
-                    if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
-                        $deliveryTotal = $deliveryTotal + $total_cart;
-                        if ($deliveryTotal < 0 || $total_cart < $realDiscountSum) {
-                            $deliveryTotal = 0;
-                            $freeDelivery = true;
-                        }
-                    }
-                    $total_cart = 0;
+                if ($freeDelivery) {
+                    $discountSum += $deliveryTotal;
                 }
+
             }
         } // Business client discount
         elseif (!empty($current_user) && is_object($current_user) && $current_user->getIsBussinesClient()) {
@@ -787,6 +787,11 @@ class DefaultController extends Controller
                 }
             }
         }
+
+        if ($useAdminFee && ($cartFromMin - $total_cart) >= 0.00001) {
+            $total_cart += $adminFee;
+        }
+
         $cartSumTotal = $total_cart;
         // Jei restorane galima tik atsiimti arba, jei zmogus rinkosi, kad jis atsiimas, arba jei yra uzsakymas ir fiksuotas atsiemimas vietoje - neskaiciuojam pristatymo
         if ($place->getDeliveryOptions() == Place::OPT_ONLY_PICKUP ||
@@ -806,10 +811,6 @@ class DefaultController extends Controller
             $useAdminFee = false;
         }
 
-        if ($useAdminFee && ($cartFromMin - $total_cart) >= 0.00001) {
-            $total_cart += $adminFee;
-
-        }
 
         // Nemokamas pristatymas dideliam krepseliui
         $self_delivery = $place->getSelfDelivery();
@@ -830,7 +831,11 @@ class DefaultController extends Controller
             }
         }
 
-        $totalWIthDelivery = $freeDelivery ? $total_cart : ($total_cart + $deliveryTotal);
+        if($total_cart < 0){
+            $total_cart = 0;
+        }
+
+        $totalWIthDelivery = $useTotal ? $total_cart : ($total_cart + $deliveryTotal);
 
         //$prices = $orderPriceService->getOrderPrices($place);
         // total_cart
