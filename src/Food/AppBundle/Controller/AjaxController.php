@@ -53,24 +53,13 @@ class AjaxController extends Controller
                         if($request->get('address') != "") {
                             $collection = $this->_checkAddress($request);
                         } else {
-                            $lService = $this->get('food.location');
-
-                            $ip = $request->getClientIp();
-                            if($ip == "127.0.0.1"){
-                                $ip = "88.119.11.173";
-                            }
-
-                            $findAddress = $lService->findByIp($ip);
-                            if ($findAddress['precision'] != 1) {
-                                try {
-                                    $cityId = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findNearestCity($findAddress);
-                                    $collection['success'] = true;
-                                    $collection['url'] = $this->get('slug')->getUrl($cityId, Slug::TYPE_CITY);
-                                } catch (\Exception $e) {
-                                    $collection['success'] = false;
-                                    $collection['message'] = $this->get('translator')->trans('location.cant.be.located');
-                                }
-                            } else {
+                            $findAddress = $this->get('food.location')->findByIp($request->getClientIp());
+                            try {
+                                $cityId = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findNearestCity($findAddress);
+                                $collection['success'] = true;
+                                $collection['url'] = $this->get('slug')->getUrl($cityId, Slug::TYPE_CITY);
+                            } catch (\Exception $e) {
+                                $collection['success'] = false;
                                 $collection['message'] = $this->get('translator')->trans('location.cant.be.located');
                             }
                         }
