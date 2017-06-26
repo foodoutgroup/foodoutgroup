@@ -96,7 +96,12 @@
         <div class="check-bottom">
             <div class="total-sum cart clearfix">
                 <div class="fl">{% trans %}cart.block.total_cart{% endtrans %}:</div>
+                {% if freeDelivery %}
+
+                <div class="fr"> {{ currency_display|raw }}{{ total_delivery|number_format(2, ',', ' ') }}
+                    {% else %}
                 <div class="fr"> {{ currency_display|raw }}{{ total_cart|number_format(2, ',', ' ') }}
+                    {% endif %}
                     {% if currency_alternative %}
                         <span class="euro">/ {{ misc_utils.getLitas(total_cart)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
                     {% endif %}
@@ -105,16 +110,16 @@
             {% if hide_delivery == 0 %}
                 <div class="delivery-price clearfix">
                     <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
-                    {% if freeDelivery %}
-                        <div class="fr">{{ currency_display|raw }}0,00 {% if currency_alternative %}<span class="euro">/
-                                0,00 {{ display_currency_alternative|raw }}</span>{% endif %}</div>
-                    {% else %}
+                    {#{% if freeDelivery %}#}
+                        {#<div class="fr">{{ currency_display|raw }}0,00 {% if currency_alternative %}<span class="euro">/#}
+                                {#0,00 {{ display_currency_alternative|raw }}</span>{% endif %}</div>#}
+                    {#{% else %}#}
                         <div class="fr">{{ currency_display|raw }}{{ total_delivery|number_format(2, ',', ' ') }}
                             {% if currency_alternative %}
                                 <span class="euro">/ {{ misc_utils.getLitas(total_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
                             {% endif %}
                         </div>
-                    {% endif %}
+                    {#{% endif %}#}
                 </div>
             {% endif %}
             {% if applyDiscount %}

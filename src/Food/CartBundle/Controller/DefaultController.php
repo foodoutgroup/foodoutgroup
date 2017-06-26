@@ -707,7 +707,6 @@ class DefaultController extends Controller
 
             if ($coupon) {
                 $applyDiscount = true;
-                $useAdminFee = false;
 
                 if ($coupon->getIgnoreCartPrice()) {
                     $noMinimumCart = true;
