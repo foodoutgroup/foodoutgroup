@@ -730,7 +730,7 @@ input.button {}
 }
 .search-food-form span.find-me {
     position: relative;
-    right: 210px;
+    right: 188px;
     top: 16px;
     background: url(/bundles/foodapp/images/find-me.png);
     width: 28px;
