@@ -1,15 +1,4 @@
 parameters:
-    database_driver: pdo_mysql
-    database_host: maindb
-    database_port: 3306
-    database_name: foodoutlt
-    database_user: foodoutlt
-    database_password: NWZv50Evwus004II
-    mailer_transport: smtp
-    mailer_host: 127.0.0.1
-    mailer_user: null
-    mailer_password: null
-    secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
     defaultDomain: messages
     defaultSelections: [messages]
     emptyPrefixes: []
@@ -18,6 +7,18 @@ parameters:
         type: textarea       # Type of input. Can be text|textarea|select|date|checklist and more
         emptytext: Empty     # text to display on empty translations
         placement: top       # ingnored for inline mode
+    database_driver: pdo_mysql
+    database_host: maindb
+    database_port: 3306
+    database_name: food_lt_prod
+    database_user: food_lt_prod
+    database_password: GobdGVJOrCpvqR2i
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: f6180a0fb30e99a1da1e364412f96c3f98cbaa1f
+
     aws_key: AKIAJN3454YNXAUSJIRA
     aws_secret: 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
     aws_region: eu-west-1
@@ -45,7 +46,7 @@ parameters:
         vilnius: []
         kaunas: []
         klaipėda: []
-        ryga: []
+        ryga: [karolis.m@foodout.lt]
     order.accept_notify_emails: []
     order.cancel_notify_emails: []
     accounting_email: "buhalterija@foodout.lt"
