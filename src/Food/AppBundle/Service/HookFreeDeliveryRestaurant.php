@@ -65,6 +65,7 @@ class HookFreeDeliveryRestaurant {
                 ->innerJoin('pp.place', 'p', 'pp.place = p.id')
                 ->where('pp.active = 1')
                 ->andWhere('p.active = 1')
+                ->andWhere('p.deliveryOptions IN (\'delivery\', \'delivery_and_pickup\')')
                 ->andWhere('p.selfDelivery = 0')
                 ->andWhere('pp.delivery = 1')
                 ->andWhere('pp.cityId = :cityId')
