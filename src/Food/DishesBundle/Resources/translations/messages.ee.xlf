@@ -183,6 +183,10 @@
             <trans-unit id="place_point.min_cart_amount" resname="place_point.min_cart_amount">
                 <source>place_point.min_cart_amount</source><target>Min cart amount</target>
             </trans-unit>
+            <trans-unit id="place_point.tag-not-working" resname="place_point.tag-not-working">
+                <source>place_point.tag-not-working</source>
+                <target>Hetkel suletud, telli hilisemaks</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

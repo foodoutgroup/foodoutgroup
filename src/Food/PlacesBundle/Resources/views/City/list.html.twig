@@ -16,61 +16,90 @@
                 <div class="logo-wrap"><a href="{{ url }}"><img src="//{{ cloudfront_url }}/uploads/places/thumb_{{ place.logo }}"></a></div>
             </div>
             <div class="item-center">
-                <h2 class="name clearfix">
-                    <span class="text"><a href="{{ url }}">{{ place.name }}</a></span>
+                <h2 class="name clearfix list-title-container">
+                    <span class="text list-restaurant-title"><a href="{{ url }}">{{ place.name }}</a></span>
                     {% if place_point.point.fast %}
                         <span class="tag">
                             <img src="/bundles/foodapp/images/tag-speed.png">
                         </span>
                     {% endif %}
                     {% if place.new %}
-                        <span class="tag">
+                        <span class="tag tag-new-restaurant">
                             <img src="/bundles/foodapp/images/tag-new.png">
                         </span>
                     {% endif %}
 
-                    {% if place_point.is_work == 1 %}
-                        {# IT WORKS. Everything works :) #}
-                        {% if not place_point.is_delivering %}
-                            <span class="tag">
+                    {# IT WORKS. Everything works :) #}
+                    {% if not place_point.is_delivering and place_point.is_work == 1 %}
+                        <span class="tag tag-not-working">
                                 <span class="partial-work"></span>
                                 <div class="time-popup time-popup2">{{ 'general.restaurant_not_delivering_to_address'|trans }}
                                     <div class="nip"></div>
                                 </div>
-                            </span>
-                        {% endif %}
-                    {% elseif place_point.is_work == 2 %}
-                        {# IT WORKS. Well some of the points do :D :) #}
-                        <span class="tag">
-                            <span class="partial-work{% if locale == 'lv' %} partial-work-lv{% elseif locale == 'ee' %} partial-work-ee{% endif %}"></span>
-                            <div class="time-popup time-popup2">{{ order_service.notWorkingPlacesPoints(place)|raw }}
-                                <div class="nip"></div>
-                            </div>
                         </span>
-                    {% else %}
-                        {# NAH non of it works :) #}
-                        {% if place_point.pp_count == 1 %}
-                            <span class="tag">
-                                <img src="/bundles/foodapp/images/tag-not-working{% if locale == 'lv' %}_lv{% elseif locale == 'ee' %}_ee{% endif %}.png">
-                                <div class="time-popup">{{ order_service.getTodayWork(place_point.point) }}
-                                    <div class="nip"></div>
-                                </div>
-                            </span>
-                        {% else %}
-                            <span class="tag">
-                                <img src="/bundles/foodapp/images/tag-not-working{% if locale == 'lv' %}_lv{% elseif locale == 'ee' %}_ee{% endif %}.png">
-                                <div class="time-popup">{{ order_service.notWorkingPlacesPoints(place)|raw }}
-                                    <div class="nip"></div>
-                                </div>
-                            </span>
-                        {% endif %}
                     {% endif %}
+
                 </h2>
+
+
                 <p class="desc">
                     {% for kitchen in place.kitchens %}
                         {{kitchen.name}}{% if loop.last == false %}, {% endif %}
                     {% endfor %}
                 </p>
+
+                {% if place_point.is_work == 1 %}
+                {% elseif place_point.is_work == 2 %}
+                    {# IT WORKS. Well some of the points do :D :) #}
+                    <span class="tag tag-not-working">
+                             <div class="not-working-container">
+                                    <div class="not-working-text">
+                                        {% trans %}place_point.tag-not-working{% endtrans %}
+                                    </div>
+                                     <div class="list-questionmark">
+                                         ?
+                                     </div>
+                             </div>
+                    </span>
+                    <div class="time-popup time-popup2">{{ order_service.notWorkingPlacesPoints(place)|raw }}
+                        <div class="nip"></div>
+                    </div>
+                    </span>
+                {% else %}
+                    {# NAH non of it works :) #}
+                    {% if place_point.pp_count == 1 %}
+                        <span class="tag tag-not-working">
+                                 <div class="not-working-container">
+                                    <div class="not-working-text">
+                                       {% trans %}place_point.tag-not-working{% endtrans %}
+                                    </div>
+                                    <div class="list-questionmark">
+                                         ?
+                                     </div>
+                                 </div>
+                                <div class="time-popup">{{ order_service.getTodayWork(place_point.point) }}
+                                    <div class="nip"></div>
+                                </div>
+                            </span>
+                    {% else %}
+                        <span class="tag tag-not-working">
+
+                                <div class="not-working-container">
+                                    <div class="not-working-text">
+                                        {% trans %}place_point.tag-not-working{% endtrans %}
+                                    </div>
+                                    <div class="list-questionmark">
+                                         ?
+                                     </div>
+                                </div>
+                                <div class="time-popup">{{ order_service.notWorkingPlacesPoints(place)|raw }}
+                                    <div class="nip"></div>
+                                </div>
+                            </span>
+                    {% endif %}
+                {% endif %}
+
+
                 <div class="details">
                     {% if place.deliveryOptions == 'delivery' %}
                         <span class="delivery">{% trans %}place_point.delivery_info{% endtrans %}:
