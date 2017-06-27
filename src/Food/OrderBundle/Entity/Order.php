@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Food\AppBundle\Entity\Driver;
 
 /**
- * @ORM\Table(name="orders", indexes={@ORM\Index(name="nav_delivery_order_idx", columns={"nav_delivery_order"}),@ORM\Index(name="oder_status_idx", columns={"order_status"}),@ORM\Index(name="payment_status_idx", columns={"payment_status"}),@ORM\Index(name="place_point_city_idx", columns={"place_point_city"}),@ORM\Index(name="delivery_type_idx", columns={"delivery_type"}),@ORM\Index(name="has_user_completed_orders_idx", columns={"place_id","user_id","dispatcher_id","order_status"})})
+ * @ORM\Table(name="orders", indexes={@ORM\Index(name="nav_delivery_order_idx", columns={"nav_delivery_order"}),@ORM\Index(name="order_status_idx", columns={"order_status"}),@ORM\Index(name="status_date_idx", columns={"order_status", "order_date"}),@ORM\Index(name="payment_status_idx", columns={"payment_status"}),@ORM\Index(name="place_point_city_idx", columns={"place_point_city"}),@ORM\Index(name="delivery_type_idx", columns={"delivery_type"}),@ORM\Index(name="has_user_completed_orders_idx", columns={"place_id","user_id","dispatcher_id","order_status"})})
  * @ORM\Entity(repositoryClass="Food\OrderBundle\Entity\OrderRepository")
  */
 class Order

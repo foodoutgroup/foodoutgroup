@@ -30,7 +30,7 @@ class City implements \JsonSerializable
     private $bestOffers;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Food\PlacesBundle\Entity\PlaceNotification", mappedBy="city")
+     * @ORM\ManyToMany(targetEntity="Food\PlacesBundle\Entity\PlaceNotification", mappedBy="cityCollection")
      */
 
     private $placeNotificationCollection;
@@ -157,7 +157,7 @@ class City implements \JsonSerializable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -196,14 +196,14 @@ class City implements \JsonSerializable
     public function setZavalasOn($zavalasOn)
     {
         $this->zavalasOn = $zavalasOn;
-    
+
         return $this;
     }
 
     /**
      * Get zavalasOn
      *
-     * @return boolean 
+     * @return boolean
      */
     public function isZavalasOn()
     {
@@ -219,14 +219,14 @@ class City implements \JsonSerializable
     public function setZavalasTime($zavalasTime)
     {
         $this->zavalasTime = $zavalasTime;
-    
+
         return $this;
     }
 
     /**
      * Get zavalasTime
      *
-     * @return string 
+     * @return string
      */
     public function getZavalasTime()
     {

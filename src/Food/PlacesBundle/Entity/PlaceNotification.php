@@ -92,7 +92,7 @@ class PlaceNotification extends Uploadable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -154,14 +154,14 @@ class PlaceNotification extends Uploadable
     public function setActive($active)
     {
         $this->active = $active;
-    
+
         return $this;
     }
 
     /**
      * Get active
      *
-     * @return integer 
+     * @return integer
      */
     public function getActive()
     {
@@ -177,14 +177,14 @@ class PlaceNotification extends Uploadable
     public function setPlace(\Food\DishesBundle\Entity\Place $place = null)
     {
         $this->place = $place;
-    
+
         return $this;
     }
 
     /**
      * Get place
      *
-     * @return \Food\DishesBundle\Entity\Place 
+     * @return \Food\DishesBundle\Entity\Place
      */
     public function getPlace()
     {
@@ -249,7 +249,7 @@ class PlaceNotification extends Uploadable
     /**
      * Get placeCollection
      *
-     * @return \Food\DishesBundle\Entity\Place 
+     * @return \Food\DishesBundle\Entity\Place
      */
     public function getPlaceCollection()
     {
@@ -282,7 +282,7 @@ class PlaceNotification extends Uploadable
     /**
      * Get cityCollection
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCityCollection()
     {
@@ -305,7 +305,7 @@ class PlaceNotification extends Uploadable
     /**
      * Get showTill
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getShowTill()
     {
