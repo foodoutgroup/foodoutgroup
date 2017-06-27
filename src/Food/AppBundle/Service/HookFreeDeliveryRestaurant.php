@@ -65,8 +65,10 @@ class HookFreeDeliveryRestaurant {
                 ->innerJoin('pp.place', 'p', 'pp.place = p.id')
                 ->where('pp.active = 1')
                 ->andWhere('p.active = 1')
-                ->andWhere('p.selfDelivery = 1')
-                ->andWhere('pp.cityId = :cityId');
+                ->andWhere('p.selfDelivery = 0')
+                ->andWhere('pp.delivery = 1')
+                ->andWhere('pp.cityId = :cityId')
+                ->groupBy('p.id');
 
             $qb->setParameter('cityId', $city->getId());
 
