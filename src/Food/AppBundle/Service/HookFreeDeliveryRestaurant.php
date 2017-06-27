@@ -73,10 +73,14 @@ class HookFreeDeliveryRestaurant {
 
             $qb->setParameter('cityId', $city->getId());
 
-            $dataCollection[] = [
-                'city' => $city,
-                'collection' => $qb->getQuery()->execute()
-            ];
+            $list = $qb->getQuery()->execute();
+
+            if (count($list)) {
+                $dataCollection[] = [
+                    'city' => $city,
+                    'collection' => $list
+                ];
+            }
         }
 
         return $this->templating->render("@FoodApp/Hook/free_delivery_restaurant.html.twig", [
