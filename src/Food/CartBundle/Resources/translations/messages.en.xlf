@@ -102,6 +102,10 @@
                 <source>cart.checkout.delivery_time</source>
                 <target>Delivery time</target>
             </trans-unit>
+            <trans-unit id="cart.checkout.preorder_form_empty" resname="cart.checkout.preorder_form_empty">
+                <source>cart.checkout.preorder_form_empty</source>
+                <target>Restaurant is not working</target>
+            </trans-unit>
             <trans-unit id="cart.checkout.order_now" resname="cart.checkout.order_now">
                 <source>cart.checkout.order_now</source>
                 <target>Order Now</target>
