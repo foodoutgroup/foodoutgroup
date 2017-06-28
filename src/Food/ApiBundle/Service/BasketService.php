@@ -257,6 +257,10 @@ class BasketService extends ContainerAware
             'total_price',
             array(
                 'amount' => $total,
+                'admin_fee' => [
+                    'enabled' => false, // todo admin-fee ar taikomas siam order admin fee
+                    'amount' => 100, // todo admin-fee // koks dydis yra admin fee jei taikomas
+                ],
                 'discount' => $discount < 0.005 ? 0 : $discount,
                 'currency' => $this->container->getParameter('currency_iso')
             )
