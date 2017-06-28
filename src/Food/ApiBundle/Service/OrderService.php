@@ -643,8 +643,12 @@ class OrderService extends ContainerAware
             'order_id' => $order->getId(),
             'order_hash' => $order->getOrderHash(),
             'total_price' => [
+                'admin_fee' => [
+                    'enabled' => true, // todo admin-fee ar taikomas siam order admin fee
+                    'amount' => 100, // todo admin-fee // koks dydis yra admin fee jei taikomas
+                ],
                 //'amount' => $order->getTotal() * 100,
-                'amount' => $total_sum,
+                'amount' => $total_sum, // todo admin-fee if enabled admin_fee and smaller than min cart add admin_fee size :)
                 'currency' => $this->container->getParameter('currency_iso')
             ],
             'delivery_price' => $order->getDeliveryPrice(), //Kode cia ne *100?
