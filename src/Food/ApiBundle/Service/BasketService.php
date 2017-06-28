@@ -253,13 +253,27 @@ class BasketService extends ContainerAware
             $discount = ($this->container->get('food.cart')->getCartTotalOld($cartItems, $basketInfo->getPlaceId()) * 100) - $total;
         }
 
+
+        $adminFee = 0;
+        $placeService = $this->container->get('food.places');
+        $useAdminFee = $placeService->useAdminFee($basketInfo->getPlaceId());
+
+        $minCart = $placeService->getMinCartPrice($basketInfo->getPlaceId()->getId());
+
+        if($useAdminFee && ($minCart > $total)){
+            $useAdminFee = true;
+            $adminFee = $placeService->getAdminFee($basketInfo->getPlaceId());
+        }else{
+            $useAdminFee = false;
+        }
+
         $basket->set(
             'total_price',
             array(
                 'amount' => $total,
                 'admin_fee' => [
-                    'enabled' => false, // todo admin-fee ar taikomas siam order admin fee
-                    'amount' => 100, // todo admin-fee // koks dydis yra admin fee jei taikomas
+                    'enabled' => $useAdminFee, // todo admin-fee ar taikomas siam order admin fee
+                    'amount' => $adminFee, // todo admin-fee // koks dydis yra admin fee jei taikomas
                 ],
                 'discount' => $discount < 0.005 ? 0 : $discount,
                 'currency' => $this->container->getParameter('currency_iso')

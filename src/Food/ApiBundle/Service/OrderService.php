@@ -639,6 +639,19 @@ class OrderService extends ContainerAware
 
         }
 
+        $adminFee = 0;
+        $placeService = $this->container->get('food.places');
+        $useAdminFee = $placeService->useAdminFee($order->getPlace());
+
+        $minCart = $placeService->getMinCartPrice($order->getPlace()->getId());
+        if($useAdminFee && ($minCart > $total_sum)){
+            $useAdminFee = true;
+            $adminFee = $placeService->getAdminFee($order->getPlace());
+            $total_sum += $adminFee;
+        }else{
+            $useAdminFee = false;
+        }
+
 
 
         $returner = [
@@ -646,8 +659,8 @@ class OrderService extends ContainerAware
             'order_hash' => $order->getOrderHash(),
             'total_price' => [
                 'admin_fee' => [
-                    'enabled' => false, // todo admin-fee ar taikomas siam order admin fee
-                    'amount' => 100, // todo admin-fee // koks dydis yra admin fee jei taikomas
+                    'enabled' => $useAdminFee, // todo admin-fee ar taikomas siam order admin fee
+                    'amount' => $adminFee, // todo admin-fee // koks dydis yra admin fee jei taikomas
                 ],
                 //'amount' => $order->getTotal() * 100,
                 'amount' => $total_sum,
