@@ -643,7 +643,12 @@ class OrderService extends ContainerAware
         $placeService = $this->container->get('food.places');
         $useAdminFee = $placeService->useAdminFee($order->getPlace());
 
+
+
         $minCart = $placeService->getMinCartPrice($order->getPlace()->getId());
+
+
+
         if($useAdminFee && ($minCart > $total_sum)){
             $useAdminFee = true;
             $adminFee = $placeService->getAdminFee($order->getPlace());
@@ -651,8 +656,6 @@ class OrderService extends ContainerAware
         }else{
             $useAdminFee = false;
         }
-
-
 
         $returner = [
             'order_id' => $order->getId(),
@@ -667,7 +670,6 @@ class OrderService extends ContainerAware
                 'currency' => $this->container->getParameter('currency_iso')
             ],
             'delivery_price' => $order->getDeliveryPrice(), //Kode cia ne *100?
-            'admin_fee' => $order->getAdminFee() * 100,
             'place_point_self_delivery' => $order->getPlacePointSelfDelivery(),
             'payment_method' => $this->container->get('translator')->trans('mobile.payment.' . $order->getPaymentMethod()),
             'order_date' => $order->getOrderDate()->format('H:i'),
