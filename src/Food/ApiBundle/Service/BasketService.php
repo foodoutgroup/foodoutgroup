@@ -262,7 +262,7 @@ class BasketService extends ContainerAware
 
         if($useAdminFee && ($minCart*100 > $total)){
             $useAdminFee = true;
-            $adminFee = $placeService->getAdminFee($basketInfo->getPlaceId());
+            $adminFee = $placeService->getAdminFee($basketInfo->getPlaceId()) * 100;
         }else{
             $useAdminFee = false;
         }

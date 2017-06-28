@@ -651,8 +651,8 @@ class OrderService extends ContainerAware
 
         if($useAdminFee && ($minCart > $total_sum)){
             $useAdminFee = true;
-            $adminFee = $placeService->getAdminFee($order->getPlace());
-            $total_sum += $adminFee;
+            $adminFee = $placeService->getAdminFee($order->getPlace()) * 100;
+            $total_sum += ($adminFee);
         }else{
             $useAdminFee = false;
         }
