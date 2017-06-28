@@ -236,7 +236,7 @@ class OrderDetails
     /**
      * Get dish_unit_id
      *
-     * @return integer
+     * @return DishUnit
      */
     public function getDishUnitId()
     {

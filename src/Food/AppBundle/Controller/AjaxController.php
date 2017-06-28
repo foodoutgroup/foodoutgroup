@@ -242,7 +242,7 @@ class AjaxController extends Controller
         $rsp = json_decode($curl->get($this->container->getParameter('geo_provider') . '/autocomplete', [
             'input' => $term,
             'components' => 'country:' . strtoupper($this->container->getParameter('country')),
-            'language' => $request->getLocale(),
+//            'language' => $request->getLocale(),
             'types' => 'geocode',
         ])->body);
         $assets =  $this->get('templating.helper.assets');

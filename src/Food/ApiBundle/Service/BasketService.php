@@ -247,20 +247,34 @@ class BasketService extends ContainerAware
         $basket->set('payment', $firstPayment);
         $basket->set('payment_method', $paymentMethodCollection);
 
-        $total = $this->container->get('food.cart')->getCartTotalApi($cartItems) * 100;
+        $total = $this->container->get('food.cart')->getCartTotalApi($cartItems, $basketInfo->getPlaceId()) * 100;
         $discount = 0;
         if ($basketInfo->getPlaceId()->getDiscountPricesEnabled()) {
             $discount = ($this->container->get('food.cart')->getCartTotalOld($cartItems, $basketInfo->getPlaceId()) * 100) - $total;
         }
 
+
+        $adminFee = 0;
+        $placeService = $this->container->get('food.places');
+        $useAdminFee = $placeService->useAdminFee($basketInfo->getPlaceId());
+
+        $minCart = $placeService->getMinCartPrice($basketInfo->getPlaceId()->getId());
+
+        if($useAdminFee && ($minCart*100 > $total)){
+            $useAdminFee = true;
+            $adminFee = $placeService->getAdminFee($basketInfo->getPlaceId());
+        }else{
+            $useAdminFee = false;
+        }
+
         $basket->set(
             'total_price',
             array(
+                'amount' => $total,
                 'admin_fee' => [
-                    'enabled' => true, // todo admin-fee
-                    'amount' => 555, // todo admin-fee
+                    'enabled' => $useAdminFee, // todo admin-fee ar taikomas siam order admin fee
+                    'amount' => $adminFee, // todo admin-fee // koks dydis yra admin fee jei taikomas
                 ],
-                'amount' => $total, // todo admin-fee if enabled admin_fee and smaller than min cart add admin_fee size :) (TODO: check if total good.)
                 'discount' => $discount < 0.005 ? 0 : $discount,
                 'currency' => $this->container->getParameter('currency_iso')
             )

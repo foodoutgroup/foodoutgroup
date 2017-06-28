@@ -25,7 +25,6 @@ class SmsTemplateRepository extends EntityRepository
             'defaultSource' => 'All',
             'type' => 'deliver'
         ];
-
         if($order->getOrderPicked()) {
             $params['type'] = 'pickup';
         }
@@ -36,7 +35,8 @@ class SmsTemplateRepository extends EntityRepository
             ->andWhere('st.preorder = :preorder')
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->eq('st.source', ':source'),
-                $qb->expr()->eq('st.source', ':defaultSource')
+                $qb->expr()->eq('st.source', ':defaultSource'),
+                $qb->expr()->isNull('st.source')
             ))
             ->andWhere('st.type = :type')
             ->andWhere('st.active = 1')
