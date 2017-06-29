@@ -473,7 +473,8 @@ class DefaultController extends Controller
                 }
                 // TODO Crap happened?
             } catch (\Exception $e) {
-                $this->container->get('logger')->critical($e->getMessage());
+                $this->container->get('logger')->critical('Error on order: ' . $e->getMessage());
+                $this->container->get('logger')->alert('Trace on order: ' . $e->getTraceAsString());
                 $translator = $this->container->get('translator');
                 $formErrors = [$translator->trans('system.error_on_order')];
                 $formHasErrors = true;
