@@ -644,14 +644,17 @@ class OrderService extends ContainerAware
         $useAdminFee = $placeService->useAdminFee($order->getPlace());
 
 
+        if($order->getDeliveryType() != 'pickup') {
+            $minCart = $placeService->getMinCartPrice($order->getPlace()->getId());
 
-        $minCart = $placeService->getMinCartPrice($order->getPlace()->getId());
+            if ($useAdminFee && (($minCart * 100) > $total_sum)) {
+                $useAdminFee = true;
+                $adminFee = $placeService->getAdminFee($order->getPlace()) * 100;
+                $total_sum += ($adminFee);
+            } else {
+                $useAdminFee = false;
+            }
 
-
-        if($useAdminFee && (($minCart*100) > $total_sum)){
-            $useAdminFee = true;
-            $adminFee = $placeService->getAdminFee($order->getPlace()) * 100;
-            $total_sum += ($adminFee);
         }else{
             $useAdminFee = false;
         }
