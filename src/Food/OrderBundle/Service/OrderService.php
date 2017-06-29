@@ -477,7 +477,7 @@ class OrderService extends ContainerAware
      * @param string|null $source
      * @param string|null $message
      */
-    protected function chageOrderStatus($status, $source = null, $message = null)
+    protected function changeOrderStatus($status, $source = null, $message = null)
     {
         // Let's log the shit out of it
         $this->logStatusChange($this->getOrder(), $status, $source, $message);
@@ -568,7 +568,7 @@ class OrderService extends ContainerAware
                 'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
                 'invoice' => $invoice,
                 'beta_code' => $betaCode,
-                'city' => $order->getCityId()->getTitle(),
+                'city' => $order->getPlacePoint()->getCityId()->getTitle(),
                 'food_review_url' =>  'http://'.$this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review'
             ];
 
@@ -2834,7 +2834,7 @@ class OrderService extends ContainerAware
         $userAddressObject = $order->getAddressId();
 
         if (!empty($userAddressObject) && is_object($userAddressObject)) {
-            $userAddress = $order->getAddressId()->getAddress() . ', ' . $order->getAddressId()->getCity();
+            $userAddress = $order->getAddressId()->getAddress() . ', ' . $order->getAddressId()->getCityId()->getTitle();
         }
 
         $driverUrl = $this->container->get('router')
@@ -2844,7 +2844,7 @@ class OrderService extends ContainerAware
 
         $emailMessageText = $newOrderText . ' ' . $order->getPlace()->getName() . "\n"
             . "OrderId: " . $order->getId() . "\n\n"
-            . $translator->trans('general.new_order.selected_place_point') . ": " . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCity() . "\n"
+            . $translator->trans('general.new_order.selected_place_point') . ": " . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCityId()->getTitle() . "\n"
             . $translator->trans('general.new_order.place_point_phone') . ":" . $order->getPlacePoint()->getPhone() . "\n"
             . "\n"
             . $translator->trans('general.new_order.client_name') . ": " . $order->getUser()->getFirstname() . ' ' . $order->getUser()->getLastname() . "\n"
