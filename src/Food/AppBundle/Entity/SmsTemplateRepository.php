@@ -14,9 +14,9 @@ class SmsTemplateRepository extends EntityRepository
 {
     /**
      * @param Order $order
-     * @return bool|SmsTemplate
+     * @return bool|SmsTemplate[]
      */
-    public function findOneByOrder(Order $order)
+    public function findByOrder(Order $order)
     {
         $params = [
             'order_status' => $order->getOrderStatus(),
@@ -39,17 +39,12 @@ class SmsTemplateRepository extends EntityRepository
                 $qb->expr()->isNull('st.source')
             ))
             ->andWhere('st.type = :type')
-            ->andWhere('st.active = 1')
-            ->setMaxResults(1);
+            ->andWhere('st.active = 1');
 
         $result = $qb->getQuery()->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker')
             ->setHint(TranslatableListener::HINT_TRANSLATABLE_LOCALE, $order->getLocale())
             ->execute($params);
 
-        if(count($result)) {
-            return $result[0];
-        }
-
-        return false;
+        return $result;
     }
 }

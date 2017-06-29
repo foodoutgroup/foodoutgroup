@@ -483,121 +483,129 @@ class OrderService extends ContainerAware
 
         $this->getOrder()->setOrderStatus($status);
 
-        $smsObj = $this->em->getRepository('FoodAppBundle:SmsTemplate')->findOneByOrder($this->order);
+        $smsCollection = $this->em->getRepository('FoodAppBundle:SmsTemplate')->findByOrder($this->order);
 
         $order = $this->getOrder();
         $place = $order->getPlace();
         $placeService = $this->container->get('food.places');
-        if($smsObj) {
-            $smsText = str_replace(
-                [
-                    '[order_id]',
-                    '[restaurant_name]',
-                    '[delivery_time]',
-                    '[pre_delivery_time]',
-                    '[delay_time]',
-                ],
-                [
-                    $order->getId(),
-                    $place->getName(),
-                    ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
-                    $order->getDeliveryTime()->format('m-d H:i'),
-                    $order->getDelayDuration(),
-                ],
-                $smsObj->getText()
-            );
+        if ($smsCollection) {
+            foreach ($smsCollection as $smsObj) {
+                if($smsObj) {
+                    $smsText = str_replace(
+                        [
+                            '[order_id]',
+                            '[restaurant_name]',
+                            '[delivery_time]',
+                            '[pre_delivery_time]',
+                            '[delay_time]',
+                        ],
+                        [
+                            $order->getId(),
+                            $place->getName(),
+                            ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
+                            $order->getDeliveryTime()->format('m-d H:i'),
+                            $order->getDelayDuration(),
+                        ],
+                        $smsObj->getText()
+                    );
 
-            $smsService = $this->container->get('food.messages');
-            $sender = $this->container->getParameter('sms.sender');
+                    $smsService = $this->container->get('food.messages');
+                    $sender = $this->container->getParameter('sms.sender');
 
-            $message = $smsService->createMessage($sender, $order->getOrderExtra()->getPhone(), $smsText, $order);
-            $smsService->saveMessage($message);
+                    $message = $smsService->createMessage($sender, $order->getOrderExtra()->getPhone(), $smsText, $order);
+                    $smsService->saveMessage($message);
+                }
+            }
         }
 
-        $emailObj = $this->em->getRepository('FoodAppBundle:EmailTemplate')->findOneByOrder($this->order);
+        $emailCollection = $this->em->getRepository('FoodAppBundle:EmailTemplate')->findByOrder($this->order);
 
-        if($emailObj) {
+        if ($emailCollection) {
+            foreach ($emailCollection as $emailObj) {
+                if($emailObj) {
 
-            $ml = $this->container->get('food.mailer');
-            $placeService = $this->container->get('food.places');
+                    $ml = $this->container->get('food.mailer');
+                    $placeService = $this->container->get('food.places');
 
-            $invoice = [];
-            foreach ($this->getOrder()->getDetails() as $ord) {
+                    $invoice = [];
+                    foreach ($this->getOrder()->getDetails() as $ord) {
 
-                $optionCollection = $ord->getOptions();
-                $invoice[] = [
-                    'itm_name' => $ord->getDishName(),
-                    'itm_amount' => $ord->getQuantity(),
-                    'itm_price' => $ord->getPrice(),
-                    'itm_sum' => $ord->getPrice() * $ord->getQuantity(),
-                ];
-                if (count($optionCollection)) {
-
-                    foreach ($optionCollection as $k => $opt) {
-
+                        $optionCollection = $ord->getOptions();
                         $invoice[] = [
-                            'itm_name' => "  - " . $opt->getDishOptionName(),
+                            'itm_name' => $ord->getDishName(),
                             'itm_amount' => $ord->getQuantity(),
-                            'itm_price' => $opt->getPrice(),
-                            'itm_sum' => $opt->getPrice() * $ord->getQuantity(),
+                            'itm_price' => $ord->getPrice(),
+                            'itm_sum' => $ord->getPrice() * $ord->getQuantity(),
                         ];
+                        if (count($optionCollection)) {
+
+                            foreach ($optionCollection as $k => $opt) {
+
+                                $invoice[] = [
+                                    'itm_name' => "  - " . $opt->getDishOptionName(),
+                                    'itm_amount' => $ord->getQuantity(),
+                                    'itm_price' => $opt->getPrice(),
+                                    'itm_sum' => $opt->getPrice() * $ord->getQuantity(),
+                                ];
+                            }
+
+                        }
                     }
 
+                    // TODO temp Beta.lt code
+                    $betaCode = '';
+                    if ($this->container->get('food.app.utils.misc')->getParam('beta_code_on', true) == 'on') {
+                        // TODO Kavos akcija tik mobilkom
+                        if ($this->getOrder()->getMobile()) {
+                            $betaCode = $this->getBetaCode();
+                        }
+                    }
+
+                    $variables = [
+                        'place_name' => $this->getOrder()->getPlace()->getName(),
+                        'place_address' => $this->getOrder()->getPlacePoint()->getAddress(),
+                        'order_id' => $this->getOrder()->getId(),
+                        'order_hash' => $this->getOrder()->getOrderHash(),
+                        'user_address' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->toString() : "--"),
+                        'delivery_date' => $placeService->getDeliveryTime($this->getOrder()->getPlace()),
+                        'total_sum' => $this->getOrder()->getTotal(),
+                        'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
+                        'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
+                        'invoice' => $invoice,
+                        'beta_code' => $betaCode,
+                        'city' => $order->getCityId() ? $order->getCityId()->getTitle() : $order->getPlacePoint()->getCityId()->getTitle(),
+                        'food_review_url' =>  'http://'.$this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review'
+                    ];
+
+
+                    $mailTemplate = $emailObj->getTemplateId();
+
+                    if ($this->getOrder()->getPlace()->getId() == 142 && $this->container->getParameter('country') == 'LT') {
+                        $mailTemplate = 41586573;
+                    }
+
+                    $mailResp = $ml->setVariables($variables)
+                        ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
+                        ->setId($mailTemplate)
+                        ->send();
+
+                    if (isset($mailResp['errors'])) {
+                        $this->container->get('logger')->error(
+                            $mailResp['errors'][0]
+                        );
+
+                    }
+
+
+                    $this->logMailSent(
+                        $this->getOrder(),
+                        'auto_email_send_'.$status,
+                        $mailTemplate,
+                        $variables
+                    );
+
                 }
             }
-
-            // TODO temp Beta.lt code
-            $betaCode = '';
-            if ($this->container->get('food.app.utils.misc')->getParam('beta_code_on', true) == 'on') {
-                // TODO Kavos akcija tik mobilkom
-                if ($this->getOrder()->getMobile()) {
-                    $betaCode = $this->getBetaCode();
-                }
-            }
-
-            $variables = [
-                'place_name' => $this->getOrder()->getPlace()->getName(),
-                'place_address' => $this->getOrder()->getPlacePoint()->getAddress(),
-                'order_id' => $this->getOrder()->getId(),
-                'order_hash' => $this->getOrder()->getOrderHash(),
-                'user_address' => ($this->getOrder()->getDeliveryType() != self::$deliveryPickup ? $this->getOrder()->getAddressId()->toString() : "--"),
-                'delivery_date' => $placeService->getDeliveryTime($this->getOrder()->getPlace()),
-                'total_sum' => $this->getOrder()->getTotal(),
-                'total_delivery' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? $this->getOrder()->getDeliveryPrice() : 0),
-                'total_card' => ($this->getOrder()->getDeliveryType() == self::$deliveryDeliver ? ($this->getOrder()->getTotal() - $this->getOrder()->getDeliveryPrice()) : $this->getOrder()->getTotal()),
-                'invoice' => $invoice,
-                'beta_code' => $betaCode,
-                'city' => $order->getCityId()->getTitle(),
-                'food_review_url' =>  'http://'.$this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review'
-            ];
-
-
-            $mailTemplate = $emailObj->getTemplateId();
-
-            if ($this->getOrder()->getPlace()->getId() == 142 && $this->container->getParameter('country') == 'LT') {
-                $mailTemplate = 41586573;
-            }
-
-            $mailResp = $ml->setVariables($variables)
-                ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
-                ->setId($mailTemplate)
-                ->send();
-
-            if (isset($mailResp['errors'])) {
-                $this->container->get('logger')->error(
-                    $mailResp['errors'][0]
-                );
-
-            }
-
-
-            $this->logMailSent(
-                $this->getOrder(),
-                'auto_email_send_'.$status,
-                $mailTemplate,
-                $variables
-            );
-
         }
 
     }
