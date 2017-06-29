@@ -253,7 +253,6 @@ class BasketService extends ContainerAware
             $discount = ($this->container->get('food.cart')->getCartTotalOld($cartItems, $basketInfo->getPlaceId()) * 100) - $total;
         }
 
-
         $adminFee = 0;
         $placeService = $this->container->get('food.places');
         $useAdminFee = $placeService->useAdminFee($basketInfo->getPlaceId());
