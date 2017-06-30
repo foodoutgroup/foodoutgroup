@@ -35,15 +35,15 @@ trait PaymentLogDecorator
             // throws exception on optimistic lock check failure
             $em->flush();
 
-            // inform stuff
-            if ($orderService->getAllowToInform()) {
-                $orderService->informPlace();
-            }
-
             if ($order->getPreorder()) {
                 $orderService->statusNewPreorder('payment accept');
             } else {
                 $orderService->statusNew('payment accept');
+            }
+
+            // inform stuff
+            if ($orderService->getAllowToInform()) {
+                $orderService->informPlace();
             }
 
             // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti
