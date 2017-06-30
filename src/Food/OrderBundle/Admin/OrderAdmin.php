@@ -163,7 +163,7 @@ class OrderAdmin extends FoodAdmin
         }
 
         $queryBuilder->join(sprintf('%s.address_id', $alias), 'ad');
-        $queryBuilder->andWhere("ad.address LIKE :theaddress");
+        $queryBuilder->andWhere("ad.address LIKE :theaddress OR ad.origin LIKE :theaddress");
         $queryBuilder->setParameter('theaddress', '%'.$value['value'].'%');
 
         return true;
