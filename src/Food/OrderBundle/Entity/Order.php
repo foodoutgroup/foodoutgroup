@@ -1056,6 +1056,7 @@ class Order
     }
 
     /**
+     * @deprecated
      * Set place_point_city
      *
      * @param string $placePointCity
@@ -1069,6 +1070,7 @@ class Order
     }
 
     /**
+     * @deprecated
      * Get place_point_city
      *
      * @return string

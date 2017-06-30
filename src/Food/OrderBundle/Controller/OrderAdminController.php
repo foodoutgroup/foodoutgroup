@@ -190,7 +190,7 @@ class OrderAdminController extends Controller
                             break;
                         case 'city':
                             if (!empty($value['value'])) {
-                                $where .= " AND o.place_point_city LIKE " . $prepare_val("%" . $value['value'] . "%");
+                                $where .= " AND c.title LIKE " . $prepare_val("%" . $value['value'] . "%");
                             }
                             break;
                         case 'place_name':
@@ -290,10 +290,11 @@ class OrderAdminController extends Controller
                 LEFT JOIN user_address ua ON o.address_id = ua.id
                 LEFT JOIN order_extra oe ON o.id = oe.order_id
                 LEFT JOIN place_point pp ON o.point_id = pp.id /* pakeitimas */
+                LEFT JOIN city c ON pp.city_id = c.id
                 LEFT JOIN fos_user u ON u.id = o.dispatcher_id AND o.dispatcher_id IS NOT NULL
                 LEFT JOIN fos_user cc ON cc.id = o.user_id
                 LEFT JOIN drivers d ON o.driver_id = d.id
-                WHERE 1 = 1 $where";;
+                WHERE 1 = 1 $where";
         $total = $this->get('database_connection')->fetchColumn($qry);
 
         $data = [];
@@ -304,7 +305,7 @@ class OrderAdminController extends Controller
                       o.payment_method, o.payment_method_code, o.payment_status, o.submitted_for_payment, o.last_updated, o.last_payment_error,
                       o.delivery_type, o.preorder,
                       o.mobile, o.nav_delivery_order, o.order_from_nav, o.nav_driver_code,
-                      o.place_id, o.point_id, o.place_name, o.place_point_address, o.place_point_city, o.place_point_self_delivery,
+                      o.place_id, o.point_id, o.place_name, o.place_point_address, c.title AS place_point_city, o.place_point_self_delivery,
                       o.driver_id, d.extId as driver_ext_id, d.type AS driver_type, d.name as driver_name,
                       o.total, o.vat, o.coupon_code, o.discount_size, o.discount_sum, o.delivery_price, o.adminFee as admin_fee, o.sf_series, o.sf_number,
                       u.firstname AS dispatcher_name,
@@ -321,6 +322,7 @@ class OrderAdminController extends Controller
                     LEFT JOIN user_address ua ON o.address_id = ua.id
                     LEFT JOIN order_extra oe ON o.id = oe.order_id
                     LEFT JOIN place_point pp ON o.point_id = pp.id
+                    LEFT JOIN city c ON pp.city_id = c.id
                     LEFT JOIN fos_user u ON u.id = o.dispatcher_id
                     LEFT JOIN fos_user cc ON cc.id = o.user_id
                     LEFT JOIN drivers d ON o.driver_id = d.id
