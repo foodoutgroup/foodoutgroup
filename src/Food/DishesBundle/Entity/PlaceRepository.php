@@ -124,9 +124,6 @@ class PlaceRepository extends EntityRepository
         $stmt->execute();
         $places = $stmt->fetchAll();
 
-        echo $query;
-        var_dump($places);die;
-
         $dh = date("H");
         $dm = date("i");
         $wd = date('w');
