@@ -145,7 +145,7 @@ class DefaultController extends Controller
             $orderService->saveOrder();
 
             return $this->redirect(
-                $this->generateUrl('ordermobile', array('hash' => $hash))
+                $this->generateUrl('order_support_mobile', array('hash' => $hash))
             );
         }
         return $this->render('FoodOrderBundle:Default:mobile_admin.html.twig', array('order' => $order));

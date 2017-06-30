@@ -345,7 +345,7 @@ class OrderService extends ContainerAware
             $this->order->setUserIp('');
         }
 
-        if ($this->container->get('food.zavalas_service')->isRushHourAtCityById($this->order->getPlacePointCity())) {
+        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($this->order->getPlacePointCity())) {
             $this->order->setDuringZavalas(true);
         }
 
@@ -1557,7 +1557,6 @@ class OrderService extends ContainerAware
 //                $sumTotal += $cartDish->getQuantity() * $dishOptionPrice;
             }
         }
-        //~ $this->getEm()->flush();
 
         // Nemokamas pristatymas dideliam krepseliui
         $miscService = $this->container->get('food.app.utils.misc');
@@ -2221,7 +2220,7 @@ class OrderService extends ContainerAware
         } else if (is_object($debugData)) {
             if (method_exists($debugData, '__toArray')) {
                 $debugData = 'Class: ' . get_class($debugData) . ' Data: '
-                    . json_encode($debugData);
+                    . var_export($debugData->__toArray(), true);
             } else {
                 $debugData = get_class($debugData);
             }
@@ -2636,11 +2635,11 @@ class OrderService extends ContainerAware
             . $translator->trans('general.new_order.payment_type') . ": " . $order->getPaymentMethod() . "\n"
             . $translator->trans('general.new_order.payment_status') . ": " . $order->getPaymentStatus() . "\n";
 
-        //~ $emailMessageText .= "\n"
-            //~ . $translator->trans('general.new_order.admin_link') . ": "
-            //~ . 'http://' . $domain . $this->container->get('router')
-                //~ ->generate('order_support_mobile', ['hash' => $order->getOrderHash()], false)
-            //~ . "\n";
+        $emailMessageText .= "\n"
+            . $translator->trans('general.new_order.admin_link') . ": "
+            . 'http://' . $domain . $this->container->get('router')
+                ->generate('order_support_mobile', ['hash' => $order->getOrderHash()], false)
+            . "\n";
 
         $mailer = $this->container->get('mailer');
 
@@ -2751,14 +2750,14 @@ class OrderService extends ContainerAware
         $userAddressObject = $order->getAddressId();
 
         if (!empty($userAddressObject) && is_object($userAddressObject)) {
-            $userAddress = $order->getAddressId()->getAddress() . ', ' . $order->getAddressId()->getCityId()->getTitle();
+            $userAddress = $order->getAddressId()->getAddress() . ', ' . $order->getAddressId()->getCity();
         }
 
         $newOrderText = $translator->trans('general.new_order.title');
 
         $emailMessageText = $newOrderText . ' ' . $order->getPlace()->getName() . "\n"
             . "OrderId: " . $order->getId() . "\n\n"
-            . $translator->trans('general.new_order.selected_place_point') . ": " . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCityId()->getTitle() . "\n"
+            . $translator->trans('general.new_order.selected_place_point') . ": " . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCity() . "\n"
             . $translator->trans('general.new_order.place_point_phone') . ":" . $order->getPlacePoint()->getPhone() . "\n"
             . "\n"
             . $translator->trans('general.new_order.client_name') . ": " . $order->getUser()->getFirstname() . ' ' . $order->getUser()->getLastname() . "\n"
@@ -2774,10 +2773,10 @@ class OrderService extends ContainerAware
             . $translator->trans('general.new_order.restaurant_link') . ": " . $this->container->get('router')
                 ->generate('ordermobile', ['hash' => $order->getOrderHash()], true)
             . "\n";
-        //~ $emailMessageText .= "\n"
-            //~ . $translator->trans('general.new_order.admin_link') . ": " . $this->container->get('router')
-                //~ ->generate('order_support_mobile', ['hash' => $order->getOrderHash()], true)
-            //~ . "\n";
+        $emailMessageText .= "\n"
+            . $translator->trans('general.new_order.admin_link') . ": " . $this->container->get('router')
+                ->generate('order_support_mobile', ['hash' => $order->getOrderHash()], true)
+            . "\n";
 
         $mailer = $this->container->get('mailer');
 
@@ -3442,7 +3441,7 @@ class OrderService extends ContainerAware
             }
         }
 
-        $useAdminFee = true;
+
         if ($coupon || ($takeAway && !$place->getMinimalOnSelfDel())) {
             $useAdminFee = false;
         }
@@ -4805,13 +4804,13 @@ class OrderService extends ContainerAware
     public function isAllowToInformOnZaval()
     {
         $response = true;
-        if ($this->container->get('food.zavalas_service')->isRushHourEnabled()) {
+        if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnGlobal()) {
             $order = $this->getOrder();
             if (!$order instanceof Order) {
                 throw new \InvalidArgumentException('No order is set');
             }
 
-            if ($this->container->get('food.zavalas_service')->isRushHourAtCityById($order->getPlacePointCity())
+            if ($this->container->get('food.zavalas_service')->isZavalasTurnedOnByCity($order->getPlacePointCity())
                 && !$order->getPlacePointSelfDelivery()
                 && $order->getDeliveryType() != self::$deliveryPickup
             ) {
