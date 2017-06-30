@@ -15,7 +15,11 @@ class BestOfferRepository extends EntityRepository
      */
     public function getActiveOffers(City $city = null, $forMobile = false)
     {
-        $bestOffers = $this->findBy(['active' => 1, 'useUrl' => $forMobile ? true : false]);
+        $params = ['active' => 1];
+        if ($forMobile) {
+            $params['useUrl'] = false;
+        }
+        $bestOffers = $this->findBy($params);
 
         if (!empty($city)) {
 
