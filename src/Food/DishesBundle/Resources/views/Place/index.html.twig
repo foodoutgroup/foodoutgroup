@@ -48,11 +48,6 @@
                     e.preventDefault();
                     var cities_form = $(this);
                     var city = cities_form.find('#region_select').val();
-                    var location = '{{ slug.getUrl(333 ,'place') }}';
-
-                       if (city != 'Vilnius' && city != 'Kaunas' && city != 'Klaipėda') {
-                           window.location.href = location;
-                       }
 
 //                    if (city == 'Vilnius' || city == 'Kaunas' || city == 'Klaipėda') {
 //                        $.fancybox.close();
