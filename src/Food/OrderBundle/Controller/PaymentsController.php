@@ -187,7 +187,7 @@ class PaymentsController extends Controller
 
                     if ($order->getPreorder()) {
                         $orderService->statusNewPreorder('paysera accept');
-                    } elseif (!in_array($order->getOrderStatus(), ['new', 'pre'])) {
+                    } else {
                         $orderService->statusNew('paysera accept');
                     }
 

@@ -42,7 +42,7 @@ trait PaymentLogDecorator
 
             if ($order->getPreorder()) {
                 $orderService->statusNewPreorder('payment accept');
-            } elseif (!in_array($order->getOrderStatus(), ['new', 'pre'])) {
+            } else {
                 $orderService->statusNew('payment accept');
             }
 
