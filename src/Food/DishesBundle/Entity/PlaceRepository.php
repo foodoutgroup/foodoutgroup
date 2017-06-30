@@ -18,14 +18,13 @@ class PlaceRepository extends EntityRepository
      * @param array $kitchens
      * @param array $filters
      * @param bool $recommended
-     * @param array|null $locationData
+     * @param array $locationData
      * @param Container $container
      *
      * @return array
      */
-    public function magicFindByKitchensIds($kitchens, $filters = [], $locationData = null, $container = null)
+    public function magicFindByKitchensIds($kitchens, $filters = [], $locationData = [], $container = null)
     {
-
         $currTime = date('H:i:s');
         $lat = $locationData['latitude'];
         $lon = $locationData['longitude'];
@@ -37,8 +36,7 @@ class PlaceRepository extends EntityRepository
         $rushHour = false;
         $pickup = (isset($filters['delivery_type']) && $filters['delivery_type'] == Place::OPT_ONLY_PICKUP);
 
-        if($pickup && !isset($locationData['city_id'])) {
-
+        if ($pickup && !isset($locationData['city_id'])) {
             return [];
         }
 
@@ -47,7 +45,11 @@ class PlaceRepository extends EntityRepository
             $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id AND pps.city_id = ".$locationData['city_id']." GROUP BY pps.place";
         } else {
             if ($container) {
-                $rushHour = $container->get('food.zavalas_service')->isRushHourEnabled();
+                if ($locationData['city_id']) {
+                    $container->get('food.zavalas_service')->isRushHourAtCityById($locationData['city_id']);
+                } else {
+                    $rushHour = $container->get('food.zavalas_service')->isRushHourEnabled();
+                }
             }
             /**
              * $container->getParameter('default_delivery_distance')
@@ -121,6 +123,9 @@ class PlaceRepository extends EntityRepository
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
         $places = $stmt->fetchAll();
+
+        echo $query;
+        var_dump($places);die;
 
         $dh = date("H");
         $dm = date("i");
