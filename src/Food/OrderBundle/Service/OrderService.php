@@ -3783,7 +3783,7 @@ class OrderService extends ContainerAware
             $translator = $this->container->get('translator');
             $translator->trans('order.form.errors.customeraddr');
 
-            $this->container->get('food.error_log')->saveErrorLog(
+            $this->container->get('food.error_log_service')->saveErrorLog(
                 'checkout_form_page',
                 $formErrors,
                 serialize($request) . '<br><br>' . serialize($debugCartInfo)
