@@ -303,7 +303,7 @@ class OrderService extends ContainerAware
         $this->order->setPlacePointSelfDelivery($placeRecord->getSelfDelivery());
 
         $this->order->setPlacePoint($pointRecord);
-        $this->order->setPlacePointCity($pointRecord->getCityId()->getTitle());
+        $this->order->setPlacePointCity($pointRecord->getCity());
         $this->order->setPlacePointAddress($pointRecord->getAddress());
 
         $this->order->setOrderDate(new \DateTime("now"));
@@ -1043,7 +1043,7 @@ class OrderService extends ContainerAware
             'maisto_gamintojas' => $this->getOrder()->getPlace()->getName(),
             'uzsakymo_nr' => $this->getOrder()->getId(),
             'order_hash' => $this->getOrder()->getOrderHash(),
-            'miestas' => $this->getOrder()->getPlacePoint()->getCityId()->getTitle(),
+            'miestas' => $this->getOrder()->getPlacePoint()->getCity(),
             'maisto_review_url' => 'http://www.foodout.lt/lt/' . $slugUtil->getSlugByItem(
                     $this->getOrder()->getPlace()->getId(),
                     'place'
@@ -2342,7 +2342,7 @@ class OrderService extends ContainerAware
             $logger->alert('--- Place asks for email, so we have sent an email about new order to: ' . $placePointEmail);
             $emailMessageText = $messageText;
             $emailMessageText .= "\n" . $orderTextTranslation . ': '
-                . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCityId()->getTitle();
+                . $order->getPlacePoint()->getAddress() . ', ' . $order->getPlacePoint()->getCity();
 
             $mailer = $this->container->get('mailer');
 
