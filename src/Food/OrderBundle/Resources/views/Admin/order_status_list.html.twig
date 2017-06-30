@@ -17,6 +17,7 @@
                     <th>{{ 'admin.order.status.new_status'|trans({}, 'SonataAdminBundle') }}</th>
                     <th>{{ 'admin.order.status.source'|trans({}, 'SonataAdminBundle') }}</th>
                     <th>{{ 'admin.order.status.message'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.status.user'|trans({}, 'SonataAdminBundle') }}</th>
                 </tr>
             {% for statusInfo in object.orderStatusLog %}
                 <tr>
@@ -25,6 +26,7 @@
                     <td>{{ ( 'admin.dispatcher.order_status.' ~ statusInfo.newStatus)|trans({}, 'SonataAdminBundle') }}</td>
                     <td>{{ ( 'admin.order.status.source.' ~ statusInfo.source)|trans({}, 'SonataAdminBundle') }}</td>
                     <td>{{ statusInfo.message }}</td>
+                    <td>{% if statusInfo.user %}{{ statusInfo.user.fullName }}, {{ statusInfo.user.email }}{% endif %}</td>
                 </tr>
             {% endfor %}
             </table>
