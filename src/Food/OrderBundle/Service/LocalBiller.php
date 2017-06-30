@@ -107,7 +107,7 @@ class LocalBiller extends ContainerAware implements BillingInterface
 
             if ($order->getPreorder()) {
                 $orderService->statusNewPreorder('local accept');
-            } elseif (!in_array($order->getOrderStatus(), ['new', 'pre'])) {
+            } else {
                 $orderService->statusNew('local accept');
             }
         }
