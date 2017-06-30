@@ -6081,20 +6081,3 @@ div.coupon_form_popup {
 .list-questionmark{
 
 }
-.empty-preorder-time{
-    color: #CE0E2A;
-    font-size: 14px;
-    padding-bottom: 5px;
-    padding-top: 8px;
-}
-
-.preorder-times{
-    display: flex;
-}
-
-.button-disabled{
-    background-image:none !important;
-    background-color: grey !important;
-    pointer-events: none;
-    cursor: default;
-}
