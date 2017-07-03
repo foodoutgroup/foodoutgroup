@@ -1,6 +1,6 @@
 <?php
 
-namespace Food\PlacesBundle\Service;
+namespace Food\DishesBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Entity\City;

@@ -23,18 +23,20 @@ class BannerLinks extends Uploadable
     private $id;
 
     /**
-     * @var string
+     * @ORM\ManyToOne(targetEntity="Place")
+     * @ORM\JoinColumn(name="place_from", referencedColumnName="id")
      *
-     * @ORM\Column(name="url_from", type="string", length=255)
+     * @var Place
      */
-    private $urlFrom;
+    private $placeFrom;
 
     /**
-     * @var string
+     * @ORM\ManyToOne(targetEntity="Place")
+     * @ORM\JoinColumn(name="place_to", referencedColumnName="id")
      *
-     * @ORM\Column(name="url_to", type="string", length=255)
+     * @var Place
      */
-    private $urlTo;
+    private $placeTo;
 
     /**
      * @var string
@@ -50,6 +52,19 @@ class BannerLinks extends Uploadable
      */
     private $text;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="photo", type="string", length=255)
+     */
+    private $photo = "";
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active;
 
     /**
      * Get id
@@ -151,5 +166,117 @@ class BannerLinks extends Uploadable
     public function getText()
     {
         return $this->text;
+    }
+
+    /**
+     * Set photo
+     *
+     * @param string $photo
+     * @return BannerLinks
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return string 
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    /**
+     * Set placeFrom
+     *
+     * @param \Food\DishesBundle\Entity\Place $placeFrom
+     * @return BannerLinks
+     */
+    public function setPlaceFrom(\Food\DishesBundle\Entity\Place $placeFrom = null)
+    {
+        $this->placeFrom = $placeFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get placeFrom
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlaceFrom()
+    {
+        return $this->placeFrom;
+    }
+
+    /**
+     * Set placeTo
+     *
+     * @param \Food\DishesBundle\Entity\Place $placeTo
+     * @return BannerLinks
+     */
+    public function setPlaceTo(\Food\DishesBundle\Entity\Place $placeTo = null)
+    {
+        $this->placeTo = $placeTo;
+
+        return $this;
+    }
+
+    /**
+     * Get placeTo
+     *
+     * @return \Food\DishesBundle\Entity\Place 
+     */
+    public function getPlaceTo()
+    {
+        return $this->placeTo;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUploadableField()
+    {
+        return 'photo';
+    }
+
+    /**
+     * @return string
+     */
+    public function getUploadDir()
+    {
+        if (empty($this->uploadDir)) {
+            $this->uploadDir = 'uploads/covers';
+        }
+        return $this->uploadDir;
+    }
+
+
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     * @return BannerLinks
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
     }
 }

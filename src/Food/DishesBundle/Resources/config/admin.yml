@@ -132,7 +132,6 @@ services:
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
-
     sonata.admin.place.reviews:
         class: Food\DishesBundle\Admin\PlaceReviewsAdmin
         tags:
@@ -459,6 +458,17 @@ services:
       arguments:
         - ~
         - Food\DishesBundle\Entity\DishOptionSizePrice
+        - ~
+      calls:
+        - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.place.banner_links:
+      class: Food\DishesBundle\Admin\BannerLinkAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.banner_link" }
+      arguments:
+        - ~
+        - Food\DishesBundle\Entity\BannerLinks
         - ~
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]
