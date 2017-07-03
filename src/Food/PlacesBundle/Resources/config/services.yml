@@ -25,6 +25,6 @@ services:
       class: Food\PlacesBundle\Service\PedestrianService
       arguments: ["@doctrine.orm.entity_manager", "@food.app.utils.misc"]
 
-  food.place.banner_links:
-        class: Food\PlacesBundle\Service\BannerLinkService
-        arguments: ["@doctrine.orm.entity_manager"]
+#  food.place.banner_links:
+#        class: Food\PlacesBundle\Service\BannerLinkService
+#        arguments: ["@doctrine.orm.entity_manager"]
