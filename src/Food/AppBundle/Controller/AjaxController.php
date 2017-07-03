@@ -308,6 +308,9 @@ class AjaxController extends Controller
 
         $t = $this->get('translator');
         if($response) {
+
+            $rsp['detail'] = $response;
+
             if (empty($response['house'])) {
                 $rsp['message'] = $t->trans('error.house.not.found');
             } elseif(!is_null($response['city_id'])) {
