@@ -18,6 +18,10 @@ class ShoppingBasket extends ContainerAware{
             'credit_card' => false
         ),
         'total_price' => array(
+            'admin_fee' => [
+                'enabled' => false,
+                'amount' => 0,
+            ],
             'amount' => 0,
             'discount' => 0,
             'currency' => 'EUR'

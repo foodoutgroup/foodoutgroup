@@ -29,6 +29,9 @@ class OffersController extends Controller
         try {
             $city = $request->get('city');
             $repo = $this->get('doctrine')->getRepository('FoodPlacesBundle:BestOffer');
+            if ($city) {
+                $city = $this->container->get('doctrine')->getRepository('FoodAppBundle:City')->findOneByTitle($city);
+            }
             $offers = $repo->getActiveOffers($city, true);
 
             $response = [];

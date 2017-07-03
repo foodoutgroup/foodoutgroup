@@ -30,7 +30,7 @@
                     {% endif %}
 
                     {# IT WORKS. Everything works :) #}
-                    {% if not place_point.is_delivering and place_point.is_work == 1 %}
+                    {% if not place_point.is_delivering and delivery_type_filter != 'pickup' and place_point.is_work == 1 %}
                         <span class="tag tag-not-working">
                                 <span class="partial-work"></span>
                                 <div class="time-popup time-popup2">{{ 'general.restaurant_not_delivering_to_address'|trans }}

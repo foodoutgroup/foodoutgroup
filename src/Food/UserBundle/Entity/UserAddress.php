@@ -114,7 +114,7 @@ class UserAddress
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -127,10 +127,7 @@ class UserAddress
             return '';
         }
 
-        $buffer = $this->getAddress().', ';
-        if($city = $this->getCityId()) {
-            $buffer .= $city->getTitle();
-        }
+        $buffer = $this->getAddress();
         return $buffer;
     }
 
@@ -170,21 +167,31 @@ class UserAddress
     public function setAddress($address)
     {
         $this->address = $address;
-    
+
         return $this;
     }
 
     /**
      * Get address
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {
-        if($this->address == null) {
-            return $this->getStreet(). ($this->getHouse() ? " ".$this->getHouse() : "").($this->getFlat() ? " - ".$this->getFlat() : "" );
+        $address = '';
+        if ($this->origin) {
+            $address = $this->origin;
+        } elseif (!$this->address) {
+            $address = $this->getStreet(). ($this->getHouse() ? " ".$this->getHouse() : "").($this->getFlat() ? " - ".$this->getFlat() : "" );
+        } else {
+            $city = '';
+            if ($cityObj = $this->getCityId()) {
+                $city = $cityObj->getTitle();
+            }
+            $address = $this->address . ', ' . $city;
         }
-        return $this->address;
+
+        return $address;
     }
 
     /**
@@ -196,14 +203,14 @@ class UserAddress
     public function setCoords($coords)
     {
         $this->coords = $coords;
-    
+
         return $this;
     }
 
     /**
      * Get coords
      *
-     * @return string 
+     * @return string
      */
     public function getCoords()
     {
@@ -219,14 +226,14 @@ class UserAddress
     public function setDefault($default)
     {
         $this->default = $default;
-    
+
         return $this;
     }
 
     /**
      * Get default
      *
-     * @return integer 
+     * @return integer
      */
     public function getDefault()
     {
@@ -242,14 +249,14 @@ class UserAddress
     public function setUser(\Food\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getUser()
     {
@@ -265,14 +272,14 @@ class UserAddress
     public function setLat($lat)
     {
         $this->lat = $lat;
-    
+
         return $this;
     }
 
     /**
      * Get lat
      *
-     * @return string 
+     * @return string
      */
     public function getLat()
     {
@@ -288,14 +295,14 @@ class UserAddress
     public function setLon($lon)
     {
         $this->lon = $lon;
-    
+
         return $this;
     }
 
     /**
      * Get lon
      *
-     * @return string 
+     * @return string
      */
     public function getLon()
     {
@@ -311,14 +318,14 @@ class UserAddress
     public function setComment($comment)
     {
         $this->comment = $comment;
-    
+
         return $this;
     }
 
     /**
      * Get comment
      *
-     * @return string 
+     * @return string
      */
     public function getComment()
     {
@@ -334,14 +341,14 @@ class UserAddress
     public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
     {
         $this->cityId = $cityId;
-    
+
         return $this;
     }
 
     /**
      * Get cityId
      *
-     * @return \Food\AppBundle\Entity\City 
+     * @return \Food\AppBundle\Entity\City
      */
     public function getCityId()
     {
@@ -354,7 +361,7 @@ class UserAddress
     {
         $this->cityId = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Add cityId
      *
@@ -364,7 +371,7 @@ class UserAddress
     public function addCityId(\Food\AppBundle\Entity\City $cityId)
     {
         $this->cityId[] = $cityId;
-    
+
         return $this;
     }
 
@@ -399,7 +406,7 @@ class UserAddress
     /**
      * Get addressId
      *
-     * @return string 
+     * @return string
      */
     public function getAddressId()
     {
@@ -422,7 +429,7 @@ class UserAddress
     /**
      * Get flat
      *
-     * @return string 
+     * @return string
      */
     public function getFlat()
     {
@@ -445,7 +452,7 @@ class UserAddress
     /**
      * Get house
      *
-     * @return string 
+     * @return string
      */
     public function getHouse()
     {
@@ -468,7 +475,7 @@ class UserAddress
     /**
      * Get street
      *
-     * @return string 
+     * @return string
      */
     public function getStreet()
     {
@@ -491,7 +498,7 @@ class UserAddress
     /**
      * Get country
      *
-     * @return string 
+     * @return string
      */
     public function getCountry()
     {
@@ -514,7 +521,7 @@ class UserAddress
     /**
      * Get origin
      *
-     * @return string 
+     * @return string
      */
     public function getOrigin()
     {

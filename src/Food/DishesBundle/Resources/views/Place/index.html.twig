@@ -148,8 +148,7 @@
                                 <div class="menu-lefter" id="catmnu">
                                     {% if placeCategories|length > 10 %}
                                         <div class="dropdown">
-                                            <button id="dLabel" class="button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans %}places.food_categories{% endtrans %}<span class="caret"></span>
-                                            </button>
+                                            <button id="dLabel" class="button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans %}places.food_categories{% endtrans %}<span class="caret"></span></button>
                                             <ul class="dropdown-menu scrollable-menu menu" aria-labelledby="dLabel">
                                                 {% for category in placeCategories %}
                                                     {% if category.dishes and dishService.activeDishesByCategory(category.id)|length > 0 %}
@@ -250,10 +249,7 @@
                                         $(document).ready(function() {
 
                                             $('.pickup_click').click(function () {
-
-
                                                 $.post('{{ path('food_ajax', {'action' : 'delivery-type'}) }}', {'type' : 'pickup'});
-
                                                 $('.alert-no-address').addClass('hidden');
                                                 requestAddress = false;
                                                 type = $('.iradio input[name=delivery_type]');
@@ -261,19 +257,7 @@
                                                     $('.delivery_type[value=pickup]').iCheck('check');
                                                 }
                                             });
-
-                                            $('.submit-address-change').click(function () {
-                                                var params = { city: $('#address_city').val(), address: $('#address').val(), currentUrl: window.location.href };
-                                                $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
-                                                    if(response.data.success == 1) {
-                                                        window.location = window.location.href.split("#")[0];
-                                                    } else {
-                                                        $("<div>" + response.data.message + "</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
-                                                    }
-                                                });
-                                            });
                                         });
-
 
                                     </script>
                                     <div class="alert-no-address hidden shake-me">
@@ -281,7 +265,17 @@
                                         <div class="input-section">
                                             <form class="address-search-form-ui address-search-form-city address-search-form-place"  action="#" method="get">
                                                 <div class="flex-aligment">
-                                                    <input type="text" {% if location is not null and location.precision == 0 and location.id is defined %}data-selected="{{ location.id }}"{% endif %} id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if location is not null and location.output is defined  %}{{ location.output }}{% endif %}" />
+                                                    <input type="text"
+                                                           {% if location is not null and location.precision == 0 and location.id is defined %}data-selected="{{ location.id }}"{% endif %}
+                                                           id="address_autocomplete"
+                                                           data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}"
+                                                           placeholder="{% trans %}index.street{% endtrans %}"
+                                                           class="input-street search-field"
+                                                           autocomplete="off"
+                                                           value="{% if location is not null and location.output is defined  %}{{ location.output }}{% endif %}"
+                                                    />
+                                                    <div id="mapError" class="hidden" style="position: absolute;color: red;opacity: 0.9;background: #fff;z-index: 9999;left: 49px;text-align: left;font-size: 13px;padding: 11px;right: 77px;top: 37px;"></div>
+                                                    <div id="map" class="hidden" style="position: absolute;left: 48px;background: rgb(255, 255, 255);top: 36px;height: 260px;box-shadow: rgb(204, 204, 238) 0px 3px 11px 0px;right: 76px;z-index: 99;border: 1px solid rgb(225, 221, 214);overflow: hidden;"></div>
                                                     <button class="submit submit-address-change" id="submit" data-redirect="self" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}" img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/></button>
                                                     <span id="find-me" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
                                                 </div>

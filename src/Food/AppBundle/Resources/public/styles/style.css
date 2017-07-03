@@ -1232,15 +1232,24 @@ input.button {
     justify-content: center;
 }
 
+.search-food-form label{
+    margin: 18px 8px 18px 14px;
+}
 .search-food-form span.find-me {
     position: relative;
-    right: 120px;
+    right: 188px;
     top: 16px;
     background: url(/bundles/foodapp/images/find-me.png);
-    width: 24px;
+    width: 28px;
     height: 24px;
     border: none;
     cursor:pointer;
+
+}
+
+.search-food-form .do-pickup {
+    margin-left: 10px;
+    background:url("/bundles/foodapp/images/marker-icon.png");
 
 }
 

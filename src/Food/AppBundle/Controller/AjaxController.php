@@ -5,6 +5,7 @@ namespace Food\AppBundle\Controller;
 use Food\AppBundle\Entity\Slug;
 use Food\DishesBundle\Entity\PlaceRepository;
 use Food\OrderBundle\Entity\Coupon;
+use Food\OrderBundle\Service\OrderService;
 use Food\UserBundle\Entity\User;
 use Food\UserBundle\Entity\UserAddress;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -45,8 +46,26 @@ class AjaxController extends Controller
                 $collection = $this->_getAddressByLocation($request);
                 break;
             case 'delivery-type':
-                $this->get('session')->set('delivery_type', $request->get('type'));
-                $collection = [];
+                $collection = ['success' => false];
+
+                    $this->get('session')->set('delivery_type', $request->get('type'));
+                    if ($request->get('redirect')) {
+                        if($request->get('address') != "") {
+                            $collection = $this->_checkAddress($request);
+                        } else {
+                            $findAddress = $this->get('food.location')->findByIp($request->getClientIp());
+                            try {
+                                $cityId = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findNearestCity($findAddress);
+                                $collection['success'] = true;
+                                $collection['url'] = $this->get('slug')->getUrl($cityId, Slug::TYPE_CITY);
+                            } catch (\Exception $e) {
+                                $collection['success'] = false;
+                                $collection['message'] = $this->get('translator')->trans('location.cant.be.located');
+                            }
+                        }
+
+                    }
+
                 break;
             default:
                 $collection = ['message' => 'Method not found :)'];
@@ -289,6 +308,9 @@ class AjaxController extends Controller
 
         $t = $this->get('translator');
         if($response) {
+
+            $rsp['detail'] = $response;
+
             if (empty($response['house'])) {
                 $rsp['message'] = $t->trans('error.house.not.found');
             } elseif(!is_null($response['city_id'])) {
