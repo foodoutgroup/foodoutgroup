@@ -3318,6 +3318,22 @@
                 <source>admin.phone_codes</source>
                 <target>Phone codes</target>
             </trans-unit>
+            <trans-unit id="admin.duplicate">
+                <source>admin.duplicate</source>
+                <target>Duplicate Restaurants</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.place">
+                <source>admin.duplicate.place</source>
+                <target>Restaurant</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.new_place">
+                <source>admin.duplicate.new_place</source>
+                <target>Duplicated restaurant</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.user">
+                <source>admin.duplicate.user</source>
+                <target>Created by</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

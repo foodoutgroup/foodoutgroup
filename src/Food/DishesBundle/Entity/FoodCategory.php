@@ -193,7 +193,21 @@ class FoodCategory implements Translatable
     {
         return $this->slug;
     }
-    
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return FoodCategory
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+
     /**
      * Get id
      *
