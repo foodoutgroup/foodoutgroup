@@ -245,7 +245,6 @@
 
                                             $('.pickup_click').click(function () {
                                                 $.post('{{ path('food_ajax', {'action' : 'delivery-type'}) }}', {'type' : 'pickup'});
-
                                                 $('.alert-no-address').addClass('hidden');
                                                 requestAddress = false;
                                                 type = $('.iradio input[name=delivery_type]');
@@ -253,9 +252,7 @@
                                                     $('.delivery_type[value=pickup]').iCheck('check');
                                                 }
                                             });
-
                                         });
-
 
                                     </script>
                                     <div class="alert-no-address hidden shake-me">
