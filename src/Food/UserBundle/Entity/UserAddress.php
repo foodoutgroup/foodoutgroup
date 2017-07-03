@@ -179,9 +179,7 @@ class UserAddress
     public function getAddress()
     {
         $address = '';
-        if ($this->origin) {
-            $address = $this->origin;
-        } elseif (!$this->address) {
+        if (!$this->address) {
             $address = $this->getStreet(). ($this->getHouse() ? " ".$this->getHouse() : "").($this->getFlat() ? " - ".$this->getFlat() : "" );
         } else {
             $city = '';
