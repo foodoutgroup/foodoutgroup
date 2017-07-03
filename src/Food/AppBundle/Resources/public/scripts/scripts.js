@@ -383,7 +383,7 @@ var registrationForm = {
                     window.location.href = response.url;
                 }
             } else {
-                if(response.detail.precision < 5) {
+                if(typeof response.detail != "undefined" && response.detail.precision < 5) {
                     throwMapLocationPicker(response.detail.latitude, response.detail.longitude, response.message);
                 } else {
                     throwError(response.message);
