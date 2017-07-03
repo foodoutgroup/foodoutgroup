@@ -402,9 +402,9 @@ class DefaultController extends Controller
 
 
 
-                if ($countryCode != $user->getCountryCode() && !$user->getIsBussinesClient()) {
-                    $user->setCountryCode($countryCode);
-                }
+            if ($countryCode != $user->getCountryCode() && !$user->getIsBussinesClient()) {
+                $user->setCountryCode($countryCode);
+            }
 
                 if ($userPhone != $user->getPhone() && !$user->getIsBussinesClient()) {
                     $formatedPhone = $miscUtils->formatPhone($request->get('customer-phone'), $request->get('country'));
@@ -449,13 +449,13 @@ class DefaultController extends Controller
                         ->setCompanyAddress($user->getCompanyAddress());
                 }
 
-            // Update order with recent address information. but only if we need to deliver
-            if ($deliveryType == $orderService::$deliveryDeliver || $deliveryType == $orderService::$deliveryPedestrian) {
+                // Update order with recent address information. but only if we need to deliver
+                if ($deliveryType == $orderService::$deliveryDeliver || $deliveryType == $orderService::$deliveryPedestrian) {
 
-                $em = $this->getDoctrine()->getManager();
-                $address = $lService->saveAddressFromArrayToUser($lService->get(), $user);
-                $orderService->getOrder()->setAddressId($address);
-                // Set user default address
+                    $em = $this->getDoctrine()->getManager();
+                    $address = $lService->saveAddressFromArrayToUser($lService->get(), $user);
+                    $orderService->getOrder()->setAddressId($address);
+                    // Set user default address
 
                     if (!$user->getDefaultAddress()) {
                         $em->persist($address);
@@ -489,9 +489,9 @@ class DefaultController extends Controller
 
         $currentCountry = $this->container->getParameter('country');
 
-        $countryCode = $pService->getCountryCode($this->getUser(),$currentCountry);
+        $countryCode = $pService->getCountryCode($this->getUser(), $currentCountry);
 
-        if($request->getMethod() == 'POST' && !empty($_POST['country'])){
+        if ($request->getMethod() == 'POST' && !empty($_POST['country'])) {
             $countryCode = $_POST['country'];
         }
 
@@ -557,6 +557,8 @@ class DefaultController extends Controller
             $adminFee = 0;
         }
 
+
+
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
 
         $enable_free_delivery_for_big_basket = $miscService->getParam('enable_free_delivery_for_big_basket');
@@ -590,7 +592,6 @@ class DefaultController extends Controller
             $deliveryTotal = 0;
         } else {
             $placePointMap = $this->container->get('session')->get('point_data');
-
 
 
             $locationData = $this->get('food.location')->get();
@@ -657,6 +658,11 @@ class DefaultController extends Controller
         $total_cart = $this->getCartService()->getCartTotal($list);
         $priceBeforeDiscount = $total_cart;
 
+        if(($place->getCartMinimum() < $total_cart) && $useAdminFee){
+            $useAdminFee = false;
+        }
+
+
         $noMinimumCart = false;
         $current_user = $this->container->get('security.context')->getToken()->getUser();
         if (!empty($current_user) && is_object($current_user)) {
@@ -667,20 +673,20 @@ class DefaultController extends Controller
         $applyDiscount = $freeDelivery = $discountInSum = false;
         $discountSize = null;
         $discountSum = null;
-
+        $checkAdmin = false;
         // If coupon in use
+
         if (!empty($couponCode)) {
             $coupon = $this->get('food.order')->getCouponByCode($couponCode);
 
             if ($coupon) {
                 $applyDiscount = true;
-                $useAdminFee = false;
 
                 if ($coupon->getIgnoreCartPrice()) {
                     $noMinimumCart = true;
                 }
 
-                $freeDelivery = $coupon->getFreeDelivery();
+                $freeDeliver = $coupon->getFreeDelivery();
 
                 $discountSize = $coupon->getDiscount();
 
@@ -703,10 +709,10 @@ class DefaultController extends Controller
                 }
 
                 // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
-                $otherMinusDiscount = $otherPriceTotal - $discountSum;
-                if ($otherMinusDiscount < 0) {
-                    $discountSum = $otherPriceTotal;
-                }
+//                $otherMinusDiscount = $otherPriceTotal - $discountSum;
+//                if ($otherMinusDiscount < 0) {
+//                    $discountSum = $otherPriceTotal;
+//                }
 
 
                 if ($enableDiscount) {
@@ -717,13 +723,26 @@ class DefaultController extends Controller
 
                 if ($total_cart <= 0) {
                     if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
-                        $deliveryTotal = $deliveryTotal + $total_cart;
                         if ($deliveryTotal < 0 || $total_cart < $realDiscountSum) {
-                            $deliveryTotal = 0;
                             $freeDelivery = true;
+                            if ($total_cart < $place->getCartMinimum()) {
+                                $useAdminFee = true;
+                                $checkAdmin = true;
+
+                                if(($total_cart - $adminFee) < $realDiscountSum){
+                                    $total_cart += $adminFee;
+                                    $freeDelivery = false;
+                                }
+                            } else {
+                                $useAdminFee = false;
+                            }
                         }
                     }
-                    $total_cart = 0;
+                }
+
+                if ($freeDeliver) {
+                    $discountSum += $deliveryTotal;
+                    $freeDelivery = true;
                 }
             }
         } // Business client discount
@@ -731,6 +750,7 @@ class DefaultController extends Controller
             if (!$takeAway && !$place->getSelfDelivery()) {
                 $applyDiscount = true;
                 $discountSize = $this->get('food.user')->getDiscount($current_user);
+
                 $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
 
                 $otherPriceTotal = 0;
@@ -747,7 +767,6 @@ class DefaultController extends Controller
                     $discountSum = $otherPriceTotal;
                 }
 
-
                 if ($enableDiscount) {
                     $total_cart -= $discountSum;
                 } else {
@@ -755,6 +774,12 @@ class DefaultController extends Controller
                 }
             }
         }
+
+
+        if ($useAdminFee && (($cartFromMin - $total_cart) >= 0.00001) && !$checkAdmin ) {
+            $total_cart += $adminFee;
+        }
+
         $cartSumTotal = $total_cart;
         // Jei restorane galima tik atsiimti arba, jei zmogus rinkosi, kad jis atsiimas, arba jei yra uzsakymas ir fiksuotas atsiemimas vietoje - neskaiciuojam pristatymo
         if ($place->getDeliveryOptions() == Place::OPT_ONLY_PICKUP ||
@@ -774,10 +799,6 @@ class DefaultController extends Controller
             $useAdminFee = false;
         }
 
-        if ($useAdminFee && ($cartFromMin - $total_cart) >= 0.00001) {
-            $total_cart += $adminFee;
-
-        }
 
         // Nemokamas pristatymas dideliam krepseliui
         $self_delivery = $place->getSelfDelivery();
@@ -798,7 +819,11 @@ class DefaultController extends Controller
             }
         }
 
-        $totalWIthDelivery = $freeDelivery ? $total_cart : ($total_cart + $deliveryTotal);
+        if($freeDelivery){
+            $totalWIthDelivery = ($total_cart > 0) ? $total_cart : 0;
+        }else{
+            $totalWIthDelivery = ($total_cart + $deliveryTotal) > 0 ? $total_cart + $deliveryTotal : 0;
+        }
 
         //$prices = $orderPriceService->getOrderPrices($place);
         // total_cart

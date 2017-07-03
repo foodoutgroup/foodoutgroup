@@ -89,6 +89,9 @@ class PlaceRepository extends EntityRepository
                                 case 'delivery':
                                     $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "delivery")';
                                     break;
+                                case OrderService::$deliveryDeliver:
+                                    $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "delivery")';
+                                    break;
                                 case OrderService::$deliveryPickup:
                                     $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "pickup")';
                                     break;

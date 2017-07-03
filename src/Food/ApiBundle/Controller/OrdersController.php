@@ -455,6 +455,7 @@ class OrdersController extends Controller
             $requestJson = new JsonRequest($request);
             $code = $requestJson->get('code');
             $orderService = $this->get('food.order');
+            $placeService = $this->get('food.places');
 
             if (!$requestJson->get('basket_id')) {
                 throw new ApiException(
@@ -598,21 +599,31 @@ class OrdersController extends Controller
                 $cartService->setNewSessionId($basket->getSession());
                 $list = $cartService->getCartDishes($place);
                 $coupon = $orderService->getCouponByCode($code);
+
                 if (!$orderService->validateCouponForPlace($coupon, $place)
                     || $coupon->getOnlyNav() && !$place->getNavision()
                     || $coupon->getNoSelfDelivery() && $place->getSelfDelivery()) {
+
                     $discount = 0;
                 } else {
                     $discount = $cartService->getTotalDiscount($list, $coupon->getDiscount()) * 100;
                 }
+
+
+
+                if($coupon->getFullOrderCovers()){
+                    $discount += ($coupon->getDiscountSum()*100);
+                }
+
                 $cartBeforeDiscount = $cartService->getCartTotal($list) * 100;
                 $cartTotal = $cartBeforeDiscount - $discount;
+
 
                 $response = [
                     'id' => $coupon->getId(),
                     'name' => $coupon->getName(),
                     'code' => $coupon->getCode(),
-                    'discount' => $coupon->getDiscount(),
+                    'discount' => $discount,
                     'cart_discount' => (int)$discount,
                     'cart_before_discount' => (int)$cartBeforeDiscount,
                     'total' => (int)$cartTotal,
