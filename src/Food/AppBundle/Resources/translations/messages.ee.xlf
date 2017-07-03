@@ -680,7 +680,12 @@
                 <source>general.restaurant_page_title</source><target>%restaurant_name% – toidu tellimine koju</target>
             </trans-unit>
             <trans-unit id="general.cart.success" resname="general.cart.success">
-                <source>general.cart.success</source><target><![CDATA[Teie tellimus on vastu võetud ja peaks teieni jõudma kohe, kui restoran on selle valmis saanud. <br/>Kui teil on küsimusi või soovite teha viimase minuti muudatusi, helistage meile <br/> su <strong>Foodout.lt</strong> telefonil <strong>+370 6100 4970</strong><br/>või<br/>ettevõtte <strong>%placeName%</strong> telefonil <strong>+%placePhone%</strong>.]]></target>
+                <source>general.cart.success</source>
+                <target><![CDATA[Teie tellimus on vastu võetud ja peaks teieni jõudma kohe, kui restoran on selle valmis saanud. <br/>Kui teil on küsimusi või soovite teha viimase minuti muudatusi, helistage meile <br/> su <strong>Foodout.lt</strong> telefonil <strong>+370 6100 4970</strong><br/>]]></target>
+            </trans-unit>
+             <trans-unit id="general.cart.success.restaurant" resname="general.cart.success.restaurant">
+                <source>general.cart.success.restaurant</source>
+                <target><![CDATA[või<br/>ettevõtte <strong>%placeName%</strong> telefonil <strong>+%placePhone%</strong>.]]></target>
             </trans-unit>
             <trans-unit id="general.cart.success_pre" resname="general.cart.success_pre">
                 <source>general.cart.success_pre</source>

@@ -94,8 +94,11 @@
                             {% if order.orderStatus == 'preorder' %}
                                 {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success_pre{% endtrans %}
                             {% else %}
-                                {% trans with {'%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success{% endtrans %}
-                            {% endif %}
+                                {% trans %}general.cart.success{% endtrans %}
+                                    {% if order.place.showPhone %}
+                                        {% trans with {'%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success.restaurant{% endtrans %}
+                                    {% endif %}
+                                {% endif %}
                         {% else %}
                             {% trans with {'%placeName%':  order.placeName} %}general.cart.success_no_place_num{% endtrans %}
                         {% endif %}

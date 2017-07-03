@@ -844,7 +844,11 @@
             </trans-unit>
             <trans-unit id="general.cart.success" resname="general.cart.success">
                 <source>general.cart.success</source>
-                <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
+                <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>]]></target>
+            </trans-unit>
+            <trans-unit id="general.cart.success.restaurant" resname="general.cart.success.restaurant">
+                <source>general.cart.success.restaurant</source>
+                <target><![CDATA[ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
             </trans-unit>
             <trans-unit id="general.cart.reverse" resname="general.cart.reverse">
                 <source>general.cart.reverse</source>
