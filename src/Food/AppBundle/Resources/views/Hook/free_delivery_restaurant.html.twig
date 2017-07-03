@@ -4,7 +4,7 @@
         <strong>{{ item['city'].title }}: </strong>
         {% for placePoint in item['collection'] %}
             {% set place = placePoint.place %}
-            <a href="{{ slug.getUrl(place.id, 'place') }}" title="{{ place.name }}"><span style="color:#696969">{{ place.name }}</span></a>{% if not loop.last %}, {% endif -%}
+            <a href="{{ slug.getUrl(place.id, 'place') }}" title="{{ place.name }}"><span style="color:#696969">{{ place.name }}</span></a>{% if not loop.last %}, {% endif %}
         {% endfor %}
     {% endfor %}
 </p>

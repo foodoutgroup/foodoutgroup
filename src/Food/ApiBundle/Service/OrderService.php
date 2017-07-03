@@ -537,11 +537,11 @@ class OrderService extends ContainerAware
             );
             $os->getOrder()->setAddressId($address);
         }
-        if ($isThisPre) {
-            $os->getOrder()->setOrderStatus(
-                \Food\OrderBundle\Service\OrderService::$status_pre
-            );
-        }
+
+        $os->getOrder()->setOrderStatus(
+            \Food\OrderBundle\Service\OrderService::$status_pre
+        );
+
         $os->saveOrder();
         if (!$isThisPre) {
             $billingUrl = $os->billOrder();

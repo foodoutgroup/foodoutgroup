@@ -176,7 +176,7 @@ class Place extends Uploadable implements Translatable
     private $bestOffers;
 
     /**
-     * @ORM\OneToMany(targetEntity="Food\PlacesBundle\Entity\PlaceNotification", mappedBy="place")
+     * @ORM\OneToMany(targetEntity="Food\PlacesBundle\Entity\PlaceNotification", mappedBy="placeCollection")
      */
     private $placeNotification;
 

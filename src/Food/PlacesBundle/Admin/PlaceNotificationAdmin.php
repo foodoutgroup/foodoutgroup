@@ -45,7 +45,8 @@ class PlaceNotificationAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('description', null, ['label' => 'admin.title']);
+            ->add('description', null, ['label' => 'admin.title'])
+            ->add('active', null, ['label' => 'admin.active']);
     }
 
     // Fields to be shown on lists
@@ -54,6 +55,7 @@ class PlaceNotificationAdmin extends FoodAdmin
         $listMapper
             ->addIdentifier('id', null, array('label' => 'admin.id'))
             ->add('type', null, array('label' => 'admin.type'))
+            ->add('placeCollection', null, array('label' => 'admin.place'))
             ->add('description', null, array('label' => 'admin.title'))
             ->add('showTill', null, ['label' => 'admin.show_till'])
             ->add('active', 'boolean', array('label' => 'admin.active', 'editable' => true))

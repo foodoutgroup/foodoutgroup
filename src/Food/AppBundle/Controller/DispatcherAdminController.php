@@ -401,7 +401,7 @@ class DispatcherAdminController extends Controller
                         ->setPlaceInformed(false);
 
                     if ($order->getOrderStatus() != $orderService::$status_preorder) {
-                        $orderService->statusNew();
+                        $orderService->statusNew('dispatcher', 'forwarding', false);
 
                         $orderService->informPlace();
                     }

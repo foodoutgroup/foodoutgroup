@@ -18,14 +18,13 @@ class PlaceRepository extends EntityRepository
      * @param array $kitchens
      * @param array $filters
      * @param bool $recommended
-     * @param array|null $locationData
+     * @param array $locationData
      * @param Container $container
      *
      * @return array
      */
-    public function magicFindByKitchensIds($kitchens, $filters = [], $locationData = null, $container = null)
+    public function magicFindByKitchensIds($kitchens, $filters = [], $locationData = [], $container = null)
     {
-
         $currTime = date('H:i:s');
         $lat = $locationData['latitude'];
         $lon = $locationData['longitude'];
@@ -37,8 +36,7 @@ class PlaceRepository extends EntityRepository
         $rushHour = false;
         $pickup = (isset($filters['delivery_type']) && $filters['delivery_type'] == Place::OPT_ONLY_PICKUP);
 
-        if($pickup && !isset($locationData['city_id'])) {
-
+        if ($pickup && !isset($locationData['city_id'])) {
             return [];
         }
 
@@ -47,7 +45,11 @@ class PlaceRepository extends EntityRepository
             $subQuery = "SELECT id FROM place_point pps WHERE active=1 AND deleted_at IS NULL AND place = p.id AND pps.city_id = ".$locationData['city_id']." GROUP BY pps.place";
         } else {
             if ($container) {
-                $rushHour = $container->get('food.zavalas_service')->isRushHourEnabled();
+                if ($locationData['city_id']) {
+                    $container->get('food.zavalas_service')->isRushHourAtCityById($locationData['city_id']);
+                } else {
+                    $rushHour = $container->get('food.zavalas_service')->isRushHourEnabled();
+                }
             }
             /**
              * $container->getParameter('default_delivery_distance')
@@ -277,17 +279,17 @@ class PlaceRepository extends EntityRepository
     }
 
 
-    public function getDeliveryPriceForPlacePoint(Place $place, PlacePoint $placePoint, $locationData, $noneWorking = false,$fututeDate = false)
+    public function getDeliveryPriceForPlacePoint(Place $place, PlacePoint $placePoint, $locationData, $noneWorking = false, $fututeDate = false)
     {
-        $data = $this->getPlacePointNearWithDistance($place->getId(), $locationData, false, false, $noneWorking,$fututeDate);
+        $data = $this->getPlacePointNearWithDistance($place->getId(), $locationData, false, false, $noneWorking, $fututeDate);
         $currTime = date('H:i:s');
-        $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=" . (int)$data['id'] . " AND active=1 AND distance >= " . (float)$data['distance'] . " AND (time_from <= '" . $currTime . "' AND '" . $currTime . "' <= time_to) ORDER BY distance ASC LIMIT 1";
+        $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=" . (int)$data['id'] . " AND active=1 AND distance >= " . (float)$data['distance'] . " AND (time_from <= '" . $currTime . "' AND '" . $currTime . "' <= time_to) AND deleted_at IS NULL ORDER BY distance ASC LIMIT 1";
         $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
         $stmt->execute();
         $result = $stmt->fetchColumn();
 
-        if(empty($result)){
-            $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=" . (int)$data['id'] . " AND active=1 AND distance >= " . (float)$data['distance']." AND time_from IS NULL AND time_to IS NULL";
+        if (empty($result)) {
+            $deliveryPrice = "SELECT price FROM `place_point_delivery_zones` WHERE place_point=" . (int)$data['id'] . " AND active=1 AND distance >= " . (float)$data['distance']." AND time_from IS NULL AND time_to IS NULL AND deleted_at IS NULL";
             $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
             $stmt->execute();
             $result = $stmt->fetchColumn();

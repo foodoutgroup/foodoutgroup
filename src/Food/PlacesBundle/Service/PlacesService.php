@@ -750,7 +750,10 @@ class PlacesService extends ContainerAware
         } else {
             $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
             if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
-                $deliveryTime = $this->container->get('food.zavalas_service')->getRushHourTimeByPlace($place);
+                $rhDeliveryTime = $this->container->get('food.zavalas_service')->getRushHourTimeByPlace($place);
+                if ($rhDeliveryTime) {
+                    $deliveryTime = $rhDeliveryTime;
+                }
             }
         }
         return $deliveryTime;

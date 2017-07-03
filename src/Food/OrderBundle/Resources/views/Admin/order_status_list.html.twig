@@ -1,7 +1,7 @@
 {# Uzsakymo statuso ir statuso istorijos ispiesimas prie sonatos order show formos #}
 <td colspan="2">
     <b>{{ field_description.options.label|trans({}, 'SonataAdminBundle') }}:</b> {{ ( 'admin.dispatcher.order_status.' ~ object.orderStatus)|trans({}, 'SonataAdminBundle') }}
-    {% if object.orderStatus == 'canceled' %}
+    {% if object.orderStatus == 'canceled' or object.orderStatus == 'canceled_produced' %}
     <br /><b>{{ 'admin.dispatcher.cancel_reason'|trans({}, 'SonataAdminBundle') }}:</b> {{ object.orderExtra.cancelReason }}
     <br /><b>{{ 'admin.dispatcher.cancel_reason_comment'|trans({}, 'SonataAdminBundle') }}:</b> {{ object.orderExtra.cancelReasonComment }}
     {% endif %}
@@ -17,6 +17,7 @@
                     <th>{{ 'admin.order.status.new_status'|trans({}, 'SonataAdminBundle') }}</th>
                     <th>{{ 'admin.order.status.source'|trans({}, 'SonataAdminBundle') }}</th>
                     <th>{{ 'admin.order.status.message'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th>{{ 'admin.order.status.user'|trans({}, 'SonataAdminBundle') }}</th>
                 </tr>
             {% for statusInfo in object.orderStatusLog %}
                 <tr>
@@ -25,6 +26,7 @@
                     <td>{{ ( 'admin.dispatcher.order_status.' ~ statusInfo.newStatus)|trans({}, 'SonataAdminBundle') }}</td>
                     <td>{{ ( 'admin.order.status.source.' ~ statusInfo.source)|trans({}, 'SonataAdminBundle') }}</td>
                     <td>{{ statusInfo.message }}</td>
+                    <td>{% if statusInfo.user %}{{ statusInfo.user.fullName }}, {{ statusInfo.user.email }}{% endif %}</td>
                 </tr>
             {% endfor %}
             </table>

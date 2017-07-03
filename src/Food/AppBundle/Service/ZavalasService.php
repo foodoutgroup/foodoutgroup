@@ -91,27 +91,32 @@ class ZavalasService extends BaseService
      */
     public function getRushHourTimeByPlace(Place $place)
     {
+        $return = false;
         $locationData = $this->locationService->get();
         if ($locationData['city_id']) {
             $cityObj = $this->em->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
 
-            if (!$cityObj || $this->isRushHourAtCity($cityObj) || !$this->placesService->isPlaceDeliversToCity($place, $cityObj->getId())) {
+            $deliversToCity = $this->placesService->isPlaceDeliversToCity($place, $cityObj->getId());
+
+            if ($this->isRushHourAtCity($cityObj) && $deliversToCity) {
+                $return = $this->getRushHourTimeAtCity($cityObj);
+            } elseif (!$deliversToCity) {
 
                 $placeCityCollection = $this->em->getRepository('FoodDishesBundle:Place')->getCityCollectionByPlace($place);
                 $placeCityCollectionOrdered = [];
                 foreach ($placeCityCollection as $placeCity) {
                     $placeCityKey = $this->em->getRepository('FoodAppBundle:City')->find($placeCity->getId())->getZavalasTime();
-                    $placeCityCollectionOrdered[$placeCityKey] = $placeCity;
+                    if ($this->isRushHourAtCity($placeCity)) {
+                        $placeCityCollectionOrdered[$placeCityKey] = $placeCity;
+                    }
                 }
                 krsort($placeCityCollectionOrdered);
-                $placeCityCollection = $placeCityCollectionOrdered;
-                foreach ($placeCityCollection as $placeCity) {
-                    if ($this->isRushHourAtCity($placeCity)) {
-                        return $this->getRushHourTimeAtCity($placeCity);
-                    }
+                foreach ($placeCityCollectionOrdered as $placeCity) {
+                    $return = $this->getRushHourTimeAtCity($placeCity);
+                    break;
                 }
             }
         }
-        return false;
+        return $return;
     }
 }

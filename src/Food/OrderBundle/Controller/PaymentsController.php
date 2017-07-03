@@ -179,16 +179,17 @@ class PaymentsController extends Controller
                     // Paysera was waiting for funds to be transfered
                     $logger->alert('-- Payment is valid. Procceed with care..');
                     $orderService->setPaymentStatus($orderService::$paymentStatusComplete, 'Paysera billed payment');
-                    $orderService->saveOrder();
-
-                    if ($orderService->getAllowToInform()) {
-                        $orderService->informPlace();
-                    }
 
                     if ($order->getPreorder()) {
                         $orderService->statusNewPreorder('paysera accept');
                     } else {
                         $orderService->statusNew('paysera accept');
+                    }
+
+                    $orderService->saveOrder();
+
+                    if ($orderService->getAllowToInform()) {
+                        $orderService->informPlace();
                     }
 
                     // Jei naudotas kuponas, paziurim ar nereikia jo deaktyvuoti

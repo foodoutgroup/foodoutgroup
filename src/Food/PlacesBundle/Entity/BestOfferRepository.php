@@ -3,6 +3,7 @@
 namespace Food\PlacesBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Food\AppBundle\Entity\City;
 
 class BestOfferRepository extends EntityRepository
 {
@@ -12,11 +13,16 @@ class BestOfferRepository extends EntityRepository
      * @param boolean $forMobile
      * @return array|BestOffer[]
      */
-    public function getActiveOffers($city = null, $forMobile = false)
+    public function getActiveOffers(City $city = null, $forMobile = false)
     {
 
-        $bestOffers = $this->findBy(['active' => 1, 'useUrl' => $forMobile ? true : false]);
+
         $cityService = $this->getEntityManager()->getRepository('FoodAppBundle:City');
+        $params = ['active' => 1];
+        if ($forMobile) {
+            $params['useUrl'] = false;
+        }
+        $bestOffers = $this->findBy($params);
 
         if (!empty($city)) {
 
@@ -30,7 +36,7 @@ class BestOfferRepository extends EntityRepository
                 $checker = false;
                 foreach ($offer->getOfferCity() as $city_val) {
 
-                    if ($city_val->getId() == $city) {
+                    if ($city_val->getId() == $city->getId()) {
                         $checker = true;
                     }
                 }

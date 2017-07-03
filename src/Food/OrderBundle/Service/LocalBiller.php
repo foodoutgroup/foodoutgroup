@@ -100,15 +100,15 @@ class LocalBiller extends ContainerAware implements BillingInterface
             $orderService->statusUnapproved('new_order', 'Possible new unreliable user or suspected fraud');
             $orderService->informUnapproved();
         } else {
-            // If pre order - do not inform (only if it is a NAV order - the NAV is responsible for pre)
-            if ($orderService->getAllowToInform()) {
-                $orderService->informPlace();
-            }
-
             if ($order->getPreorder()) {
                 $orderService->statusNewPreorder('local accept');
             } else {
                 $orderService->statusNew('local accept');
+            }
+
+            // If pre order - do not inform (only if it is a NAV order - the NAV is responsible for pre)
+            if ($orderService->getAllowToInform()) {
+                $orderService->informPlace();
             }
         }
 
