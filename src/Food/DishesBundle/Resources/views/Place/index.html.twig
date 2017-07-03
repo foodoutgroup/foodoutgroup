@@ -244,8 +244,6 @@
                                         $(document).ready(function() {
 
                                             $('.pickup_click').click(function () {
-
-
                                                 $.post('{{ path('food_ajax', {'action' : 'delivery-type'}) }}', {'type' : 'pickup'});
 
                                                 $('.alert-no-address').addClass('hidden');
