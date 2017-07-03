@@ -44,7 +44,7 @@ class NordeaBanklinkBiller extends ContainerAware
         }
 
         $options = ['id' => $order->getId()];
-        $redirectUrl = $router->generate('nordea_banklink_redirect', $options);
+        $redirectUrl = 'http://'.$this->container->getParameter('domain').$router->generate('nordea_banklink_redirect', $options);
 
         return $redirectUrl;
     }

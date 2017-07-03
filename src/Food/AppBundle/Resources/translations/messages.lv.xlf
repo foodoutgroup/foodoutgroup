@@ -266,6 +266,10 @@
                 <source>mobile.order_dish</source>
                 <target>Ēdiens</target>
             </trans-unit>
+            <trans-unit id="ceb80ce24895534499f2a5a28a707fbf" resname="mobile.pedestrian_warning">
+                <source>mobile.pedestrian_warning</source>
+                <target>ātra pasūtījumu</target>
+            </trans-unit>
             <trans-unit id="6579716641cda122d1f726af7a28cbb3" resname="mobile.order_quantity">
                 <source>mobile.order_quantity</source>
                 <target>Daudzums</target>
@@ -730,6 +734,10 @@
                 <source>general.profile.button_save</source>
                 <target>Saglabāt</target>
             </trans-unit>
+            <trans-unit id="6defb486341307b289948eb8fa05624a" resname="general.profile.block_save">
+                <source>general.profile.block_save</source>
+                <target>Meklēt</target>
+            </trans-unit>
             <trans-unit id="9274e23fa49ef791a605538ff3996088" resname="general.profile.home">
                 <source>general.profile.home</source>
                 <target>Sākums</target>
@@ -836,7 +844,11 @@
             </trans-unit>
             <trans-unit id="general.cart.success" resname="general.cart.success">
                 <source>general.cart.success</source>
-                <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
+                <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>]]></target>
+            </trans-unit>
+            <trans-unit id="general.cart.success.restaurant" resname="general.cart.success.restaurant">
+                <source>general.cart.success.restaurant</source>
+                <target><![CDATA[ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
             </trans-unit>
             <trans-unit id="general.cart.reverse" resname="general.cart.reverse">
                 <source>general.cart.reverse</source>
@@ -1474,7 +1486,7 @@
             </trans-unit>
             <trans-unit id="general.sms.client.order_created_pickup" resname="general.sms.client.order_created_pickup">
                 <source>general.sms.client.order_created_pickup</source>
-                <target>Sveiki. restourant_name sanema Tavu pasutijumu. Panemt to varesi pre_delivery_time! :)</target>
+                <target>Sveiki. restaurant_name sanema Tavu pasutijumu. Panemt to varesi pre_delivery_time! :)</target>
             </trans-unit>
             <trans-unit id="general.sms.client.order_created_preorder" resname="general.sms.client.order_created_preorder">
                 <source>general.sms.client.order_created_preorder</source>
@@ -1482,7 +1494,7 @@
             </trans-unit>
             <trans-unit id="general.sms.client.order_created_preorder_pickup" resname="general.sms.client.order_created_preorder_pickup">
                 <source>general.sms.client.order_created_preorder_pickup</source>
-                <target>Sveiki. restourant_name sanema Tavu pasutijumu. Panemt to varesi pre_delivery_time! :)</target>
+                <target>Sveiki. restaurant_name sanema Tavu pasutijumu. Panemt to varesi pre_delivery_time! :)</target>
             </trans-unit>
 
             <!-- order accepted -->
@@ -1571,6 +1583,22 @@
             <trans-unit id="this.payment.method.not.alowed.for.this.place">
                 <source>this.payment.method.not.alowed.for.this.place</source>
                 <target>This payment method not allowed for this place</target>
+            </trans-unit>
+             <trans-unit id="please.fill.address.message.top">
+                <source>please.fill.address.message.top</source>
+                <target>Ievadi savu adresi un atrodi tuvumā esošos restorānus,<![CDATA[<br/>]]> kas veic piegādi līdz pat Tavas mājas durvīm!</target>
+            </trans-unit>
+            <trans-unit id="please.fill.address.message.bottom">
+                <source>please.fill.address.message.bottom</source>
+                <target><![CDATA[Vai <u><b><a href="#" class="pickup_click"> izvēlies līdzņemšanu!</a></b></u>]]></target>
+            </trans-unit>
+            <trans-unit id="please.fill.address.first">
+                <source>please.fill.address.first</source>
+                <target>Please fill address first</target>
+            </trans-unit>
+            <trans-unit id="save.button">
+                <source>save.button</source>
+                <target>Save</target>
             </trans-unit>
         </body>
     </file>

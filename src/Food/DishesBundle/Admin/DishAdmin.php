@@ -237,7 +237,6 @@ class DishAdmin extends FoodAdmin
 
             $object->setPlace($place);
         }
-        $this->slug($object);
 
         parent::prePersist($object);
         $this->fixRelations($object);
@@ -253,7 +252,6 @@ class DishAdmin extends FoodAdmin
         $object->setEditedAt(new \DateTime());
         $this->fixRelations($object);
         $this->saveFile($object);
-        $this->slug($object);
         parent::preUpdate($object);
 
     }
@@ -272,6 +270,8 @@ class DishAdmin extends FoodAdmin
             }
             $em->flush();
         }
+
+        $this->slug($object);
 
         parent::postPersist($object);
     }
@@ -300,6 +300,7 @@ class DishAdmin extends FoodAdmin
             }
         }
         $em->flush();
+        $this->slug($object);
 
         parent::postUpdate($object);
     }

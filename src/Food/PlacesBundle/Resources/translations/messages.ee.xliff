@@ -49,11 +49,12 @@
             <trans-unit id="admin.place.discount_prices_enabled">
                 <source>admin.place.discount_prices_enabled</source><target>Soodustuste hinnad</target>
             </trans-unit>
-            <trans-unit id="admin.place.delivery_option.delivery_and_pickup">
-                <source>admin.place.delivery_option.delivery_and_pickup</source><target>Kohaletoimetamine ja järeletulemine</target>
-            </trans-unit>
             <trans-unit id="admin.place.delivery_option.delivery">
                 <source>admin.place.delivery_option.delivery</source><target>Ainult kohaletoimetamine</target>
+            </trans-unit>
+            <trans-unit id="admin.place.delivery_option.pedestrian">
+                <source>admin.place.delivery_option.pedestrian</source>
+                <target>jalakäija</target>
             </trans-unit>
             <trans-unit id="admin.place.delivery_option.ickup">
                 <source>admin.place.delivery_option.pickup</source><target>Ainult järeletulemine</target>

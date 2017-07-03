@@ -32,6 +32,7 @@ class CityRepository extends EntityRepository
         }
 
         $result->setParameters($params);
+        $result->distinct('b.id');
         $return = $result->getQuery()->getResult();
 
         $return = array_slice($return,0,5);
@@ -59,5 +60,10 @@ class CityRepository extends EntityRepository
         $cityName  = str_replace($search, $replace, $cityName);
 
         return $this->findOneBy(['title' => $cityName]);
+    }
+
+    public function getActivePedestrianCityByLocation($id)
+    {
+        return $this->findBy(['active' => 1, 'pedestrian' => 1,'id'=>$id]);
     }
 }

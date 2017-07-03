@@ -58,6 +58,7 @@ class DishSizeAdmin extends FoodAdmin
             );
 
         $formMapper->add('code')
+            ->add('mmCode')
             ->add('price')
             ->add('discountPrice')
             ->add('publicPrice')

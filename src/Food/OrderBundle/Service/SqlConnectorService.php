@@ -45,6 +45,8 @@ class SqlConnectorService extends ContainerAware
 
     private function _initNx($server, $port, $database, $user, $password)
     {
+        ini_set('mssql.charset', 'UTF-8');
+
         // services
         $logger = $this->container->get('logger');
 
@@ -115,6 +117,15 @@ class SqlConnectorService extends ContainerAware
             return sqlsrv_fetch_array($res, SQLSRV_FETCH_ASSOC);
         } else {
             return mssql_fetch_array($res);
+        }
+    }
+
+    public function fetchAssoc($res)
+    {
+        if ($this->isWin) {
+            return sqlsrv_fetch_array($res, SQLSRV_FETCH_ASSOC);
+        } else {
+            return mssql_fetch_assoc($res);
         }
     }
 }

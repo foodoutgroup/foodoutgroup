@@ -209,4 +209,14 @@ class BannedEmail
         $this->editedBy = $editedBy;
     }
 
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
 }

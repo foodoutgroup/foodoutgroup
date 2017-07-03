@@ -237,6 +237,7 @@ class Dish extends Uploadable implements Translatable
      */
     private $useDateInterval = false;
 
+
     /**
      * @var string
      * @Gedmo\Translatable
@@ -282,6 +283,19 @@ class Dish extends Uploadable implements Translatable
             return '';
         }
         return $this->getName();
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Dish
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -686,6 +700,19 @@ class Dish extends Uploadable implements Translatable
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * remove categories
+     *
+     * @param \Food\DishesBundle\Entity\FoodCategory $categories
+     * @return Dish
+     */
+    public function removeAllCategories()
+    {
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+
+        return $this;
     }
 
     /**

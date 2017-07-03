@@ -16,7 +16,8 @@ class ImportAdmin extends SonataAdmin
      */
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
-       // $collection->clearExcept(array('list', 'show'));
+        $collection
+            ->add('processImport');
     }
 }
 

@@ -1,6 +1,6 @@
-food_sms:
-    resource: "@FoodSmsBundle/Resources/config/routing.yml"
-    prefix:   /
+#food_sms:
+#    resource: "@FoodSmsBundle/Resources/config/routing.yml"
+#    prefix:   /
 
 #food_places:
 #    resource: "@FoodPlacesBundle/Controller/"
@@ -24,11 +24,6 @@ food_app:
 
 food_dishes:
     resource: "@FoodDishesBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-food_call_center:
-    resource: "@CallCenterBundle/Controller/"
     type:     annotation
     prefix:   /
 

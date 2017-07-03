@@ -234,6 +234,10 @@
             <trans-unit id="ceb80ce24895534499f2a5a28a707fbb" resname="mobile.order_dish">
                 <source>mobile.order_dish</source><target>Toit</target>
             </trans-unit>
+            <trans-unit id="ceb80ce24895534499f2a5a28a707fbf" resname="mobile.pedestrian_warning">
+                <source>mobile.pedestrian_warning</source>
+                <target>Kiire, et</target>
+            </trans-unit>
             <trans-unit id="6579716641cda122d1f726af7a28cbb3" resname="mobile.order_quantity">
                 <source>mobile.order_quantity</source><target>Kogus</target>
             </trans-unit>
@@ -590,6 +594,10 @@
             <trans-unit id="6defb486341307b289948eb8fa05624f" resname="general.profile.button_save">
                 <source>general.profile.button_save</source><target>Salvesta</target>
             </trans-unit>
+            <trans-unit id="6defb486341307b289948eb8fa05624a" resname="general.profile.block_save">
+                <source>general.profile.block_save</source>
+                <target>Salvesta</target>
+            </trans-unit>
             <trans-unit id="9274e23fa49ef791a605538ff3996088" resname="general.profile.home">
                 <source>general.profile.home</source><target>Algus</target>
             </trans-unit>
@@ -672,7 +680,12 @@
                 <source>general.restaurant_page_title</source><target>%restaurant_name% – toidu tellimine koju</target>
             </trans-unit>
             <trans-unit id="general.cart.success" resname="general.cart.success">
-                <source>general.cart.success</source><target><![CDATA[Teie tellimus on vastu võetud ja peaks teieni jõudma kohe, kui restoran on selle valmis saanud. <br/>Kui teil on küsimusi või soovite teha viimase minuti muudatusi, helistage meile <br/> su <strong>Foodout.lt</strong> telefonil <strong>+370 6100 4970</strong><br/>või<br/>ettevõtte <strong>%placeName%</strong> telefonil <strong>+%placePhone%</strong>.]]></target>
+                <source>general.cart.success</source>
+                <target><![CDATA[Teie tellimus on vastu võetud ja peaks teieni jõudma kohe, kui restoran on selle valmis saanud. <br/>Kui teil on küsimusi või soovite teha viimase minuti muudatusi, helistage meile <br/> su <strong>Foodout.lt</strong> telefonil <strong>+370 6100 4970</strong><br/>]]></target>
+            </trans-unit>
+             <trans-unit id="general.cart.success.restaurant" resname="general.cart.success.restaurant">
+                <source>general.cart.success.restaurant</source>
+                <target><![CDATA[või<br/>ettevõtte <strong>%placeName%</strong> telefonil <strong>+%placePhone%</strong>.]]></target>
             </trans-unit>
             <trans-unit id="general.cart.success_pre" resname="general.cart.success_pre">
                 <source>general.cart.success_pre</source>
@@ -1325,17 +1338,21 @@
                 <source>mobile.order.admin_fee_no_vat</source>
                 <target>Adminstreerimistasu (KM-ita)</target>
             </trans-unit>
-            <trans-unit id="cart.checkout.company_contract">
-                <source>cart.checkout.company_contract</source>
-                <target>Company has contract with foodout</target>
+            <trans-unit id="please.fill.address.message.top">
+                <source>please.fill.address.message.top</source>
+                <target>Palun sisestage oma kohaletoimetamis aadress<![CDATA[<br/>]]> ja valige omale meelepärane restoran*</target>
             </trans-unit>
-            <trans-unit id="cart.checkout.company_contract_number">
-                <source>cart.checkout.company_contract_number</source>
-                <target>Contract number</target>
+            <trans-unit id="please.fill.address.message.bottom">
+                <source>please.fill.address.message.bottom</source>
+                <target><![CDATA[Kui <u><b><a href="#" class="pickup_click">kohaletoimetamist ei soovi siis valige lähen ise järele!</a></b></u>]]></target>
             </trans-unit>
-            <trans-unit id="this.payment.method.not.alowed.for.this.place">
-                <source>this.payment.method.not.alowed.for.this.place</source>
-                <target>This payment method not allowed for this place</target>
+            <trans-unit id="please.fill.address.first">
+                <source>please.fill.address.first</source>
+                <target>Please fill address first</target>
+            </trans-unit>
+           <trans-unit id="save.button">
+                <source>save.button</source>
+                <target>Save</target>
             </trans-unit>
         </body>
     </file>

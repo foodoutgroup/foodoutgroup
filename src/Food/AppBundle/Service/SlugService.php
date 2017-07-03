@@ -50,14 +50,13 @@ class SlugService
         $this->isBanned = $this->misc->isIpBanned($this->container->get('request')->getClientIp());
     }
 
-    public function generateForLocale($locale, $object,  $slugField = 'slug', $type = SlugEntity::TYPE_PAGE)
+    public function generateForLocale($locale, $object, $slugField = 'slug', $type = SlugEntity::TYPE_PAGE)
     {
         $defined = false;
-        if(defined(get_class($object) . '::SLUG_TYPE')){
+        if (defined(get_class($object) . '::SLUG_TYPE')) {
             $defined = true;
             $type = $object::SLUG_TYPE;
-        } elseif ($type === null)
-        {
+        } elseif ($type === null) {
             throw new \Exception('Type not defined');
         }
 
@@ -70,7 +69,7 @@ class SlugService
             throw new \Exception('getTranslations method required');
         }
 
-        if (!$locale){
+        if (!$locale) {
             throw new \Exception('Locale is required');
         }
 
@@ -89,11 +88,10 @@ class SlugService
     {
 
         $defined = false;
-        if(defined(get_class($object) . '::SLUG_TYPE')){
+        if (defined(get_class($object) . '::SLUG_TYPE')) {
             $defined = true;
             $type = $object::SLUG_TYPE;
-        } elseif ($type === null)
-        {
+        } elseif ($type === null) {
             throw new \Exception('Type not defined');
         }
 
@@ -114,15 +112,17 @@ class SlugService
 
         $method = Inflector::camelize('get_' . $slugField);
 
-        if (method_exists($object, $method) ) {
+        if (method_exists($object, $method)) {
             $textsForSlugs[$defaultLocale] = $object->{$method}();
             $origName = $textsForSlugs[$defaultLocale];
         }
 
-        foreach ($object->getTranslations()->getValues() as $row) {
+        if (is_object($object->getTranslations())) {
+            foreach ($object->getTranslations()->getValues() as $row) {
 
-            if ($row->getField() == $slugField) {
-                $textsForSlugs[$row->getLocale()] = $row->getContent();
+                if ($row->getField() == $slugField) {
+                    $textsForSlugs[$row->getLocale()] = $row->getContent();
+                }
             }
         }
 
@@ -145,12 +145,13 @@ class SlugService
         return $this->repository->exist($slug);
     }
 
-    public function get($itemId, $type)
+    public function get($itemId, $type, $locale = null)
     {
+
         $item = $this->repository->findOneBy(
             array(
                 'item_id' => $itemId, 'type' => $type,
-                'lang_id' => $this->getLocale(), 'active' => 1
+                'lang_id' => $locale ? $locale : $this->getLocale(), 'active' => 1
             )
         );
 
@@ -178,7 +179,7 @@ class SlugService
 
     public function getUrl($itemId, $type)
     {
-        if(isset(self::$cache[$type][$itemId])) {
+        if (isset(self::$cache[$type][$itemId])) {
             return self::$cache[$type][$itemId];
         }
         $locale = $this->getLocale();
@@ -204,7 +205,7 @@ class SlugService
 
     public function getPath($itemId, $type, $lang = false)
     {
-        if(isset(self::$cachePath[$type][$itemId])) {
+        if (isset(self::$cachePath[$type][$itemId])) {
             return self::$cachePath[$type][$itemId];
         }
 
@@ -229,7 +230,8 @@ class SlugService
         return $url;
     }
 
-    public function ajaxURL($route, $params = []) {
+    public function ajaxURL($route, $params = [])
+    {
 
         $locale = $this->getLocale();
         $params['_locale'] = $locale;
@@ -239,25 +241,40 @@ class SlugService
 
     public function generateURL($route, $params = [])
     {
-        if (count($params)){
-            if (array_key_exists('_locale', $params[0])) {
-                $params = $params[0];
-                $recLoc = $this->request->getLocale();
-                $this->request->setLocale($params['_locale']);
-                $default = ['_locale' => $this->getLocale()];
-                $url =  $this->router->generate($route, array_merge($params, $default));
-                $this->request->setLocale($recLoc);
 
-                return $url;
-            }
-        }
-        else {
+        if (count($params) && $this->keyExists( $params, '_locale')) {
+            $params = $params[0];
+            $recLoc = $this->request->getLocale();
+            $this->request->setLocale($params['_locale']);
+            $default = ['_locale' => $this->getLocale()];
+            $url = $this->router->generate($route, array_merge($params, $default));
+            $this->request->setLocale($recLoc);
+
+            return $url;
+        } else {
             $default = ['_locale' => $this->getLocale()];
             return $this->router->generate($route, array_merge($params, $default));
         }
 
     }
 
+    private function keyExists(array $arr, $key)
+    {
+        if (array_key_exists($key, $arr)) {
+            return true;
+        }
+
+        foreach ($arr as $element) {
+            if (is_array($element)) {
+                if ($this->keyExists($element, $key)) {
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
+    }
 
     public function generatePath($route, $params = [])
     {
@@ -286,15 +303,16 @@ class SlugService
     }
 
 
-    public function isBanned() {
+    public function isBanned()
+    {
         return $this->isBanned;
     }
 
     public function urlFromParam($name, $type)
     {
         $contentId = $bannedEmailPageId = $this->misc->getParam($name);
-        if(!$contentId) {
-            throw new \Exception('Parameter '.$name.' not found');
+        if (!$contentId) {
+            throw new \Exception('Parameter ' . $name . ' not found');
         }
         return $this->getUrl($contentId, $type);
     }
@@ -306,7 +324,7 @@ class SlugService
         $availableLocales = $this->localeCollection;
         $disabledLocales = $this->container->getParameter('locales_hidden');
 
-        if(count($disabledLocales)) {
+        if (count($disabledLocales)) {
             foreach ($availableLocales as $key => $locale) {
                 if (in_array($locale, $disabledLocales)) {
                     unset($availableLocales[$key]);
@@ -318,6 +336,33 @@ class SlugService
             throw new NotFoundHttpException();
         }
 
+    }
+
+    public function stringParse($text, $delimiter = '-'){
+
+        // replace non letter or digits by -
+        $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+        // transliterate
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+        // remove unwanted characters
+        $text = preg_replace('~[^-\w]+~', '', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        // remove duplicated - symbols
+        $text = preg_replace('~-+~', '-', $text);
+
+        // lowercase
+        $text = strtolower($text);
+
+        if (empty($text)) {
+            return 'n-a';
+        }
+
+        return $text;
     }
 
 }

@@ -67,6 +67,19 @@ class DishOptionLocalized extends AbstractPersonalTranslation
     }
 
     /**
+     * Set id
+     *
+     * @param integer $id
+     * @return DishUnitsLocalized
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return integer

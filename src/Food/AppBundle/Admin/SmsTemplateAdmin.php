@@ -15,18 +15,19 @@ class SmsTemplateAdmin extends FoodAdmin
             ->add('preorder', 'boolean', ['label' => 'admin.sms.preorder'])
             ->add('type', 'text', ['label' => 'admin.sms.type'])
             ->add('source', 'text', ['label' => 'admin.sms.source'])
+            ->add('active', 'boolean', ['label' => 'admin.sms.active', 'editable' => true])
             ->add('_action', 'actions', ['actions' => ['edit' => [], 'delete' => [],], 'label' => 'admin.actions']);
     }
 
     function configureFormFields(FormMapper $form)
     {
 
-        $sourceCollection = [];
+        $sourceCollection = ['All' => $this->trans('admin.email.use_for_all')];
         foreach (Order::$sourceCollection as $source) {
             $sourceCollection[$source] = $source;
         }
 
-        $typeCollection = ['pickup' => 'Pickup', 'order' => 'Simple Order'];
+        $typeCollection = ['pickup' => 'Pickup', 'deliver' => 'Simple Order'];
         $orderStatusCollection = [];
         foreach (OrderService::getOrderStatuses() as $os) {
             $orderStatusCollection[$os] = $os;

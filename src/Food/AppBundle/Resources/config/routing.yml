@@ -32,3 +32,7 @@ food_slug:
     defaults: { _controller: FoodAppBundle:Slug:process, slug: ~, _locale: %kernel.default_locale%  }
     requirements:
         slug : "^(.*)$"
+
+food_nav_test:
+    path:  /test/nav
+    defaults: { _controller: FoodAppBundle:Test:nav }

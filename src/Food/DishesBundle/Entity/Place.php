@@ -29,6 +29,7 @@ class Place extends Uploadable implements Translatable
     const OPT_DELIVERY_AND_PICKUP = 'delivery_and_pickup';
     const OPT_ONLY_DELIVERY = 'delivery';
     const OPT_ONLY_PICKUP = 'pickup';
+    const OPT_ONLY_PEDESTRIAN = 'pedestrian';
 
 
 
@@ -173,6 +174,11 @@ class Place extends Uploadable implements Translatable
      * @ORM\OneToMany(targetEntity="Food\PlacesBundle\Entity\BestOffer", mappedBy="place")
      */
     private $bestOffers;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Food\PlacesBundle\Entity\PlaceNotification", mappedBy="placeCollection")
+     */
+    private $placeNotification;
 
     /**
      * @ORM\OneToMany(targetEntity="PlacePoint", mappedBy="place", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -591,6 +597,20 @@ class Place extends Uploadable implements Translatable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     *
+     * @return Place
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -1304,6 +1324,14 @@ class Place extends Uploadable implements Translatable
     }
 
     /**
+     * @param mixed translations
+     */
+    public function removeAllTranslations()
+    {
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();;
+    }
+
+    /**
      * Get translations
      *
      * @return \Doctrine\Common\Collections\Collection
@@ -1571,7 +1599,7 @@ class Place extends Uploadable implements Translatable
      */
     public function setDeliveryOptions($deliveryOptions)
     {
-        if (!in_array($deliveryOptions, [self::OPT_DELIVERY_AND_PICKUP, self::OPT_ONLY_DELIVERY, self::OPT_ONLY_PICKUP])) {
+        if (!in_array($deliveryOptions, [self::OPT_DELIVERY_AND_PICKUP, self::OPT_ONLY_DELIVERY, self::OPT_ONLY_PICKUP, self::OPT_ONLY_PEDESTRIAN])) {
             throw new \InvalidArgumentException('Unknown delivery opion: ' . $deliveryOptions);
         }
         $this->deliveryOptions = $deliveryOptions;
@@ -1968,6 +1996,40 @@ class Place extends Uploadable implements Translatable
     }
 
     /**
+     * Get placeNotification
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPlaceNotification()
+    {
+        return $this->placeNotification;
+    }
+
+    /**
+     * Add placeNotification
+     *
+     * @param \Food\PlacesBundle\Entity\PlaceNotification $placeNotification
+     *
+     * @return Place
+     */
+    public function addPlaceNotification(\Food\PlacesBundle\Entity\PlaceNotification $placeNotification)
+    {
+        $this->placeNotification[] = $placeNotification;
+
+        return $this;
+    }
+
+    /**
+     * Remove placeNotification
+     *
+     * @param \Food\PlacesBundle\Entity\PlaceNotification $placeNotification
+     */
+    public function removePlaceNotification(\Food\PlacesBundle\Entity\PlaceNotification $placeNotification)
+    {
+        $this->placeNotification->removeElement($placeNotification);
+    }
+
+    /**
      * Set pickupTime
      *
      * @param string $pickupTime
@@ -2243,14 +2305,14 @@ class Place extends Uploadable implements Translatable
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -2311,5 +2373,13 @@ class Place extends Uploadable implements Translatable
         return $this->cityId;
     }
 
-
+    /**
+     * Get useAdminFee
+     *
+     * @return boolean
+     */
+    public function getUseAdminFee()
+    {
+        return $this->useAdminFee;
+    }
 }

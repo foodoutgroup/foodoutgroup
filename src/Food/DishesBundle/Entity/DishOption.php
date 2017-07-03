@@ -43,6 +43,7 @@ class DishOption implements Translatable
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=60)
+     * @Gedmo\Translatable
      */
     private $name;
 
@@ -83,6 +84,7 @@ class DishOption implements Translatable
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
+     * @Gedmo\Translatable
      */
     private $description;
 
@@ -177,6 +179,22 @@ class DishOption implements Translatable
      */
     private $sizesPrices;
 
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+
+    /**
+     * @param $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
     /**
      * Returns the name
      *
@@ -196,6 +214,19 @@ class DishOption implements Translatable
     {
         $this->localized = new \Doctrine\Common\Collections\ArrayCollection();
         $this->dishes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return DishOption
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**

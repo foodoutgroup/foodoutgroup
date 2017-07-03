@@ -1,11 +1,11 @@
 {% extends 'FoodPlacesBundle:City:layout.html.twig' %}
 
-{% block title %}{% if meta_title is not empty %}{{ meta_title }}. {% endif %}{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city.getTitle()  }}{% endif %}{% endblock %}
-{% block seo_description %}{% if meta_description is not empty %}{{ meta_description }}{% else %}{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city.getTitle() }}{% endif %}{% endif %}{% endblock %}
+{% block title %}{% if meta_title is not empty %}{{ meta_title }}. {% endif %}{% trans %}places.header_main_part{% endtrans %} {% if city is not null %} {{ city.getTitle() }} {% else %} {{ location['city'] }} {% endif %}{% endblock %}
+{% block seo_description %}{% if meta_description is not empty %}{{ meta_description }}{% else %}{% trans %}places.header_main_part{% endtrans %}  {% if city is not null %} {{ city.getTitle() }} {% else %} {{ location['city'] }} {% endif %}{% endif %}{% endblock %}
 
 {% block breadcrumb %}
     <a href="{{ path('food_lang_homepage') }}">{% trans %}general.profile.home{% endtrans %}</a>
-    <a href="{{ current_url_path }}"> {{ city.getTitle() }}</a>
+    <a href="{{ current_url_path }}"> {% if city is not null  %} {{ city.getTitle() }} {% else %} {{ location['city'] }} {% endif %}</a>
 
     {% if kitchen_collection is not empty %}
         {% set kitchen = kitchen_collection|first %}
@@ -14,5 +14,5 @@
 {% endblock %}
 
 {% block page_title_h1 %}
-    <h1>{% if meta_title is not empty %}{{ meta_title }}. {% endif %}{% trans %}places.header_main_part{% endtrans %}{%  if location is defined and location.city is defined %} {{ city.getTitle()  }}{% endif %}</h1>
+    <h1>{% if meta_title is not empty %}{{ meta_title }}. {% endif %}{% trans %}places.header_main_part{% endtrans %}  {% if city is not null %} {{ city.getTitle() }} {% else %} {{ location['city'] }} {% endif %}</h1>
 {% endblock %}

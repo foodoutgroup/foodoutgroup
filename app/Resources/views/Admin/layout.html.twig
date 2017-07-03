@@ -5,7 +5,7 @@
     {{ parent() }}
     <meta name="msapplication-config" content="none"/>
 
-    {% stylesheets 'bundles/foodapp/styles/admin_style.css' filter="cssrewrite" %}
+    {% stylesheets '@FoodAppBundle/Resources/public/styles/admin_style.css' filter="cssrewrite" %}
     <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css' %}
@@ -33,6 +33,15 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var areas = $('textarea.ckeditor_custom');
+
+            //todo: Rasai hardcode
+//            setInterval(function () {
+//                $("div").css("background-color", function () {
+//                    this.switch = !this.switch
+//                    return this.switch ? "#1E90FF" : ""
+//                });
+//            }, 10)
+
 
             if (areas.length) {
                 areas.each(function (key, area) {

@@ -5,7 +5,7 @@ namespace Food\ApiBundle\Controller;
 use Food\ApiBundle\Exceptions\ApiException;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
@@ -22,12 +22,16 @@ class OffersController extends Controller
      * @param string|null $city
      * @return JsonResponse
      */
-    public function getAction($city = null)
+    public function getAction($city = null,Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Offers:getAction Request:' . $city);
+        //$this->get('logger')->alert('Offers:getAction Request:' . $city);
         try {
+            $city = $request->get('city');
             $repo = $this->get('doctrine')->getRepository('FoodPlacesBundle:BestOffer');
+            if ($city) {
+                $city = $this->container->get('doctrine')->getRepository('FoodAppBundle:City')->findOneByTitle($city);
+            }
             $offers = $repo->getActiveOffers($city, true);
 
             $response = [];
@@ -64,8 +68,8 @@ class OffersController extends Controller
                 array('error' => 'server error', 'description' => null)
             );
         }
-        $this->get('logger')->alert('Offers:getAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Offers:getAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 

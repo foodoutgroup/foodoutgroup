@@ -18,7 +18,7 @@ class CityLocalized extends AbstractPersonalTranslation
 {
 
     /**
-     * @ORM\ManyToOne(targetEntity="Food\AppBundle\Entity\City", inversedBy="<")
+     * @ORM\ManyToOne(targetEntity="Food\AppBundle\Entity\City", inversedBy="translations")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $object;

@@ -68,7 +68,7 @@ class UsersController extends Controller
     public function registerAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Users:registerAction Request:', (array) $request);
+        //$this->get('logger')->alert('Users:registerAction Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
             $um = $this->getUserManager();
@@ -222,8 +222,8 @@ class UsersController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Users:registerAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Users:registerAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -239,7 +239,7 @@ class UsersController extends Controller
     public function register2Action(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Users:register2Action Request:', (array) $request);
+        //$this->get('logger')->alert('Users:register2Action Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
             $um = $this->getUserManager();
@@ -417,8 +417,8 @@ class UsersController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Users:register2Action Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Users:register2Action Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -431,7 +431,7 @@ class UsersController extends Controller
     public function updateAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Users:updateAction Request:', (array) $request);
+        //$this->get('logger')->alert('Users:updateAction Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
             // TODO after testing - remove!
@@ -494,8 +494,8 @@ class UsersController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Users:updateAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Users:updateAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -509,7 +509,7 @@ class UsersController extends Controller
     public function changePasswordAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Users:changePasswordAction Request:', (array) $request);
+        //$this->get('logger')->alert('Users:changePasswordAction Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
             // TODO after testing - remove!
@@ -571,8 +571,8 @@ class UsersController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Users:changePasswordAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Users:changePasswordAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response, 204);
     }
 
@@ -585,7 +585,7 @@ class UsersController extends Controller
     public function resetPasswordAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Users:resetPasswordAction Request:', (array) $request);
+        //$this->get('logger')->alert('Users:resetPasswordAction Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
             // TODO after testing - remove!
@@ -619,8 +619,8 @@ class UsersController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Users:resetPasswordAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Users:resetPasswordAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response, 200);
     }
 
@@ -633,7 +633,7 @@ class UsersController extends Controller
     public function loginAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Users:loginAction Request:', (array) $request);
+        //$this->get('logger')->alert('Users:loginAction Request:', (array) $request);
         try {
             $this->parseRequestBody($request);
             $username = $this->getRequestParam('email');
@@ -713,8 +713,8 @@ class UsersController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Users:loginAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Users:loginAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -727,7 +727,7 @@ class UsersController extends Controller
     public function logoutUserAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Users:logoutUserAction Request:', (array) $request);
+        //$this->get('logger')->alert('Users:logoutUserAction Request:', (array) $request);
         try {
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
 
@@ -765,8 +765,8 @@ class UsersController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Users:logoutUserAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Users:logoutUserAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -822,7 +822,7 @@ class UsersController extends Controller
     public function usersListAction($itemsPerPage, $pageNo, Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Users:usersListAction Request: itemsPerPage - ' . $itemsPerPage . ', pageNo - ' . $pageNo, (array) $request);
+        //$this->get('logger')->alert('Users:usersListAction Request: itemsPerPage - ' . $itemsPerPage . ', pageNo - ' . $pageNo, (array) $request);
         try {
             $response = array(
                 'success' => false,
@@ -871,8 +871,8 @@ class UsersController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Users:usersListAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Users:usersListAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -886,7 +886,7 @@ class UsersController extends Controller
     public function logoutAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Users:logoutAction Request:', (array) $request);
+        //$this->get('logger')->alert('Users:logoutAction Request:', (array) $request);
         try {
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
 
@@ -920,8 +920,8 @@ class UsersController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Users:logoutAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Users:logoutAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response, 204);
     }
 
@@ -934,7 +934,7 @@ class UsersController extends Controller
     public function meAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Users:meAction Request:', (array) $request);
+        //$this->get('logger')->alert('Users:meAction Request:', (array) $request);
         try {
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
 
@@ -963,8 +963,8 @@ class UsersController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Users:meAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Users:meAction Response:'. print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 

@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="verify-webtopay" content="461551ad8deddc3ad0975adb27d1eff4"/>
+    {{ misc_utils.getParam('fb_meta_tag', null)|raw }}
     <title>{% block title %}{% trans %}general.base_page_title{% endtrans %} | {{ page_title }}{% endblock %}</title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
@@ -18,24 +19,25 @@
     <meta name="description" content="{% block seo_description %}{% endblock %}">
     <meta name="viewport" content="width=1000">
     <meta name="msapplication-config" content="none"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
 
     {# Chosen CSS Begin #}
     {% stylesheets '@FoodAppBundle/Resources/public/scripts/chosen/chosen.min.css' filter="cssrewrite" %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
     {# Chosen CSS End #}
 
-    {% stylesheets 'bundles/foodapp/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css' filter="cssrewrite" %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    {% stylesheets '@FoodAppBundle/Resources/public/scripts/jquery-ui/custom-theme/jquery-ui-1.10.3.custom.min.css' filter="cssrewrite" %}
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/scripts/boxer/jquery.fs.boxer.css*' %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/style.css' %}
-    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("Ymd") }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
     {% stylesheets '@FoodAppBundle/Resources/public/styles/jquery.loadmask.css' %}
-    <link rel="stylesheet" href="{{ asset_url }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset_url }}?{{ "now"|date("YmdH") }}" type="text/css"/>
     {% endstylesheets %}
 
     {% block javascripts %}
@@ -134,8 +136,16 @@
     <script type="text/javascript">
         {% block ga_js_code %}{% endblock %}
     </script>
+
+    {% if misc_utils.getparam('show_download_app_popup') == 1 %}
+    <script type="text/javascript">
+        (function(b,r,a,n,c,h,_,s,d,k){if(!b[n]||!b[n]._q){for(;s<_.length;)c(h,_[s++]);d=r.createElement(a);d.async=1;d.src="https://cdn.branch.io/branch-latest.min.js";k=r.getElementsByTagName(a)[0];k.parentNode.insertBefore(d,k);b[n]=h}})(window,document,"script","branch",function(b,r){b[r]=function(){b._q.push([r,arguments])}},{_q:[],_v:1},"addListener applyCode banner closeBanner creditHistory credits data deepview deepviewCta first getCode init link logout redeem referrals removeListener sendSMS setBranchViewData setIdentity track validateCode".split(" "), 0);
+        branch.init('{{misc_utils.getparam('download_app_key')}}');
+    </script>
+    {% endif %}
+
 </head>
-<body>
+<body class="{{ app.request.locale }}">
     {{ notifications.init|raw }}
     <div class="site">
         <div id="header-ad-container"></div>
@@ -148,12 +158,12 @@
                 <div class="langSwitcher" >
                     <div class="lang-drop">
                         {% set currentLangName = 'language_' ~ app.request.locale  %}
-                        <a class="lang-chose" href="#"> {{ currentLangName|trans() }}</a>
+                        <a class="lang-chose" href="#">{{ currentLangName|trans() }} <span class="arrow-down"></span></a>
                         <ul>
                             {% for locale in localeService.getAvailable() %}
                                 {% set langName = 'language_' ~ locale  %}
                                 <li class="lang-item lang-{{ locale }} {% if locale == app.request.locale %}current-lang{% endif %}">
-                                    <a href="{{ slug.generateUrl('food_lang_homepage_slashSwitch', [{'_locale':locale}]) }}"> {{ langName|trans() }} </a>
+                                    <a href="{{ slug.generateUrl('food_lang_homepage_slashSwitch', [{'_locale':locale}]) }}">{{ langName|trans() }}</a>
                                 </li>
                             {% endfor %}
                         </ul>
@@ -202,8 +212,8 @@
     </div>
 
     {{ include('FoodAppBundle:Default:login_register.html.twig') }}
-    <script src="{{ asset('bundles/foodapp/scripts/common.js')}}"></script>
-    <script src="{{ asset('bundles/foodapp/scripts/scripts.js')}}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/common.js')}}?{{ "now"|date("YmdH") }}"></script>
+    <script src="{{ asset('bundles/foodapp/scripts/scripts.js')}}?{{ "now"|date("YmdH") }}"></script>
     {% block jscode %}{% endblock %}
     {{ misc_utils.param('footer_scripts', true)|raw }}
 </body>

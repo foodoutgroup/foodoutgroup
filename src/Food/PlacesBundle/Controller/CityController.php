@@ -23,36 +23,40 @@ class CityController extends Controller
             }
         }
 
-        $metaTitle = '';
-        $metaDescription = '';
+        $lService = $this->get('food.location');
 
-        $this->get('food.googlegis')->setCity($city);
+        $metaTitle = $city->getMetaTitle();
+        $metaDescription = $city->getMetaTitle();
 
-        $placeService = $this->get('food.places');
-        $kitchenCollection = $placeService->getKitchenCollectionFromSlug($params, $request);
+        // TODO: get meta data by kitchen filter :D
 
-        if (count($kitchenCollection)) {
-            list($first,) = $kitchenCollection;
-            $metaTitle = $first->getMetaTitle();
-            $metaDescription = $first->getMetaDescription();
+        $locationData = $lService->get();
+
+        if($locationData == null || (array_key_exists('city_id', $locationData) && $locationData['city_id'] != $city->getId())) {
+            $dataToSet = $lService->findByAddress($city->getTitle().", ".$this->container->getParameter('country_full'));
+            $dataToSet['city_id'] = $city->getId();
+            $dataToSet['city'] = $city->getTitle();
+            $dataToSet['output'] = null;
+            $dataToSet['flat'] = null;
+            $lService->clear()->set($dataToSet);
         }
 
+        $placeService = $this->get('food.places');
+
         return $this->render(
-            'FoodPlacesBundle:City:index.html.twig',
-            array(
-                'recommended' => in_array('recom',$params), // todo MULTI-L param for recommended list
-                'rush_hour' => in_array('rush', $params), // todo MULTI-L param for rush_hour list
-                'location' => $this->get('food.googlegis')->getLocationFromSession(),
+            'FoodPlacesBundle:City:index.html.twig', [
+                'rush_hour' => in_array('recom564fsa564fsa564fsa564f5s6a4', $params), // todo MULTI-L param for rush_hour list
+                'location' => $lService->get(),
                 'userAllAddress' => $placeService->getCurrentUserAddresses(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver),
                 'slug_filter' => implode("/", $params),
-                'kitchen_collection' => $kitchenCollection,
+                'kitchen_collection' => [],
                 'meta_title' => $metaTitle,
                 'meta_description' => $metaDescription,
                 'city' => $city,
                 'current_url' => $request->getUri(),
                 'current_url_path' => $this->get('slug')->getUrl($id, Slug::TYPE_CITY),
-            )
+            ]
         );
     }
     /**
@@ -63,9 +67,8 @@ class CityController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction($recommended = false, $slug_filter = false, $rush_hour = false, Request $request)
+    public function listAction($slug_filter = false, $rush_hour = false, Request $request)
     {
-        $isRecommended = $recommended;
 
         if ($deliveryType = $request->get('delivery_type', false)) {
             switch ($deliveryType) {
@@ -76,18 +79,20 @@ class CityController extends Controller
                 case 'pickup':
                     $this->container->get('session')->set('delivery_type', OrderService::$deliveryPickup);
                     break;
+                case 'pedestrian':
+                    $this->container->get('session')->set('delivery_type', OrderService::$deliveryPedestrian);
+                    break;
             }
         }
 
-        $placeCollection = $this->get('food.places')->getPlacesForList($isRecommended, $request, $slug_filter, $rush_hour);
+        $placeCollection = $this->get('food.places')->getPlacesForList($rush_hour, $request);
 
         return $this->render(
             'FoodPlacesBundle:City:list.html.twig',
             array(
                 'reviewsEnabled' => $this->get('food.app.utils.misc')->getParam('reviews_enabled', 0),
                 'placeCollection' => $placeCollection,
-                'isRecommended' => $isRecommended,
-                'location' => $this->get('food.googlegis')->getLocationFromSession(),
+                'location' => $this->get('food.location')->get(),
                 'delivery_type_filter' => $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver)
             )
         );

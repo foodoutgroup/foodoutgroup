@@ -14,21 +14,39 @@ class AddressController extends Controller
     public function findAddressAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Address:findAddressAction Request:', (array)$request);
-
-
+        //$this->get('logger')->alert('Address:findAddressAction Request:', (array)$request);
         try {
             $lat = $request->get('lat');
             $lng = $request->get('lng');
             $city = $request->get('city');
             $street = $request->get('street');
             $houseNumber = $request->get('house_number');
+            $lService = $response = $this->get('food.location');
+            $pedestrianService = $this->get('food.pedestrian_service');
+
             if (!empty($lat) && !empty($lng)) {
-                $response = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
+                $response = $lService->findByCords($lat, $lng);
+
+                if($response) {
+                    $lService->set($response);
+                    $response['house_number'] = $response['house'];
+                    $response['pedestrian'] = $pedestrianService->getPedestrianByCity($response['city_id']);
+                } else {
+                    $response = [];
+                }
             } elseif (!empty($city) && !empty($street) && !empty($houseNumber)) {
-                $response = $this->get('food.googlegis')->findAddressByCoordsByStuff(
-                    $city, $street, $houseNumber
-                );
+
+                $response = $lService->findByAddress($street.' '.$houseNumber.' ,'.$city);
+
+                if($response) {
+                    $lService->set($response);
+                    $response['house_number'] = $response['house'];
+                    $response['pedestrian'] = $pedestrianService->getPedestrianByCity($response['city_id']);
+
+                } else {
+                    $response = [];
+                }
+
             } else {
 
                 $response = [];
@@ -49,15 +67,15 @@ class AddressController extends Controller
         }
 
 
-        $this->get('logger')->alert('Address:findAddressAction Response:' . print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Address:findAddressAction Response:' . print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
     public function findStreetAction(Request $request)
     {
-        $startTime = microtime(true);
-        $this->get('logger')->alert('Address:findStreetAction Request:', (array)$request);
+
+        //$this->get('logger')->alert('Address:findStreetAction Request:', (array)$request);
         try {
             $queryPart = $request->get('query');
             $response = array();
@@ -88,8 +106,8 @@ class AddressController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Address:findStreetAction Response:' . print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Address:findStreetAction Response:' . print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 }

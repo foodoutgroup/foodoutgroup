@@ -47,6 +47,12 @@ class EmailTemplate
 
     /**
      * @var string
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
+     */
+    private $name;
+
+    /**
+     * @var string
      * @ORM\Column(name="source", type="string", length=255, nullable=true)
      */
     private $source;
@@ -71,6 +77,14 @@ class EmailTemplate
      */
     private $active;
 
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="use_for_all", type="boolean", nullable=true)
+     */
+    private $useForAll;
+
     /**
      * @Gedmo\Locale
      * Used locale to override Translation listener`s locale
@@ -84,6 +98,46 @@ class EmailTemplate
      * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
      */
     private $deletedAt;
+
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="edited_at", type="datetime", nullable=true)
+     */
+    private $editedAt;
+
+
+    /**
+     * @var \Food\UserBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="created_by", referencedColumnName="id")
+     **/
+    private $createdBy;
+
+    /**
+     * @var \Food\UserBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="edited_by", referencedColumnName="id")
+     */
+    private $editedBy;
+
+    /**
+     * @var \Food\UserBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="\Food\UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="deleted_by", referencedColumnName="id")
+     */
+    private $deletedBy;
 
 
     public function __construct()
@@ -290,4 +344,153 @@ class EmailTemplate
         return $this->deletedAt;
     }
 
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getEditedAt()
+    {
+        return $this->editedAt;
+    }
+
+    /**
+     * @param \DateTime|null $editedAt
+     */
+    public function setEditedAt($editedAt)
+    {
+        $this->editedAt = $editedAt;
+    }
+
+    /**
+     * @return \Food\UserBundle\Entity\User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * @param \Food\UserBundle\Entity\User $createdBy
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
+    }
+
+    /**
+     * @return \Food\UserBundle\Entity\User
+     */
+    public function getEditedBy()
+    {
+        return $this->editedBy;
+    }
+
+    /**
+     * @param \Food\UserBundle\Entity\User $editedBy
+     */
+    public function setEditedBy($editedBy)
+    {
+        $this->editedBy = $editedBy;
+    }
+
+    /**
+     * @return \Food\UserBundle\Entity\User
+     */
+    public function getDeletedBy()
+    {
+        return $this->deletedBy;
+    }
+
+    /**
+     * @param \Food\UserBundle\Entity\User $deletedBy
+     */
+    public function setDeletedBy($deletedBy)
+    {
+        $this->deletedBy = $deletedBy;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseForAll()
+    {
+        return $this->useForAll;
+    }
+
+    /**
+     * @param bool $useForAll
+     */
+    public function setUseForAll($useForAll)
+    {
+        $this->useForAll = $useForAll;
+    }
+
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return EmailTemplate
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get preorder
+     *
+     * @return boolean 
+     */
+    public function getPreorder()
+    {
+        return $this->preorder;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Get useForAll
+     *
+     * @return boolean 
+     */
+    public function getUseForAll()
+    {
+        return $this->useForAll;
+    }
 }

@@ -12,17 +12,14 @@ use Food\UserBundle\Form\Type\ChangePasswordFormType;
 class ProfileMegaFormType extends AbstractType
 {
     private $profile;
-    private $address;
     private $change_password;
 
     public function __construct(
         ProfileFormType $profile,
-        UserAddressFormType $address,
         ChangePasswordFormType $change_password
     )
     {
         $this->profile = $profile;
-        $this->address = $address;
         $this->change_password = $change_password;
     }
 
@@ -46,7 +43,6 @@ class ProfileMegaFormType extends AbstractType
     {
         $builder
             ->add('profile', $this->profile, array('required' => true))
-            ->add('address', $this->address, array('required' => false))
             ->add('change_password', $this->change_password, array('required' => false))
         ;
     }

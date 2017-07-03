@@ -24,53 +24,10 @@ class DefaultController extends Controller
             return $this->redirect($this->get('slug')->urlFromParam('page_banned', Slug::TYPE_PAGE), 302);
         }
 
-        $formDefaults = array(
-            'city_id' => '',
-            'address' => '',
-            'house' => '',
-            'flat' => '',
-        );
-
-        $user = $this->getUser();
-
-        if ($user instanceof User) {
-            $defaultUserAddress = $user->getCurrentDefaultAddress();
-
-            if (!empty($defaultUserAddress)) {
-                $addressData = $miscUtils->parseAddress($defaultUserAddress->getAddress());
-
-                $cityObj = $defaultUserAddress->getCityId();
-                $formDefaults = [
-                    'city_id' => $cityObj ? $cityObj->getId() : null,
-                    'address' => $addressData['street'],
-                    'house' => $addressData['house'],
-                    'flat' => $addressData['flat'],
-                ];
-            }
-        }
-
-        // Lets check session for last used address and use it
-        $sessionLocation = $this->get('food.googlegis')->getLocationFromSession();
-        if (!empty($sessionLocation)
-            && !empty($sessionLocation['city']) && !empty($sessionLocation['address_orig'])) {
-            $addressData = $miscUtils->parseAddress($sessionLocation['address_orig']);
-
-            $formDefaults = array(
-                'city' => $sessionLocation['city'],
-                'address' => $addressData['street'],
-                'house' => $addressData['house'],
-                'flat' => $addressData['flat'],
-                'city_id' => $sessionLocation['city_id']
-            );
-        }
-
-        $cityCollection = $this->get("food.city_service")->getActiveCity();
-
-
         return $this->render(
             'FoodAppBundle:Default:index.html.twig', [
-                'formDefaults' => $formDefaults,
-                'cityCollection' => $cityCollection
+                'location' => $this->get('food.location')->get(),
+                'cityCollection' => $this->get("food.city_service")->getActiveCity()
             ]
         );
     }

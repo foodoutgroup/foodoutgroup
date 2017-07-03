@@ -1524,6 +1524,14 @@
                 <source>admin.order.details.dish_name</source>
                 <target>Dish</target>
             </trans-unit>
+            <trans-unit id="admin.order.details.all">
+                <source>admin.order.details.all</source>
+                <target>Total</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.count">
+                <source>admin.order.details.count</source>
+                <target>Quantity</target>
+            </trans-unit>
             <trans-unit id="admin.order.details.price">
                 <source>admin.order.details.price</source>
                 <target>Price</target>
@@ -2233,6 +2241,10 @@
                 <source>admin.driver.type.local</source>
                 <target>Companies</target>
             </trans-unit>
+            <trans-unit id="admin.driver.type.pedestrian">
+                <source>admin.driver.type.pedestrian</source>
+                <target>pedestrian</target>
+            </trans-unit>
             <trans-unit id="admin.driver.type.outsource">
                 <source>admin.driver.type.outsource</source>
                 <target>Outsourced</target>
@@ -2505,6 +2517,10 @@
             <trans-unit id="admin.coupon.free_delivery">
                 <source>admin.coupon.free_delivery</source>
                 <target>Free delivery</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.inverse">
+                <source>admin.coupon.inverse</source>
+                <target>Inverse restaurants</target>
             </trans-unit>
             <trans-unit id="admin.coupon.active">
                 <source>admin.coupon.active</source>
@@ -3431,6 +3447,14 @@
                 <source>admin.cities.zavalas_on</source>
                 <target>Zavalas</target>
             </trans-unit>
+            <trans-unit id="admin.cities.pedestrian">
+                <source>admin.cities.pedestrian</source>
+                <target>Pedestrian</target>
+            </trans-unit>
+            <trans-unit id="admin.dispatcher.normal_orders">
+                <source>admin.dispatcher.normal_orders</source>
+                <target>Regular orders</target>
+            </trans-unit>
             <trans-unit id="admin.cities.zavalas_time">
                 <source>admin.cities.zavalas_time</source>
                 <target>Zavalas time</target>
@@ -3558,6 +3582,42 @@
             <trans-unit id="admin.settings">
                 <source>admin.settings</source>
                 <target>System settings</target>
+            </trans-unit>
+            <trans-unit id="admin.place.pedestrian">
+                <source>admin.place.pedestrian</source>
+                <target>33 mins</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.country">
+                <source>admin.phone.country</source>
+                <target>Country</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.code">
+                <source>admin.phone.code</source>
+                <target>Country code</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.active">
+                <source>admin.phone.active</source>
+                <target>Active</target>
+            </trans-unit>
+            <trans-unit id="admin.phone_codes">
+                <source>admin.phone_codes</source>
+                <target>Phone codes</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate">
+                <source>admin.duplicate</source>
+                <target>Duplicate Restaurants</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.place">
+                <source>admin.duplicate.place</source>
+                <target>Restaurant</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.new_place">
+                <source>admin.duplicate.new_place</source>
+                <target>Duplicated restaurant</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.user">
+                <source>admin.duplicate.user</source>
+                <target>Created by</target>
             </trans-unit>
         </body>
     </file>

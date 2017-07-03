@@ -1,4 +1,5 @@
 <?php
+
 namespace Food\PlacesBundle\Service;
 
 use Food\AppBundle\Entity\City;
@@ -49,8 +50,7 @@ class PlacesService extends ContainerAware
         }
 
         return $this->em()->getRepository('FoodDishesBundle:Place')
-            ->find($placeId)
-            ;
+            ->find($placeId);
     }
 
 
@@ -114,6 +114,21 @@ class PlacesService extends ContainerAware
     }
 
     /**
+     * @param int $dishId
+     *
+     * @return \Food\DishesBundle\Entity\Place|false
+     */
+    public function getPlaceByDish($dishId)
+    {
+        $dish = $this->em()->getRepository('FoodDishesBundle:Dish')->findOneBy(['id' => $dishId]);
+        if (!$dish) {
+            return false;
+        } else {
+            return $dish->getPlace();
+        }
+    }
+
+    /**
      * @param \Food\DishesBundle\Entity\Place $place
      *
      * @return array|\Food\DishesBundle\Entity\FoodCategory[]
@@ -123,14 +138,13 @@ class PlacesService extends ContainerAware
         return $this->em()->getRepository('FoodDishesBundle:FoodCategory')
             ->findBy(
                 [
-                    'place'  => $place->getId(),
+                    'place' => $place->getId(),
                     'active' => 1,
                 ],
                 [
                     'lineup' => 'DESC'
                 ]
-            )
-            ;
+            );
     }
 
     /**
@@ -142,12 +156,12 @@ class PlacesService extends ContainerAware
     {
         return $this->em()->getRepository('FoodDishesBundle:PlacePoint')
             ->findBy([
-                'place'  => $place->getId(),
+                'place' => $place->getId(),
                 'public' => 1,
                 'active' => 1,
             ],
                 [
-                    'city'    => 'DESC',
+                    'city' => 'DESC',
                     'address' => 'ASC'
                 ]
             );
@@ -163,8 +177,7 @@ class PlacesService extends ContainerAware
         return $this->em()->getRepository('FoodDishesBundle:PlacePoint')
             ->findBy([
                 'place' => $place->getId()
-            ])
-            ;
+            ]);
     }
 
     /**
@@ -222,8 +235,7 @@ class PlacesService extends ContainerAware
             ->orderBy('p.averageRating', 'DESC')
             ->addOrderBy('p.reviewCount', 'DESC')
             ->setMaxResults($limit)
-            ->getQuery()
-        ;
+            ->getQuery();
 
         return $placesQuery->getResult();
     }
@@ -280,7 +292,7 @@ class PlacesService extends ContainerAware
     }
 
     /**
-     * @param string     $slug_filter
+     * @param string $slug_filter
      * @param            $request
      * @param bool|false $names
      * @deprecated
@@ -305,8 +317,7 @@ class PlacesService extends ContainerAware
                     $kitchens[] = $item_by_slug->getItemId();
                 } else {
                     $kitchen = $this->container->get('doctrine')
-                        ->getRepository('FoodDishesBundle:Kitchen')->find($item_by_slug->getItemId())
-                    ;
+                        ->getRepository('FoodDishesBundle:Kitchen')->find($item_by_slug->getItemId());
                     if (!empty($kitchen)) {
                         $kitchens[] = $kitchen->getName();
                     }
@@ -316,6 +327,12 @@ class PlacesService extends ContainerAware
         return $kitchens;
     }
 
+    /**
+     * @param array $slugCollection
+     * @param $request
+     * @return array
+     * @deprecated todo: change or redactor 2017-06-20
+     */
     public function getKitchenCollectionFromSlug($slugCollection = [], $request)
     {
         if(!is_array($slugCollection)) {
@@ -324,8 +341,8 @@ class PlacesService extends ContainerAware
 
         $kitchenCollection = [];
 
-//        $slugService = $this->getContainer()->get('slug');
-
+        $slugService = $this->getContainer()->get('slug');
+//
 //        // todo MULTI-L perdaryti i viena select :)
 //        foreach ($slugCollection as $key => $value) {
 //            $item = $slugService->getObjBySlug($value, Slug::TYPE_KITCHEN);
@@ -338,27 +355,24 @@ class PlacesService extends ContainerAware
     }
 
     /**
-     * @param $recommended
      * @param Request $request
      * @param array $slug_filter
      * @param bool $rush_hour
      * @return array|mixed
      */
-    public function getPlacesForList($recommended, Request $request, $slug_filter = [], $rush_hour = false)
+    public function getPlacesForList($rush_hour = false, Request $request)
     {
         $kitchens = $request->get('kitchens', "");
         $filters = $request->get('filters');
 
 
-        $sessionService = $this->container->get('session');
-
-
-        $kitchens = empty($kitchens) ? [] : explode(",", $kitchens);
-        if (!empty($slug_filter)) {
-
-          $kitchens = $this->getKitchenCollectionFromSlug($slug_filter, $request);
+        if ($rush_hour) {
+            $deliveryType = '';
+        } else {
+            $deliveryType = $this->container->get('session')->get('delivery_type', OrderService::$deliveryDeliver);
         }
 
+        $kitchens = empty($kitchens) ? [] : explode(",", $kitchens);
         // TODO lets debug this strange scenario :(
         if (empty($filters)) {
             $filters = [];
@@ -369,8 +383,9 @@ class PlacesService extends ContainerAware
             $filters = explode(",", $filters);
         }
 
-        $filters['delivery_type'] = $rush_hour ? '' : $sessionService->get('delivery_type', OrderService::$deliveryDeliver);
-
+        if (!empty($deliveryType)) {
+            $filters['delivery_type'] = $deliveryType;
+        }
 
         foreach ($kitchens as $kkey => &$kitchen) {
             $kitchen = intval($kitchen);
@@ -382,10 +397,11 @@ class PlacesService extends ContainerAware
         $places = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
             $kitchens,
             $filters,
-            $recommended,
-            $this->container->get('food.googlegis')->getLocationFromSession(),
+            $this->container->get('food.location')->get(),
             $this->container
         );
+
+
 
         $this->container->get('food.places')->saveRelationPlaceToPoint($places);
         $places = $this->container->get('food.places')->placesPlacePointsWorkInformation($places);
@@ -498,8 +514,7 @@ class PlacesService extends ContainerAware
             $all_user_address = $this->container->get('doctrine')->getRepository('FoodUserBundle:UserAddress')
                 ->findBy([
                     'user' => $current_user,
-                ])
-            ;
+                ]);
         }
 
         return $all_user_address;
@@ -525,9 +540,10 @@ class PlacesService extends ContainerAware
     }
 
     /**
-     * @param Place           $place
+     * @TODO: this should now about zaval
+     * @param Place $place
      * @param PlacePoint|null $placePoint
-     * @param string|null     $dateShift
+     * @param string|null $dateShift
      *
      * @return array
      */
@@ -543,8 +559,14 @@ class PlacesService extends ContainerAware
         if (empty($placePoint)) {
             $placePoints = $place->getPoints();
 
-            $placePoint = $placePoints[0];
+            foreach ($placePoints as $key => $placePoint){
+
+                if($placePoint->getActive() == 1){
+                    $placePoint = $placePoints[$key];
+                }
+            }
         }
+
         $workTime = $placePoint->{'getWd' . $day}();
         $workTime = preg_replace('~\s*-\s*~', '-', $workTime);
         $intervals = explode(' ', $workTime);
@@ -582,7 +604,7 @@ class PlacesService extends ContainerAware
             if (date('w') != $day ||
                 (date('H', strtotime($strtime)) <= $startHour ||
                     date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) < $startMin) ||
-                        (date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) > 30)
+                (date('H', strtotime($strtime)) == $startHour && date('i', strtotime($strtime)) > 30)
             ) {
                 // first open on day +1h
                 if ($firstIntervalOnDay) {
@@ -721,17 +743,19 @@ class PlacesService extends ContainerAware
      *
      * @return string
      */
-    public function getDeliveryTime(Place $place, PlacePoint $placePoint = null)
+    public function getDeliveryTime(Place $place, PlacePoint $placePoint = null, $type = false)
     {
-        $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
-        if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
-            $zavalasTimeByPlace = $this->container->get('food.zavalas_service')->getRushHourTimeByPlace($place);
-            if ($zavalasTimeByPlace) {
-                $deliveryTime = $zavalasTimeByPlace;
+        if ($type && $type == 'pedestrian') {
+            $deliveryTime = $place->getDeliveryTime();
+        } else {
+            $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
+            if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
+                $rhDeliveryTime = $this->container->get('food.zavalas_service')->getRushHourTimeByPlace($place);
+                if ($rhDeliveryTime) {
+                    $deliveryTime = $rhDeliveryTime;
+                }
             }
-            $deliveryTime = $zavalasTimeByPlace;
         }
-
         return $deliveryTime;
     }
 
@@ -750,8 +774,8 @@ class PlacesService extends ContainerAware
     {
         $response = false;
         $rhService = $this->container->get('food.zavalas_service');
-        if ($rhService->isRushHourOnGlobal()) {
-            $locationData = $this->container->get('food.location')->getLocationFromSession();
+        if ($rhService->isRushHourEnabled()) {
+            $locationData = $this->container->get('food.location')->get();
             $placeCityCollection = $this->em()->getRepository('FoodDishesBundle:Place')->getCityCollectionByPlace($place);
             foreach ($placeCityCollection as $city) {
                 if ($rhService->isRushHourAtCity($city)
@@ -859,7 +883,7 @@ class PlacesService extends ContainerAware
      */
     public function getPlaceUrlByCity($placeId, $city)
     {
-        $current_place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find((int) $placeId);
+        $current_place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
         if (!empty($current_place) && !empty($city)) {
             $name = $current_place->getName();
             $repo = $this->em()->getRepository('FoodDishesBundle:PlacePoint');
@@ -882,7 +906,7 @@ class PlacesService extends ContainerAware
     public function getCitiesByPlace($placeId)
     {
         $citiesArr = [];
-        $current_place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find((int) $placeId);
+        $current_place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
         if (!empty($current_place)) {
             $name = $current_place->getName();
             $repo = $this->em()->getRepository('FoodDishesBundle:PlacePoint');
@@ -903,11 +927,7 @@ class PlacesService extends ContainerAware
     public function useAdminFee(Place $place)
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
-        if (is_object($user)){
-            if ($user->getIsBussinesClient() ) {
-                return false;
-            }
-        }
+
         $dontUseFee = !$place->isUseAdminFee();
         if ($dontUseFee === false)
         {
@@ -916,8 +936,10 @@ class PlacesService extends ContainerAware
         else{
             return (bool) $this->container->get('food.app.utils.misc')->getParam('use_admin_fee_globally'); //Globally set to use fee?
         }
+
         return (bool)$dontUseFee;
     }
+
     public function getAdminFee(Place $place)
     {
         $feeSize = $place->getAdminFee();
@@ -928,14 +950,37 @@ class PlacesService extends ContainerAware
         return floatval(str_replace(',', '.',  $feeSize));
     }
 
+    public function getPedestrianDeliveryTime()
+    {
+        return $this->container->get('food.app.utils.misc')->getParam('pedestrian_delivery_time');
+    }
 
-
-    public function getCityName($city){
+    /**
+     * @param string $city
+     * @return string
+     * @deprecated from 2017-05-22
+     */
+    public function getCityName($city) //TODO-ML A tikrai to reik?
+    {
         $country = $this->container->getParameter('country');
-        if($country == "LV" && $city == 'Rīga'){
+        if ($country == "LV" && $city == 'Rīga') {
             $city = 'Rīga un pierīga';
         }
 
         return $city;
+    }
+
+    public function getListPedestrianFilter()
+    {
+        $return = false;
+        $location = $this->container->get('food.location')->get();
+        if($location['city_id']) {
+            $cityCheck = $this->em()->getRepository('FoodAppBundle:City')->find($location['city_id']);
+            if ($cityCheck && $cityCheck->getPedestrian()) {
+                $return = true;
+            }
+        }
+
+        return $return;
     }
 }

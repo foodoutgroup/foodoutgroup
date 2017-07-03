@@ -16,12 +16,14 @@ class SettingsController extends CRUDController
         'page_help',
         'page_best_offer',
         'page_blog',
+        'page_restaurant_list',
         'use_admin_fee_globally',
         'admin_fee_size',
         'page_b2b_rules',
         'page_privacy',
         'disabled_preorder_days',
         'zaval_on',
+        'pedestrian_delivery_time',
         'showMobilePopup',
         'enable_free_delivery_for_big_basket',
         'free_delivery_price',
@@ -30,6 +32,7 @@ class SettingsController extends CRUDController
         'late_time_to_delivery',
         'sf_next_number',
         'footer_scripts',
+        'fb_meta_tag',
         'extra_group',
         'free_delivery_discount_code_generation_enable',
         'free_delivery_discount_code_generation_after_completed_orders',
@@ -38,7 +41,9 @@ class SettingsController extends CRUDController
         'reviews_enabled',
         'optin_code',
         'game_revive_zone_id',
-        'footer_social'
+        'footer_social',
+        'pedestrian_filter_show',
+        'placepoint_prepare_times_pedestrian'
     ];
 
     public function listAction( )
@@ -49,7 +54,7 @@ class SettingsController extends CRUDController
         $session = $this->get('session');
         $data = [];
         foreach ($this->keywordMapCollection as $keyword) {
-            $data[$keyword] = $paramService->getParam($keyword, '');
+            $data[$keyword] = $paramService->getParam($keyword, NULL);
         }
 
         $form = $this->get('form.factory')->createNamedBuilder('settings', 'form', $data, ['csrf_protection' => false]);
@@ -84,7 +89,7 @@ class SettingsController extends CRUDController
     {
         $static = $this->getDoctrine()->getRepository('FoodAppBundle:StaticContent');
         $pageCollection = [];
-
+        $pageCollection[] = ' - ';
         foreach ($static->findAll() as $page) {
             $pageCollection[$page->getId()] = $page->getTitle();
         }
@@ -93,7 +98,7 @@ class SettingsController extends CRUDController
 
         $form->add('page_banned', 'choice', [
             'label' => 'Banned page',
-            'choices' => $pageCollection,
+            'choices' =>  $pageCollection,
             'attr' => [
                 'group' => 'Info pages',
                 'style' => 'margin-bottom:10px',
@@ -111,26 +116,32 @@ class SettingsController extends CRUDController
 
         $form->add('page_help', 'choice', [
             'label' => 'Help page',
-            'choices' => $pageCollection
+            'choices' =>  $pageCollection
         ]);
 
         $form->add('page_best_offer', 'choice', [
             'label' => 'Best offer page',
-            'choices' => $pageCollection
+            'choices' =>  $pageCollection
         ]);
         $form->add('page_b2b_rules', 'choice', [
             'label' => 'B2B rules page',
-            'choices' => $pageCollection
+            'choices' =>  $pageCollection
         ]);
 
         $form->add('page_privacy', 'choice', [
             'label' => 'Privacy page',
-            'choices' => $pageCollection
+            'choices' =>  $pageCollection
         ]);
 
         $form->add('page_blog', 'choice', [
             'label' => 'Blog page',
-            'choices' => array_merge(['0' => ''], $pageCollection),
+            'choices' =>  $pageCollection
+        ]);
+
+
+        $form->add('page_restaurant_list', 'choice', [
+            'label' => 'Restaurant list',
+            'choices' =>  $pageCollection
         ]);
 
         $form->add('use_admin_fee_globally', 'boolean', [
@@ -150,6 +161,16 @@ class SettingsController extends CRUDController
         $form->add('zaval_on', 'boolean', [
             'label' => 'Rush hours activated',
         ]);
+
+        $form->add('pedestrian_filter_show', 'boolean', [
+            'label' => 'Enable pedestrian filter',
+        ]);
+
+        $form->add('pedestrian_delivery_time', 'number', [
+            'label' => 'Pedestrian delivery time'
+        ]);
+
+        $form->add('placepoint_prepare_times_pedestrian', 'text');
 
         $form->add('enable_free_delivery_for_big_basket', 'boolean');
 
@@ -185,6 +206,12 @@ class SettingsController extends CRUDController
             'label' => 'Footer Scripts',
             'required' => false,
             'attr' => ['style' => 'width:100%;', 'group' => 'Content', 'rows' => 20]
+        ]);
+
+        $form->add('fb_meta_tag', 'textarea', [
+            'label' => 'Facebook meta tag',
+            'required' => false,
+            'attr' => ['style' => 'width:100%;', 'rows' => 20]
         ]);
 
         $form->add('optin_code', 'textarea', [

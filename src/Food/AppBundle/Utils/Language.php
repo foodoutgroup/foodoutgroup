@@ -29,7 +29,6 @@ class Language
      * @var array
      */
     private $countryCharReplacements = array(
-        'lt' => array(
             'ą' => 'a',
             'č' => 'c',
             'ę' => 'e',
@@ -39,9 +38,6 @@ class Language
             'ų' => 'u',
             'ū' => 'u',
             'ž' => 'z',
-        ),
-        'en' => array(),
-        'ru' => array(
             'ґ' => 'g', 'ё' => 'e', 'є' => 'e', 'ї' => 'i', 'і' => 'i',
             'а' => 'a', 'б' => 'b', 'в' => 'v',
             'г' => 'g', 'д' => 'd', 'е' => 'e',
@@ -52,23 +48,17 @@ class Language
             'ц' => 'c', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'sch',
             'ы' => 'y', 'э' => 'e', 'ю' => 'u', 'я' => 'ya', 'é' => 'e',
             'ь' => '', 'ъ' => '',
-        ),
-        'lv' => array( /* Latvian */
-            'ā' => 'a', 'č' => 'c', 'ē' => 'e', 'ģ' => 'g', 'ī' => 'i', 'ķ' => 'k', 'ļ' => 'l', 'ņ' => 'n',
-            'š' => 's', 'ū' => 'u', 'ž' => 'z', 'Ā' => 'A', 'Č' => 'C', 'Ē' => 'E', 'Ģ' => 'G', 'Ī' => 'i',
-            'Ķ' => 'k', 'Ļ' => 'L', 'Ņ' => 'N', 'Š' => 'S', 'Ū' => 'u', 'Ž' => 'Z'
-        ),
-        'ee' => array(
-            'Š' => 'S', 'Ž' => 'Z', 'Õ' => 'O', 'Ä' => 'A', 'Ö' => 'O', 'Ü' => 'U',
-            'š' => 's', 'ž' => 'z', 'õ' => 'o', 'ä' => 'a', 'ö' => 'o', 'ü' => 'u'
-        )
+            'ā' => 'a', 'ē' => 'e', 'ģ' => 'g', 'ī' => 'i', 'ķ' => 'k', 'ļ' => 'l', 'ņ' => 'n',
+            'Ā' => 'A', 'Č' => 'C', 'Ē' => 'E', 'Ģ' => 'G', 'Ī' => 'i',
+            'Ķ' => 'k', 'Ļ' => 'L', 'Ņ' => 'N', 'Š' => 'S', 'Ū' => 'u', 'Ž' => 'Z',
+            'Õ' => 'O', 'Ä' => 'A', 'Ö' => 'O', 'Ü' => 'U',
+            'õ' => 'o', 'ä' => 'a', 'ö' => 'o', 'ü' => 'u'
     );
 
     /**
      * @var array
      */
     private $countryCapitalCharReplacements = array(
-        'lt' => array(
             'Ą' => 'A',
             'Č' => 'C',
             'Ę' => 'E',
@@ -78,9 +68,6 @@ class Language
             'Ų' => 'U',
             'Ū' => 'U',
             'Ž' => 'Z',
-        ),
-        'en' => array(),
-        'ru' => array(
             'А' => 'A', 'Б' => 'B', 'В' => 'V', 'Г' => 'G', 'Д' => 'D',
             'Е' => 'E', 'Ж' => 'Zh', 'З' => 'Z',
             'И' => 'I', 'Й' => 'Y', 'К' => 'K', 'Л' => 'L',
@@ -89,13 +76,9 @@ class Language
             'Ф' => 'F', 'Х' => 'H', 'Ц' => 'Ts', 'Ч' => 'Ch',
             'Ш' => 'Sh', 'Щ' => 'Sht', 'Ъ' => 'A', 'Ь' => 'Y',
             'Ю' => 'Yu', 'Я' => 'Ya',
-        ),
-        'lv' => array( /* Latvian */
             'ā' => 'a', 'č' => 'c', 'ē' => 'e', 'ģ' => 'g', 'ī' => 'i', 'ķ' => 'k', 'ļ' => 'l', 'ņ' => 'n',
-            'š' => 's', 'ū' => 'u', 'ž' => 'z', 'Ā' => 'A', 'Č' => 'C', 'Ē' => 'E', 'Ģ' => 'G', 'Ī' => 'i',
-            'Ķ' => 'k', 'Ļ' => 'L', 'Ņ' => 'N', 'Š' => 'S', 'Ū' => 'u', 'Ž' => 'Z'
-        ),
-        'ee' => array()
+            'š' => 's', 'ū' => 'u', 'ž' => 'z', 'Ā' => 'A',  'Ē' => 'E', 'Ģ' => 'G', 'Ī' => 'i',
+            'Ķ' => 'k', 'Ļ' => 'L', 'Ņ' => 'N',
     );
 
     /**
@@ -137,15 +120,15 @@ class Language
      */
     public function removeChars($lang, $text, $toLower = true, $removeSpecialChars = true)
     {
-        if (!in_array($lang, array('lt', 'ru', 'en', 'lv', 'ee'))) {
-            throw new \Exception('Undefined language');
-        }
+//        if (!in_array($lang, array('lt', 'ru', 'en', 'lv', 'ee'))) {
+//            throw new \Exception('Undefined language');
+//        }
 
         if ($toLower) {
-            $text = strtr(mb_strtolower($text, 'utf-8'), $this->countryCharReplacements[$lang]);
+            $text = strtr(mb_strtolower($text, 'utf-8'), $this->countryCharReplacements);
         } else {
-            $text = strtr($text, $this->countryCharReplacements[$lang]);
-            $text = strtr($text, $this->countryCapitalCharReplacements[$lang]);
+            $text = strtr($text, $this->countryCharReplacements);
+            $text = strtr($text, $this->countryCapitalCharReplacements);
         }
 
         if ($removeSpecialChars) {
@@ -239,16 +222,16 @@ class Language
     public function getAllCharTranslations($text)
     {
         $allLang = $this->countryCharReplacements;
-        $tmpLangArr = array();
+//        $tmpLangArr = array();
+//
+//        foreach ($allLang as $lang) {
+//            $tmpLangArr = array_merge($tmpLangArr, $lang);
+//        }
 
-        foreach ($allLang as $lang) {
-            $tmpLangArr = array_merge($tmpLangArr, $lang);
-        }
-
-        $text = strtr(mb_strtolower($text, 'utf-8'), $tmpLangArr);
-        $text = strtr($text, $tmpLangArr);
-        $text = strtr($text, $tmpLangArr);
-        $text = strtr($text, $tmpLangArr);
+        $text = strtr(mb_strtolower($text, 'utf-8'), $allLang);
+        $text = strtr($text, $allLang);
+        $text = strtr($text, $allLang);
+        $text = strtr($text, $allLang);
 
         return $text;
 

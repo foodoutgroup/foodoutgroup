@@ -52,4 +52,5 @@ class UserRepository extends EntityRepository
         $qb->from('FoodUserBundle:User','user');
         return $qb->getQuery()->getSingleScalarResult();
     }
+
 }

@@ -266,6 +266,10 @@
                 <source>mobile.order_dish</source>
                 <target>Patiekalas</target>
             </trans-unit>
+            <trans-unit id="ceb80ce24895534499f2a5a28a707fbf" resname="mobile.pedestrian_warning">
+                <source>mobile.pedestrian_warning</source>
+                <target>Skubus užsakymas</target>
+            </trans-unit>
             <trans-unit id="6579716641cda122d1f726af7a28cbb3" resname="mobile.order_quantity">
                 <source>mobile.order_quantity</source>
                 <target>Kiekis</target>
@@ -730,6 +734,10 @@
                 <source>general.profile.button_save</source>
                 <target>Išsaugoti</target>
             </trans-unit>
+            <trans-unit id="6defb486341307b289948eb8fa05624a" resname="general.profile.block_save">
+                <source>general.profile.block_save</source>
+                <target>Saugoti</target>
+            </trans-unit>
             <trans-unit id="9274e23fa49ef791a605538ff3996088" resname="general.profile.home">
                 <source>general.profile.home</source>
                 <target>Pradžia</target>
@@ -836,7 +844,11 @@
             </trans-unit>
             <trans-unit id="general.cart.success" resname="general.cart.success">
                 <source>general.cart.success</source>
-                <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 698 55544</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
+                <target><![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 698 55544</strong><br/>]]></target>
+            </trans-unit>
+            <trans-unit id="general.cart.success.restaurant" resname="general.cart.success.restaurant">
+                <source>general.cart.success.restaurant</source>
+                <target><![CDATA[arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
             </trans-unit>
             <trans-unit id="general.cart.reverse" resname="general.cart.reverse">
                 <source>general.cart.reverse</source>
@@ -1600,7 +1612,10 @@
                 <source>mobile.order.admin_fee</source>
                 <target>Administracinis mokestis (su PVM)</target>
             </trans-unit>
-
+            <trans-unit id="mobile.order.admin_fee_no_vat">
+                <source>mobile.order.admin_fee_no_vat</source>
+                <target>Administracinis mokestis (be PVM)</target>
+            </trans-unit>
               <trans-unit id="import">
                   <source>import</source>
                   <target>Importuoti</target>
@@ -1609,17 +1624,21 @@
                 <source>export</source>
                 <target>Eksportuoti</target>
             </trans-unit>
-            <trans-unit id="cart.checkout.company_contract">
-                <source>cart.checkout.company_contract</source>
-                <target>Company has contract with foodout</target>
+             <trans-unit id="please.fill.address.message.top">
+                <source>please.fill.address.message.top</source>
+                <target>Įveskite pristatymo adresą ir sužinokite,<![CDATA[<br/>]]> iš kurių restoranų galite užsisakyti*</target>
             </trans-unit>
-            <trans-unit id="cart.checkout.company_contract_number">
-                <source>cart.checkout.company_contract_number</source>
-                <target>Contract number</target>
+            <trans-unit id="please.fill.address.message.bottom">
+                <source>please.fill.address.message.bottom</source>
+                <target><![CDATA[Arba <u><b><a href="#" class="pickup_click">pasirinkite Atsiėmimą restorane!</a></b></u>]]></target>
             </trans-unit>
-            <trans-unit id="this.payment.method.not.alowed.for.this.place">
-                <source>this.payment.method.not.alowed.for.this.place</source>
-                <target>Šiam restorane atsiskaitymas šiuo mokėjimu negalimas</target>
+            <trans-unit id="please.fill.address.first">
+                <source>please.fill.address.first</source>
+                <target>Prašome įvesti adresą.</target>
+            </trans-unit>
+            <trans-unit id="save.button">
+                <source>save.button</source>
+                <target>Save</target>
             </trans-unit>
         </body>
     </file>

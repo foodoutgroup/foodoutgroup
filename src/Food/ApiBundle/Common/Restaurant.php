@@ -2,6 +2,7 @@
 
 namespace Food\ApiBundle\Common;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Service\OrderService;
@@ -110,9 +111,16 @@ class Restaurant extends ContainerAware
      *
      * @return $this
      */
-    public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false, $locationData = null, $deliveryType = null)
+    public function loadFromEntity(Place $place, PlacePoint $placePoint = null, $pickUpOnly = false, $locationData = null)
     {
         $placeService = $this->container->get('food.places');
+        if(!$locationData) {
+            $locationData = $this->container->get('food.location')->get();
+        }
+        /**
+         * @var $doctrine Registry
+         */
+        $doctrine = $this->container->get('doctrine');
         if (empty($placePoint)) {
             foreach ($place->getPoints() as $pp) {
                 if ($pp->getActive()) {
@@ -140,9 +148,11 @@ class Restaurant extends ContainerAware
         if ($pickUpOnly || $place->getDeliveryOptions() == $place::OPT_ONLY_PICKUP) {
             $pickUp = true;
             $delivery = false;
+            $pedestrian = false;
         } elseif ($locationData == null) {
             $delivery = false;
             $pickUp = false;
+
             foreach ($place->getPoints() as $tempPP) {
                 if (!$tempPP->getActive()) {
                     continue;
@@ -157,33 +167,37 @@ class Restaurant extends ContainerAware
                     break;
                 }
             }
-        } else {
+
+        }elseif ($place->getDeliveryOptions() == $place::OPT_ONLY_PEDESTRIAN){
+            $pickUp = false;
+            $delivery = true;
+        }
+        else {
             $pickUp = (isset($placePoint) && $placePoint->getPickUp() ? true : false);
             $delivery = (isset($placePoint) && $placePoint->getDelivery() ? true : false);
         }
 
         $devPrice = 0;
         $devCart = 0;
-        if (!empty($locationData) && OrderService::$deliveryPickup != $deliveryType) {
+        if (!empty($locationData) && OrderService::$deliveryPickup != $place->getDeliveryOptions()) {
             $placePointMap = $this->container->get('session')->get('point_data');
             if (empty($placePointMap[$place->getId()])) {
-                $ppId = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance(
+                $ppId = $doctrine->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance(
                     $place->getId(),
                     $locationData,
                     false,
                     true
-                )
-                ;
+                );
 
                 if ($ppId) {
-                    $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($ppId);
+                    $pointRecord = $doctrine->getRepository('FoodDishesBundle:PlacePoint')->find($ppId);
                 }
             } else {
                 // TODO Trying to catch fatal when searching for PlacePoint
                 if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
                     $this->container->get('logger')->error('Trying to find PlacePoint without ID in Restaurant - loadFromEntity find 2');
                 }
-                $pointRecord = $this->container->get('doctrine')->getManager()->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+                $pointRecord = $doctrine->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
             }
 
             if (!empty($pointRecord)) {
@@ -239,7 +253,7 @@ class Restaurant extends ContainerAware
             ->set(
                 'delivery_options',
                 [
-                    'estimated_time'       => ((!empty($deliveryType) && $deliveryType == 'pickup') ? $place->getPickupTime() : $this->container->get('food.places')->getDeliveryTime($place)),
+                    'estimated_time'       => (string)((!empty($deliveryType) && $deliveryType == 'pickup') ? $place->getPickupTime() : $this->container->get('food.places')->getDeliveryTime($place)),
                     'price'                => [
                         'amount'   => (!empty($devPrice) ? ($devPrice * 100) : ($place->getDeliveryPrice() * 100)),
                         'currency' => $currency

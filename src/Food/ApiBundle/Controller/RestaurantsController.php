@@ -3,6 +3,7 @@
 namespace Food\ApiBundle\Controller;
 
 use Food\ApiBundle\Exceptions\ApiException;
+use Food\DishesBundle\Entity\Kitchen;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,21 +16,34 @@ class RestaurantsController extends Controller
      */
     public function getRestaurantsAction(Request $request)
     {
-
-        $startTime = microtime(true);
-        $this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array) $request);
+        $this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array)$request);
+        $doctrine = $this->getDoctrine();
         try {
             /**
              * address,city,lat,lng,cuisines,keyword,offset,limit
              *
              */
-            $address = $request->get('address');
+
             $city = $request->get('city');
-            if (!empty($city)) {
-                $city = str_replace("laipeda", "laipėda", $city);
-            }
+            $address = $request->get('address');
+
             $lat = $request->get('lat');
             $lng = $request->get('lng');
+
+            $locationService = $this->get('food.location');
+            $locationData = null;
+
+            if ($address && $city) {
+                $locationData = $locationService->findByAddress($address . ', ' . $city);
+                $locationService->set($locationData);
+            } elseif ($address) {
+                $locationData = $locationService->findByAddress($address);
+                $locationService->set($locationData);
+            } elseif ($lat && $lng) {
+                $locationData = $locationService->findByCords($lat, $lng);
+                $locationService->set($locationData);
+            }
+
             $keyword = $request->get('keyword', '');
             $delivery_type = $request->get('delivery', '');
 
@@ -37,7 +51,7 @@ class RestaurantsController extends Controller
                 'keyword' => $keyword
             );
 
-            if (!empty($delivery_type) && in_array($delivery_type, array('delivery', 'pickup'))) {
+            if (!empty($delivery_type) && in_array($delivery_type, array('delivery', 'pickup','pedestrian'))) {
                 $filters['delivery_type'] = $delivery_type;
             }
 
@@ -48,29 +62,16 @@ class RestaurantsController extends Controller
 
             $placeCollection = [];
 
-            if (!empty($address)) {
-
-                $placeCollection = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
+            if (!empty($locationData)) {
+                $placeCollection = $doctrine->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
                     $kitchenCollection,
                     $filters,
-                    false,
-                    $this->get('food.googlegis')->groupData($address, $city),
+                    $locationData,
                     $this->container
                 );
-
-            } elseif (!empty($lat) && !empty($lng)) {
-                $locationData = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
-                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
-                if($cityObj) {
-                    $placeCollection = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-                        $kitchenCollection,
-                        $filters,
-                        false,
-                        $this->get('food.googlegis')->getCityObj(),
-                        $this->container
-                    );
-                }
             }
+
+            $this->get('session')->set('filter', $filters);
 
             $response = [
                 'restaurants' => [],
@@ -83,14 +84,8 @@ class RestaurantsController extends Controller
 
             $placeCollection = $this->get('food.places')->placesPlacePointsWorkInformation($placeCollection);
             foreach ($placeCollection as $place) {
-                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
-                    $place['place'],
-                    $place['point'],
-                    false,
-                    $this->get('food.googlegis')->getLocationFromSession(),
-                    $delivery_type
-                );
-                $response['restaurants'][] = $restaurant->data;
+                $response['restaurants'][] = $this->get('food_api.api')
+                    ->createRestaurantFromPlace($place['place'], $place['point'])->data;
             }
         } catch (ApiException $e) {
             $this->get('logger')->error('Restaurants:getRestaurantsAction Error1:' . $e->getMessage());
@@ -107,8 +102,8 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getRestaurantsAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        $this->get('logger')->alert('Restaurants:getRestaurantsAction Response:' . json_encode($response));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -121,48 +116,44 @@ class RestaurantsController extends Controller
     public function getRestaurantsFilteredAction(Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Restaurants:getRestaurantsFilteredAction Request:', (array) $request);
+        $this->get('logger')->alert('Restaurants:getRestaurantsFilteredAction Request:', (array)$request);
         try {
-            $address = $request->get('address');
+
             $city = $request->get('city');
-            if (!empty($city)) {
-                $city = str_replace("laipeda", "laipėda", $city);
-            }
+            $address = $request->get('address');
+
             $lat = $request->get('lat');
             $lng = $request->get('lng');
 
-            $places = array();
+            $locationService = $this->get('food.location');
+            $locationData = null;
 
-            if (!empty($address)) {
+            if ($address && $city) {
+                $locationData = $locationService->findByAddress($address . ', ' . $city);
+                $locationService->set($locationData);
+            } elseif ($address) {
+                $locationData = $locationService->findByAddress($address);
+                $locationService->set($locationData);
+            } elseif ($lat && $lng) {
+                $locationData = $locationService->findByCords($lat, $lng);
+                $locationService->set($locationData);
+            }
 
-                $this->get('food.googlegis')->groupData($address, $city);
+            $places = [];
+            if (!empty($locationData)) {
+                $places = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')
+                    ->magicFindByKitchensIds([], [], $locationData, $this->container);
 
-                $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-                    array(),
-                    array(),
-                    false,
-                    $this->get('food.googlegis')->getLocationFromSession(),
-                    $this->container
-                );
-            } elseif (!empty($lat) && !empty($lng)) {
-
-                $locationData = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
-                $cityObj = $this->getDoctrine()->getRepository('FoodAppBundle:City')->find($locationData['city_id']);
-                if($cityObj) {
-                    $places = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->magicFindByKitchensIds(
-                        [],
-                        [],
-                        false,
-                        $this->get('food.googlegis')->setCity($cityObj),
-                        $this->container
-                    );
-                }
             }
 
             $cuisines = array();
             if (!empty($places)) {
                 foreach ($places as $place) {
+
                     foreach ($place['place']->getKitchens() as $kit) {
+                        /**
+                         * @var $kit Kitchen
+                         */
                         if (empty($cuisines[$kit->getId()])) {
                             $cuisines[$kit->getId()] = array(
                                 'id' => $kit->getId(),
@@ -191,8 +182,8 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getRestaurantsFilteredAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        $this->get('logger')->alert('Restaurants:getRestaurantsFilteredAction Response:' . json_encode($response));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 
@@ -203,74 +194,47 @@ class RestaurantsController extends Controller
      */
     public function getRestaurantAction($id, Request $request)
     {
+
         $startTime = microtime(true);
-        $this->get('logger')->alert('Restaurants:getRestaurantAction Request: id - ' . $id, (array) $request);
+        //$this->get('logger')->alert('Restaurants:getRestaurantAction Request: id - ' . $id, (array)$request);
         try {
+
             $city = $request->get('city');
-            if (!empty($city)) {
-                $city = str_replace("laipeda", "laipėda", $city);
-            }
             $address = $request->get('address');
+
             $lat = $request->get('lat');
             $lng = $request->get('lng');
-            $searchCrit = array(
-                'city' => null,
-                'lat' => null,
-                'lng' => null
-            );
-            if (!empty($city) && !empty($address)) {
-                $locationInfo = $this->get('food.googlegis')->groupData($address, $city);
-                if (isset($locationInfo['city'])) {
-                    $searchCrit['city'] = $locationInfo['city'];
-                }
-                if (isset($locationInfo['lat'])) {
-                    $searchCrit['lat'] = $locationInfo['lat'];
-                }
-                if (isset($locationInfo['lng'])) {
-                    $searchCrit['lng'] = $locationInfo['lng'];
-                }
-            } elseif (!empty($lat) && !empty($lng)) {
-                $data = $this->get('food.googlegis')->findAddressByCoords($lat, $lng);
-                $searchCrit = array(
-                    'city' => $data['city'],
-                    'lat' => $lat,
-                    'lng' => $lng
-                );
+
+            $locationService = $this->get('food.location');
+            $locationData = null;
+
+            if ($address && $city) {
+                $locationData = $locationService->findByAddress($address . ', ' . $city);
+                $locationService->set($locationData);
+            } elseif ($address) {
+                $locationData = $locationService->findByAddress($address);
+                $locationService->set($locationData);
+            } elseif ($lat && $lng) {
+                $locationData = $locationService->findByCords($lat, $lng);
+                $locationService->set($locationData);
             }
 
             $place = $this->get('doctrine')->getRepository('FoodDishesBundle:Place')->find(intval($id));
-            $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
-                $place->getId(),
-                $searchCrit,
-                true
-            );
+            $pointId = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, true);
 
             if (!empty($pointId)) {
                 $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
-                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
-                    $place,
-                    $placePoint,
-                    false,
-                    $this->get('food.googlegis')->getLocationFromSession()
-                );
+                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, $placePoint,false, $locationData);
             } else {
-                $pointId = $this->getDoctrine()->getManager()->getRepository('FoodDishesBundle:Place')->getPlacePointNear(
-                    $place->getId(),
-                    $searchCrit
-                );
+                $pointId = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData);
                 if (!empty($pointId)) {
                     $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
-                    $restaurant = $this->get('food_api.api')->createRestaurantFromPlace(
-                        $place,
-                        $placePoint,
-                        false,
-                        $this->get('food.googlegis')->getLocationFromSession()
-                    );
+                    $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, $placePoint, false, $locationData);
                 } else {
-                    $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null, true, $this->get('food.googlegis')->getLocationFromSession());
+                    $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, null, true, $locationData);
                 }
             }
-            $response =  $restaurant->data;
+            $response = $restaurant->data;
         } catch (ApiException $e) {
             $this->get('logger')->error('Restaurants:getRestaurantAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Restaurants:getRestaurantAction Trace1:' . $e->getTraceAsString());
@@ -286,8 +250,8 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getRestaurantAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Restaurants:getRestaurantAction Response:' . print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         $realResponse = new JsonResponse($response);
         $responseHeaders = $realResponse->headers;
         $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
@@ -305,7 +269,7 @@ class RestaurantsController extends Controller
     public function getMenuAction($id, Request $request)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Restaurants:getMenuAction Request: id - ' . $id, (array) $request);
+        //$this->get('logger')->alert('Restaurants:getMenuAction Request: id - ' . $id, (array)$request);
         try {
             $updated_at = $request->get('updated_at');
             $menuItems = $this->get('food_api.api')->createMenuByPlaceId($id, $updated_at);
@@ -336,8 +300,8 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getMenuAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Restaurants:getMenuAction Response:' . print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         $resp = new JsonResponse($response);
         $resp->setMaxAge(1);
         $resp->setSharedMaxAge(1);
@@ -354,7 +318,7 @@ class RestaurantsController extends Controller
     public function getMenuItemAction($placeId, $menuItem)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Restaurants:getMenuItemAction Request: placeId - ' . $placeId . ', menuItem - ' . $menuItem);
+        //$this->get('logger')->alert('Restaurants:getMenuItemAction Request: placeId - ' . $placeId . ', menuItem - ' . $menuItem);
         try {
             $response = $this->get('food_api.api')->createMenuItemByPlaceIdAndItemId($placeId, $menuItem);
         } catch (ApiException $e) {
@@ -372,8 +336,8 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getMenuItemAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Restaurants:getMenuItemAction Response:' . print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         $resp = new JsonResponse($response);
         $resp->setMaxAge(1);
         $resp->setSharedMaxAge(1);
@@ -389,7 +353,7 @@ class RestaurantsController extends Controller
     public function getMenuCategoriesAction($id)
     {
         $startTime = microtime(true);
-        $this->get('logger')->alert('Restaurants:getMenuCategoriesAction Request: id - ' . $id);
+        //$this->get('logger')->alert('Restaurants:getMenuCategoriesAction Request: id - ' . $id);
         try {
             $response = [];
             $items = $this->getDoctrine()->getRepository('FoodDishesBundle:FoodCategory')->findBy(
@@ -397,13 +361,13 @@ class RestaurantsController extends Controller
                     'place' => (int)$id,
                     'active' => 1
                 ),
-                array('lineup'=> 'DESC')
+                array('lineup' => 'DESC')
             );
-            foreach ($items as $key=>$item) {
+            foreach ($items as $key => $item) {
                 $response[] = array(
                     'id' => $item->getId(),
                     'name' => $item->getName(),
-                    'precedence' => ($key+1)
+                    'precedence' => ($key + 1)
                 );
             }
         } catch (ApiException $e) {
@@ -421,8 +385,8 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getMenuCategoriesAction Response:'. print_r($response, true));
-        $this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
+        //$this->get('logger')->alert('Restaurants:getMenuCategoriesAction Response:' . print_r($response, true));
+        //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response);
     }
 }

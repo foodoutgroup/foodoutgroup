@@ -34,6 +34,7 @@ class ReportService extends ContainerAware
         $orderData = $orderRepo->getOrderCountByDay($dateFrom, $dateTo);
         $orderCanceledData = $orderRepo->getOrderCountByDay($dateFrom, $dateTo, OrderService::$status_canceled);
         $orderMobileData = $orderRepo->getOrderCountByDay($dateFrom, $dateTo, null, true);
+        $adminFeeData = $orderRepo->getOrderCountByDay($dateFrom, $dateTo, null, false, true);
 
         $orderGraphData = $this->fillEmptyDays(
             $this->remapDataForGraph($orderData, 'report_day', 'order_count'),
@@ -48,6 +49,12 @@ class ReportService extends ContainerAware
 
         $orderMobileCountGraphData = $this->fillEmptyDays(
             $this->remapDataForGraph($orderMobileData, 'report_day', 'order_count'),
+            $dateFrom,
+            $dateTo
+        );
+
+        $adminFeeGraphData = $this->fillEmptyDays(
+            $this->remapDataForGraph($adminFeeData, 'report_day', 'order_count'),
             $dateFrom,
             $dateTo
         );
@@ -67,7 +74,12 @@ class ReportService extends ContainerAware
                 'name' => $translator->trans('admin.report.mobile_orders'),
                 'data' => array_values($orderMobileCountGraphData),
                 'type' => 'spline'
-            )
+            ),
+             array(
+                 'name' => $translator->trans('admin.report.admin_fee'),
+                 'data' => array_values($adminFeeGraphData),
+                 'type' => 'spline'
+             )
         );
 
         $ob = new Highchart();
@@ -307,6 +319,7 @@ class ReportService extends ContainerAware
         $totalData = $orderRepo->getTotalSumByDay($dateFrom, $dateTo);
         $deliveryData = $orderRepo->getDeliverySumByDay($dateFrom, $dateTo);
         $discountData = $orderRepo->getDiscountSumByDay($dateFrom, $dateTo);
+        $adminFeeData = $orderRepo->getTotalAdminFeeByDay($dateFrom, $dateTo);
 
         $totalGraphData = $this->fillEmptyDays(
             $this->remapDataForGraph($totalData, 'report_day', 'order_count'),
@@ -325,6 +338,12 @@ class ReportService extends ContainerAware
             $dateTo
         );
 
+        $adminFeeGraphData = $this->fillEmptyDays(
+            $this->remapDataForGraph($adminFeeData, 'report_day', 'order_count'),
+            $dateFrom,
+            $dateTo
+        );
+
         $series = array(
             array(
                 "name" => $translator->trans('admin.report.total_sum_with_vat'),
@@ -339,6 +358,11 @@ class ReportService extends ContainerAware
             array(
                 'name' => $translator->trans('admin.report.discount_sum'),
                 'data' => array_values($discountGraphData),
+                'type' => 'spline'
+            ),
+            array(
+                'name' => $translator->trans('admin.report.total_admin_fee'),
+                'data' => array_values($adminFeeGraphData),
                 'type' => 'spline'
             )
         );

@@ -2,6 +2,7 @@
 
 namespace Food\UserBundle\Service;
 
+use Food\AppBundle\Utils\Language;
 use FOS\UserBundle\Form\Handler\RegistrationFormHandler as OriginalHandler;
 use FOS\UserBundle\Model\UserManagerInterface;
 use FOS\UserBundle\Model\UserInterface;
@@ -33,10 +34,10 @@ class RegistrationFormHandler extends OriginalHandler
                                 $cart)
     {
         parent::__construct($form,
-                            $request,
-                            $userManager,
-                            $mailer,
-                            $tokenGenerator);
+            $request,
+            $userManager,
+            $mailer,
+            $tokenGenerator);
 
         $this->translator = $translator;
         $this->notifications = $notifications;
@@ -57,10 +58,10 @@ class RegistrationFormHandler extends OriginalHandler
     {
         $existingUser = $this->getUser();
         $fullyRegistered = !!\Maybe($existingUser)->getFullyRegistered()
-                                                  ->val(false);
+            ->val(false);
 
         $user = $this->createUser();
-        
+
         if ($existingUser && !$fullyRegistered) {
             $user = $existingUser;
         }
@@ -99,7 +100,9 @@ class RegistrationFormHandler extends OriginalHandler
             $this->translator->trans('general.successful_user_registration'));
 
         // $d = $this->request->get('fos_user_registration_form');
-        // $this->_notifyNewUser($user, $d['plainPassword']['first']);
+        if($this->container->getParameter('country') == 'LT'){
+            $this->_notifyNewUser($user);
+        }
 
         $this->userManager->updateUser($user);
     }
@@ -118,20 +121,22 @@ class RegistrationFormHandler extends OriginalHandler
      * @param User $user
      * @param $pass
      */
-    protected function _notifyNewUser($user, $pass)
+    protected function _notifyNewUser($user)
     {
-        $variables = [
-            'username' => $user->getUsername(),
-            'password' => $pass,
-            'login_url' => $this->router
-                                ->generate('food_lang_homepage', [], true)
-        ];
+        $ml = $this->container->get('food.mailer');
+        $mailTemplate = $this->container->getParameter('mailer_notify_new_user');
 
-        $this->foodMailer
-             ->setVariables($variables)
-             ->setRecipient($user->getEmail(),
-                            $user->getEmail())
-             ->setId($this->container->getParameter('mailer_notify_new_user'))
-             ->send();
+        $locale =  $this->container->getParameter('locale');
+        $utils = new Language($this->container);
+        $name = $utils->getName($user->getFirstname(),$locale);
+
+        $variables = array(
+            'firstname' => $name,
+        );
+
+        $ml->setVariables($variables)
+            ->setRecipient($user->getEmail(),$name)
+            ->setId($mailTemplate)
+            ->send();
     }
 }

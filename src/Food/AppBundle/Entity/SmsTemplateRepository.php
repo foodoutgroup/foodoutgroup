@@ -14,36 +14,37 @@ class SmsTemplateRepository extends EntityRepository
 {
     /**
      * @param Order $order
-     * @return bool|SmsTemplate
+     * @return bool|SmsTemplate[]
      */
-    public function findOneByOrder(Order $order)
+    public function findByOrder(Order $order)
     {
         $params = [
             'order_status' => $order->getOrderStatus(),
             'preorder' => (bool)$order->getPreorder(),
             'source' => $order->getSource(),
+            'defaultSource' => 'All',
             'type' => 'deliver'
         ];
-
-        if($order->getOrderPicked()) {
+        if ('pickup' == $order->getDeliveryType()) {
             $params['type'] = 'pickup';
         }
 
-        $qb = $this->createQueryBuilder('st')
-            ->where('st.status = :order_status')
+        $qb = $this->createQueryBuilder('st');
+
+        $qb->where('st.status = :order_status')
             ->andWhere('st.preorder = :preorder')
-            ->andWhere('st.source = :source')
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->eq('st.source', ':source'),
+                $qb->expr()->eq('st.source', ':defaultSource'),
+                $qb->expr()->isNull('st.source')
+            ))
             ->andWhere('st.type = :type')
-            ->setMaxResults(1);
+            ->andWhere('st.active = 1');
 
         $result = $qb->getQuery()->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker')
             ->setHint(TranslatableListener::HINT_TRANSLATABLE_LOCALE, $order->getLocale())
             ->execute($params);
 
-        if(count($result)) {
-            return $result[0];
-        }
-
-        return false;
+        return $result;
     }
 }

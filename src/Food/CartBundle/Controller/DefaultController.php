@@ -2,9 +2,9 @@
 
 namespace Food\CartBundle\Controller;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Food\AppBundle\Entity\Slug;
 use Food\CartBundle\Service\CartService;
-use Food\DishesBundle\Admin\DishSizeAdmin;
 use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 class DefaultController extends Controller
 {
     /**
-     * @var CartServiceworkingHoursToday
+     * @var CartService
      */
     private $cartService;
 
@@ -31,7 +31,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @return \Food\CartBundle\Service\CartService
+     * @return CartService
      */
     public function getCartService()
     {
@@ -74,30 +74,15 @@ class DefaultController extends Controller
             case 'refresh':
                 break;
         }
-        /*
-        $jsonResponseData['items'] = $this->getCartService()->getCartDishesForJson(
-            $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
-                $this->getRequest()->get('place')
-            )
-        );
-        */
 
-        $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(
-            $request->get('place', 0)
-        );
+        $place = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find($request->get('place', 0));
 
         // Somehow we've lost the place.. dont crash.. better show nothing
         if (!$place) {
             return new Response('');
         }
 
-        $jsonResponseData['block'] = $this->sideBlockAction(
-            $place,
-            true,
-            $request->get('in_cart', false),
-            null,
-            $request->get('coupon_code', null)
-        );
+        $jsonResponseData['block'] = $this->sideBlockAction($place, true, $request->get('in_cart', false), null, $request->get('coupon_code', null));
 
         $response->setContent(json_encode($jsonResponseData));
 
@@ -187,16 +172,14 @@ class DefaultController extends Controller
 
     public function indexAction($placeId, $takeAway = null, Request $request)
     {
-
         // for now this is relevant for callcenter functionality
-        $isCallCenter = $request->isXmlHttpRequest();
-
+        $pService = $this->container->get('food.phones_code_service');
         $orderService = $this->get('food.order');
         $placeService = $this->get('food.places');
         $miscUtils = $this->get('food.app.utils.misc');
-        $googleGisService = $this->container->get('food.googlegis');
-
-        $country = $this->container->getParameter('country');
+        $lService = $this->container->get('food.location');
+        $session = $request->getSession();
+        $locationData = $session->get('locationData');
 
         /**
          * @var UserManager $fosUserManager
@@ -219,10 +202,17 @@ class DefaultController extends Controller
         $formHasErrors = false;
         $formErrors = [];
         $dataToLoad = [];
+        $placePointMap = [];
 
-        // Data preparation for form
-        $placePointMap = $this->container->get('session')->get('point_data');
-        if (!empty($placePointMap) && isset($placePointMap[$placeId]) && !empty($placePointMap[$placeId])) {
+        /**
+         * @var $doctrine Registry
+         */
+        $doctrine = $this->container->get('doctrine');
+        $placePointId = $doctrine->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $lService->get());
+        $placePointMap[$placeId] = $placePointId;
+        $session->set('point_data', $placePointMap);
+
+        if (!empty($placePointMap[$placeId])) {
             $pointRecord = $this->container->get('doctrine')
                 ->getRepository('FoodDishesBundle:PlacePoint')
                 ->find($placePointMap[$placeId]);
@@ -242,7 +232,7 @@ class DefaultController extends Controller
         if ($pointRecord) {
             $orderService->workTimeErrors($pointRecord, $pointWorkingErrors);
         }
-        if (!empty($pointWorkingErrors)) {
+        if (!$pointRecord && !$takeAway || !empty($pointWorkingErrors)) {
             $pointIsWorking = false;
         }
 
@@ -254,20 +244,12 @@ class DefaultController extends Controller
         // TODO refactor this nonsense... if is if is if is bullshit...
         // Validate only if post happened
         if ($request->getMethod() == 'POST') {
+
             $couponEnt = null;
             if ($request->get('coupon_code', false)) {
                 $couponEnt = $this->get('doctrine')->getRepository('FoodOrderBundle:Coupon')->findOneBy(['code' => $request->get('coupon_code', '')]);
             }
-            $this->get('food.order')->validateDaGiantForm(
-                $place,
-                $request,
-                $formHasErrors,
-                $formErrors,
-                ($takeAway ? true : false),
-                ($takeAway ? $request->get('place_point') : null),
-                $couponEnt,
-                $isCallCenter
-            );
+            $this->get('food.order')->validateDaGiantForm($place, $request, $formHasErrors, $formErrors, $takeAway, ($takeAway ? $request->get('place_point') : null), $couponEnt, false);
         }
 
         // Empty dish protection
@@ -284,15 +266,8 @@ class DefaultController extends Controller
             $require_lastname = $this->getCartService()->isAlcoholInCart($dishes);
         }
 
-        if ($formHasErrors) {
-            $dataToLoad = $request->request->all();
-        }
-
         // PreLoad UserAddress Begin
         $address = null;
-        $session = $request->getSession();
-        $locationData = $session->get('locationData');
-
 
         $current_user = $this->container->get('security.context')->getToken()->getUser();
 
@@ -314,87 +289,91 @@ class DefaultController extends Controller
         // PreLoad UserAddress End
 
         if ($request->getMethod() == 'POST' && !$formHasErrors) {
+            try {
+                $countryCode = $request->get('country');
 
+                // Jei vede kupona - uzsikraunam
+                $deliveryType = $request->get('delivery-type');
 
-            // Jei vede kupona - uzsikraunam
-            $couponCode = $request->get('coupon_code');
-            if (!empty($couponCode)) {
-                $coupon = $orderService->getCouponByCode($couponCode);
-            } else {
-                $coupon = null;
-            }
-
-            // Jeigu atsiima pats - dedam gamybos taska, kuri jis pats pasirinko, o ne mes Pauliaus magic find funkcijoje
-            if ($takeAway) {
-                $placePointId = $request->get('place_point');
-                $placePoint = $placeService->getPlacePointData($placePointId);
-            } else {
-                $placePoint = null;
-            }
-
-            if (empty($order)) {
-
-                $userEmail = $request->get('customer-email');
-                $userPhone = $request->get('customer-phone');
-                $userFirstName = $request->get('customer-firstname');
-                $userLastName = $request->get('customer-lastname', null);
-                if (!empty($userPhone)) {
-                    $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
-
-                    if (!empty($formatedPhone)) {
-                        $userPhone = $formatedPhone;
-                    }
-                }
-                $userData = [
-                    'email' => $userEmail,
-                    'phone' => $userPhone,
-                    'firstname' => $userFirstName,
-                    'lastname' => $userLastName,
-                ];
-
-                $user = $fosUserManager->findUserByEmail($userEmail);
-
-                // If bussines user - load it from here please
-                try {
-                    $tmpUser = $this->container->get('security.context')->getToken()->getUser();
-
-                    if ($tmpUser instanceof User && $tmpUser->getId() && $tmpUser->getIsBussinesClient()) {
-                        $user = $tmpUser;
-                    }
-                } catch (\Exception $e) {
-                    $this->get('logger')->error($e->getTraceAsString());
-                    $this->get('logger')->error($e->getMessage());
+                $couponCode = $request->get('coupon_code');
+                if (!empty($couponCode)) {
+                    $coupon = $orderService->getCouponByCode($couponCode);
+                } else {
+                    $coupon = null;
                 }
 
-                if (empty($user) || !$user->getId()) {
-                    /**
-                     * @var User $user
-                     */
-                    $user = $fosUserManager->createUser();
-                    $user->setUsername($userEmail);
-                    $user->setEmail($userEmail);
-                    $user->setFullyRegistered(false);
-                    $user->setFirstname($userFirstName);
-                    $user->setLastname($userLastName);
+                // Jeigu atsiima pats - dedam gamybos taska, kuri jis pats pasirinko, o ne mes Pauliaus magic find funkcijoje
+                if ($takeAway) {
+                    $placePointId = $request->get('place_point');
+                    $placePoint = $placeService->getPlacePointData($placePointId);
+                } else {
+                    $placePoint = null;
+                }
+
+                if (empty($order)) {
+
+                    $userEmail = $request->get('customer-email');
+                    $userPhone = $request->get('customer-phone');
+
+                    $userFirstName = $request->get('customer-firstname');
+                    $userLastName = $request->get('customer-lastname', null);
                     if (!empty($userPhone)) {
-                        $user->setPhone($userPhone);
+                        $formatedPhone = $miscUtils->formatPhone($userPhone, $request->get('country'));
+                        if (!empty($formatedPhone)) {
+                            $userPhone = $formatedPhone;
+                        }
                     }
 
-                    // TODO gal cia normaliai generuosim desra-sasyskos-random krap ir siusim useriui emailu ir dar iloginsim
-                    $user->setPlainPassword('new-user');
-                    $user->addRole('ROLE_USER');
-                    $user->setEnabled(true);
+                    $userData = [
+                        'email' => $userEmail,
+                        'phone' => $userPhone,
+                        'firstname' => $userFirstName,
+                        'lastname' => $userLastName,
+                    ];
 
-                    $fosUserManager->updateUser($user);
-                }
+                    $user = $fosUserManager->findUserByEmail($userEmail);
 
-                $blockedEmails = $this->getDoctrine()
-                    ->getRepository('FoodAppBundle:BannedEmail')->findByEmail($userEmail);
-                if (!empty($blockedEmails) || !$user->isAccountNonLocked() || !$user->isEnabled()) {
-                    return $this->redirect($this->get('slug')->urlFromParam('page_email_banned', Slug::TYPE_PAGE));
-                }
+                    // If bussines user - load it from here please
+                    try {
+                        $tmpUser = $this->container->get('security.context')->getToken()->getUser();
 
-                $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
+                        if ($tmpUser instanceof User && $tmpUser->getId() && $tmpUser->getIsBussinesClient()) {
+                            $user = $tmpUser;
+                        }
+                    } catch (\Exception $e) {
+                        $this->get('logger')->error($e->getTraceAsString());
+                        $this->get('logger')->error($e->getMessage());
+                    }
+
+                    if (empty($user) || !$user->getId()) {
+                        /**
+                         * @var User $user
+                         */
+                        $user = $fosUserManager->createUser();
+                        $user->setUsername($userEmail);
+                        $user->setEmail($userEmail);
+                        $user->setFullyRegistered(false);
+                        $user->setFirstname($userFirstName);
+                        $user->setLastname($userLastName);
+                        if (!empty($userPhone)) {
+                            $user->setPhone($userPhone);
+                        }
+
+                        // TODO gal cia normaliai generuosim desra-sasyskos-random krap ir siusim useriui emailu ir dar iloginsim
+                        $user->setPlainPassword('new-user');
+                        $user->addRole('ROLE_USER');
+                        $user->setEnabled(true);
+
+                        $fosUserManager->updateUser($user);
+                    }
+
+                    $blockedEmails = $this->getDoctrine()
+                        ->getRepository('FoodAppBundle:BannedEmail')->findByEmail($userEmail);
+                    if (!empty($blockedEmails) || !$user->isAccountNonLocked() || !$user->isEnabled()) {
+                        return $this->redirect($this->get('slug')->urlFromParam('page_email_banned', Slug::TYPE_PAGE));
+                    }
+
+                    $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
 
                 // Preorder date formation
                 $orderDate = null;
@@ -417,85 +396,88 @@ class DefaultController extends Controller
                 }
                 $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
 
-                $user = $order->getUser();
-                $userPhone = $user->getPhone();
-            }
-
-
-
-            if ($userPhone != $user->getPhone() && !$user->getIsBussinesClient()) {
-                $formatedPhone = $miscUtils->formatPhone($userPhone, $country);
-
-                if (!empty($formatedPhone)) {
-                    $user->setPhone($formatedPhone);
-                } else {
-                    $user->setPhone($userPhone);
+                    $user = $order->getUser();
+                    $userPhone = $user->getPhone();
                 }
-                $fosUserManager->updateUser($user);
+
+
+
+            if ($countryCode != $user->getCountryCode() && !$user->getIsBussinesClient()) {
+                $user->setCountryCode($countryCode);
             }
 
-            $paymentMethod = $request->get('payment-type');
-            $deliveryType = $request->get('delivery-type');
-            $customerComment = $request->get('customer-comment');
-            $orderService->setPaymentMethod($paymentMethod);
-            $orderService->setDeliveryType($deliveryType);
-            $orderService->setLocale($request->getLocale());
-            if (!empty($customerComment)) {
-                $orderService->getOrder()->setComment($customerComment);
-            }
-            $orderService->setPaymentStatus($orderService::$paymentStatusWait);
+                if ($userPhone != $user->getPhone() && !$user->getIsBussinesClient()) {
+                    $formatedPhone = $miscUtils->formatPhone($request->get('customer-phone'), $request->get('country'));
 
-            // I R big bussines
-            if ($request->get('company') == 'on') {
-                $orderService->getOrder()
-                    ->setCompany(true)
-                    ->setCompanyName($request->get('company_name'))
-                    ->setCompanyCode($request->get('company_code'))
-                    ->setVatCode($request->get('vat_code'))
-                    ->setCompanyAddress($request->get('company_address'));
-            }
-
-            if ($user->getIsBussinesClient()) {
-                $orderService->getOrder()
-                    ->setIsCorporateClient(true)
-                    ->setDivisionCode($request->get('company_division_code'))
-                    ->setCompany(true)
-                    ->setCompanyName($user->getCompanyName())
-                    ->setCompanyCode($user->getCompanyCode())
-                    ->setVatCode($user->getVatCode())
-                    ->setCompanyAddress($user->getCompanyAddress());
-            }
-
-            // Update order with recent address information. but only if we need to deliver
-            if ($deliveryType == $orderService::$deliveryDeliver) {
-                $locationData = $googleGisService->getLocationFromSession();
-                $em = $this->getDoctrine()->getManager();
-                $address = $orderService->createAddressMagic(
-                    $user,
-                    $locationData['city'],
-                    $locationData['address_orig'],
-                    (string)$locationData['lat'],
-                    (string)$locationData['lng'],
-                    $customerComment,
-                    $locationData['city_id']
-                );
-                $orderService->getOrder()->setAddressId($address);
-                // Set user default address
-                if (!$user->getDefaultAddress()) {
-                    $em->persist($address);
-                    $user->addAddress($address);
+                    if (!empty($formatedPhone)) {
+                        $user->setPhone($formatedPhone);
+                    } else {
+                        $user->setPhone($userPhone);
+                    }
+                    $fosUserManager->updateUser($user);
                 }
+
+                $paymentMethod = $request->get('payment-type');
+
+                $customerComment = $request->get('customer-comment');
+                $orderService->setPaymentMethod($paymentMethod);
+                $orderService->setDeliveryType($deliveryType);
+                $orderService->setLocale($request->getLocale());
+                if (!empty($customerComment)) {
+                    $orderService->getOrder()->setComment($customerComment);
+                }
+                $orderService->setPaymentStatus($orderService::$paymentStatusWait);
+
+                // I R big bussines
+                if ($request->get('company') == 'on') {
+                    $orderService->getOrder()
+                        ->setCompany(true)
+                        ->setCompanyName($request->get('company_name'))
+                        ->setCompanyCode($request->get('company_code'))
+                        ->setVatCode($request->get('vat_code'))
+                        ->setCompanyAddress($request->get('company_address'));
+                }
+
+                if ($user->getIsBussinesClient()) {
+                    $orderService->getOrder()
+                        ->setIsCorporateClient(true)
+                        ->setDivisionCode($request->get('company_division_code'))
+                        ->setCompany(true)
+                        ->setCompanyName($user->getCompanyName())
+                        ->setCompanyCode($user->getCompanyCode())
+                        ->setVatCode($user->getVatCode())
+                        ->setCompanyAddress($user->getCompanyAddress());
+                }
+
+                // Update order with recent address information. but only if we need to deliver
+                if ($deliveryType == $orderService::$deliveryDeliver || $deliveryType == $orderService::$deliveryPedestrian) {
+
+                    $em = $this->getDoctrine()->getManager();
+                    $address = $lService->saveAddressFromArrayToUser($lService->get(), $user);
+                    $orderService->getOrder()->setAddressId($address);
+                    // Set user default address
+
+                    if (!$user->getDefaultAddress()) {
+                        $em->persist($address);
+                        $user->addAddress($address);
+                    }
+                }
+
+                $orderService->getOrder()->setNewsletterSubscribe((boolean)$request->get('newsletter_subscribe'));
+
+                $orderService->saveOrder();
+
+                $billingUrl = $orderService->billOrder();
+                if (!empty($billingUrl)) {
+                    return new RedirectResponse($billingUrl);
+                }
+                // TODO Crap happened?
+            } catch (\Exception $e) {
+                $this->container->get('logger')->critical($e->getMessage());
+                $translator = $this->container->get('translator');
+                $formErrors = [$translator->trans('system.error_on_order')];
+                $formHasErrors = true;
             }
-
-            $orderService->getOrder()->setNewsletterSubscribe((boolean)$request->get('newsletter_subscribe'));
-
-            $orderService->saveOrder();
-
-            $billingUrl = $orderService->billOrder();
-            if (!empty($billingUrl)) {
-                return new RedirectResponse($billingUrl);
-            }
-            // TODO Crap happened?
         }
 
         $disabledPreorderDaysParam = $this->get('food.app.utils.misc')->getParam('disabled_preorder_days');
@@ -505,13 +487,25 @@ class DefaultController extends Controller
             $disabledPreorderDays = array();
         }
 
+        $currentCountry = $this->container->getParameter('country');
+
+        $countryCode = $pService->getCountryCode($this->getUser(), $currentCountry);
+
+        if ($request->getMethod() == 'POST' && !empty($_POST['country'])) {
+            $countryCode = $_POST['country'];
+        }
+
+        if ($formHasErrors) {
+            $dataToLoad = $request->request->all();
+        }
+
         $data = [
             'order' => $order,
             'formHasErrors' => $formHasErrors,
             'formErrors' => $formErrors,
             'place' => $place,
             'takeAway' => ($takeAway ? true : false),
-            'location' => $this->get('food.googlegis')->getLocationFromSession(),
+            'location' => $this->get('food.location')->get(),
             'dataToLoad' => $dataToLoad,
             'userAddress' => $address,
             'userAllAddress' => $placeService->getCurrentUserAddresses(),
@@ -519,24 +513,13 @@ class DefaultController extends Controller
             'testNordea' => $request->query->get('test_nordea'),
             'workingHoursForInterval' => $workingHoursForInterval,
             'workingDaysCount' => $workingDaysCount,
-            'isCallcenter' => $isCallCenter,
             'require_lastname' => $require_lastname,
             'pointIsWorking' => $pointIsWorking,
             'disabledPreorderDays' => $disabledPreorderDays,
+            'countryCode' => $countryCode
         ];
 
-
-        // callcenter functionality
-        if ($isCallCenter) {
-            $data['isCallcenter'] = true;
-
-            return $this->render('FoodCartBundle:Default:form.html.twig', $data);
-        }
-
-        return $this->render(
-            'FoodCartBundle:Default:index.html.twig',
-            $data
-        );
+        return $this->render('FoodCartBundle:Default:index.html.twig', $data);
     }
 
     /**
@@ -557,10 +540,10 @@ class DefaultController extends Controller
         $miscService = $this->get('food.app.utils.misc');
         $session = $this->get('session');
 
-        $isCallCenter = $session->get('isCallcenter');
 
         $enableDiscount = !$place->getOnlyAlcohol();
         $placeServ = $this->get('food.places');
+
         $cartFromMin = $placeServ->getMinCartPrice($place->getId());
         $cartFromMax = $placeServ->getMaxCartPrice($place->getId());
         $useAdminFee = $placeServ->useAdminFee($place);
@@ -573,6 +556,8 @@ class DefaultController extends Controller
         if ($useAdminFee && !$adminFee) {
             $adminFee = 0;
         }
+
+
 
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
 
@@ -608,12 +593,13 @@ class DefaultController extends Controller
         } else {
             $placePointMap = $this->container->get('session')->get('point_data');
 
-            $locationData = $this->get('food.googlegis')->getLocationFromSession();
+
+            $locationData = $this->get('food.location')->get();
 
             if (empty($placePointMap) || !isset($placePointMap[$place->getId()])) {
                 $deliveryTotal = $place->getDeliveryPrice();
 
-            } elseif (!$locationData['not_found']) {
+            } elseif ($locationData['precision'] >= 0) {
                 // TODO Trying to catch fatal when searching for PlacePoint
                 if (!isset($placePointMap[$place->getId()]) || empty($placePointMap[$place->getId()])) {
                     $this->container->get('logger')->error('Trying to find PlacePoint without ID in CartBundle Default controller - sideBlockAction');
@@ -627,23 +613,10 @@ class DefaultController extends Controller
                     $noneWorking = true;
                 }
 
-                $pointRecord = $em
-                    ->getRepository('FoodDishesBundle:PlacePoint')
-                    ->find($placePointMap[$place->getId()]);
-
-                $deliveryTotal = $this->getCartService()->getDeliveryPrice(
-                    $place,
-                    $locationData,
-                    $pointRecord,
-                    $noneWorking
-                );
-
+                $pointRecord = $em->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
+                $deliveryTotal = $this->getCartService()->getDeliveryPrice($place, $locationData, $pointRecord, $noneWorking);
                 $displayCartInterval = false;
-                $cartFromMin = $this->getCartService()->getMinimumCart(
-                    $place,
-                    $locationData,
-                    $pointRecord
-                );
+                $cartFromMin = $this->getCartService()->getMinimumCart($place, $locationData, $pointRecord);
             }
 
             // Check cart limits
@@ -685,6 +658,11 @@ class DefaultController extends Controller
         $total_cart = $this->getCartService()->getCartTotal($list);
         $priceBeforeDiscount = $total_cart;
 
+        if(($place->getCartMinimum() < $total_cart) && $useAdminFee){
+            $useAdminFee = false;
+        }
+
+
         $noMinimumCart = false;
         $current_user = $this->container->get('security.context')->getToken()->getUser();
         if (!empty($current_user) && is_object($current_user)) {
@@ -695,20 +673,20 @@ class DefaultController extends Controller
         $applyDiscount = $freeDelivery = $discountInSum = false;
         $discountSize = null;
         $discountSum = null;
-
+        $checkAdmin = false;
         // If coupon in use
+
         if (!empty($couponCode)) {
             $coupon = $this->get('food.order')->getCouponByCode($couponCode);
 
             if ($coupon) {
                 $applyDiscount = true;
-                $useAdminFee = false;
 
                 if ($coupon->getIgnoreCartPrice()) {
                     $noMinimumCart = true;
                 }
 
-                $freeDelivery = $coupon->getFreeDelivery();
+                $freeDeliver = $coupon->getFreeDelivery();
 
                 $discountSize = $coupon->getDiscount();
 
@@ -731,10 +709,10 @@ class DefaultController extends Controller
                 }
 
                 // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
-                $otherMinusDiscount = $otherPriceTotal - $discountSum;
-                if ($otherMinusDiscount < 0) {
-                    $discountSum = $otherPriceTotal;
-                }
+//                $otherMinusDiscount = $otherPriceTotal - $discountSum;
+//                if ($otherMinusDiscount < 0) {
+//                    $discountSum = $otherPriceTotal;
+//                }
 
 
                 if ($enableDiscount) {
@@ -745,13 +723,26 @@ class DefaultController extends Controller
 
                 if ($total_cart <= 0) {
                     if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
-                        $deliveryTotal = $deliveryTotal + $total_cart;
                         if ($deliveryTotal < 0 || $total_cart < $realDiscountSum) {
-                            $deliveryTotal = 0;
                             $freeDelivery = true;
+                            if ($total_cart < $place->getCartMinimum()) {
+                                $useAdminFee = true;
+                                $checkAdmin = true;
+
+                                if(($total_cart - $adminFee) < $realDiscountSum){
+                                    $total_cart += $adminFee;
+                                    $freeDelivery = false;
+                                }
+                            } else {
+                                $useAdminFee = false;
+                            }
                         }
                     }
-                    $total_cart = 0;
+                }
+
+                if ($freeDeliver) {
+                    $discountSum += $deliveryTotal;
+                    $freeDelivery = true;
                 }
             }
         } // Business client discount
@@ -759,6 +750,7 @@ class DefaultController extends Controller
             if (!$takeAway && !$place->getSelfDelivery()) {
                 $applyDiscount = true;
                 $discountSize = $this->get('food.user')->getDiscount($current_user);
+
                 $discountSum = $this->getCartService()->getTotalDiscount($list, $discountSize);
 
                 $otherPriceTotal = 0;
@@ -775,7 +767,6 @@ class DefaultController extends Controller
                     $discountSum = $otherPriceTotal;
                 }
 
-
                 if ($enableDiscount) {
                     $total_cart -= $discountSum;
                 } else {
@@ -783,6 +774,12 @@ class DefaultController extends Controller
                 }
             }
         }
+
+
+        if ($useAdminFee && (($cartFromMin - $total_cart) >= 0.00001) && !$checkAdmin ) {
+            $total_cart += $adminFee;
+        }
+
         $cartSumTotal = $total_cart;
         // Jei restorane galima tik atsiimti arba, jei zmogus rinkosi, kad jis atsiimas, arba jei yra uzsakymas ir fiksuotas atsiemimas vietoje - neskaiciuojam pristatymo
         if ($place->getDeliveryOptions() == Place::OPT_ONLY_PICKUP ||
@@ -802,10 +799,6 @@ class DefaultController extends Controller
             $useAdminFee = false;
         }
 
-        if ($useAdminFee && ($cartFromMin - $total_cart) >= 0.00001) {
-            $total_cart += $adminFee;
-
-        }
 
         // Nemokamas pristatymas dideliam krepseliui
         $self_delivery = $place->getSelfDelivery();
@@ -826,7 +819,11 @@ class DefaultController extends Controller
             }
         }
 
-        $totalWIthDelivery = $freeDelivery ? $total_cart : ($total_cart + $deliveryTotal);
+        if($freeDelivery){
+            $totalWIthDelivery = ($total_cart > 0) ? $total_cart : 0;
+        }else{
+            $totalWIthDelivery = ($total_cart + $deliveryTotal) > 0 ? $total_cart + $deliveryTotal : 0;
+        }
 
         //$prices = $orderPriceService->getOrderPrices($place);
         // total_cart
@@ -863,7 +860,7 @@ class DefaultController extends Controller
             'self_delivery' => $self_delivery,
             'enable_free_delivery_for_big_basket' => $enable_free_delivery_for_big_basket,
             'basket_errors' => $basketErrors,
-            'isCallcenter' => $isCallCenter,
+            'isCallcenter' => false,
             'useAdminFee' => $useAdminFee,
             'adminFee' => $adminFee,
             'noneWorking' => $noneWorking

@@ -12,36 +12,30 @@ class KitchenController extends Controller
 
     public function indexAction($id, $slug)
     {
-        $kitchen = $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen')->find($id);
-
-        return $this->render('FoodDishesBundle:Kitchen:index.html.twig', array('kitchen' => $kitchen));
+        return $this->render('FoodDishesBundle:Kitchen:index.html.twig', ['kitchen' => $this->getDoctrine()->getRepository('FoodDishesBundle:Kitchen')->find($id)]);
     }
 
     /**
      * Rodomas restoranu sarase
      *
+     * @param bool $rush_hour
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAction($recommended = false, $slug_filter = false, Request $request, $rush_hour = false, $city = null)
+    public function listAction($rush_hour = false, Request $request)
     {
 
-        if ($recommendedFromRequest = $request->get('recommended', null) !== null) {
-            $recommended = (bool)$recommendedFromRequest;
-        }
-
         if ($deliveryType = $request->get('delivery_type', false)) {
-            switch($deliveryType) {
-                // @TODO: delivery !== deliver
+
+            switch ($deliveryType) {
                 case 'delivery':
-                    $this->container->get('session')->set('delivery_type', OrderService::$deliveryDeliver);
+                    $setDeliveryType = OrderService::$deliveryDeliver;
                     break;
-                case 'pickup':
-                    $this->container->get('session')->set('delivery_type', OrderService::$deliveryPickup);
-                    break;
-                case 'delivery_and_pickup':
-                    $this->container->get('session')->set('delivery_type', 'delivery_and_pickup');
+                default:
+                    $setDeliveryType = $deliveryType;
                     break;
             }
+            $this->container->get('session')->set('delivery_type', $setDeliveryType);
         }
 
         if ($rush_hour) {
@@ -52,49 +46,35 @@ class KitchenController extends Controller
         if (!empty($selectedKitchens)) {
             $selectedKitchens = explode(',', $selectedKitchens);
         } else {
-            $selectedKitchens = $this->get('food.places')->getKitchenCollectionFromSlug($slug_filter, $request);
+            $selectedKitchens = [];
         }
 
         $selectedKitchensSlugs = $request->get('selected_kitchens_slugs', '');
         if (!empty($selectedKitchensSlugs)) {
             $selectedKitchensSlugs = explode(',', $selectedKitchensSlugs);
         } else {
-            $selectedKitchensSlugs = array();
+            $selectedKitchensSlugs = [];
         }
 
-        $list = $this->getKitchens($recommended, $request);
+        $list = $this->getKitchens($request);
 
-        return $this->render(
-            'FoodDishesBundle:Kitchen:list_items.html.twig',
-            array(
+        return $this->render('FoodDishesBundle:Kitchen:list_items.html.twig', [
                 'list' => $list,
                 'selected_kitchens' => $selectedKitchens,
                 'selected_kitchens_slugs' => $selectedKitchensSlugs,
-                'city' => $city
-            )
+            ]
         );
     }
 
     /**
-     * @todo - patikrinti reikalinguma. Nebeliko ikonkiu prie virtuviu
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function kitchenListWithImagesAction()
-    {
-        $list = $this->getKitchens();
-
-        return $this->render('FoodDishesBundle:Kitchen:list_items_with_images.html.twig', array('list' => $list));
-    }
-
-    /**
+     * @param Request $request
      * @return array|\Food\DishesBundle\Entity\Kitchen[]
      */
-    private function getKitchens($recommended, Request $request)
+    private function getKitchens(Request $request)
     {
         $returnList = array();
         $placeCountArr = array();
-        $list = $this->get('food.places')->getPlacesForList($recommended, $request);
+        $list = $this->get('food.places')->getPlacesForList(false, $request);
 
         foreach ($list as $placeRow) {
             foreach ($placeRow['place']->getKitchens() as $kitchen) {

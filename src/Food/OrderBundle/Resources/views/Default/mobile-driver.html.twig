@@ -5,6 +5,17 @@
 
 {% block body %}
     <style type="text/css">
+        .pedestrian-template-warning{
+            text-align: center;
+            text-transform: uppercase;
+            background-color: red;
+            border-radius: 10px;
+            padding:15px;
+            font-weight: bold;
+            font-size: 25px;
+            letter-spacing: 1px;
+
+        }
 
         .headerLogoMobile {
             background: #cd1d36;
@@ -35,6 +46,18 @@
                 <img src="//{{ cloudfront_url }}/{{order.place.getWebPathThumb}}" style="float: right">
             </th>
         </tr>
+
+        {% if order.deliveryType == 'pedestrian' %}
+            <tr>
+                <td colspan="5">
+                    <div class="pedestrian-template-warning" >
+
+                        {% trans %}mobile.pedestrian_warning{% endtrans %}
+                    </div>
+                </td>
+            </tr>
+        {% endif %}
+
         <tr>
             <th style="width: 30px">#</th>
             <th>{% trans %}mobile.order_dish{% endtrans %}</th>
@@ -47,12 +70,12 @@
         {% for dish in order.details %}
             <tr>
                 <td>{{ loop.index }}</td>
-                <td>{{ dish.dishName }}</td>
-                <td>{{ dish.dishUnitName }}</td>
+                <td>{{ dish.dishId.name }}</td>
+                <td>{{ dish.dishUnitId.name }}</td>
                 <td>{{ dish.quantity }}</td>
                 <td>
                     {% for option in dish.options %}
-                        <li>{{ option.dishOptionName }}</li>
+                        <li>{{ option.dishOptionId.name }}</li>
                     {% endfor %}
                 </td>
             </tr>

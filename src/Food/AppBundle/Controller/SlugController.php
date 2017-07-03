@@ -35,7 +35,8 @@ class SlugController extends Controller
 
         $params = explode("/", $slug);
 
-        $slug = $params[0];
+        $slug = strtolower($params[0]);
+
         unset($params[0]);
         $qb = $this->getDoctrine()
             ->getRepository('FoodAppBundle:Slug')
@@ -57,7 +58,6 @@ class SlugController extends Controller
             $query
                 ->orderBy('s.id', 'DESC')
                 ->setMaxResults(1);
-
             $result = $query->getQuery()->execute();
             $slugRow = null;
             if(count($result)) {
@@ -96,7 +96,12 @@ class SlugController extends Controller
             case Slug::TYPE_CITY:
                 return $this->forward('FoodPlacesBundle:City:index', $dataOptions);
             case Slug::TYPE_DISH:
-                die("todo dish page");
+                $place = $this->get('food.places')->getPlaceByDish($slugRow->getItemId());
+                $slugUtele = $this->get('food.dishes.utils.slug');
+                $placeSlug = $slugUtele->getSlugByItem($place->getId(), Slug::TYPE_PLACE);
+                $url = $this->generateUrl('food_slug', ['slug' => $placeSlug], true);
+                $queryString = $request->getQueryString().'#'.$slug;
+                return new RedirectResponse(sprintf('%s%s', $url, !empty($queryString) ? '?' . $queryString : ''), 301);
                 break;
             case Slug::TYPE_KITCHEN:
                 return $this->forward('FoodDishesBundle:Kitchen:index', $dataOptions);

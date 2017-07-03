@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="user_address")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="UserAddressRepository")
  */
 class UserAddress
 {
@@ -32,6 +32,42 @@ class UserAddress
      * @ORM\Column(name="address", type="string", length=255, nullable=true)
      */
     private $address;
+
+    /**
+     * @var string
+     * @ORM\Column(name="addressId", type="text", nullable=true)
+     */
+    private $addressId = null;
+
+    /**
+     * @var string
+     * @ORM\Column(name="flat", type="text", nullable=true)
+     */
+    private $flat = null;
+
+    /**
+     * @var string
+     * @ORM\Column(name="house", type="text", nullable=true)
+     */
+    private $house = null;
+
+    /**
+     * @var string
+     * @ORM\Column(name="street", type="text", nullable=true)
+     */
+    private $street = null;
+
+    /**
+     * @var string
+     * @ORM\Column(name="country", type="text", nullable=true)
+     */
+    private $country = null;
+
+    /**
+     * @var string
+     * @ORM\Column(name="origin", type="text", nullable=true)
+     */
+    private $origin = null;
 
     /**
      * @var string
@@ -74,10 +110,11 @@ class UserAddress
      **/
     private $cityId;
 
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -90,10 +127,7 @@ class UserAddress
             return '';
         }
 
-        $buffer = $this->getAddress().', ';
-        if($city = $this->getCityId()) {
-            $buffer .= $city->getTitle();
-        }
+        $buffer = $this->getAddress();
         return $buffer;
     }
 
@@ -133,18 +167,29 @@ class UserAddress
     public function setAddress($address)
     {
         $this->address = $address;
-    
+
         return $this;
     }
 
     /**
      * Get address
      *
-     * @return string 
+     * @return string
      */
     public function getAddress()
     {
-        return $this->address;
+        $address = '';
+        if (!$this->address) {
+            $address = $this->getStreet(). ($this->getHouse() ? " ".$this->getHouse() : "").($this->getFlat() ? " - ".$this->getFlat() : "" );
+        } else {
+            $city = '';
+            if ($cityObj = $this->getCityId()) {
+                $city = $cityObj->getTitle();
+            }
+            $address = $this->address . ', ' . $city;
+        }
+
+        return $address;
     }
 
     /**
@@ -156,14 +201,14 @@ class UserAddress
     public function setCoords($coords)
     {
         $this->coords = $coords;
-    
+
         return $this;
     }
 
     /**
      * Get coords
      *
-     * @return string 
+     * @return string
      */
     public function getCoords()
     {
@@ -179,14 +224,14 @@ class UserAddress
     public function setDefault($default)
     {
         $this->default = $default;
-    
+
         return $this;
     }
 
     /**
      * Get default
      *
-     * @return integer 
+     * @return integer
      */
     public function getDefault()
     {
@@ -202,14 +247,14 @@ class UserAddress
     public function setUser(\Food\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
-    
+
         return $this;
     }
 
     /**
      * Get user
      *
-     * @return \Food\UserBundle\Entity\User 
+     * @return \Food\UserBundle\Entity\User
      */
     public function getUser()
     {
@@ -225,14 +270,14 @@ class UserAddress
     public function setLat($lat)
     {
         $this->lat = $lat;
-    
+
         return $this;
     }
 
     /**
      * Get lat
      *
-     * @return string 
+     * @return string
      */
     public function getLat()
     {
@@ -248,14 +293,14 @@ class UserAddress
     public function setLon($lon)
     {
         $this->lon = $lon;
-    
+
         return $this;
     }
 
     /**
      * Get lon
      *
-     * @return string 
+     * @return string
      */
     public function getLon()
     {
@@ -271,14 +316,14 @@ class UserAddress
     public function setComment($comment)
     {
         $this->comment = $comment;
-    
+
         return $this;
     }
 
     /**
      * Get comment
      *
-     * @return string 
+     * @return string
      */
     public function getComment()
     {
@@ -294,14 +339,14 @@ class UserAddress
     public function setCityId(\Food\AppBundle\Entity\City $cityId = null)
     {
         $this->cityId = $cityId;
-    
+
         return $this;
     }
 
     /**
      * Get cityId
      *
-     * @return \Food\AppBundle\Entity\City 
+     * @return \Food\AppBundle\Entity\City
      */
     public function getCityId()
     {
@@ -314,7 +359,7 @@ class UserAddress
     {
         $this->cityId = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Add cityId
      *
@@ -324,7 +369,7 @@ class UserAddress
     public function addCityId(\Food\AppBundle\Entity\City $cityId)
     {
         $this->cityId[] = $cityId;
-    
+
         return $this;
     }
 
@@ -341,5 +386,143 @@ class UserAddress
     public function toString()
     {
         return $this->__toString();
+    }
+
+    /**
+     * Set addressId
+     *
+     * @param string $addressId
+     * @return UserAddress
+     */
+    public function setAddressId($addressId)
+    {
+        $this->addressId = $addressId;
+
+        return $this;
+    }
+
+    /**
+     * Get addressId
+     *
+     * @return string
+     */
+    public function getAddressId()
+    {
+        return $this->addressId;
+    }
+
+    /**
+     * Set flat
+     *
+     * @param string $flat
+     * @return UserAddress
+     */
+    public function setFlat($flat)
+    {
+        $this->flat = $flat;
+
+        return $this;
+    }
+
+    /**
+     * Get flat
+     *
+     * @return string
+     */
+    public function getFlat()
+    {
+        return $this->flat;
+    }
+
+    /**
+     * Set house
+     *
+     * @param string $house
+     * @return UserAddress
+     */
+    public function setHouse($house)
+    {
+        $this->house = $house;
+
+        return $this;
+    }
+
+    /**
+     * Get house
+     *
+     * @return string
+     */
+    public function getHouse()
+    {
+        return $this->house;
+    }
+
+    /**
+     * Set street
+     *
+     * @param string $street
+     * @return UserAddress
+     */
+    public function setStreet($street)
+    {
+        $this->street = $street;
+
+        return $this;
+    }
+
+    /**
+     * Get street
+     *
+     * @return string
+     */
+    public function getStreet()
+    {
+        return $this->street;
+    }
+
+    /**
+     * Set country
+     *
+     * @param string $country
+     * @return UserAddress
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set origin
+     *
+     * @param string $origin
+     * @return UserAddress
+     */
+    public function setOrigin($origin)
+    {
+        $this->origin = $origin;
+
+        return $this;
+    }
+
+    /**
+     * Get origin
+     *
+     * @return string
+     */
+    public function getOrigin()
+    {
+        return $this->origin;
     }
 }

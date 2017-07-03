@@ -1,0 +1,78 @@
+{% extends ':Admin:layout.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block sonata_admin_content %}
+
+    <script type="text/javascript">
+        $( function() {
+            $( ".datepicker" ).datepicker( {
+                changeMonth: true,
+                changeYear: true,
+            });
+        } );
+    </script>
+
+    <div class="container-fluid">
+        <div class="col-lg-12">
+            <div class="page-header">
+                <h1>
+                    {% trans %}report.unique_users_with_placepoints{% endtrans %}
+                </h1>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <form action="">
+                <label>{% trans %}show.results.from{% endtrans %}</label>
+                <input name="from" type="text" placeholder="{% trans %}date.from{% endtrans %}" value="{{ val }}" class="datepicker"/>
+                <button class="btn sonata-action-element" style="margin-top: -10px;" type="submit">{% trans %}show{% endtrans %}</button>
+            </form>
+        </div>
+        {% if resultCollection is not null %}
+            {% set keys = resultCollection['keys'] %}
+            <h4>{% trans %}order.count{% endtrans %}</h4>
+            <table class="table table-hover table-bordered">
+                    <tr style="background: #f2f2f2;">
+                        <th>{% trans %}order.count{% endtrans %} / {% trans %}date{% endtrans %}</th>
+                        {% for key in keys %}
+                            <th>{{ key }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td style="background: #f2f2f2;"><b> = 1</b></td>
+                        {% for key in keys %}
+                            <td>{{ resultCollection['activeMembers1'][key] }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td style="background: #f2f2f2;"><b>> 1</b></td>
+                        {% for key in keys %}
+                            <td>{{ resultCollection['activeMembers2'][key] }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td style="background: #f2f2f2;"><b>{% trans %}total{% endtrans %}</b></td>
+                        {% for key in keys %}
+                            {% set t = resultCollection['activeMembers2'][key] + resultCollection['activeMembers1'][key] %}
+                            <td>{{ t }}</td>
+                        {% endfor %}
+                    </tr>
+                </table>
+
+
+            <h4>{% trans %}new.placepoint{% endtrans %}</h4>
+                <table class="table table-hover table-bordered">
+                    <tr style="background: #f2f2f2;">
+                        {% for key in keys %}
+                            <th style="background: #f6f6f6">{{ key }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for key in keys %}
+                            <td>{% if resultCollection['newPlacePoints'][key] is defined %}{{ resultCollection['newPlacePoints'][key] }}{% else %}0{% endif %}</td>
+                        {% endfor %}
+                    </tr>
+                </table>
+        {% endif %}
+    </div>
+{% endblock %}

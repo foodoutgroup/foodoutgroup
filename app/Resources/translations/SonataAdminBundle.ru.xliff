@@ -394,6 +394,22 @@
           <source>admin.settings</source>
           <target>Настройки</target>
       </trans-unit>
+      <trans-unit id="admin.restaurant_dublicate">
+          <source>admin.restaurant_dublicate</source>
+          <target>Дублированные рестораны</target>
+      </trans-unit>
+      <trans-unit id="admin.duplicate.place">
+          <source>admin.duplicate.place</source>
+          <target>Ресторан</target>
+      </trans-unit>
+      <trans-unit id="admin.duplicate.new_place">
+          <source>admin.duplicate.new_place</source>
+          <target>Дублированный ресторан</target>
+      </trans-unit>
+      <trans-unit id="admin.duplicate.user">
+          <source>admin.duplicate.user</source>
+          <target>Сделано</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

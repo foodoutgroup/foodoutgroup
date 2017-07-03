@@ -35,6 +35,12 @@ trait PaymentLogDecorator
             // throws exception on optimistic lock check failure
             $em->flush();
 
+            if ($order->getPreorder()) {
+                $orderService->statusNewPreorder('payment accept');
+            } else {
+                $orderService->statusNew('payment accept');
+            }
+
             // inform stuff
             if ($orderService->getAllowToInform()) {
                 $orderService->informPlace();

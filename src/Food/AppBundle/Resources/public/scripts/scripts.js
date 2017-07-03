@@ -16,7 +16,7 @@
 
         $(".boxer").boxer({
             callback: function(){
-                $("input:not(.no-icheck)").iCheck();
+                $("#boxer input:not(.no-icheck)").iCheck();
                 $('form.login-form input[name=_username]').focus();
             }
         });
@@ -228,6 +228,8 @@ change_location = function(element, click_callback, data_callback, change_text, 
         });
     });
 
+
+
     $.fancybox({
         'autoScale': true,
         'transitionIn': 'elastic',
@@ -241,54 +243,6 @@ change_location = function(element, click_callback, data_callback, change_text, 
     });
 };
 
-initStreetSearch = function(){
-    var streetsUrl = Routing.generate('food_ajax', { '_locale': $('html').attr('lang'), 'action' : 'find-street' });
-    var streets = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: '?city=%CITY&street=%QUERY',
-            replace: function(url, query) {
-                url = url.replace('%CITY', $('#index_city').val());
-                url = url.replace('%QUERY', query);
-                return streetsUrl + url;
-            }
-        }
-    });
-
-    streets.initialize();
-
-    $('#index_address').typeahead(null, {
-        name: 'streets',
-        displayKey: 'value',
-        source: streets.ttAdapter()
-    });
-};
-
-initStreetHouseSearch = function(){
-    var streetsUrl = Routing.generate('food_ajax', { '_locale': $('html').attr('lang'), 'action' : 'find-street-house' });
-    var streets = new Bloodhound({
-        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
-        queryTokenizer: Bloodhound.tokenizers.whitespace,
-        remote: {
-            url: '?city=%CITY&street=%STREET&house=%QUERY',
-            replace: function(url, query) {
-                url = url.replace('%CITY', $('#index_city').val());
-                url = url.replace('%STREET', $('#index_address').val());
-                url = url.replace('%QUERY', query);
-                return streetsUrl + url;
-            }
-        }
-    });
-
-    streets.initialize();
-
-    $('#index_house').typeahead(null, {
-        name: 'houses',
-        displayKey: 'value',
-        source: streets.ttAdapter()
-    });
-};
 
 var registrationForm = {
     showPrivate: function(element) {
@@ -318,3 +272,215 @@ var registrationForm = {
         return false;
     }
 };
+(function (form) {
+
+    var input_auto_complete = form.find('#address_autocomplete');
+    var button_submit = form.find('#submit');
+    var input_collection = form.find('input');
+    var button_find_me = form.find('#find-me');
+    var button_do_pickup = form.find('#do-pickup');
+    var div_error = form.find('#error');
+    var mapDiv = form.find("#map");
+    var mapErrorDiv = form.find("#mapError");
+    var map = null;
+    var marker = null;
+    var resultCollection = [];
+    var selected = null;
+
+    if (!navigator.geolocation) {
+        button_find_me.remove();
+    }
+    var autoSelect = true;
+    input_auto_complete.autocomplete({
+        source: input_auto_complete.data('url'),
+        minLength: 2,
+        html: true,
+        position: {
+            my: "left+0 top-4"
+        },
+        response: function( event, ui ) {
+            resultCollection = ui.content;
+        },
+        select: function( event, ui ) {
+            setSelected(ui.item);
+            autoSelect = false;
+        }
+    }).focusin(function(){
+        autoSelect = true;
+        if(resultCollection.length >= 2) {
+            $(this).autocomplete("search");
+        }
+    }).focusout(function(){
+        if(autoSelect && resultCollection.length >= 1 && autoSelect) {
+            setSelected(resultCollection[0]);
+        }
+        autoSelect = false;
+    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+        return $("<li></li>")
+            .data("item.autocomplete", item)
+            .append("<a data-class='" + item.class + "'>" + item.label + "</a>")
+            .appendTo(ul);
+    };
+
+    button_find_me.click(function (e) {
+        e.preventDefault();
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position){
+
+                $.get(button_find_me.data("url"), {"lat": position.coords.latitude, "lng": position.coords.longitude}, function (response) {
+                    setSelected({'id': response.detail.id, 'value': response.detail.output});
+                });
+                if(position.coords.accuracy > 150) {
+                    throwMapLocationPicker(position.coords.latitude, position.coords.longitude, button_find_me.data('error-accuracy-to-big'));
+                }
+            });
+        } else {
+            throwError(button_find_me.data('error-no-service'));
+        }
+    });
+
+    button_do_pickup.click(function (e) {
+        e.preventDefault();
+        img = $(this).find('img');
+        oldval = img.attr('src');
+        img.attr('src', img.attr('img-loader'));
+        $.get($(this).data("url"), {"redirect" : true, "type" : "pickup", "address": input_auto_complete.data("selected") }, function (response) {
+            if(response.success) {
+                window.location.href = response.url;
+            } else {
+                throwError(response.message);
+            }
+            img.attr('src', oldval);
+        });
+
+    });
+
+    input_collection.on('keyup', function (e) {
+        if(e.keyCode != 13) {
+            throwError(null);
+        }
+    }).on('focusin', function () {
+        throwError(null);
+    });
+
+    div_error.click(function () {
+        throwError(null);
+    });
+
+    button_submit.click(function (e) {
+        e.preventDefault();
+        img = $(this).find('img');
+        oldval = img.attr('src');
+        input_auto_complete.attr('disabled', true);
+
+        img.attr('src', img.attr('img-loader'));
+
+        $.post($(this).data('url'), {"address":input_auto_complete.data('selected'), "flat" : form.find('#flat').val()} , function (response) {
+            if(response.success && typeof response.url != "undefined" ) {
+                if(button_submit.data('redirect') == "self"){
+                    window.location.href = window.location.href;
+                } else {
+                    window.location.href = response.url;
+                }
+            } else {
+                if(typeof response.detail != "undefined" && response.detail.precision < 5) {
+                    throwMapLocationPicker(response.detail.latitude, response.detail.longitude, response.message);
+                } else {
+                    throwError(response.message);
+                }
+                input_auto_complete.attr('disabled', false);
+                img.attr('src', oldval);
+            }
+        });
+
+    });
+
+
+    mapErrorDiv.click(function () {
+       $(this).addClass('hidden');
+       $(this).html('');
+    });
+
+    function setSelected(selected) {
+        input_auto_complete.data('selected', selected.id);
+        input_auto_complete.val(selected.value);
+        form.find('#hidden-field-for-address-id').val(selected.id);
+    }
+
+    function throwMapLocationPicker(lat, lng, message) {
+
+        if(message != null) {
+            mapErrorDiv.removeClass('hidden');
+            mapErrorDiv.html(message);
+        }
+
+        if(lat != null && lng != null) {
+
+            mapDiv.removeClass('hidden');
+            var pt = new google.maps.LatLng(lat, lng);
+
+            if(map == null) {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 8,
+                    maxZoom: 17,
+                    disableDefaultUI: true,
+                    minZoom: 10,
+                    center: pt,
+                    zoomControl: true,
+                    zoomControlOptions: {
+                        style: google.maps.ZoomControlStyle.LARGE
+                    },
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                });
+            }
+            map.setZoom(16);
+            map.setCenter(pt);
+
+            if(marker != null) {
+                marker.setMap(null);
+                marker = null;
+            }
+
+            marker = new google.maps.Marker({map: map, draggable:true, animation: google.maps.Animation.DROP, position: pt});
+            google.maps.event.addListener(marker, 'mouseover', function() {
+                mapErrorDiv.addClass('hidden');
+                mapErrorDiv.html('');
+            });
+            google.maps.event.addListener(marker, 'dragend', function() {
+                $.get(button_find_me.data("url"), {"lat": marker.getPosition().lat(), "lng": marker.getPosition().lng()}, function (response) {
+                    setSelected({'id': response.detail.id, 'value': response.detail.output});
+                });
+            });
+        }
+    }
+
+    function throwError(message){
+        if(message == null) {
+            message = '';
+            mapDiv.addClass('hidden');
+            mapErrorDiv.addClass('hidden');
+            mapErrorDiv.html('');
+            input_collection.removeClass('error');
+        } else {
+            form.closest('.shake-me').shake(5, 5, 400);
+            input_collection.addClass('error');
+        }
+        div_error.html(message);
+    }
+
+})($( ".address-search-form-ui" ));
+
+
+jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
+    this.each(function() {
+        $(this).css("position","relative");
+        for (var x=1; x<=intShakes; x++) {
+            $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
+                .animate({left:intDistance}, ((intDuration/intShakes)/2))
+                .animate({left:0}, (((intDuration/intShakes)/4)));
+        }
+    });
+    return this;
+};
+
+

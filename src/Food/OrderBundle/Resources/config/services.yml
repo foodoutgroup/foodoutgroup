@@ -33,11 +33,11 @@ services:
         calls:
             - [setContainer, [@service_container]]
 
-#    food.seb_banklink:
-#        class: Food\OrderBundle\Service\Banklink\Seb
-#        arguments: ["%seb%"]
-#        calls:
-#            - [setContainer, ["@service_container"]]
+    food.seb_banklink:
+        class: Food\OrderBundle\Service\Banklink\Seb
+        arguments: ["%seb%"]
+        calls:
+            - [setContainer, ["@service_container"]]
 
     food.nordea_banklink:
         class: Food\OrderBundle\Service\Banklink\Nordea

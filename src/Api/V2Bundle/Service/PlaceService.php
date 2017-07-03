@@ -27,40 +27,22 @@ class PlaceService extends PlacesService
     {
         $response = [
             'found' => false,
-            'lat' => 0,
-            'lng' => 0,
+            'latitude' => 0,
+            'longitude' => 0,
             'street' => false,
             'house' => false,
         ];
 
-        $addressString = $address." ,".$city." Lithuania"; // todo change lithuania to configuration :)
-        $gis = $this->container->get('food.googlegis');
-        $location = $gis->getPlaceData($addressString);
+        $addressString = $address." ,".$city;
 
-        if(count($location->results) >= 1 && strlen($city) >= 3) {
+        $location = $this->container->get('food.location')->findByAddress($addressString);
 
-            try {
-                $baseRegion = $location->results[0]->geometry->location;
-                $response['lat'] = $baseRegion->lat;
-                $response['lng'] = $baseRegion->lng;
-                $response['found'] = true;
-            } catch (\Exception $e) {
-                $response['found'] = false;
-            }
-
-            $addressParser = $gis->parseDataFromLocation($location, $addressString);
-
-            if(isset($addressParser['lat']) && isset($addressParser['lng'])) {
-                $response['lat'] = $addressParser['lat'];
-                $response['lng'] = $addressParser['lng'];
-            }
-
-            if(!$response['found']) {
-                $response['found'] = !$addressParser['not_found'];
-            }
-
-            $response['street'] = $addressParser['street_found'];
-            $response['house'] = $addressParser['address_found'];
+        if($location && is_array($location)) {
+            $response['found'] = true;
+            $response['latitude'] = $location['latitude'];
+            $response['longitude'] = $location['longitude'];
+            $response['street'] = $location['street'] ? true : false;
+            $response['house'] = $location['house'] ? true : false;
         }
 
         return $response;
@@ -76,17 +58,16 @@ class PlaceService extends PlacesService
 
             $response = [];
             $cacheKey = $placeId . serialize($locationData) . (int)$ignoreSelfDelivery;
+
             if (!isset(self::$_getNearCache[$cacheKey])) {
-                if (!empty($locationData['lat'])) {
-                    $lat = str_replace(",", ".", $locationData['lat']);
-                    $lon = str_replace(",", ".", $locationData['lng']);
+                if (!empty($locationData['latitude'])) {
+                    $lat = $locationData['latitude'];
+                    $lon = $locationData['longitude'];
 
                     $dh = date("H");
                     $dm = date("i");
-                    $wd = date('w');
-                    if ($wd == 0) $wd = 7;
+                    $wd = date('w') == 0 ? 7 : date('w');
 
-                    $defaultZone = "SELECT MAX(ppdzd.distance) FROM `place_point_delivery_zones` ppdzd WHERE ppdzd.deleted_at IS NULL AND ppdzd.active=1 AND ppdzd.place_point IS NULL AND ppdzd.place IS NULL";
                     $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id";
 
                     $subQuery = "SELECT pp.id, pp.address, pp.city, pp.delivery, pp.public,  (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) AS distance
@@ -98,9 +79,7 @@ class PlaceService extends PlacesService
                       AND p.active=1
                       AND pp.place = $placeId
                       AND (
-                        (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <=
-                        IF(($maxDistance) IS NULL, ($defaultZone), ($maxDistance))
-                        " . (!$ignoreSelfDelivery ? "" : "") . "
+                        (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) <= ($maxDistance)
                     )
                       AND ppwt.week_day = " . $wd . "
                       AND (

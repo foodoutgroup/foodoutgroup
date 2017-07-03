@@ -12,7 +12,8 @@ use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
 
 
-class CartService {
+class CartService
+{
 
     private $container;
     /**
@@ -75,7 +76,6 @@ class CartService {
     {
         $this->newSessionId = $newSessionId;
     }
-
 
 
     /**
@@ -142,7 +142,7 @@ class CartService {
     public function removeDishByIds($dishId, $cartId, $placeId)
     {
         if (empty($placeId)) {
-            $this->getContainer()->get('logger')->error('removeDishByIds called without place given. DishId: '.$dishId.' cartId: '.$cartId);
+            $this->getContainer()->get('logger')->error('removeDishByIds called without place given. DishId: ' . $dishId . ' cartId: ' . $cartId);
             return $this;
         }
         $dish = $this->getEm()->getRepository('FoodDishesBundle:Dish')->find((int)$dishId);
@@ -158,9 +158,9 @@ class CartService {
         foreach ($opts as $opt) {
             if ($opt == null) {
                 $context = array(
-                    'RequestData: '.json_encode($this->container->get('request')->request->all()),
-                    'EntityType: '.get_class($opt),
-                    'ParentType: '.get_class($dish)
+                    'RequestData: ' . json_encode($this->container->get('request')->request->all()),
+                    'EntityType: ' . get_class($opt),
+                    'ParentType: ' . get_class($dish)
                 );
                 $this->container->get('logger')->error(
                     "ACTION: removeDishByIds, options removal",
@@ -184,8 +184,8 @@ class CartService {
 
         if ($cartDish == null) {
             $context = array(
-                'RequestData: '.json_encode($this->container->get('request')->request->all()),
-                'EntityType: '.get_class($cartDish),
+                'RequestData: ' . json_encode($this->container->get('request')->request->all()),
+                'EntityType: ' . get_class($cartDish),
             );
             $this->container->get('logger')->error(
                 "ACTION: removeDishByIds, Dish removal removal",
@@ -261,7 +261,7 @@ class CartService {
         }
         $sizeEnt = $this->getEm()->getRepository('FoodDishesBundle:DishSize')->find($size);
 
-        if(!empty($option)) {
+        if (!empty($option)) {
             if (is_array($option)) {
                 $options = array_merge($options, array_values($option));
             } else {
@@ -371,7 +371,7 @@ class CartService {
                 'place_id' => $place->getId()
             )
         );
-        foreach($list as $k => &$item) {
+        foreach ($list as $k => &$item) {
             $item->setEm($this->getEm());
         }
         return $list;
@@ -408,10 +408,18 @@ class CartService {
      */
     public function getCartTotal($cartItems)
     {
+        $optionalCheck = false;
+
+        if (!empty($cartItems)) {
+            $optionalCheck = $this->OptionalCheck($cartItems);
+        }
+//        var_dump($optionalCheck);die;
         $total = 0;
         foreach ($cartItems as $cartItem) {
             if (!$cartItem->getIsFree()) {
                 $total += ((float)$cartItem->getDishSizeId()->getCurrentPrice() * 100) * (int)$cartItem->getQuantity();
+            }
+            if ($optionalCheck || !$cartItem->getIsFree()) {
 
                 $dishOptionsPrices = $this->getContainer()->get('food.dishes')->getDishOptionsPrices($cartItem->getDishId());
                 foreach ($cartItem->getOptions() as $opt) {
@@ -510,15 +518,18 @@ class CartService {
             }
             $theDish = 0;
             if ($thisDishFitsUs) {
-                $theDish+= $cartItem->getDishSizeId()->getCurrentPrice() * $cartItem->getQuantity();
+                $theDish += $cartItem->getDishSizeId()->getCurrentPrice() * $cartItem->getQuantity();
                 foreach ($cartItem->getOptions() as $opt) {
                     $theDish += $opt->getDishOptionId()->getPrice() * $cartItem->getQuantity();
                 }
                 if ($theDish > 0) {
-                    $total+= round(($theDish * $discountPercent / 100), 2);
+                    $total += ($theDish * $discountPercent / 100);
                 }
             }
         }
+
+        $total = round($total, 2);
+
         return $total;
     }
 
@@ -585,9 +596,9 @@ class CartService {
         $options = $this->getCartDishOptions($cartItem);
         foreach ($options as $cartOption) {
             $returnData[] = array(
-                'name'      => $cartOption->getDishOptionId()->getName(),
-                'price'     => $cartOption->getDishOptionId()->getPrice(),
-                'quantity'  => $cartOption->getQuantity()
+                'name' => $cartOption->getDishOptionId()->getName(),
+                'price' => $cartOption->getDishOptionId()->getPrice(),
+                'quantity' => $cartOption->getQuantity()
             );
         }
         return $returnData;
@@ -605,7 +616,7 @@ class CartService {
                     'session' => $this->getSessionId()
                 )
             );
-        foreach ($cartDishes as $ck=>$cartDish) {
+        foreach ($cartDishes as $ck => $cartDish) {
             $cartOptions = $this->getEm()->getRepository('FoodCartBundle:CartOption')
                 ->findBy(
                     array(
@@ -614,7 +625,7 @@ class CartService {
                         'cart_id' => $cartDish->getCartId()
                     )
                 );
-            foreach ($cartOptions as $co=>$cartOption) {
+            foreach ($cartOptions as $co => $cartOption) {
                 $this->getEm()->remove($cartOption);
                 $this->getEm()->flush();
             }
@@ -629,14 +640,15 @@ class CartService {
      * @param PlacePoint $placePoint
      * @return int
      */
-    public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint,$noneWorking = false)
+    public function getDeliveryPrice(Place $place, $locData, PlacePoint $placePoint, $noneWorking = false, $futureDate = false)
     {
-        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData,$noneWorking);
+        $deliveryTotal = $this->container->get('doctrine')->getRepository("FoodDishesBundle:Place")->getDeliveryPriceForPlacePoint($place, $placePoint, $locData, $noneWorking, $futureDate);
 
         if (false === $deliveryTotal) {
             $deliveryTotal = $place->getDeliveryPrice();
         }
-        return (float) $deliveryTotal;
+
+        return (float)$deliveryTotal;
     }
 
     /**
@@ -647,12 +659,44 @@ class CartService {
      */
     public function getMinimumCart(Place $place, $locData, PlacePoint $placePoint)
     {
-        $deliveryTotal = $this->container->get('doctrine')->getManager()->getRepository("FoodDishesBundle:Place")->getMinimumCartForPlacePoint($place, $placePoint, $locData);
+        $deliveryTotal = $this->container->get('doctrine')->getRepository("FoodDishesBundle:Place")->getMinimumCartForPlacePoint($place, $placePoint, $locData);
         if (empty($deliveryTotal)) {
             $deliveryTotal = $place->getCartMinimum();
         }
         $deliveryTotal = sprintf("%01.2f", $deliveryTotal);
         return $deliveryTotal;
+    }
+
+    public function OptionalCheck($cartItems)
+    {
+        $result = false;
+        $place = $cartItems[0]->getPlaceId();
+        $activeBundles = $this->_getActiveBundles($place);
+
+        foreach ($cartItems as $item) {
+            if ($item->getIsFree()) {
+                $dishCategories = $item->getDishId()->getCategories();
+
+                foreach ($activeBundles as $comboDiscount) {
+                    if ($comboDiscount->getApplyBy() == ComboDiscount::OPT_COMBO_APPLY_UNIT) {
+                        if ($comboDiscount->getDishUnit()->getId() == $item->getDishSizeId()->getUnit()->getId()) {
+                            $comboDishCategory = $comboDiscount->getDishCategory();
+                            if (!empty($comboDishCategory)) {
+                                foreach ($dishCategories as $dishCategory) {
+                                    if ($comboDishCategory->getId() == $dishCategory->getId()) {
+                                        return $comboDiscount->getOptionals();
+                                    }
+                                }
+                            } else {
+                                return $comboDiscount->getOptionals();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $result;
     }
 
     public function recalculateBundles($placeId)
@@ -714,18 +758,18 @@ class CartService {
         $amount = $bundle->getAmount();
         $totalDishes = 0;
         foreach ($items as $item) {
-            $totalDishes+= $item->getQuantity();
+            $totalDishes += $item->getQuantity();
         }
         // splitas kad gauti kiek paketu gaunasi taikant Bundla ze free (kiek reikia surinkti + tas kuris bus free)
-        $splits = floor($totalDishes / ($amount+1));
+        $splits = floor($totalDishes / ($amount + 1));
         /**
          * kacialinam pigiausius dabar, nes butent juos discountinsim
          */
         $thePricesIdMap = [];
         $thePriceMapper = [];
         $theIdMap = [];
-        foreach($items as $dish) {
-            for($i = 0; $i < $dish->getQuantity(); $i++) {
+        foreach ($items as $dish) {
+            for ($i = 0; $i < $dish->getQuantity(); $i++) {
                 $thePricesIdMap[] = array(
                     'cartOption' => $dish,
                     'dish' => $dish->getDishId(),
@@ -763,7 +807,7 @@ class CartService {
                 $this->getEm()->persist($item);
                 $this->getEm()->flush();
             } else {
-                $item->setQuantity($quan-1);
+                $item->setQuantity($quan - 1);
                 $this->getEm()->persist($item);
                 $this->getEm()->flush();
                 $this->addDish($item->getDishId(), $item->getDishSizeId(), 1, $options, "", null, true);
@@ -788,7 +832,8 @@ class CartService {
      * @param \Food\CartBundle\Entity\Cart[] $dishes
      * @return bool
      */
-    public function isAlcoholInCart($dishes)
+    public
+    function isAlcoholInCart($dishes)
     {
         if (count($dishes)) {
             foreach ($dishes as $dish) {
@@ -804,7 +849,8 @@ class CartService {
      * @param \Food\DishesBundle\Entity\Dish $dish
      * @return bool
      */
-    public function isAlcohol($dish)
+    public
+    function isAlcohol($dish)
     {
         $dishCategories = $dish->getCategories();
         foreach ($dishCategories as $dishCategory) {

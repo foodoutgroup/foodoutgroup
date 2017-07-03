@@ -244,34 +244,34 @@ class NavService extends ContainerAware
     public function testInsertOrder()
     {
         $dataToPut = [
-            'Order No_'          => '10004',
-            'Phone'              => '37061544121',
-            'ZipCode'            => '03115',
-            'City'               => '',
-            'Street'             => '',
-            'Street No_'         => '',
-            'Floor'              => '',
-            'Grid'               => '',
-            'Chain'              => 'PICA',
-            'Name'               => 'FoodOut_dev',
-            'Delivery Type'      => '1',
-            'Restaurant No_'     => '64',
-            'Order Date'         => date("Y-m-d H:i:s"),
+            'Order No_' => '10004',
+            'Phone' => '37061544121',
+            'ZipCode' => '03115',
+            'City' => '',
+            'Street' => '',
+            'Street No_' => '',
+            'Floor' => '',
+            'Grid' => '',
+            'Chain' => 'PICA',
+            'Name' => 'FoodOut_dev',
+            'Delivery Type' => '1',
+            'Restaurant No_' => '64',
+            'Order Date' => date("Y-m-d H:i:s"),
             //'Order Time' => '1754-01-01 '.date("H:i:s", strtotime('-3 hours')),
             //'Takeout Time' => date("Y-m-d H:i:s", (strtotime('+20 minutes') - (3600 * 3))),
-            'Order Time'         => '1754-01-01 ' . date("H:i:s"),
-            'Takeout Time'       => date("Y-m-d H:i:s", (strtotime('+20 minutes'))),
-            'Directions'         => 'Negaminti',
-            'Discount Card No_'  => '',
-            'Order Status'       => '',
+            'Order Time' => '1754-01-01 ' . date("H:i:s"),
+            'Takeout Time' => date("Y-m-d H:i:s", (strtotime('+20 minutes'))),
+            'Directions' => 'Negaminti',
+            'Discount Card No_' => '',
+            'Order Status' => '',
             'Delivery Order No_' => '',
-            'Error Description'  => '',
-            'Flat No_'           => '',
-            'Entrance Code'      => '',
-            'Region Code'        => '',
-            'Delivery Status'    => '',
-            'In Use By User'     => '',
-            'Loyalty Card No_'   => '',
+            'Error Description' => '',
+            'Flat No_' => '',
+            'Entrance Code' => '',
+            'Region Code' => '',
+            'Delivery Status' => '',
+            'In Use By User' => '',
+            'Loyalty Card No_' => '',
             'Order with Alcohol' => '0'
         ];
         $queryPart = $this->generateQueryPart($dataToPut);
@@ -292,7 +292,7 @@ class NavService extends ContainerAware
         $values = array_values($data);
 
         return [
-            'keys'   => '[' . implode('],[', $arrayKeys) . ']',
+            'keys' => '[' . implode('],[', $arrayKeys) . ']',
             'values' => "'" . implode("','", $values) . "'",
         ];
     }
@@ -303,7 +303,7 @@ class NavService extends ContainerAware
         $values = array_values($data);
 
         return [
-            'keys'   => '[' . implode('],[', $arrayKeys) . ']',
+            'keys' => '[' . implode('],[', $arrayKeys) . ']',
             'values' => implode(',', $values)
         ];
     }
@@ -358,7 +358,7 @@ class NavService extends ContainerAware
                 $comment .= ". Mokesiu grynais";
             }
         } else {
-            $comment .= ". ".$order->getPaymentMethod();
+            $comment .= ". " . $order->getPaymentMethod();
         }
 
         $dataToPut = [
@@ -374,13 +374,13 @@ class NavService extends ContainerAware
             'Name'               => 'FO:' . $order->getUser()->getFirstname(),
             'Delivery Type'      => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? 1 : 4),
             //'Restaurant No_' => ($order->getDeliveryType() == OrderService::$deliveryDeliver ? '':  $order->getPlacePoint()->getInternalCode()),
-            'Restaurant No_'     => $order->getPlacePoint()->getInternalCode(),
-            'Order Date'         => $orderDate->format("Y-m-d"),
-            'Order Time'         => '1754-01-01 ' . $orderDate->format("H:i:s"),
-            'Takeout Time'       => $deliveryDate->format("Y-m-d H:i:s"),
-            'Directions'         => $comment,
-            'Discount Card No_'  => '',
-            'Order Status'       => 4,
+            'Restaurant No_' => $order->getPlacePoint()->getInternalCode(),
+            'Order Date' => $orderDate->format("Y-m-d"),
+            'Order Time' => '1754-01-01 ' . $orderDate->format("H:i:s"),
+            'Takeout Time' => $deliveryDate->format("Y-m-d H:i:s"),
+            'Directions' => $comment,
+            'Discount Card No_' => '',
+            'Order Status' => 4,
             'Delivery Order No_' => '',
             'Error Description'  => '',
             'Flat No_'           => $flatNr, //($order->getDeliveryType() == OrderService::$deliveryDeliver ? $flatNr: ''),
@@ -431,19 +431,19 @@ class NavService extends ContainerAware
     private function _processPayedLineDelivery(Order $order, $orderNewId, $key)
     {
         $dataToPut = [
-            'Order No_'       => $orderNewId,
-            'Line No_'        => $key,
-            'Entry Type'      => 3,
-            'No_'             => "'B_SWED'",
-            'Description'     => "''",
-            'Quantity'        => 1,
-            'Price'           => $order->getTotal(),
-            'Parent Line'     => 0,
-            'Amount'          => 0,
+            'Order No_' => $orderNewId,
+            'Line No_' => $key,
+            'Entry Type' => 3,
+            'No_' => "'B_SWED'",
+            'Description' => "''",
+            'Quantity' => 1,
+            'Price' => $order->getTotal(),
+            'Parent Line' => 0,
+            'Amount' => 0,
             'Discount Amount' => 0,
-            'Payment'         => 0,
-            'Value'           => "''",
-            'Discount No_'    => "''"
+            'Payment' => 0,
+            'Value' => "''",
+            'Discount No_' => "''"
         ];
 
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
@@ -470,19 +470,19 @@ class NavService extends ContainerAware
         //}
 
         $dataToPut = [
-            'Order No_'       => $orderNewId,
-            'Line No_'        => $key,
-            'Entry Type'      => 0,
-            'No_'             => "'ZRAW0009996'",
-            'Description'     => "''",
-            'Quantity'        => 1,
-            'Price'           => $devPrice,
-            'Parent Line'     => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
-            'Amount'          => $devPrice,
+            'Order No_' => $orderNewId,
+            'Line No_' => $key,
+            'Entry Type' => 0,
+            'No_' => "'ZRAW0009996'",
+            'Description' => "''",
+            'Quantity' => 1,
+            'Price' => $devPrice,
+            'Parent Line' => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
+            'Amount' => $devPrice,
             'Discount Amount' => 0,
-            'Payment'         => $devPrice,
-            'Value'           => "''",
-            'Discount No_'    => "''"
+            'Payment' => $devPrice,
+            'Value' => "''",
+            'Discount No_' => "''"
         ];
 
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
@@ -604,20 +604,21 @@ class NavService extends ContainerAware
         */
         $desc = str_replace(["'", '"', ',', '(', ')', '`'], '', $desc);
         $desc = "'" . $desc . "'";
+        $mmCode = "'" . $detail->getDishSizeMmCode() . "'";
         $dataToPut = [
-            'Order No_'       => $orderNewId,
-            'Line No_'        => $key,
-            'Entry Type'      => 0,
-            'No_'             => "'" . $code . "'",
-            'Description'     => $desc,
-            'Quantity'        => $detail->getQuantity(),
-            'Price'           => $priceForInsert, //$detail->getPrice(), // @todo test the price. Kaip gula. Total ar ne.
-            'Parent Line'     => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
-            'Amount'          => $amountForInsert, // $detail->getPrice() * $detail->getQuantity(),// @todo test the price. Kaip gula. Total ar ne.
+            'Order No_' => $orderNewId,
+            'Line No_' => $key,
+            'Entry Type' => 0,
+            'No_' => "'" . $code . "'",
+            'Description' => $desc,
+            'Quantity' => $detail->getQuantity(),
+            'Price' => $priceForInsert, //$detail->getPrice(), // @todo test the price. Kaip gula. Total ar ne.
+            'Parent Line' => 0, // @todo kaip optionsai sudedami. ar prie pirmines kainos ar ne
+            'Amount' => $amountForInsert, // $detail->getPrice() * $detail->getQuantity(),// @todo test the price. Kaip gula. Total ar ne.
             'Discount Amount' => "-" . $discountAmount,
-            'Payment'         => $amountForInsert - $discountAmount, //$detail->getPrice() * $detail->getQuantity(),
-            'Value'           => "''",
-            'Discount No_'    => "''"
+            'Payment' => $amountForInsert - $discountAmount, //$detail->getPrice() * $detail->getQuantity(),
+            'Value' => "''",
+            'Discount No_' => $mmCode
         ];
         $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
         $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
@@ -638,19 +639,19 @@ class NavService extends ContainerAware
                 }
 
                 $dataToPut = [
-                    'Order No_'       => $orderNewId,
-                    'Line No_'        => $okeyCounter,
-                    'Entry Type'      => ($opt->getDishOptionId()->getFirstLevel() ? 0 : 1),
-                    'No_'             => "'" . $code . "'",
-                    'Description'     => "'" . $desc . "'",
-                    'Quantity'        => ($opt->getDishOptionId()->getFirstLevel() ? $opt->getOrderDetail()->getQuantity() : 0),
-                    'Price'           => ($opt->getDishOptionId()->getFirstLevel() ? $opt->getDishOptionId()->getPrice() : 0),
-                    'Parent Line'     => ($opt->getDishOptionId()->getFirstLevel() ? 0 : $key),
-                    'Amount'          => ($opt->getDishOptionId()->getFirstLevel() ? ($opt->getOrderDetail()->getQuantity() * $opt->getDishOptionId()->getPrice()) : 0),
+                    'Order No_' => $orderNewId,
+                    'Line No_' => $okeyCounter,
+                    'Entry Type' => ($opt->getDishOptionId()->getFirstLevel() ? 0 : 1),
+                    'No_' => "'" . $code . "'",
+                    'Description' => "'" . $desc . "'",
+                    'Quantity' => ($opt->getDishOptionId()->getFirstLevel() ? $opt->getOrderDetail()->getQuantity() : 0),
+                    'Price' => ($opt->getDishOptionId()->getFirstLevel() ? $opt->getDishOptionId()->getPrice() : 0),
+                    'Parent Line' => ($opt->getDishOptionId()->getFirstLevel() ? 0 : $key),
+                    'Amount' => ($opt->getDishOptionId()->getFirstLevel() ? ($opt->getOrderDetail()->getQuantity() * $opt->getDishOptionId()->getPrice()) : 0),
                     'Discount Amount' => 0,
-                    'Payment'         => ($opt->getDishOptionId()->getFirstLevel() ? ($opt->getOrderDetail()->getQuantity() * $opt->getDishOptionId()->getPrice()) : 0),
-                    'Value'           => "''",
-                    'Discount No_'    => "''"
+                    'Payment' => ($opt->getDishOptionId()->getFirstLevel() ? ($opt->getOrderDetail()->getQuantity() * $opt->getDishOptionId()->getPrice()) : 0),
+                    'Value' => "''",
+                    'Discount No_' => "''"
                 ];
                 $queryPart = $this->generateQueryPartNoQuotes($dataToPut);
                 $query = 'INSERT INTO ' . $this->getLineTable() . ' (' . $queryPart['keys'] . ') VALUES(' . $queryPart['values'] . ')';
@@ -780,25 +781,25 @@ class NavService extends ContainerAware
             : $this->convertPaymentType($paymentType);
 
         // main variable that holds parameters for a Soap call
-        $params = ['InvoiceNo'         => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
-                   'OrderID'           => $o->getId()->val('0'),
-                   'OrderDate'         => $o->getDeliveryTime()->format('Y.m.d')->val('1754-01-01'),
-                   'RestaurantID'      => $o->getPlace()->getId()->val('0'),
-                   'RestaurantName'    => $o->getPlaceName()->val(''),
-                   'DriverID'          => $driverId,
-                   'ClientName'        => $this->normalizeStringForNav($clientName),
-                   'RegistrationNo'    => $o->getCompanyCode()->val(''),
-                   'VATRegistrationNo' => $o->getVATCode()->val(''),
-                   'DeliveryAddress'   => $this->normalizeStringForNav($o->getAddressId()->getAddress()->val('')),
-                   'City'              => $o->getPlacePointCity()->val(''),
-                   'PaymentType'       => substr($paymentType, 0, 20),
-                   'PaymentCode'       => $paymentCode,
-                   'FoodAmount'        => number_format($foodTotal, 2, '.', ''),
-                   'AlcoholAmount'     => number_format(0.0, 2, '.', ''),
-                   'DeliveryAmount'    => $o->getDeliveryType()->val('') == 'pickup'
-                       ? '0.00'
-                       : number_format($deliveryTotal, 2, '.', ''),
-                    'DiscountAmount'   => number_format($discountSum, 2, '.', '') // doesn't works
+        $params = ['InvoiceNo' => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
+            'OrderID' => $o->getId()->val('0'),
+            'OrderDate' => $o->getDeliveryTime()->format('Y.m.d')->val('1754-01-01'),
+            'RestaurantID' => $o->getPlace()->getId()->val('0'),
+            'RestaurantName' => $o->getPlaceName()->val(''),
+            'DriverID' => $driverId,
+            'ClientName' => $this->normalizeStringForNav($clientName),
+            'RegistrationNo' => $o->getCompanyCode()->val(''),
+            'VATRegistrationNo' => $o->getVATCode()->val(''),
+            'DeliveryAddress' => $this->normalizeStringForNav($o->getAddressId()->getAddress()->val('')),
+            'City' => $o->getPlacePointCity()->val(''),
+            'PaymentType' => substr($paymentType, 0, 20),
+            'PaymentCode' => $paymentCode,
+            'FoodAmount' => number_format($foodTotal, 2, '.', ''),
+            'AlcoholAmount' => number_format(0.0, 2, '.', ''),
+            'DeliveryAmount' => $o->getDeliveryType()->val('') == 'pickup'
+                ? '0.00'
+                : number_format($deliveryTotal, 2, '.', ''),
+            'DiscountAmount' => number_format($discountSum, 2, '.', '') // doesn't works
         ];
 
         // send a call to a web service, but beware of exceptions
@@ -825,8 +826,7 @@ class NavService extends ContainerAware
 
             $this->getContainer()
                 ->get('event_dispatcher')
-                ->dispatch(SoapFaultEvent::SOAP_FAULT, $event)
-            ;
+                ->dispatch(SoapFaultEvent::SOAP_FAULT, $event);
         }
 
         $r = \Maybe($response);
@@ -835,12 +835,12 @@ class NavService extends ContainerAware
     }
 
     /**
-     * @param String     $phone
+     * @param String $phone
      * @param PlacePoint $restaurant
-     * @param String     $orderDate
-     * @param String     $orderTime
-     * @param String     $deliveryType
-     * @param Cart[]     $dishes
+     * @param String $orderDate
+     * @param String $orderTime
+     * @param String $deliveryType
+     * @param Cart[] $dishes
      *
      * @return array
      */
@@ -849,10 +849,10 @@ class NavService extends ContainerAware
         $rcCode = !empty($restaurant) ? $restaurant->getInternalCode() : '';
 
         $requestData = [
-            'Phone'        => str_replace(['370', '371'], "8", $phone),
+            'Phone' => str_replace(['370', '371'], "8", $phone),
             'RestaurantNo' => $rcCode,
-            'OrderDate'    => str_replace("-", ".", $orderDate),
-            'OrderTime'    => $orderTime,
+            'OrderDate' => str_replace("-", ".", $orderDate),
+            'OrderTime' => $orderTime,
             'DeliveryType' => ($deliveryType == OrderService::$deliveryDeliver ? 1 : 4)
         ];
 
@@ -876,18 +876,18 @@ class NavService extends ContainerAware
 
             $lineMap = [];
             $requestData['Lines'][] = ['Line' => [
-                'LineNo'       => $lineNo,
+                'LineNo' => $lineNo,
                 'ParentLineNo' => 0,
-                'EntryType'    => 0,
-                'ItemNo'       => $code,
-                'Description'  => mb_substr($cart->getDishId()->getNameToNav(), 0, 30, 'utf-8'),
-                'Quantity'     => $cart->getQuantity(),
-                'Price'        => $cart->getDishSizeId()->getPrice(),
-                'Amount'       => $cart->getDishSizeId()->getPrice() * $cart->getQuantity()
+                'EntryType' => 0,
+                'ItemNo' => $code,
+                'Description' => mb_substr($cart->getDishId()->getNameToNav(), 0, 30, 'utf-8'),
+                'Quantity' => $cart->getQuantity(),
+                'Price' => $cart->getDishSizeId()->getPrice(),
+                'Amount' => $cart->getDishSizeId()->getPrice() * $cart->getQuantity()
             ]];
             $lineMap[$lineNo] = [
                 'parent' => 0,
-                'name'   => $cart->getDishId()->getName()
+                'name' => $cart->getDishId()->getName()
             ];
 
             $origLineNo = $lineNo;
@@ -915,18 +915,18 @@ class NavService extends ContainerAware
 
                     $lineMap[$lineNo] = [
                         'parent' => $origLineNo,
-                        'name'   => $description
+                        'name' => $description
                     ];
 
                     $requestData['Lines'][] = ['Line' => [
-                        'LineNo'       => $lineNo,
+                        'LineNo' => $lineNo,
                         'ParentLineNo' => $parencyLineNo,
-                        'EntryType'    => $entryType,
-                        'ItemNo'       => $optionCode,
-                        'Description'  => mb_substr($description, 0, 30, 'utf-8'),
-                        'Quantity'     => $cart->getQuantity(),
-                        'Price'        => $option->getDishOptionId()->getPrice(),
-                        'Amount'       => $option->getDishOptionId()->getPrice() * $cart->getQuantity()
+                        'EntryType' => $entryType,
+                        'ItemNo' => $optionCode,
+                        'Description' => mb_substr($description, 0, 30, 'utf-8'),
+                        'Quantity' => $cart->getQuantity(),
+                        'Price' => $option->getDishOptionId()->getPrice(),
+                        'Amount' => $option->getDishOptionId()->getPrice() * $cart->getQuantity()
                     ]];
 
                 }
@@ -937,11 +937,11 @@ class NavService extends ContainerAware
         // this is more like anomaly than a rule
         if (empty($requestData['Lines'])) {
             $returner = [
-                'valid'   => false,
+                'valid' => false,
                 'errcode' => [
-                    'code'         => 255,
-                    'line'         => __LINE__,
-                    'msg'          => 'No line items.',
+                    'code' => 255,
+                    'line' => __LINE__,
+                    'msg' => 'No line items.',
                     'problem_dish' => ''
                 ]
             ];
@@ -957,8 +957,7 @@ class NavService extends ContainerAware
                 'params' => $requestData,
                 'errors' => []
             ]
-        )
-        ;
+        );
         //~ $this->container->get('logger')->debug('CILI NVB VALIDATE RESPONSE');
         //~ $this->container->get('logger')->debug(print_r($response, true));
         ob_end_clean();
@@ -973,11 +972,11 @@ class NavService extends ContainerAware
         }
 
         $returner = [
-            'valid'   => ($response->return_value == 0 ? true : false),
+            'valid' => ($response->return_value == 0 ? true : false),
             'errcode' => [
-                'code'         => ($response->return_value != 0 && isset($response->errors->Error) ? $response->errors->Error->Code : ''),
-                'line'         => ($response->return_value != 0 && isset($response->errors->Error) ? $response->errors->Error->SubCode : ''),
-                'msg'          => ($response->return_value != 0 && isset($response->errors->Error) ? $response->errors->Error->Description : ''),
+                'code' => ($response->return_value != 0 && isset($response->errors->Error) ? $response->errors->Error->Code : ''),
+                'line' => ($response->return_value != 0 && isset($response->errors->Error) ? $response->errors->Error->SubCode : ''),
+                'msg' => ($response->return_value != 0 && isset($response->errors->Error) ? $response->errors->Error->Description : ''),
                 'problem_dish' => $prbDish
             ]
         ];
@@ -1165,12 +1164,12 @@ class NavService extends ContainerAware
         $return = [];
         while ($rowRez = $this->container->get('food.mssql')->fetchArray($result)) {
             $return[$orderIdMap[$rowRez['OrderNo']]] = [
-                'Order No_'          => $rowRez['OrderNo'],
-                'Order Status'       => null,
-                'Delivery Status'    => $rowRez['OrderStatus'],
+                'Order No_' => $rowRez['OrderNo'],
+                'Order Status' => null,
+                'Delivery Status' => $rowRez['OrderStatus'],
                 'Delivery Order No_' => $rowRez['OrderNo'],
-                'Driver ID'          => $rowRez['Driver ID'],
-                'Total Sum'          => $rowRez['OrderSum'],
+                'Driver ID' => $rowRez['Driver ID'],
+                'Total Sum' => $rowRez['OrderSum'],
             ];
         }
 
@@ -1284,7 +1283,7 @@ class NavService extends ContainerAware
     }
 
     /**
-     * @param Order  $order
+     * @param Order $order
      * @param string $driverId
      */
     public function setDriverFromNav(Order $order, $driverId)
@@ -1598,8 +1597,7 @@ class NavService extends ContainerAware
                     $pPoint->getId(),
                     $chain,
                     $pPoint->getPlace()->getChain()
-                ))
-            ;
+                ));
         }
 
         if ($pPoint->getParentId() !== null) {
@@ -1610,8 +1608,7 @@ class NavService extends ContainerAware
                     $pPoint->getId(),
                     $chain,
                     $pPoint->getPlace()->getChain()
-                ))
-            ;
+                ));
 
             $pPoint = $repo->find($pPoint->getParentId());
         }
@@ -1639,12 +1636,11 @@ class NavService extends ContainerAware
                 ->where('d.name LIKE :first_name_part')
                 ->andWhere('d.name LIKE :second_name_part')
                 ->setParameters([
-                    'first_name_part'  => $nameParts[0] . "%",
+                    'first_name_part' => $nameParts[0] . "%",
                     'second_name_part' => "% " . $nameParts[1] . "%"
                 ])
                 ->orderBy('d.id', 'ASC')
-                ->setMaxResults(1)
-            ;
+                ->setMaxResults(1);
 
             $driver = $driverQueryBuilder->getQuery()->getResult();
 
@@ -1670,8 +1666,7 @@ class NavService extends ContainerAware
             $invoiceToSendNavOnly = new InvoiceToSendNavOnly();
             $invoiceToSendNavOnly->setOrder($order)
                 ->setDateAdded(new \DateTime('now'))
-                ->setDateSent(new \DateTime('now'))
-            ;
+                ->setDateSent(new \DateTime('now'));
 
             $em->persist($invoiceToSendNavOnly);
         } else {
@@ -1767,29 +1762,29 @@ class NavService extends ContainerAware
                 $o->getUser()->getLastname()->val(''));
 
         $orderProperties = [
-            'Order ID'                 => $o->getId()->val(''),
-            'Invoice No_'              => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
-            'Restaurant ID'            => $o->getPlace()->getId()->val(''),
-            'Restaurant Name'          => $o->getPlaceName()->val(''),
-            'Driver ID'                => $o->getDriver()->getId()->val(''),
-            'Client Name'              => $this->normalizeStringForNav($clientName),
-            'Registration No_'         => $o->getCompanyCode()->val(''),
-            'VAT Registration No_'     => $o->getVatCode()->val(''),
-            'Delivery Address'         => $this->normalizeStringForNav($o->getAddressId()->getAddress()->val('')),
-            'City'                     => $o->getPlacePointCity()->val(''),
-            'Payment Method Type'      => $o->getPaymentMethod()->val(''),
-            'Payment Method Code'      => $o->getPaymentMethod()->val('') == 'local'
+            'Order ID' => $o->getId()->val(''),
+            'Invoice No_' => $o->getSfSeries()->val('') . $o->getSfNumber()->val(''),
+            'Restaurant ID' => $o->getPlace()->getId()->val(''),
+            'Restaurant Name' => $o->getPlaceName()->val(''),
+            'Driver ID' => $o->getDriver()->getId()->val(''),
+            'Client Name' => $this->normalizeStringForNav($clientName),
+            'Registration No_' => $o->getCompanyCode()->val(''),
+            'VAT Registration No_' => $o->getVatCode()->val(''),
+            'Delivery Address' => $this->normalizeStringForNav($o->getAddressId()->getAddress()->val('')),
+            'City' => $o->getPlacePointCity()->val(''),
+            'Payment Method Type' => $o->getPaymentMethod()->val(''),
+            'Payment Method Code' => $o->getPaymentMethod()->val('') == 'local'
                 ? $o->getDriver()->getId()->val('')
                 : $this->convertPaymentType($o->getPaymentMethod()->val('')),
-            'Food Amount With VAT'     => $o->getTotal()->val(0.0) - $o->getDeliveryPriceForNav()->val(0.0),
-            'Alcohol Amount With VAT'  => 0.0,
+            'Food Amount With VAT' => $o->getTotal()->val(0.0) - $o->getDeliveryPriceForNav()->val(0.0),
+            'Alcohol Amount With VAT' => 0.0,
             'Delivery Amount With VAT' => $o->getDeliveryPriceForNav()->val('')
         ];
 
         $result = [
-            'sameData'   => array_intersect_assoc($navInvoice, $orderProperties),
+            'sameData' => array_intersect_assoc($navInvoice, $orderProperties),
             'invoiceHas' => array_diff_assoc($navInvoice, $orderProperties),
-            'orderHas'   => array_diff_assoc($orderProperties, $navInvoice)
+            'orderHas' => array_diff_assoc($orderProperties, $navInvoice)
         ];
 
         return $result;
@@ -1960,7 +1955,7 @@ class NavService extends ContainerAware
             $existsInLines = false;
         }
 
-        if ($existsInHeader || $existsInLines) {
+        if (!$existsInHeader || !$existsInLines) {
             return false;
         }
 
@@ -2006,5 +2001,24 @@ class NavService extends ContainerAware
                 }
             }
         }
+    }
+
+    public function getErrorFromNav($orderId)
+    {
+
+        $query = sprintf(
+            "SELECT * FROM %s WHERE [Order No_] = %d", $this->getMessagesTable(), $orderId
+        );
+
+        $result = $this->initSqlConn()->query($query);
+        if ($result === false) {
+            return [];
+        }
+        $return = [];
+        while ($rowRez = $this->container->get('food.mssql')->fetchAssoc($result)) {
+            $return = $rowRez;
+        }
+
+        return implode(',',$return);
     }
 }

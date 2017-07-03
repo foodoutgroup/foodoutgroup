@@ -4,6 +4,7 @@ namespace Food\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Food\DishesBundle\Entity\Dish;
+use Food\DishesBundle\Entity\DishUnit;
 
 /**
  * @ORM\Table(name="order_details")
@@ -33,7 +34,8 @@ class OrderDetails
     private $dish_id;
 
     /**
-     * @ORM\Column(name="dish_unit_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\DishUnit")
+     * @ORM\JoinColumn(name="dish_unit_id", referencedColumnName="id")
      */
     private $dish_unit_id;
 
@@ -58,6 +60,11 @@ class OrderDetails
      * @ORM\Column(name="dish_size_code", type="string", length=255, nullable=true)
      */
     private $dish_size_code;
+
+    /**
+     * @ORM\Column(name="dish_size_mm_code", type="string", length=255, nullable=true)
+     */
+    private $dish_size_mm_code;
 
     /**
      * @ORM\Column(name="quantity", type="integer", length=3)
@@ -216,10 +223,10 @@ class OrderDetails
     /**
      * Set dish_unit_id
      *
-     * @param integer $dishUnitId
+     * @param DishUnit $dishUnitId
      * @return OrderDetails
      */
-    public function setDishUnitId($dishUnitId)
+    public function setDishUnitId(DishUnit $dishUnitId)
     {
         $this->dish_unit_id = $dishUnitId;
 
@@ -229,7 +236,7 @@ class OrderDetails
     /**
      * Get dish_unit_id
      *
-     * @return integer
+     * @return DishUnit
      */
     public function getDishUnitId()
     {
@@ -429,17 +436,40 @@ class OrderDetails
     public function setNameToNav($nameToNav)
     {
         $this->nameToNav = $nameToNav;
-    
+
         return $this;
     }
 
     /**
      * Get nameToNav
      *
-     * @return string 
+     * @return string
      */
     public function getNameToNav()
     {
         return $this->nameToNav;
+    }
+
+    /**
+     * Set dish_size_mm_code
+     *
+     * @param string $dishSizeMmCode
+     * @return OrderDetails
+     */
+    public function setDishSizeMmCode($dishSizeMmCode)
+    {
+        $this->dish_size_mm_code = $dishSizeMmCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get dish_size_mm_code
+     *
+     * @return string 
+     */
+    public function getDishSizeMmCode()
+    {
+        return $this->dish_size_mm_code;
     }
 }

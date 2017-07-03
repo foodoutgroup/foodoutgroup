@@ -42,8 +42,15 @@
             <trans-unit id="ab9dbc0e8b931d30795a4bcbeee01531" resname="cart.checkout.delivery_to_home">
                 <source>cart.checkout.delivery_to_home</source><target>Koju toomine</target>
             </trans-unit>
+            <trans-unit id="ab9dbc0e8b931d30795a4bcbeee01532" resname="cart.checkout.pedestrian">
+                <source>cart.checkout.pedestrian</source>
+                <target>Tarne jalakäijate</target>
+            </trans-unit>
             <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1d" resname="cart.checkout.delivery_i_pickup">
                 <source>cart.checkout.delivery_i_pickup</source><target>Tulen ise järele</target>
+            </trans-unit>
+            <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1f" resname="cart.checkout.delivery_by_pedestrian">
+                <source>cart.checkout.delivery_by_pedestrian</source><target>tarnida 33 minutit</target>
             </trans-unit>
             <trans-unit id="91a531cac53e76cf23ca76d224b23c27new" resname="cart.checkout.enter_address">
                 <source>cart.checkout.enter_address</source><target>Sisestage aadress</target>
@@ -83,7 +90,7 @@
                 <target>Broneerige hiljem</target>
             </trans-unit>
             <trans-unit id="72ac47fdc9d8610d13cc86b4dd35e24f" resname="cart.checkout.phone_placeholder">
-                <source>cart.checkout.phone_placeholder</source><target>372 56 837 237</target>
+                <source>cart.checkout.phone_placeholder</source><target> 56 837 237</target>
             </trans-unit>
             <trans-unit id="bc8439664f3800919e17d58ad5eaff4b" resname="cart.checkout.delivery_comment">
                 <source>cart.checkout.delivery_comment</source><target>Lisateave</target>
@@ -242,7 +249,7 @@ Vilnius</target>
                 <target>Dėmesio! Šiame restorane galite pasirinkti ne daugiau kaip %text% gėrimus. Prašome sumažinti gėrimų kiekį arba pasirinkti kitą restoraną iš Foodout.lt . Skanaus pasirinkimo!</target>
             </trans-unit>
             <trans-unit id="order.form.errors.customerphone_format" resname="order.form.errors.customerphone_format">
-                <source>order.form.errors.customerphone_format</source><target>Sisestage mobiiltelefoni number vormingus 37061234567</target>
+                <source>order.form.errors.customerphone_format</source><target>Sisestage mobiiltelefoni number vormingus 61234567</target>
             </trans-unit>
             <trans-unit id="order.form.errors.customerphone_not_mobile" resname="order.form.errors.customerphone_not_mobile">
                 <source>order.form.errors.customerphone_not_mobile</source><target>Sisestatud telefoninumber ei ole mobiilinumber</target>

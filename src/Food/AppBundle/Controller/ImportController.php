@@ -12,7 +12,7 @@ class ImportController extends CRUDController
         $request = $this->get('request');
         $serviceResp = '';
         $t = $this->get('translator');
-        $localeCollection = $this->container->getParameter('available_locales');
+        $localeCollection = $this->container->getParameter('locales');
 
         $importExportService = $this->container->get('food.import_export_service');
         $fieldMap = $importExportService->getFieldMapForField();
@@ -29,7 +29,7 @@ class ImportController extends CRUDController
                 'choices' => $fieldMap,
                 'multiple' => true, 'expanded' => true,
             ])
-            ->add('import', 'submit', ['label' => 'import', 'attr' => ['class' => 'form-control btn btn-primary']])
+            ->add('processImport', 'submit', ['label' => 'import', 'attr' => ['class' => 'form-control btn btn-primary']])
             ->remove('token')
             ->getForm();
 

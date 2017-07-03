@@ -14,6 +14,7 @@ services:
         calls:
             - [ setAnnotationReader, [ @annotation_reader ] ]
             - [ setDefaultLocale, [ %locale% ] ]
+            - [ setTranslatableLocale, [ %locale% ] ]
             - [ setTranslationFallback, [ true ] ]
 
     slug:
@@ -22,7 +23,7 @@ services:
 
     validate.slug:
         class: Food\AppBundle\Validator\Constraints\SlugValidator
-        arguments: [@doctrine.orm.entity_manager, %locales%, %kernel.default_locale%]
+        arguments: [@doctrine.orm.entity_manager, %locales%, %kernel.default_locale%, @service_container]
         tags:
           - { name: validator.constraint_validator, alias: validate.slug }
 
@@ -60,15 +61,9 @@ services:
         calls:
             - [setContainer, [@service_container]]
 
-    food.googlegis:
-        class: Food\AppBundle\Service\GoogleGisService
-        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
-
-
     food.location:
         class: Food\AppBundle\Service\LocationService
-        calls:
-            - [setContainer, [@service_container]]
+        arguments: ["@doctrine.orm.entity_manager", "@service_container"]
 
     food.mail:
         class: Food\AppBundle\Service\MailService
@@ -171,6 +166,9 @@ services:
     hook.sitemap:
         class: Food\AppBundle\Service\HookSitemap
         arguments: ['@templating', '@doctrine.orm.entity_manager', '@service_container']
+    hook.restaurant_list:
+        class: Food\AppBundle\Service\HookRestaurantList
+        arguments: ['@service_container']
 
     food.zavalas_service:
       class: Food\AppBundle\Service\ZavalasService
@@ -272,12 +270,13 @@ services:
         class: Food\AppBundle\Service\ImportExportService
         parent: food.base_service
         arguments:
-          - @router
           - @food.app.utils.language
           - @service_container
+          - @filesystem
         calls:
           - [setLocale, [%locale%]]
           - [setFieldMap]
+          - [ setSaveDirectory, ['%kernel.root_dir%/../web/']]
 
     sonata.admin.translations:
       class: Food\AppBundle\Admin\ORMTranslationAdmin
@@ -328,3 +327,18 @@ services:
     food.error_log:
         class: Food\AppBundle\Service\ErrorLogService
         arguments: ["@doctrine.orm.entity_manager","@service_container"]
+
+    food.phones_code_service:
+                class: Food\AppBundle\Service\RestCountryService
+                parent: food.base_service
+
+    sonata.admin.country_phone:
+          class: Food\AppBundle\Admin\PhoneCodesAdmin
+          tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.phone_codes" }
+          arguments:
+            - ~
+            - Food\AppBundle\Entity\PhoneCodes
+            - ~
+          calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]

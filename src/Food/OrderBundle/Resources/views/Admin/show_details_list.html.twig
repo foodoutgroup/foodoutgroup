@@ -17,13 +17,13 @@
                 </tr>
             {% for detail in object.details %}
                 <tr>
-                    <td>{{ detail.getDishName() }}</td>
+                    <td>{{ detail.dishId.name }}</td>
                     <td>{{ detail.getPriceBeforeDiscount() }} {{ currency_display|raw }}</td>
                     <td>{{ detail.getPrice() }} {{ currency_display|raw }}</td>
                     <td>{{ detail.getPriceBeforeDiscount() - detail.getPrice() }} {{ currency_display|raw }}</td>
                     <td>{{ detail.getQuantity() }}</td>
                     <td>{{ detail.getPrice() * detail.getQuantity() }} {{ currency_display|raw }}</td>
-                    <td>{{ detail.getDishUnitName() }}</td>
+                    <td>{{ detail.dishUnitId.name }}</td>
                     <td>{{ detail.getDishSizeCode() }}</td>
                     <td>
                         {% if detail.options is not empty %}
@@ -34,14 +34,34 @@
                                     <th>{{ 'admin.order.details.price_before_discount'|trans({}, 'SonataAdminBundle') }}</th>
                                     <th>{{ 'admin.order.details.option_code'|trans({}, 'SonataAdminBundle') }}</th>
                                 </tr>
-                            {% for option in detail.options %}
+                                {% set priceCount = 0 %}
+                                {% set count = 0 %}
+                                {% for option in detail.options %}
+                                    {% set priceCount = priceCount + option.price %}
+                                    {% set count = count+1 %}
+
                                 <tr>
-                                    <td>{{ option.dishOptionName }}</td>
+                                    <td>
+                                        {% if option.dishOptionId %}
+                                            {{ option.dishOptionId.name }}
+                                        {% else %}
+                                            {{ option.dishOptionName }}
+                                        {% endif %}
+                                    </td>
                                     <td>{{ option.price }} {{ currency_display|raw }}</td>
                                     <td>{{ option.priceBeforeDiscount }} {{ currency_display|raw }}</td>
                                     <td>{{ option.dishOptionCode }}</td>
                                 </tr>
+
                             {% endfor %}
+                                <tr>
+                                    <td>{{ 'admin.order.details.quantity'|trans({}, 'SonataAdminBundle') }}</td>
+                                    <td style="text-align: right" colspan="3">{{ count }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ 'admin.order.details.all'|trans({}, 'SonataAdminBundle') }}</td>
+                                    <td style="text-align: right" colspan="3">{{ priceCount }} {{ currency_display|raw }}</td>
+                                </tr>
                             </table>
                         {% endif %}
                     </td>

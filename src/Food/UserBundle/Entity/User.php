@@ -242,6 +242,12 @@ class User extends BaseUser
      */
     private $deletedAt;
 
+    /**
+     * @var string
+     * @ORM\Column(name="country", type="string", nullable=true)
+     **/
+    private $countryCode;
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
@@ -448,11 +454,18 @@ class User extends BaseUser
     /**
      * Get address
      *
-     * @return UserAddress
+     * @return UserAddress|null
      */
     public function getDefaultAddress()
     {
-        return $this->address[0];
+        if (!empty($this->address)) {
+            foreach($this->address as $address) {
+                if ($address->getDefault()) {
+                    return $address;
+                }
+            }
+        }
+        return null;
     }
 
     public function getCurrentDefaultAddress()
@@ -1183,8 +1196,41 @@ class User extends BaseUser
     public function setSpecial($special)
     {
         $this->special = $special;
-    
+
         return $this;
+    }
+
+    /**
+     * Get special
+     *
+     * @return boolean
+     */
+    public function getSpecial()
+    {
+        return $this->special;
+    }
+
+    /**
+     * Set countryCode
+     *
+     * @param string $countryCode
+     * @return User
+     */
+    public function setCountryCode($countryCode)
+    {
+        $this->countryCode = $countryCode;
+
+        return $this;
+    }
+
+    /**
+     * Get countryCode
+     *
+     * @return string
+     */
+    public function getCountryCode()
+    {
+        return $this->countryCode;
     }
 
     /**
@@ -1196,18 +1242,8 @@ class User extends BaseUser
     public function addOrderStatusLog(\Food\OrderBundle\Entity\OrderStatusLog $orderStatusLog)
     {
         $this->orderStatusLog[] = $orderStatusLog;
-    
-        return $this;
-    }
 
-    /**
-     * Get special
-     *
-     * @return boolean 
-     */
-    public function getSpecial()
-    {
-        return $this->special;
+        return $this;
     }
 
 
@@ -1224,7 +1260,7 @@ class User extends BaseUser
     /**
      * Get orderStatusLog
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getOrderStatusLog()
     {
@@ -1240,14 +1276,14 @@ class User extends BaseUser
     public function setLocale($locale)
     {
         $this->locale = $locale;
-    
+
         return $this;
     }
 
     /**
      * Get locale
      *
-     * @return string 
+     * @return string
      */
     public function getLocale()
     {

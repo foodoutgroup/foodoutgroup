@@ -419,6 +419,10 @@
                 <source>admin.place.coupon_check_url</source>
                 <target>HTTP kuponų tikrinimo adresas</target>
             </trans-unit>
+            <trans-unit id="admin.place.pedestrian">
+                <source>admin.place.pedestrian</source>
+                <target>33 min</target>
+            </trans-unit>
             <trans-unit id="admin.place.registered">
                 <source>admin.place.registered</source>
                 <target>Registered</target>
@@ -1235,6 +1239,14 @@
                 <source>admin.order.details.dish_name</source>
                 <target>Patiekalas</target>
             </trans-unit>
+            <trans-unit id="admin.order.details.all">
+                <source>admin.order.details.all</source>
+                <target>Viso</target>
+            </trans-unit>
+            <trans-unit id="admin.order.details.count">
+                <source>admin.order.details.count</source>
+                <target>Kiekis</target>
+            </trans-unit>
             <trans-unit id="admin.order.details.price">
                 <source>admin.order.details.price</source>
                 <target>Kaina</target>
@@ -1613,6 +1625,14 @@
                 <source>admin.dispatcher.unassigned_pickup</source>
                 <target>Atsiėmimai restorane</target>
             </trans-unit>
+            <trans-unit id="admin.dispatcher.unassigned_pedestrian">
+                <source>admin.dispatcher.unassigned_pedestrian</source>
+                <target>Pėstukai (per 33 min)</target>
+            </trans-unit>
+             <trans-unit id="admin.dispatcher.normal_orders">
+                <source>admin.dispatcher.normal_orders</source>
+                <target>Įprasti užsakymai</target>
+            </trans-unit>
             <trans-unit id="admin.dispatcher.unapproved">
                 <source>admin.dispatcher.unapproved</source>
                 <target>Nepatikrinti</target>
@@ -1955,6 +1975,10 @@
                 <source>admin.driver.type.local</source>
                 <target>Įmonės</target>
             </trans-unit>
+            <trans-unit id="admin.driver.type.pedestrian">
+                <source>admin.driver.type.pedestrian</source>
+                <target>Pėstysis</target>
+            </trans-unit>
             <trans-unit id="admin.driver.type.outsource">
                 <source>admin.driver.type.outsource</source>
                 <target>Išorinis</target>
@@ -2150,6 +2174,10 @@
             <trans-unit id="admin.coupon.free_delivery">
                 <source>admin.coupon.free_delivery</source>
                 <target>Nemok. pristatymas</target>
+            </trans-unit>
+            <trans-unit id="admin.coupon.inverse">
+                <source>admin.coupon.inverse</source>
+                <target>Netaikyti pasirinktiems</target>
             </trans-unit>
             <trans-unit id="admin.coupon.active">
                 <source>admin.coupon.active</source>
@@ -3066,6 +3094,10 @@
                 <source>admin.cities.zavalas_on</source>
                 <target>Zavalas</target>
             </trans-unit>
+            <trans-unit id="admin.cities.pedestrian">
+                <source>admin.cities.pedestrian</source>
+                <target>Pėstukai</target>
+            </trans-unit>
             <trans-unit id="admin.cities.zavalas_time">
                 <source>admin.cities.zavalas_time</source>
                 <target>Zavalo trukmė</target>
@@ -3246,6 +3278,22 @@
                  <source>admin.error.debug</source>
                  <target>Debug</target>
             </trans-unit>
+            <trans-unit id="admin.phone.country">
+                <source>admin.phone.country</source>
+                <target>Šalis</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.code">
+                <source>admin.phone.code</source>
+                <target>Šalies kodas</target>
+            </trans-unit>
+            <trans-unit id="admin.phone.active">
+                <source>admin.phone.active</source>
+                <target>Aktyvus</target>
+            </trans-unit>
+            <trans-unit id="admin.phone_codes">
+                <source>admin.phone_codes</source>
+                <target>Telefonų kodai</target>
+            </trans-unit>
 
             <trans-unit id="0d02bb7fd4c07249c1c2b4236a7621bb" resname="admin.dispatcher.delivery_time">
                 <source>admin.dispatcher.delivery_time</source>
@@ -3270,6 +3318,22 @@
             <trans-unit id="admin.settings">
                 <source>admin.settings</source>
                 <target>Sisteminiai nustatymai</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate">
+                <source>admin.duplicate</source>
+                <target>Dublikuoti restoranus</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.place">
+                <source>admin.duplicate.place</source>
+                <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.new_place">
+                <source>admin.duplicate.new_place</source>
+                <target>Dublikuotas restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.user">
+                <source>admin.duplicate.user</source>
+                <target>Sukūrė</target>
             </trans-unit>
         </body>
     </file>
