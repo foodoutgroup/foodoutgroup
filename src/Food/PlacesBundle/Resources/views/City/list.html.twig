@@ -139,6 +139,16 @@
                         {% endif %}
                     </span>
                     {% endif %}
+
+                    {% if app.user and (app.user.isBussinesClient or is_granted('ROLE_DISPATCHER')) %}
+                        <span class="business" style="clear:both;">
+                            {% if place.selfDelivery or place.onlyAlcohol %}
+                                {% trans %}not.work.for.business.client{% endtrans %}
+                            {% else %}
+                                {% trans %}work.for.business.client{% endtrans %}
+                            {% endif %}
+                        </span>
+                    {% endif %}
                 </div>
             </div>
             <div class="item-righter">

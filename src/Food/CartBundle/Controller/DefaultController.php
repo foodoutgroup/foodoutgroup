@@ -375,26 +375,26 @@ class DefaultController extends Controller
 
                     $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
 
-                    // Preorder date formation
-                    $orderDate = null;
-                    $preOrder = $request->get('pre-order');
-                    if ($preOrder == 'it-is') {
-                        $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
-                    }
+                // Preorder date formation
+                $orderDate = null;
+                $preOrder = $request->get('pre-order');
+                if ($preOrder == 'it-is') {
+                    $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                }
 
-                    $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate, $deliveryType);
-                    $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
-                    if ($preOrder == 'it-is') {
-                        $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
-                    }
-                } else {
-                    $orderService->setOrder($order);
-                    if ($takeAway) {
-                        $orderService->getOrder()->setPlacePoint($placePoint);
-                        $orderService->getOrder()->setCityId($placePoint->getCityId());
-                        $orderService->getOrder()->setPlacePointAddress($placePoint->getAddress());
-                    }
-                    $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
+                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate);
+                $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
+                if ($preOrder == 'it-is') {
+                    $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
+                }
+            } else {
+                $orderService->setOrder($order);
+                if ($takeAway) {
+                    $orderService->getOrder()->setPlacePoint($placePoint);
+                    $orderService->getOrder()->setCityId($placePoint->getCityId());
+                    $orderService->getOrder()->setPlacePointAddress($placePoint->getAddress());
+                }
+                $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
 
                     $user = $order->getUser();
                     $userPhone = $user->getPhone();

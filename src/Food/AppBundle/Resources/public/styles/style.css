@@ -1769,6 +1769,13 @@ input.button {
 }
 
 .restaurant-item .delivery,
+.restaurant-item .min-cart-size {padding-left: 20px;}
+.restaurant-item .select-place-point {display: block; margin-top: 2px;}
+.restaurant-item .select-place-point a { color: #000000;}
+.restaurant-item .delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left 2px;  display: block; float: right}
+.restaurant-item .pickup {background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left 2px; color: #55422e; padding-left: 20px; letter-spacing: 0.5px; display: block; float: left}
+.restaurant-item .min-cart-size {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left 1px; display: block; float: left}
+.restaurant-item .business {background: url(/bundles/foodapp/images/business.png) no-repeat left 2px; color: #55422e; padding-left: 20px; letter-spacing: 0.5px; display: block; float: left}
 .restaurant-item .min-cart-size {
     padding-left: 20px;
 }

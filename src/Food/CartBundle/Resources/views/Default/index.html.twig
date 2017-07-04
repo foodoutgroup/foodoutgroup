@@ -93,6 +93,14 @@
             }
         });
 
+        $('#company_order_contract').on('ifToggled', function(event){
+            if (event.target.checked) {
+                $('.company_contract').removeClass('hidden');
+            } else {
+                $('.company_contract').addClass('hidden');
+            }
+        });
+
         var orderingHours = [];
         {% for day, dayInfo in workingHoursForInterval %}
             orderingHours['{{ day }}'] = [{% for hourInfo in  dayInfo%}{% if loop.index0 != 0 %},{% endif %}'{{ hourInfo }}'{% endfor %}];
@@ -331,8 +339,14 @@
                             </div>
                             <h2 class="section-2">2. {% trans %}cart.checkout.block_title_secure_payment{% endtrans %}</h2>
                             <div class="select-payment clearfix">
-                                {% if app.user.isBussinesClient|default(false) and app.user.allowDelayPayment|default(false) %}<label class="custom-radio">{% trans %}cart.checkout.corporate_pay{% endtrans %}
-                                    <input type="radio" name="payment-type" value="postpaid"{% if (order is not null and order.paymentMethod == 'postpaid') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'postpaid') or (dataToLoad is empty) %} checked="checked"{% endif %}>
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        $(".custom-radio[title]" ).tooltip();
+                                    });
+                                </script>
+                                {% if app.user.isBussinesClient|default(false) and app.user.allowDelayPayment|default(false) %}
+                                    <label class="custom-radio" {% if place.selfDelivery or place.onlyAlcohol %}title="{% trans %}this.payment.method.not.alowed.for.this.place{% endtrans %}"{% endif %}>{% trans %}cart.checkout.corporate_pay{% endtrans %}
+                                        <input type="radio" name="payment-type" {% if place.selfDelivery or place.onlyAlcohol %}disabled{% endif %} value="postpaid"{% if (order is not null and order.paymentMethod == 'postpaid') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'postpaid') or (dataToLoad is empty) %} checked="checked"{% endif %}>
                                     </label>
                                 {% endif %}
                                 {% if not place.disabledPaymentOnDelivery %}
@@ -345,6 +359,7 @@
                                         </label>
                                     {% endif %}
                                 {% endif %}
+
                             </div>
 
                             {% if places_service.getAllowOnlinePayment(place) %}
