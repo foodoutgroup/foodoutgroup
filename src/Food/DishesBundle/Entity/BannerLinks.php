@@ -4,12 +4,18 @@ namespace Food\DishesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Food\AppBundle\Entity\Uploadable;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Translatable\Translatable;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * BannerLinks
  *
  * @ORM\Table(name="banner_links")
  * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\BannerLinksRepository")
+ * @Callback(methods={"isFileSizeValid"})
+ * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\BannerLinksLocalized")
  */
 class BannerLinks extends Uploadable
 {
@@ -39,16 +45,9 @@ class BannerLinks extends Uploadable
     private $placeTo;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="element", type="string", length=255)
-     */
-    private $element;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="text", type="string", length=255)
+     * @var text
+     * @Gedmo\Translatable
+     * @ORM\Column(name="text", type="text", length=255,nullable=true)
      */
     private $text;
 
@@ -60,11 +59,42 @@ class BannerLinks extends Uploadable
     private $photo = "";
 
     /**
+     * @ORM\OneToMany(targetEntity="BannerLinksLocalized", mappedBy="object", cascade={"persist", "remove"})
+     **/
+    private $translations;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="active", type="boolean")
      */
     private $active;
+
+    /**
+     * @Gedmo\Locale
+     * Used locale to override Translation listener`s locale
+     * this is not a mapped field of entity metadata, just a simple property
+     */
+    private $locale;
+
+    protected $resizeMode = null;
+    protected $boxSize = null;
+    // megabytes
+    protected $maxFileSize = 1.9;
+
+    public function __toString()
+    {
+        if (!$this->getId()) {
+            return '';
+        }
+
+        return $this->getId().'-'.$this->getPlaceFrom()->getName().'-'.$this->getPlaceTo()->getName().'-'.$this->getPhoto();
+    }
+
+    /**
+     * @var object
+     */
+    protected $file;
 
     /**
      * Get id
@@ -74,75 +104,6 @@ class BannerLinks extends Uploadable
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set urlFrom
-     *
-     * @param string $urlFrom
-     * @return BannerLinks
-     */
-    public function setUrlFrom($urlFrom)
-    {
-        $this->urlFrom = $urlFrom;
-
-        return $this;
-    }
-
-    /**
-     * Get urlFrom
-     *
-     * @return string 
-     */
-    public function getUrlFrom()
-    {
-        return $this->urlFrom;
-    }
-
-    /**
-     * Set urlTo
-     *
-     * @param string $urlTo
-     * @return BannerLinks
-     */
-    public function setUrlTo($urlTo)
-    {
-        $this->urlTo = $urlTo;
-
-        return $this;
-    }
-
-    /**
-     * Get urlTo
-     *
-     * @return string 
-     */
-    public function getUrlTo()
-    {
-        return $this->urlTo;
-    }
-
-    /**
-     * Set element
-     *
-     * @param string $element
-     * @return BannerLinks
-     */
-    public function setElement($element)
-    {
-        $this->element = $element;
-
-        return $this;
-    }
-
-    /**
-     * Get element
-     *
-     * @return string 
-     */
-    public function getElement()
-    {
-        return $this->element;
     }
 
     /**
@@ -251,9 +212,25 @@ class BannerLinks extends Uploadable
     public function getUploadDir()
     {
         if (empty($this->uploadDir)) {
-            $this->uploadDir = 'uploads/covers';
+            $this->uploadDir = 'uploads/banners';
         }
         return $this->uploadDir;
+    }
+
+    /**
+     * @param object $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @return object
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 
 
@@ -278,5 +255,52 @@ class BannerLinks extends Uploadable
     public function getActive()
     {
         return $this->active;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add translations
+     *
+     * @param \Food\DishesBundle\Entity\BannerLinksLocalized $translations
+     * @return BannerLinks
+     */
+    public function addTranslation(\Food\DishesBundle\Entity\BannerLinksLocalized $translations)
+    {
+        $this->translations[] = $translations;
+
+        return $this;
+    }
+
+    /**
+     * Remove translations
+     *
+     * @param \Food\DishesBundle\Entity\BannerLinksLocalized $translations
+     */
+    public function removeTranslation(\Food\DishesBundle\Entity\BannerLinksLocalized $translations)
+    {
+        $this->translations->removeElement($translations);
+    }
+
+    /**
+     * Get translations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+
+    public function isFileSizeValid(ExecutionContextInterface $context)
+    {
+        if ($this->getFile() && $this->getFile()->getSize() > round($this->maxFileSize * 1024 * 1024)) {
+            $context->addViolationAt('file', 'Paveiksliukas užima daugiau nei ' . $this->maxFileSize . ' MB vietos.');
+        }
     }
 }

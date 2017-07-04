@@ -12,5 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class BannerLinksRepository extends EntityRepository
 {
-
+    public function getBannerLinkByPlace($placeId){
+        return $this->findBy(['placeFrom'=>$placeId,'active'=>1]);
+    }
 }

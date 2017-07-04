@@ -462,7 +462,7 @@ services:
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]
 
-    sonata.admin.place.banner_links:
+    sonata.admin.dishes.banner_links:
       class: Food\DishesBundle\Admin\BannerLinkAdmin
       tags:
         - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.banner_link" }
