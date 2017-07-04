@@ -6107,6 +6107,7 @@ div.coupon_form_popup {
     border: 2px solid #F2C74C;
     border-radius: 4px;
     display:flex;
+    width: 100%;
 }
 .place-banner-text{
     text-align: center;
