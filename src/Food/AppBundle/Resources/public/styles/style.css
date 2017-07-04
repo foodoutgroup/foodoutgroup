@@ -5845,7 +5845,7 @@ div.coupon_form_popup {
     font-size: 14px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    z-index: 9999999;
+    z-index: 9;
     width: auto;
     min-width: 150px;
     float: right;
