@@ -175,15 +175,16 @@
                                         </div>
                                     {% endif %}
 
-                                    {#Related place collection view#}
-                                    {% for relatedPlace in relatedPlaceCollection %}
-                                        <br />
-                                        <a class="btn-walk" href="{{ slug.getUrl(relatedPlace.id, 'place') }}">
-                                            <span><i class="icon-walk"></i><b>{% trans %}related.place.go.to{% endtrans %} {{ relatedPlace.name }}</b><i class="icon-arrow"></i></span>
-                                            <img itemprop="logo" class="restaurant_image" alt="general.restaurant_logo_alt" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
-                                        </a>
-                                    {% endfor %}
-                                    {# end of related place collection view #}
+
+                                    <div class="place-banner-container">
+                                        {% for relatedPlace in relatedPlaceCollection %}
+                                            <br />
+                                            <a class="place-banner-item" href="{{ slug.getUrl(relatedPlace.placeTo.getId, 'place') }}" style="background: url('//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}')">
+                                                <span class="place-banner-text"> {{ relatedPlace.text|raw }}</span>
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+
                                 </div>
                                 <div class="menu-righter">
                                     <script type="text/javascript">

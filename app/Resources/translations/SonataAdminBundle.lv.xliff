@@ -3318,6 +3318,26 @@
                 <source>admin.phone_codes</source>
                 <target>Phone codes</target>
             </trans-unit>
+            <trans-unit id="admin.banner_link" resname="admin.banner_link">
+                <source>admin.banner_link</source>
+                <target>Banner linking</target>
+            </trans-unit>
+            <trans-unit id="admin.banner_link.place_from" resname="admin.banner_link.place_from">
+                <source>admin.banner_link.place_from</source>
+                <target>Place From</target>
+            </trans-unit>
+            <trans-unit id="admin.banner_link.place_to" resname="admin.banner_link.place_to">
+                <source>admin.banner_link.place_to</source>
+                <target>Place to</target>
+            </trans-unit>
+            <trans-unit id="admin.banner_link.element" resname="admin.banner_link.element">
+                <source>admin.banner_link.element</source>
+                <target>Banner element</target>
+            </trans-unit>
+            <trans-unit id="admin.banner_link.text" resname="admin.banner_link.text">
+                <source>admin.banner_link.text</source>
+                <target>Banner text</target>
+            </trans-unit>
             <trans-unit id="admin.duplicate">
                 <source>admin.duplicate</source>
                 <target>Duplicate Restaurants</target>

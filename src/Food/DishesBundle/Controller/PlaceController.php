@@ -83,24 +83,27 @@ class PlaceController extends Controller
             $breadcrumbData['kitchen_url'] = $breadcrumbData['city_url'].'/'.$kitchenSlug;
         }
 
-        $relatedPlaceCollection = [];
+        $bannerService = $this->container->get('food.dishes.banner_links');
 
-        // only for LT and only for cili
-        // todo: MULTI-L someday move to database as conditions
-        $relatedPlace = null;
-        if ($this->container->getParameter('country') == 'LT') {
-            if (in_array($place->getId(), [63, 85, 302, 333]) && $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->findOneBy(['id' => 142, 'active' => 1]) ) {
-                $relatedPlaceCollection[] = $relatedPlace;
-            } elseif ($place->getId() == 142 && $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->findOneBy(['id' => 63, 'active' => 1])) {
-                $relatedPlaceCollection[] = $relatedPlace;
-            }
-        } elseif($this->container->getParameter('country') == 'LV'){
-            if (in_array($place->getId(), [1, 35]) && $relatedPlace =  $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(['id' => 36, 'active' => 1])) {
-                $relatedPlaceCollection[] = $relatedPlace ;
-            } elseif ($place->getId() == 36 && $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->findOneBy(['id' => 35, 'active' => 1])) {
-                $relatedPlaceCollection[] = $relatedPlace;
-            }
-        }
+        $relatedPlaceCollection = $bannerService->getBannerLink($place);
+
+
+//        // only for LT and only for cili
+//        // todo: MULTI-L someday move to database as conditions
+//        $relatedPlace = null;
+//        if ($this->container->getParameter('country') == 'LT') {
+//            if (in_array($place->getId(), [63, 85, 302, 333]) && $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->findOneBy(['id' => 142, 'active' => 1]) ) {
+//                $relatedPlaceCollection[] = $relatedPlace;
+//            } elseif ($place->getId() == 142 && $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->findOneBy(['id' => 63, 'active' => 1])) {
+//                $relatedPlaceCollection[] = $relatedPlace;
+//            }
+//        } elseif($this->container->getParameter('country') == 'LV'){
+//            if (in_array($place->getId(), [1, 35]) && $relatedPlace =  $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->find(['id' => 36, 'active' => 1])) {
+//                $relatedPlaceCollection[] = $relatedPlace ;
+//            } elseif ($place->getId() == 36 && $relatedPlace = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->findOneBy(['id' => 35, 'active' => 1])) {
+//                $relatedPlaceCollection[] = $relatedPlace;
+//            }
+//        }
 
 
         $placeService = $this->get('food.places');
