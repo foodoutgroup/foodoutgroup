@@ -6116,6 +6116,7 @@ div.coupon_form_popup {
     font-family: 'avenirbook';
     font-size: 12px;
     margin-top:5px;
+    width: 100%;
 }
 
 .discount-sum .fr{
