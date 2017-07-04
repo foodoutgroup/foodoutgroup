@@ -201,6 +201,12 @@ class User extends BaseUser
     private $regeneratePassword = true;
 
     /**
+     * @var String
+     * @ORM\Column(name="contract_number", type="string", length=255,  nullable=true)
+     */
+    private $contractNumber = null;
+
+    /**
      * @ORM\OneToMany(targetEntity="UserDivisionCode", mappedBy="user", cascade={"persist", "remove"})
      **/
     private $divisionCodes;
@@ -1085,6 +1091,27 @@ class User extends BaseUser
     {
         $this->regeneratePassword = $regeneratePassword;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getContractNumber()
+    {
+        return $this->contractNumber;
+    }
+
+    /**
+     * @param mixed $contractNumber
+     * @return $this
+     */
+    public function setContractNumber($contractNumber)
+    {
+        $this->contractNumber = $contractNumber;
+        return $this;
+    }
+
+
+
     /**
      * Add order
      *

@@ -1237,10 +1237,10 @@ input.button {
 }
 .search-food-form span.find-me {
     position: relative;
-    right: 188px;
+    right: 40px;
     top: 16px;
     background: url(/bundles/foodapp/images/find-me.png);
-    width: 28px;
+    width: 24px;
     height: 24px;
     border: none;
     cursor:pointer;
@@ -1769,6 +1769,13 @@ input.button {
 }
 
 .restaurant-item .delivery,
+.restaurant-item .min-cart-size {padding-left: 20px;}
+.restaurant-item .select-place-point {display: block; margin-top: 2px;}
+.restaurant-item .select-place-point a { color: #000000;}
+.restaurant-item .delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left 2px;  display: block; float: right}
+.restaurant-item .pickup {background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left 2px; color: #55422e; padding-left: 20px; letter-spacing: 0.5px; display: block; float: left}
+.restaurant-item .min-cart-size {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left 1px; display: block; float: left}
+.restaurant-item .business {background: url(/bundles/foodapp/images/business.png) no-repeat left 2px; color: #55422e; padding-left: 20px; letter-spacing: 0.5px; display: block; float: left}
 .restaurant-item .min-cart-size {
     padding-left: 20px;
 }
@@ -4839,8 +4846,6 @@ div.coupon_form_popup {
 }
 
 .search-food-form input.input-street[type="text"] {
-    width: 80%;
-    margin: 0px 10px 0px 20px;
     border-radius: 0;
     border-radius: 5px 5px 5px 5px;
 }
@@ -5840,7 +5845,7 @@ div.coupon_form_popup {
     font-size: 14px;
     letter-spacing: 2px;
     text-transform: uppercase;
-    z-index: 9999999;
+    z-index: 9;
     width: auto;
     min-width: 150px;
     float: right;

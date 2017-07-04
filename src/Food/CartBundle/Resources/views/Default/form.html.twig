@@ -80,14 +80,16 @@
 
         {{ include('@FoodCart/Default/simple_user_form_fields.html.twig') }}
 
+
         <div class="clearfix"></div>
         <div class="cupon-info">
             {% trans %}general.coupon.popup_link{% endtrans %}
             <input type="hidden" name="coupon_code" id="coupon_code" value="{% if (dataToLoad is not empty and dataToLoad['coupon_code'] is not empty) %}{{ dataToLoad['coupon_code'] }}{% endif %}" />
         </div>
         <div class="select-payment clearfix">
-            {% if app.user.isBussinesClient|default(false) and app.user.allowDelayPayment|default(false) %}<label class="custom-radio">{% trans %}cart.checkout.corporate_pay{% endtrans %}
-                <input type="radio" name="payment-type" value="postpaid"{% if (order is not null and order.paymentMethod == 'postpaid') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'postpaid') or (dataToLoad is empty) %} checked="checked"{% endif %}>
+            {% if app.user.isBussinesClient|default(false) and app.user.allowDelayPayment|default(false) %}
+                <label class="custom-radio" {% if place.selfDelivery or place.onlyAlcohol %}title="{% trans %}this.payment.method.not.alowed.for.this.place{% endtrans %}"{% endif %}>{% trans %}cart.checkout.corporate_pay{% endtrans %}
+                    <input type="radio" name="payment-type" {% if place.selfDelivery or place.onlyAlcohol %}disabled{% endif %} value="postpaid"{% if (order is not null and order.paymentMethod == 'postpaid') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'postpaid') or (dataToLoad is empty) %} checked="checked"{% endif %}>
                 </label>
             {% endif %}
             {% if not place.disabledPaymentOnDelivery %}
@@ -115,6 +117,8 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
+        $(".custom-radio[title]" ).tooltip();
+
         Cart.placeId = {{ place.id }};
         Cart.locale = '{{ app.request.get('_locale') }}';
         Cart.bindEvents();
@@ -133,6 +137,14 @@
                 $('.company_data').removeClass('hidden');
             } else {
                 $('.company_data').addClass('hidden');
+            }
+        });
+
+        $('#company_order_contract').on('ifToggled', function(event){
+            if (event.target.checked) {
+                $('.company_contract').removeClass('hidden');
+            } else {
+                $('.company_contract').addClass('hidden');
             }
         });
 
