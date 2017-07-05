@@ -67,10 +67,11 @@ class OrderAdminController extends Controller
     {
         $orderService = $this->get('food.order');
         $invoiceService = $this->get('food.invoice');
+        $invoiceFolder = $this->container->getParameter('s3_bucket');
         $order = $orderService->getOrderById($id);
 
         $fileName = $invoiceService->getInvoiceFilename($order);
-        $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/' . $fileName;
+        $file = 'https://s3-eu-west-1.amazonaws.com/'.$invoiceFolder.'/pdf/' . $fileName;
 
         $content = file_get_contents($file);
 
