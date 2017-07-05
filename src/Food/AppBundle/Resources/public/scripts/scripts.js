@@ -275,12 +275,14 @@ var registrationForm = {
 (function (form) {
 
     var input_auto_complete = form.find('#address_autocomplete');
+    var input_address_autocomplete_modal = form.find('#address_autocomplete_modal');
     var button_submit = form.find('#submit');
     var input_collection = form.find('input');
     var button_find_me = form.find('#find-me');
     var button_do_pickup = form.find('#do-pickup');
     var div_error = form.find('#error');
     var mapDiv = form.find("#map");
+    var confirmMapPoint = form.find("#confirmMapPoint");
     var mapErrorDiv = form.find("#mapError");
     var map = null;
     var marker = null;
@@ -291,6 +293,12 @@ var registrationForm = {
         button_find_me.remove();
     }
     var autoSelect = true;
+
+    confirmMapPoint.click(function () {
+        button_submit.trigger('click');
+        $.fancybox.close();
+    });
+
     input_auto_complete.autocomplete({
         source: input_auto_complete.data('url'),
         minLength: 2,
@@ -329,6 +337,11 @@ var registrationForm = {
 
                 $.get(button_find_me.data("url"), {"lat": position.coords.latitude, "lng": position.coords.longitude}, function (response) {
                     setSelected({'id': response.detail.id, 'value': response.detail.output});
+                    if(typeof response.detail.precision != "undefined" && response.detail.precision == 0) {
+                        confirmMapPoint.removeClass('hidden');
+                    } else {
+                        confirmMapPoint.addClass('hidden');
+                    }
                 });
                 if(position.coords.accuracy > 150) {
                     throwMapLocationPicker(position.coords.latitude, position.coords.longitude, button_find_me.data('error-accuracy-to-big'));
@@ -383,6 +396,7 @@ var registrationForm = {
                     window.location.href = response.url;
                 }
             } else {
+
                 if(typeof response.detail != "undefined" && response.detail.precision < 5) {
                     throwMapLocationPicker(response.detail.latitude, response.detail.longitude, response.message);
                 } else {
@@ -395,7 +409,6 @@ var registrationForm = {
 
     });
 
-
     mapErrorDiv.click(function () {
        $(this).addClass('hidden');
        $(this).html('');
@@ -404,10 +417,14 @@ var registrationForm = {
     function setSelected(selected) {
         input_auto_complete.data('selected', selected.id);
         input_auto_complete.val(selected.value);
+        input_address_autocomplete_modal.val(selected.value);
         form.find('#hidden-field-for-address-id').val(selected.id);
     }
 
     function throwMapLocationPicker(lat, lng, message) {
+
+        $.fancybox.open(form.find('.modal-map-div'));
+
 
         if(message != null) {
             mapErrorDiv.removeClass('hidden');
@@ -441,7 +458,11 @@ var registrationForm = {
                 marker = null;
             }
 
-            marker = new google.maps.Marker({map: map, draggable:true, animation: google.maps.Animation.DROP, position: pt});
+            marker = new google.maps.Marker({
+                map: map, draggable:true,
+                animation: google.maps.Animation.DROP,
+                position: pt
+            });
             google.maps.event.addListener(marker, 'mouseover', function() {
                 mapErrorDiv.addClass('hidden');
                 mapErrorDiv.html('');
@@ -449,6 +470,13 @@ var registrationForm = {
             google.maps.event.addListener(marker, 'dragend', function() {
                 $.get(button_find_me.data("url"), {"lat": marker.getPosition().lat(), "lng": marker.getPosition().lng()}, function (response) {
                     setSelected({'id': response.detail.id, 'value': response.detail.output});
+
+                    if(typeof response.detail.precision != "undefined" && response.detail.precision == 0) {
+                        confirmMapPoint.removeClass('hidden');
+                    } else {
+                        confirmMapPoint.addClass('hidden');
+                    }
+
                 });
             });
         }
@@ -457,7 +485,6 @@ var registrationForm = {
     function throwError(message){
         if(message == null) {
             message = '';
-            mapDiv.addClass('hidden');
             mapErrorDiv.addClass('hidden');
             mapErrorDiv.html('');
             input_collection.removeClass('error');

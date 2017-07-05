@@ -41,11 +41,18 @@
                                     placeholder="{% trans %}index.street{% endtrans %}"
                                     class="input-street search-field"
                                     autocomplete="off" value="{% if location is not null and location.output is defined %}{{ location.output }}{% endif %}" />
-                            <span id="find-me"  data-error-no-service="{% trans %}error.no.service.available{% endtrans %}" data-error-accuracy-to-big="{% trans %}error.accuracy.to.big{% endtrans %}" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
-                            <div id="mapError" class="hidden" style="position:absolute;color:red;opacity: 0.9;background: #fff;z-index:9999;left: 1px;padding: 12px;right: 25px;top: 53px;"></div>
-                            <div id="map" class="hidden" style="position: absolute;left: 0px;background: rgb(255, 255, 255);top: 52px;height: 260px;box-shadow: rgb(204, 204, 238) 0px 3px 11px 0px;right: 24px;border: 1px solid rgb(225, 221, 214);overflow: hidden;"></div>
+                            <span id="find-me" data-error-no-service="{% trans %}error.no.service.available{% endtrans %}" data-error-accuracy-to-big="{% trans %}error.accuracy.to.big{% endtrans %}" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
                         </div>
-                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqpZVOgHfx5JTtFNl-50qh0f2evbtovwU"></script>
+                        <div class="hidden">
+                            <div class="modal-map-div" STYLE="width: 800px;">
+                                <h1 class="text-center" style="font-weight: 800;">{% trans %}modal.map.title.text{% endtrans %}</h1>
+                                <div id="mapError"></div>
+                                <input id="address_autocomplete_modal" readonly="readonly" type="text"/>
+                                <div id="map" style="width: 800px; height: 500px;"></div>
+                                <button id="confirmMapPoint" class="hidden" type="button">{% trans %}button.continue{% endtrans %}</button>
+                                <p>{% trans %}modal.map.text.bottom{% endtrans %}</p>
+                            </div>
+                        </div>
                         <button class="submit" id="submit" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}"  img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/></button>
                         <button class="submit do-pickup" title="{% trans %}label.pickup{% endtrans %}" id="do-pickup" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'delivery-type'}) }}"><img src="{{ asset('bundles/foodapp/images/go-pickup.png') }}"  img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/><br/>{% trans %}label.pickup{% endtrans %}</button>
                     </div>

@@ -275,10 +275,18 @@
                                                            autocomplete="off"
                                                            value="{% if location is not null and location.output is defined  %}{{ location.output }}{% endif %}"
                                                     />
-                                                    <div id="mapError" class="hidden" style="position: absolute;color: red;opacity: 0.9;background: #fff;z-index: 9999;left: 49px;text-align: left;font-size: 13px;padding: 11px;right: 77px;top: 37px;"></div>
-                                                    <div id="map" class="hidden" style="position: absolute;left: 48px;background: rgb(255, 255, 255);top: 36px;height: 260px;box-shadow: rgb(204, 204, 238) 0px 3px 11px 0px;right: 76px;z-index: 99;border: 1px solid rgb(225, 221, 214);overflow: hidden;"></div>
                                                     <button class="submit submit-address-change" id="submit" data-redirect="self" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}" img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/></button>
                                                     <span id="find-me" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
+                                                </div>
+                                                <div class="hidden">
+                                                    <div class="modal-map-div" STYLE="width: 800px;">
+                                                        <h1 class="text-center" style="font-weight: 800;">{% trans %}modal.map.title.text{% endtrans %}</h1>
+                                                        <div id="mapError"></div>
+                                                        <input id="address_autocomplete_modal" readonly="readonly" type="text"/>
+                                                        <div id="map" style="width: 800px; height: 500px;"></div>
+                                                        <button id="confirmMapPoint" class="hidden" type="button">{% trans %}button.continue{% endtrans %}</button>
+                                                        <p>{% trans %}modal.map.text.bottom{% endtrans %}</p>
+                                                    </div>
                                                 </div>
                                                 <div class="clearfix"></div>
                                                 <div id="error"></div>
