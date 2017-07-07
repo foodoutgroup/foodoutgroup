@@ -361,7 +361,16 @@ var registrationForm = {
             if(response.success) {
                 window.location.href = response.url;
             } else {
-                throwError(response.message);
+
+                if(typeof response.detail.precision != "undefined") {
+                    if(response.detail.precision <= 4) {
+                        throwMapLocationPicker(response.detail.latitude, response.detail.longitude, response.message);
+                    } else {
+                        throwError(response.message);
+                    }
+                } else {
+                    throwError(response.message);
+                }
             }
             img.attr('src', oldval);
         });
