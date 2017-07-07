@@ -15,3 +15,12 @@ services:
         class: Food\DishesBundle\Service\DishesService
         calls:
             - [container, [@service_container]]
+
+    food.restaurant.duplicate.service:
+        class: Food\DishesBundle\Service\RestaurantDuplicateService
+        calls:
+            - [container, [@service_container]]
+
+    food.dishes.banner_links:
+          class: Food\DishesBundle\Service\BannerLinkService
+          arguments: ["@doctrine.orm.entity_manager"]

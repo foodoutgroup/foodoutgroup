@@ -154,6 +154,19 @@ class DishUnit implements Translatable
     }
 
     /**
+     * Set id
+     *
+     * @param integer $id
+     * @return DishUnit
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return integer

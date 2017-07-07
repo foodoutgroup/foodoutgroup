@@ -639,16 +639,38 @@ class OrderService extends ContainerAware
 
         }
 
+        $adminFee = 0;
+        $placeService = $this->container->get('food.places');
+        $useAdminFee = $placeService->useAdminFee($order->getPlace());
+
+
+        if($order->getDeliveryType() != 'pickup') {
+            $minCart = $placeService->getMinCartPrice($order->getPlace()->getId());
+
+            if ($useAdminFee && (($minCart * 100) > $total_sum)) {
+                $useAdminFee = true;
+                $adminFee = $placeService->getAdminFee($order->getPlace()) * 100;
+            } else {
+                $useAdminFee = false;
+            }
+
+        }else{
+            $useAdminFee = false;
+        }
+
         $returner = [
             'order_id' => $order->getId(),
             'order_hash' => $order->getOrderHash(),
             'total_price' => [
+                'admin_fee' => [
+                    'enabled' => $useAdminFee, // todo admin-fee ar taikomas siam order admin fee
+                    'amount' => $adminFee, // todo admin-fee // koks dydis yra admin fee jei taikomas
+                ],
                 //'amount' => $order->getTotal() * 100,
-                'amount' => $total_sum,
+                'amount' => $total_sum, // todo admin-fee if enabled admin_fee and smaller than min cart add admin_fee size :)
                 'currency' => $this->container->getParameter('currency_iso')
             ],
             'delivery_price' => $order->getDeliveryPrice(), //Kode cia ne *100?
-            'admin_fee' => $order->getAdminFee() * 100,
             'place_point_self_delivery' => $order->getPlacePointSelfDelivery(),
             'payment_method' => $this->container->get('translator')->trans('mobile.payment.' . $order->getPaymentMethod()),
             'order_date' => $order->getOrderDate()->format('H:i'),

@@ -600,6 +600,20 @@ class Place extends Uploadable implements Translatable
     }
 
     /**
+     * Set id
+     *
+     * @param integer $id
+     *
+     * @return Place
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Set name
      *
      * @param string $name
@@ -1307,6 +1321,14 @@ class Place extends Uploadable implements Translatable
     public function removeTranslation(\Food\DishesBundle\Entity\PlaceLocalized $translations)
     {
         $this->translations->removeElement($translations);
+    }
+
+    /**
+     * @param mixed translations
+     */
+    public function removeAllTranslations()
+    {
+        $this->translations = new \Doctrine\Common\Collections\ArrayCollection();;
     }
 
     /**

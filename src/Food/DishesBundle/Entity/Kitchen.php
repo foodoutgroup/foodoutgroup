@@ -227,6 +227,19 @@ class Kitchen extends Uploadable implements Translatable
         $res = ($query->getSingleResult());
         return $res['alias'];
     }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Kitchen
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     /**
      * Get id
      *

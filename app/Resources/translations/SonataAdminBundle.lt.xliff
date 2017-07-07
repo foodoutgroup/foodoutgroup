@@ -3319,6 +3319,42 @@
                 <source>admin.settings</source>
                 <target>Sisteminiai nustatymai</target>
             </trans-unit>
+            <trans-unit id="admin.duplicate">
+                <source>admin.duplicate</source>
+                <target>Dublikuoti restoranus</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.place">
+                <source>admin.duplicate.place</source>
+                <target>Restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.new_place">
+                <source>admin.duplicate.new_place</source>
+                <target>Dublikuotas restoranas</target>
+            </trans-unit>
+            <trans-unit id="admin.duplicate.user">
+                <source>admin.duplicate.user</source>
+                <target>Sukūrė</target>
+            </trans-unit>
+            <trans-unit id="admin.banner_link" resname="admin.banner_link">
+                <source>admin.banner_link</source>
+                <target>Banerių nukreipimai</target>
+            </trans-unit>
+            <trans-unit id="admin.banner_link.place_from" resname="admin.banner_link.place_from">
+                <source>admin.banner_link.place_from</source>
+                <target>Vieta iš</target>
+            </trans-unit>
+            <trans-unit id="admin.banner_link.place_to" resname="admin.banner_link.place_to">
+                <source>admin.banner_link.place_to</source>
+                <target>Vieta į</target>
+            </trans-unit>
+            <trans-unit id="admin.banner_link.element" resname="admin.banner_link.element">
+                <source>admin.banner_link.element</source>
+                <target>Banerio elementas</target>
+            </trans-unit>
+            <trans-unit id="admin.banner_link.text" resname="admin.banner_link.text">
+                <source>admin.banner_link.text</source>
+                <target>Banerio tekstas</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

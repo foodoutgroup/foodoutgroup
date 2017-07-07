@@ -15,6 +15,9 @@ class BestOfferRepository extends EntityRepository
      */
     public function getActiveOffers(City $city = null, $forMobile = false)
     {
+
+
+        $cityService = $this->getEntityManager()->getRepository('FoodAppBundle:City');
         $params = ['active' => 1];
         if ($forMobile) {
             $params['useUrl'] = false;
@@ -23,10 +26,16 @@ class BestOfferRepository extends EntityRepository
 
         if (!empty($city)) {
 
+            if(is_string($city)){
+
+                $cityObj =  $cityService->findOneBy(['title'=>$city]);
+                $city = $cityObj->getId();
+            }
 
             foreach ($bestOffers as $key => $offer) {
                 $checker = false;
                 foreach ($offer->getOfferCity() as $city_val) {
+
                     if ($city_val->getId() == $city->getId()) {
                         $checker = true;
                     }

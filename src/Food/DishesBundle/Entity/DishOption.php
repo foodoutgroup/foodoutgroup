@@ -217,6 +217,19 @@ class DishOption implements Translatable
     }
 
     /**
+     * Set id
+     *
+     * @param integer $id
+     * @return DishOption
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return integer

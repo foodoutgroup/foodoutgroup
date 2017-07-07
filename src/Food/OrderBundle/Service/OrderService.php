@@ -1404,12 +1404,12 @@ class OrderService extends ContainerAware
                     $includeDelivery = false;
                 }
 
-                $useAdminFee = false;
             } elseif ($user->getIsBussinesClient()) {
                 // Jeigu musu logistika, tada taikom fiksuota nuolaida
                 if (!$selfDelivery) {
                     $discountSize = $this->container->get('food.user')->getDiscount($user);
                     $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
+
                     $discountPercent = $discountSize;
                     $this->getOrder()->setDiscountSize($discountSize)->setDiscountSum($discountSum);
                 }
@@ -1423,7 +1423,7 @@ class OrderService extends ContainerAware
         $discountOverTotal = 0;
         if ($discountSum > $totalPriceBeforeDiscount) {
             $discountOverTotal = $discountSum - $totalPriceBeforeDiscount;
-            $discountSum = $totalPriceBeforeDiscount;
+//            $discountSum = $totalPriceBeforeDiscount;
         }
 
         $discountSumLeft = $discountSum;
@@ -1435,6 +1435,12 @@ class OrderService extends ContainerAware
         }
 
         $sumTotal = $totalPriceBeforeDiscount - $discountSum;
+
+        if($useAdminFee && ($placeObject->getCartMinimum() > $totalPriceBeforeDiscount)){
+            $useAdminFee = true;
+        }else{
+            $useAdminFee = false;
+        }
 
         foreach ($itemCollection as $cartDish) {
 
@@ -1571,12 +1577,12 @@ class OrderService extends ContainerAware
 
         // jei ignoruoti pristatymo min krepseli bet yra pristatymas mokamas
         //~ if ($includeDelivery) {
-        if ($discountOverTotal > 0) {
-            $deliveryPrice = $deliveryPrice - $discountOverTotal;
-            if ($deliveryPrice < 0) {
-                $deliveryPrice = 0;
-            }
-        }
+//        if ($discountOverTotal > 0) {
+//            $deliveryPrice = $deliveryPrice - $discountOverTotal;
+//            if ($deliveryPrice < 0) {
+//                $deliveryPrice = 0;
+//            }
+//        }
         //~ }
 
         $placesService =  $this->container->get('food.places');
@@ -1592,14 +1598,19 @@ class OrderService extends ContainerAware
         }
 
 
-        if ($useAdminFee && ($cartFromMin - $sumTotal) >= 0.00001) {
+        if ($useAdminFee) {
             $sumTotal += $adminFee;
+
         } else {
             $useAdminFee = false;
         }
 
         $sumTotal += $deliveryPrice;
         //~ }
+
+        if($sumTotal < 0){
+            $sumTotal = 0;
+        }
 
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);

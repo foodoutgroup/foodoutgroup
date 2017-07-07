@@ -844,7 +844,11 @@
             </trans-unit>
             <trans-unit id="general.cart.success" resname="general.cart.success">
                 <source>general.cart.success</source>
-                <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
+                <target><![CDATA[Jūsu pasūtījums ir pieņemts un tas būs pieejams, tiklīdz restorāns to pagatavos. <br/>Ja radīsies jautājumi vai pēdējā brīža izmaiņu gadījumā lūdzam sazināties <br/> ar <strong>“Foodout.lv”</strong> pa tālruni <strong>+371 67363663</strong><br/>vai<br/>]]></target>
+            </trans-unit>
+            <trans-unit id="general.cart.success.restaurant" resname="general.cart.success.restaurant">
+                <source>general.cart.success.restaurant</source>
+                <target><![CDATA[ar <strong>“%placeName%”</strong> pa tālruni <strong>+%placePhone%</strong>.]]></target>
             </trans-unit>
             <trans-unit id="general.cart.reverse" resname="general.cart.reverse">
                 <source>general.cart.reverse</source>
@@ -1568,9 +1572,17 @@
                 <source>mobile.order.admin_fee</source>
                 <target>Administrēšanas maksa (ar PVN)</target>
             </trans-unit>
-            <trans-unit id="mobile.order.admin_fee_no_vat">
-                <source>mobile.order.admin_fee_no_vat</source>
-                <target>Administrēšanas maksa (bez PVN)</target>
+            <trans-unit id="cart.checkout.company_contract">
+                <source>cart.checkout.company_contract</source>
+                <target>Company has contract with foodout</target>
+            </trans-unit>
+            <trans-unit id="cart.checkout.company_contract_number">
+                <source>cart.checkout.company_contract_number</source>
+                <target>Contract number</target>
+            </trans-unit>
+            <trans-unit id="this.payment.method.not.alowed.for.this.place">
+                <source>this.payment.method.not.alowed.for.this.place</source>
+                <target>This payment method not allowed for this place</target>
             </trans-unit>
              <trans-unit id="please.fill.address.message.top">
                 <source>please.fill.address.message.top</source>

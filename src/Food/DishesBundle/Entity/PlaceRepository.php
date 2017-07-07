@@ -89,6 +89,9 @@ class PlaceRepository extends EntityRepository
                                 case 'delivery':
                                     $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "delivery")';
                                     break;
+                                case OrderService::$deliveryDeliver:
+                                    $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "delivery")';
+                                    break;
                                 case OrderService::$deliveryPickup:
                                     $placeFilter .= ' AND p.delivery_options IN ("delivery_and_pickup", "pickup")';
                                     break;
@@ -697,5 +700,25 @@ class PlaceRepository extends EntityRepository
             }
         }
         return self::$_citiesCache[$place->getId()];
+    }
+
+    public function getRelatedKitchens($placeId){
+
+        $query = "SELECT kitchen_id FROM place_kitchen WHERE place_id = " . (int)$placeId;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    public function getRelatedSeoRecords($placeId){
+
+        $query = "SELECT seorecord_id FROM place_seorecords WHERE place_id = " . (int)$placeId;
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($query);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 }

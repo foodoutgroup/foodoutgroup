@@ -105,16 +105,11 @@
             {% if hide_delivery == 0 %}
                 <div class="delivery-price clearfix">
                     <div class="fl">{% trans %}cart.block.delivery_price{% endtrans %}:</div>
-                    {% if freeDelivery %}
-                        <div class="fr">{{ currency_display|raw }}0,00 {% if currency_alternative %}<span class="euro">/
-                                0,00 {{ display_currency_alternative|raw }}</span>{% endif %}</div>
-                    {% else %}
                         <div class="fr">{{ currency_display|raw }}{{ total_delivery|number_format(2, ',', ' ') }}
                             {% if currency_alternative %}
                                 <span class="euro">/ {{ misc_utils.getLitas(total_delivery)|number_format(2, ',', ' ') }} {{ display_currency_alternative|raw }}</span>
                             {% endif %}
                         </div>
-                    {% endif %}
                 </div>
             {% endif %}
             {% if applyDiscount %}
@@ -123,7 +118,8 @@
                     <div class="fr">{{ currency_display|raw }}{{ discountSum|number_format(2, ',', ' ') }}</div>
                 </div>
             {% endif %}
-            {% if useAdminFee == true  and ((discountInSum and total_cart + discountSum < cart_from_min) or (total_cart < cart_from_min)) and not noMinimumCart %}
+            {% if useAdminFee == true%}
+
                 <div class="fee-sum clearfix">
                     <div class="fl">{% trans %}cart.block.admin_fee{% endtrans %}:</div>
                     <div class="fr">{{ currency_display|raw }}{{ adminFee|number_format(2, ',', ' ') }}</div>

@@ -327,6 +327,8 @@ sonata_admin:
                       - sonata.admin.place.reviews
                       - sonata.admin.place.coverphoto
                       - sonata.admin.place_notification
+                      - sonata.admin.restaurant_duplicate
+                      - sonata.admin.dishes.banner_links
                   roles: [ ROLE_DISPATCHER ]
               acme.admin.group.formanagers:
                   label: admin.group.formanagers

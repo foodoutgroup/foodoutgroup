@@ -394,6 +394,42 @@
           <source>admin.settings</source>
           <target>Настройки</target>
       </trans-unit>
+      <trans-unit id="admin.restaurant_dublicate">
+          <source>admin.restaurant_dublicate</source>
+          <target>Дублированные рестораны</target>
+      </trans-unit>
+      <trans-unit id="admin.duplicate.place">
+          <source>admin.duplicate.place</source>
+          <target>Ресторан</target>
+      </trans-unit>
+      <trans-unit id="admin.duplicate.new_place">
+          <source>admin.duplicate.new_place</source>
+          <target>Дублированный ресторан</target>
+      </trans-unit>
+      <trans-unit id="admin.duplicate.user">
+          <source>admin.duplicate.user</source>
+          <target>Сделано</target>
+      </trans-unit>
+      <trans-unit id="admin.banner_link" resname="admin.banner_link">
+          <source>admin.banner_link</source>
+          <target>Banner linking</target>
+      </trans-unit>
+      <trans-unit id="admin.banner_link.place_from" resname="admin.banner_link.place_from">
+          <source>admin.banner_link.place_from</source>
+          <target>Place From</target>
+      </trans-unit>
+      <trans-unit id="admin.banner_link.place_to" resname="admin.banner_link.place_to">
+          <source>admin.banner_link.place_to</source>
+          <target>Place to</target>
+      </trans-unit>
+      <trans-unit id="admin.banner_link.element" resname="admin.banner_link.element">
+          <source>admin.banner_link.element</source>
+          <target>Banner element</target>
+      </trans-unit>
+      <trans-unit id="admin.banner_link.text" resname="admin.banner_link.text">
+          <source>admin.banner_link.text</source>
+          <target>Banner text</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

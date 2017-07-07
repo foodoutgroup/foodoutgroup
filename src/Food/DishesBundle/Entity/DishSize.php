@@ -370,6 +370,19 @@ class DishSize
     }
 
     /**
+     * Set id
+     *
+     * @param integer $id
+     * @return DishSize
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * Get id
      *
      * @return integer

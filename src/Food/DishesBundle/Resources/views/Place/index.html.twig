@@ -1,6 +1,6 @@
 {% extends 'FoodAppBundle::layout.html.twig' %}
 
-{% block title %}{% trans with {'%restaurant_name%':place.name} %}general.restaurant_page_title{% endtrans %}{% if place.getSEO('Title') %} {{ place.getSEO('Title') }}{% endif %} | {{page_title }}{% endblock %}
+{#{% block title %}{% trans with {'%restaurant_name%':place.name} %}general.restaurant_page_title{% endtrans %}{% if place.getSEO('Title') %} {{ place.getSEO('Title') }}{% endif %} | {{page_title }}{% endblock %}#}
 {% block seo_description %}{{ place.getSEO('Description') }}{% endblock %}
 
 {% block adnet_retargeting %}
@@ -148,8 +148,7 @@
                                 <div class="menu-lefter" id="catmnu">
                                     {% if placeCategories|length > 10 %}
                                         <div class="dropdown">
-                                            <button id="dLabel" class="button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans %}places.food_categories{% endtrans %}<span class="caret"></span>
-                                            </button>
+                                            <button id="dLabel" class="button" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans %}places.food_categories{% endtrans %}<span class="caret"></span></button>
                                             <ul class="dropdown-menu scrollable-menu menu" aria-labelledby="dLabel">
                                                 {% for category in placeCategories %}
                                                     {% if category.dishes and dishService.activeDishesByCategory(category.id)|length > 0 %}
@@ -176,15 +175,16 @@
                                         </div>
                                     {% endif %}
 
-                                    {#Related place collection view#}
-                                    {% for relatedPlace in relatedPlaceCollection %}
-                                        <br />
-                                        <a class="btn-walk" href="{{ slug.getUrl(relatedPlace.id, 'place') }}">
-                                            <span><i class="icon-walk"></i><b>{% trans %}related.place.go.to{% endtrans %} {{ relatedPlace.name }}</b><i class="icon-arrow"></i></span>
-                                            <img itemprop="logo" class="restaurant_image" alt="general.restaurant_logo_alt" src="//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}">
-                                        </a>
-                                    {% endfor %}
-                                    {# end of related place collection view #}
+
+                                    <div class="place-banner-container">
+                                        {% for relatedPlace in relatedPlaceCollection %}
+                                            <br />
+                                            <a class="place-banner-item" href="{{ slug.getUrl(relatedPlace.placeTo.getId, 'place') }}" style="background: url('//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}')">
+                                                <span class="place-banner-text"> {{ relatedPlace.text|raw }}</span>
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+
                                 </div>
                                 <div class="menu-righter">
                                     <script type="text/javascript">
@@ -250,10 +250,7 @@
                                         $(document).ready(function() {
 
                                             $('.pickup_click').click(function () {
-
-
                                                 $.post('{{ path('food_ajax', {'action' : 'delivery-type'}) }}', {'type' : 'pickup'});
-
                                                 $('.alert-no-address').addClass('hidden');
                                                 requestAddress = false;
                                                 type = $('.iradio input[name=delivery_type]');
@@ -261,19 +258,7 @@
                                                     $('.delivery_type[value=pickup]').iCheck('check');
                                                 }
                                             });
-
-                                            $('.submit-address-change').click(function () {
-                                                var params = { city: $('#address_city').val(), address: $('#address').val(), currentUrl: window.location.href };
-                                                $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
-                                                    if(response.data.success == 1) {
-                                                        window.location = window.location.href.split("#")[0];
-                                                    } else {
-                                                        $("<div>" + response.data.message + "</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
-                                                    }
-                                                });
-                                            });
                                         });
-
 
                                     </script>
                                     <div class="alert-no-address hidden shake-me">
@@ -281,9 +266,27 @@
                                         <div class="input-section">
                                             <form class="address-search-form-ui address-search-form-city address-search-form-place"  action="#" method="get">
                                                 <div class="flex-aligment">
-                                                    <input type="text" {% if location is not null and location.precision == 0 and location.id is defined %}data-selected="{{ location.id }}"{% endif %} id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if location is not null and location.output is defined  %}{{ location.output }}{% endif %}" />
+                                                    <input type="text"
+                                                           {% if location is not null and location.precision == 0 and location.id is defined %}data-selected="{{ location.id }}"{% endif %}
+                                                           id="address_autocomplete"
+                                                           data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}"
+                                                           placeholder="{% trans %}index.street{% endtrans %}"
+                                                           class="input-street search-field"
+                                                           autocomplete="off"
+                                                           value="{% if location is not null and location.output is defined  %}{{ location.output }}{% endif %}"
+                                                    />
                                                     <button class="submit submit-address-change" id="submit" data-redirect="self" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}" img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/></button>
                                                     <span id="find-me" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
+                                                </div>
+                                                <div class="hidden">
+                                                    <div class="modal-map-div" STYLE="width: 800px;">
+                                                        <h1 class="text-center" style="font-weight: 800;">{% trans %}modal.map.title.text{% endtrans %}</h1>
+                                                        <div id="mapError"></div>
+                                                        <input id="address_autocomplete_modal" readonly="readonly" type="text"/>
+                                                        <div id="map" style="width: 800px; height: 500px;"></div>
+                                                        <button id="confirmMapPoint" class="hidden" type="button">{% trans %}button.continue{% endtrans %}</button>
+                                                        <p>{% trans %}modal.map.text.bottom{% endtrans %}</p>
+                                                    </div>
                                                 </div>
                                                 <div class="clearfix"></div>
                                                 <div id="error"></div>

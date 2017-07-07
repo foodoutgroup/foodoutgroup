@@ -3,54 +3,53 @@
 namespace Food\DishesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Translatable\Entity\MappedSuperclass\AbstractPersonalTranslation;
 
 /**
- * Dish units localized
+ * BannerLinksLocalized
  *
- * @ORM\Table(name="dish_option_localized",
+ * * @ORM\Table(name="banner_links_localized",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="lookup_unique_idx", columns={
  *         "locale", "object_id", "field"
  *     })})
  * @ORM\Entity
  */
-class DishOptionLocalized extends AbstractPersonalTranslation
+class BannerLinksLocalized
 {
     /**
-     * @ORM\ManyToOne(targetEntity="DishOption", inversedBy="translations")
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Food\DishesBundle\Entity\BannerLinks", inversedBy="translations")
      * @ORM\JoinColumn(name="object_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    protected $object;
+    private $object;
 
     /**
-     * @var integer $id
+     * @var string
      *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\Column(name="locale", type="string", length=255)
      */
-    protected $id;
+    private $locale;
 
     /**
-     * @var string $locale
+     * @var string
      *
-     * @ORM\Column(type="string", length=8)
+     * @ORM\Column(name="field", type="string", length=255)
      */
-    protected $locale;
+    private $field;
 
     /**
-     * @var string $field
+     * @var string
      *
-     * @ORM\Column(type="string", length=32)
+     * @ORM\Column(name="content", type="text", nullable=true)
      */
-    protected $field;
-
-    /**
-     * @var string $content
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $content;
+    private $content;
 
     /**
      * Convenient constructor
@@ -67,22 +66,9 @@ class DishOptionLocalized extends AbstractPersonalTranslation
     }
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     * @return DishUnitsLocalized
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -90,79 +76,10 @@ class DishOptionLocalized extends AbstractPersonalTranslation
     }
 
     /**
-     * Set locale
-     *
-     * @param string $locale
-     * @return DishUnitsLocalized
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get locale
-     *
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * Set field
-     *
-     * @param string $field
-     * @return DishUnitsLocalized
-     */
-    public function setField($field)
-    {
-        $this->field = $field;
-
-        return $this;
-    }
-
-    /**
-     * Get field
-     *
-     * @return string
-     */
-    public function getField()
-    {
-        return $this->field;
-    }
-
-    /**
-     * Set content
-     *
-     * @param string $content
-     * @return DishUnitsLocalized
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get content
-     *
-     * @return string
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
      * Set object
      *
-     * @param $object
-     * @return DishUnitsLocalized
+     * @param integer $object
+     * @return BannerLinksLocalized
      */
     public function setObject($object)
     {
@@ -174,10 +91,79 @@ class DishOptionLocalized extends AbstractPersonalTranslation
     /**
      * Get object
      *
-     * @return \Food\DishesBundle\Entity\DishUnit
+     * @return integer 
      */
     public function getObject()
     {
         return $this->object;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return BannerLinksLocalized
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string 
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set field
+     *
+     * @param string $field
+     * @return BannerLinksLocalized
+     */
+    public function setField($field)
+    {
+        $this->field = $field;
+
+        return $this;
+    }
+
+    /**
+     * Get field
+     *
+     * @return string 
+     */
+    public function getField()
+    {
+        return $this->field;
+    }
+
+    /**
+     * Set content
+     *
+     * @param string $content
+     * @return BannerLinksLocalized
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return string 
+     */
+    public function getContent()
+    {
+        return $this->content;
     }
 }

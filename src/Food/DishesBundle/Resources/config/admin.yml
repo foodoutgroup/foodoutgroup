@@ -97,6 +97,17 @@ services:
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.restaurant_duplicate:
+          class: Food\DishesBundle\Admin\RestaurantDuplicateAdmin
+          tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.duplicate" }
+          arguments:
+            - ~
+            - Food\DishesBundle\Entity\DuplicatedRestaurant
+            - ~
+          calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]
+
     sonata.admin.place.pointfull:
         class: Food\DishesBundle\Admin\PlacePointFullAdmin
         tags:
@@ -131,7 +142,6 @@ services:
             - ~
         calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
-
 
     sonata.admin.place.reviews:
         class: Food\DishesBundle\Admin\PlaceReviewsAdmin
@@ -459,6 +469,17 @@ services:
       arguments:
         - ~
         - Food\DishesBundle\Entity\DishOptionSizePrice
+        - ~
+      calls:
+        - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.dishes.banner_links:
+      class: Food\DishesBundle\Admin\BannerLinkAdmin
+      tags:
+        - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.banner_link" }
+      arguments:
+        - ~
+        - Food\DishesBundle\Entity\BannerLinks
         - ~
       calls:
         - [ setTranslationDomain, [SonataAdminBundle]]

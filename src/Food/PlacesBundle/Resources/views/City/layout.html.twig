@@ -99,27 +99,6 @@
 
 
 
-            $(document).ready(function () {
-                $('.pickup_click').click(function () {
-                    $('.delivery-type-filter a[data-type="pickup"]').trigger('click');
-                });
-
-                $('.submit-address-change').click(function (e) {
-                    var params = {
-                        city: $('.input-section #address_city').val(),
-                        address: $('.input-section #address').val(),
-                        currentUrl: window.location.href
-                    };
-                    $.get('{{ url('food_ajax', {'action': 'find-address'}) }}', params, function (response) {
-                        if (response.data.success == 1) {
-                            window.location =  $('.input-section #address_city option:selected').data('url') ;
-                        } else {
-                            $("<div>" + response.data.message + "</div>").dialog(dialogOpts).siblings('.ui-dialog-titlebar').remove();
-                            e.preventDefault();
-                        }
-                    });
-                });
-            });
 
             $(document).on('click', '.filters-list a', function () {
                 targetInput = $(this).parent().find('input');
@@ -269,9 +248,28 @@
                         <div class="address-quick-search hidden">
                             <form class="address-search-form-ui"  action="#" method="get">
                                 <div class="flex-aligment shake-me">
-                                    <input type="text" {% if location is not null and location.precision == 0 and location.id is defined %}data-selected="{{ location.id }}"{% endif %} id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if location is not null and location.output is defined  %}{{ location.output }}{% endif %}" />
+                                    <input
+                                            type="text"
+                                            {% if location is not null and location.precision == 0 and location.id is defined %}data-selected="{{ location.id }}"{% endif %}
+                                            id="address_autocomplete"
+                                            data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}"
+                                            placeholder="{% trans %}index.street{% endtrans %}"
+                                            class="input-street search-field"
+                                            autocomplete="off"
+                                            value="{% if location is not null and location.output is defined  %}{{ location.output }}{% endif %}"
+                                    />
                                     <button class="submit submit-address-change" id="submit" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}" img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/></button>
-                                    <span id="find-me" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
+                                    <span id="find-me" data-error-no-service="{% trans %}error.no.service.available{% endtrans %}" data-error-accuracy-to-big="{% trans %}error.accuracy.to.big{% endtrans %}" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
+                                </div>
+                                <div class="hidden">
+                                    <div class="modal-map-div" STYLE="width: 800px;">
+                                        <h1 class="text-center" style="font-weight: 800;">{% trans %}modal.map.title.text{% endtrans %}</h1>
+                                        <div id="mapError"></div>
+                                        <input name="address_acm" id="address_autocomplete_modal" readonly="readonly" type="text"/>
+                                        <div id="map" style="width: 800px; height: 500px;"></div>
+                                        <button id="confirmMapPoint" class="hidden" type="button">{% trans %}button.continue{% endtrans %}</button>
+                                        <p>{% trans %}modal.map.text.bottom{% endtrans %}</p>
+                                    </div>
                                 </div>
                                 <div class="clearfix"></div>
                                 <div id="error"></div>
@@ -358,21 +356,43 @@
                 </div>
                 {% set showNoAddress  = false %}
                 <div class="content-righter">
-                    <div class="alert-no-address shake-me {% if not showNoAddress %}hidden{% endif %}">
-                        {% trans %}please.fill.address.message.top{% endtrans %}<br/>
-                        <div class="input-section">
-                            <form class="address-search-form-ui address-search-form-city"  action="#" method="get">
-                                <div class="flex-aligment">
-                                    <input type="text" {% if location is not null and location.precision == 0 and location.id is defined %}data-selected="{{ location.id }}"{% endif %} id="address_autocomplete" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}" placeholder="{% trans %}index.street{% endtrans %}" class="input-street search-field" autocomplete="off" value="{% if location is not null and location.output is defined %}{{ location.output }}{% endif %}" />
-                                    <button class="submit submit-address-change" id="submit" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}" img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/> </button>
-                                    <span id="find-me" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
-                                </div>
-                                <div class="clearfix"></div>
-                                <div id="error"></div>
-                            </form>
+                    {% if location is null or location.precision != 0 %}
+                        <div class="alert-no-address shake-me {% if not showNoAddress %}hidden{% endif %}">
+                            {% trans %}please.fill.address.message.top{% endtrans %}<br/>
+                            <div class="input-section">
+                                <form class="address-search-form-ui address-search-form-city"  action="#" method="get">
+                                    <div class="flex-aligment">
+                                        <input
+                                                type="text"
+                                                {% if location is not null and location.precision == 0 and location.id is defined %}data-selected="{{ location.id }}"{% endif %}
+                                                id="address_autocomplete"
+                                                data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}"
+                                                placeholder="{% trans %}index.street{% endtrans %}"
+                                                class="input-street search-field"
+                                                autocomplete="off"
+                                                value="{% if location is not null and location.output is defined %}{{ location.output }}{% endif %}"
+                                        />
+                                        <button class="submit submit-address-change" id="submit" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}" img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/> </button>
+                                        <span id="find-me" data-error-no-service="{% trans %}error.no.service.available{% endtrans %}" data-error-accuracy-to-big="{% trans %}error.accuracy.to.big{% endtrans %}" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
+                                    </div>
+                                    <div class="hidden">
+                                        <div class="modal-map-div" STYLE="width: 800px;">
+                                            <h1 class="text-center" style="font-weight: 800;">{% trans %}modal.map.title.text{% endtrans %}</h1>
+                                            <div id="mapError"></div>
+                                            <input name="address_acm" id="address_autocomplete_modal" readonly="readonly" type="text"/>
+                                            <div id="map" style="width: 800px; height: 500px;"></div>
+                                            <button id="confirmMapPoint" class="hidden" type="button">{% trans %}button.continue{% endtrans %}</button>
+                                            <p>{% trans %}modal.map.text.bottom{% endtrans %}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                    <div id="error"></div>
+                                </form>
+                            </div>
+                            {% trans %}please.fill.address.message.bottom{% endtrans %}<br/>
                         </div>
-                        {% trans %}please.fill.address.message.bottom{% endtrans %}<br/>
-                    </div>
+                    {% endif %}
                     <div class="restaurants-list-controls clearfix nab-visible">
                     {% if not rush_hour %}
                         <div class="restaurants-list-top-filters">
@@ -401,4 +421,5 @@
 
         </div>
     </div>
+
 {% endblock %}
