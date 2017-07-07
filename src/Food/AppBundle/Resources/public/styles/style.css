@@ -1237,7 +1237,7 @@ input.button {
 }
 .search-food-form span.find-me {
     position: relative;
-    right: 40px;
+    right: 120px;
     top: 16px;
     background: url(/bundles/foodapp/images/find-me.png);
     width: 24px;
@@ -1289,7 +1289,7 @@ input.button {
     padding: 18px 16px;
     line-height: 18px;
     height: 18px;
-    width: 360px;
+    width: 80%;
     font-size: 15px;
     border-radius: 5px 5px 0px 5px;
 }
@@ -4848,6 +4848,7 @@ div.coupon_form_popup {
 .search-food-form input.input-street[type="text"] {
     border-radius: 0;
     border-radius: 5px 5px 5px 5px;
+    margin: 0px 10px 0px 20px;
 }
 
 .search-food-form input.input-house[type="text"] {
