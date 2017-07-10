@@ -129,6 +129,9 @@ class InvoiceService extends ContainerAware
      */
     public function generateUserInvoice($order)
     {
+        $locale = $this->container->getParameter('kernel.default_locale');
+        $this->container->get('translator')->setLocale($locale);
+
         if (!$order instanceof Order) {
             throw new \InvalidArgumentException('Cannot generate invoice PDF without order');
         }

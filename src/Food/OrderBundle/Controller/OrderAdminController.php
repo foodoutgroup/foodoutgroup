@@ -310,7 +310,7 @@ class OrderAdminController extends Controller
                       o.driver_id, d.extId as driver_ext_id, d.type AS driver_type, d.name as driver_name,
                       o.total, o.vat, o.coupon_code, o.discount_size, o.discount_sum, o.delivery_price, o.adminFee as admin_fee, o.sf_series, o.sf_number,
                       u.firstname AS dispatcher_name,
-                      oe.firstname, oe.lastname, oe.phone, oe.email, oe.cancel_reason, oe.cancel_reason_comment, oe.change_reason,
+                      cc.id as user_id, oe.firstname, oe.lastname, cc.created_at as user_create_date, oe.phone, oe.email, oe.cancel_reason, oe.cancel_reason_comment, oe.change_reason,
                       o.user_ip, o.is_corporate_client, o.company, o.company_name, o.company_code, o.vat_code, o.company_address,
                       o.newsletter_subscribe,
                       ua.city, ua.address,

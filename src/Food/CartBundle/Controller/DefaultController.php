@@ -375,36 +375,35 @@ class DefaultController extends Controller
 
                     $selfDelivery = ($request->get('delivery-type') == "pickup" ? true : false);
 
-                // Preorder date formation
-                $orderDate = null;
-                $preOrder = $request->get('pre-order');
-                if ($preOrder == 'it-is') {
-                    $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
-                }
+                    // Preorder date formation
+                    $orderDate = null;
+                    $preOrder = $request->get('pre-order');
+                    if ($preOrder == 'it-is') {
+                        $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
+                    }
 
-                $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate);
-                $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
-                if ($preOrder == 'it-is') {
-                    $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
-                }
-            } else {
-                $orderService->setOrder($order);
-                if ($takeAway) {
-                    $orderService->getOrder()->setPlacePoint($placePoint);
-                    $orderService->getOrder()->setCityId($placePoint->getCityId());
-                    $orderService->getOrder()->setPlacePointAddress($placePoint->getAddress());
-                }
-                $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
+                    $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate);
+                    $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
+                    if ($preOrder == 'it-is') {
+                        $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
+                    }
+                } else {
+                    $orderService->setOrder($order);
+                    if ($takeAway) {
+                        $orderService->getOrder()->setPlacePoint($placePoint);
+                        $orderService->getOrder()->setCityId($placePoint->getCityId());
+                        $orderService->getOrder()->setPlacePointAddress($placePoint->getAddress());
+                    }
+                    $orderService->logOrder(null, 'retry', 'Canceled order billing retry by user', $orderService->getOrder());
 
                     $user = $order->getUser();
                     $userPhone = $user->getPhone();
                 }
 
 
-
-            if ($countryCode != $user->getCountryCode() && !$user->getIsBussinesClient()) {
-                $user->setCountryCode($countryCode);
-            }
+                if ($countryCode != $user->getCountryCode() && !$user->getIsBussinesClient()) {
+                    $user->setCountryCode($countryCode);
+                }
 
                 if ($userPhone != $user->getPhone() && !$user->getIsBussinesClient()) {
                     $formatedPhone = $miscUtils->formatPhone($request->get('customer-phone'), $request->get('country'));
@@ -548,6 +547,10 @@ class DefaultController extends Controller
         $cartFromMax = $placeServ->getMaxCartPrice($place->getId());
         $useAdminFee = $placeServ->useAdminFee($place);
         $adminFee = $placeServ->getAdminFee($place);
+
+        if($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup){
+            $useAdminFee = false;
+        }
 
         $em = $this->getDoctrine()->getManager();
 
@@ -729,7 +732,7 @@ class DefaultController extends Controller
                                 $useAdminFee = true;
                                 $checkAdmin = true;
 
-                                if(($total_cart - $adminFee) < $realDiscountSum){
+                                if (($total_cart - $adminFee) < $realDiscountSum) {
                                     $total_cart += $adminFee;
                                     $freeDelivery = false;
                                 }
@@ -776,7 +779,7 @@ class DefaultController extends Controller
         }
 
 
-        if ($useAdminFee && (($cartFromMin - $total_cart) >= 0.00001) && !$checkAdmin ) {
+        if ($useAdminFee && (($cartFromMin - $total_cart) >= 0.00001) && !$checkAdmin) {
             $total_cart += $adminFee;
         }
 
@@ -819,9 +822,9 @@ class DefaultController extends Controller
             }
         }
 
-        if($freeDelivery){
+        if ($freeDelivery) {
             $totalWIthDelivery = ($total_cart > 0) ? $total_cart : 0;
-        }else{
+        } else {
             $totalWIthDelivery = ($total_cart + $deliveryTotal) > 0 ? $total_cart + $deliveryTotal : 0;
         }
 
