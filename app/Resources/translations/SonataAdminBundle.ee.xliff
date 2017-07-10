@@ -3327,6 +3327,10 @@
                 <source>admin.banner_link.text</source>
                 <target>Banner text</target>
             </trans-unit>
+            <trans-unit id="admin.place.no_business_discount" resname="admin.place.no_business_discount">
+                <source>admin.place.no_business_discount</source>
+                <target>No business discount</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

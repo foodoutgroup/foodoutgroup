@@ -747,7 +747,9 @@ class DefaultController extends Controller
             }
         } // Business client discount
         elseif (!empty($current_user) && is_object($current_user) && $current_user->getIsBussinesClient()) {
-            if (!$takeAway && !$place->getSelfDelivery()) {
+            $businesCheck = $place->getNoBusinessDiscount();
+
+            if (!$takeAway && !$place->getSelfDelivery() && !$businesCheck) {
                 $applyDiscount = true;
                 $discountSize = $this->get('food.user')->getDiscount($current_user);
 
