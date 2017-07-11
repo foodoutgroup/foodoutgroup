@@ -1394,11 +1394,11 @@ class OrderService extends ContainerAware
                     $discountSum = $coupon->getDiscountSum();
                 }
 
-                $this->getOrder()->setDiscountSize($discountSize)->setDiscountSum($discountSum);
-
                 if ($coupon->getFreeDelivery()) {
-                    $deliveryPrice = 0;
+                    $discountSum += $deliveryPrice;
                 }
+
+                $this->getOrder()->setDiscountSize($discountSize)->setDiscountSum($discountSum);
 
                 if ($coupon->getIgnoreCartPrice() && !$coupon->getFreeDelivery() || !$coupon->getIncludeDelivery()) {
                     $includeDelivery = false;
