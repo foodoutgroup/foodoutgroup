@@ -270,11 +270,12 @@ class BannerLinks extends Uploadable
      * @param \Food\DishesBundle\Entity\BannerLinksLocalized $translations
      * @return BannerLinks
      */
-    public function addTranslation(\Food\DishesBundle\Entity\BannerLinksLocalized $translations)
+    public function addTranslation(\Food\DishesBundle\Entity\BannerLinksLocalized $t)
     {
-        $this->translations[] = $translations;
-
-        return $this;
+        if (!$this->translations->contains($t)) {
+            $this->translations[] = $t;
+            $t->setObject($this);
+        }
     }
 
     /**
