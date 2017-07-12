@@ -10,6 +10,7 @@ class SettingsController extends CRUDController
 
     private $keywordMapCollection = [
         'site_logo_url',
+        'change_phone_position',
         'page_banned',
         'page_sitemap',
         'page_email_banned',
@@ -95,6 +96,12 @@ class SettingsController extends CRUDController
         }
 
         $form->add('site_logo_url', 'text');
+
+        if($this->container->getParameter('country') != 'EE') {
+            $form->add('change_phone_position', 'boolean', [
+                'label' => 'Move phone to footer',
+            ]);
+        }
 
         $form->add('page_banned', 'choice', [
             'label' => 'Banned page',

@@ -113,6 +113,7 @@ twig:
         locale:       "%locale%"
         page_title:   "%title%"
         site_country: "%country%"
+        site_email:   "%mailer_from%"
         currency_display: "%currency_display%"
         currency_iso: "%currency_iso%"
         display_currency_alternative: "%display_currency_alternative%"
