@@ -1590,7 +1590,7 @@ class OrderService extends ContainerAware
         $adminFee    = $placesService->getAdminFee($placeObject);
         $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
 
-        if ($this->getOrder()->getDeliveryType() == 'pickup' && !$placeObject->getMinimalOnSelfDel()) {
+        if ($this->getOrder()->getDeliveryType() == 'pickup' || !$placeObject->getMinimalOnSelfDel()) {
             $useAdminFee = false;
         }
 
