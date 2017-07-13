@@ -442,6 +442,14 @@ class Place extends Uploadable implements Translatable
      */
     private $deletedBy;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="no_business_discount", type="boolean", nullable=true)
+     */
+    private $noBusinessDiscount = false;
+
+
     protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
     protected $boxSize = ['w' => 130, 'h' => 86];
 
@@ -2381,5 +2389,28 @@ class Place extends Uploadable implements Translatable
     public function getUseAdminFee()
     {
         return $this->useAdminFee;
+    }
+
+    /**
+     * Set noBusinessDiscount
+     *
+     * @param boolean $noBusinessDiscount
+     * @return Place
+     */
+    public function setNoBusinessDiscount($noBusinessDiscount)
+    {
+        $this->noBusinessDiscount = $noBusinessDiscount;
+
+        return $this;
+    }
+
+    /**
+     * Get noBusinessDiscount
+     *
+     * @return boolean 
+     */
+    public function getNoBusinessDiscount()
+    {
+        return $this->noBusinessDiscount;
     }
 }

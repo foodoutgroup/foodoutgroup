@@ -1406,7 +1406,8 @@ class OrderService extends ContainerAware
 
             } elseif ($user->getIsBussinesClient()) {
                 // Jeigu musu logistika, tada taikom fiksuota nuolaida
-                if (!$selfDelivery) {
+                $businessCheck = $placeObject->getNoBusinessDiscount();
+                if (!$selfDelivery && !$businessCheck) {
                     $discountSize = $this->container->get('food.user')->getDiscount($user);
                     $discountSum = $this->getCartService()->getTotalDiscount($this->getCartService()->getCartDishes($placeObject), $discountSize);
 

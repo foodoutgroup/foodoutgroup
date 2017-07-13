@@ -1354,6 +1354,10 @@
                 <source>save.button</source>
                 <target>Save</target>
             </trans-unit>
+            <trans-unit id="general.bottom.contacts">
+                <source>general.bottom.contacts</source>
+                <target>Kontakt</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

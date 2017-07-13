@@ -3355,6 +3355,10 @@
                 <source>admin.banner_link.text</source>
                 <target>Banerio tekstas</target>
             </trans-unit>
+            <trans-unit id="admin.place.no_business_discount" resname="admin.place.no_business_discount">
+                <source>admin.place.no_business_discount</source>
+                <target>Netaikyti verslo įmonės nuolaidos</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
