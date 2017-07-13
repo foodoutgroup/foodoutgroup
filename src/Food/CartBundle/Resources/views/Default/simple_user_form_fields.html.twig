@@ -25,7 +25,7 @@
 <div class="form-row">
     <label><br></label>
     <div class="order-type-radios clearfix">
-        <label class="custom-radio">{% trans %}cart.checkout.order_now{% endtrans %}
+        <label class="custom-radio" {% if pointIsWorking == false %} style="color:grey" {% endif %}>{% trans %}cart.checkout.order_now{% endtrans %}
             <input type="radio" name="pre-order" value="not-this-time" {% if dataToLoad is empty or (dataToLoad is not empty and dataToLoad['pre-order'] is not empty and dataToLoad['pre-order'] == "not-this-time") %}checked="checked"{% endif %}{% if pointIsWorking == false %} disabled{% endif %}>
         </label>
         <label class="custom-radio">{% trans %}cart.checkout.order_later{% endtrans %}
