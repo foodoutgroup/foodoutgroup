@@ -34,7 +34,9 @@ class LocationService extends ContainerAware
 
             if(!is_null($flat) || (isset($location['output']) && !is_null($flat = $this->parseFlat($location['output'])))) {
                 preg_match('/(.*?\s+\d{1,3}(\pL|\s\pL)?)([-|\s]{0,4}[\d\pL]{0,3})(.*)$/ium', $location['output'], $response);
-                $location['output'] = str_replace($response[3], "", $location['output']);
+                if (isset($response[3])) {
+                    $location['output'] = str_replace($response[3], "", $location['output']);
+                }
             }
 
             $locationData = [
@@ -175,13 +177,43 @@ class LocationService extends ContainerAware
 
     public function parseFlat($address)
     {
+
+        $regxpHouseFlat = '
+           /\A\s*
+           (?: #########################################################################
+               # Option A: [<Addition to address 1>] <House number> <Street name>      #
+               # [<Addition to address 2>]                                             #
+               #########################################################################
+               (?:(?P<1_additional_1>.*?),\s*)? # Addition to address 1
+           (?:No\.\s*)?
+               (?P<house_flat>\pN+[a-zA-Z]{0,2}(?:\s*[-\/\pP]\s*\pN+[a-zA-Z]?)*) # House number
+           \s*,?\s*
+               (?P<1_street_name>(?:[a-zA-Z]\s*|\pN\pL{2,}\s\pL)\S[^,#]*?(?<!\s)) # Street name
+           \s*(?:(?:[,\/]|(?=\#))\s*(?!\s*No\.)
+               (?P<1_additional_2>(?!\s).*?))? # Addition to address 2
+           |   #########################################################################
+               # Option B: [<Addition to address 1>] <Street name> <House number>      #
+               # [<Addition to address 2>]                                             #
+               #########################################################################
+               (?:(?P<2_additional_1>.*?),\s*(?=.*[,\/]))? # Addition to address 1
+               (?!\s*No\.)(?P<2_street_name>[^0-9# ]\s*\S(?:[^,#](?!\b\pN+\s))*?(?<!\s)) # Street name
+           \s*[\/,]?\s*(?:\sNo[.:])?\s*
+               (?P<2_house_flat>\pN+\s*-?[a-zA-Z]{0,2}(?:\s*[-\/\pP]?\s*\pN+(?:\s*[\-a-zA-Z])?)*|
+               [IVXLCDM]+(?!.*\b\pN+\b))(?<!\s) # House number
+           \s*(?:(?:[,\/]|(?=\#)|\s)\s*(?!\s*No\.)\s*
+               (?P<2_additional_2>(?!\s).*?))? # Addition to address 2
+           )
+           \s*\Z/xu';
         $flat = null;
         if (!empty($address)) {
-            preg_match('/(([0-9]{1,3}\s?[a-z]?)[-|\s]{0,4}([\d\w]{0,3}))/i', $address, $addrData);
-            if (isset($addrData[0])) {
-                $flat = (!empty($addrData[3]) ? $addrData[3] : null);
+            preg_match($regxpHouseFlat, $address, $addrData);
+
+            if (isset($addrData['house_flat'])) {
+                $matches = preg_split('/([\\\\s@&.?$+-]+)/i', $addrData['house_flat']);
+                $flat = (!empty($matches[1]) ? $matches[1] : null);
             }
         }
+
         return $flat;
     }
 
