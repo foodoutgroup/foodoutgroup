@@ -146,6 +146,11 @@ class UserAddress
         return $this;
     }
 
+    public function getCityReal()
+    {
+        return $this->city;
+    }
+
     /**
      * Get city
      *
