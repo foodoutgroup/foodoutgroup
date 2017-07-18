@@ -3464,27 +3464,17 @@ class OrderService extends ContainerAware
 
                 if($locationData['precision'] == 0) {
 
-                    $cityObj = $this->getEm()->getRepository('FoodAppBundle:City')->getByName($locationData['city']);
+                    $locationService->set($locationData, $flat);
+                    $locationData = $locationService->get();
 
-                    if(!$cityObj) {
-                        $formErrors[] = "order.form.errors.customeraddr.city.not.found";
-                    } else {
+                    if (empty($placePointMap[$place->getId()])) {
+                        $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 1');
+                        // Mapping not found, lets try to remap
 
-                        $locationService->set($locationData, $flat);
+                        $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData);
 
-                        $locationData = $locationService->get();
-
-
-                        if (empty($placePointMap[$place->getId()])) {
-                            $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 1');
-                            // Mapping not found, lets try to remap
-
-                            $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData);
-
-                            $placePointMap[$place->getId()] = $placePointId;
-                            $this->container->get('session')->set('point_data', $placePointMap);
-                        }
-
+                        $placePointMap[$place->getId()] = $placePointId;
+                        $this->container->get('session')->set('point_data', $placePointMap);
                     }
 
                 } else {
