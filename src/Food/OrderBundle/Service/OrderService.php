@@ -507,7 +507,7 @@ class OrderService extends ContainerAware
                             [
                                 $order->getId(),
                                 $place->getName(),
-                                ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
+                                ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place,null,$order->getDeliveryType()) : $place->getPickupTime()),
                                 $order->getDeliveryTime()->format('m-d H:i'),
                                 $order->getDelayDuration(),
                             ],
