@@ -54,7 +54,7 @@ class OrdersController extends Controller
 
         //$this->get('logger')->alert('Orders:getOrdersAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -87,7 +87,7 @@ class OrdersController extends Controller
         //$this->get('logger')->alert('Orders:createOrderAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -119,7 +119,7 @@ class OrdersController extends Controller
 
         //$this->get('logger')->alert('Orders:createOrderPreAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -157,7 +157,7 @@ class OrdersController extends Controller
         //$this->get('logger')->alert('Orders:getOrderDetailsByHashAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -193,7 +193,7 @@ class OrdersController extends Controller
         //$this->get('logger')->alert('Orders:changeOrderStatusByHashAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -230,7 +230,7 @@ class OrdersController extends Controller
         //$this->get('logger')->alert('Orders:changeOrderStatusByHashAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     public function getOrdersByPlacepointHashAction($hash, Request $request)
@@ -247,13 +247,10 @@ class OrdersController extends Controller
                 return new JsonResponse(null, 404);
             }
         }  catch (ApiException $e) {
-            var_dump($e->getMessage());die();
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
         } catch (\Exception $e) {
-            var_dump($e->getMessage());die();
-
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error2:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace2:' . $e->getTraceAsString());
 
@@ -267,7 +264,7 @@ class OrdersController extends Controller
         //$this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -330,7 +327,7 @@ class OrdersController extends Controller
 
         //$this->get('logger')->alert('Orders:getOrderDetailsAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -382,7 +379,7 @@ class OrdersController extends Controller
 
         //$this->get('logger')->alert('Orders:confirmOrderAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -436,7 +433,7 @@ class OrdersController extends Controller
 
         //$this->get('logger')->alert('Orders:getOrderStatusAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -669,7 +666,7 @@ class OrdersController extends Controller
 
         //$this->get('logger')->alert('Orders:getOrderStatusAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**

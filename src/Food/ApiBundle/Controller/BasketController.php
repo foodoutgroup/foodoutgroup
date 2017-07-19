@@ -46,7 +46,7 @@ class BasketController extends Controller
 
         //$this->get('logger')->alert('createBasketAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     public function updateBasketAction($id, Request $request)
@@ -73,7 +73,7 @@ class BasketController extends Controller
 
         //$this->get('logger')->alert('updateBasketAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     public function getBasketAction($id)
@@ -82,7 +82,7 @@ class BasketController extends Controller
         //$this->get('logger')->alert('getBasketAction Request:' . $id);
         try {
             $basket = $this->get('food_api.basket')->getBasket($id);
-            $response = new JsonResponse($basket);
+            $response = new JsonResponse($basket, 200, array('Access-Control-Allow-Origin'=> '*'));
             $response->setMaxAge(1);
             $response->setSharedMaxAge(1);
             $date = new \DateTime();
@@ -131,7 +131,7 @@ class BasketController extends Controller
 
         //$this->get('logger')->alert('deleteBasketAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 204);
+        return new JsonResponse($response, 204, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     public function updateBasketItemAction($id, $basket_item_id, Request $request)
@@ -159,7 +159,7 @@ class BasketController extends Controller
 
         //$this->get('logger')->alert('updateBasketItemAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     public function deleteBasketItemAction($id, $basket_item_id, Request $request)
@@ -187,7 +187,7 @@ class BasketController extends Controller
 
         //$this->get('logger')->alert('deleteBasketItemAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
      /**
