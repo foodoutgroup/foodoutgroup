@@ -430,6 +430,10 @@
           <source>admin.banner_link.text</source>
           <target>Banner text</target>
       </trans-unit>
+      <trans-unit id="admin.banner_link.color" resname="admin.banner_link.color">
+          <source>admin.banner_link.color</source>
+          <target>Text color (e.g #ffffff)</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
