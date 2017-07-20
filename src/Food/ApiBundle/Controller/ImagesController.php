@@ -86,6 +86,7 @@ class ImagesController extends Controller
             $response->headers->set('Content-Type', $type);
             $response->headers->set('Content-Length', $imageLength);
             $response->headers->set('Cache-Control', 'max-age=432000');
+            $response->headers->set('Access-Control-Allow-Origin', '*');
 
         } catch (\InvalidArgumentException $e) {
             $this->get('logger')->error('imageAction Error:' . $e->getMessage());
