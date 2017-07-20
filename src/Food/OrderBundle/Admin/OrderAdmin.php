@@ -34,7 +34,9 @@ class OrderAdmin extends FoodAdmin
             ->add('companyName', 'text', array('label' => 'admin.order.companyName', 'required' => false))
             ->add('companyCode', 'text', array('label' => 'admin.order.companyCode', 'required' => false))
             ->add('vatCode', 'text', array('label' => 'admin.order.vatCode', 'required' => false))
-            ->add('companyAddress', 'text', array('label' => 'admin.order.companyAddress', 'required' => false))
+            ->add('companyAddress', 'text', array('label' => 'Company Address', 'required' => false))
+            ->add('order_date','datetime',['label'=>'admin.order.order_date'])
+            ->add('shitfoks','text', ['required' => false,  'label' => 'Delivery Address'])
         ;
 
         /**
@@ -250,6 +252,26 @@ class OrderAdmin extends FoodAdmin
             $object->setPlace($place);
         }
         parent::prePersist($object);
+    }
+
+    /**
+     * @param Order $obj
+     */
+    public function preUpdate($obj)
+    {
+
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        if(!empty($obj->getShitfoksReal())) {
+            $addressE = $obj->getAddressId();
+            if($addressE && $addressE->getOrigin() != $obj->getShitfoksReal()) {
+                $addressE->setOrigin($obj->getShitfoksReal());
+                $em->persist($addressE);
+                $em->flush();
+            }
+        }
+
+        parent::preUpdate($obj);
     }
 
     /**
