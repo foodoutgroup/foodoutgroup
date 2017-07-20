@@ -180,7 +180,7 @@
                                         {% for relatedPlace in relatedPlaceCollection %}
                                             <br />
                                             <a class="place-banner-item" href="{{ slug.getUrl(relatedPlace.placeTo.getId, 'place') }}" style="background: url('//{{ cloudfront_url }}/{{relatedPlace.getWebPathThumb}}')">
-                                                <span class="place-banner-text"> {{ relatedPlace.text|raw }}</span>
+                                                <span class="place-banner-text" style="{% if relatedPlace.color %} color: {{ relatedPlace.color|raw }} {% else %} color:white {% endif %}"> {{ relatedPlace.text|raw }}</span>
                                             </a>
                                         {% endfor %}
                                     </div>
