@@ -3359,6 +3359,10 @@
                 <source>admin.place.no_business_discount</source>
                 <target>Netaikyti verslo įmonės nuolaidos</target>
             </trans-unit>
+             <trans-unit id="admin.banner_link.color" resname="admin.banner_link.color">
+                <source>admin.banner_link.color</source>
+                <target>Teksto spalva (pvz:. #ffffff)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

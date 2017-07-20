@@ -148,7 +148,6 @@ class Restaurant extends ContainerAware
         if ($pickUpOnly || $place->getDeliveryOptions() == $place::OPT_ONLY_PICKUP) {
             $pickUp = true;
             $delivery = false;
-            $pedestrian = false;
         } elseif ($locationData == null) {
             $delivery = false;
             $pickUp = false;
@@ -226,6 +225,11 @@ class Restaurant extends ContainerAware
         $useAdminFee = $placeService->useAdminFee($place);
         $adminFee    = $placeService->getAdminFee($place);
 
+        $deliveryPedestrian = null;
+
+        if($place->getDeliveryOptions() == $place::OPT_ONLY_PEDESTRIAN){
+            $deliveryPedestrian = $place::OPT_ONLY_PEDESTRIAN;
+        }
 
         $this
             ->set('restaurant_id', $place->getId())
@@ -253,7 +257,7 @@ class Restaurant extends ContainerAware
             ->set(
                 'delivery_options',
                 [
-                    'estimated_time'       => (string)((!empty($deliveryType) && $deliveryType == 'pickup') ? $place->getPickupTime() : $this->container->get('food.places')->getDeliveryTime($place)),
+                    'estimated_time'       => (string)((!empty($deliveryType) && $deliveryType == 'pickup') ? $place->getPickupTime() : $this->container->get('food.places')->getDeliveryTime($place,null,$deliveryPedestrian)),
                     'price'                => [
                         'amount'   => (!empty($devPrice) ? ($devPrice * 100) : ($place->getDeliveryPrice() * 100)),
                         'currency' => $currency
