@@ -104,7 +104,7 @@ class RestaurantsController extends Controller
 
         $this->get('logger')->alert('Restaurants:getRestaurantsAction Response:' . json_encode($response));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -184,7 +184,7 @@ class RestaurantsController extends Controller
 
         $this->get('logger')->alert('Restaurants:getRestaurantsFilteredAction Response:' . json_encode($response));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -387,6 +387,6 @@ class RestaurantsController extends Controller
 
         //$this->get('logger')->alert('Restaurants:getMenuCategoriesAction Response:' . print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 }
