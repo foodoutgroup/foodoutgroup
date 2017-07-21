@@ -15,4 +15,10 @@
 
 {% block page_title_h1 %}
     <h1>{% if meta_title is not empty %}{{ meta_title }}. {% endif %}{% trans %}places.header_main_part{% endtrans %}  {% if city is not null %} {{ city.getTitle() }} {% else %} {{ location['city'] }} {% endif %}</h1>
+
+        <div class="modal-pedestrian-div" STYLE="width: 800px;position: relative;display: none;">
+            <img src="{{ asset('bundles/foodapp/images/pop-up.png') }}">
+            <a id="pedestrian-redirect" href="javascript:void(0)" style="position:absolute;right: 20px;bottom: 20px;"><img src="{{ asset('bundles/foodapp/images/mygtukas.png') }}"></a>
+        </div>
+
 {% endblock %}
