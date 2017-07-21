@@ -31,17 +31,17 @@ class LocationService extends ContainerAware
         $locationData = null;
         if ($location != null && is_array($location)) {
             if (isset($location['flat']) && !$flat) { $flat = $location['flat'] ; }
-
-            if(!is_null($flat) || (isset($location['output']) && !is_null($flat = $this->parseFlat($location['output'])))) {
-                preg_match('/(.*?\s+\d{1,3}(\pL|\s\pL)?)([-|\s]{0,4}[\d\pL]{0,3})(.*)$/ium', $location['output'], $response);
+            if(!is_null($flat) || (isset($location['output']) && !is_null($flat = $this->parseFlat($location['output']))) ) {
+                preg_match('/(.*?\d{1,3}(\pL|\s\pL)?)([-|\s]{0,4}[\d\pL]{0,3})(.*)$/ium', $location['output'], $response); //TODO: fix this bitch ass reg
                 if (isset($response[3])) {
-                    $location['output'] = str_replace($response[3], "", $location['output']);
+                   $location['outputNoFlat'] = str_replace($response[3], "", $location['output']);
                 }
             }
 
             $locationData = [
                 'id' => isset($location['id']) ? $location['id'] : null,
                 'output' => isset($location['output']) ? $location['output'] : null,
+                'outputNoFlat' => isset($location['outputNoFlat']) ? $location['outputNoFlat'] : null,
                 'country' => isset($location['country']) ? $location['country'] : null,
                 'city' => isset($location['city']) ? $location['city'] : null,
                 'city_id' => null,
@@ -160,7 +160,6 @@ class LocationService extends ContainerAware
 
     public function finishUpData($response = [])
     {
-
         if($response && isset($response['success']) && $response['success']) {
             $response = $this->parseLocation($response['detail']);
         } else {
@@ -172,12 +171,12 @@ class LocationService extends ContainerAware
 
     public function findByHash($hash)
     {
+
         return $this->finishUpData($this->getGeoCodeCurl(['hash' => $hash]));
     }
 
-    public function parseFlat($address)
+    public function parseAddrData($address)
     {
-
         $regxpHouseFlat = '
            /\A\s*
            (?: #########################################################################
@@ -204,10 +203,21 @@ class LocationService extends ContainerAware
                (?P<b_additional_2>(?!\s).*?))? # Addition to address 2
            )
            \s*\Z/xu';
+
+        preg_match($regxpHouseFlat, $address, $addrData);
+
+        return $addrData;
+
+    }
+
+
+    public function parseFlat($address)
+    {
         $flat = null;
 
         if (!empty($address)) {
-            preg_match($regxpHouseFlat, $address, $addrData);
+
+            $addrData = $this->parseAddrData($address);
 
             if (isset($addrData['house_flat']) && $addrData['house_flat'] != '') {
                 $matches = preg_split('/([\\\\s@&.?$+-]+)/i', $addrData['house_flat']);
