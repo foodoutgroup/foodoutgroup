@@ -63,7 +63,7 @@ class CityAdmin extends FoodAdmin
             ->add('pedestrian', 'checkbox', array('label' => 'admin.cities.pedestrian', 'required' => false))
             ->add('pop_up', 'checkbox', array('label' => 'admin.cities.popup', 'required' => false))
             ->add('pop_up_time_from','time', array('label' => 'admin.cities.popup_from','required' => false))
-            ->add('pop_up_time_to','time', array('label' => 'admin.cities.popup_tp','required' => false))
+            ->add('pop_up_time_to','time', array('label' => 'admin.cities.popup_to','required' => false))
         ;
 
     }

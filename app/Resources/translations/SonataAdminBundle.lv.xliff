@@ -3362,6 +3362,18 @@
                 <source>admin.banner_link.color</source>
                 <target>Text color (e.g #ffffff)</target>
             </trans-unit>
+            <trans-unit id="admin.cities.popup" resname="admin.cities.popup">
+                <source>admin.cities.popup</source>
+                <target>Pedestrian popup</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.popup_from" resname="admin.cities.popup_from">
+                <source>admin.cities.popup_from</source>
+                <target>Show pop up from</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.popup_to" resname="admin.cities.popup_to">
+                <source>admin.cities.popup_to</source>
+                <target>Show pop up to</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
