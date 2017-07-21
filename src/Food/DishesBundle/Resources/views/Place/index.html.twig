@@ -304,7 +304,8 @@
                                             </div>
                                         {% endif %}
                                     {% endif %}
-                                    {% if place.selfDelivery and app.user is not empty and app.user.isBussinesClient or place.getNoBusinessDiscount %}
+
+                                    {% if place.selfDelivery and app.user is not empty and (app.user.isBussinesClient or place.getNoBusinessDiscount) %}
                                         <div class="alert alert-danger">
                                             {% trans %}places.discount_not_for_business_clients{% endtrans %}
                                         </div>
