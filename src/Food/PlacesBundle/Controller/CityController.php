@@ -14,6 +14,7 @@ class CityController extends Controller
 
     public function indexAction($id, $params = [])
     {
+
         $request = $this->get('request');
 
         $cityService = $this->get('food.city_service');
