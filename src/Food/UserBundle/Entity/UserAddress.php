@@ -126,9 +126,14 @@ class UserAddress
         if (!$this->getId()) {
             return '';
         }
+        $buffer = $this->getOrigin();
 
-        $buffer = $this->getAddress();
-        return $buffer;
+        if(!empty($buffer)){
+            return $buffer;
+        }else{
+            return $this->getAddress();
+        }
+
     }
 
 
