@@ -262,7 +262,8 @@ class OrderAdmin extends FoodAdmin
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
-        if(!empty($obj->getShitfoksReal())) {
+        $val =$obj->getShitfoksReal();
+        if(!empty($val)) {
             $addressE = $obj->getAddressId();
             if($addressE && $addressE->getOrigin() != $obj->getShitfoksReal()) {
                 $addressE->setOrigin($obj->getShitfoksReal());

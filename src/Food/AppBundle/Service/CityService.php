@@ -71,8 +71,10 @@ class CityService extends BaseService
     {
         $result = false;
 
+        $popTime = $city->getPopUpTimeFrom();
+        $popTimeTo = $city->getPopUpTimeTo();
         if($city->getPopUp()){
-            if (!empty($city->getPopUpTimeFrom()) && !empty($city->getPopUpTimeTo())){
+            if (!empty($popTime) && !empty($popTimeTo)){
                 $timeFrom = strtotime($city->getPopUpTimeFrom()->format('H:i:s'));
                 $timeTo = strtotime($city->getPopUpTimeTo()->format('H:i:s'));
                 $timeNow = strtotime(date('H:i:s'));
