@@ -2704,7 +2704,9 @@ class Order
     {
         if($this->getAddressId()) {
 
-            if(!empty($this->getAddressId()->getOrigin())) {
+
+            $empt = empty($this->getAddressId()->getOrigin();
+            if(!$empt) {
                 return $this->getAddressId()->getOrigin()."- ".$this->getAddressId()->getId();
             } else {
                 return $this->getAddressId()." - ". $this->getAddressId()->getId();
