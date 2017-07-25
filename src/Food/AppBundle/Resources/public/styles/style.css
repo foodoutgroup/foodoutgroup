@@ -1232,9 +1232,10 @@ input.button {
     justify-content: center;
 }
 
-.search-food-form label{
+.search-food-form label {
     margin: 18px 8px 18px 14px;
 }
+
 .search-food-form span.find-me {
     position: relative;
     right: 40px;
@@ -1243,13 +1244,13 @@ input.button {
     width: 24px;
     height: 24px;
     border: none;
-    cursor:pointer;
+    cursor: pointer;
 
 }
 
 .search-food-form .do-pickup {
     margin-left: 10px;
-    background:url("/bundles/foodapp/images/marker-icon.png");
+    background: url("/bundles/foodapp/images/marker-icon.png");
 
 }
 
@@ -1769,13 +1770,49 @@ input.button {
 }
 
 .restaurant-item .delivery,
-.restaurant-item .min-cart-size {padding-left: 20px;}
-.restaurant-item .select-place-point {display: block; margin-top: 2px;}
-.restaurant-item .select-place-point a { color: #000000;}
-.restaurant-item .delivery {background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left 2px;  display: block; float: right}
-.restaurant-item .pickup {background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left 2px; color: #55422e; padding-left: 20px; letter-spacing: 0.5px; display: block; float: left}
-.restaurant-item .min-cart-size {background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left 1px; display: block; float: left}
-.restaurant-item .business {background: url(/bundles/foodapp/images/business.png) no-repeat left 2px; color: #55422e; padding-left: 20px; letter-spacing: 0.5px; display: block; float: left}
+.restaurant-item .min-cart-size {
+    padding-left: 20px;
+}
+
+.restaurant-item .select-place-point {
+    display: block;
+    margin-top: 2px;
+}
+
+.restaurant-item .select-place-point a {
+    color: #000000;
+}
+
+.restaurant-item .delivery {
+    background: url(/bundles/foodapp/images/delivery-ico.png) no-repeat left 2px;
+    display: block;
+    float: right
+}
+
+.restaurant-item .pickup {
+    background: url(/bundles/foodapp/images/pickup-ico.png) no-repeat left 2px;
+    color: #55422e;
+    padding-left: 20px;
+    letter-spacing: 0.5px;
+    display: block;
+    float: left
+}
+
+.restaurant-item .min-cart-size {
+    background: url(/bundles/foodapp/images/cart-ico.png) no-repeat left 1px;
+    display: block;
+    float: left
+}
+
+.restaurant-item .business {
+    background: url(/bundles/foodapp/images/business.png) no-repeat left 2px;
+    color: #55422e;
+    padding-left: 20px;
+    letter-spacing: 0.5px;
+    display: block;
+    float: left
+}
+
 .restaurant-item .min-cart-size {
     padding-left: 20px;
 }
@@ -5958,7 +5995,7 @@ div.coupon_form_popup {
 }
 
 .address-search-form-city span.find-me {
-    cursor:pointer;
+    cursor: pointer;
     position: absolute;
     right: 100px;
     top: 8px;
@@ -5981,7 +6018,7 @@ div.coupon_form_popup {
 .address-search-form-cart span.find-me {
     right: 220px;
     top: 7px;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .address-quick-search input {
@@ -6042,8 +6079,8 @@ div.coupon_form_popup {
 .not-working-container {
     display: flex;
     color: white;
-    margin-bottom:5px;
-    border-radius:10px;
+    margin-bottom: 5px;
+    border-radius: 10px;
 }
 
 .not-working-text {
@@ -6083,22 +6120,23 @@ div.coupon_form_popup {
     background-color: #cc1f36;
 }
 
-.restaurant-item .item-center .desc{
+.restaurant-item .item-center .desc {
     margin-bottom: 5px;
 }
 
-.tag-not-working{
+.tag-not-working {
     position: relative;
     display: flex;
 }
 
-.place-banner-container{
+.place-banner-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top:15px;
+    margin-top: 15px;
 }
-.place-banner-item{
+
+.place-banner-item {
     height: 150px;
     background-position: center !important;
     background-repeat: no-repeat !important;
@@ -6107,21 +6145,22 @@ div.coupon_form_popup {
     box-shadow: 0 1px 5px 0 rgba(207, 180, 184, 0.44);
     border: 2px solid #F2C74C;
     border-radius: 4px;
-    display:flex;
+    display: flex;
     width: 143px;
 }
-.place-banner-text{
+
+.place-banner-text {
     text-align: center;
     margin-left: 15px;
     margin-right: 15px;
     font-family: 'avenirbook';
     font-size: 12px;
-    margin-top:5px;
+    margin-top: 5px;
     width: 100%;
 }
 
-.discount-sum .fr{
-    color:red;
+.discount-sum .fr {
+    color: red;
 }
 
 #mapError {
@@ -6192,4 +6231,19 @@ div.coupon_form_popup {
     color: #fff;
     float: left;
     word-wrap: normal;
+}
+
+.badge-container {
+    z-index: 3;
+    bottom: 15px;
+    left: 15px;
+    position: fixed;
+}
+
+.pedestrian-list-info-container{
+    background: url("/bundles/foodapp/images/maps.png");
+    background-position: center;
+    background-size: cover;
+    height: 500px;
+    border-bottom: 1px solid #ebe2d9;
 }

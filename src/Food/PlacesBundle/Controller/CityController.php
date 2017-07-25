@@ -15,6 +15,16 @@ class CityController extends Controller
     public function indexAction($id, $params = [])
     {
 
+        $badge = $this->get('session')->get('badge');
+
+        if($badge){
+            $this->container->get('session')->set('delivery_type', OrderService::$deliveryPedestrian);
+            $this->get('session')->remove('badge');
+        }else{
+            $this->container->get('session')->set('delivery_type', OrderService::$deliveryDeliver);
+        }
+
+
         $request = $this->get('request');
 
         $cityService = $this->get('food.city_service');
