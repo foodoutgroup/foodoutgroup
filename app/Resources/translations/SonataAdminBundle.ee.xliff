@@ -3343,6 +3343,10 @@
                <source>admin.cities.popup_to</source>
                <target>Show pop up to</target>
            </trans-unit>
+           <trans-unit id="admin.cities.badge" resname="admin.cities.badge">
+               <source>admin.cities.badge</source>
+               <target>Show pedestrian badge</target>
+           </trans-unit>
             lt/user/cart/24
         </body>
     </file>

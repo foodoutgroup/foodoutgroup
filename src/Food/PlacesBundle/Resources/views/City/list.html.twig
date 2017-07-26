@@ -1,9 +1,6 @@
 <div class="restaurants-list">
     {% if delivery_type_filter == 'pedestrian' %}
         <div class="pedestrian-list-info-container">
-            <div class="pedestrian-list-info">
-                {% trans %}place.pedestrian_info{% endtrans %}
-            </div>
         </div>
     {% endif %}
     {% for place_point in placeCollection %}

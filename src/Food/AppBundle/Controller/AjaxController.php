@@ -306,6 +306,10 @@ class AjaxController extends Controller
         $lService = $this->get('food.location');
         $response = $lService->findByHash($request->get("address"));
 
+        if($request->get("type")) {
+            $this->get('session')->set('badge', 1);
+        }
+
         $t = $this->get('translator');
         if($response) {
 
