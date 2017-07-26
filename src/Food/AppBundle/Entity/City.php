@@ -174,7 +174,12 @@ class City implements \JsonSerializable
      */
     private $popUpTimeTo;
 
-
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="badge", type="boolean", nullable=true)
+     */
+    private $badge;
 
     /**
      * Get id
@@ -660,5 +665,28 @@ class City implements \JsonSerializable
     public function getPopUpTimeTo()
     {
         return $this->popUpTimeTo;
+    }
+
+    /**
+     * Set badge
+     *
+     * @param boolean $badge
+     * @return City
+     */
+    public function setBadge($badge)
+    {
+        $this->badge = $badge;
+
+        return $this;
+    }
+
+    /**
+     * Get badge
+     *
+     * @return boolean 
+     */
+    public function getBadge()
+    {
+        return $this->badge;
     }
 }
