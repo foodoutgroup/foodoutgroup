@@ -3,6 +3,7 @@ namespace Food\AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Food\AppBundle\Entity\City;
+use Food\AppBundle\Entity\Tmp\Location;
 use Food\AppBundle\Utils\Language;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -82,6 +83,19 @@ class CityService extends BaseService
                     $result = true;
                 }
             }
+        }
+
+        return $result;
+    }
+
+    public function getCityFromLocation($location)
+    {
+        $result = false;
+
+        $cityObj = $this->getCityById($location['city_id']);
+
+        if($cityObj->getBadge()){
+            $result = true;
         }
 
         return $result;

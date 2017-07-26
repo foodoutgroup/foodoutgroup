@@ -3375,6 +3375,10 @@
                 <source>admin.cities.popup_to</source>
                 <target>Rodyti popup iki</target>
             </trans-unit>
+            <trans-unit id="admin.cities.badge" resname="admin.cities.badge">
+                <source>admin.cities.badge</source>
+                <target>33 min ženkliukas</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
