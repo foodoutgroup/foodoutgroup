@@ -37,6 +37,7 @@ class OrderAdmin extends FoodAdmin
             ->add('companyAddress', 'text', array('label' => 'Company Address', 'required' => false))
             ->add('order_date','datetime',['label'=>'admin.order.order_date'])
             ->add('shitfoks','text', ['required' => false,  'label' => 'Delivery Address'])
+            ->add('house','text', ['required' => false,  'label' => 'Address House'])
         ;
 
         /**
@@ -262,12 +263,24 @@ class OrderAdmin extends FoodAdmin
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
-        $val =$obj->getShitfoksReal();
-        if(!empty($val)) {
+        $shitfok =$obj->getShitfoksReal();
+        $house = $obj->getHouseReal();
+        if(!empty($shitfok)) {
             $addressE = $obj->getAddressId();
-            if($addressE && $addressE->getOrigin() != $obj->getShitfoksReal()) {
-                $addressE->setOrigin($obj->getShitfoksReal());
+
+            if($addressE && $addressE->getAddress() != $obj->getShitfoksReal()) {
+                $addressE->setAddress($obj->getShitfoksReal());
                 $em->persist($addressE);
+                $em->flush();
+            }
+        }
+
+        if(!empty($house)){
+            $houseE = $obj->getAddressId();
+
+            if($houseE && $houseE->getHouse() != $obj->getHouseReal()) {
+                $houseE->setHouse($obj->getHouseReal());
+                $em->persist($houseE);
                 $em->flush();
             }
         }
