@@ -747,6 +747,7 @@ class PlacesService extends ContainerAware
     {
         if ($type && $type == 'pedestrian') {
             $deliveryTime = $place->getDeliveryTime();
+
         } else {
             $deliveryTime = $placePoint ? $placePoint->getDeliveryTime() : $place->getDeliveryTime();
             if (!$place->getSelfDelivery() && !$place->getNavision() && $this->isShowZavalDeliveryTime($place)) {
