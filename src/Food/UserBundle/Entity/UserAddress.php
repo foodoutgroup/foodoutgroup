@@ -202,6 +202,14 @@ class UserAddress
         return $address;
     }
 
+    public function getAddressAdmin()
+    {
+        $address = $this->address;
+
+        return $address;
+    }
+
+
     /**
      * Set coords
      *
