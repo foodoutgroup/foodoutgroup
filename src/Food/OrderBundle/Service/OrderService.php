@@ -1373,7 +1373,7 @@ class OrderService extends ContainerAware
         $discountPercent = 0;
         $discountSum = 0;
 
-        $selfDelivery = $this->getOrder()->getPlace()->getSelfDelivery();
+
         $includeDelivery = true;
 
 
@@ -1590,7 +1590,7 @@ class OrderService extends ContainerAware
         $adminFee = $placesService->getAdminFee($placeObject);
         $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
 
-        if ($this->getOrder()->getDeliveryType() == 'pickup' || !$placeObject->getMinimalOnSelfDel()) {
+        if ($selfDelivery) {
             $useAdminFee = false;
         }
 
@@ -1636,6 +1636,7 @@ class OrderService extends ContainerAware
      */
     public function saveOrder()
     {
+
         if (empty($this->order) || $this->order == null) {
             throw new \Exception("Yah whatever... seivinam orderi neturedami jo ?:)");
         } else {
