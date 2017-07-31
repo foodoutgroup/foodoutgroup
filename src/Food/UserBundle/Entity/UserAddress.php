@@ -126,9 +126,14 @@ class UserAddress
         if (!$this->getId()) {
             return '';
         }
+        $buffer = $this->getOrigin();
 
-        $buffer = $this->getAddress();
-        return $buffer;
+        if(!empty($buffer)){
+            return $buffer;
+        }else{
+            return $this->getAddress();
+        }
+
     }
 
 
@@ -144,6 +149,11 @@ class UserAddress
         $this->city = $city;
 
         return $this;
+    }
+
+    public function getCityReal()
+    {
+        return $this->city;
     }
 
     /**
@@ -191,6 +201,14 @@ class UserAddress
 
         return $address;
     }
+
+    public function getAddressAdmin()
+    {
+        $address = $this->address;
+
+        return $address;
+    }
+
 
     /**
      * Set coords

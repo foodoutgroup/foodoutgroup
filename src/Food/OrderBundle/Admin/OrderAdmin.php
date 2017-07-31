@@ -34,7 +34,10 @@ class OrderAdmin extends FoodAdmin
             ->add('companyName', 'text', array('label' => 'admin.order.companyName', 'required' => false))
             ->add('companyCode', 'text', array('label' => 'admin.order.companyCode', 'required' => false))
             ->add('vatCode', 'text', array('label' => 'admin.order.vatCode', 'required' => false))
-            ->add('companyAddress', 'text', array('label' => 'admin.order.companyAddress', 'required' => false))
+            ->add('companyAddress', 'text', array('label' => 'Company Address', 'required' => false))
+            ->add('order_date','datetime',['label'=>'admin.order.order_date'])
+            ->add('shitfoks','text', ['required' => false,  'label' => 'Delivery Address'])
+            ->add('house','text', ['required' => false,  'label' => 'Address House'])
         ;
 
         /**
@@ -250,6 +253,39 @@ class OrderAdmin extends FoodAdmin
             $object->setPlace($place);
         }
         parent::prePersist($object);
+    }
+
+    /**
+     * @param Order $obj
+     */
+    public function preUpdate($obj)
+    {
+
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        $shitfok =$obj->getShitfoksReal();
+        $house = $obj->getHouseReal();
+        if(!empty($shitfok)) {
+            $addressE = $obj->getAddressId();
+
+            if($addressE && $addressE->getAddress() != $obj->getShitfoksReal()) {
+                $addressE->setAddress($obj->getShitfoksReal());
+                $em->persist($addressE);
+                $em->flush();
+            }
+        }
+
+        if(!empty($house)){
+            $houseE = $obj->getAddressId();
+
+            if($houseE && $houseE->getHouse() != $obj->getHouseReal()) {
+                $houseE->setHouse($obj->getHouseReal());
+                $em->persist($houseE);
+                $em->flush();
+            }
+        }
+
+        parent::preUpdate($obj);
     }
 
     /**

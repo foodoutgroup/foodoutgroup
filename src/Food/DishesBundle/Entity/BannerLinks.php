@@ -71,6 +71,13 @@ class BannerLinks extends Uploadable
     private $active;
 
     /**
+     * @var text
+     *
+     * @ORM\Column(name="color", type="text", length=255, nullable=true)
+     */
+    private $color;
+
+    /**
      * @Gedmo\Locale
      * Used locale to override Translation listener`s locale
      * this is not a mapped field of entity metadata, just a simple property
@@ -303,5 +310,28 @@ class BannerLinks extends Uploadable
         if ($this->getFile() && $this->getFile()->getSize() > round($this->maxFileSize * 1024 * 1024)) {
             $context->addViolationAt('file', 'Paveiksliukas užima daugiau nei ' . $this->maxFileSize . ' MB vietos.');
         }
+    }
+
+    /**
+     * Set color
+     *
+     * @param string $color
+     * @return BannerLinks
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
     }
 }

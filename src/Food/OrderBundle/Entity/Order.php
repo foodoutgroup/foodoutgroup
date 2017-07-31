@@ -99,6 +99,10 @@ class Order
      **/
     private $address_id;
 
+    private $shitfoks;
+
+    private $house;
+
     /**
      * @ORM\Column(name="order_status", type="string", length=50, nullable=false)
      **/
@@ -2690,6 +2694,68 @@ class Order
         $this->source = $source;
         return $this;
     }
+
+    public function getShitfoksReal(){
+        return $this->shitfoks;
+    }
+
+    public function getHouseReal(){
+        return $this->house;
+    }
+
+    public function getHouse()
+    {
+        if($this->getAddressId()) {
+
+            $val = $this->getAddressId()->getHouse();
+            $empt = empty($val);
+            if(!$empt) {
+                return $this->getAddressId()->getHouse();
+            } else {
+                return '';
+            }
+        } else {
+            return '';
+        }
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getShitfoks()
+    {
+        if($this->getAddressId()) {
+
+            $val = $this->getAddressId()->getAddressAdmin();
+            $empt = empty($val);
+            if(!$empt) {
+                return $this->getAddressId()->getAddressAdmin();
+            } else {
+                return '';
+            }
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * @param mixed $shitfoks
+     */
+    public function setShitfoks($shitfoks)
+    {
+        $this->shitfoks = $shitfoks;
+    }
+
+    /**
+     * @param mixed $house
+     */
+    public function setHouse($house)
+    {
+        $this->house = $house;
+    }
+
+
 
 
 }

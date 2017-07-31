@@ -1349,7 +1349,7 @@
             </trans-unit>
             <trans-unit id="admin.order.status.source.repostToNavOnMissingInNav">
                 <source>admin.order.status.source.repostToNavOnMissingInNav</source>
-                <target>Čili Navision repost order on fatal error</target>
+                <target>??ili Navision repost order on fatal error</target>
             </trans-unit>
             <trans-unit id="admin.order.delivery_log.order_accepted">
                 <source>admin.order.delivery_log.order_accepted</source>
@@ -1799,23 +1799,23 @@
             </trans-unit>
             <trans-unit id="admin.dispatcher.cancel_reason.client_changed_his_mind">
                 <source>admin.dispatcher.cancel_reason.client_changed_his_mind</source>
-                <target>Klients ir pārdomājis</target>
+                <target>Klients ir p??rdom??jis</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.cancel_reason.restaurant_dont_works">
                 <source>admin.dispatcher.cancel_reason.restaurant_dont_works</source>
-                <target>Restorāns nestrādā</target>
+                <target>Restor??ns nestr??d??</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.cancel_reason.restaurant_has_no_dishes">
                 <source>admin.dispatcher.cancel_reason.restaurant_has_no_dishes</source>
-                <target>Restorānam nav piedāvājuma</target>
+                <target>Restor??nam nav pied??v??juma</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.cancel_reason.too_long_production_time">
                 <source>admin.dispatcher.cancel_reason.too_long_production_time</source>
-                <target>Pārāk ilgs pagatavošanas laiks</target>
+                <target>P??r??k ilgs pagatavo??anas laiks</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.cancel_reason.software_error">
                 <source>admin.dispatcher.cancel_reason.software_error</source>
-                <target>Programmas kļùda</target>
+                <target>Programmas k????da</target>
             </trans-unit>
             <trans-unit id="admin.dispatcher.cancel_reason_comment">
                 <source>admin.dispatcher.cancel_reason_comment</source>
@@ -2052,7 +2052,7 @@
             </trans-unit>
             <trans-unit id="admin.street.street_placeholder">
                 <source>admin.street.street_placeholder</source>
-                <target>Laisvės pr.</target>
+                <target>Laisv??s pr.</target>
             </trans-unit>
             <!-- Kuponu listas -->
             <trans-unit id="admin.company_discount_level">
@@ -2155,7 +2155,7 @@
             </trans-unit>
             <trans-unit id="admin.reports.place_code">
                 <source>admin.reports.place_code</source>
-                <target>Uzņēmuma kods</target>
+                <target>Uz????muma kods</target>
             </trans-unit>
             <trans-unit id="admin.restaurant">
                 <source>admin.restaurant</source>
@@ -2722,7 +2722,7 @@
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>Loading information…</target>
+                <target>Loading information???</target>
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
@@ -2867,7 +2867,7 @@
             </trans-unit>
             <trans-unit id="admin.users.regenerate_password">
                  <source>admin.users.regenerate_password</source>
-                 <target>Automātiski ģenerēta parole</target>
+                 <target>Autom??tiski ??ener??ta parole</target>
              </trans-unit>
             <!-- CRM -->
             <trans-unit id="admin.dispatcher.crm_search_button">
@@ -3331,6 +3331,23 @@
                 <source>admin.place.no_business_discount</source>
                 <target>No business discount</target>
             </trans-unit>
+            <trans-unit id="admin.cities.popup" resname="admin.cities.popup">
+                <source>admin.cities.popup</source>
+                <target>Pedestrian popup</target>
+            </trans-unit>
+           <trans-unit id="admin.cities.popup_from" resname="admin.cities.popup_from">
+               <source>admin.cities.popup_from</source>
+               <target>Show pop up from</target>
+           </trans-unit>
+           <trans-unit id="admin.cities.popup_to" resname="admin.cities.popup_to">
+               <source>admin.cities.popup_to</source>
+               <target>Show pop up to</target>
+           </trans-unit>
+           <trans-unit id="admin.cities.badge" resname="admin.cities.badge">
+               <source>admin.cities.badge</source>
+               <target>Show pedestrian badge</target>
+           </trans-unit>
+            lt/user/cart/24
         </body>
     </file>
 </xliff>

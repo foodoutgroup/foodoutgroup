@@ -495,7 +495,7 @@ class OrderService extends ContainerAware
             $placeService = $this->container->get('food.places');
             if ($smsCollection) {
                 foreach ($smsCollection as $smsObj) {
-                    if($smsObj) {
+                    if ($smsObj) {
                         $smsText = str_replace(
                             [
                                 '[order_id]',
@@ -507,7 +507,7 @@ class OrderService extends ContainerAware
                             [
                                 $order->getId(),
                                 $place->getName(),
-                                ($order->getDeliveryType() == self::$deliveryDeliver ? $placeService->getDeliveryTime($place) : $place->getPickupTime()),
+                                ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
                                 $order->getDeliveryTime()->format('m-d H:i'),
                                 $order->getDelayDuration(),
                             ],
@@ -527,7 +527,7 @@ class OrderService extends ContainerAware
 
             if ($emailCollection) {
                 foreach ($emailCollection as $emailObj) {
-                    if($emailObj) {
+                    if ($emailObj) {
 
                         $ml = $this->container->get('food.mailer');
                         $placeService = $this->container->get('food.places');
@@ -579,7 +579,7 @@ class OrderService extends ContainerAware
                             'invoice' => $invoice,
                             'beta_code' => $betaCode,
                             'city' => $order->getCityId() ? $order->getCityId()->getTitle() : $order->getPlacePoint()->getCityId()->getTitle(),
-                            'food_review_url' =>  'http://'.$this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review'
+                            'food_review_url' => 'http://' . $this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review'
                         ];
 
 
@@ -604,7 +604,7 @@ class OrderService extends ContainerAware
 
                         $this->logMailSent(
                             $this->getOrder(),
-                            'auto_email_send_'.$status,
+                            'auto_email_send_' . $status,
                             $mailTemplate,
                             $variables
                         );
@@ -736,7 +736,7 @@ class OrderService extends ContainerAware
             $restaurant_address = $order->getAddressId()->toString();
 
             $prac = $order->getPlacePointCity();
-            if($cityObj = $order->getPlacePoint()->getCityId()) {
+            if ($cityObj = $order->getPlacePoint()->getCityId()) {
                 $prac = $cityObj->getTitle();
             }
 
@@ -1241,7 +1241,7 @@ class OrderService extends ContainerAware
      */
     public function createAddressMagic($user, $city, $address, $lat, $lon, $comment = null, $cityId = null)
     {
-        if(is_null($cityId)) {
+        if (is_null($cityId)) {
             $userAddress = $this->getEm()
                 ->getRepository('Food\UserBundle\Entity\UserAddress')
                 ->findOneBy([
@@ -1373,7 +1373,7 @@ class OrderService extends ContainerAware
         $discountPercent = 0;
         $discountSum = 0;
 
-        $selfDelivery = $this->getOrder()->getPlace()->getSelfDelivery();
+
         $includeDelivery = true;
 
 
@@ -1437,9 +1437,9 @@ class OrderService extends ContainerAware
 
         $sumTotal = $totalPriceBeforeDiscount - $discountSum;
 
-        if($useAdminFee && ($placeObject->getCartMinimum() > $totalPriceBeforeDiscount)){
+        if ($useAdminFee && ($placeObject->getCartMinimum() > $totalPriceBeforeDiscount)) {
             $useAdminFee = true;
-        }else{
+        } else {
             $useAdminFee = false;
         }
 
@@ -1586,11 +1586,11 @@ class OrderService extends ContainerAware
 //        }
         //~ }
 
-        $placesService =  $this->container->get('food.places');
-        $adminFee    = $placesService->getAdminFee($placeObject);
+        $placesService = $this->container->get('food.places');
+        $adminFee = $placesService->getAdminFee($placeObject);
         $cartFromMin = $placesService->getMinCartPrice($this->getOrder()->getPlace()->getId());
 
-        if ($this->getOrder()->getDeliveryType() == 'pickup' || !$placeObject->getMinimalOnSelfDel()) {
+        if ($selfDelivery) {
             $useAdminFee = false;
         }
 
@@ -1609,7 +1609,7 @@ class OrderService extends ContainerAware
         $sumTotal += $deliveryPrice;
         //~ }
 
-        if($sumTotal < 0){
+        if ($sumTotal < 0) {
             $sumTotal = 0;
         }
 
@@ -1636,6 +1636,7 @@ class OrderService extends ContainerAware
      */
     public function saveOrder()
     {
+
         if (empty($this->order) || $this->order == null) {
             throw new \Exception("Yah whatever... seivinam orderi neturedami jo ?:)");
         } else {
@@ -2453,7 +2454,7 @@ class OrderService extends ContainerAware
         $newOrderText = $translator->trans('general.new_unapproved_order.title');
 
         $placePointCity = '';
-        if($cityObj = $order->getPlacePoint()->getCityId()) {
+        if ($cityObj = $order->getPlacePoint()->getCityId()) {
             $placePointCity = $cityObj->getTitle();
         }
 
@@ -2532,7 +2533,7 @@ class OrderService extends ContainerAware
             // Jei placepoint turi emaila - vadinas siunciam jiems emaila :)
 
             $placePointCity = '';
-            if($cityObj = $order->getCityId()) {
+            if ($cityObj = $order->getCityId()) {
                 $placePointCity = $cityObj->getTitle();
             }
 
@@ -2621,7 +2622,7 @@ class OrderService extends ContainerAware
         $cityCoordinators = $this->container->getParameter('order.city_coordinators');
 
         $placePointCity = '';
-        if($cityObj = $order->getCityId()) {
+        if ($cityObj = $order->getCityId()) {
             $placePointCity = $cityObj->getTitle();
         }
 
@@ -2756,7 +2757,7 @@ class OrderService extends ContainerAware
         $newOrderText = $translator->trans('general.new_order.title');
 
         $placePointCity = $order->getPlacePointCity();
-        if($cityObj = $order->getPlacePoint()->getCityId()) {
+        if ($cityObj = $order->getPlacePoint()->getCityId()) {
             $placePointCity = $cityObj->getTitle();
         }
 
@@ -2878,7 +2879,6 @@ class OrderService extends ContainerAware
      */
     public function logStatusChange($order = null, $newStatus, $source = null, $message = null)
     {
-
 
 
         $log = new OrderStatusLog();
@@ -3453,7 +3453,7 @@ class OrderService extends ContainerAware
             $placePointMap = $this->container->get('session')->get('point_data');
 
             $addressId = $request->request->get("addressId");
-            $flat = ( $request->request->get('flat') === '' ? null : $request->request->get('flat') );
+            $flat = ($request->request->get('flat') === '' ? null : $request->request->get('flat'));
             if ($addressId || $flat) {
                 if (!$addressId) {
                     $oldData = $locationService->get();
@@ -3462,29 +3462,19 @@ class OrderService extends ContainerAware
 
                 $locationData = $locationService->findByHash($request->request->get("addressId"), $flat);
 
-                if($locationData['precision'] == 0) {
+                if ($locationData['precision'] == 0) {
 
-                    $cityObj = $this->getEm()->getRepository('FoodAppBundle:City')->getByName($locationData['city']);
+                    $locationService->set($locationData, $flat);
+                    $locationData = $locationService->get();
 
-                    if(!$cityObj) {
-                        $formErrors[] = "order.form.errors.customeraddr.city.not.found";
-                    } else {
+                    if (empty($placePointMap[$place->getId()])) {
+                        $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 1');
+                        // Mapping not found, lets try to remap
 
-                        $locationService->set($locationData, $flat);
+                        $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData);
 
-                        $locationData = $locationService->get();
-
-
-                        if (empty($placePointMap[$place->getId()])) {
-                            $this->container->get('logger')->alert('Trying to find PlacePoint without ID in OrderService - validateDaGiantForm fix part 1');
-                            // Mapping not found, lets try to remap
-
-                            $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData);
-
-                            $placePointMap[$place->getId()] = $placePointId;
-                            $this->container->get('session')->set('point_data', $placePointMap);
-                        }
-
+                        $placePointMap[$place->getId()] = $placePointId;
+                        $this->container->get('session')->set('point_data', $placePointMap);
                     }
 
                 } else {
@@ -3540,8 +3530,8 @@ class OrderService extends ContainerAware
             $debugDishOptions = $this->getCartService()->getCartDishOptions($item);
             if (!empty($debugDishOptions)) {
                 foreach ($debugDishOptions as $option) {
-                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['name'] =  $option->getDishOptionId()->getName();
-                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['price'] =  $option->getDishOptionId()->getPrice();
+                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['name'] = $option->getDishOptionId()->getName();
+                    $debugCartInfo['options'][$option->getDishOptionId()->getId()]['price'] = $option->getDishOptionId()->getPrice();
                 }
             }
             $debugCartInfo['dish'][$dish->getId()]['price'] = $item->getDishSizeId()->getCurrentPrice();
@@ -3553,7 +3543,6 @@ class OrderService extends ContainerAware
                 ];
             }
         }
-
 
 
         $preOrder = $request->get('pre-order');
@@ -3603,10 +3592,22 @@ class OrderService extends ContainerAware
             } else {
 
                 if ($preOrder == 'it-is') {
+
                     $preOrderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
                     $pointRecordId = $this->getEm()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData, false, $preOrderDate);
                     if (!empty($pointRecordId)) {
                         $pointRecord = $this->getEm()->getRepository('FoodDishesBundle:PlacePoint')->find($pointRecordId);
+
+                        $cartMinimum = $this->getCartService()->getMinimumCart(
+                            $place,
+                            $locationService->get(),
+                            $pointRecord
+                        );
+
+                        if (($cartMinimum - $total_cart) >= 0.00001 && $noMinimumCart == false && !$useAdminFee) {
+                            $formErrors[] = 'order.form.errors.cartlessthanminimum';
+                        }
+
                     } else {
                         $formErrors[] = 'cart.checkout.place_point_not_in_radius';
                     }
@@ -3713,9 +3714,9 @@ class OrderService extends ContainerAware
         if (strlen($phone)) {
             $validation = $this->container->get('food.phones_code_service')->validatePhoneNumber($phone, $request->get('country'));
 
-            if($validation === true){
+            if ($validation === true) {
                 $phonePass = true;
-            }else{
+            } else {
                 $formErrors = $validation;
             }
         }
@@ -4560,9 +4561,9 @@ class OrderService extends ContainerAware
                 $message = \Swift_Message::newInstance()
                     ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
                     ->setFrom('info@' . $domain);
-            $message = \Swift_Message::newInstance()
-                ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
-                ->setFrom('info@' . $domain);
+                $message = \Swift_Message::newInstance()
+                    ->setSubject($this->container->getParameter('title') . ': ' . $translator->trans('general.email.user_delayed_subject'))
+                    ->setFrom('info@' . $domain);
 
                 $message->addTo($userEmail);
                 $message->setBody($text);
@@ -4687,7 +4688,7 @@ class OrderService extends ContainerAware
 
         $params = ['place' => $order->getPlace()->getId()];
 
-        if($cityObj = $order->getPlacePoint()->getCityId()) {
+        if ($cityObj = $order->getPlacePoint()->getCityId()) {
             $params['cityId'] = $cityObj->getId();
         } else {
             $params['city'] = $order->getPlacePointCity();

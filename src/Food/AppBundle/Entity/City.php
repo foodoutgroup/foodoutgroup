@@ -153,6 +153,33 @@ class City implements \JsonSerializable
      */
     private $pedestrian;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="pop_up", type="boolean", nullable=true)
+     */
+    private $popUp;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="pop_up_time_from", type="time", nullable=true)
+     */
+    private $popUpTimeFrom;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="pop_up_time_to", type="time", nullable=true)
+     */
+    private $popUpTimeTo;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="badge", type="boolean", nullable=true)
+     */
+    private $badge;
 
     /**
      * Get id
@@ -569,5 +596,97 @@ class City implements \JsonSerializable
     public function getPedestrian()
     {
         return $this->pedestrian;
+    }
+
+    /**
+     * Set popUp
+     *
+     * @param boolean $popUp
+     * @return City
+     */
+    public function setPopUp($popUp)
+    {
+        $this->popUp = $popUp;
+
+        return $this;
+    }
+
+    /**
+     * Get popUp
+     *
+     * @return boolean 
+     */
+    public function getPopUp()
+    {
+        return $this->popUp;
+    }
+
+    /**
+     * Set popUpTimeFrom
+     *
+     * @param \DateTime $popUpTimeFrom
+     * @return City
+     */
+    public function setPopUpTimeFrom($popUpTimeFrom)
+    {
+        $this->popUpTimeFrom = $popUpTimeFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get popUpTimeFrom
+     *
+     * @return \DateTime 
+     */
+    public function getPopUpTimeFrom()
+    {
+        return $this->popUpTimeFrom;
+    }
+
+    /**
+     * Set popUpTimeTo
+     *
+     * @param \DateTime $popUpTimeTo
+     * @return City
+     */
+    public function setPopUpTimeTo($popUpTimeTo)
+    {
+        $this->popUpTimeTo = $popUpTimeTo;
+
+        return $this;
+    }
+
+    /**
+     * Get popUpTimeTo
+     *
+     * @return \DateTime 
+     */
+    public function getPopUpTimeTo()
+    {
+        return $this->popUpTimeTo;
+    }
+
+    /**
+     * Set badge
+     *
+     * @param boolean $badge
+     * @return City
+     */
+    public function setBadge($badge)
+    {
+        $this->badge = $badge;
+
+        return $this;
+    }
+
+    /**
+     * Get badge
+     *
+     * @return boolean 
+     */
+    public function getBadge()
+    {
+        return $this->badge;
     }
 }

@@ -224,7 +224,7 @@ class UsersController extends Controller
 
         //$this->get('logger')->alert('Users:registerAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -419,7 +419,7 @@ class UsersController extends Controller
 
         //$this->get('logger')->alert('Users:register2Action Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -496,7 +496,7 @@ class UsersController extends Controller
 
         //$this->get('logger')->alert('Users:updateAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -573,7 +573,7 @@ class UsersController extends Controller
 
         //$this->get('logger')->alert('Users:changePasswordAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 204);
+        return new JsonResponse($response, 204, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -621,7 +621,7 @@ class UsersController extends Controller
 
         //$this->get('logger')->alert('Users:resetPasswordAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 200);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -715,7 +715,7 @@ class UsersController extends Controller
 
         //$this->get('logger')->alert('Users:loginAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -767,7 +767,7 @@ class UsersController extends Controller
 
         //$this->get('logger')->alert('Users:logoutUserAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -873,7 +873,7 @@ class UsersController extends Controller
 
         //$this->get('logger')->alert('Users:usersListAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
 
@@ -922,7 +922,7 @@ class UsersController extends Controller
 
         //$this->get('logger')->alert('Users:logoutAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 204);
+        return new JsonResponse($response, 204, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**
@@ -965,7 +965,7 @@ class UsersController extends Controller
 
         //$this->get('logger')->alert('Users:meAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response);
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }
 
     /**

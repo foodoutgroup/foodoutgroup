@@ -34,8 +34,8 @@ class BannerLinkAdmin extends FoodAdmin
             ->add('placeFrom', 'entity', ['class' => 'Food\DishesBundle\Entity\Place', 'required' => true, 'label' => 'admin.banner_link.place_from'])
             ->add('placeTo', 'entity', ['class' => 'Food\DishesBundle\Entity\Place', 'required' => true, 'label' => 'admin.banner_link.place_to'])
             ->add('file', 'file', $options)
-            ->add('active', 'checkbox', ['label' => 'admin.active', 'required' => false]);
-
+            ->add('active', 'checkbox', ['label' => 'admin.active', 'required' => false])
+            ->add('color', null, ['label' => 'admin.banner_link.color']);
     }
 
     // Fields to be shown on filter forms
@@ -54,7 +54,7 @@ class BannerLinkAdmin extends FoodAdmin
                 'template' => 'FoodDishesBundle:Default:list_image_100px.html.twig',
                 'label' => 'admin.dish.photo'
             ))
-            ->add('element', null, ['label' => 'admin.banner_link.element'])
+            ->add('color', null, ['label' => 'admin.banner_link.color'])
             ->add('text', null, ['label' => 'admin.banner_link.text'])
             ->add('active', 'checkbox', ['label' => 'admin.active'])
             ->add('_action', 'actions', array(

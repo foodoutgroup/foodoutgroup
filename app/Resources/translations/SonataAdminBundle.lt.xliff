@@ -3359,6 +3359,26 @@
                 <source>admin.place.no_business_discount</source>
                 <target>Netaikyti verslo įmonės nuolaidos</target>
             </trans-unit>
+             <trans-unit id="admin.banner_link.color" resname="admin.banner_link.color">
+                <source>admin.banner_link.color</source>
+                <target>Teksto spalva (pvz:. #ffffff)</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.popup" resname="admin.cities.popup">
+                <source>admin.cities.popup</source>
+                <target>33 min popupas</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.popup_from" resname="admin.cities.popup_from">
+                <source>admin.cities.popup_from</source>
+                <target>Rodyti popup nuo</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.popup_to" resname="admin.cities.popup_to">
+                <source>admin.cities.popup_to</source>
+                <target>Rodyti popup iki</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.badge" resname="admin.cities.badge">
+                <source>admin.cities.badge</source>
+                <target>33 min ženkliukas</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

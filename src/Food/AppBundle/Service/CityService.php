@@ -2,6 +2,8 @@
 namespace Food\AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Food\AppBundle\Entity\City;
+use Food\AppBundle\Entity\Tmp\Location;
 use Food\AppBundle\Utils\Language;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -64,5 +66,38 @@ class CityService extends BaseService
         }
         return $bestOffers;
 
+    }
+
+    public function getPopUpAvailability(City $city)
+    {
+        $result = false;
+
+        $popTime = $city->getPopUpTimeFrom();
+        $popTimeTo = $city->getPopUpTimeTo();
+        if($city->getPopUp()){
+            if (!empty($popTime) && !empty($popTimeTo)){
+                $timeFrom = strtotime($city->getPopUpTimeFrom()->format('H:i:s'));
+                $timeTo = strtotime($city->getPopUpTimeTo()->format('H:i:s'));
+                $timeNow = strtotime(date('H:i:s'));
+                if(($timeFrom <= $timeNow) &&($timeNow <= $timeTo )){
+                    $result = true;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public function getCityFromLocation($location)
+    {
+        $result = false;
+
+        $cityObj = $this->getCityById($location['city_id']);
+
+        if($cityObj->getBadge()){
+            $result = true;
+        }
+
+        return $result;
     }
 }

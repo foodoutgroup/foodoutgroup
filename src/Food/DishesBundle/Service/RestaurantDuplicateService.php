@@ -46,6 +46,7 @@ class RestaurantDuplicateService extends ContainerAware
         $newPlace->removeAllTranslations();
 
         $em->persist($newPlace);
+        $em->flush();
 
         foreach ($oldPlace->getTranslations() as $translation) {
             $transRecord = new PlaceLocalized();
@@ -75,12 +76,12 @@ class RestaurantDuplicateService extends ContainerAware
 
         //common slugs
 
-        $commonSlugs = $slugRepo->findBy(['type' => 'place', 'item_id' => $placeId]);
+        $commonSlugs = $slugRepo->findBy(['type' => 'place', 'item_id' => $placeId, 'deactivated_at' => null, 'active'=>1]);
 
         if (!empty($commonSlugs)) {
             foreach ($commonSlugs as $slugItem) {
                 $newSlug = new Slug();
-                $newSlug->setItemId($newPlace);
+                $newSlug->setItemId($newPlace->getId());
                 $newSlug->setName($slug);
                 $newSlug->setOrigName($slug);
                 $newSlug->setActive(1);
@@ -192,6 +193,7 @@ class RestaurantDuplicateService extends ContainerAware
                 $newDish = clone $dish;
                 $newDish->setId(null);
                 $newDish->setPlace($newPlace);
+                $newDish->setSlug($dish->getSlug().'-'.uniqid());
                 $oldCategories = clone $dish->getCategories();
                 $newDish->removeAllCategories();
 

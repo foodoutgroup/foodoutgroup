@@ -144,11 +144,11 @@
         branch.init('{{misc_utils.getparam('download_app_key')}}');
     </script>
     {% endif %}
-
 </head>
 <body class="{{ app.request.locale }}">
-    {{ notifications.init|raw }}
-    <div class="site">
+{{ notifications.init|raw }}
+
+<div class="site">
         <div id="header-ad-container"></div>
         <div class="site-top">
             <div class="site-block clearfix">

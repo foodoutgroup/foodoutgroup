@@ -1156,11 +1156,11 @@
             </trans-unit>
             <trans-unit id="admin.wallet.sms_money_added">
                 <source>admin.wallet.sms_money_added</source>
-                <target>مبلغ {{ added_value }} بابت {{ comment }} به حساب شما افزوده شد. موجودی فعلی شما: {{ current_balance }} تومان</target>
+                <target>???????? {{ added_value }} ???????? {{ comment }} ???? ???????? ?????? ???????????? ????. ???????????? ???????? ??????: {{ current_balance }} ??????????</target>
             </trans-unit>
             <trans-unit id="admin.wallet.sms_money_deducted">
                 <source>admin.wallet.sms_money_deducted</source>
-                <target>مبلغ {{ deducted_value }} بابت {{ comment }} از حساب شما کاسته شد. موجودی فعلی شما: {{ current_balance }} تومان</target>
+                <target>???????? {{ deducted_value }} ???????? {{ comment }} ???? ???????? ?????? ?????????? ????. ???????????? ???????? ??????: {{ current_balance }} ??????????</target>
             </trans-unit>
 
             <!-- Static content -->
@@ -1662,7 +1662,7 @@
             </trans-unit>
             <trans-unit id="admin.order.status.source.repostToNavOnMissingInNav">
                 <source>admin.order.status.source.repostToNavOnMissingInNav</source>
-                <target>Čili Navision repost order on fatal error</target>
+                <target>??ili Navision repost order on fatal error</target>
             </trans-unit>
             <trans-unit id="admin.order.delivery_log.order_accepted">
                 <source>admin.order.delivery_log.order_accepted</source>
@@ -2467,7 +2467,7 @@
             </trans-unit>
             <trans-unit id="admin.street.street_placeholder">
                 <source>admin.street.street_placeholder</source>
-                <target>Laisvės pr.</target>
+                <target>Laisv??s pr.</target>
             </trans-unit>
             <!-- Kuponu listas -->
             <trans-unit id="admin.company_discount_level">
@@ -3069,7 +3069,7 @@
             </trans-unit>
             <trans-unit id="loading_information">
                 <source>loading_information</source>
-                <target>Loading information…</target>
+                <target>Loading information???</target>
             </trans-unit>
             <trans-unit id="btn_preview">
                 <source>btn_preview</source>
@@ -3642,6 +3642,26 @@
             <trans-unit id="admin.place.no_business_discount" resname="admin.place.no_business_discount">
                 <source>admin.place.no_business_discount</source>
                 <target>No business discount</target>
+            </trans-unit>
+            <trans-unit id="admin.banner_link.color" resname="admin.banner_link.color">
+                <source>admin.banner_link.color</source>
+                <target>Text color (e.g #ffffff)</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.popup" resname="admin.cities.popup">
+                <source>admin.cities.popup</source>
+                <target>Pedestrian popup</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.popup_from" resname="admin.cities.popup_from">
+                <source>admin.cities.popup_from</source>
+                <target>Show pop up from</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.popup_to" resname="admin.cities.popup_to">
+                <source>admin.cities.popup_to</source>
+                <target>Show pop up to</target>
+            </trans-unit>
+            <trans-unit id="admin.cities.badge" resname="admin.cities.badge">
+                <source>admin.cities.badge</source>
+                <target>Show pedestrian badge</target>
             </trans-unit>
         </body>
     </file>
