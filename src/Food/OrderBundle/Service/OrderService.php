@@ -3342,7 +3342,8 @@ class OrderService extends ContainerAware
             if ($user->getIsBussinesClient()) {
                 // Bussines client must be logged in
                 if (!$loggedIn) {
-                    $formErrors[] = 'order.form.errors.bussines_client_not_loggedin';
+                    //Eglės paliepimu nuimta
+                    //                    $formErrors[] = 'order.form.errors.bussines_client_not_loggedin';
                 } elseif ($user->getRequiredDivision()) {
                     // Bussines client must enter correct division code
                     $givenDivisionCode = $request->get('company_division_code', '');
