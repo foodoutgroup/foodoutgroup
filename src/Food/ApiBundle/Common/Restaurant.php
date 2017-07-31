@@ -229,6 +229,9 @@ class Restaurant extends ContainerAware
 
         if($place->getDeliveryOptions() == $place::OPT_ONLY_PEDESTRIAN){
             $deliveryPedestrian = $place::OPT_ONLY_PEDESTRIAN;
+            $picupAmount = $this->container->get('food.places')->getMinCartPrice($place->getId())*100;
+        }else{
+            $picupAmount = ($place->getMinimalOnSelfDel() ? $this->container->get('food.places')->getMinCartPrice($place->getId()) * 100 : 0);
         }
 
         $this
@@ -273,7 +276,7 @@ class Restaurant extends ContainerAware
 
                     ],
                     'minimal_order_pickup' => [
-                        'amount'   => ($place->getMinimalOnSelfDel() ? $this->container->get('food.places')->getMinCartPrice($place->getId()) * 100 : 0),
+                        'amount'   => $picupAmount,
                         'currency' => $currency
                     ]
                 ]
