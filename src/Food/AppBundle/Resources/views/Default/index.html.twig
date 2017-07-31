@@ -21,10 +21,12 @@
             }
         });
     </script>
-    {% if location and cityService.getCityFromLocation(location) %}
-        <div class="badge-container">
-            <a id="badge-link" onclick="badgeFunction(this)" data-url = "{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}" data-code = "{{ location.id }}" href="javascript:void(0)"><img src="{{ asset('/bundles/foodapp/images/badge.png')}}"></a>
-        </div>
+    {% if location  %}
+       {% if cityService.getCityFromLocation(location) %}
+            <div class="badge-container">
+                <a id="badge-link" onclick="badgeFunction(this)" data-url = "{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}" data-code = "{{ location.id }}" href="javascript:void(0)"><img src="{{ asset('/bundles/foodapp/images/badge.png')}}"></a>
+            </div>
+       {% endif %}
     {% endif %}
 
     <div style="background-image: url(//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/title_offer/offer-'~site_country|lower~'-'~random(['2', '3', '4', '5', '6', '9', '10', '14'])~'.jpg') }});" class="site-header special-offer-block">
