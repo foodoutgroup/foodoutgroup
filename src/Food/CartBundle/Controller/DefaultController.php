@@ -382,7 +382,7 @@ class DefaultController extends Controller
                         $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
                     }
 
-                    $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate);
+                    $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate,null,null);
                     $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
                     if ($preOrder == 'it-is') {
                         $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
