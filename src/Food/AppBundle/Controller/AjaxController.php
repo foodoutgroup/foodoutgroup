@@ -40,7 +40,7 @@ class AjaxController extends Controller
                 $collection = $this->_autoCompleteAddress($request);
                 break;
             case 'check-address':
-                $collection = $this->_checkAddress($request);
+                $collection = $this->_checkAddress($request,$request->get('place'));
                 break;
             case 'get-address-by-location':
                 $collection = $this->_getAddressByLocation($request);
@@ -304,7 +304,7 @@ class AjaxController extends Controller
 
     }
 
-    private function _checkAddress(Request $request)
+    private function _checkAddress(Request $request,$place)
     {
 
         $rsp = ['success' => false];
@@ -317,7 +317,21 @@ class AjaxController extends Controller
         }
 
         $t = $this->get('translator');
+
+
+
         if($response) {
+
+            if(!empty($place)){
+                $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place,$response,false,false);
+
+                if(empty($placePoint)){
+                    $rsp['message'] = $t->trans('place_point_does_not_deliver');
+                    $rsp['place_point_error'] = 1;
+
+                    return $rsp;
+                }
+            }
 
             $rsp['detail'] = $response;
 

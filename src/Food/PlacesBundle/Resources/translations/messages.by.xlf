@@ -3,107 +3,140 @@
     <file source-language="lt" datatype="plaintext" original="file.ext">
         <body>
             <trans-unit id="63a8c152b2f20462a41fabb0aed78b90" resname="label.name">
-                <source>label.name</source><target>Nimetus</target>
+                <source>label.name</source>
+                <target>Name</target>
             </trans-unit>
             <trans-unit id="0420a37d01528c8ccb62e5fdab5833b1" resname="label.description">
-                <source>label.description</source><target>Kirjeldus</target>
+                <source>label.description</source>
+                <target>Description</target>
             </trans-unit>
             <trans-unit id="7a1920d61156abc05a60135aefe8bc67" resname="Default">
-                <source>Default</source><target>Peamine</target>
+                <source>Default</source>
+                <target>Default</target>
             </trans-unit>
             <trans-unit id="99f5238dc66cbe96929c47644f0c2c76" resname="admin.active">
-                <source>admin.active</source><target>Aktiivne</target>
+                <source>admin.active</source>
+                <target>Active</target>
             </trans-unit>
             <trans-unit id="ec008def21d978019fd40f8f39866561" resname="admin.hidden">
-                <source>admin.hidden</source><target>Peidetud</target>
+                <source>admin.hidden</source>
+                <target>Hidden</target>
             </trans-unit>
             <trans-unit id="a08b256228e3deea7b1a631ff3acfd46" resname="admin.visible">
-                <source>admin.visible</source><target>Nähtav</target>
+                <source>admin.visible</source>
+                <target>Visible</target>
             </trans-unit>
             <trans-unit id="6ee5d0ba516cc21109497e917b17ef18" resname="admin.static.title">
-                <source>admin.static.title</source><target>Nimetus</target>
+                <source>admin.static.title</source>
+                <target>Title</target>
             </trans-unit>
             <trans-unit id="22398e809e690c88e475630d11decf73" resname="admin.static.content">
-                <source>admin.static.content</source><target>Sisukord</target>
+                <source>admin.static.content</source>
+                <target>Content</target>
             </trans-unit>
             <trans-unit id="4b0bdec793cf5139ea5e4c9fef0dac02" resname="admin.dish.recomended">
-                <source>admin.dish.recomended</source><target>Soovitatakse</target>
+                <source>admin.dish.recomended</source>
+                <target>Recommended</target>
             </trans-unit>
             <trans-unit id="label.alias" resname="label.alias">
                 <source>label.alias</source>
                 <target>Alias</target>
             </trans-unit>
             <trans-unit id="admin.dish.time_from" resname="admin.dish.time_from">
-                <source>admin.dish.time_from</source><target>Aeg alates</target>
+                <source>admin.dish.time_from</source>
+                <target>Time from</target>
             </trans-unit>
             <trans-unit id="admin.dish.time_to" resname="admin.dish.time_to">
-                <source>admin.dish.time_to</source><target>Aeg kuni</target>
+                <source>admin.dish.time_to</source>
+                <target>Time to</target>
             </trans-unit>
             <trans-unit id="2c33fa8aaa15d65cb09a1d95fc568389" resname="admin.place.point.weekdays_worktime">
-                <source>admin.place.point.weekdays_worktime</source><target>Tööaeg</target>
+                <source>admin.place.point.weekdays_worktime</source>
+                <target>Worktime</target>
             </trans-unit>
             <trans-unit id="0edf0d1f7b8afbd5362c9607b21e1fbd" resname="admin.place.point.weekday_trans1">
-                <source>admin.place.point.weekday_trans1</source><target>Esmaspäev</target>
+                <source>admin.place.point.weekday_trans1</source>
+                <target>Monday</target>
             </trans-unit>
             <trans-unit id="03c391337821e4cc55c4ec117a976ed9" resname="admin.place.point.weekday_trans2">
-                <source>admin.place.point.weekday_trans2</source><target>Teisipäev</target>
+                <source>admin.place.point.weekday_trans2</source>
+                <target>Tuesday</target>
             </trans-unit>
             <trans-unit id="5b31f2408b1972d160c1cfa73523b025" resname="admin.place.point.weekday_trans3">
-                <source>admin.place.point.weekday_trans3</source><target>Kolmapäev</target>
+                <source>admin.place.point.weekday_trans3</source>
+                <target>Wednesday</target>
             </trans-unit>
             <trans-unit id="1a9631bc77ac554d491b701348a14e72" resname="admin.place.point.weekday_trans4">
-                <source>admin.place.point.weekday_trans4</source><target>Neljapäev</target>
+                <source>admin.place.point.weekday_trans4</source>
+                <target>Thursday</target>
             </trans-unit>
             <trans-unit id="4b3c3cef63851feab629dd6cc3a0fd62" resname="admin.place.point.weekday_trans5">
-                <source>admin.place.point.weekday_trans5</source><target>Reede</target>
+                <source>admin.place.point.weekday_trans5</source>
+                <target>Friday</target>
             </trans-unit>
             <trans-unit id="8c0cc485b23b63690161a65a6d607e12" resname="admin.place.point.weekday_trans6">
-                <source>admin.place.point.weekday_trans6</source><target>Laupäev</target>
+                <source>admin.place.point.weekday_trans6</source>
+                <target>Saturday</target>
             </trans-unit>
             <trans-unit id="c91f64f83dfa1a8b2c0505303d9fa0f9" resname="admin.place.point.weekday_trans7">
-                <source>admin.place.point.weekday_trans7</source><target>Pühapäev</target>
+                <source>admin.place.point.weekday_trans7</source>
+                <target>Sunday</target>
             </trans-unit>
             <trans-unit id="f1e4237cc7baaeb83fc16739e156e2af" resname="admin.point.pickup">
-                <source>admin.point.pickup</source><target>Järeletulemine</target>
+                <source>admin.point.pickup</source>
+                <target>Pickup</target>
             </trans-unit>
             <trans-unit id="030e4e680ac83e550bd6268d94c09de8" resname="admin.point.delivery">
-                <source>admin.point.delivery</source><target>Kohaletoomine</target>
+                <source>admin.point.delivery</source>
+                <target>Delivery</target>
             </trans-unit>
             <trans-unit id="e1e410cac45db85136792b6d662b199b" resname="admin.point.active">
-                <source>admin.point.active</source><target>Aktiivne</target>
+                <source>admin.point.active</source>
+                <target>Active</target>
             </trans-unit>
             <trans-unit id="1e6cd917ed71a1241e4bedc29264bd98" resname="404 Not Found">
-                <source>404 Not Found</source><target>Kahjuks lehekülge ei leitud.</target>
+                <source>404 Not Found</source>
+                <target>Page not found</target>
             </trans-unit>
             <trans-unit id="60c3de6def601e306f093cfa912f845c" resname="global.page_not_found">
-                <source>global.page_not_found</source><target>Lehekülge ei leitud</target>
+                <source>global.page_not_found</source>
+                <target>Page not found</target>
             </trans-unit>
             <trans-unit id="10f11162c862a7df3189be97c180404b" resname="global.page_not_found.description">
-                <source>global.page_not_found.description</source><target>Kontrollige, kas kirjutasite aadressi õigesti.</target>
+                <source>global.page_not_found.description</source>
+                <target>Please check the url</target>
             </trans-unit>
             <trans-unit id="510b7879d5751a52bb1d1e33d31faf99" resname="general.error_happened">
-                <source>general.error_happened</source><target>Kahjuks ilmnes tõrge</target>
+                <source>general.error_happened</source>
+                <target>Oops, error happened</target>
             </trans-unit>
             <trans-unit id="85a24106b1bb1388890f8fb6340af85f" resname="general.error_happened.description">
-                <source>general.error_happened.description</source><target>Palun proovige mõne minuti pärast uuesti</target>
+                <source>general.error_happened.description</source>
+                <target>Please try again in few minutes</target>
             </trans-unit>
             <trans-unit id="a64946380123e11bb1a33f0b624b8861" resname="label_type_yes">
-                <source>label_type_yes</source><target>Jah</target>
+                <source>label_type_yes</source>
+                <target>Yes</target>
             </trans-unit>
             <trans-unit id="d9901e7f42326dc58a5c5a1ed0257cc3" resname="label_type_no">
-                <source>label_type_no</source><target>Ei</target>
+                <source>label_type_no</source>
+                <target>No</target>
             </trans-unit>
             <trans-unit id="80dee81fa475dfebb87e5778ea7daa98" resname="ROLE_ADMIN: ROLE_MODERATOR">
-                <source>ROLE_ADMIN: ROLE_MODERATOR</source><target>Kodulehe administraator</target>
+                <source>ROLE_ADMIN: ROLE_MODERATOR</source>
+                <target>Administrator</target>
             </trans-unit>
             <trans-unit id="44e9e90e66cb740de4923d793b7ff04e" resname="ROLE_MODERATOR">
-                <source>ROLE_MODERATOR</source><target>Restorani esindaja</target>
+                <source>ROLE_MODERATOR</source>
+                <target>Moderator</target>
             </trans-unit>
             <trans-unit id="44e9e90e66cb740de4923d793b7ff04a" resname="ROLE_SUPPORT">
-                <source>ROLE_SUPPORT</source><target>Abi</target>
+                <source>ROLE_SUPPORT</source>
+                <target>Support</target>
             </trans-unit>
             <trans-unit id="44e9e90e66cb740de4923d793b7ff031" resname="ROLE_DISPATCHER">
-                <source>ROLE_DISPATCHER</source><target>Dispetšer</target>
+                <source>ROLE_DISPATCHER</source>
+                <target>Dispatcher</target>
             </trans-unit>
             <trans-unit id="ROLE_MARKETING">
                 <source>ROLE_MARKETING</source>
@@ -114,128 +147,172 @@
                 <target>Editor</target>
             </trans-unit>
             <trans-unit id="1871dbe4ffdad6ba92dba845efaa6fa7" resname="ROLE_USER">
-                <source>ROLE_USER</source><target>Külastaja</target>
+                <source>ROLE_USER</source>
+                <target>User</target>
             </trans-unit>
             <trans-unit id="2135b2419f893073ba9adda33c3c8634" resname="places.change_address">
-                <source>places.change_address</source><target>Aadressi muutmine</target>
+                <source>places.change_address</source>
+                <target>Change address</target>
             </trans-unit>
             <trans-unit id="53d74f60f82080e265d8783fdbc0d624" resname="places.clear_filters">
-                <source>places.clear_filters</source><target>Filtrite puhastamine</target>
+                <source>places.clear_filters</source>
+                <target>Clear filter</target>
             </trans-unit>
             <trans-unit id="2225567eada33a112dde56da166efec5" resname="places.search_placeholder">
-                <source>places.search_placeholder</source><target>Otsing...</target>
+                <source>places.search_placeholder</source>
+                <target>Search...</target>
             </trans-unit>
             <trans-unit id="places.filter_by_delivery" resname="places.filter_by_delivery">
-                <source>places.filter_by_delivery</source><target>Kuva</target>
+                <source>places.filter_by_delivery</source>
+                <target>Show:</target>
             </trans-unit>
             <trans-unit id="places.filter_delivery_and_pickup" resname="places.filter_delivery_and_pickup">
-                <source>places.filter_delivery_and_pickup</source><target>Kohaletoimetamine ja järeletulemine</target>
+                <source>places.filter_delivery_and_pickup</source>
+                <target>Delivery and pickup</target>
             </trans-unit>
             <trans-unit id="places.filter_pickup" resname="places.filter_pickup">
-                <source>places.filter_pickup</source><target>Järeletulemine</target>
-            </trans-unit>
-            <trans-unit id="places.filter_pedestrian" resname="places.filter_pedestrian">
-                <source>places.filter_pedestrian</source><target>33 min.</target>
+                <source>places.filter_pickup</source>
+                <target>Pickup</target>
             </trans-unit>
             <trans-unit id="places.filter_delivery" resname="places.filter_delivery">
-                <source>places.filter_delivery</source><target>Kohaletoomine</target>
+                <source>places.filter_delivery</source>
+                <target>Delivery</target>
             </trans-unit>
             <trans-unit id="3ae217e1cb532beeb4c2445d53826bb9" resname="places.order_by">
-                <source>places.order_by</source><target>Sortimisalus</target>
+                <source>places.order_by</source>
+                <target>Order by</target>
             </trans-unit>
             <trans-unit id="1570d01bce64d0ff338129a67c3155b4" resname="places.sort_by_relevance">
-                <source>places.sort_by_relevance</source><target>Asjakohasus</target>
+                <source>places.sort_by_relevance</source>
+                <target>Relevance</target>
             </trans-unit>
             <trans-unit id="037d42e4091b77dd78e11e12a5d55eeb" resname="places.sort_by_rating">
-                <source>places.sort_by_rating</source><target>Hinnang</target>
+                <source>places.sort_by_rating</source>
+                <target>Rating</target>
             </trans-unit>
             <trans-unit id="361056fb20b2ee8abd32922df2b1172f" resname="places.sort_by_delivery_price">
-                <source>places.sort_by_delivery_price</source><target>Kohaletoimetamise hind</target>
+                <source>places.sort_by_delivery_price</source>
+                <target>Delivery price</target>
             </trans-unit>
             <trans-unit id="03b9b2358460ada5aeba45c965a71b05" resname="places.sort_by_distance">
-                <source>places.sort_by_distance</source><target>Kaugus</target>
+                <source>places.sort_by_distance</source>
+                <target>Distance</target>
             </trans-unit>
             <trans-unit id="1214eef8a9c606ec44c7e3b97c349bdb" resname="place.delivery_info">
-                <source>place.delivery_info</source><target>Kohaletoomine</target>
-            </trans-unit>
-            <trans-unit id="1214eef8a9c606ec44c7e3b97c349bdf" resname="place.pedestrian_info">
-                <source>place.pedestrian_info</source><target></target>
+                <source>place.delivery_info</source>
+                <target>Delivery</target>
             </trans-unit>
             <trans-unit id="place.pickup_info" resname="place.pickup_info">
-                <source>place.pickup_info</source><target>Järeletulemine pärast</target>
+                <source>place.pickup_info</source>
+                <target>Pickup in</target>
             </trans-unit>
             <trans-unit id="de03d40f9e854231164bfbbfdbfa52f9" resname="place.min_cart_amount">
-                <source>place.min_cart_amount</source><target>Ostukorvi minimaalne summa</target>
+                <source>place.min_cart_amount</source>
+                <target>Min. cart</target>
             </trans-unit>
             <trans-unit id="place.select_place_to_pickup" resname="place.select_place_to_pickup">
-                <source>place.select_place_to_pickup</source><target>Valige, kuhu tulete järele</target>
+                <source>place.select_place_to_pickup</source>
+                <target>Choose where to pickup</target>
             </trans-unit>
             <trans-unit id="4962db963b0f0d3cd2bc1b571272710b" resname="places.reviews_count">
-                <source>places.reviews_count</source><target>Hinnang|Hinnangud|Hinnanguid</target>
+                <source>places.reviews_count</source>
+                <target>Review|Reviews|Reviews</target>
             </trans-unit>
             <trans-unit id="places.review_choice" resname="places.review_choice">
-                <source>places.review_choice</source><target>Arvustus|Arvustused|Arvustusi</target>
+                <source>places.review_choice</source>
+                <target>Review|Reviews|Reviews</target>
             </trans-unit>
             <trans-unit id="general.no_place_reviews" resname="general.no_place_reviews">
                 <source>general.no_place_reviews</source>
-                <target>Ei ülevaateid</target>
+                <target>0 reviews</target>
             </trans-unit>
             <trans-unit id="c246f90396fd5c888eb71087fbb61789" resname="places.watch_menu">
-                <source>places.watch_menu</source><target>Menüü vaatamine</target>
+                <source>places.watch_menu</source>
+                <target>Show menu</target>
             </trans-unit>
             <trans-unit id="bd1a1db3eb2d711ca8c2688222c5d0e7" resname="admin.place.slogan">
-                <source>admin.place.slogan</source><target>Hüüdlause</target>
+                <source>admin.place.slogan</source>
+                <target>Slogan</target>
             </trans-unit>
             <trans-unit id="cb9075cff71fef3e2f58f9f8bbd859ca" resname="admin.place.description">
-                <source>admin.place.description</source><target>Kirjeldus</target>
+                <source>admin.place.description</source>
+                <target>Description</target>
             </trans-unit>
             <trans-unit id="8988cef218e29834d745dd0ccada226d" resname="admin.place.recommended">
-                <source>admin.place.recommended</source><target>Soovit.</target>
+                <source>admin.place.recommended</source>
+                <target>Recommended</target>
             </trans-unit>
             <trans-unit id="admin.place.discount_prices_enabled">
-                <source>admin.place.discount_prices_enabled</source><target>Soodustuste hinnad</target>
+                <source>admin.place.discount_prices_enabled</source>
+                <target>Discount prices</target>
             </trans-unit>
             <trans-unit id="b97ef5e6ab382da2cf8726ef38fcc091" resname="places.recomended_block_title">
-                <source>places.recomended_block_title</source><target>Meie soovitatavad restoranid</target>
+                <source>places.recomended_block_title</source>
+                <target>Recommended restaurants</target>
             </trans-unit>
             <trans-unit id="places.best_offers_block_title" resname="places.best_offers_block_title">
-                <source>places.best_offers_block_title</source><target>Head pakkumised</target>
+                <source>places.best_offers_block_title</source>
+                <target>Best offers</target>
             </trans-unit>
             <trans-unit id="ff0bc83f13df6076f1fe1eda1481372d" resname="places.recomended_show_more">
-                <source>places.recomended_show_more</source><target>Rohkem pakkumisi</target>
+                <source>places.recomended_show_more</source>
+                <target>More best offers</target>
             </trans-unit>
             <trans-unit id="e9af7214246747e3648fdc0ec367494c" resname="general.places">
-                <source>general.places</source><target>Restoranid</target>
+                <source>general.places</source>
+                <target>Restaurants</target>
             </trans-unit>
             <trans-unit id="general.places_found1" resname="general.places_found1">
-                <source>general.places_found1</source><target>Leitud %1 restoran</target>
+                <source>general.places_found1</source>
+                <target>Found %1 restaurant</target>
             </trans-unit>
             <trans-unit id="general.places_found2" resname="general.places_found2">
-                <source>general.places_found2</source><target>Leitud %1 restorani</target>
+                <source>general.places_found2</source>
+                <target>Found %1 restaurants</target>
             </trans-unit>
             <trans-unit id="general.places_found3" resname="general.places_found3">
-                <source>general.places_found3</source><target>Leitud %1 restorani</target>
+                <source>general.places_found3</source>
+                <target>Found %1 of restaurants</target>
             </trans-unit>
             <trans-unit id="places.places_near" resname="places.places_near">
-                <source>places.places_near</source><target>lähedal</target>
+                <source>places.places_near</source>
+                <target>near</target>
             </trans-unit>
             <trans-unit id="places.is_not_detailed_search" resname="places.is_not_detailed_search">
-                <source>places.is_not_detailed_search</source><target>Otsing pole täpne, sest te ei sisestanud täpset aadressi. Tellimuse esitamise võimalus sõltub aadressist, mille sisestate tellimuse aknasse.</target>
+                <source>places.is_not_detailed_search</source>
+                <target>Search is not accurate because you are not entered full address.</target>
             </trans-unit>
             <trans-unit id="places.header_main_part" resname="places.header_main_part">
-                <source>places.header_main_part</source><target>Toidu tellimine koju</target>
+                <source>places.header_main_part</source>
+                <target>Food delivery</target>
             </trans-unit>
             <trans-unit id="general.restaurant" resname="general.restaurant">
                 <source>general.restaurant</source>
-                <target>Restoranas</target>
+                <target>Restaurant</target>
             </trans-unit>
             <trans-unit id="places.discount_not_for_business_clients" resname="places.discount_not_for_business_clients">
                 <source>places.discount_not_for_business_clients</source>
-                <target>Atsiprašome, šiame restorane negalioja verslo klientų nuolaida</target>
+                <target>Sorry, business client discount is not available in this restaurant</target>
+            </trans-unit>
+            <trans-unit id="admin.meta_description" resname="admin.meta_description">
+                <source>admin.meta_description</source>
+                <target>Meta description</target>
+            </trans-unit>
+            <trans-unit id="admin.meta_title" resname="admin.meta_title">
+                <source>admin.meta_title</source>
+                <target>Meta title</target>
+            </trans-unit>
+            <trans-unit id="food.order_food_in_home">
+                <source>food.order_food_in_home</source>
+                <target>Order food in home</target>
+            </trans-unit>
+            <trans-unit id="food.will_deliver_in_hour">
+                <source>food.will_deliver_in_hour</source>
+                <target>We will deliver in 1 hour</target>
             </trans-unit>
             <trans-unit id="place_does_not_deliver_to_saved_address">
                 <source>place_does_not_deliver_to_saved_address</source>
-                <target>See restoran ei anna salvestatud aadressi</target>
+                <target>This restaurant does not deliver to saved address</target>
             </trans-unit>
         </body>
     </file>
