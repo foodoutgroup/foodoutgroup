@@ -48,6 +48,12 @@ class PlaceController extends Controller
 
         $userLocationData = $this->get('food.location')->get();
 
+        $placePoint = null;
+
+        if(!empty($userLocationData)){
+            $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($id,$userLocationData,false,false);
+        }
+
         $breadcrumbData = [
             'city' => '',
             'city_url' => '',
@@ -124,7 +130,8 @@ class PlaceController extends Controller
             'oldFriendIsHere' => $oldFriendIsHere,
             'takeAway' => ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup),
             'location' => $this->get('food.location')->get(),
-            'notificationCollection' => $this->getDoctrine()->getRepository('FoodPlacesBundle:PlaceNotification')->get($cityObj, $place)
+            'notificationCollection' => $this->getDoctrine()->getRepository('FoodPlacesBundle:PlaceNotification')->get($cityObj, $place),
+            'place_point' => $placePoint
         ];
 
         if($this->get('food.app.utils.misc')->getParam('reviews_enabled', false)) {

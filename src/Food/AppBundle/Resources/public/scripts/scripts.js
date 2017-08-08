@@ -398,6 +398,7 @@ var registrationForm = {
 
     button_submit.click(function (e) {
         e.preventDefault();
+        var error_element = $('.autocomplete-error');
         img = $(this).find('img');
         oldval = img.attr('src');
         input_auto_complete.attr('disabled', true);
