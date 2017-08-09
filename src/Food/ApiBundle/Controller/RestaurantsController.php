@@ -4,6 +4,7 @@ namespace Food\ApiBundle\Controller;
 
 use Food\ApiBundle\Exceptions\ApiException;
 use Food\DishesBundle\Entity\Kitchen;
+use Food\OrderBundle\Entity\Order;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +24,7 @@ class RestaurantsController extends Controller
              * address,city,lat,lng,cuisines,keyword,offset,limit
              *
              */
-
+            $pickUpOnly = false;
             $city = $request->get('city');
             $address = $request->get('address');
 
@@ -81,11 +82,14 @@ class RestaurantsController extends Controller
                     'limit' => 50
                 ]
             ];
+            if($delivery_type == 'pickup'){
+                $pickUpOnly = true;
+            }
 
             $placeCollection = $this->get('food.places')->placesPlacePointsWorkInformation($placeCollection);
             foreach ($placeCollection as $place) {
                 $response['restaurants'][] = $this->get('food_api.api')
-                    ->createRestaurantFromPlace($place['place'], $place['point'])->data;
+                    ->createRestaurantFromPlace($place['place'], $place['point'],$pickUpOnly)->data;
             }
         } catch (ApiException $e) {
             $this->get('logger')->error('Restaurants:getRestaurantsAction Error1:' . $e->getMessage());

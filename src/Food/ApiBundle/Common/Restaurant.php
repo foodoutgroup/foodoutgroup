@@ -260,7 +260,7 @@ class Restaurant extends ContainerAware
             ->set(
                 'delivery_options',
                 [
-                    'estimated_time'       => (string)((!empty($deliveryType) && $deliveryType == 'pickup') ? $place->getPickupTime() : $this->container->get('food.places')->getDeliveryTime($place,null,$deliveryPedestrian)),
+                    'estimated_time'       => $pickUpOnly  ? $place->getPickupTime() : $this->container->get('food.places')->getDeliveryTime($place,null,$deliveryPedestrian),
                     'price'                => [
                         'amount'   => (!empty($devPrice) ? ($devPrice * 100) : ($place->getDeliveryPrice() * 100)),
                         'currency' => $currency
