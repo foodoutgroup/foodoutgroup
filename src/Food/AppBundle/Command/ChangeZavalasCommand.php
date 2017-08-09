@@ -1,4 +1,5 @@
 <?php
+
 namespace Food\AppBundle\Command;
 
 use Food\AppBundle\Service\MailService;
@@ -13,41 +14,41 @@ class ChangeZavalasCommand extends ContainerAwareCommand
 
     protected function configure()
     {
-        $this->timeStart = microtime(true);
-
         $this
             ->setName('import:zavalas_changes')
-            ->setDescription('change zavalas delivery zones')
-        ;
+            ->setDescription('change zavalas delivery zones');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
         try {
-
+            $changedRecords = 0;
+            $em = $this->getContainer()->get('doctrine')->getManager()->getConnection();
             $placePoints = $this->getContainer()->get('doctrine')->getRepository('FoodDishesBundle:PlacePoint')->findAll();
-            foreach ($placePoints as $placePoint){
-                $deliveryZones = $placePoint->getZones();
-var_dump($deliveryZones);
+            foreach ($placePoints as $placePoint) {
+                $query = "SELECT * from place_point_delivery_zones where place_point = 1409 ORDER BY distance asc";
 
-//                if(!empty($deliveryZones)){
-//                    $lowestDistance[0] = array();
-//                    $i = 0;
-//                    foreach ($deliveryZones as $deliveryZone){
-//                        if($i = 0){
-//                            $lowestDistance[$deliveryZone->getDistance()] = $deliveryZone;
-//                        }else{
-//                            if(key($lowestDistance) < $deliveryZone->getDistance()){
-//                                $lowestDistance[$deliveryZone->getDistance()] = $deliveryZone;
-//                            }
-//                        }
-//                    $i++;
-//                    }
-//
-//                }
+                $stmt = $em->prepare($query);
+                $stmt->execute();
+                $deliveryZones = $stmt->fetchAll();
 
+                if ($deliveryZones) {
+                    $i = 0;
+                    foreach ($deliveryZones as $deliveryZone) {
+                        if ($i == 0) {
+                            $update = "UPDATE place_point_delivery_zones SET active_on_zaval = 1 WHERE id = '" . $deliveryZone['id'] . "'";
+                        } else {
+                            $update = "UPDATE place_point_delivery_zones SET active_on_zaval = 0 WHERE id = '" . $deliveryZone['id'] . "'";
+                        }
+                        $i++;
+                        $stmt = $em->prepare($update);
+                        $stmt->execute();
+                        $changedRecords++;
+                    }
+                }
             }
+            $output->writeln('Changed delivery zones '.$changedRecords.' ');
         } catch (\Exception $e) {
             $output->writeln('<fg=red>Something went horribly wrong</fg=red>');
             $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
