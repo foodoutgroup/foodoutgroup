@@ -304,7 +304,7 @@ class AjaxController extends Controller
 
     }
 
-    private function _checkAddress(Request $request,$place)
+    private function _checkAddress(Request $request,$place = null)
     {
 
         $rsp = ['success' => false];
@@ -322,7 +322,7 @@ class AjaxController extends Controller
 
         if($response) {
 
-            if(!empty($place)){
+            if($place != null){
                 $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place,$response,false,false);
 
                 if(empty($placePoint)){
