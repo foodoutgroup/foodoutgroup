@@ -1358,6 +1358,11 @@
                 <source>general.bottom.contacts</source>
                 <target>Kontakt</target>
             </trans-unit>
+            <trans-unit id="mobile.pedestrian" resname="mobile.pedestrian">
+                <source>mobile.pedestrian</source>
+                <target>Jalakäija</target>
+            </trans-unit>
+
         </body>
     </file>
 </xliff>

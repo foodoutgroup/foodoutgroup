@@ -67,7 +67,7 @@ class OrderService extends ContainerAware
         $logger = $this->container->get('logger');
         $logger->alert("=================");
         $logger->alert("orderService->createOrder called");
-
+        $locationInfo = array();
         $os = $this->container->get('food.order');
         /**
          * {
@@ -213,6 +213,7 @@ class OrderService extends ContainerAware
         // Discount code validation
         $coupon = null;
         $discountVar = $request->get('discount');
+
         if (!empty($discountVar) && !empty($discountVar['code'])) {
             $coupon = $os->getCouponByCode($discountVar['code']);
             if (empty($coupon) || !$coupon instanceof Coupon) {
@@ -410,6 +411,7 @@ class OrderService extends ContainerAware
                 );
             } else {
                 $locationInfo = $lService->findByAddress($serviceVar['address']['street'] . " " . $serviceVar['address']['house_number'] . ", " . $serviceVar['address']['city']);
+
                 $searchCrit = [
                     'city' => $locationInfo['city'],
                     'city_id' => $locationInfo['city_id'],
@@ -484,7 +486,8 @@ class OrderService extends ContainerAware
             $coupon,
             null,
             null,
-            $placeType
+            $placeType,
+            $locationInfo
         );
 
         $os->setMobileOrder(true);

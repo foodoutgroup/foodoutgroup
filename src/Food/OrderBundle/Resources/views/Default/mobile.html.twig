@@ -197,13 +197,23 @@
                     <td colspan="5">{% trans %}mobile.pickup_foodout{% endtrans %}</td>
                 </tr>
             {% endif %}
-        {% else %}
+        {% elseif order.deliveryType == 'pickup' %}
             <tr>
                 <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
             </tr>
             <tr>
                 <td colspan="5">{% trans %}mobile.pickup{% endtrans %}</td>
             </tr>
+
+        {% elseif order.deliveryType == 'pedestrian' %}
+
+            <tr>
+                <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5">{% trans %}mobile.pedestrian{% endtrans %}</td>
+            </tr>
+
         {% endif %}
 
         <tr>

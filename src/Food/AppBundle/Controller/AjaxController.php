@@ -53,7 +53,10 @@ class AjaxController extends Controller
                         if($request->get('address') != "") {
                             $collection = $this->_checkAddress($request);
                         } else {
-                            $findAddress = $this->get('food.location')->findByIp($request->getClientIp());
+                            if($ipUser = $request->getClientIp() == "127.0.0.1") {
+                                $ipUser = "88.119.11.173";
+                            }
+                            $findAddress = $this->get('food.location')->findByIp($ipUser);
                             try {
                                 $cityId = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findNearestCity($findAddress);
                                 $collection['success'] = true;
@@ -309,7 +312,7 @@ class AjaxController extends Controller
         $lService = $this->get('food.location');
         $response = $lService->findByHash($request->get("address"));
 
-        if($request->get("type")) {
+        if($request->get("type") == 'badge') {
             $this->get('session')->set('badge', 1);
         }
 
