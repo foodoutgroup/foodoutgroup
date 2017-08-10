@@ -146,7 +146,7 @@
                 <td colspan="5">{% trans %}mobile.pickup{% endtrans %}</td>
             </tr>
 
-        {% elseif %}
+        {% elseif order.deliveryType == 'pedestrian'%}
 
             <tr>
                 <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
