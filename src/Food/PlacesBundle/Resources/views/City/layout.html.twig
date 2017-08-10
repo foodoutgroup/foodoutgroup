@@ -43,8 +43,8 @@
         var addressFound = {% if location is not null and location.precision == 0 %}true{% else %}false{% endif %};
 
         $(document).ready(function () {
-            {% if cityService.getPopUpAvailability(city) %}
-            $.fancybox.open($('.modal-pedestrian-div'));
+            {% if city and cityService.getPopUpAvailability(city) %}
+                $.fancybox.open($('.modal-pedestrian-div'));
             {% endif %}
             $(document).on('click', '#pedestrian-redirect', function () {
                 $.fancybox.close($('.modal-pedestrian-div'));
