@@ -323,6 +323,7 @@ class AjaxController extends Controller
         if($response) {
 
             if($place != null){
+                $placePointMap = array();
                 $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place,$response,false,false);
 
                 if(empty($placePoint)){
@@ -330,6 +331,9 @@ class AjaxController extends Controller
                     $rsp['place_point_error'] = 1;
 
                     return $rsp;
+                }else{
+                    $placePointMap[$place] = $placePoint;
+                    $this->container->get('session')->set('point_data',$placePointMap);
                 }
             }
 
