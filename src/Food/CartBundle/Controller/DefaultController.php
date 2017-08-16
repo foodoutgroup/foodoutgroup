@@ -616,10 +616,13 @@ class DefaultController extends Controller
                     $noneWorking = true;
                 }
 
+
+
                 $pointRecord = $em->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
                 $deliveryTotal = $this->getCartService()->getDeliveryPrice($place, $locationData, $pointRecord, $noneWorking);
                 $displayCartInterval = false;
                 $cartFromMin = $this->getCartService()->getMinimumCart($place, $locationData, $pointRecord);
+
             }
 
             // Check cart limits
@@ -661,7 +664,7 @@ class DefaultController extends Controller
         $total_cart = $this->getCartService()->getCartTotal($list);
         $priceBeforeDiscount = $total_cart;
 
-        if(($place->getCartMinimum() < $total_cart) && $useAdminFee){
+        if(($cartFromMin < $total_cart) && $useAdminFee){
             $useAdminFee = false;
         }
 

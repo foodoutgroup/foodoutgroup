@@ -1358,6 +1358,8 @@ class OrderService extends ContainerAware
         $this->getOrder()->setOrderExtra($orderExtra);
         $deliveryPrice = 0;
 
+        $cartMinimum = false;
+
         if (!$selfDelivery) {
            $locationTmp = $this->container->get('food.location')->get();
 
@@ -1371,6 +1373,12 @@ class OrderService extends ContainerAware
                 $this->getOrder()->getPlacePoint(),
                 '',
                 $orderDate
+            );
+
+            $cartMinimum = $this->getCartService()->getMinimumCart(
+                $this->getOrder()->getPlace(),
+                $locationInfo,
+                $this->getOrder()->getPlacePoint()
             );
         }
 
@@ -1443,7 +1451,7 @@ class OrderService extends ContainerAware
 
         $sumTotal = $totalPriceBeforeDiscount - $discountSum;
 
-        if ($useAdminFee && ($placeObject->getCartMinimum() > $totalPriceBeforeDiscount)) {
+        if ($useAdminFee && $cartMinimum &&($cartMinimum > $totalPriceBeforeDiscount)) {
             $useAdminFee = true;
         } else {
             $useAdminFee = false;
