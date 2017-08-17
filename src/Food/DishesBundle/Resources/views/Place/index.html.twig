@@ -289,7 +289,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="clearfix"></div>
-                                                <div id="error"></div>
+                                                Architektų gatvė 176, Vilnius, Lithuania     <div id="error"></div>
                                             </form>
                                         </div>
 
@@ -298,7 +298,7 @@
                                         {% endif %}
                                     </div>
 
-                                    {% if place_point is empty %}
+                                    {% if place_point is empty and location is not null %}
                                     <div class="no-delivery-container alert-danger alert">
                                         {% trans %}place_does_not_deliver_to_saved_address{% endtrans %}
                                     </div>
