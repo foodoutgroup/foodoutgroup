@@ -284,8 +284,8 @@ class PlaceRepository extends EntityRepository
         $cityRepo = $this->getEntityManager()->getRepository('FoodAppBundle:City');
         $city = $cityRepo->find($locationData['city_id']);
 
-        $rushHour = '';
-        if($city->getZavalasTime()){
+        $rushHour = ' ';
+        if($city->getZavalasOn()){
             $rushHour = ' AND active_on_zaval = 1';
         }
 
