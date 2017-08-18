@@ -298,11 +298,11 @@
                                         {% endif %}
                                     </div>
 
-                                    {% if place_point is empty and location is not null %}
-                                    <div class="no-delivery-container alert-danger alert">
-                                        {% trans %}place_does_not_deliver_to_saved_address{% endtrans %}
-                                    </div>
-                                    {% endif %}
+                                    {#{% if place_point is empty and location is not null %}#}
+                                    {#<div class="no-delivery-container alert-danger alert">#}
+                                        {#{% trans %}place_does_not_deliver_to_saved_address{% endtrans %}#}
+                                    {#</div>#}
+                                    {#{% endif %}#}
 
                                     {% if placePointsAll|length == 1 %}
                                         {% if isTodayNoOneWantsToWork == true %}
