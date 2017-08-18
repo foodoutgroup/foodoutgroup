@@ -53,10 +53,7 @@ class AjaxController extends Controller
                         if($request->get('address') != "") {
                             $collection = $this->_checkAddress($request,null);
                         } else {
-                            if($ipUser = $request->getClientIp() == "127.0.0.1") {
-                                $ipUser = "88.119.11.173";
-                            }
-                            $findAddress = $this->get('food.location')->findByIp($ipUser);
+                            $findAddress = $this->get('food.location')->findByIp($request->getClientIp());
                             try {
                                 $cityId = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findNearestCity($findAddress);
                                 $collection['success'] = true;
