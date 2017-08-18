@@ -51,7 +51,7 @@ class AjaxController extends Controller
                     $this->get('session')->set('delivery_type', $request->get('type'));
                     if ($request->get('redirect')) {
                         if($request->get('address') != "") {
-                            $collection = $this->_checkAddress($request);
+                            $collection = $this->_checkAddress($request,null);
                         } else {
                             if($ipUser = $request->getClientIp() == "127.0.0.1") {
                                 $ipUser = "88.119.11.173";
