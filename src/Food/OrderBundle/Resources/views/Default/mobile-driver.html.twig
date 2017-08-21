@@ -146,7 +146,7 @@
                 <td colspan="5">{% trans %}mobile.pickup{% endtrans %}</td>
             </tr>
 
-        {% elseif %}
+        {% elseif order.deliveryType == 'pedestrian'%}
 
             <tr>
                 <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>
@@ -166,7 +166,7 @@
             <th colspan="5">{% trans %}mobile.place_point_address{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5"><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr={{ order.placePoint.address }}, {{ order.placePoint.cityId.title }}" target="_blank">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.cityId.title }}</a></td>
+            <td colspan="5"><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr={{ order.placePoint.address }}" target="_blank">{{ order.place.name }} - {{ order.placePoint.address }}, {{ order.placePoint.cityId.title }}</a></td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.place_point_phone{% endtrans %}</th>
@@ -178,7 +178,7 @@
             <th colspan="5">{% trans %}mobile.delivery_destination{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5"><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr={{ order.addressId.address }}, {{ order.addressId.cityId.title }}" target="_blank">{{ order.addressId.address }}, {{ order.addressId.cityId.title }}</a></td>
+            <td colspan="5"><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr={{ order.addressId.address }}" target="_blank">{{ order.addressId.address }}</a></td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.customer_phone{% endtrans %}</th>

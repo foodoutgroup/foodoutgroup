@@ -51,19 +51,16 @@ class AjaxController extends Controller
                     $this->get('session')->set('delivery_type', $request->get('type'));
                     if ($request->get('redirect')) {
                         if($request->get('address') != "") {
-                            $collection = $this->_checkAddress($request);
+                            $collection = $this->_checkAddress($request,null);
                         } else {
-                            if($ipUser = $request->getClientIp() == "127.0.0.1") {
-                                $ipUser = "88.119.11.173";
-                            }
-                            $findAddress = $this->get('food.location')->findByIp($ipUser);
+                            $findAddress = $this->get('food.location')->findByIp($request->getClientIp());
                             try {
                                 $cityId = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findNearestCity($findAddress);
                                 $collection['success'] = true;
                                 $collection['url'] = $this->get('slug')->getUrl($cityId, Slug::TYPE_CITY);
                             } catch (\Exception $e) {
                                 $collection['success'] = false;
-                                $collection['message'] = $this->get('translator')->trans('location.cant.be.located');
+                                $collection['message'] = $e->getMessage();// $this->get('translator')->trans('location.cant.be.located');
                             }
                         }
 
@@ -304,7 +301,7 @@ class AjaxController extends Controller
 
     }
 
-    private function _checkAddress(Request $request,$place)
+    private function _checkAddress(Request $request,$place = null)
     {
 
         $rsp = ['success' => false];
@@ -322,7 +319,8 @@ class AjaxController extends Controller
 
         if($response) {
 
-            if(!empty($place)){
+            if($place != null){
+                $placePointMap = array();
                 $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place,$response,false,false);
 
                 if(empty($placePoint)){
@@ -330,6 +328,9 @@ class AjaxController extends Controller
                     $rsp['place_point_error'] = 1;
 
                     return $rsp;
+                }else{
+                    $placePointMap[$place] = $placePoint;
+                    $this->container->get('session')->set('point_data',$placePointMap);
                 }
             }
 

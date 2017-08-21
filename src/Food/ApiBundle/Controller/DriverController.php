@@ -171,7 +171,6 @@ class DriverController extends Controller
             $orderService->logDeliveryEvent($orderService->getOrder(), 'order_pickedup');
             $orderService->getOrder()->setOrderPicked(true);
             $orderService->saveOrder();
-            $orderService->sendOrderPickedMessage();
             $response = ['success' => true];
         } catch (ApiException $e) {
             $this->get('logger')->error('Driver:assignToOrderAction Error1:' . $e->getMessage());

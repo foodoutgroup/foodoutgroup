@@ -3379,6 +3379,10 @@
                 <source>admin.cities.badge</source>
                 <target>33 min ženkliukas</target>
             </trans-unit>
+            <trans-unit id="admin.order.delivery_address_house">
+                <source>admin.order.delivery_address_house</source>
+                <target>Užsak. adreso butas</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

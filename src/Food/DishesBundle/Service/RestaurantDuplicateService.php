@@ -157,7 +157,7 @@ class RestaurantDuplicateService extends ContainerAware
             $cloneDishUnit = clone $dishUnit;
             $cloneDishUnit->setId(null);
             $cloneDishUnit->setPlace($newPlace);
-            $cloneDishUnit->setUnitCategory();
+            $cloneDishUnit->setUnitCategory($dishUnitsCategoryArray[$dishUnit->getUnitCategory()->getId()]);
 
             $em->persist($cloneDishUnit);
             $dishUnitsArray[$dishUnit->getId()] = $cloneDishUnit;

@@ -3347,7 +3347,10 @@
                <source>admin.cities.badge</source>
                <target>Show pedestrian badge</target>
            </trans-unit>
-            lt/user/cart/24
+           <trans-unit id="admin.order.delivery_address_house">
+               <source>admin.order.delivery_address_house</source>
+               <target>Address House</target>
+           </trans-unit>
         </body>
     </file>
 </xliff>

@@ -386,6 +386,8 @@ class UsersController extends Controller
                 $hash = $this->get('food_api.api')->generateUserHash($user);
                 $user->setApiToken($hash);
                 $user->setApiTokenValidity(new \DateTime('+1 week'));
+            } else {
+                $hash = $user->getApiToken();
             }
 
             $um->updateUser($user);
