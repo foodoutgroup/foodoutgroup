@@ -21,7 +21,7 @@ class CityAdmin extends FoodAdmin
     {
         $list
             ->add('title', null, array('label' => 'admin.cities.title', 'editable' => true))
-            ->add('zavalas_on', 'boolean', array('label' => 'admin.cities.zavalas_on', 'editable' => false))
+            ->add('zavalasOn', null, array('label' => 'admin.cities.zavalas_on', 'editable' => true))
             ->add('zavalas_time', null, array('label' => 'admin.cities.zavalas_time', 'editable' => false))
             ->add('active', null, array('label' => 'admin.cities.active', 'editable' => true))
             ->add('pedestrian', null, array('label' => 'admin.cities.pedestrian', 'editable' => true))
