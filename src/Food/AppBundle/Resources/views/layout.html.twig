@@ -148,7 +148,7 @@
 </head>
 <body class="{{ app.request.locale }}">
 {{ notifications.init|raw }}
-
+{{ misc_utils.getParam('body_scripts', null)|raw }}
 <div class="site">
         <div id="header-ad-container"></div>
         <div class="site-top">
