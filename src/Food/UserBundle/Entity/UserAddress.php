@@ -126,12 +126,12 @@ class UserAddress
         if (!$this->getId()) {
             return '';
         }
-        $buffer = $this->getOrigin();
+        $buffer = $this->getAddress();
 
         if(!empty($buffer)){
             return $buffer;
         }else{
-            return $this->getAddress();
+            return $this->getOrigin();
         }
 
     }
@@ -190,7 +190,7 @@ class UserAddress
     {
         $address = '';
         if (!$this->address) {
-            $address = $this->getStreet(). ($this->getHouse() ? " ".$this->getHouse() : "").($this->getFlat() ? " - ".$this->getFlat() : "" );
+            $address = $this->getStreet(). ($this->getHouse() ? " ".$this->getHouse() : "").($this->getFlat() ? " - ".$this->getFlat() : "" ) . ($this->getCityReal() ? ", " . $this->getCityReal() : '');
         } else {
             $city = '';
             if ($cityObj = $this->getCityId()) {

@@ -60,7 +60,7 @@ class AjaxController extends Controller
                                 $collection['url'] = $this->get('slug')->getUrl($cityId, Slug::TYPE_CITY);
                             } catch (\Exception $e) {
                                 $collection['success'] = false;
-                                $collection['message'] = $this->get('translator')->trans('location.cant.be.located');
+                                $collection['message'] = $e->getMessage();// $this->get('translator')->trans('location.cant.be.located');
                             }
                         }
 
