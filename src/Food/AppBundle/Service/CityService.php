@@ -1,4 +1,5 @@
 <?php
+
 namespace Food\AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
@@ -19,8 +20,9 @@ class CityService extends BaseService
         parent::__construct($em);
         $this->router = $router;
         $this->request = $container->get('request');
-        $this->locale= $this->request->getLocale();
+        $this->locale = $this->request->getLocale();
     }
+
     public function getActiveCity()
     {
         return $this->em->getRepository('FoodAppBundle:City')->getActive();
@@ -46,7 +48,8 @@ class CityService extends BaseService
         return $this->em->getRepository('FoodAppBundle:City')->findOneBy(['title' => $name]);
     }
 
-    public function getRandomBestOffers($cityId){
+    public function getRandomBestOffers($cityId)
+    {
 
         $bestOfferIds = $this->em->getRepository('FoodAppBundle:City')->getBestOffersByCity($cityId);
 
@@ -61,7 +64,7 @@ class CityService extends BaseService
 
             $bestOfferIds = array_slice($tmpOfferIds, 0, 5);
             $bestOffers = $this->em->getRepository('FoodPlacesBundle:BestOffer')->getBestOffersByIds($bestOfferIds);
-        }else{
+        } else {
             $bestOffers = null;
         }
         return $bestOffers;
@@ -74,12 +77,12 @@ class CityService extends BaseService
 
         $popTime = $city->getPopUpTimeFrom();
         $popTimeTo = $city->getPopUpTimeTo();
-        if($city->getPopUp()){
-            if (!empty($popTime) && !empty($popTimeTo)){
+        if ($city->getPopUp()) {
+            if (!empty($popTime) && !empty($popTimeTo)) {
                 $timeFrom = strtotime($city->getPopUpTimeFrom()->format('H:i:s'));
                 $timeTo = strtotime($city->getPopUpTimeTo()->format('H:i:s'));
                 $timeNow = strtotime(date('H:i:s'));
-                if(($timeFrom <= $timeNow) &&($timeNow <= $timeTo )){
+                if (($timeFrom <= $timeNow) && ($timeNow <= $timeTo)) {
                     $result = true;
                 }
             }
@@ -94,10 +97,11 @@ class CityService extends BaseService
 
         $cityObj = $this->getCityById($location['city_id']);
 
-        if($cityObj->getBadge()){
-            $result = true;
+        if ($cityObj) {
+            if ($cityObj->getBadge()) {
+                $result = true;
+            }
         }
-
         return $result;
     }
 }

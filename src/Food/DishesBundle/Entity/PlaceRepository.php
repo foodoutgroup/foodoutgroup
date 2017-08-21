@@ -284,9 +284,9 @@ class PlaceRepository extends EntityRepository
         $cityRepo = $this->getEntityManager()->getRepository('FoodAppBundle:City');
         $city = $cityRepo->find($locationData['city_id']);
 
-        $rushHour = 0;
+        $rushHour = '';
         if($city->getZavalasTime()){
-            $rushHour = 1;
+            $rushHour = ' AND active_on_zaval = 1';
         }
 
         $data = $this->getPlacePointNearWithDistance($place->getId(), $locationData, false, false, $noneWorking, $fututeDate);
@@ -298,23 +298,24 @@ class PlaceRepository extends EntityRepository
                           AND distance >= " . (float)$data['distance'] . " 
                           AND (time_from <= '" . $currTime . "' AND '" . $currTime . "' <= time_to) 
                           AND deleted_at IS NULL 
-                          AND active_on_zaval = ".$rushHour."
-                          ORDER BY distance ASC LIMIT 1";
+                          ".$rushHour
+            ." ORDER BY distance ASC LIMIT 1";
         $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
         $stmt->execute();
         $result = $stmt->fetchColumn();
 
         if (empty($result)) {
-            $deliveryPrice = "SELECT price 
-                              FROM `place_point_delivery_zones` 
-                              WHERE place_point = " . (int)$data['id'] . " 
-                              AND active = 1 
-                              AND distance >= " . (float)$data['distance']." 
-                              AND time_from IS NULL 
-                              AND time_to IS NULL 
+            $deliveryPrice = "SELECT price
+                              FROM `place_point_delivery_zones`
+                              WHERE place_point = " . (int)$data['id'] . "
+                              AND active = 1
+                              AND distance >= " . (float)$data['distance']."
+                              AND time_from IS NULL
+                              AND time_to IS NULL
                               AND deleted_at IS NULL
-                              AND active_on_zaval = ".$rushHour."
-                              ";
+                             ".$rushHour .
+                " ORDER BY distance ASC LIMIT 1"
+            ;
             $stmt = $this->getEntityManager()->getConnection()->prepare($deliveryPrice);
             $stmt->execute();
             $result = $stmt->fetchColumn();

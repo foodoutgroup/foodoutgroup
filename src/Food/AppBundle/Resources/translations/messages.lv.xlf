@@ -1604,6 +1604,10 @@
                 <source>general.bottom.contacts</source>
                 <target>Kontakti</target>
             </trans-unit>
+            <trans-unit id="mobile.pedestrian" resname="mobile.pedestrian">
+                <source>mobile.pedestrian</source>
+                <target>Gājējs</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

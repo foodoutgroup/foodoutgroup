@@ -1299,7 +1299,7 @@ class OrderService extends ContainerAware
      * @param array|null $userData
      * @param string|null $orderDate
      */
-    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null, $deliveryType = null)
+    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null, $deliveryType = null,$locationInfo = null)
     {
         // TODO Fix prices calculation
 
@@ -1359,9 +1359,15 @@ class OrderService extends ContainerAware
         $deliveryPrice = 0;
 
         if (!$selfDelivery) {
+           $locationTmp = $this->container->get('food.location')->get();
+
+           if(!empty($locationTmp)){
+               $locationInfo = $locationTmp;
+           }
+
             $deliveryPrice = $this->getCartService()->getDeliveryPrice(
                 $this->getOrder()->getPlace(),
-                $this->container->get('food.location')->get(),
+                $locationInfo,
                 $this->getOrder()->getPlacePoint(),
                 '',
                 $orderDate

@@ -780,8 +780,9 @@ class PlacesService extends ContainerAware
             $placeCityCollection = $this->em()->getRepository('FoodDishesBundle:Place')->getCityCollectionByPlace($place);
             foreach ($placeCityCollection as $city) {
                 if ($rhService->isRushHourAtCity($city)
-                    && (empty($locationData)
+                        && (empty($locationData)
                         || empty($locationData['city'])
+                        || empty($locationData['city_id'])
                         || $rhService->isRushHourAtCityById($locationData['city_id'])
                         || !$this->isPlaceDeliversToCity($place, $locationData['city_id']))) {
                         $response = true;

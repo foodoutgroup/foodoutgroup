@@ -418,6 +418,10 @@ Vilnius</target>
                 <source>general.delivery_does_not_match</source>
                 <target>See restoran ei anna toidu valinud saatmisviisi</target>
             </trans-unit>
+            <trans-unit id="place_point_does_not_deliver" resname="place_point_does_not_deliver">
+                <source>place_point_does_not_deliver</source>
+                <target>See restoran ei anna antud aadressile</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -233,15 +233,15 @@
 			</trans-unit>
 			<trans-unit id="74fbe91702c1ee04724c55bde63e654f" resname="general.email.new_order">
 				<source>general.email.new_order</source>
-				<target>naujas užsakymas</target>
+				<target>naujas u?sakymas</target>
 			</trans-unit>
 			<trans-unit id="general.email.canceled_order" resname="general.email.canceled_order">
 				<source>general.email.canceled_order</source>
-				<target>atšauktas užsakymas</target>
+				<target>at?auktas u?sakymas</target>
 			</trans-unit>
 			<trans-unit id="general.email.order_reminder" resname="general.email.order_reminder">
 				<source>general.email.order_reminder</source>
-				<target>primename, kad turite nepatvirtintą užsakymą</target>
+				<target>primename, kad turite nepatvirtint? u?sakym?</target>
 			</trans-unit>
 			<trans-unit id="77c7e784b0de17ca35cb5e6e9b59b207" resname="general.email.accounting_yesterday_report">
 				<source>general.email.accounting_yesterday_report</source>
@@ -253,7 +253,7 @@
 			</trans-unit>
 			<trans-unit id="19554e921e608df135b269a564c8cf6a" resname="mobile.order_confirm">
 				<source>mobile.order_confirm</source>
-				<target>Patvirtinti užsakymą</target>
+				<target>Patvirtinti u?sakym?</target>
 			</trans-unit>
 			<trans-unit id="mobile.order_confirm_prepareTime" resname="mobile.order_confirm_prepareTime">
 				<source>mobile.order_confirm_prepareTime</source>
@@ -269,7 +269,7 @@
 			</trans-unit>
 			<trans-unit id="7ebe276de073f58e9744cb5e46760b88" resname="mobile.order_delay">
 				<source>mobile.order_delay</source>
-				<target>Atidėti užsakymą</target>
+				<target>Atid?ti u?sakym?</target>
 			</trans-unit>
 			<trans-unit id="e110f798f6661e6e1ac7fbfe1f03e679" resname="mobile.order_finish">
 				<source>mobile.order_finish</source>
@@ -277,19 +277,19 @@
 			</trans-unit>
 			<trans-unit id="2b94e2d1c25ddac053ea4bd3eaadd41f" resname="mobile.order_delivered">
 				<source>mobile.order_delivered</source>
-				<target>Pristačiau užsakymą</target>
+				<target>Prista?iau u?sakym?</target>
 			</trans-unit>
 			<trans-unit id="mobile.order_picked_up" resname="mobile.order_picked_up">
 				<source>mobile.order_picked_up</source>
-				<target>Paėmiau užsakymą</target>
+				<target>Pa?miau u?sakym?</target>
 			</trans-unit>
 			<trans-unit id="mobile.order_partialy_delivered" resname="mobile.order_partialy_delivered">
 				<source>mobile.order_partialy_delivered</source>
-				<target>Pristačiau dalį užsakymo (klientas dalies nepriėmė)</target>
+				<target>Prista?iau dal? u?sakymo (klientas dalies nepri?m?)</target>
 			</trans-unit>
 			<trans-unit id="ebbc16fb3a732d7abe363ef2463397f9" resname="mobile.order_cancel">
 				<source>mobile.order_cancel</source>
-				<target>Atšaukti užsakymą</target>
+				<target>At?aukti u?sakym?</target>
 			</trans-unit>
 			<trans-unit id="mobile.to_cancel_order_please_call" resname="mobile.to_cancel_order_please_call">
 				<source>mobile.to_cancel_order_please_call</source>
@@ -303,7 +303,7 @@
 			</trans-unit>
 			<trans-unit id="mobile.order.id" resname="mobile.order.id">
 				<source>mobile.order.id</source>
-				<target>Užsakymo nr.</target>
+				<target>U?sakymo nr.</target>
 			</trans-unit>
 			<trans-unit id="ceb80ce24895534499f2a5a28a707fbb" resname="mobile.order_dish">
 				<source>mobile.order_dish</source>
@@ -331,19 +331,19 @@
 			</trans-unit>
 			<trans-unit id="cb2ecbcd06bc62396f6bb198d438dccf" resname="mobile.order_submit_delay">
 				<source>mobile.order_submit_delay</source>
-				<target>Patvirtinti atidėjimą</target>
+				<target>Patvirtinti atid?jim?</target>
 			</trans-unit>
 			<trans-unit id="0350819266b7134804cd4cab11e9762b" resname="mobile.order_cancel_delay">
 				<source>mobile.order_cancel_delay</source>
-				<target>Atšaukti atidėjimą</target>
+				<target>At?aukti atid?jim?</target>
 			</trans-unit>
 			<trans-unit id="9724ea84f06483ca64d1effecaa364d8" resname="mobile.order_delay_reason">
 				<source>mobile.order_delay_reason</source>
-				<target>Atidėjimo priežastis</target>
+				<target>Atid?jimo prie?astis</target>
 			</trans-unit>
 			<trans-unit id="d8d4495d7e138c947ba2bc0cb9f2a5ad" resname="mobile.order_delay_duration">
 				<source>mobile.order_delay_duration</source>
-				<target>Atidėjimo trukmė</target>
+				<target>Atid?jimo trukm?</target>
 			</trans-unit>
 			<trans-unit id="ad0cfaf6d8907666cb2aee2b0210192e" resname="general.login_title">
 				<source>general.login_title</source>
@@ -439,7 +439,7 @@
 			</trans-unit>
 			<trans-unit id="general.email.partialy_completed" resname="general.email.partialy_completed">
 				<source>general.email.partialy_completed</source>
-				<target>Pristatytas nepilnas užsakymas</target>
+				<target>Pristatytas nepilnas u?sakymas</target>
 			</trans-unit>
 			<trans-unit id="3d6f52993727876649fad3f9e2d5c687" resname="general.sms.driver_assigned_order">
 				<source>general.sms.driver_assigned_order</source>
@@ -476,11 +476,11 @@
 			</trans-unit>
 			<trans-unit id="0144b5f007f80909d118805c288cac04" resname="mobile.place_point_address">
 				<source>mobile.place_point_address</source>
-				<target>Paimti iš</target>
+				<target>Paimti i?</target>
 			</trans-unit>
 			<trans-unit id="34e780a20dd8982964b54edd9425ffe3" resname="mobile.restourant_place_point_address">
 				<source>mobile.restourant_place_point_address</source>
-				<target>Gamybos taškas</target>
+				<target>Gamybos ta?kas</target>
 			</trans-unit>
 			<trans-unit id="mobile.restaurant_delivery_price" resname="mobile.restaurant_delivery_price">
 				<source>mobile.restaurant_delivery_price</source>
@@ -488,7 +488,7 @@
 			</trans-unit>
 			<trans-unit id="c515ebc67239e3c3555e84b329f7eeba" resname="mobile.place_point_phone">
 				<source>mobile.place_point_phone</source>
-				<target>Gamybos taško telefonas</target>
+				<target>Gamybos ta?ko telefonas</target>
 			</trans-unit>
 			<trans-unit id="88456d596941f6ec79d9cd30ae01e8af" resname="mobile.pickup_foodout">
 				<source>mobile.pickup_foodout</source>
@@ -504,15 +504,15 @@
 			</trans-unit>
 			<trans-unit id="mobile.need_invoice" resname="mobile.need_invoice">
 				<source>mobile.need_invoice</source>
-				<target>Reikės sąskaitos faktūros</target>
+				<target>Reik?s s?skaitos fakt?ros</target>
 			</trans-unit>
 			<trans-unit id="mobile.company_name" resname="mobile.company_name">
 				<source>mobile.company_name</source>
-				<target>Įmonė</target>
+				<target>?mon?</target>
 			</trans-unit>
 			<trans-unit id="mobile.company_code" resname="mobile.company_code">
 				<source>mobile.company_code</source>
-				<target>Įm. kodas</target>
+				<target>?m. kodas</target>
 			</trans-unit>
 			<trans-unit id="mobile.vat_code" resname="mobile.vat_code">
 				<source>mobile.vat_code</source>
@@ -528,31 +528,31 @@
 			</trans-unit>
 			<trans-unit id="6f33924553f5d8fac62abb6a0c7a685c" resname="mobile.payment.local.card">
 				<source>mobile.payment.local.card</source>
-				<target>Kortele, atsiimant užsakymą</target>
+				<target>Kortele, atsiimant u?sakym?</target>
 			</trans-unit>
 			<trans-unit id="975056dcfb485500d01cf7f23d10c891" resname="mobile.payment.local">
 				<source>mobile.payment.local</source>
-				<target>Grynaisiais, atsiimant užsakymą</target>
+				<target>Grynaisiais, atsiimant u?sakym?</target>
 			</trans-unit>
 			<trans-unit id="ff990e97a34ed6619f88da89f1555dd1" resname="mobile.payment.paysera">
 				<source>mobile.payment.paysera</source>
-				<target>Apmokėta internetu</target>
+				<target>Apmok?ta internetu</target>
 			</trans-unit>
 			<trans-unit id="mobile.payment.nordea-banklink" resname="mobile.payment.nordea-banklink">
 				<source>mobile.payment.nordea-banklink</source>
-				<target>Apmokėta internetu (Nordea)</target>
+				<target>Apmok?ta internetu (Nordea)</target>
 			</trans-unit>
 			<trans-unit id="mobile.payment.seb-banklink" resname="mobile.payment.seb-banklink">
 				<source>mobile.payment.seb-banklink</source>
-				<target>Apmokėta internetu (SEB)</target>
+				<target>Apmok?ta internetu (SEB)</target>
 			</trans-unit>
 			<trans-unit id="mobile.payment.swedbank-credit-card-gateway" resname="mobile.payment.swedbank-credit-card-gateway">
 				<source>mobile.payment.swedbank-credit-card-gateway</source>
-				<target>Apmokėta internetu (Swed CC)</target>
+				<target>Apmok?ta internetu (Swed CC)</target>
 			</trans-unit>
 			<trans-unit id="mobile.payment.swedbank-gateway" resname="mobile.payment.swedbank-gateway">
 				<source>mobile.payment.swedbank-gateway</source>
-				<target>Apmokėta internetu (Swedbank)</target>
+				<target>Apmok?ta internetu (Swedbank)</target>
 			</trans-unit>
 			<trans-unit id="ca4d1fefea4fd64c121dbd0e8fa2819c" resname="mobile.order.sum_with_delivery">
 				<source>mobile.order.sum_with_delivery</source>
@@ -584,19 +584,19 @@
 			</trans-unit>
 			<trans-unit id="e0e188c6f3a31f7c0c241e260d7c442b" resname="mobile.customer_phone">
 				<source>mobile.customer_phone</source>
-				<target>Užsakovo tel.</target>
+				<target>U?sakovo tel.</target>
 			</trans-unit>
 			<trans-unit id="mobile.dispatcher_contact_phone" resname="mobile.dispatcher_contact_phone">
 				<source>mobile.dispatcher_contact_phone</source>
-				<target>Dispečerių tel.</target>
+				<target>Dispe?eri? tel.</target>
 			</trans-unit>
 			<trans-unit id="6b992ec872e88f6be09ab06f8cceb76e" resname="mobile.order_time">
 				<source>mobile.order_time</source>
-				<target>Užsakymo laikas</target>
+				<target>U?sakymo laikas</target>
 			</trans-unit>
 			<trans-unit id="7dc15ebe3ad3e6bdf4ae58cdb2353c9c" resname="mobile.restaurant_order">
 				<source>mobile.restaurant_order</source>
-				<target>Naujas užsakymas</target>
+				<target>Naujas u?sakymas</target>
 			</trans-unit>
 			<trans-unit id="416ee797bc3b010f67367cec0ea0cf11" resname="mobile.driver_order">
 				<source>mobile.driver_order</source>
@@ -604,7 +604,7 @@
 			</trans-unit>
 			<trans-unit id="0dbbfe8f19d7310a3259363d622cf7ae" resname="mobile.restaurant_invoice">
 				<source>mobile.restaurant_invoice</source>
-				<target>Priėmimo perdavimo aktas</target>
+				<target>Pri?mimo perdavimo aktas</target>
 			</trans-unit>
 			<trans-unit id="4090ca7ff35db8d3631a005420152ed6" resname="mobile.invoice.date">
 				<source>mobile.invoice.date</source>
@@ -612,11 +612,11 @@
 			</trans-unit>
 			<trans-unit id="de728da4e406160a87aa23b86371f725" resname="mobile.invoice.assign_date">
 				<source>mobile.invoice.assign_date</source>
-				<target>Užsakymo išsiuntimo laikas</target>
+				<target>U?sakymo i?siuntimo laikas</target>
 			</trans-unit>
 			<trans-unit id="032824c6bcc0a9b0ac9e8385315a5bd5" resname="mobile.invoice.delivery_date">
 				<source>mobile.invoice.delivery_date</source>
-				<target>Užsakymo pristatymo laikas</target>
+				<target>U?sakymo pristatymo laikas</target>
 			</trans-unit>
 			<trans-unit id="dda1dd34b8ed6aeefe19435a155fc07a" resname="mobile.invoice.dish_name">
 				<source>mobile.invoice.dish_name</source>
@@ -636,7 +636,7 @@
 			</trans-unit>
 			<trans-unit id="11a8e22472e0eab53be67fab606dae58" resname="mobile.invoice.customer">
 				<source>mobile.invoice.customer</source>
-				<target>Užsakovas</target>
+				<target>U?sakovas</target>
 			</trans-unit>
 			<trans-unit id="6c520917038237f134ad0fd241a8fdf8" resname="mobile.invoice.customer_phone">
 				<source>mobile.invoice.customer_phone</source>
@@ -644,11 +644,11 @@
 			</trans-unit>
 			<trans-unit id="1de88ddbb94bb197474dcfc54669ba42" resname="mobile.invoice.submitted">
 				<source>mobile.invoice.submitted</source>
-				<target>Perdavė</target>
+				<target>Perdav?</target>
 			</trans-unit>
 			<trans-unit id="7ac847c965b1ee56487223805dc9c904" resname="mobile.invoice.received">
 				<source>mobile.invoice.received</source>
-				<target>Priėmė</target>
+				<target>Pri?m?</target>
 			</trans-unit>
 			<trans-unit id="39f9b5cc77e17ca280be3bd3a4dd9635" resname="mobile.invoice.vat_code">
 				<source>mobile.invoice.vat_code</source>
@@ -656,11 +656,11 @@
 			</trans-unit>
 			<trans-unit id="1a971e1e4c395c44347f7fdfaad550c6" resname="mobile.invoice.company_code">
 				<source>mobile.invoice.company_code</source>
-				<target>Įm. kodas</target>
+				<target>?m. kodas</target>
 			</trans-unit>
 			<trans-unit id="5ae95cad37ee0316aedc7626a61fa937" resname="mobile.invoice_driver">
 				<source>mobile.invoice_driver</source>
-				<target>Važtaraštis</target>
+				<target>Va?tara?tis</target>
 			</trans-unit>
 			<trans-unit id="5a8757eec95dabc93144ef38a3f34eb0" resname="mobile.invoice.driver">
 				<source>mobile.invoice.driver</source>
@@ -716,19 +716,19 @@
 			</trans-unit>
 			<trans-unit id="eac01114b0976e68239dfd36aeacbed0" resname="general.user.lastname.not_blank">
 				<source>general.user.lastname.not_blank</source>
-				<target>Įveskite savo pavardę</target>
+				<target>?veskite savo pavard?</target>
 			</trans-unit>
 			<trans-unit id="414f36b3933132261c070fa1179087cb" resname="general.user.lastname.short">
 				<source>general.user.lastname.short</source>
-				<target>Pavardė negali būti trumpesnė nei 2 simboliai</target>
+				<target>Pavard? negali b?ti trumpesn? nei 2 simboliai</target>
 			</trans-unit>
 			<trans-unit id="efe502b0e090904235afb3f5afb3ffc0" resname="general.user.lastname.long">
 				<source>general.user.lastname.long</source>
-				<target>Pavardė negali būti ilgesnė nei 255 simboliai</target>
+				<target>Pavard? negali b?ti ilgesn? nei 255 simboliai</target>
 			</trans-unit>
 			<trans-unit id="c1d379b8878916928a9c4c935daa3e14" resname="general.user.email.not_blank">
 				<source>general.user.email.not_blank</source>
-				<target>Įveskite savo el.pašto adresą</target>
+				<target>?veskite savo el.pa?to adres?</target>
 			</trans-unit>
 			<trans-unit id="36e5d23120269705d139f18a4ee96f4f" resname="general.order">
 				<source>general.order</source>
@@ -756,19 +756,19 @@
 			</trans-unit>
 			<trans-unit id="8540a3f4a2e4a8d25fb8b518ea07d6c2" resname="general.for">
 				<source>general.for</source>
-				<target>už</target>
+				<target>u?</target>
 			</trans-unit>
 			<trans-unit id="59fb7baae09f0848dc2cc994412415c8" resname="general.to">
 				<source>general.to</source>
-				<target>į</target>
+				<target>?</target>
 			</trans-unit>
 			<trans-unit id="general.from" resname="general.from">
 				<source>general.from</source>
-				<target>iš</target>
+				<target>i?</target>
 			</trans-unit>
 			<trans-unit id="general.will_pickup_from" resname="general.will_pickup_from">
 				<source>general.will_pickup_from</source>
-				<target>, atsiimsite iš</target>
+				<target>, atsiimsite i?</target>
 			</trans-unit>
 			<trans-unit id="general.picked_up" resname="general.picked_up">
 				<source>general.picked_up</source>
@@ -797,7 +797,7 @@
 			<trans-unit id="general.profile.current_discount">
 				<source>general.profile.current_discount</source>
 				<target>
-					<![CDATA[Šiuo metu jums taikoma nuolaida: <strong> %discount% </strong> %]]>
+					<![CDATA[?iuo metu jums taikoma nuolaida: <strong> %discount% </strong> %]]>
 				</target>
 			</trans-unit>
 			<trans-unit id="6defb486341307b289948eb8fa05624f" resname="general.profile.button_save">
@@ -838,7 +838,7 @@
 			</trans-unit>
 			<trans-unit id="general.email.accounting_report.swedbank-credit-card-gateway" resname="general.email.accounting_report.swedbank-credit-card-gateway">
 				<source>general.email.accounting_report.swedbank-credit-card-gateway</source>
-				<target>Internetu (Swedbank kreditinė)</target>
+				<target>Internetu (Swedbank kreditin?)</target>
 			</trans-unit>
 			<trans-unit id="general.email.accounting_report.swedbank-gateway" resname="general.email.accounting_report.swedbank-gateway">
 				<source>general.email.accounting_report.swedbank-gateway</source>
@@ -906,7 +906,7 @@
 			</trans-unit>
 			<trans-unit id="general.base_page_description" resname="general.base_page_description">
 				<source>general.base_page_description</source>
-				<target>Greitas pristatymas + didžiausia restoranų įvairovė Vilniuje, Kaune ir Klaipėdoje. Apžiūrėk savo mėgstamiausių ir populiariausių vietų MENIU, išsirink ir užsisakyk jau DABAR!</target>
+				<target>Greitas pristatymas + did?iausia restoran? ?vairov? Vilniuje, Kaune ir Klaip?doje. Ap?i?r?k savo m?gstamiausi? ir populiariausi? viet? MENIU, i?sirink ir u?sisakyk jau DABAR!</target>
 			</trans-unit>
 			<trans-unit id="general.restaurant_page_title" resname="general.restaurant_page_title">
 				<source>general.restaurant_page_title</source>
@@ -915,12 +915,12 @@
 			<trans-unit id="general.cart.success" resname="general.cart.success">
 				<source>general.cart.success</source>
 				<target>
-					<![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 698 55544</strong><br/>]]>
+					<![CDATA[J?s? u?sakymas priimtas ir tur?t? pasiekti, kai tik restoranas pagamins. <br/>Jei kils koki? klausim? ar yra paskutin?s minut?s pakeitim?, pra?ome susisiekite <br/> su <strong>?Foodout.lt?</strong> telefonu <strong>+370 698 55544</strong><br/>]]>
 				</target>
 			</trans-unit>
 			<trans-unit id="general.cart.success.restaurant" resname="general.cart.success.restaurant">
                 <source>general.cart.success.restaurant</source>
-                <target><![CDATA[arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
+                <target><![CDATA[arba<br/>su <strong>?%placeName%?</strong> telefonu <strong>+%placePhone%</strong>.]]></target>
             </trans-unit>
 			<trans-unit id="general.cart.reverse" resname="general.cart.reverse">
 				<source>general.cart.reverse</source>
@@ -929,7 +929,7 @@
 			<trans-unit id="general.cart.success_pre" resname="general.cart.success_pre">
 				<source>general.cart.success_pre</source>
 				<target>
-					<![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti %order_date%. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 698 55544</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]>
+					<![CDATA[J?s? u?sakymas priimtas ir tur?t? pasiekti %order_date%. <br/>Jei kils koki? klausim? ar yra paskutin?s minut?s pakeitim?, pra?ome susisiekite <br/> su <strong>?Foodout.lt?</strong> telefonu <strong>+370 698 55544</strong><br/>arba<br/>su <strong>?%placeName%?</strong> telefonu <strong>+%placePhone%</strong>.]]>
 				</target>
 			</trans-unit>
 			<trans-unit id="general.cart.success_title" resname="general.cart.success_title">
@@ -939,18 +939,18 @@
 			<trans-unit id="general.cart.success_no_place_num" resname="general.cart.success_no_place_num">
 				<source>general.cart.success_no_place_num</source>
 				<target>
-					<![CDATA[Jūsų užsakymas priimtas ir turėtų pasiekti, kai tik restoranas pagamins. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 698 55544</strong>.]]>
+					<![CDATA[J?s? u?sakymas priimtas ir tur?t? pasiekti, kai tik restoranas pagamins. <br/>Jei kils koki? klausim? ar yra paskutin?s minut?s pakeitim?, pra?ome susisiekite <br/> su <strong>?Foodout.lt?</strong> telefonu <strong>+370 698 55544</strong>.]]>
 				</target>
 			</trans-unit>
 			<trans-unit id="general.cart.wait" resname="general.cart.wait">
 				<source>general.cart.wait</source>
 				<target>
-					<![CDATA[Jūsų užsakymas priimtas ir bus perduotas restoranui, kai tik baigsite mokėjimą. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitimų, prašome susisiekite <br/> su <strong>"Foodout.lt"</strong> telefonu <strong>+370 698 55544</strong><br/>arba<br/>su <strong>“%placeName%”</strong> telefonu <strong>+%placePhone%</strong>.]]>
+					<![CDATA[J?s? u?sakymas priimtas ir bus perduotas restoranui, kai tik baigsite mok?jim?. <br/>Jei kils koki? klausim? ar yra paskutin?s minut?s pakeitim?, pra?ome susisiekite <br/> su <strong>"Foodout.lt"</strong> telefonu <strong>+370 698 55544</strong><br/>arba<br/>su <strong>?%placeName%?</strong> telefonu <strong>+%placePhone%</strong>.]]>
 				</target>
 			</trans-unit>
 			<trans-unit id="reporting.monthly.driver_report.title" resname="reporting.monthly.driver_report.title">
 				<source>reporting.monthly.driver_report.title</source>
-				<target>Praėjusio mėnesio (%reportDate%) vairuotojų vežti užsakymai</target>
+				<target>Pra?jusio m?nesio (%reportDate%) vairuotoj? ve?ti u?sakymai</target>
 			</trans-unit>
 			<trans-unit id="reporting.driver" resname="reporting.driver">
 				<source>reporting.driver</source>
@@ -958,53 +958,53 @@
 			</trans-unit>
 			<trans-unit id="reporting.orders_total" resname="reporting.orders_total">
 				<source>reporting.orders_total</source>
-				<target>Viso užsakymų</target>
+				<target>Viso u?sakym?</target>
 			</trans-unit>
 			<trans-unit id="reporting.monthly.driver_report.payment_local" resname="reporting.monthly.driver_report.payment_local">
 				<source>reporting.monthly.driver_report.payment_local</source>
-				<target>Apmokėti vietoje</target>
+				<target>Apmok?ti vietoje</target>
 			</trans-unit>
 			<trans-unit id="reporting.monthly.driver_report.payment_banklink" resname="reporting.monthly.driver_report.payment_banklink">
 				<source>reporting.monthly.driver_report.payment_banklink</source>
-				<target>Apmokėti internetu</target>
+				<target>Apmok?ti internetu</target>
 			</trans-unit>
 			<trans-unit id="reporting.monthly.driver_report.payment_local_sum" resname="reporting.monthly.driver_report.payment_local_sum">
 				<source>reporting.monthly.driver_report.payment_local_sum</source>
 				<target>
-					<![CDATA[Suma apmokėta vietoje<br />(su PVM)]]>
+					<![CDATA[Suma apmok?ta vietoje<br />(su PVM)]]>
 				</target>
 			</trans-unit>
 			<trans-unit id="reporting.monthly.driver_report.payment_banklink_sum" resname="reporting.monthly.driver_report.payment_banklink_sum">
 				<source>reporting.monthly.driver_report.payment_banklink_sum</source>
 				<target>
-					<![CDATA[Suma apmokėta internetu<br />(su PVM)]]>
+					<![CDATA[Suma apmok?ta internetu<br />(su PVM)]]>
 				</target>
 			</trans-unit>
 			<trans-unit id="reporting.monthly.driver_report.total_order_sum" resname="reporting.monthly.driver_report.total_order_sum">
 				<source>reporting.monthly.driver_report.total_order_sum</source>
 				<target>
-					<![CDATA[Visų užsakymų suma<br />(su PVM)]]>
+					<![CDATA[Vis? u?sakym? suma<br />(su PVM)]]>
 				</target>
 			</trans-unit>
 			<trans-unit id="reporting.monthly.driver_report.total_drivers" resname="reporting.monthly.driver_report.total_drivers">
 				<source>reporting.monthly.driver_report.total_drivers</source>
-				<target>Viso vežusių vairuotojų</target>
+				<target>Viso ve?usi? vairuotoj?</target>
 			</trans-unit>
 			<trans-unit id="reporting.daily.yesterday_orders.title" resname="reporting.daily.yesterday_orders.title">
 				<source>reporting.daily.yesterday_orders.title</source>
-				<target>Vakar dienos (%reportDate%) užsakymai</target>
+				<target>Vakar dienos (%reportDate%) u?sakymai</target>
 			</trans-unit>
 			<trans-unit id="reporting.daily.yesterday_orders.our_delivery" resname="reporting.daily.yesterday_orders.our_delivery">
 				<source>reporting.daily.yesterday_orders.our_delivery</source>
-				<target>Užsakymai su mūsų pristatymu</target>
+				<target>U?sakymai su m?s? pristatymu</target>
 			</trans-unit>
 			<trans-unit id="reporting.daily.yesterday_orders.restourant_delivery" resname="reporting.daily.yesterday_orders.restourant_delivery">
 				<source>reporting.daily.yesterday_orders.restourant_delivery</source>
-				<target>Užsakymai, kuriuos pristatė pats restoranas</target>
+				<target>U?sakymai, kuriuos pristat? pats restoranas</target>
 			</trans-unit>
 			<trans-unit id="reporting.daily.yesterday_orders.pickup" resname="reporting.daily.yesterday_orders.pickup">
 				<source>reporting.daily.yesterday_orders.pickup</source>
-				<target>Restorane asiimti užsakymai</target>
+				<target>Restorane asiimti u?sakymai</target>
 			</trans-unit>
 			<trans-unit id="reporting.daily.yesterday_orders.time" resname="reporting.daily.yesterday_orders.time">
 				<source>reporting.daily.yesterday_orders.time</source>
@@ -1016,7 +1016,7 @@
 			</trans-unit>
 			<trans-unit id="reporting.daily.yesterday_orders.place_point" resname="reporting.daily.yesterday_orders.place_point">
 				<source>reporting.daily.yesterday_orders.place_point</source>
-				<target>Gam.taškas</target>
+				<target>Gam.ta?kas</target>
 			</trans-unit>
 			<trans-unit id="reporting.daily.yesterday_orders.payment_type" resname="reporting.daily.yesterday_orders.payment_type">
 				<source>reporting.daily.yesterday_orders.payment_type</source>
@@ -1053,7 +1053,7 @@
 			<trans-unit id="reporting.daily.yesterday_orders.preorder" resname="reporting.daily.yesterday_orders.preorder">
 				<source>reporting.daily.yesterday_orders.preorder</source>
 				<target>
-					<![CDATA[Užsak. laikui<br />(pristatymo data)]]>
+					<![CDATA[U?sak. laikui<br />(pristatymo data)]]>
 				</target>
 			</trans-unit>
 			<trans-unit id="reporting.daily.yesterday_orders.total_with_vat_no_brake" resname="reporting.daily.yesterday_orders.total_with_vat_no_brake">
@@ -1155,7 +1155,7 @@
 			</trans-unit>
 			<trans-unit id="general.canceled_order.title" resname="general.canceled_order.title">
 				<source>general.canceled_order.title</source>
-				<target>Atšauktas apmokėtas užsakymas</target>
+				<target>At?auktas apmok?tas u?sakymas</target>
 			</trans-unit>
 			<!-- End of debug emails on new order -->
 			<trans-unit id="general.email.placeholder" resname="general.email.placeholder">
@@ -1177,67 +1177,67 @@
 			<!-- Swedbank gateway payments -->
 			<trans-unit id="payment.swedbank_gateway.cancelled" resname="payment.swedbank_gateway.cancelled">
 				<source>payment.swedbank_gateway.cancelled</source>
-				<target>Užsakymas atšauktas.</target>
+				<target>U?sakymas at?auktas.</target>
 			</trans-unit>
 			<trans-unit id="payment.swedbank_gateway.communication_error" resname="payment.swedbank_gateway.communication_error">
 				<source>payment.swedbank_gateway.communication_error</source>
-				<target>Įvyko komunikacijos su banku klaida. Pabandykite atnaujinti šį puslapį po kelių minučių.</target>
+				<target>?vyko komunikacijos su banku klaida. Pabandykite atnaujinti ?? puslap? po keli? minu?i?.</target>
 			</trans-unit>
 			<trans-unit id="payment.swedbank_gateway.error" resname="payment.swedbank_gateway.error">
 				<source>payment.swedbank_gateway.error</source>
-				<target>Užsakymas atšauktas.</target>
+				<target>U?sakymas at?auktas.</target>
 			</trans-unit>
 			<trans-unit id="payment.swedbank_gateway.order_not_found" resname="payment.swedbank_gateway.order_not_found">
 				<source>payment.swedbank_gateway.order_not_found</source>
-				<target>Užsakymas nerastas.</target>
+				<target>U?sakymas nerastas.</target>
 			</trans-unit>
 			<trans-unit id="payment.swedbank_gateway.processing" resname="payment.swedbank_gateway.processing">
 				<source>payment.swedbank_gateway.processing</source>
-				<target>Užsakymas priimtas banko apdorojimui.</target>
+				<target>U?sakymas priimtas banko apdorojimui.</target>
 			</trans-unit>
 			<trans-unit id="payment.swedbank_gateway.something_wrong" resname="payment.swedbank_gateway.something_wrong">
 				<source>payment.swedbank_gateway.something_wrong</source>
-				<target>Įvyko nenustatyto tipo klaida.</target>
+				<target>?vyko nenustatyto tipo klaida.</target>
 			</trans-unit>
 			<trans-unit id="payment.swedbank_gateway.success" resname="payment.swedbank_gateway.success">
 				<source>payment.swedbank_gateway.success</source>
-				<target>Užsakymas sėkmingai apmokėtas.</target>
+				<target>U?sakymas s?kmingai apmok?tas.</target>
 			</trans-unit>
 			<trans-unit id="payment.nordea.success" resname="payment.nordea.success">
 				<source>payment.nordea.success</source>
-				<target>Užsakymas sėkmingai apmokėtas.</target>
+				<target>U?sakymas s?kmingai apmok?tas.</target>
 			</trans-unit>
 			<trans-unit id="payment.nordea.failed" resname="payment.nordea.failed">
 				<source>payment.nordea.failed</source>
-				<target>Užsakymas nebuvo apmokėtas.</target>
+				<target>U?sakymas nebuvo apmok?tas.</target>
 			</trans-unit>
 			<trans-unit id="general.successful_user_registration" resname="general.successful_user_registration">
 				<source>general.successful_user_registration</source>
-				<target>Jūs sėkmingai užsiregistravote!</target>
+				<target>J?s s?kmingai u?siregistravote!</target>
 			</trans-unit>
 			<trans-unit id="general.noty.profile_updated" resname="general.noty.profile_updated">
 				<source>general.noty.profile_updated</source>
-				<target>Duomenys sėkmingai atnaujinti.</target>
+				<target>Duomenys s?kmingai atnaujinti.</target>
 			</trans-unit>
 			<trans-unit id="general.resetting" resname="general.resetting">
 				<source>general.resetting</source>
-				<target>Slaptažodžio priminimas</target>
+				<target>Slapta?od?io priminimas</target>
 			</trans-unit>
 			<trans-unit id="general.resetting.continue" resname="general.resetting.continue">
 				<source>general.resetting.continue</source>
-				<target>Tęsti</target>
+				<target>T?sti</target>
 			</trans-unit>
 			<trans-unit id="general.resetting.email_sent" resname="general.resetting.email_sent">
 				<source>general.resetting.email_sent</source>
-				<target>Jums buvo išsiųstas jūsų sąskaitos slaptažodžio priminimo laiškas. Jame yra nuoroda, kuria nuėję galėsite pasikeisti slaptažodį.</target>
+				<target>Jums buvo i?si?stas j?s? s?skaitos slapta?od?io priminimo lai?kas. Jame yra nuoroda, kuria nu?j? gal?site pasikeisti slapta?od?.</target>
 			</trans-unit>
 			<trans-unit id="general.resetting.password_must_match" resname="general.resetting.password_must_match">
 				<source>general.resetting.password_must_match</source>
-				<target>Slaptažodžiai turi sutapti.</target>
+				<target>Slapta?od?iai turi sutapti.</target>
 			</trans-unit>
 			<trans-unit id="registration.user.exists" resname="registration.user.exists">
 				<source>registration.user.exists</source>
-				<target>Vartotojas tokiu el. paštu jau egzistuoja</target>
+				<target>Vartotojas tokiu el. pa?tu jau egzistuoja</target>
 			</trans-unit>
 			<trans-unit id="registration.phone.is_empty" resname="registration.phone.is_empty">
 				<source>registration.phone.is_empty</source>
@@ -1249,15 +1249,15 @@
 			</trans-unit>
 			<trans-unit id="registration.email.is_empty" resname="registration.email.is_empty">
 				<source>registration.email.is_empty</source>
-				<target>Nenurodytas el.pašto adresas</target>
+				<target>Nenurodytas el.pa?to adresas</target>
 			</trans-unit>
 			<trans-unit id="registration.password.too_short" resname="registration.password.too_short">
 				<source>registration.password.too_short</source>
-				<target>Slaptažodis negali būti trumpesnis, nei 6 simboliai</target>
+				<target>Slapta?odis negali b?ti trumpesnis, nei 6 simboliai</target>
 			</trans-unit>
 			<trans-unit id="mobile.change_password.password.is_empty" resname="mobile.change_password.password.is_empty">
 				<source>mobile.change_password.password.is_empty</source>
-				<target>Tučias slaptažodis</target>
+				<target>Tu?ias slapta?odis</target>
 			</trans-unit>
 			<trans-unit id="mobile.change_password.user.id_dont_match" resname="mobile.change_password.user.id_dont_match">
 				<source>mobile.change_password.user.id_dont_match</source>
@@ -1265,7 +1265,7 @@
 			</trans-unit>
 			<trans-unit id="mobile.order_status.order_delayed" resname="mobile.order_status.order_delayed">
 				<source>mobile.order_status.order_delayed</source>
-				<target>Užsakymas vėluos %delayTime% min.</target>
+				<target>U?sakymas v?luos %delayTime% min.</target>
 			</trans-unit>
 			<trans-unit id="cart.didnt_reach_min_cart" resname="cart.didnt_reach_min_cart">
 				<source>cart.didnt_reach_min_cart</source>
@@ -1347,15 +1347,15 @@
 			</trans-unit>
 			<trans-unit id="places.in_klaipeda" resname="places.in_klaipeda">
 				<source>places.in_klaipeda</source>
-				<target>Klaipėdoje</target>
+				<target>Klaip?doje</target>
 			</trans-unit>
 			<trans-unit id="places.in_siauliai" resname="places.in_siauliai">
 				<source>places.in_siauliai</source>
-				<target>Šiauliuose</target>
+				<target>?iauliuose</target>
 			</trans-unit>
 			<trans-unit id="places.in_panevezys" resname="places.in_panevezys">
 				<source>places.in_panevezys</source>
-				<target>Panevėžyje</target>
+				<target>Panev??yje</target>
 			</trans-unit>
 			<trans-unit id="places.in_alytus" resname="places.in_alytus">
 				<source>places.in_alytus</source>
@@ -1363,7 +1363,7 @@
 			</trans-unit>
 			<trans-unit id="places.in_marijampole" resname="places.in_marijampole">
 				<source>places.in_marijampole</source>
-				<target>Marijampolėje</target>
+				<target>Marijampol?je</target>
 			</trans-unit>
 			<trans-unit id="places.in_utena" resname="places.in_utena">
 				<source>places.in_utena</source>
@@ -1371,11 +1371,11 @@
 			</trans-unit>
 			<trans-unit id="places.in_kedainiai" resname="places.in_kedainiai">
 				<source>places.in_kedainiai</source>
-				<target>Kėdainiuose</target>
+				<target>K?dainiuose</target>
 			</trans-unit>
 			<trans-unit id="places.in_plunge" resname="places.in_plunge">
 				<source>places.in_plunge</source>
-				<target>Plungėje</target>
+				<target>Plung?je</target>
 			</trans-unit>
 			<trans-unit id="places.in_palanga" resname="places.in_palanga">
 				<source>places.in_palanga</source>
@@ -1387,7 +1387,7 @@
 			</trans-unit>
 			<trans-unit id="food.game.lastname" resname="food.game.lastname">
 				<source>food.game.lastname</source>
-				<target>Pavardė</target>
+				<target>Pavard?</target>
 			</trans-unit>
 			<trans-unit id="food.game.city" resname="food.game.city">
 				<source>food.game.city</source>
@@ -1407,7 +1407,7 @@
 			</trans-unit>
 			<trans-unit id="food.game.email" resname="food.game.email">
 				<source>food.game.email</source>
-				<target>El. paštas</target>
+				<target>El. pa?tas</target>
 			</trans-unit>
 			<trans-unit id="food.game.register" resname="food.game.register">
 				<source>food.game.register</source>
@@ -1415,29 +1415,29 @@
 			</trans-unit>
 			<trans-unit id="food.game.empty_field" resname="food.game.empty_field">
 				<source>food.game.empty_field</source>
-				<target>Šis laukas negali būti tuščias</target>
+				<target>?is laukas negali b?ti tu??ias</target>
 			</trans-unit>
 			<trans-unit id="food.game.has_error" resname="food.game.has_error">
 				<source>food.game.has_error</source>
-				<target>Oi! Neteisingai įvedėte duomenis.</target>
+				<target>Oi! Neteisingai ?ved?te duomenis.</target>
 			</trans-unit>
 			<trans-unit id="food.game.its_success" resname="food.game.its_success">
 				<source>food.game.its_success</source>
-				<target>Ačiū, Jūs užsiregistravote sėkmingai</target>
+				<target>A?i?, J?s u?siregistravote s?kmingai</target>
 			</trans-unit>
 			<trans-unit id="food.game.agree" resname="food.game.agree">
 				<source>food.game.agree</source>
 				<target>
-					<![CDATA[Sutinku su taisyklėmis. <a href="rule_url">Taisyklės</a>]]>
+					<![CDATA[Sutinku su taisykl?mis. <a href="rule_url">Taisykl?s</a>]]>
 				</target>
 			</trans-unit>
 			<trans-unit id="general.wow_game" resname="general.wow_game">
 				<source>general.wow_game</source>
-				<target>Registracija žaidimui</target>
+				<target>Registracija ?aidimui</target>
 			</trans-unit>
 			<trans-unit id="food.marketing.bad_email" resname="food.marketing.bad_email">
 				<source>food.marketing.bad_email</source>
-				<target>Blogas el.pašto adresas</target>
+				<target>Blogas el.pa?to adresas</target>
 			</trans-unit>
 			<trans-unit id="general.top_contact.worktime_days" resname="general.top_contact.worktime_days">
 				<source>general.top_contact.worktime_days</source>
@@ -1473,11 +1473,11 @@
 			</trans-unit>
 			<!--<trans-unit id="Please check this box if you want to proceed." resname="Please check this box if you want to proceed.">-->
 			<!--<source>Please check this box if you want to proceed.</source>-->
-			<!--<target>Privalote sutikti, norėdami tęsti</target>-->
+			<!--<target>Privalote sutikti, nor?dami t?sti</target>-->
 			<!--</trans-unit>-->
 			<!--<trans-unit id="Please fill out this field." resname="Please fill out this field.">-->
 			<!--<source>Please fill out this field.</source>-->
-			<!--<target>Privalote sutikti, norėdami tęsti</target>-->
+			<!--<target>Privalote sutikti, nor?dami t?sti</target>-->
 			<!--</trans-unit>-->
 			<trans-unit id="admin.dispatcher.delayed_minutes" resname="admin.dispatcher.delayed_minutes">
 				<source>admin.dispatcher.delayed_minutes</source>
@@ -1486,15 +1486,15 @@
 			<!-- Business client begin -->
 			<trans-unit id="form.company_name">
 				<source>form.company_name</source>
-				<target>Įmonės pavadinimas</target>
+				<target>?mon?s pavadinimas</target>
 			</trans-unit>
 			<trans-unit id="registration.companyName_placeholder">
 				<source>registration.companyName_placeholder</source>
-				<target>UAB "įmonė"</target>
+				<target>UAB "?mon?"</target>
 			</trans-unit>
 			<trans-unit id="form.company_code">
 				<source>form.company_code</source>
-				<target>Įmonės kodas</target>
+				<target>?mon?s kodas</target>
 			</trans-unit>
 			<trans-unit id="registration.companyCode_placeholder">
 				<source>registration.companyCode_placeholder</source>
@@ -1510,15 +1510,15 @@
 			</trans-unit>
 			<trans-unit id="form.company_address">
 				<source>form.company_address</source>
-				<target>Įmonės adresas</target>
+				<target>?mon?s adresas</target>
 			</trans-unit>
 			<trans-unit id="registration.companyAddress_placeholder">
 				<source>registration.companyAddress_placeholder</source>
-				<target>Laisvės pr. 123, LT-01234, Vilnius</target>
+				<target>Laisv?s pr. 123, LT-01234, Vilnius</target>
 			</trans-unit>
 			<trans-unit id="form.checking_account">
 				<source>form.checking_account</source>
-				<target>Atsiskaitomoji sąskaita</target>
+				<target>Atsiskaitomoji s?skaita</target>
 			</trans-unit>
 			<trans-unit id="registration.checkingAccount_placeholder">
 				<source>registration.checkingAccount_placeholder</source>
@@ -1526,7 +1526,7 @@
 			</trans-unit>
 			<trans-unit id="form.workers_count">
 				<source>form.workers_count</source>
-				<target>Darbuotojų skaičius</target>
+				<target>Darbuotoj? skai?ius</target>
 			</trans-unit>
 			<trans-unit id="registration.workersCount_placeholder">
 				<source>registration.workersCount_placeholder</source>
@@ -1535,64 +1535,64 @@
 			<trans-unit id="form.businessAgreement">
 				<source>form.businessAgreement</source>
 				<target>
-					<![CDATA[Sutinku su <a href="%link%" target="_blank">taisyklėmis</a>]]>
+					<![CDATA[Sutinku su <a href="%link%" target="_blank">taisykl?mis</a>]]>
 				</target>
 			</trans-unit>
 			<trans-unit id="errors.companyName">
 				<source>errors.companyName</source>
-				<target>Šis laukas yra privalomas</target>
+				<target>?is laukas yra privalomas</target>
 			</trans-unit>
 			<trans-unit id="errors.companyCode">
 				<source>errors.companyCode</source>
-				<target>Šis laukas yra privalomas</target>
+				<target>?is laukas yra privalomas</target>
 			</trans-unit>
 			<trans-unit id="errors.companyAddress">
 				<source>errors.companyAddress</source>
-				<target>Šis laukas yra privalomas</target>
+				<target>?is laukas yra privalomas</target>
 			</trans-unit>
 			<trans-unit id="errors.checkingAccount">
 				<source>errors.checkingAccount</source>
-				<target>Šis laukas yra privalomas</target>
+				<target>?is laukas yra privalomas</target>
 			</trans-unit>
 			<trans-unit id="errors.businessAgreement">
 				<source>errors.businessAgreement</source>
-				<target>Būtina sutikti su taisyklėmis</target>
+				<target>B?tina sutikti su taisykl?mis</target>
 			</trans-unit>
 			<trans-unit id="general.company.note_text">
 				<source>general.company.note_text</source>
 				<target>
-					<![CDATA[Užsakymas įmonei? <a href="#login-register-popup" class="boxer">Sudarykite maisto tiekimo sutartį</a> ir mėgaukitės išskirtinėmis sąlygomis maisto pristatymui į savo darbovietę!]]>
+					<![CDATA[U?sakymas ?monei? <a href="#login-register-popup" class="boxer">Sudarykite maisto tiekimo sutart?</a> ir m?gaukit?s i?skirtin?mis s?lygomis maisto pristatymui ? savo darboviet?!]]>
 				</target>
 			</trans-unit>
 			<!-- Business client end -->
 			<!-- Order Tracking Begin -->
 			<trans-unit id="general.tracking_page_title" resname="general.tracking_page_title">
 				<source>general.tracking_page_title</source>
-				<target>Tavo užsakymo būklė</target>
+				<target>Tavo u?sakymo b?kl?</target>
 			</trans-unit>
 			<trans-unit id="general.tracking_step1" resname="general.tracking_step1">
 				<source>general.tracking_step1</source>
-				<target>Tavo užsakymas laukia restorano patvirtinimo!</target>
+				<target>Tavo u?sakymas laukia restorano patvirtinimo!</target>
 			</trans-unit>
 			<trans-unit id="general.tracking_step2" resname="general.tracking_step2">
 				<source>general.tracking_step2</source>
-				<target>Tavo užsakymas patvirtintas ir gaminamas!</target>
+				<target>Tavo u?sakymas patvirtintas ir gaminamas!</target>
 			</trans-unit>
 			<trans-unit id="general.tracking_step3" resname="general.tracking_step3">
 				<source>general.tracking_step3</source>
-				<target>Tavo užsakymas yra vežamas!</target>
+				<target>Tavo u?sakymas yra ve?amas!</target>
 			</trans-unit>
 			<trans-unit id="general.tracking_step4" resname="general.tracking_step4">
 				<source>general.tracking_step4</source>
-				<target>Tavo užsakymas pristatytas.</target>
+				<target>Tavo u?sakymas pristatytas.</target>
 			</trans-unit>
 			<trans-unit id="general.tracking_step4_pickup" resname="general.tracking_step4_pickup">
 				<source>general.tracking_step4_pickup</source>
-				<target>Tavo užsakymas pagamintas.</target>
+				<target>Tavo u?sakymas pagamintas.</target>
 			</trans-unit>
 			<trans-unit id="general.tracking_canceled" resname="general.tracking_canceled">
 				<source>general.tracking_canceled</source>
-				<target>Tavo užsakymas atšauktas</target>
+				<target>Tavo u?sakymas at?auktas</target>
 			</trans-unit>
 			<!-- Order Tracking End -->
 			<trans-unit id="0e65a51883c91778501ba45f41022bbd" resname="general.b2b_clients">
@@ -1654,6 +1654,10 @@
 			<trans-unit id="general.bottom.contacts">
                 <source>general.bottom.contacts</source>
                 <target>Contacts</target>
+            </trans-unit>
+            <trans-unit id="mobile.pedestrian" resname="mobile.pedestrian">
+                <source>mobile.pedestrian</source>
+                <target>Pedestrian</target>
             </trans-unit>
 		</body>
 	</file>

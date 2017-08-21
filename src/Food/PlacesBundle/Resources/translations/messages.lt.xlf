@@ -357,6 +357,10 @@
                 <source>food.will_deliver_in_hour</source>
                 <target>Atvešime per 1h.</target>
             </trans-unit>
+            <trans-unit id="place_does_not_deliver_to_saved_address">
+                <source>place_does_not_deliver_to_saved_address</source>
+                <target>Šis restoranas nepristato į jūsų įvestą addresą</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

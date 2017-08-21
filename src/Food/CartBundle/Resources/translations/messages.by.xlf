@@ -54,17 +54,9 @@
                 <source>cart.checkout.delivery_to_home</source>
                 <target>Home delivery</target>
             </trans-unit>
-            <trans-unit id="ab9dbc0e8b931d30795a4bcbeee01532" resname="cart.checkout.pedestrian">
-                <source>cart.checkout.pedestrian</source>
-                <target>Delivery by pedestrian</target>
-            </trans-unit>
             <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1d" resname="cart.checkout.delivery_i_pickup">
                 <source>cart.checkout.delivery_i_pickup</source>
                 <target>Local pick up</target>
-            </trans-unit>
-            <trans-unit id="5934b3ea4d66d942ef9715da9d6fca1f" resname="cart.checkout.delivery_by_pedestrian">
-                <source>cart.checkout.delivery_by_pedestrian</source>
-                <target>delivered within 33 minutes</target>
             </trans-unit>
             <trans-unit id="91a531cac53e76cf23ca76d224b23c27new" resname="cart.checkout.enter_address">
                 <source>cart.checkout.enter_address</source>
@@ -112,7 +104,7 @@
             </trans-unit>
             <trans-unit id="72ac47fdc9d8610d13cc86b4dd35e24f" resname="cart.checkout.phone_placeholder">
                 <source>cart.checkout.phone_placeholder</source>
-                <target>60000000</target>
+                <target>37060000000</target>
             </trans-unit>
             <trans-unit id="bc8439664f3800919e17d58ad5eaff4b" resname="cart.checkout.delivery_comment">
                 <source>cart.checkout.delivery_comment</source>
@@ -314,7 +306,7 @@ Tallinn]]></target>
             </trans-unit>
             <trans-unit id="order.form.errors.customerphone_format" resname="order.form.errors.customerphone_format">
                 <source>order.form.errors.customerphone_format</source>
-                <target>Enter mobile phone number in format 61234567</target>
+                <target>Enter mobile phone number in format 37061234567</target>
             </trans-unit>
             <trans-unit id="order.form.errors.customerphone_not_mobile" resname="order.form.errors.customerphone_not_mobile">
                 <source>order.form.errors.customerphone_not_mobile</source>
@@ -442,7 +434,7 @@ Tallinn]]></target>
             </trans-unit>
             <trans-unit id="general.coupon.only_cili" resname="general.coupon.only_cili">
                 <source>general.coupon.only_cili</source>
-                <target>Your discount coupon is only valid for Čili pica, Soya, Forest restaurants</target>
+                <target>Your discount coupon is only valid for ??ili pica, Soya, Forest restaurants</target>
             </trans-unit>
             <trans-unit id="general.coupon.wrong_place_simple" resname="general.coupon.wrong_place_simple">
                 <source>general.coupon.wrong_place_simple</source>
@@ -507,29 +499,6 @@ Tallinn]]></target>
             <trans-unit id="general.coupon.coupon_expired" resname="general.coupon.coupon_expired">
                 <source>general.coupon.coupon_expired</source>
                 <target>Discount coupon has expired</target>
-            </trans-unit>
-            <trans-unit id="general.delivery_does_not_match" resname="general.delivery_does_not_match">
-                <source>general.delivery_does_not_match</source>
-                <target>Šis restorāns nenodrošina ēdienu ar izvēlēto piegādes iespējas</target>
-            </trans-unit>
-
-
-
-            <trans-unit id="label.address">
-                <source>label.address</source>
-                <target>Address</target>
-            </trans-unit>
-            <trans-unit id="error.house.not.found">
-                <source>error.house.not.found</source>
-                <target>House number undefined</target>
-            </trans-unit>
-            <trans-unit id="error.server.problem.city.not.found">
-                <source>error.server.problem.city.not.found</source>
-                <target>Wrong address structure</target>
-            </trans-unit>
-            <trans-unit id="in.this.city.we.have.not.delivered.food">
-                <source>in.this.city.we.have.not.delivered.food</source>
-                <target>Sorry, we can not delivering to this city</target>
             </trans-unit>
             <trans-unit id="place_point_does_not_deliver" resname="place_point_does_not_deliver">
                 <source>place_point_does_not_deliver</source>

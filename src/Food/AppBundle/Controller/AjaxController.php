@@ -40,7 +40,7 @@ class AjaxController extends Controller
                 $collection = $this->_autoCompleteAddress($request);
                 break;
             case 'check-address':
-                $collection = $this->_checkAddress($request);
+                $collection = $this->_checkAddress($request,$request->get('place'));
                 break;
             case 'get-address-by-location':
                 $collection = $this->_getAddressByLocation($request);
@@ -53,7 +53,10 @@ class AjaxController extends Controller
                         if($request->get('address') != "") {
                             $collection = $this->_checkAddress($request);
                         } else {
-                            $findAddress = $this->get('food.location')->findByIp($request->getClientIp());
+                            if($ipUser = $request->getClientIp() == "127.0.0.1") {
+                                $ipUser = "88.119.11.173";
+                            }
+                            $findAddress = $this->get('food.location')->findByIp($ipUser);
                             try {
                                 $cityId = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findNearestCity($findAddress);
                                 $collection['success'] = true;
@@ -301,7 +304,7 @@ class AjaxController extends Controller
 
     }
 
-    private function _checkAddress(Request $request)
+    private function _checkAddress(Request $request,$place)
     {
 
         $rsp = ['success' => false];
@@ -309,12 +312,26 @@ class AjaxController extends Controller
         $lService = $this->get('food.location');
         $response = $lService->findByHash($request->get("address"));
 
-        if($request->get("type")) {
+        if($request->get("type") == 'badge') {
             $this->get('session')->set('badge', 1);
         }
 
         $t = $this->get('translator');
+
+
+
         if($response) {
+
+            if(!empty($place)){
+                $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place,$response,false,false);
+
+                if(empty($placePoint)){
+                    $rsp['message'] = $t->trans('place_point_does_not_deliver');
+                    $rsp['place_point_error'] = 1;
+
+                    return $rsp;
+                }
+            }
 
             $rsp['detail'] = $response;
 
