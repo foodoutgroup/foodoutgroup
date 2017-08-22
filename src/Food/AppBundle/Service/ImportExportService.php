@@ -103,7 +103,7 @@ class ImportExportService extends BaseService
             }
         }
 
-        //$hasErrors = $this->updateRecords($data);
+        $hasErrors = $this->updateRecords($data);
         if (count($hasErrors) < 1) {
             return ['flashMsgType' => 'success', 'flashMsg' => 'Your changes were saved successfully'];
         } else {
