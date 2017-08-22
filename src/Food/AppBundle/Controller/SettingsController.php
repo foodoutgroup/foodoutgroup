@@ -33,6 +33,7 @@ class SettingsController extends CRUDController
         'late_time_to_delivery',
         'sf_next_number',
         'header_scripts',
+        'body_scripts',
         'footer_scripts',
         'fb_meta_tag',
         'extra_group',
@@ -214,6 +215,12 @@ class SettingsController extends CRUDController
             'label' => 'Header Scripts',
             'required' => false,
             'attr' => ['style' => 'width:100%;', 'group' => 'Content', 'rows' => 20]
+        ]);
+
+        $form->add('body_scripts', 'textarea', [
+            'label' => 'Body Scripts',
+            'required' => false,
+            'attr' => ['style' => 'width:100%;', 'rows' => 20]
         ]);
 
         $form->add('footer_scripts', 'textarea', [

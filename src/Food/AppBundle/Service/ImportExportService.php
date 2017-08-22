@@ -88,7 +88,7 @@ class ImportExportService extends BaseService
             try {
                 $sheet = $excelReader->setActiveSheetIndexByName($k);
             } catch (\PHPExcel_Exception $e) {
-                return ['flashMsgType' => 'error', 'failed' => true, 'flashMsg' => $e->getMessage()];
+                return ['flashMsgType' => 'error', 'success' => false, 'flashMsg' => $e->getMessage()];
             }
 
             $row = 2;
@@ -152,7 +152,7 @@ class ImportExportService extends BaseService
             $ids = array_keys($items);
             $entity = $this->getFieldMap();
             $entity = $entity[$table]['entity'];
-
+            echo 'started query build' .  PHP_EOL;
             $itemsToTranslate = $qb
                 ->from($entity, $table)
                 ->select($table)
@@ -162,20 +162,28 @@ class ImportExportService extends BaseService
                     Query::HINT_CUSTOM_OUTPUT_WALKER,
                     'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker'
                 )->setHint(TranslatableListener::HINT_TRANSLATABLE_LOCALE, $this->getLocale())->execute();
+            echo 'ended query build' .  PHP_EOL;
 
             $objCollection = [];
+            echo 'started translatable build' .  PHP_EOL;
+
             foreach ($itemsToTranslate as $itemToTranslate) {
                 $itemToTranslate->setTranslatableLocale($this->getLocale());
                 $objCollection[$itemToTranslate->getId()] = $itemToTranslate;
 
             }
 
-
+            echo 'ended translatable build' .  PHP_EOL;
             foreach ($items as $itemId => $item) {
+                $qb = $this->em->createQueryBuilder();
+
+
+
                 $changed = false;
                 if (!is_int($itemId)) {
                     return ['msg' => $itemId . ' is not an integer'];
                 }
+                echo 'started fields build' .  PHP_EOL;
 
                 foreach ($item['fields'] as $fieldName => $dataToSet) {
                     $fromField = '';
@@ -189,6 +197,11 @@ class ImportExportService extends BaseService
                     }
                     $setter = Inflector::camelize('set_' . $fieldName);
                     $getter = Inflector::camelize('get_' . $fieldName);
+                    $objCollection[$itemId]->{$setter}($dataToSet);
+
+
+
+                    $changed = true;
                     if (method_exists($objCollection[$itemId], $setter)) {
                         $current = $objCollection[$itemId]->{$getter}();
                         if (!is_null($dataToSet) && !is_null($current)){
@@ -205,7 +218,7 @@ class ImportExportService extends BaseService
                     if ($generateSlug && $changed) {
 
                         if (strlen($item['fields']['~' . $fromField]) < 1) {
-                            if (strlen($item['fields']['title']) > 1) {
+                            if (@strlen($item['fields']['title']) > 1) {
                                 $fromField = 'title';
                             } else {
                                 $fromField = 'name';
@@ -216,12 +229,18 @@ class ImportExportService extends BaseService
                         $objCollection[$itemId]->setSlug($this->slugService->get($itemId, $objCollection[$itemId]::SLUG_TYPE, $this->getLocale()));
                     }
                 }
+                echo 'ended fields build' .  PHP_EOL;
 
                 if ($changed == true) {
                     $this->em->persist($objCollection[$itemId]);
                     unset($objCollection[$itemId]);
                     try {
+                        echo 'started flushing ' . $table .  PHP_EOL;
+
                         $this->em->flush();
+
+                        echo 'ended flushing ' . $table .  PHP_EOL;
+
                     } catch (\Exception $e) {
                         $this->container->get('logger')->addError($e->getMessage());
 //                        $this->em->rollback();
@@ -230,6 +249,10 @@ class ImportExportService extends BaseService
                 }
             }
         }
+
+
+
+
 
         return $errorCollection;
     }
@@ -243,7 +266,7 @@ class ImportExportService extends BaseService
         $cellIterator->setIterateOnlyExistingCells(false);
 
         foreach ($cellIterator as $cell) {
-            if ($val = $cell->getValue()) {
+            if ($val = strtolower($cell->getValue())) {
                 $columns[$val] = $cell->getColumn();
             }
         }
@@ -409,11 +432,6 @@ class ImportExportService extends BaseService
                     [
                         'entity' => 'Food\DishesBundle\Entity\Kitchen',
                         'fields' => ['name', 'alias', '~slug']
-                    ],
-                'place' =>
-                    [
-                        'entity' => 'Food\DishesBundle\Entity\Place',
-                        'fields' => ['name', 'slogan', 'description', 'notification_content', '~slug']
                     ]
             ];
         }
@@ -470,7 +488,7 @@ class ImportExportService extends BaseService
      */
     public function getImportFields()
     {
-        return json_decode('{"city":["title","meta_title","meta_description","~slug"],"dish":["name","description","~slug"],"dish_option":["name","description"],"dish_unit":["name","short_name"],"food_category":["name","~slug"],"kitchen":["name","alias","~slug"],"place":["name","slogan","description","notification_content","~slug"]}');
+        return json_decode('{"city":["title","meta_title","meta_description","~slug"],"dish":["name","description","~slug"],"dish_option":["name","description"],"dish_unit":["name","short_name"],"food_category":["name","~slug"],"kitchen":["name","alias","~slug"]}');
 
 
 //          return $this->importFields;

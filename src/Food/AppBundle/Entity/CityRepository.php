@@ -35,11 +35,17 @@ class CityRepository extends EntityRepository
         $result->distinct('b.id');
         $return = $result->getQuery()->getResult();
 
-        $return = array_slice($return,0,5);
 
-        return $return;
+        if(count($return)>=5) {
+            $resultTmp = array();
 
-
+            foreach (array_rand($return, 5) as $k) {
+                $resultTmp[] = $return[$k];
+            }
+        }else{
+            $resultTmp = $return;
+        }
+        return $resultTmp;
     }
 
     public function getActiveById($id)
