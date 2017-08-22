@@ -488,7 +488,7 @@ class ImportExportService extends BaseService
      */
     public function getImportFields()
     {
-        return json_decode('{"dish":["name","description","~slug"],"dish_option":["name","description"],"dish_unit":["name","short_name"],"food_category":["name","~slug"],"kitchen":["name","alias","~slug"]}');
+        return json_decode('{"city":["title","meta_title","meta_description","~slug"],"dish":["name","description","~slug"],"dish_option":["name","description"],"dish_unit":["name","short_name"],"food_category":["name","~slug"],"kitchen":["name","alias","~slug"]}');
 
 
 //          return $this->importFields;
