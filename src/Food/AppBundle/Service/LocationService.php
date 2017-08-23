@@ -57,6 +57,11 @@ class LocationService extends ContainerAware
                 $cityObj = $this->em->getRepository('FoodAppBundle:City')->getByName($locationData['city']);
                 if ($cityObj) {
                     $locationData['city_id'] = $cityObj->getId();
+                } else {
+                    $cityObj = new City();
+                    $cityObj->setTitle($locationData['city']);
+                    $this->em->persist($cityObj);
+                    $this->em->flush();
                 }
             }
 
