@@ -39,6 +39,7 @@ class ProcessImportCommand extends ContainerAwareCommand
         } catch (\Exception $e) {
             $output->writeln('<fg=red>Something went horribly wrong</fg=red>');
             $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+            $output->writeln(sprintf('<error>Error: %s</error>', $e->getTraceAsString()));
 
             throw $e;
         }

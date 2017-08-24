@@ -83,7 +83,6 @@ class ImportExportService extends BaseService
 //            return ['flashMsgType' => 'error', 'failed' => true, 'flashMsg' => 'No import fields selected'];
 //        }
         $data = [];
-
         foreach ($this->getImportFields() as $k => $table) {
             try {
                 $sheet = $excelReader->setActiveSheetIndexByName($k);
@@ -102,7 +101,6 @@ class ImportExportService extends BaseService
                 }
             }
         }
-
         $hasErrors = $this->updateRecords($data);
         if (count($hasErrors) < 1) {
             return ['flashMsgType' => 'success', 'flashMsg' => 'Your changes were saved successfully'];
@@ -146,6 +144,7 @@ class ImportExportService extends BaseService
         $flushed = 0;
         $errorCollection = [];
         foreach ($data as $table => $items) {
+            echo  $table . PHP_EOL;
             $qb = $this->em->createQueryBuilder();
 
             $ids = null;
@@ -153,7 +152,7 @@ class ImportExportService extends BaseService
             $ids = array_keys($items);
             $entity = $this->getFieldMap();
             $entity = $entity[$table]['entity'];
-            echo 'started query build' .  PHP_EOL;
+            echo 'started query build for ' . $table .  PHP_EOL;
             $itemsToTranslate = $qb
                 ->from($entity, $table)
                 ->select($table)
@@ -182,7 +181,7 @@ class ImportExportService extends BaseService
 
                 $changed = false;
                 if (!is_int($itemId)) {
-                    return ['msg' => $itemId . ' is not an integer'];
+                   continue;
                 }
                 echo 'started fields build' .  PHP_EOL;
 
@@ -209,12 +208,15 @@ class ImportExportService extends BaseService
                             }
                         }
 
-                        $this->slugService->generateForLocale($this->getLocale(), $objCollection[$itemId], $fromField, null);
+
+
+                        $this->slugService->generateForLocale($this->getLocale(), $objCollection[$itemId], $fromField, $objCollection[$itemId]::SLUG_TYPE);
+
                         $dataToSet = $this->slugService->get($itemId, $objCollection[$itemId]::SLUG_TYPE, $this->getLocale());
                         $objCollection[$itemId]->setSlug($dataToSet);
                     }
 
-                    if (method_exists($objCollection[$itemId], $setter)) {
+                    if (@method_exists($objCollection[$itemId], $setter)) {
                         $current = $objCollection[$itemId]->{$getter}();
                         if (!is_null($dataToSet) && !is_null($current)){
                             if ($dataToSet != $objCollection[$itemId]->{$getter}()) {
@@ -225,7 +227,7 @@ class ImportExportService extends BaseService
                         }
                     } else {
                         $errorCollection[$table][$itemId][$fieldName] = $dataToSet;
-                        return ['msg' => 'Setter function ' . $setter . " doesn't exist"];
+                       // return ['msg' => 'Setter function ' . $setter . " doesn't exist on " . $table . ' ' . $itemId];
                     }
 
 
@@ -242,6 +244,7 @@ class ImportExportService extends BaseService
                         $flushed++;
                         echo 'ended flushing ' . $table .  PHP_EOL;
                     } catch (\Exception $e) {
+                        echo $e->getMessage(); die();
                         $this->container->get('logger')->addError($e->getMessage());
 //                        $this->em->rollback();
 //                        $this->em->clear();
