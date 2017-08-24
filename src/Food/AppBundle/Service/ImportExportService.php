@@ -83,12 +83,11 @@ class ImportExportService extends BaseService
 //            return ['flashMsgType' => 'error', 'failed' => true, 'flashMsg' => 'No import fields selected'];
 //        }
         $data = [];
-
         foreach ($this->getImportFields() as $k => $table) {
             try {
                 $sheet = $excelReader->setActiveSheetIndexByName($k);
             } catch (\PHPExcel_Exception $e) {
-                return ['flashMsgType' => 'error', 'failed' => true, 'flashMsg' => $e->getMessage()];
+                return ['flashMsgType' => 'error', 'success' => false, 'flashMsg' => $e->getMessage()];
             }
 
             $row = 2;
@@ -102,7 +101,6 @@ class ImportExportService extends BaseService
                 }
             }
         }
-
         $hasErrors = $this->updateRecords($data);
         if (count($hasErrors) < 1) {
             return ['flashMsgType' => 'success', 'flashMsg' => 'Your changes were saved successfully'];
@@ -143,8 +141,10 @@ class ImportExportService extends BaseService
     private function updateRecords($data)
     {
 
+        $flushed = 0;
         $errorCollection = [];
         foreach ($data as $table => $items) {
+            echo  $table . PHP_EOL;
             $qb = $this->em->createQueryBuilder();
 
             $ids = null;
@@ -152,7 +152,7 @@ class ImportExportService extends BaseService
             $ids = array_keys($items);
             $entity = $this->getFieldMap();
             $entity = $entity[$table]['entity'];
-
+            echo 'started query build for ' . $table .  PHP_EOL;
             $itemsToTranslate = $qb
                 ->from($entity, $table)
                 ->select($table)
@@ -162,20 +162,28 @@ class ImportExportService extends BaseService
                     Query::HINT_CUSTOM_OUTPUT_WALKER,
                     'Gedmo\\Translatable\\Query\\TreeWalker\\TranslationWalker'
                 )->setHint(TranslatableListener::HINT_TRANSLATABLE_LOCALE, $this->getLocale())->execute();
+            echo 'ended query build' .  PHP_EOL;
 
             $objCollection = [];
+            echo 'started translatable build' .  PHP_EOL;
+
             foreach ($itemsToTranslate as $itemToTranslate) {
                 $itemToTranslate->setTranslatableLocale($this->getLocale());
                 $objCollection[$itemToTranslate->getId()] = $itemToTranslate;
 
             }
 
-
+            echo 'ended translatable build' .  PHP_EOL;
             foreach ($items as $itemId => $item) {
+                $qb = $this->em->createQueryBuilder();
+
+
+
                 $changed = false;
                 if (!is_int($itemId)) {
-                    return ['msg' => $itemId . ' is not an integer'];
+                   continue;
                 }
+                echo 'started fields build' .  PHP_EOL;
 
                 foreach ($item['fields'] as $fieldName => $dataToSet) {
                     $fromField = '';
@@ -189,40 +197,54 @@ class ImportExportService extends BaseService
                     }
                     $setter = Inflector::camelize('set_' . $fieldName);
                     $getter = Inflector::camelize('get_' . $fieldName);
-                    if (method_exists($objCollection[$itemId], $setter)) {
-                        $current = $objCollection[$itemId]->{$getter}();
-                        if (!is_null($dataToSet) && !is_null($current)){
-                            if ($dataToSet != $objCollection[$itemId]->{$getter}()) {
-                                $changed = true;
-                                $objCollection[$itemId]->{$setter}($dataToSet);
-                            }
-                        }
-                    } else {
-                        $errorCollection[$table][$itemId][$fieldName] = $dataToSet;
-                        return ['msg' => 'Setter function ' . $setter . " doesn't exist"];
-                    }
 
-                    if ($generateSlug && $changed) {
+                    if ($generateSlug) {
 
                         if (strlen($item['fields']['~' . $fromField]) < 1) {
-                            if (strlen($item['fields']['title']) > 1) {
+                            if (@strlen($item['fields']['title']) > 1) {
                                 $fromField = 'title';
                             } else {
                                 $fromField = 'name';
                             }
                         }
 
-                        $this->slugService->generateForLocale($this->getLocale(), $objCollection[$itemId], $fromField, null);
-                        $objCollection[$itemId]->setSlug($this->slugService->get($itemId, $objCollection[$itemId]::SLUG_TYPE, $this->getLocale()));
+
+
+                        $this->slugService->generateForLocale($this->getLocale(), $objCollection[$itemId], $fromField, $objCollection[$itemId]::SLUG_TYPE);
+
+                        $dataToSet = $this->slugService->get($itemId, $objCollection[$itemId]::SLUG_TYPE, $this->getLocale());
+                        $objCollection[$itemId]->setSlug($dataToSet);
                     }
+
+                    if (@method_exists($objCollection[$itemId], $setter)) {
+                        $current = $objCollection[$itemId]->{$getter}();
+                        if (!is_null($dataToSet) && !is_null($current)){
+                            if ($dataToSet != $objCollection[$itemId]->{$getter}()) {
+                                $changed = true;
+
+                                $objCollection[$itemId]->{$setter}($dataToSet);
+                            }
+                        }
+                    } else {
+                        $errorCollection[$table][$itemId][$fieldName] = $dataToSet;
+                       // return ['msg' => 'Setter function ' . $setter . " doesn't exist on " . $table . ' ' . $itemId];
+                    }
+
+
                 }
+                echo 'ended fields build' .  PHP_EOL;
 
                 if ($changed == true) {
                     $this->em->persist($objCollection[$itemId]);
                     unset($objCollection[$itemId]);
                     try {
+                        echo 'started flushing ' . $table .  PHP_EOL;
+                        echo $fieldName . ' - ' . $current . ' - ' . $dataToSet . PHP_EOL;
                         $this->em->flush();
+                        $flushed++;
+                        echo 'ended flushing ' . $table .  PHP_EOL;
                     } catch (\Exception $e) {
+                        echo $e->getMessage(); die();
                         $this->container->get('logger')->addError($e->getMessage());
 //                        $this->em->rollback();
 //                        $this->em->clear();
@@ -231,6 +253,11 @@ class ImportExportService extends BaseService
             }
         }
 
+
+
+
+        echo $flushed . PHP_EOL;
+        die();
         return $errorCollection;
     }
 
@@ -243,7 +270,7 @@ class ImportExportService extends BaseService
         $cellIterator->setIterateOnlyExistingCells(false);
 
         foreach ($cellIterator as $cell) {
-            if ($val = $cell->getValue()) {
+            if ($val = strtolower($cell->getValue())) {
                 $columns[$val] = $cell->getColumn();
             }
         }
@@ -409,11 +436,6 @@ class ImportExportService extends BaseService
                     [
                         'entity' => 'Food\DishesBundle\Entity\Kitchen',
                         'fields' => ['name', 'alias', '~slug']
-                    ],
-                'place' =>
-                    [
-                        'entity' => 'Food\DishesBundle\Entity\Place',
-                        'fields' => ['name', 'slogan', 'description', 'notification_content', '~slug']
                     ]
             ];
         }
@@ -470,7 +492,7 @@ class ImportExportService extends BaseService
      */
     public function getImportFields()
     {
-        return json_decode('{"city":["title","meta_title","meta_description","~slug"],"dish":["name","description","~slug"],"dish_option":["name","description"],"dish_unit":["name","short_name"],"food_category":["name","~slug"],"kitchen":["name","alias","~slug"],"place":["name","slogan","description","notification_content","~slug"]}');
+        return json_decode('{"city":["title","meta_title","meta_description","~slug"],"dish":["name","description","~slug"],"dish_option":["name","description"],"dish_unit":["name","short_name"],"food_category":["name","~slug"],"kitchen":["name","alias","~slug"]}');
 
 
 //          return $this->importFields;

@@ -30,12 +30,16 @@ class ProcessImportCommand extends ContainerAwareCommand
         $serviceImp = $this->getContainer()->get('food.import_export_service');
         try {
             $resp = $serviceImp->setLocale($input->getOption('locale'))->doImport();
-            if ($resp) {
+            if ($resp['success']) {
                 $output->writeln('<fg=green>All content was imported.</fg=green>');
+            } else {
+                $output->writeln($resp['flashMsg']);
+                exit;
             }
         } catch (\Exception $e) {
             $output->writeln('<fg=red>Something went horribly wrong</fg=red>');
             $output->writeln(sprintf('<error>Error: %s</error>', $e->getMessage()));
+            $output->writeln(sprintf('<error>Error: %s</error>', $e->getTraceAsString()));
 
             throw $e;
         }
