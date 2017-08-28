@@ -585,10 +585,6 @@ class OrderService extends ContainerAware
 
                         $mailTemplate = $emailObj->getTemplateId();
 
-                        if ($this->getOrder()->getPlace()->getId() == 142 && $this->container->getParameter('country') == 'LT') {
-                            $mailTemplate = 41586573;
-                        }
-
                         $mailResp = $ml->setVariables($variables)
                             ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
                             ->setId($mailTemplate)
