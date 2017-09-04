@@ -585,10 +585,40 @@ class OrderService extends ContainerAware
 
                         $mailTemplate = $emailObj->getTemplateId();
 
-                        $mailResp = $ml->setVariables($variables)
-                            ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
-                            ->setId($mailTemplate)
-                            ->send();
+
+                        if($mailTemplate == $this->container->getParameter('mailer_send_invoice')){
+
+                            $invoiceService = $this->container->get('food.invoice');
+
+
+                            $this->setInvoiceDataForOrder();
+
+                            $invoiceService->generateUserInvoice($order,true);
+                            $fileName = $invoiceService->getInvoiceFilename($order);
+                            $file = $invoiceService->getFilename($fileName);
+
+                            $this->logMailSent(
+                                $this->getOrder(),
+                                'filename',
+                                $fileName,
+                                $file
+                            );
+
+                            $mailResp = $ml->setVariables($variables)
+                                ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
+                                ->addAttachment($fileName, file_get_contents($file))
+                                ->setId($mailTemplate)
+                                ->send();
+
+
+
+                        }else{
+
+                            $mailResp = $ml->setVariables($variables)
+                                ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
+                                ->setId($mailTemplate)
+                                ->send();
+                        }
 
                         if (isset($mailResp['errors'])) {
                             $this->container->get('logger')->error(
