@@ -590,27 +590,7 @@ class OrderService extends ContainerAware
 
                             $invoiceService = $this->container->get('food.invoice');
 
-
-                            $this->setInvoiceDataForOrder();
-
-                            $invoiceService->generateUserInvoice($order,true);
-                            $fileName = $invoiceService->getInvoiceFilename($order);
-                            $file = $invoiceService->getFilename($fileName);
-
-                            $this->logMailSent(
-                                $this->getOrder(),
-                                'filename',
-                                $fileName,
-                                $file
-                            );
-
-                            $mailResp = $ml->setVariables($variables)
-                                ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
-                                ->addAttachment($fileName, file_get_contents($file))
-                                ->setId($mailTemplate)
-                                ->send();
-
-
+                            $invoiceService->addInvoiceToSend($order,false,true);
 
                         }else{
 
