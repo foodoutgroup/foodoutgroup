@@ -6246,4 +6246,5 @@ div.coupon_form_popup {
     background-size: contain;
     height: 500px;
     border-bottom: 1px solid #ebe2d9;
+    background-repeat: none;
 }
