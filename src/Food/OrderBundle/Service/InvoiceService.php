@@ -304,6 +304,7 @@ class InvoiceService extends ContainerAware
         }
 
         $ml = $this->container->get('food.mailer');
+        $ml->removeAttachments();
         $logger = $this->container->get('logger');
 
         $fileName = $this->getInvoiceFilename($order);
@@ -334,7 +335,7 @@ class InvoiceService extends ContainerAware
 
                 // TODO this is a temp fix for Mailer lite api
 
-                $ml->removeAttachments();
+
 
 
                 $mailTemplate = $this->container->getParameter('mailer_send_invoice');
