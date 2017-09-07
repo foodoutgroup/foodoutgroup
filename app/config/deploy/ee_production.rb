@@ -23,4 +23,5 @@ set :robots_file, "robots.prod.txt.dist"
 
 after "deploy" do
     run "~/sync.sh estonia.foodout.lt"
+    run "~/clearCache.sh estonia.foodout.lt"
 end

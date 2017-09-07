@@ -23,4 +23,5 @@ set :robots_file, "robots.dev.txt.dist"
 
 after "deploy" do
     run "~/sync.sh beta.mychef.ee"
+    run "~/clearCache.sh beta.mychef.ee"
 end

@@ -229,7 +229,9 @@ class BasketService extends ContainerAware
         $paymentData = $this->container->getParameter('payment');
 
         for($i = 0; $i<count($paymentData['method']); $i++) {
-
+            if($basketInfo->getPlaceId()->getDisabledOnlinePayment() && $i ==2){
+                break;
+            }
             $payment =  [
                 'name' => $paymentData['title'][$i],
                 'code' => $paymentData['method'][$i],
