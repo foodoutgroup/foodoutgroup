@@ -334,7 +334,7 @@ class InvoiceService extends ContainerAware
 
                 // TODO this is a temp fix for Mailer lite api
 
-                $ml->removeAttachments()->resetVariables();
+                $ml->removeAttachments();
 
 
                 $mailTemplate = $this->container->getParameter('mailer_send_invoice');
