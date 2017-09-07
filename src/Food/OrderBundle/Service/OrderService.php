@@ -589,6 +589,11 @@ class OrderService extends ContainerAware
 
                         if($mailTemplate == $this->container->getParameter('mailer_send_invoice')){
 
+                            $orderSfSeries = $order->getSfSeries();
+                            if (empty($orderSfSeries)) {
+                                $this->setInvoiceDataForOrder();
+                            }
+
                             $invoiceService = $this->container->get('food.invoice');
 
                             $invoiceService->addInvoiceToSend($order,false,true);
