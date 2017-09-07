@@ -579,16 +579,27 @@ class OrderService extends ContainerAware
                             'invoice' => $invoice,
                             'beta_code' => $betaCode,
                             'city' => $order->getCityId() ? $order->getCityId()->getTitle() : $order->getPlacePoint()->getCityId()->getTitle(),
-                            'food_review_url' => 'http://' . $this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review'
+                            'food_review_url' => 'http://' . $this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review',
+                            'delivery_time' => ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
                         ];
 
 
                         $mailTemplate = $emailObj->getTemplateId();
 
-                        $mailResp = $ml->setVariables($variables)
-                            ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
-                            ->setId($mailTemplate)
-                            ->send();
+
+                        if($mailTemplate == $this->container->getParameter('mailer_send_invoice')){
+
+                            $invoiceService = $this->container->get('food.invoice');
+
+                            $invoiceService->addInvoiceToSend($order,false,true);
+
+                        }else{
+
+                            $mailResp = $ml->setVariables($variables)
+                                ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
+                                ->setId($mailTemplate)
+                                ->send();
+                        }
 
                         if (isset($mailResp['errors'])) {
                             $this->container->get('logger')->error(
