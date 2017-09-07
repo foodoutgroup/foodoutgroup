@@ -304,7 +304,6 @@ class InvoiceService extends ContainerAware
         }
 
         $ml = $this->container->get('food.mailer');
-        $ml->removeAttachments();
         $logger = $this->container->get('logger');
 
         $fileName = $this->getInvoiceFilename($order);
@@ -354,6 +353,7 @@ class InvoiceService extends ContainerAware
                     $mailTemplate,
                     $variablesForLog
                 );
+                $ml->removeAttachments();
             }
         }
 
