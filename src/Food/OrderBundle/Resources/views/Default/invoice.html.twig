@@ -32,7 +32,7 @@
 </head>
 <body>
 <div style="text-align: center">
-    <div style="width: 100%;text-align: left;margin-top: 50px;margin-left:50px;"><div><img style="width: 250px; height: 80px;" src="{{ asset('bundles/foodapp/images/logo-juodas.png',absolute=true) }}"></div></div>
+    <div style="width: 100%;text-align: left;margin-top: 50px;margin-left:50px;"><div><img style="width: 250px; height: 80px;" src="{{ asset('bundles/foodapp/images/logo-juodas.png') }}"></div></div>
     <h1>{% trans %}order.invoice.invoice_title{% endtrans %}</h1>
     <br />
     <h3>{% trans %}order.invoice.series{% endtrans %} {{ order.sfSeries }} {% trans %}order.invoice.number{% endtrans %} {{ order.sfNumber }}</h3>
