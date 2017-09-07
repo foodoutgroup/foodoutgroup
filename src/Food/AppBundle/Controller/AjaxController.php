@@ -316,17 +316,13 @@ class AjaxController extends Controller
         $t = $this->get('translator');
 
 
-
         if($response) {
-
             if($place != null){
                 $placePointMap = array();
                 $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place,$response,false,false);
-
                 if(empty($placePoint)){
                     $rsp['message'] = $t->trans('place_point_does_not_deliver');
                     $rsp['place_point_error'] = 1;
-
                     return $rsp;
                 }else{
                     $placePointMap[$place] = $placePoint;
