@@ -313,6 +313,8 @@ class InvoiceService extends ContainerAware
         $variables = array(
             'uzsakymo_data' => $order->getOrderDate()->format("Y-m-d H:i"),
             'restorano_pavadinimas' => $order->getPlaceName(),
+            'order_id' => $order->getId(),
+            'order_date'=>$order->getOrderDate()
         );
 
         $logger->alert(sprintf(
