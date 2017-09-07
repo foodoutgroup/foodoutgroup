@@ -26,7 +26,7 @@ class InvoiceService extends ContainerAware
     {
         if (empty($this->s3Client)) {
             $config = array(
-                'key'    => $this->container->getParameter('aws_key'),
+                'key' => $this->container->getParameter('aws_key'),
                 'secret' => $this->container->getParameter('aws_secret'),
                 'region' => $this->container->getParameter('aws_region')
             );
@@ -51,7 +51,7 @@ class InvoiceService extends ContainerAware
      * @param boolean $skipChecks
      * @throws \InvalidArgumentException
      */
-    public function addInvoiceToSend($order, $mustDoNavDelete=false, $skipChecks=false)
+    public function addInvoiceToSend($order, $mustDoNavDelete = false, $skipChecks = false)
     {
         if (!$order instanceof Order) {
             throw new \InvalidArgumentException('I need order to plan invoice generation');
@@ -74,7 +74,7 @@ class InvoiceService extends ContainerAware
         ));
 
         // If there is a unsent Item already registered - dont do that again
-        if (!empty($unsentItem) && count($unsentItem)>0) {
+        if (!empty($unsentItem) && count($unsentItem) > 0) {
             return;
         }
 
@@ -108,7 +108,7 @@ class InvoiceService extends ContainerAware
             '%s_%s_%s.pdf',
             'foodout',
             strtolower($this->container->getParameter('country')),
-            $order->getSfSeries().$order->getSfNumber()
+            $order->getSfSeries() . $order->getSfNumber()
         );
     }
 
@@ -137,7 +137,7 @@ class InvoiceService extends ContainerAware
         }
 
         $file = $this->getInvoiceFilename($order);
-        $filename = $this->getInvoicePath().$file;
+        $filename = $this->getInvoicePath() . $file;
 
         $this->container->get('logger')->alert(
             sprintf(
@@ -158,7 +158,7 @@ class InvoiceService extends ContainerAware
             $this->container->get('templating')->render(
                 'FoodOrderBundle:Default:invoice.html.twig',
                 array(
-                    'order'  => $order,
+                    'order' => $order,
                 )
             ),
             $filename
@@ -180,7 +180,7 @@ class InvoiceService extends ContainerAware
         }
 
         $file = $this->getInvoiceFilename($orders[0]);
-        $filename = $this->getInvoicePath().$file;
+        $filename = $this->getInvoicePath() . $file;
 
         $user = $orders[0]->getUser();
         if (!$user instanceof User) {
@@ -219,7 +219,7 @@ class InvoiceService extends ContainerAware
             $this->container->get('templating')->render(
                 'FoodOrderBundle:Default:corporate_invoice.html.twig',
                 array(
-                    'orders'  => $orderByDivision,
+                    'orders' => $orderByDivision,
                     'mainOrder' => $orders[0],
                     'user' => $user
                 )
@@ -242,7 +242,7 @@ class InvoiceService extends ContainerAware
         $s3Client = $this->getS3Client();
 
         $file = $this->getInvoiceFilename($order);
-        $filename = $this->getInvoicePath().$file;
+        $filename = $this->getInvoicePath() . $file;
 
         try {
             $this->container->get('logger')->alert(
@@ -257,14 +257,14 @@ class InvoiceService extends ContainerAware
 
             $s3Client->putObject(array(
                 'Bucket' => $this->container->getParameter('s3_bucket'),
-                'Body'   => fopen($filename, 'r'),
-                'Key'    => 'pdf/'.$file,
-                'ACL'    => 'public-read',
+                'Body' => fopen($filename, 'r'),
+                'Key' => 'pdf/' . $file,
+                'ACL' => 'public-read',
             ));
 
             unlink($filename);
         } catch (S3Exception $e) {
-            throw new \Exception('Error happened while uploading invoice to S3: '.$e->getMessage());
+            throw new \Exception('Error happened while uploading invoice to S3: ' . $e->getMessage());
         }
     }
 
@@ -288,7 +288,7 @@ class InvoiceService extends ContainerAware
 
             $userEmail = $order->getUser()->getEmail();
 
-            if (!$order->getOrderFromNav() || ($userEmail != ($order->getUser()->getPhone().'@foodout.lt'))) {
+            if (!$order->getOrderFromNav() || ($userEmail != ($order->getUser()->getPhone() . '@foodout.lt'))) {
                 $emails[] = $userEmail;
             }
 
@@ -311,8 +311,8 @@ class InvoiceService extends ContainerAware
         $file = $this->getFilename($fileName);
 
         $variables = array(
-            'uzsakymo_data' => $order->getOrderDate()->format("Y-m-d H:i"),
-            'restorano_pavadinimas' => $order->getPlaceName(),
+            'order_date' => $order->getOrderDate()->format("Y-m-d H:i"),
+            'restaurant_name' => $order->getPlaceName(),
             'order_id' => $order->getId(),
         );
 
@@ -378,7 +378,7 @@ class InvoiceService extends ContainerAware
 
             $userEmail = $order->getUser()->getEmail();
 
-            if (!$order->getOrderFromNav() || ($userEmail != ($order->getUser()->getPhone().'@foodout.lt'))) {
+            if (!$order->getOrderFromNav() || ($userEmail != ($order->getUser()->getPhone() . '@foodout.lt'))) {
                 $emails[] = $userEmail;
             }
 
@@ -441,11 +441,10 @@ class InvoiceService extends ContainerAware
             // send sf to financing. TODO - translations bitch please
             $message = \Swift_Message::newInstance()
                 ->setSubject('Foodout.lt - nauja verslo kliento faktura')
-                ->setFrom('info@foodout.lt')
-            ;
+                ->setFrom('info@foodout.lt');
             $message->addTo('buhalterija@foodout.lt');
 //            $message->addTo('karolis.m@foodout.lt');
-            $message->setBody('Siunciame kliento '.$order->getUser()->getCompanyName().' jungtine faktura. Prasome isitraukti i NAV');
+            $message->setBody('Siunciame kliento ' . $order->getUser()->getCompanyName() . ' jungtine faktura. Prasome isitraukti i NAV');
             $message->attach(\Swift_Attachment::fromPath($file));
             $mailer->send($message);
         }
@@ -460,7 +459,7 @@ class InvoiceService extends ContainerAware
     public function removeUserInvoice($order)
     {
         $file = $this->getInvoiceFilename($order);
-        $filename = $this->getInvoicePath().$file;
+        $filename = $this->getInvoicePath() . $file;
 
         if (file_exists($filename)) {
             unlink($filename);
@@ -495,7 +494,7 @@ class InvoiceService extends ContainerAware
             // return it
             return $theNumber;
 
-        // Rerty on error
+            // Rerty on error
         } catch (OptimisticLockException $e) {
             if ($failOnError) {
                 return null;
@@ -511,13 +510,13 @@ class InvoiceService extends ContainerAware
     {
         switch ($this->container->getParameter('locale')) {
             case 'lv':
-                $file = 'https://s3-eu-west-1.amazonaws.com/foodout-lv-invoice/pdf/'.$fileName;
+                $file = 'https://s3-eu-west-1.amazonaws.com/foodout-lv-invoice/pdf/' . $fileName;
                 break;
             case 'ee':
-                $file = 'https://s3-eu-west-1.amazonaws.com/foodout-ee-invoice/pdf/'.$fileName;
+                $file = 'https://s3-eu-west-1.amazonaws.com/foodout-ee-invoice/pdf/' . $fileName;
                 break;
             case 'lt':
-                $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/'.$fileName;
+                $file = 'https://s3-eu-west-1.amazonaws.com/foodout-invoice/pdf/' . $fileName;
                 break;
         }
 
