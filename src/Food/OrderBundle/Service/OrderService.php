@@ -589,9 +589,6 @@ class OrderService extends ContainerAware
 
                         if ($mailTemplate == $this->container->getParameter('mailer_send_invoice') && $order->getDeliveryType() != 'pickup' && $order->getPlace()->getSendInvoice()) {
 
-
-
-
                             $orderSfSeries = $order->getSfSeries();
                             if (empty($orderSfSeries)) {
                                 $this->setInvoiceDataForOrder();
