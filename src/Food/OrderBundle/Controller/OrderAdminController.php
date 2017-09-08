@@ -58,6 +58,28 @@ class OrderAdminController extends Controller
         );
     }
 
+    public function generateInvoiceAction($id)
+    {
+        $orderService = $this->get('food.order');
+
+        $order = $orderService->getOrderById($id);
+        $invoiceService = $this->get('food.invoice');
+        $orderService->setOrder($order);
+        $orderService->setInvoiceDataForOrder();
+        $invoiceService->generateUserInvoice($order);
+        $fileName = $invoiceService->getInvoiceFilename($order);
+        $content = file_get_contents($invoiceService->getInvoicePath() . $fileName);
+
+        $response = new Response();
+
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-Disposition', 'attachment;filename="' . $fileName);
+
+        $response->setContent($content);
+
+        return $response;
+    }
+
     /**
      * @param null $id
      *
