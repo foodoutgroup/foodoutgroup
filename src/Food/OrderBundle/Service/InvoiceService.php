@@ -115,7 +115,7 @@ class InvoiceService extends ContainerAware
     /**
      * @return string
      */
-    private function getInvoicePath()
+    public function getInvoicePath()
     {
         return $this->container->get('kernel')->getRootDir() . '/../web/uploads/pdf/';
     }
