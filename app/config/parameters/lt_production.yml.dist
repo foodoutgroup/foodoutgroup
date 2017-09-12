@@ -107,7 +107,8 @@ parameters:
     google.analytics.view_id: "85237075"
     nav_table_prefix: 'Čilija Skambučių Centras'
     nav_ws_prefix: 'Čilija Skambučių Centras'
-    mailer_api_key: "0NIS89UU-IGKU-BCUN-MJFM-W3IK4NTUQ9LB"
+    mailer_api_key: "h0t6p0c4k3p3l0d9l1m2w1x5k3z0y5j9"
+    sendigo_api_key: "0NIS89UU-IGKU-BCUN-MJFM-W3IK4NTUQ9LB"
     mailer_from: info@foodout.lt
     mailer_notify_on_accept: 30010811
     mailer_notify_pickup_on_accept: 41582385
