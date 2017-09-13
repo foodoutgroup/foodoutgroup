@@ -44,7 +44,12 @@
 
         $(document).ready(function () {
             {% if city and cityService.getPopUpAvailability(city) %}
+            setTimeout(function(){
                 $.fancybox.open($('.modal-pedestrian-div'));
+
+            }, 5000);
+
+
             {% endif %}
             $(document).on('click', '#pedestrian-redirect', function () {
                 $.fancybox.close($('.modal-pedestrian-div'));
