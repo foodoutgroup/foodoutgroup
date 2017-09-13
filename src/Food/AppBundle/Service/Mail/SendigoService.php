@@ -169,7 +169,7 @@ class SendigoService extends ContainerAware
 
     public function addAttachment( $filename, $content ) {
 
-        $this->attachments[] = array('name' => $filename, 'data' => base64_encode($content) );
+        $this->attachments[] = array('name' => $filename, 'data' => base64_encode($content) ,'mime'=>'text\/plain');
 
         return $this;
     }

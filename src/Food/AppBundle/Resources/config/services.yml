@@ -92,7 +92,7 @@ services:
 
     food.mail.sendigo:
         class: Food\AppBundle\Service\Mail\SendigoService
-        arguments: [%mailer_api_key%]
+        arguments: [%sendigo_api_key%]
         calls:
             - [setContainer, [@service_container]]
             - [setFromEmail, [%mailer_from%]]
