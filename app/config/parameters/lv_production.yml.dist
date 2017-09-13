@@ -95,6 +95,7 @@ parameters:
     nav_table_prefix: 'LV Call Center'
     nav_ws_prefix: 'LV Call Center'
     mailer_api_key: "o8s5m7s5h7s4t8m3l0t2n3u8j9r9m4x5"
+    sendigo_api_key: "R64BNSBP-EPCO-DEBG-EUUT-SIZWGDCIOV1S"
     mailer_from: info@foodout.lv
     mailer_notify_on_accept: 30026333
     mailer_notify_pickup_on_accept: 41584575
@@ -102,11 +103,11 @@ parameters:
     mailer_user_reset: 30026299
     mailer_partialy_deliverer: 30021995
     mailer_rate_your_food: 30026301
-    mailer_send_invoice: 30026291
+    mailer_send_invoice: template-1497516201
     mailer_send_corporate_invoice: 41585359_to_change
     mailer_send_corporate_changed_password: 41611951
     mailer_send_free_delivery_discount: 41611739
-    mailer_provider: food.mail.mailer
+    mailer_provider: food.mail.sendigo
     mailer_newsletter_provider: food.mail.mailer
     mailerlite_api_key: "71b32c22e0944db62613e34669489d1a"
     mailerlite_group_id: 6456020
