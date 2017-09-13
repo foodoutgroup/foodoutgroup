@@ -207,7 +207,9 @@ class RestaurantDuplicateService extends ContainerAware
                 $newDish->removeAllCategories();
 
                 foreach ($oldCategories as $category) {
-                    $newDish->addCategorie($foodCategoriesArray[$category->getId()]);
+                    if(isset($foodCategoriesArray[$category->getId()])) {
+                        $newDish->addCategorie($foodCategoriesArray[$category->getId()]);
+                    }
                 }
 
                 $em->persist($newDish);
@@ -227,7 +229,9 @@ class RestaurantDuplicateService extends ContainerAware
                     $cloneSize = clone $size;
                     $cloneSize->setId(null);
                     $cloneSize->setDish($newDish);
+                    if(isset($dishUnitsArray[$sizeId])){
                     $cloneSize->setUnit($dishUnitsArray[$sizeId]);
+                    }
                     $em->persist($cloneSize);
                 }
             }
