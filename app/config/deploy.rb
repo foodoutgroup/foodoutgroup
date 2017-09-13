@@ -6,7 +6,7 @@ set :repository,  "git@github.com:Foodout/skanu.lt.git"
 set :scm,         :git
 
 set :model_manager, "doctrine"
-set :branch, "hotfix/sendigo_release"
+set :branch, "master"
 
 # multi-stage environment
 set :stages,        %w(lt_beta lt_staging lt_production)
