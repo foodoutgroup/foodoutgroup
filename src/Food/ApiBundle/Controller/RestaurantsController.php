@@ -61,6 +61,14 @@ class RestaurantsController extends Controller
                 $kitchenCollection = array();
             }
 
+            if($request->query->has('limit')) {
+                $filters['limit'] = $request->query->has('limit');
+            }
+
+            if($request->query->has('offset')) {
+                $filters['offset'] = $request->query->has('offset');
+            }
+
             $placeCollection = [];
 
             if (!empty($locationData)) {
@@ -72,14 +80,17 @@ class RestaurantsController extends Controller
                 );
             }
 
+
+
             $this->get('session')->set('filter', $filters);
+
 
             $response = [
                 'restaurants' => [],
                 '_meta' => [
                     'total' => sizeof($placeCollection),
-                    'offset' => 0,
-                    'limit' => 50
+                    'offset' => isset($filters['offset']) ? intval($filters['offset']) : 0,
+                    'limit' => isset($filters['limit']) ? intval($filters['limit']) : 50
                 ]
             ];
             if($delivery_type == 'pickup'){
@@ -276,7 +287,7 @@ class RestaurantsController extends Controller
         //$this->get('logger')->alert('Restaurants:getMenuAction Request: id - ' . $id, (array)$request);
         try {
             $updated_at = $request->get('updated_at');
-            $menuItems = $this->get('food_api.api')->createMenuByPlaceId($id, $updated_at);
+            $menuItems = $this->get('food_api.api')->createMenuByPlaceId($id, $updated_at, $request);
             $deletedItems = $this->get('food_api.api')->createDeletedByPlaceId($id, $updated_at, $menuItems);
 
             $response = array(
@@ -284,10 +295,11 @@ class RestaurantsController extends Controller
                 'deleted' => $deletedItems,
                 '_meta' => array(
                     'total' => sizeof($menuItems),
-                    'offset' => 0,
-                    'limit' => 50
+                    'offset' => intval($request->query->get('offset', 0)),
+                    'limit' => intval($request->query->get('limit', 50))
                 )
             );
+
 
         } catch (ApiException $e) {
             $this->get('logger')->error('Restaurants:getMenuAction Error1:' . $e->getMessage());
