@@ -42,6 +42,7 @@
             <div class="dish-info">
                 <p class="name">{{ dish.name }}</p>
                 <p class="desc">{{ dish.description|nl2br }}</p>
+                {% if site_country == 'LT'%}<p class="desc" style="margin-top: 10px;font-size: 10px;">{% trans %}dishes.allergic.warring{% endtrans %}</p>{% endif %}
             </div>
         </div>
 
