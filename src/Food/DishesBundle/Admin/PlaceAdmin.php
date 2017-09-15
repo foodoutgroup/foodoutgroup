@@ -116,6 +116,8 @@ class PlaceAdmin extends FoodAdmin
             ->add('apiHash', 'text', ['label' => 'admin.place.api_hash', 'required' => false])
             ->add('couponURL', 'text', ['label' => 'admin.place.coupon_check_url', 'required' => false])
             ->add('no_business_discount', 'checkbox', ['label' => 'admin.place.no_business_discount', 'required' => false])
+            ->add('showInSelfDelivery', 'checkbox', ['label' => 'admin.place.not_in_self_discount', 'required' => false])
+
             ->add('points', 'sonata_type_collection',
                 [
                     //'by_reference' => false,

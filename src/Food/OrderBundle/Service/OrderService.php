@@ -587,19 +587,20 @@ class OrderService extends ContainerAware
                         $mailTemplate = $emailObj->getTemplateId();
 
 
-                        if ($mailTemplate == $this->container->getParameter('mailer_send_invoice') && $order->getDeliveryType() != 'pickup' && $order->getPlace()->getSendInvoice()) {
+                        if ($mailTemplate == $this->container->getParameter('mailer_send_invoice')) {
 
-                            $orderSfSeries = $order->getSfSeries();
-                            if (empty($orderSfSeries)) {
-                                $this->setInvoiceDataForOrder();
+                            if ($order->getDeliveryType() != 'pickup' && $order->getPlace()->getSendInvoice()) {
+                                $orderSfSeries = $order->getSfSeries();
+                                if (empty($orderSfSeries)) {
+                                    $this->setInvoiceDataForOrder();
+                                }
+
+                                $invoiceService = $this->container->get('food.invoice');
+
+                                $invoiceService->addInvoiceToSend($order, false, true);
                             }
 
-                            $invoiceService = $this->container->get('food.invoice');
-
-                            $invoiceService->addInvoiceToSend($order, false, true);
-
-
-                        }else{
+                        } else {
 
                             $mailResp = $ml->setVariables($variables)
                                 ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())

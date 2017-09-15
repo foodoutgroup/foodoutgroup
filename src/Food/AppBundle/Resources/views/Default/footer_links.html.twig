@@ -100,11 +100,11 @@
                     {# <a href="#"><img src="/bundles/foodapp/images/gp-ico.png"></a>#}
                     <a href="https://www.youtube.com/channel/UCg5hgGVUwdmrmRe9zGwJjHA" target="_BLANK"><img src="//{{ cloudfront_url }}/bundles/foodapp/images/yt-ico.png"></a>
                 {% elseif site_country == 'EE' %}
+                    <a href="https://www.facebook.com/mychef.ee/" target="_blank"><img src="//{{ cloudfront_url }}/bundles/foodapp/images/fb-ico.png"></a>
                     <span class="phone"><a href="callto:{{ 'general.top_contact.phone'|trans()|replace({" " : ""}) }}" title="">{% trans %}general.top_contact.phone{% endtrans %}</a></span>
                 {% endif %}
 
                 {% if site_country != 'EE' and misc_utils.param('change_phone_position') %}
-                    <a href="https://www.facebook.com/mychef.ee/" target="_blank"><img src="//{{ cloudfront_url }}/bundles/foodapp/images/fb-ico.png"></a>
                     <br/><br/>
                     <h5>{% trans %}general.bottom.contacts{% endtrans %}</h5>
                     <span class="email"><a href="mailto: {{ site_email }}" title="{{ site_email }}"> {{ site_email }}</a></span>

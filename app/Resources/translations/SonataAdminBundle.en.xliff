@@ -3667,6 +3667,10 @@
                 <source>admin.order.delivery_address_house</source>
                 <target>Address House</target>
             </trans-unit>
+            <trans-unit id="admin.place.not_in_self_discount" resname="admin.place.not_in_self_discount">
+                <source>admin.place.not_in_self_discount</source>
+                <target>Not in self delivery</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

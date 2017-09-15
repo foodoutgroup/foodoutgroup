@@ -510,6 +510,13 @@ class Place extends Uploadable implements Translatable
      **/
     private $cityId;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="show_in_self_delivery", type="boolean",options={"default": 0},nullable=true)
+     */
+    private   $showInSelfDelivery;
+
 
     /**
      * Returns place name
@@ -2412,5 +2419,28 @@ class Place extends Uploadable implements Translatable
     public function getNoBusinessDiscount()
     {
         return $this->noBusinessDiscount;
+    }
+
+    /**
+     * Set showInSelfDelivery
+     *
+     * @param boolean $showInSelfDelivery
+     * @return Place
+     */
+    public function setShowInSelfDelivery($showInSelfDelivery)
+    {
+        $this->showInSelfDelivery = $showInSelfDelivery;
+
+        return $this;
+    }
+
+    /**
+     * Get showInSelfDelivery
+     *
+     * @return boolean 
+     */
+    public function getShowInSelfDelivery()
+    {
+        return $this->showInSelfDelivery;
     }
 }

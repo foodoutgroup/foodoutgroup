@@ -69,6 +69,7 @@ class HookFreeDeliveryRestaurant {
                 ->andWhere('p.selfDelivery = 0')
                 ->andWhere('pp.delivery = 1')
                 ->andWhere('pp.cityId = :cityId')
+                ->andWhere('p.showInSelfDelivery = 0')
                 ->groupBy('p.id');
 
             $qb->setParameter('cityId', $city->getId());
