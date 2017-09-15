@@ -230,6 +230,9 @@ class OrderAdmin extends FoodAdmin
                     'downloadInvoice' => array(
                         'template' => 'FoodOrderBundle:CRUD:list__action_downloadInvoice.html.twig'
                     ),
+                    'generateInvoice' => array(
+                        'template' => 'FoodOrderBundle:CRUD:list__action_generateInvoice.html.twig'
+                    ),
                 ),
                 'label' => 'admin.actions'
             ))
@@ -407,6 +410,7 @@ class OrderAdmin extends FoodAdmin
     {
         $collection->clearExcept(array('edit', 'list', 'show', 'export'))
             ->add('sendInvoice', $this->getRouterIdParameter().'/sendInvoice')
-            ->add('downloadInvoice', $this->getRouterIdParameter().'/downloadInvoice');
+            ->add('downloadInvoice', $this->getRouterIdParameter().'/downloadInvoice')
+            ->add('generateInvoice', $this->getRouterIdParameter().'/generateInvoice');
     }
 }

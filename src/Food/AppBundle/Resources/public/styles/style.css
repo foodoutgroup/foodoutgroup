@@ -6243,7 +6243,8 @@ div.coupon_form_popup {
 .pedestrian-list-info-container{
     background: url("/bundles/foodapp/images/maps.png");
     background-position: center;
-    background-size: cover;
+    background-size: contain;
     height: 500px;
     border-bottom: 1px solid #ebe2d9;
+    background-repeat: no-repeat;
 }

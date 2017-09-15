@@ -1,0 +1,6 @@
+{% if is_granted('ROLE_SUPER_ADMIN') or is_granted('EDIT', admin) or is_granted('ROLE_DISPATCHER') %}
+        <a class="btn btn-small" href="{{ admin.generateObjectUrl('generateInvoice', object) }}">
+            <i class="icon-download"></i>
+            {% trans from 'SonataAdminBundle' %}admin.order.generate_invoice{% endtrans %}
+        </a>
+{% endif %}

@@ -50,8 +50,8 @@ class CouponAdmin extends FoodAdmin
             ->add('enableValidateDate', 'checkbox', array('required' => false))
             ->add('validFrom', 'datetime', array('required' => false))
             ->add('validTo', 'datetime', array('required' => false))
-            ->add('validHourlyFrom', 'time', array('required' => false))
-            ->add('validHourlyTo', 'time', array('required' => false))
+//            ->add('validHourlyFrom', 'time', array('required' => false))
+//            ->add('validHourlyTo', 'time', array('required' => false))
             ->add('ignoreCartPrice', 'checkbox', [
                 'required' => false,
                 'label' => 'Ignore Minimal Price'

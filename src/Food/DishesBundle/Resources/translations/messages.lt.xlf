@@ -222,6 +222,10 @@
                 <source>dishes.no_production</source>
                 <target><![CDATA[Patiekalas šiuo metu negaminamas]]></target>
             </trans-unit>
+            <trans-unit id="dishes.allergic.warring" resname="dishes.allergic.warring">
+                <source>dishes.no_production</source>
+                <target>*Dėl patiekaluose esančių alergenų ar netoleravimą sukeliančių maisto medžiagų produktų, kreipkitės tiesiogiai į restorano darbuotojus.</target>
+            </trans-unit>
             <trans-unit id="place_point.delivery_info" resname="place_point.delivery_info">
                 <source>place_point.delivery_info</source><target>Pristatymas</target>
             </trans-unit>

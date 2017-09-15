@@ -17,7 +17,7 @@ class RestaurantsController extends Controller
      */
     public function getRestaurantsAction(Request $request)
     {
-        $this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array)$request);
+        //$this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array)$request);
         $doctrine = $this->getDoctrine();
         try {
             /**
@@ -117,7 +117,7 @@ class RestaurantsController extends Controller
             );
         }
 
-        $this->get('logger')->alert('Restaurants:getRestaurantsAction Response:' . json_encode($response));
+        //$this->get('logger')->alert('Restaurants:getRestaurantsAction Response:' . json_encode($response));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
         return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
     }

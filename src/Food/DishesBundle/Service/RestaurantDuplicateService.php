@@ -20,6 +20,7 @@ class RestaurantDuplicateService extends ContainerAware
 
     public function DuplicateRestaurant($placeId)
     {
+        set_time_limit(50000);
         $em = $this->container->get('doctrine')->getManager();
         $placeRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place');
         $dishRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Dish');
@@ -154,10 +155,18 @@ class RestaurantDuplicateService extends ContainerAware
         foreach ($dishUnits as $dishUnit) {
 
 
+            $dishUnitCategoryTmp = null;
+
+            if($dishUnit->getUnitCategory()){
+                $dishUnitCategoryTmp = $dishUnitsCategoryArray[$dishUnit->getUnitCategory()->getId()];
+            }
+
+
+
             $cloneDishUnit = clone $dishUnit;
             $cloneDishUnit->setId(null);
             $cloneDishUnit->setPlace($newPlace);
-            $cloneDishUnit->setUnitCategory($dishUnitsCategoryArray[$dishUnit->getUnitCategory()->getId()]);
+            $cloneDishUnit->setUnitCategory($dishUnitCategoryTmp);
 
             $em->persist($cloneDishUnit);
             $dishUnitsArray[$dishUnit->getId()] = $cloneDishUnit;
@@ -178,9 +187,9 @@ class RestaurantDuplicateService extends ContainerAware
             $comboDiscountClone->setId(null);
             $comboDiscountClone->setPlace($newPlace);
             if($comboDiscount->getDishCategory()){
-                $comboDiscountClone->setDishCategory($foodCategoriesArray[$comboDiscount->getId()]);
+                $comboDiscountClone->setDishCategory( isset($foodCategoriesArray[$comboDiscount->getId()]) ? $foodCategoriesArray[$comboDiscount->getId()] : null);
             }
-            $comboDiscountClone->setDishUnit($dishUnitsArray[$comboDiscount->getId()]);
+            $comboDiscountClone->setDishUnit(isset($dishUnitsArray[$comboDiscount->getId()]) ? $dishUnitsArray[$comboDiscount->getId()] : null);
             $em->persist($comboDiscountClone);
         }
 
@@ -198,7 +207,9 @@ class RestaurantDuplicateService extends ContainerAware
                 $newDish->removeAllCategories();
 
                 foreach ($oldCategories as $category) {
-                    $newDish->addCategorie($foodCategoriesArray[$category->getId()]);
+                    if(isset($foodCategoriesArray[$category->getId()])) {
+                        $newDish->addCategorie($foodCategoriesArray[$category->getId()]);
+                    }
                 }
 
                 $em->persist($newDish);
@@ -218,7 +229,9 @@ class RestaurantDuplicateService extends ContainerAware
                     $cloneSize = clone $size;
                     $cloneSize->setId(null);
                     $cloneSize->setDish($newDish);
+                    if(isset($dishUnitsArray[$sizeId])){
                     $cloneSize->setUnit($dishUnitsArray[$sizeId]);
+                    }
                     $em->persist($cloneSize);
                 }
             }
