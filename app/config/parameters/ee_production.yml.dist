@@ -59,11 +59,11 @@ parameters:
            method:
              - local
              - local.card
-             - seb-banklink
+             - paysera
            title:
              - '[#cash#]'
              - '[#credit.card#]'
-             - 'Seb Bank'
+             - 'Paysera'
     payment.methods:
         - local
         - local.card
