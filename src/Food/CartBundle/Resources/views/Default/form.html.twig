@@ -151,7 +151,10 @@
         var orderingHours = [];
         {% for day, dayInfo in workingHoursForInterval %}
         orderingHours['{{ day }}'] = [{% for hourInfo in  dayInfo%}{% if loop.index0 != 0 %},{% endif %}'{{ hourInfo }}'{% endfor %}];
+
         {% endfor %}
+
+
 
         $("#pre_order_date").on( "selectmenuselect", function( event, ui ) {
             changeTheTimes(ui.value);
