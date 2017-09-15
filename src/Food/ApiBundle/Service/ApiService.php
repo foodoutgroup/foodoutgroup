@@ -11,6 +11,7 @@ use Food\DishesBundle\Entity\PlacePoint;
 use Food\OrderBundle\Entity\Order;
 use Food\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -42,17 +43,37 @@ class ApiService extends ContainerAware
      * @param string $updated_at
      * @return array
      */
-    public function createMenuByPlaceId($placeId, $updated_at = null)
+    public function createMenuByPlaceId($placeId, $updated_at = null, Request $request = null)
     {
         if (empty($placeId)) {
             return array();
         }
+        /**
+         * @var $place Place
+         */
         $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find((int)$placeId);
         if ($place) {
             $returner = array();
             $currentWeek = date('W') % 2 == 1; # 1 - odd 0 - even
             $currentTime = date("H:i");
-            foreach ($place->getDishes() as $dish) {
+
+            if($request->query->has('limit') && $request->query->has('offset')) {
+
+                $dishList = $this->container
+                    ->get('doctrine')
+                    ->getRepository('FoodDishesBundle:Dish')
+                    ->findBy(
+                        ['place' => $place->getId()],
+                        null,
+                        intval($request->query->get('limit')),
+                        intval($request->query->get('offset'))
+                    );
+
+            } else {
+                $dishList = $place->getDishes();
+            }
+
+            foreach ($dishList as $dish) {
                 $menuItem = new MenuItem(null, $this->container);
                 if ($dish->getActive()) {
                     // Is even check on and this is even week?
