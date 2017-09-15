@@ -3331,6 +3331,10 @@
                 <source>admin.place.no_business_discount</source>
                 <target>No business discount</target>
             </trans-unit>
+            <trans-unit id="admin.place.not_in_self_discount" resname="admin.place.not_in_self_discount">
+                <source>admin.place.not_in_self_discount</source>
+                <target>Not in self delivery</target>
+            </trans-unit>
             <trans-unit id="admin.cities.popup" resname="admin.cities.popup">
                 <source>admin.cities.popup</source>
                 <target>Pedestrian popup</target>

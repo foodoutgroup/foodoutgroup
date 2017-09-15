@@ -3383,6 +3383,10 @@
                 <source>admin.order.delivery_address_house</source>
                 <target>Užsak. adreso butas</target>
             </trans-unit>
+            <trans-unit id="admin.place.not_in_self_discount" resname="admin.place.not_in_self_discount">
+                <source>admin.place.not_in_self_discount</source>
+                <target>Nerodyti prie mūsų logistikos</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
