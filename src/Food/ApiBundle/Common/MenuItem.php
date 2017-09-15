@@ -26,6 +26,7 @@ class MenuItem extends ContainerAware
             "maximum_old" => 0,
             "currency" => "EUR"
         ),
+        "combination" => false,
         "status" => 'available',
         "updated_at" => ""
     );
@@ -158,6 +159,7 @@ class MenuItem extends ContainerAware
             ->set('ingredients', $dish->getDescription())
             ->set('show_discount', $showDiscount)
             ->set('price_range', $priceRange)
+            ->set('combination', count($dish->getOptions()) ? true : false)
             ->set('updated_at', date('U')); //($dish->getEditedAt() != null ? $dish->getEditedAt()->format('U'): $dish->getCreatedAt()->format('U')));
 
         if ($loadOptions) {

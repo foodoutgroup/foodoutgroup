@@ -68,6 +68,8 @@ class PlaceRepository extends EntityRepository
         // Place filters
         $placeFilter = '';
 
+        $endOfFilter = '';
+
         if (!empty($filters) && is_array($filters)) {
 
             foreach ($filters as $filterName => $filterValue) {
@@ -102,8 +104,18 @@ class PlaceRepository extends EntityRepository
                             }
                         }
                         break;
+                    case 'limit':
+                        $endOfFilter .= ' LIMIT '.intval($filterValue);
+                        break;
+                    case 'offset':
+                        if($endOfFilter != '') {
+                            $endOfFilter .= ' OFFSET ' . intval($filterValue);
+                        }
+                        break;
 
                     default:
+
+                        break;
                 }
             }
         }
@@ -121,7 +133,7 @@ class PlaceRepository extends EntityRepository
         }
 
         $ppCounter = "SELECT COUNT(*) FROM place_point ppc WHERE ppc.active=1 AND ppc.deleted_at IS NULL AND ppc.place = p.id";
-        $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL ". $placeFilter . $otherFilters . " AND pp.id = (" . $subQuery . ") " . $kitchensQuery . " ORDER BY p.priority DESC, RAND()";
+        $query = "SELECT p.id as place_id, pp.id as point_id, pp.address, (" . $ppCounter . ") as pp_count, p.priority, p.navision FROM place p, place_point pp WHERE pp.place = p.id AND p.active=1 AND pp.active = 1 AND pp.deleted_at IS NULL ". $placeFilter . $otherFilters . " AND pp.id = (" . $subQuery . ") " . $kitchensQuery . " ORDER BY p.priority DESC, RAND()". $endOfFilter;
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
