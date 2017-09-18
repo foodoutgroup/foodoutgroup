@@ -100,7 +100,7 @@ parameters:
     mailer_notify_on_accept: 30026333
     mailer_notify_pickup_on_accept: 41584575
     mailer_notify_new_user: 30026305
-    mailer_user_reset: 30026299
+    mailer_user_reset: template-1497516067
     mailer_partialy_deliverer: 30021995
     mailer_rate_your_food: 30026301
     mailer_send_invoice: template-1497516201
