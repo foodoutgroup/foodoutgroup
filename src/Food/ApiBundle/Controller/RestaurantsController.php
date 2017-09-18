@@ -62,11 +62,11 @@ class RestaurantsController extends Controller
             }
 
             if($request->query->has('limit')) {
-                $filters['limit'] = $request->query->has('limit');
+                $filters['limit'] = $request->query->get('limit');
             }
 
             if($request->query->has('offset')) {
-                $filters['offset'] = $request->query->has('offset');
+                $filters['offset'] = $request->query->get('offset');
             }
 
             $placeCollection = [];
