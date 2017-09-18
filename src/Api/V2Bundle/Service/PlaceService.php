@@ -70,7 +70,7 @@ class PlaceService extends PlacesService
 
                     $maxDistance = "SELECT MAX(ppdz.distance) FROM `place_point_delivery_zones` ppdz WHERE ppdz.deleted_at IS NULL AND ppdz.active=1 AND ppdz.place_point=pp.id";
 
-                    $subQuery = "SELECT pp.id, pp.address, pp.city, pp.delivery, pp.public,  (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) AS distance
+                    $subQuery = "SELECT pp.id, pp.address, pp.city, pp.delivery, pp.hash, pp.public,  (6371 * 2 * ASIN(SQRT(POWER(SIN(($lat - abs(pp.lat)) * pi()/180 / 2), 2) + COS(abs($lat) * pi()/180 ) * COS(abs(pp.lat) * pi()/180) * POWER(SIN(($lon - pp.lon) * pi()/180 / 2), 2) ))) AS distance
                     FROM place_point pp, place p, place_point_work_time ppwt
                     WHERE p.id = pp.place
                       AND pp.id = ppwt.place_point
@@ -103,6 +103,7 @@ class PlaceService extends PlacesService
                              */
                             $response[] = [
                                 'id' => $item['id'],
+                                'hash' => $item['hash'],
                                 'address' => $item['address'],
                                 'distance' => $item['distance'],
                                 'pickup' => (boolean)$item['public'],
