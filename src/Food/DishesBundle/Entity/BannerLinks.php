@@ -6,6 +6,7 @@ use Food\AppBundle\Entity\Uploadable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Translatable;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 /**
  * Dish option
@@ -13,6 +14,7 @@ use Gedmo\Translatable\Translatable;
  * @ORM\Table(name="banner_links", indexes={@ORM\Index(name="deleted_at_idx", columns={"deleted_at"})})
  * @ORM\Entity
  * @ORM\Entity(repositoryClass="Food\DishesBundle\Entity\BannerLinksRepository")
+ * @Callback(methods={"isFileSizeValid"})
  * @Gedmo\TranslationEntity(class="Food\DishesBundle\Entity\BannerLinksLocalized")
  */
 class BannerLinks extends Uploadable implements Translatable
