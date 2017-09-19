@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
 class OrderService extends \Food\ApiBundle\Service\OrderService
 {
 
+    protected $paymentMethods = ["emc.payment"]; // cia custom for custom payments
+
     /**
      * @param JsonRequest $json
      */
@@ -68,12 +70,31 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
 
         } else {
             $address = $json->get('address', []);
-            if (!isset($address['city']) || !isset($address['street']) || !isset($address['house_number'])) {
-                throw new ApiException('Address  must have city, street and house_number parameters (flat_number - optional)'); // todo
+
+            if(!isset($address['stringify']) || (!isset($address['city']) || !isset($address['street']) || !isset($address['house_number']))) {
+                throw new ApiException('Address stringify or city, street and house_number parameters (flat_number - optional) must be defined'); // todo
             }
-            $order->setPaymentMethod("local.card");
-            $addressBuffer = $address['street'] . ' ' . $address['house_number'] . (!empty($address['flat_number']) ? '-' . $address['flat_number'] . '' : '');
-            $location = $this->container->get('food.location')->findByAddress($addressBuffer.", ".$address['city']);
+
+            $pMethod = $json->get("payment_method", null);
+
+            if($pMethod != null){
+
+                if(in_array($pMethod, $this->paymentMethods)) {
+                    $order->setPaymentMethod($pMethod);
+                } else {
+                    throw new ApiException("payment method doesn't exist");
+                }
+
+            } else {
+                $order->setPaymentMethod("local.card");
+            }
+
+            if(isset($address['stringify'])) {
+                $location = $this->container->get('food.location')->findByAddress($address['stringify']);
+            } else {
+                $addressBuffer = $address['street'] . ' ' . $address['house_number'] . (!empty($address['flat_number']) ? '-' . $address['flat_number'] . '' : '');
+                $location = $this->container->get('food.location')->findByAddress($addressBuffer.", ".$address['city']);
+            }
             $id = $doctrine->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance($place->getId(), $location, false, true);
             $placePoint = $doctrine->getRepository('FoodDishesBundle:PlacePoint')->find($id);
             $dp = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getDeliveryPriceForPlacePoint($place, $placePoint, $location);
