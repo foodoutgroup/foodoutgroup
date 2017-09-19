@@ -189,6 +189,11 @@
                 <tr>
                     <td colspan="5">{{ order.addressId.address }}</td>
                 </tr>
+                {% if order.addressId.flat is not null %}
+                    <tr>
+                        <td colspan="5">{{ order.addressId.flat }}</td>
+                    </tr>
+                {% endif %}
             {% else %}
                 <tr>
                     <th colspan="5">{% trans %}mobile.pickup_type{% endtrans %}</th>

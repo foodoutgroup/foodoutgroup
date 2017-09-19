@@ -180,6 +180,11 @@
         <tr>
             <td colspan="5"><a itemprop="address" href="https://maps.google.com?saddr=Current+Location&daddr={{ order.addressId.address }}" target="_blank">{{ order.addressId.address }}</a></td>
         </tr>
+        {% if order.addressId.flat is not null %}
+            <tr>
+                <td colspan="5">{{ order.addressId.flat }}</td>
+            </tr>
+        {% endif %}
         <tr>
             <th colspan="5">{% trans %}mobile.customer_phone{% endtrans %}</th>
         </tr>
