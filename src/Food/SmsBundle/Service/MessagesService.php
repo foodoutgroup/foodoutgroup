@@ -140,6 +140,7 @@ class MessagesService
         }
         if (!empty($text)) {
             $text = str_replace(["\n", "\t", "\r"], '', $text);
+            $text = transliterator_transliterate('Any-Latin; Latin-ASCII',$text);
             $message->setMessage($text);
         }
         if (!empty($order)) {
