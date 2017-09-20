@@ -89,6 +89,12 @@ class BannerLinks extends Uploadable implements Translatable
      */
     private $locale;
 
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     */
+    private $deletedAt;
 
 
     protected $resizeMode = null;
@@ -97,6 +103,23 @@ class BannerLinks extends Uploadable implements Translatable
     protected $maxFileSize = 1.9;
 
     protected $file;
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getDeletedAt()
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param \DateTime|null $deletedAt
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deletedAt = $deletedAt;
+    }
+
 
 
     public function __toString()
