@@ -112,7 +112,7 @@ parameters:
     mailer_from: info@foodout.lt
     mailer_notify_on_accept: 30010811
     mailer_notify_pickup_on_accept: 41582385
-    mailer_notify_new_user: 41639737
+    mailer_notify_new_user: template-1497614273
     mailer_user_reset: template-1505479091
     mailer_partialy_deliverer: 30021995
     mailer_rate_your_food: 30009271
