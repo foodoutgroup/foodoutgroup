@@ -106,7 +106,7 @@ parameters:
     mailer_send_invoice: template-1497516201
     mailer_send_corporate_invoice: 41585359_to_change
     mailer_send_corporate_changed_password: 41611951
-    mailer_send_free_delivery_discount: 41611739
+    mailer_send_free_delivery_discount: template-1497515703
     mailer_provider: food.mail.sendigo
     mailer_newsletter_provider: food.mail.mailer
     mailerlite_api_key: "71b32c22e0944db62613e34669489d1a"
