@@ -77,7 +77,7 @@ class RestaurantDuplicateService extends ContainerAware
 
         //common slugs
 
-        $commonSlugs = $slugRepo->findBy(['type' => 'place', 'item_id' => $placeId, 'deactivated_at' => null, 'active'=>1]);
+        $commonSlugs = $slugRepo->findBy(['type' => 'place', 'item_id' => $placeId, 'deactivated_at' => null, 'active' => 1]);
 
         if (!empty($commonSlugs)) {
             foreach ($commonSlugs as $slugItem) {
@@ -93,8 +93,8 @@ class RestaurantDuplicateService extends ContainerAware
         }
 
 
-
         $dishOptions = $dishOptionRepo->findby(['place' => $placeId]);
+        $dishMap = [];
 
         foreach ($dishOptions as $option) {
 
@@ -102,6 +102,8 @@ class RestaurantDuplicateService extends ContainerAware
             $cloneOption->setId(null);
             $cloneOption->setPlace($newPlace);
             $em->persist($cloneOption);
+            $dishMap[$option->getId()] = $cloneOption;
+
             $translation = $option->getTranslations();
 
             if (!empty($translation)) {
@@ -112,6 +114,7 @@ class RestaurantDuplicateService extends ContainerAware
                     $em->persist($newOptionTranslation);
                 }
             }
+
         }
 
         $foodCategories = $foodCategoryRepo->findBy(['place' => $placeId]);
@@ -157,10 +160,14 @@ class RestaurantDuplicateService extends ContainerAware
 
             $dishUnitCategoryTmp = null;
 
-            if($dishUnit->getUnitCategory()){
-                $dishUnitCategoryTmp = $dishUnitsCategoryArray[$dishUnit->getUnitCategory()->getId()];
-            }
+            if ($dishUnit->getUnitCategory()) {
+                if (isset($dishUnitsCategoryArray[$dishUnit->getUnitCategory()->getId()])) {
+                    $dishUnitCategoryTmp = $dishUnitsCategoryArray[$dishUnit->getUnitCategory()->getId()];
+                } else {
+                    $dishUnitCategoryTmp = null;
+                }
 
+            }
 
 
             $cloneDishUnit = clone $dishUnit;
@@ -180,14 +187,14 @@ class RestaurantDuplicateService extends ContainerAware
 
         }
 
-        $comboDiscounts = $comboDiscountRepo->findBy(['place'=>$placeId]);
+        $comboDiscounts = $comboDiscountRepo->findBy(['place' => $placeId]);
 
-        foreach ($comboDiscounts as $comboDiscount){
+        foreach ($comboDiscounts as $comboDiscount) {
             $comboDiscountClone = clone  $comboDiscount;
             $comboDiscountClone->setId(null);
             $comboDiscountClone->setPlace($newPlace);
-            if($comboDiscount->getDishCategory()){
-                $comboDiscountClone->setDishCategory( isset($foodCategoriesArray[$comboDiscount->getId()]) ? $foodCategoriesArray[$comboDiscount->getId()] : null);
+            if ($comboDiscount->getDishCategory()) {
+                $comboDiscountClone->setDishCategory(isset($foodCategoriesArray[$comboDiscount->getId()]) ? $foodCategoriesArray[$comboDiscount->getId()] : null);
             }
             $comboDiscountClone->setDishUnit(isset($dishUnitsArray[$comboDiscount->getId()]) ? $dishUnitsArray[$comboDiscount->getId()] : null);
             $em->persist($comboDiscountClone);
@@ -202,12 +209,21 @@ class RestaurantDuplicateService extends ContainerAware
                 $newDish = clone $dish;
                 $newDish->setId(null);
                 $newDish->setPlace($newPlace);
-                $newDish->setSlug($dish->getSlug().'-'.uniqid());
+                $newDish->setSlug($dish->getSlug() . '-' . uniqid());
                 $oldCategories = clone $dish->getCategories();
+                $oldDishOptions = clone $dish->getOptions();
                 $newDish->removeAllCategories();
+                $newDish->removeAllOptions();
+
+                foreach ($oldDishOptions as $dishOptionItem) {
+                    if (isset($dishMap[$dishOptionItem->getId()])) {
+                        $newDish->addOption($dishMap[$dishOptionItem->getId()]);
+                    }
+                }
+
 
                 foreach ($oldCategories as $category) {
-                    if(isset($foodCategoriesArray[$category->getId()])) {
+                    if (isset($foodCategoriesArray[$category->getId()])) {
                         $newDish->addCategorie($foodCategoriesArray[$category->getId()]);
                     }
                 }
@@ -229,8 +245,8 @@ class RestaurantDuplicateService extends ContainerAware
                     $cloneSize = clone $size;
                     $cloneSize->setId(null);
                     $cloneSize->setDish($newDish);
-                    if(isset($dishUnitsArray[$sizeId])){
-                    $cloneSize->setUnit($dishUnitsArray[$sizeId]);
+                    if (isset($dishUnitsArray[$sizeId])) {
+                        $cloneSize->setUnit($dishUnitsArray[$sizeId]);
                     }
                     $em->persist($cloneSize);
                 }

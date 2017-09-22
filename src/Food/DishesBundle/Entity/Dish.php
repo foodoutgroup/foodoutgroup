@@ -716,6 +716,19 @@ class Dish extends Uploadable implements Translatable
     }
 
     /**
+     * remove categories
+     *
+     * @param \Food\DishesBundle\Entity\DishOption $options
+     * @return Dish
+     */
+
+    public function removeAllOptions(){
+        $this->options = new \Doctrine\Common\Collections\ArrayCollection();
+
+        return $this;
+    }
+
+    /**
      * Add categories
      *
      * @param \Food\DishesBundle\Entity\FoodCategory $categories
