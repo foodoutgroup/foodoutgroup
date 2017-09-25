@@ -22,6 +22,22 @@ class RestaurantDuplicateService extends ContainerAware
     {
         set_time_limit(50000);
         $em = $this->container->get('doctrine')->getManager();
+        $filter = $em->getFilters()->disable('softdeleteable');
+        $filter->disableForEntity('FoodDishesBundle:Place');
+        $filter->disableForEntity('FoodDishesBundle:Dish');
+        $filter->disableForEntity('FoodAppBundle:SeoRecord');
+        $filter->disableForEntity('FoodAppBundle:Slug');
+        $filter->disableForEntity('FoodDishesBundle:Kitchen');
+        $filter->disableForEntity('FoodDishesBundle:DishSize');
+        $filter->disableForEntity('FoodDishesBundle:DishOption');
+        $filter->disableForEntity('FoodDishesBundle:FoodCategory');
+        $filter->disableForEntity('FoodDishesBundle:DishUnitCategory');
+        $filter->disableForEntity('FoodDishesBundle:DishUnit');
+        $filter->disableForEntity('FoodDishesBundle:ComboDiscount');
+        $filter->disableForEntity('FoodDishesBundle:PlacePoint');
+
+
+
         $placeRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place');
         $dishRepo = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Dish');
         $seoRepo = $this->container->get('doctrine')->getRepository('FoodAppBundle:SeoRecord');
@@ -163,12 +179,9 @@ class RestaurantDuplicateService extends ContainerAware
             if ($dishUnit->getUnitCategory()) {
                 if (isset($dishUnitsCategoryArray[$dishUnit->getUnitCategory()->getId()])) {
                     $dishUnitCategoryTmp = $dishUnitsCategoryArray[$dishUnit->getUnitCategory()->getId()];
-                } else {
-                    $dishUnitCategoryTmp = null;
                 }
 
             }
-
 
             $cloneDishUnit = clone $dishUnit;
             $cloneDishUnit->setId(null);

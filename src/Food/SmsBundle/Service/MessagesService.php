@@ -158,11 +158,18 @@ class MessagesService
     public function saveMessage($message)
     {
         if (!($message instanceof Message)) {
+
             throw new \Exception('Message not given. How should I save it?');
         }
-        $em = $this->getManager();
-        $em->persist($message);
-        $em->flush();
+
+        if(strlen($message->getMessage()) < 1) {
+            return  false;
+        }
+
+            $em = $this->getManager();
+            $em->persist($message);
+            $em->flush();
+        return true;
     }
 
     /**
