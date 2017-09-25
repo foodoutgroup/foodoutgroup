@@ -32,7 +32,7 @@ parameters:
 
     locale: lv
     locales: [%locale%, "en", "ru" ]
-    locales_hidden: ['en', 'ru']
+    locales_hidden: []
     available_cities: ["Rīga", "Ogre", "Jurmala", "Jelgava"]
     available_cities_slugs: ["Riga", "Ogre", "Jurmala", "Jelgava"]
     cloudfront_url: foodout.lv
