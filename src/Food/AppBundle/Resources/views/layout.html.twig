@@ -99,11 +99,11 @@
 
     <script type="text/javascript">
         // facebook pixel
-        {% set FBpixelCode = misc_utils.getParam('facebook_pixel_code', null) %}
-        {% if FBpixelCode is not null %}
-        fbq('init', '{{ FBpixelCode }}');
-        {% endif %}
-        fbq('track', "PageView");
+        {#{% set FBpixelCode = misc_utils.getParam('facebook_pixel_code', null) %}#}
+        {#{% if FBpixelCode is not null %}#}
+        {#fbq('init', '{{ FBpixelCode }}');#}
+        {#{% endif %}#}
+        {#fbq('track', "PageView");#}
 
         // google analytic
         ga('create', '{{ google_analytics_uid }}', 'auto', {'allowLinker': true});
