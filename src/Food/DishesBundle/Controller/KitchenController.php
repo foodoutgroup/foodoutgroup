@@ -24,6 +24,7 @@ class KitchenController extends Controller
      */
     public function listAction($rush_hour = false, Request $request)
     {
+        $languageUtil = $this->container->get('food.app.utils.language');
 
         if ($deliveryType = $request->get('delivery_type', false)) {
 
@@ -56,7 +57,25 @@ class KitchenController extends Controller
             $selectedKitchensSlugs = [];
         }
 
+        $slugFilter = $request->get('slug_filter');
+
         $list = $this->getKitchens($request);
+
+
+        if (empty($selectedKitchens) && !empty($slugFilter)) {
+            $slugKitchens = explode('/', $slugFilter);
+            $selectedKitchens = $this->formatKitchens($slugKitchens, $list);
+        }
+
+        if(empty($selectedKitchensSlugs) && !empty($slugFilter)) {
+            $tmp = [];
+
+            foreach ($slugKitchens as $filter) {
+                $tmp[] = $languageUtil->removeChars($this->container->getParameter('locale'), $filter);;
+            }
+            array_unshift($tmp, '');
+            $selectedKitchensSlugs = $tmp;
+        }
 
         return $this->render('FoodDishesBundle:Kitchen:list_items.html.twig', [
                 'list' => $list,
@@ -94,4 +113,21 @@ class KitchenController extends Controller
 
         return $returnList;
     }
+
+    private function formatKitchens($slugs, $kitchens)
+    {
+        $languageUtil = $this->container->get('food.app.utils.language');
+        $return = [];
+        if ($kitchens && $slugs) {
+            foreach ($kitchens as $kitchen) {
+                $value = $languageUtil->removeChars($this->container->getParameter('locale'), $kitchen['name']);
+                if (in_array($value, $slugs)) {
+                    $return[$value] = $kitchen['id'];
+                }
+            }
+        }
+
+        return $return;
+    }
+
 }
