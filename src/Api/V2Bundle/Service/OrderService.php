@@ -93,7 +93,7 @@ class OrderService extends \Food\ApiBundle\Service\OrderService
                 $location = $this->container->get('food.location')->findByAddress($address['stringify']);
             } else {
                 $addressBuffer = $address['street'] . ' ' . $address['house_number'] . (!empty($address['flat_number']) ? '-' . $address['flat_number'] . '' : '');
-                $location = $this->container->get('food.location')->findByAddress($addressBuffer.", ".$address['city']);
+                $location = $this->container->get('food.location')->findByAddress($addressBuffer, $address['city']);
             }
             $id = $doctrine->getRepository('FoodDishesBundle:Place')->getPlacePointNearWithDistance($place->getId(), $location, false, true);
             $placePoint = $doctrine->getRepository('FoodDishesBundle:PlacePoint')->find($id);
