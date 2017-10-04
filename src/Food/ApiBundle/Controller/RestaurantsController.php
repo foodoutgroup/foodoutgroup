@@ -17,6 +17,7 @@ class RestaurantsController extends Controller
      */
     public function getRestaurantsAction(Request $request)
     {
+        
         //$this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array)$request);
         $doctrine = $this->getDoctrine();
         try {
@@ -35,7 +36,7 @@ class RestaurantsController extends Controller
             $locationData = null;
 
             if ($address && $city) {
-                $locationData = $locationService->findByAddress($address . ', ' . $city);
+                $locationData = $locationService->findByAddress($address, $city);
                 $locationService->set($locationData);
             } elseif ($address) {
                 $locationData = $locationService->findByAddress($address);
@@ -106,15 +107,6 @@ class RestaurantsController extends Controller
             $this->get('logger')->error('Restaurants:getRestaurantsAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Restaurants:getRestaurantsAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
-        } catch (\Exception $e) {
-            $this->get('logger')->error('Restaurants:getRestaurantsAction Error2:' . $e->getMessage());
-            $this->get('logger')->error('Restaurants:getRestaurantsAction Trace2:' . $e->getTraceAsString());
-
-            return new JsonResponse(
-                ['error' => $this->get('translator')->trans('general.error_happened').''. $e->getMessage()],
-                500,
-                array('error' => 'server error', 'description' => null)
-            );
         }
 
         //$this->get('logger')->alert('Restaurants:getRestaurantsAction Response:' . json_encode($response));
@@ -130,8 +122,12 @@ class RestaurantsController extends Controller
      */
     public function getRestaurantsFilteredAction(Request $request)
     {
+
         $startTime = microtime(true);
         $this->get('logger')->alert('Restaurants:getRestaurantsFilteredAction Request:', (array)$request);
+
+
+//        $delivery = $request->get('delivery');
         try {
 
             $city = $request->get('city');
@@ -144,7 +140,7 @@ class RestaurantsController extends Controller
             $locationData = null;
 
             if ($address && $city) {
-                $locationData = $locationService->findByAddress($address . ', ' . $city);
+                $locationData = $locationService->findByAddress($address,  $city);
                 $locationService->set($locationData);
             } elseif ($address) {
                 $locationData = $locationService->findByAddress($address);
@@ -153,11 +149,10 @@ class RestaurantsController extends Controller
                 $locationData = $locationService->findByCords($lat, $lng);
                 $locationService->set($locationData);
             }
-
             $places = [];
             if (!empty($locationData)) {
                 $places = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')
-                    ->magicFindByKitchensIds([], [], $locationData, $this->container);
+                    ->magicFindByKitchensIds([], ['delivery_type' => $request->get('delivery')], $locationData, $this->container);
 
             }
 
