@@ -33,7 +33,6 @@ class CityController extends Controller
                 throw new NotFoundHttpException('City was not found');
             }
         }
-
         $lService = $this->get('food.location');
 
         $metaTitle = $city->getMetaTitle();
@@ -42,7 +41,6 @@ class CityController extends Controller
         // TODO: get meta data by kitchen filter :D
 
         $locationData = $lService->get();
-
         if($locationData == null || (array_key_exists('city_id', $locationData) && $locationData['city_id'] != $city->getId())) {
             $dataToSet = $lService->findByAddress($city->getTitle().", ".$this->container->getParameter('country_full'));
             $dataToSet['city_id'] = $city->getId();
@@ -51,7 +49,6 @@ class CityController extends Controller
             $dataToSet['flat'] = null;
             $lService->clear()->set($dataToSet);
         }
-
         $placeService = $this->get('food.places');
 
         return $this->render(
@@ -96,7 +93,7 @@ class CityController extends Controller
             }
         }
 
-        $placeCollection = $this->get('food.places')->getPlacesForList($rush_hour, $request,true);
+        $placeCollection = $this->get('food.places')->getPlacesForList($rush_hour, $request, true);
 
         return $this->render(
             'FoodPlacesBundle:City:list.html.twig',

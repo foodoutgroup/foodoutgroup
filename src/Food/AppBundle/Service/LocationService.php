@@ -235,9 +235,14 @@ class LocationService extends ContainerAware
         return $flat;
     }
 
-    public function findByAddress($address)
+    public function findByAddress($address, $city = null)
     {
-        return $this->finishUpData($this->getGeoCodeCurl(['address' => $address]));
+        if (!$city) {
+            return $this->finishUpData($this->getGeoCodeCurl(['address' => $address]));
+        } else {
+            return $this->finishUpData($this->getGeoCodeCurl(['address' => $address, 'locality' => $city]));
+
+        }
     }
 
     public function findByIp($ipAddress)
