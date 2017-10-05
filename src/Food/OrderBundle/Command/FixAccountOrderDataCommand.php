@@ -54,7 +54,7 @@ class FixAccountOrderDataCommand extends ContainerAwareCommand
                 foreach ($orderAccData as $orderData) {
 
                     $order = $orderRepository->findOneBy(['id'=>$orderData['order_id']]);
-                    if(($order->getOrderStatus() == 'completed' || $order->getOrderStatus() == 'canceled_produced') && $order->getPaymentStatus() == 'complete' ){
+                    if(($order->getOrderStatus() == 'completed' || $order->getOrderStatus() == 'canceled_produced' || $order->getOrderStatus() == 'finished') && $order->getPaymentStatus() == 'complete' ){
                         $accRecord = $orderAccDataRepository->find($orderData['id']);
                         $accRecord->setIsDelivered(1);
                         $accRecord->setIsSynced(0);
