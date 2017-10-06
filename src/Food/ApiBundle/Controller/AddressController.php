@@ -35,7 +35,7 @@ class AddressController extends Controller
                     $response = [];
                 }
             } elseif (!empty($city) && !empty($street) && !empty($houseNumber)) {
-                $response = $lService->findByAddress($street.' '.$houseNumber . ', ' . $city, $city);
+                $response = $lService->findByAddress($street.' '.$houseNumber . ', ' . $city);
 
                 if($response) {
                     $lService->set($response);

@@ -53,6 +53,11 @@ class LocationService extends ContainerAware
                 'precision' => 0,
             ];
 
+            if (!$locationData['output']) {
+                $locationData['output'] = $locationData['street'] . ' ' . $locationData['house'] . (isset($locationData['flat']) ? '-'. $locationData['flat'] : '') . ', ' . $locationData['city'];
+                $locationData['outputNoFlat'] = $locationData['street'] . ' ' . $locationData['house'] . ', ' . $locationData['city'];
+            }
+
             if ($locationData['city']) {
                 $cityObj = $this->em->getRepository('FoodAppBundle:City')->getByName($locationData['city']);
                 if ($cityObj) {
