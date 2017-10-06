@@ -2400,10 +2400,16 @@ class OrderService extends ContainerAware
             $messagesToSend = [];
 
             $orderMessageRecipients = [
-                $placePoint->getPhone(),
-                $placePoint->getAltPhone1(),
-                $placePoint->getAltPhone2(),
+                ($placePoint->getPhoneSend() ?  $placePoint->getAltPhone1() : null ) ,
+                ($placePoint->getAltPhone1Send() ?  $placePoint->getAltPhone1() : null ) ,
+                ($placePoint->getAltPhone2Send() ?  $placePoint->getAltPhone1() : null ) ,
             ];
+
+
+            foreach ($orderMessageRecipients as $k=>$r) {
+                if (!$r) {unset($orderMessageRecipients[$k]) ;}
+            }
+
 
             foreach ($orderMessageRecipients as $nr => $phone) {
                 // Siunciam sms'a jei jis ne landline
