@@ -2405,8 +2405,6 @@ class OrderService extends ContainerAware
                 ($placePoint->getAltPhone2Send() ?  $placePoint->getAltPhone2() : null ) ,
             ];
 
-
-            var_dump($orderMessageRecipients)
             foreach ($orderMessageRecipients as $nr => $phone) {
                 // Siunciam sms'a jei jis ne landline
                 if (!empty($phone) && $miscUtils->isMobilePhone($phone, $country)) {
