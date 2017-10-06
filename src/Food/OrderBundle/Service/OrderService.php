@@ -2399,12 +2399,10 @@ class OrderService extends ContainerAware
         if (!$order->getPlace()->getNavision()) {
             $messagesToSend = [];
 
-            $placePoint->getAltPhone1Send()
-            $placePoint->getAltPhone2Send()
             $orderMessageRecipients = [
                 ($placePoint->getPhoneSend() ?  $placePoint->getPhone() : null ) ,
                 ($placePoint->getAltPhone1Send() ?  $placePoint->getAltPhone1() : null ) ,
-                ($placePoint->getAltPhone2Send() ?  $placePoint->getAltPhone1() : null ) ,
+                ($placePoint->getAltPhone2Send() ?  $placePoint->getAltPhone2() : null ) ,
             ];
 
 
