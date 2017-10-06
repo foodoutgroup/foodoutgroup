@@ -42,7 +42,7 @@ class LocationService extends ContainerAware
                 'id' => isset($location['id']) ? $location['id'] : null,
                 'output' => isset($location['output']) ? $location['output'] : null,
                 'outputNoFlat' => isset($location['outputNoFlat']) ? $location['outputNoFlat'] : null,
-                'country' => isset($location['country']) ? $location['country'] : null,
+                'country' => isset($location['country']) ? $location['country'] : $this->container->getParameter('country_full'),
                 'city' => isset($location['city']) ? $location['city'] : null,
                 'city_id' => null,
                 'street' => isset($location['street']) ? $location['street'] : null,
@@ -105,7 +105,6 @@ class LocationService extends ContainerAware
 
         $precision = 0;
         if($locationData) {
-
             if (!$locationData['latitude'] || !$locationData['longitude']) {
                 $precision = 1;
             } else if (!$locationData['house']) {
