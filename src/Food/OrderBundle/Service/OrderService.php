@@ -2399,18 +2399,16 @@ class OrderService extends ContainerAware
         if (!$order->getPlace()->getNavision()) {
             $messagesToSend = [];
 
+            $placePoint->getAltPhone1Send()
+            $placePoint->getAltPhone2Send()
             $orderMessageRecipients = [
-                ($placePoint->getPhoneSend() ?  $placePoint->getAltPhone1() : null ) ,
+                ($placePoint->getPhoneSend() ?  $placePoint->getPhone() : null ) ,
                 ($placePoint->getAltPhone1Send() ?  $placePoint->getAltPhone1() : null ) ,
                 ($placePoint->getAltPhone2Send() ?  $placePoint->getAltPhone1() : null ) ,
             ];
 
 
-            foreach ($orderMessageRecipients as $k=>$r) {
-                if (!$r) {unset($orderMessageRecipients[$k]) ;}
-            }
-
-
+            var_dump($orderMessageRecipients)
             foreach ($orderMessageRecipients as $nr => $phone) {
                 // Siunciam sms'a jei jis ne landline
                 if (!empty($phone) && $miscUtils->isMobilePhone($phone, $country)) {
