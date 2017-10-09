@@ -581,8 +581,8 @@ class OrderService extends ContainerAware
                             'city' => $order->getCityId() ? $order->getCityId()->getTitle() : $order->getPlacePoint()->getCityId()->getTitle(),
                             'food_review_url' => 'http://' . $this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review',
                             'delivery_time' => ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
-                            'email'=>$order->getUser()->getEmail()
-                            ];
+                            'email' => $order->getUser()->getEmail()
+                        ];
 
 
                         $mailTemplate = $emailObj->getTemplateId();
@@ -603,19 +603,10 @@ class OrderService extends ContainerAware
 
                         } else {
 
-                            $mailResp = $ml->setVariables($variables)
-                                ->setRecipient($order->getOrderExtra()->getEmail(), $this->getOrder()->getOrderExtra()->getEmail())
-                                ->setId($mailTemplate)
-                                ->send();
-                        }
-
-                        if (isset($mailResp['errors'])) {
-                            $this->container->get('logger')->error(
-                                $mailResp['errors'][0]
-                            );
+                            $orderEmailService = $this->container->get('food.invoice');
+                            $orderEmailService->addOrderEmailToSend($order, $emailObj->getStatus(), $mailTemplate);
 
                         }
-
 
                         $this->logMailSent(
                             $this->getOrder(),
@@ -2404,6 +2395,14 @@ class OrderService extends ContainerAware
                 ($placePoint->getAltPhone1Send() ?  $placePoint->getAltPhone1() : null ) ,
                 ($placePoint->getAltPhone2Send() ?  $placePoint->getAltPhone2() : null ) ,
             ];
+
+
+            foreach ($orderMessageRecipients as $k => $r) {
+                if (!$r) {
+                    unset($orderMessageRecipients[$k]);
+                }
+            }
+
 
             foreach ($orderMessageRecipients as $nr => $phone) {
                 // Siunciam sms'a jei jis ne landline
