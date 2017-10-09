@@ -17,7 +17,7 @@ class RestaurantsController extends Controller
      */
     public function getRestaurantsAction(Request $request)
     {
-        
+
         //$this->get('logger')->alert('Restaurants:getRestaurantsAction Request:', (array)$request);
         $doctrine = $this->getDoctrine();
         try {
@@ -219,7 +219,7 @@ class RestaurantsController extends Controller
             $locationData = null;
 
             if ($address && $city) {
-                $locationData = $locationService->findByAddress($address, $city);
+                $locationData = $locationService->findByAddress($address . ', ' . $city);
                 $locationService->set($locationData);
             } elseif ($address) {
                 $locationData = $locationService->findByAddress($address);
