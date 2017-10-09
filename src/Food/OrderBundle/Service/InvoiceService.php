@@ -6,6 +6,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Food\AppBundle\Entity\UnusedSfNumbers;
 use Food\OrderBundle\Entity\InvoiceToSend;
 use Food\OrderBundle\Entity\Order;
+use Food\OrderBundle\Entity\OrderEmail;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
@@ -92,6 +93,23 @@ class InvoiceService extends ContainerAware
         $em->persist($invoiceTask);
         $em->flush();
     }
+
+    public function addOrderEmailToSend($order, $type, $template)
+    {
+        if (!$order instanceof Order) {
+            throw new \InvalidArgumentException('no order!');
+        }
+
+        $em = $this->container->get('doctrine')->getManager();
+
+        $orderEmailTask = new OrderEmail();
+        $orderEmailTask->setOrderId($order->getId())
+            ->setCreatedAt(new \DateTime('now'))->setType($type)->setTemplateId($template);
+
+        $em->persist($orderEmailTask);
+        $em->flush();
+    }
+
 
     /**
      * @param Order $order
