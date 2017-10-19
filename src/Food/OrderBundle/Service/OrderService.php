@@ -1073,7 +1073,7 @@ class OrderService extends ContainerAware
             if (empty($sfNumber)) {
                 // We failed. lets take a new one
                 try {
-                    $sfNumber = (int)$miscService->getParam('sf_next_number');
+                    $sfNumber = (int)$miscService->getParam('sf_next_number',null,false);
                     $miscService->setParam('sf_next_number', ($sfNumber + 1));
                     $this->logOrder($order, 'sf_number_assign', 'Assigning new SF number: ' . $sfNumber);
                 } catch (OptimisticLockException $e) {

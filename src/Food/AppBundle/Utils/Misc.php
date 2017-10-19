@@ -225,9 +225,9 @@ class Misc
      * @internal param bool $noException
      *
      */
-    public function getParam($name, $default = null)
+    public function getParam($name, $default = null, $forceRefresh = true)
     {
-        if (isset(self::$paramCollection[$name])) {
+        if (isset(self::$paramCollection[$name]) && $forceRefresh) {
             return self::$paramCollection[$name];
         }
         else {
