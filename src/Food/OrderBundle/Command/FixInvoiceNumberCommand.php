@@ -28,7 +28,7 @@ class FixInvoiceNumberCommand extends ContainerAwareCommand
         $emRepo = $this->getContainer()->get('doctrine')->getManager();
         $invoiceRepository = $emRepo->getRepository('FoodOrderBundle:InvoiceToSend');
         $orderRepository = $emRepo->getRepository('FoodOrderBundle:Order');
-
+        $orderService = $this->getContainer()->get('food.order');
         $ids = $input->getArgument('ids');
 
 
@@ -41,6 +41,15 @@ class FixInvoiceNumberCommand extends ContainerAwareCommand
                     $order->setSfNumber(null);
                     $emRepo->persist($order);
                     $emRepo->flush();
+
+                    $orderObj = $orderService->getOrderById($id);
+
+                    $orderSfSeries = $orderObj->getSfSeries();
+                    if (empty($orderSfSeries)) {
+                        $orderService->setInvoiceDataForOrder();
+                    }
+
+
 
                     $invoiceToSend = new InvoiceToSend();
                     $invoiceToSend->setOrder($order);
