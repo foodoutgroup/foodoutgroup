@@ -123,6 +123,27 @@ class DriverAdmin extends FoodAdmin
             ));
     }
 
+    public function getExportFields()
+    {
+        $exportFields = [];
+        $exportFields[] = 'id';
+        $exportFields[] = 'created_by';
+        $exportFields[] = 'edited_by';
+        $exportFields[] = 'deleted_by';
+        $exportFields[] = 'type';
+        $exportFields[] = 'provider';
+        $exportFields[] = 'extId';
+        $exportFields[] = 'phone';
+        $exportFields[] = 'name';
+        $exportFields[] = 'active';
+        $exportFields[] = 'created_at';
+        $exportFields[] = 'edited_at';
+        $exportFields[] = 'token';
+        $exportFields[] = 'city_id';
+
+        return $exportFields;
+    }
+
     /**
      * @inheritdoc
      *
