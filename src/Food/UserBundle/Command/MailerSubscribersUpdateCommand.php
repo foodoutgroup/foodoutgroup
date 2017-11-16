@@ -118,11 +118,21 @@ class MailerSubscribersUpdateCommand extends ContainerAwareCommand
                     );
                     break;
                 case 'Marketing':
+                    $address = $em->getRepository('FoodUserBundle:UserAddress')->findOneBy(array('user' => $user));
+                    if ($address instanceof UserAddress && $address && $address->getId() != '') {
+                        if($address->getCityId()) {
+                            $city = $address->getCityId()->getTitle();
+                        } else {
+                            $city = $address->getCityReal(); // from code with love :)
+                        }
+                    }else{
+                        $city = '';
+                    }
                     $subscribers[] = array(
                         'email' => $user->getEmail(),
                         'name' => $user->getFirstname(),
                         'fields' => array(
-                            array('name' => 'city', 'value' => $user->getCityId()->getTitle())
+                            array('name' => 'city', 'value' => $city)
                         )
                     );
                     break;
