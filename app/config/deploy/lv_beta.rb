@@ -3,7 +3,6 @@ set :deploy_to,   "/srv/vhosts/beta.foodout.lv/"
 
 set :scm,         :git
 set :model_manager, "doctrine"
-]
 set :user, "foodoutlv"
 set :password, "RjT8EThq"
 
