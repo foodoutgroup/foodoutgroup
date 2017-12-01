@@ -56,20 +56,15 @@ parameters:
            method:
              - local
              - local.card
-             - swedbank-gateway
-             - swedbank-credit-card-gateway
+
            title:
              - '[#cash#]'
              - '[#credit.card#]'
-             - 'Swedbank'
-             - 'Ar karti internetā'
     payment.methods:
         - local
         - local.card
         - postpaid
         - paysera
-        - swedbank-gateway
-        - swedbank-credit-card-gateway
         - seb-banklink
         - nordea-banklink
     currency_display: '&euro;'

@@ -367,22 +367,22 @@
                                 {# bbd su jusu tokiu hardcode.. bl nx stengtis jei tokius s daro zmones.#}
                                 {% if site_country == 'LV' %}
                                 <div class="for_hiding">
-                                    <div class="select-payment clearfix">
-                                        <label class="custom-radio wider-radio">
-                                            {{ 'cart.checkout.gateway_cc'|trans }}:
-                                            <img alt="MasterCard" src="//{{ cloudfront_url }}/bundles/foodapp/images/master-card-small.png">
-                                            <img alt="Visa" src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-small.png">
-                                            <img alt="Maestro" src="//{{ cloudfront_url }}/bundles/foodapp/images/maestro-small.png">
-                                            <img alt="Visa Electron" src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-electron-small.png">
-                                            <input type="radio" name="payment-type" value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}/>
-                                        </label>
-                                    </div>
-                                    <div class="select-bank clearfix">
-                                        <label class="custom-radio">
-                                            <img alt="Swedbank" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-swb.png">
-                                            <input type="radio" name="payment-type" value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}/>
-                                        </label>
-                                    </div>
+                                    {#<div class="select-payment clearfix">#}
+                                        {#<label class="custom-radio wider-radio">#}
+                                            {#{{ 'cart.checkout.gateway_cc'|trans }}:#}
+                                            {#<img alt="MasterCard" src="//{{ cloudfront_url }}/bundles/foodapp/images/master-card-small.png">#}
+                                            {#<img alt="Visa" src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-small.png">#}
+                                            {#<img alt="Maestro" src="//{{ cloudfront_url }}/bundles/foodapp/images/maestro-small.png">#}
+                                            {#<img alt="Visa Electron" src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-electron-small.png">#}
+                                            {#<input type="radio" name="payment-type" value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}/>#}
+                                        {#</label>#}
+                                    {#</div>#}
+                                    {#<div class="select-bank clearfix">#}
+                                        {#<label class="custom-radio">#}
+                                            {#<img alt="Swedbank" src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-swb.png">#}
+                                            {#<input type="radio" name="payment-type" value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}/>#}
+                                        {#</label>#}
+                                    {#</div>#}
                                 </div>
                                 {% elseif site_country == 'EE' %}
                                 <div class="for_hiding">
