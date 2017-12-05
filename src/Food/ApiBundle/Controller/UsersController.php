@@ -56,6 +56,44 @@ class UsersController extends Controller
         return $encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt());
     }
 
+    public function findByPhoneAction(Request $request)
+    {
+        $response = [];
+        try {
+            $phone = $request->get('phone');
+            $this->parseRequestBody($request);
+            $um = $this->getUserManager();
+            $os = $this->container->get('food_api.order');
+            $user = $um->findUserBy(array('phone' => $phone));
+            if ($user) {
+                $lastOrder = $user->getOrder()->last();
+                $response = array(
+                    'user_id' => $user->getId(),
+                    'phone' => $user->getPhone(),
+                    'name' => $user->getFullName(),
+                    'email' => $user->getEmail(),
+                    'lastOrder' => $os->getOrderForResponse($lastOrder),
+
+                );
+            }
+        } catch (ApiException $e) {
+            $this->get('logger')->error('Users:registerAction Error1:' . $e->getMessage());
+            $this->get('logger')->error('Users:registerAction Trace1:' . $e->getTraceAsString());
+            return new JsonResponse($e->getErrorData(), $e->getStatusCode());
+        } catch (\Exception $e) {
+            $this->get('logger')->error('Users:registerAction Error2:' . $e->getMessage());
+            $this->get('logger')->error('Users:registerAction Trace2:' . $e->getTraceAsString());
+
+            return new JsonResponse(
+                ['error' => $this->get('translator')->trans('general.error_happened')],
+                500,
+                array('error' => 'server error', 'description' => null)
+            );
+        }
+
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+    }
+
     /**
      * User register
      *
