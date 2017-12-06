@@ -60,22 +60,33 @@ class UsersController extends Controller
     {
         $response = [];
         try {
+            $this->get('food_api.api')->loginByHash($this->getApiToken($request));
             $phone = $request->get('phone');
+            if (!$phone) {
+                $response = ['message' => 'phone not supplied'];
+                return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+            }
             $this->parseRequestBody($request);
             $um = $this->getUserManager();
             $os = $this->container->get('food_api.order');
-            $user = $um->findUserBy(array('phone' => $phone));
-            if ($user) {
-                $lastOrder = $user->getOrder()->last();
-                $response = array(
-                    'user_id' => $user->getId(),
-                    'phone' => $user->getPhone(),
-                    'name' => $user->getFullName(),
-                    'email' => $user->getEmail(),
-                    'lastOrder' => $os->getOrderForResponse($lastOrder),
+            $userFound = $um->findUserBy(['phone' => $phone]);
 
-                );
+            if (!$userFound) {
+                $response = ['message' => 'user not found'];
+                return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
             }
+
+            $lastOrder = $userFound->getOrder()->last();
+
+            $response = array(
+                'user_id' => $userFound->getId(),
+                'phone' => $userFound->getPhone(),
+                'name' => $userFound->getFullName(),
+                'email' => $userFound->getEmailCanonical(),
+                'lastOrder' => $os->getOrderForResponse($lastOrder),
+
+            );
+
         } catch (ApiException $e) {
             $this->get('logger')->error('Users:registerAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Users:registerAction Trace1:' . $e->getTraceAsString());

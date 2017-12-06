@@ -2,6 +2,7 @@
 
 namespace Food\UserBundle\Entity;
 
+use Doctrine\Common\Collections\Criteria;
 use Food\DishesBundle\Entity\Place;
 use Food\OrderBundle\Entity\Order;
 use FOS\UserBundle\Entity\User as BaseUser;
@@ -1308,5 +1309,16 @@ class User extends BaseUser
         return $this;
     }
 
+    public function getLastOrder()
+    {
+
+
+        $orders = $this->getOrder();
+
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq("active", true));
+
+        $subscriptions = $subscriptions ->matching($criteria);
+    }
 
 }
