@@ -61,7 +61,10 @@ class UsersController extends Controller
         $response = [];
         try {
             $this->get('food_api.api')->loginByHash($this->getApiToken($request));
-            $phone = $request->get('phone');
+
+            $this->parseRequestBody($request);
+            $phone = $this->getRequestParam('phone');
+
             if (!$phone) {
                 $response = ['message' => 'phone not supplied'];
                 return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
