@@ -611,13 +611,13 @@ class OrdersController extends Controller
                 }
                 $cartBeforeDiscount = $cartService->getCartTotal($list) * 100;
 
-                if(!empty($coupon->getDiscount())){
-                    $discount = $coupon->getDiscount();
-                    $tmpDiscount = ($cartBeforeDiscount/100)*$discount;
-                    $cartTotal = $cartBeforeDiscount - $tmpDiscount;
-                }else{
+//                if(!empty($coupon->getDiscount())){
+//                    $discount = $coupon->getDiscount();
+//                    $tmpDiscount = ($cartBeforeDiscount/100)*$discount;
+//                    $cartTotal = $cartBeforeDiscount - $tmpDiscount;
+//                }else{
                     $cartTotal = $cartBeforeDiscount - $discount;
-                }
+//                }
 
                 $response = [
                     'id' => $coupon->getId(),
