@@ -603,18 +603,21 @@ class OrdersController extends Controller
 
                     $discount = 0;
                 } else {
-                    $discount = $cartService->getTotalDiscount($list, $coupon->getDiscount()) * 100;
+                    $discount = $cartService->getTotalDiscount($list, $coupon->getDiscount()*100);
                 }
-
-
 
                 if($coupon->getFullOrderCovers()){
                     $discount += ($coupon->getDiscountSum()*100);
                 }
-
                 $cartBeforeDiscount = $cartService->getCartTotal($list) * 100;
-                $cartTotal = $cartBeforeDiscount - $discount;
 
+                if(!empty($coupon->getDiscount())){
+                    $discount = $coupon->getDiscount();
+                    $tmpDiscount = ($cartBeforeDiscount/100)*$discount;
+                    $cartTotal = $cartBeforeDiscount - $tmpDiscount;
+                }else{
+                    $cartTotal = $cartBeforeDiscount - $discount;
+                }
 
                 $response = [
                     'id' => $coupon->getId(),
