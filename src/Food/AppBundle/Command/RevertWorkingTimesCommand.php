@@ -73,11 +73,15 @@ class RevertWorkingTimesCommand extends ContainerAwareCommand
                     $stmt = $em->prepare($query);
                     $stmt->execute();
                 }
+
             }
 
             $tmpOldWorkTimes = array();
+
+
+
             foreach ($oldWorkTimes as $oldWorkTime){
-                $tmpOldWorkTimes['id'] = $oldWorkTime;
+                $tmpOldWorkTimes[$oldWorkTime['id']] = $oldWorkTime;
             }
 
             $oldWorkTimes = $tmpOldWorkTimes;
@@ -85,6 +89,7 @@ class RevertWorkingTimesCommand extends ContainerAwareCommand
             foreach ($currentWorkTimes as $currentWorkTime) {
                 if (isset($oldWorkTimes[$currentWorkTime['id']])) {
                     $oldRecord = $oldWorkTimes[$currentWorkTime['id']];
+
                     $query = "UPDATE place_point_work_time set start_hour = '" . $oldRecord['start_hour'] . "' ,
                                                      start_min = '" . $oldRecord['start_min'] . "' ,
                                                      end_min = '" . $oldRecord['end_min'] . "' ,
