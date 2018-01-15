@@ -36,7 +36,7 @@ class RestaurantsController extends Controller
             $locationData = null;
 
             if ($address && $city) {
-                $locationData = $locationService->findByAddress($address. ', ' . $city);
+                $locationData = $locationService->findByAddress($address . ', ' . $city);
                 $locationService->set($locationData);
             } elseif ($address) {
                 $locationData = $locationService->findByAddress($address);
@@ -53,7 +53,7 @@ class RestaurantsController extends Controller
                 'keyword' => $keyword
             );
 
-            if (!empty($delivery_type) && in_array($delivery_type, array('delivery', 'pickup','pedestrian'))) {
+            if (!empty($delivery_type) && in_array($delivery_type, array('delivery', 'pickup', 'pedestrian'))) {
                 $filters['delivery_type'] = $delivery_type;
             }
 
@@ -62,11 +62,11 @@ class RestaurantsController extends Controller
                 $kitchenCollection = array();
             }
 
-            if($request->query->has('limit')) {
+            if ($request->query->has('limit')) {
                 $filters['limit'] = $request->query->get('limit');
             }
 
-            if($request->query->has('offset')) {
+            if ($request->query->has('offset')) {
                 $filters['offset'] = $request->query->get('offset');
             }
 
@@ -82,7 +82,6 @@ class RestaurantsController extends Controller
             }
 
 
-
             $this->get('session')->set('filter', $filters);
 
 
@@ -94,14 +93,14 @@ class RestaurantsController extends Controller
                     'limit' => isset($filters['limit']) ? intval($filters['limit']) : 50
                 ]
             ];
-            if($delivery_type == 'pickup'){
+            if ($delivery_type == 'pickup') {
                 $pickUpOnly = true;
             }
 
             $placeCollection = $this->get('food.places')->placesPlacePointsWorkInformation($placeCollection);
             foreach ($placeCollection as $place) {
                 $response['restaurants'][] = $this->get('food_api.api')
-                    ->createRestaurantFromPlace($place['place'], $place['point'],$pickUpOnly)->data;
+                    ->createRestaurantFromPlace($place['place'], $place['point'], $pickUpOnly)->data;
             }
         } catch (ApiException $e) {
             $this->get('logger')->error('Restaurants:getRestaurantsAction Error1:' . $e->getMessage());
@@ -111,7 +110,7 @@ class RestaurantsController extends Controller
 
         //$this->get('logger')->alert('Restaurants:getRestaurantsAction Response:' . json_encode($response));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     /**
@@ -140,7 +139,7 @@ class RestaurantsController extends Controller
             $locationData = null;
 
             if ($address && $city) {
-                $locationData = $locationService->findByAddress($address,  $city);
+                $locationData = $locationService->findByAddress($address, $city);
                 $locationService->set($locationData);
             } elseif ($address) {
                 $locationData = $locationService->findByAddress($address);
@@ -194,7 +193,7 @@ class RestaurantsController extends Controller
 
         $this->get('logger')->alert('Restaurants:getRestaurantsFilteredAction Response:' . json_encode($response));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     /**
@@ -234,7 +233,7 @@ class RestaurantsController extends Controller
 
             if (!empty($pointId)) {
                 $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->find($pointId);
-                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, $placePoint,false, $locationData);
+                $restaurant = $this->get('food_api.api')->createRestaurantFromPlace($place, $placePoint, false, $locationData);
             } else {
                 $pointId = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place->getId(), $locationData);
                 if (!empty($pointId)) {
@@ -374,12 +373,25 @@ class RestaurantsController extends Controller
                 ),
                 array('lineup' => 'DESC')
             );
+
+
             foreach ($items as $key => $item) {
-                $response[] = array(
-                    'id' => $item->getId(),
-                    'name' => $item->getName(),
-                    'precedence' => ($key + 1)
-                );
+
+                $i = 0;
+
+                foreach ($item->getDishes() as $dish) {
+                    if ($dish->getActive()) {
+                        $i++;
+                    }
+                }
+                if ($i > 0) {
+
+                    $response[] = array(
+                        'id' => $item->getId(),
+                        'name' => $item->getName(),
+                        'precedence' => ($key + 1)
+                    );
+                }
             }
         } catch (ApiException $e) {
             $this->get('logger')->error('Restaurants:getMenuCategoriesAction Error1:' . $e->getMessage());
@@ -398,6 +410,6 @@ class RestaurantsController extends Controller
 
         //$this->get('logger')->alert('Restaurants:getMenuCategoriesAction Response:' . print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 }
