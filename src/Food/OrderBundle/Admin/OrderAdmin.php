@@ -37,6 +37,7 @@ class OrderAdmin extends FoodAdmin
             ->add('companyAddress', 'text', array('label' => 'Company Address', 'required' => false))
             ->add('order_date','datetime',['label'=>'admin.order.order_date'])
             ->add('shitfoks','text', ['required' => false,  'label' => 'Delivery Address'])
+            ->add('originAddress','text', ['required' => false,  'label' => 'Original Address'])
             ->add('house','text', ['required' => false,  'label' => 'Address House'])
         ;
 
@@ -268,12 +269,24 @@ class OrderAdmin extends FoodAdmin
 
         $shitfok =$obj->getShitfoksReal();
         $house = $obj->getHouseReal();
+        $origAdrress = $obj->getOriginAddressReal();
+
         if(!empty($shitfok)) {
             $addressE = $obj->getAddressId();
 
             if($addressE && $addressE->getAddress() != $obj->getShitfoksReal()) {
                 $addressE->setAddress($obj->getShitfoksReal());
                 $em->persist($addressE);
+                $em->flush();
+            }
+        }
+
+        if(!empty($origAdrress)) {
+            $origAdrressE = $obj->getAddressId();
+
+            if($origAdrressE && $origAdrressE->getOrigin() != $obj->getOriginAddressReal()) {
+                $origAdrressE->setOrigin($obj->getOriginAddressReal());
+                $em->persist($origAdrressE);
                 $em->flush();
             }
         }

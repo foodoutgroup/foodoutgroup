@@ -209,6 +209,11 @@ class UserAddress
         return $address;
     }
 
+    public function getOriginAddressAdmin(){
+        $origin = $this->origin;
+
+        return $origin;
+    }
 
     /**
      * Set coords

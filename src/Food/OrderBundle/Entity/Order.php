@@ -101,6 +101,8 @@ class Order
 
     private $shitfoks;
 
+    private $originAddress;
+
     private $house;
 
     /**
@@ -532,7 +534,7 @@ class Order
     public function __toString()
     {
         if ($this->getId()) {
-            return $this->getId().'-'.$this->getPlaceName().'-'.$this->getAddressId();
+            return $this->getId() . '-' . $this->getPlaceName() . '-' . $this->getAddressId();
         }
         return '';
     }
@@ -1502,6 +1504,7 @@ class Order
     {
         return $this->driverSafe;
     }
+
     /**
      * Constructor
      */
@@ -1634,7 +1637,7 @@ class Order
      */
     public function getSfLine()
     {
-        return $this->sfSeries.$this->sfNumber;
+        return $this->sfSeries . $this->sfNumber;
     }
 
     /**
@@ -2103,13 +2106,13 @@ class Order
         $phone = $this->getOrderExtra()->getPhone();
 
         if (!empty($surname)) {
-            $userContactData .= ' '.$surname;
+            $userContactData .= ' ' . $surname;
         }
         if (!empty($email)) {
-            $userContactData .= ', '.$email;
+            $userContactData .= ', ' . $email;
         }
         if (!empty($phone)) {
-            $userContactData .= ', '.$phone;
+            $userContactData .= ', ' . $phone;
         }
 
         return $userContactData;
@@ -2539,8 +2542,6 @@ class Order
     }
 
 
-
-
     /**
      * Get duringZavalas
      *
@@ -2669,6 +2670,7 @@ class Order
     {
         return $this->adminFee;
     }
+
     /**
      * @param decimal $adminFee
      */
@@ -2695,21 +2697,28 @@ class Order
         return $this;
     }
 
-    public function getShitfoksReal(){
+    public function getShitfoksReal()
+    {
         return $this->shitfoks;
     }
 
-    public function getHouseReal(){
+    public function getOriginAddressReal()
+    {
+        return $this->originAddress;
+    }
+
+    public function getHouseReal()
+    {
         return $this->house;
     }
 
     public function getHouse()
     {
-        if($this->getAddressId()) {
+        if ($this->getAddressId()) {
 
             $val = $this->getAddressId()->getHouse();
             $empt = empty($val);
-            if(!$empt) {
+            if (!$empt) {
                 return $this->getAddressId()->getHouse();
             } else {
                 return '';
@@ -2725,11 +2734,11 @@ class Order
      */
     public function getShitfoks()
     {
-        if($this->getAddressId()) {
+        if ($this->getAddressId()) {
 
             $val = $this->getAddressId()->getAddressAdmin();
             $empt = empty($val);
-            if(!$empt) {
+            if (!$empt) {
                 return $this->getAddressId()->getAddressAdmin();
             } else {
                 return '';
@@ -2755,7 +2764,28 @@ class Order
         $this->house = $house;
     }
 
+    /**
+     * @param mixed $originAddress
+     */
+    public function setOriginAddress($originAddress)
+    {
+        $this->originAddress = $originAddress;
+    }
 
+    public function getOriginAddress()
+    {
+        if ($this->getAddressId()) {
 
+            $val = $this->getAddressId()->getOriginAddressAdmin();
+            $empt = empty($val);
+            if (!$empt) {
+                return $this->getAddressId()->getOriginAddressAdmin();
+            } else {
+                return '';
+            }
+        } else {
+            return '';
+        }
+    }
 
 }
