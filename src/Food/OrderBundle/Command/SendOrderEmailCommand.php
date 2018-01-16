@@ -35,8 +35,6 @@ class SendOrderEmailCommand extends ContainerAwareCommand
             $em = $this->getContainer()->get('doctrine')->getManager();
 
 
-
-
             $mails = $em->getRepository('FoodOrderBundle:OrderEmail')->getEmailsToSend();
             $orderRepository = $em->getRepository('FoodOrderBundle:Order');
             $placeService = $this->getContainer()->get('food.places');
@@ -46,6 +44,40 @@ class SendOrderEmailCommand extends ContainerAwareCommand
                 foreach ($mails as $mail) {
                     try {
                         $order = $orderRepository->find($mail->getOrderId());
+
+                        $betaCode = '';
+                        if ($this->getContainer()->get('food.app.utils.misc')->getParam('beta_code_on', true) == 'on') {
+                            // TODO Kavos akcija tik mobilkom
+                            if ($order->getMobile()) {
+                                $betaCode = $this->getBetaCode();
+                            }
+                        }
+
+                        $invoice = [];
+                        foreach ($order->getDetails() as $ord) {
+
+                            $optionCollection = $ord->getOptions();
+                            $invoice[] = [
+                                'itm_name' => $ord->getDishName(),
+                                'itm_amount' => $ord->getQuantity(),
+                                'itm_price' => $ord->getPrice(),
+                                'itm_sum' => $ord->getPrice() * $ord->getQuantity(),
+                            ];
+                            if (count($optionCollection)) {
+
+                                foreach ($optionCollection as $k => $opt) {
+
+                                    $invoice[] = [
+                                        'itm_name' => "  - " . $opt->getDishOptionName(),
+                                        'itm_amount' => $ord->getQuantity(),
+                                        'itm_price' => $opt->getPrice(),
+                                        'itm_sum' => $opt->getPrice() * $ord->getQuantity(),
+                                    ];
+                                }
+
+                            }
+                        }
+
 
                         $variables = [
                             'place_name' => $order->getPlace()->getName(),
@@ -60,22 +92,23 @@ class SendOrderEmailCommand extends ContainerAwareCommand
                             'city' => $order->getCityId() ? $order->getCityId()->getTitle() : $order->getPlacePoint()->getCityId()->getTitle(),
                             'food_review_url' => 'http://' . $this->getContainer()->getParameter('domain') . $this->getContainer()->get('slug')->getUrl($order->getPlace()->getId(), 'place') . '/#detailed-restaurant-review',
                             'delivery_time' => ($order->getDeliveryType() != OrderService::$deliveryPickup ? $placeService->getDeliveryTime($order->getPlace(), null, $order->getDeliveryType()) : $order->getPlace()->getPickupTime()),
-                            'email' => $order->getUser()->getEmail()
+                            'email' => $order->getUser()->getEmail(),
+                            'invoice' => $invoice,
+                            'beta_code' => $betaCode,
                         ];
 
 
-
                         $mailResp = $ml->setVariables($variables)
-                                ->setRecipient($order->getOrderExtra()->getEmail(), $order->getOrderExtra()->getEmail())
-                                ->setId($mail->getTemplateId())
-                                ->send();
+                            ->setRecipient($order->getOrderExtra()->getEmail(), $order->getOrderExtra()->getEmail())
+                            ->setId($mail->getTemplateId())
+                            ->send();
 
                         if (isset($mailResp['errors'])) {
                             $this->getContainer()->get('logger')->error(
                                 $mailResp['errors'][0]
                             );
                             $mail->setError($mailResp['errors'][0]);
-                        }else{
+                        } else {
                             $mail->setSent(true);
                         }
 
