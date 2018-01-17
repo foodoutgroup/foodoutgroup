@@ -45,14 +45,6 @@ class SendOrderEmailCommand extends ContainerAwareCommand
                     try {
                         $order = $orderRepository->find($mail->getOrderId());
 
-                        $betaCode = '';
-                        if ($this->getContainer()->get('food.app.utils.misc')->getParam('beta_code_on', true) == 'on') {
-                            // TODO Kavos akcija tik mobilkom
-                            if ($order->getMobile()) {
-                                $betaCode = $this->getBetaCode();
-                            }
-                        }
-
                         $invoice = [];
                         foreach ($order->getDetails() as $ord) {
 
@@ -94,7 +86,7 @@ class SendOrderEmailCommand extends ContainerAwareCommand
                             'delivery_time' => ($order->getDeliveryType() != OrderService::$deliveryPickup ? $placeService->getDeliveryTime($order->getPlace(), null, $order->getDeliveryType()) : $order->getPlace()->getPickupTime()),
                             'email' => $order->getUser()->getEmail(),
                             'invoice' => $invoice,
-                            'beta_code' => $betaCode,
+                            'beta_code' => '',
                         ];
 
 
