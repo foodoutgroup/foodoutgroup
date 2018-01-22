@@ -105,6 +105,8 @@ class Order
 
     private $house;
 
+    private $flat;
+
     /**
      * @ORM\Column(name="order_status", type="string", length=50, nullable=false)
      **/
@@ -2712,6 +2714,13 @@ class Order
         return $this->house;
     }
 
+    public function getFlatReal()
+    {
+        return $this->flat;
+    }
+
+
+
     public function getHouse()
     {
         if ($this->getAddressId()) {
@@ -2780,6 +2789,29 @@ class Order
             $empt = empty($val);
             if (!$empt) {
                 return $this->getAddressId()->getOriginAddressAdmin();
+            } else {
+                return '';
+            }
+        } else {
+            return '';
+        }
+    }
+
+    public function setFlat($flat)
+    {
+        $this->flat = $flat;
+    }
+
+    public function getFlat()
+    {
+        if ($this->getAddressId()) {
+
+            $val = $this->getAddressId()->getFlat();
+
+            $empt = empty($val);
+            if (!$empt) {
+                return $this->getAddressId()->getFlat();
+
             } else {
                 return '';
             }

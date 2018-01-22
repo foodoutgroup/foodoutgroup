@@ -1,4 +1,5 @@
 <?php
+
 namespace Food\OrderBundle\Admin;
 
 use Doctrine\ORM\QueryBuilder;
@@ -19,9 +20,9 @@ class OrderAdmin extends FoodAdmin
 
         if (!$this->hasRequest()) {
             $this->datagridValues = array(
-                '_page'       => 1,
+                '_page' => 1,
                 '_sort_order' => 'DESC',
-                '_sort_by'    => 'order_date',
+                '_sort_by' => 'order_date',
             );
         }
     }
@@ -35,11 +36,11 @@ class OrderAdmin extends FoodAdmin
             ->add('companyCode', 'text', array('label' => 'admin.order.companyCode', 'required' => false))
             ->add('vatCode', 'text', array('label' => 'admin.order.vatCode', 'required' => false))
             ->add('companyAddress', 'text', array('label' => 'Company Address', 'required' => false))
-            ->add('order_date','datetime',['label'=>'admin.order.order_date'])
-            ->add('shitfoks','text', ['required' => false,  'label' => 'Delivery Address'])
-            ->add('originAddress','text', ['required' => false,  'label' => 'Original Address'])
-            ->add('house','text', ['required' => false,  'label' => 'Address House'])
-        ;
+            ->add('order_date', 'datetime', ['label' => 'admin.order.order_date'])
+            ->add('shitfoks', 'text', ['required' => false, 'label' => 'Delivery Address'])
+            ->add('originAddress', 'text', ['required' => false, 'label' => 'Original Address'])
+            ->add('house', 'text', ['required' => false, 'label' => 'Address House'])
+            ->add('flat', 'text', ['required' => false, 'label' => 'Address Flat']);
 
         /**
          * @var Order $order
@@ -66,13 +67,13 @@ class OrderAdmin extends FoodAdmin
         $statusChoices = array();
         $allOrderStatuses = OrderService::getOrderStatuses();
         foreach ($allOrderStatuses as $status) {
-            $statusChoices[$status] = $this->trans('admin.dispatcher.order_status.'.$status);
+            $statusChoices[$status] = $this->trans('admin.dispatcher.order_status.' . $status);
         }
 
         $paymentStatusChoices = array();
         $allPaymentStatuses = OrderService::getPaymentStatuses();
         foreach ($allPaymentStatuses as $status) {
-            $paymentStatusChoices[$status] = $this->trans('admin.order.payment_status.'.$status);
+            $paymentStatusChoices[$status] = $this->trans('admin.order.payment_status.' . $status);
         }
 
         $datagridMapper
@@ -80,20 +81,20 @@ class OrderAdmin extends FoodAdmin
             //->add('address_id', null, array('label' => 'admin.order.delivery_address'))
             ->add('place_name', null, array('label' => 'admin.order.place_name_short',))
             //->add('order_date', 'doctrine_orm_date_range', array('label' => 'admin.order.order_date'))
-            ->add('order_date', 'doctrine_orm_date_range', array(), null, array('widget' => 'single_text', 'required' => false,  'attr' => array('class' => 'datepicker2')))
+            ->add('order_date', 'doctrine_orm_date_range', array(), null, array('widget' => 'single_text', 'required' => false, 'attr' => array('class' => 'datepicker2')))
             //->add('order_date', 'doctrine_orm_date_range', array(), null, array( 'required' => false,  'attr' => array('class' => 'datepicker')))
-            ->add('city', 'doctrine_orm_callback', array('callback'   => array($this, 'userCityFilter'), 'field_type' => 'text'))
-            ->add('address', 'doctrine_orm_callback', array('callback'   => array($this, 'userAddressFilter'), 'field_type' => 'text'))
-            ->add('phone', 'doctrine_orm_callback', array('callback'   => array($this, 'userPhoneFilter'), 'field_type' => 'text'))
-            ->add('email', 'doctrine_orm_callback', array('callback'   => array($this, 'userEmailFilter'), 'field_type' => 'text'))
+            ->add('city', 'doctrine_orm_callback', array('callback' => array($this, 'userCityFilter'), 'field_type' => 'text'))
+            ->add('address', 'doctrine_orm_callback', array('callback' => array($this, 'userAddressFilter'), 'field_type' => 'text'))
+            ->add('phone', 'doctrine_orm_callback', array('callback' => array($this, 'userPhoneFilter'), 'field_type' => 'text'))
+            ->add('email', 'doctrine_orm_callback', array('callback' => array($this, 'userEmailFilter'), 'field_type' => 'text'))
             ->add('userIp', null, array('label' => 'admin.order.user_ip'))
-            ->add('order_status',null, array('label' => 'admin.order.order_status'), 'choice', array(
+            ->add('order_status', null, array('label' => 'admin.order.order_status'), 'choice', array(
                 'choices' => $statusChoices
             ))
-            ->add('paymentStatus',null, array('label' => 'admin.order.payment_status'), 'choice', array(
+            ->add('paymentStatus', null, array('label' => 'admin.order.payment_status'), 'choice', array(
                 'choices' => $paymentStatusChoices
             ))
-            ->add('place_point_self_delivery',null, array('label' => 'admin.order.self_delivery'), 'choice', array(
+            ->add('place_point_self_delivery', null, array('label' => 'admin.order.self_delivery'), 'choice', array(
                 'choices' => array(
                     '1' => $this->trans('label_type_yes'),
                 )
@@ -102,7 +103,7 @@ class OrderAdmin extends FoodAdmin
 //            ->add('companyCode', null, array('label' => 'admin.order.companyCode'))
             ->add('total', null, array('label' => 'admin.order.total'))
             ->add('couponCode', null, array('label' => 'admin.order.coupon_code'))
-            ->add('deliveryType',null, array('label' => 'admin.order.delivery_type'), 'choice', array(
+            ->add('deliveryType', null, array('label' => 'admin.order.delivery_type'), 'choice', array(
                 'choices' => array(
                     OrderService::$deliveryDeliver => OrderService::$deliveryDeliver,
                     OrderService::$deliveryPickup => OrderService::$deliveryPickup
@@ -112,7 +113,7 @@ class OrderAdmin extends FoodAdmin
             ->add('navDeliveryOrder', null, array('label' => 'admin.order.nav_delivery_order'))
             ->add('sfNumber', null, array('label' => 'admin.order.sf_line'))
             ->add('orderFromNav', null, array('label' => 'admin.order.order_from_nav'))
-            ->add('user.isBussinesClient', 'doctrine_orm_choice', ['label' => ' ', 'callback'   => array($this, 'clientTypeFilter')], 'choice',
+            ->add('user.isBussinesClient', 'doctrine_orm_choice', ['label' => ' ', 'callback' => array($this, 'clientTypeFilter')], 'choice',
                 [
                     'expanded' => true,
                     'multiple' => true,
@@ -120,8 +121,7 @@ class OrderAdmin extends FoodAdmin
                         1 => $this->trans('admin.order.client.b2b')
                     ]
                 ]
-            )
-        ;
+            );
 
         // Remove Fields For Restaurant User (Moderator)
         if ($this->isModerator()) {
@@ -138,19 +138,19 @@ class OrderAdmin extends FoodAdmin
 
         $queryBuilder->join(sprintf('%s.address_id', $alias), 'a');
         $queryBuilder->andWhere("a.city LIKE :thecity");
-        $queryBuilder->setParameter('thecity', '%'.$value['value'].'%');
+        $queryBuilder->setParameter('thecity', '%' . $value['value'] . '%');
 
         return true;
     }
 
-    public function clientTypeFilter( $queryBuilder, $alias, $field, $value)
+    public function clientTypeFilter($queryBuilder, $alias, $field, $value)
     {
-        $value = (int) $value;
-        if(!$value) {
+        $value = (int)$value;
+        if (!$value) {
             return;
         }
         /**
-         * @var QueryBuilder $queryBuilder;
+         * @var QueryBuilder $queryBuilder ;
          */
 //        var_dump($queryBuilder->getQuery()->getDQL());
         $queryBuilder->leftJoin(sprintf('%s.user_id', $alias), 'ue');
@@ -168,7 +168,7 @@ class OrderAdmin extends FoodAdmin
 
         $queryBuilder->join(sprintf('%s.address_id', $alias), 'ad');
         $queryBuilder->andWhere("ad.address LIKE :theaddress OR ad.origin LIKE :theaddress");
-        $queryBuilder->setParameter('theaddress', '%'.$value['value'].'%');
+        $queryBuilder->setParameter('theaddress', '%' . $value['value'] . '%');
 
         return true;
     }
@@ -182,10 +182,11 @@ class OrderAdmin extends FoodAdmin
 
         $queryBuilder->join(sprintf('%s.orderExtra', $alias), 'oe');
         $queryBuilder->andWhere("oe.phone LIKE :thephone");
-        $queryBuilder->setParameter('thephone', '%'.str_replace("+", "", $value['value']).'%');
+        $queryBuilder->setParameter('thephone', '%' . str_replace("+", "", $value['value']) . '%');
 
         return true;
     }
+
     public function userEmailFilter($queryBuilder, $alias, $field, $value)
     {
         if (!$value || empty($value['value'])) {
@@ -194,7 +195,7 @@ class OrderAdmin extends FoodAdmin
 
         $queryBuilder->join(sprintf('%s.orderExtra', $alias), 'oe');
         $queryBuilder->andWhere("oe.email LIKE :theemail");
-        $queryBuilder->setParameter('theemail', '%'.$value['value'].'%');
+        $queryBuilder->setParameter('theemail', '%' . $value['value'] . '%');
 
         return true;
     }
@@ -236,8 +237,7 @@ class OrderAdmin extends FoodAdmin
                     ),
                 ),
                 'label' => 'admin.actions'
-            ))
-        ;
+            ));
         // hot fix master
         $this->setPlaceFilter(new PlaceFilter($this->getSecurityContext()))
             ->setPlaceFilterEnabled(true);
@@ -267,36 +267,46 @@ class OrderAdmin extends FoodAdmin
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
-        $shitfok =$obj->getShitfoksReal();
+        $shitfok = $obj->getShitfoksReal();
         $house = $obj->getHouseReal();
         $origAdrress = $obj->getOriginAddressReal();
+        $flat = $obj->getFlatReal();
 
-        if(!empty($shitfok)) {
+        if (!empty($shitfok)) {
             $addressE = $obj->getAddressId();
 
-            if($addressE && $addressE->getAddress() != $obj->getShitfoksReal()) {
+            if ($addressE && $addressE->getAddress() != $obj->getShitfoksReal()) {
                 $addressE->setAddress($obj->getShitfoksReal());
                 $em->persist($addressE);
                 $em->flush();
             }
         }
 
-        if(!empty($origAdrress)) {
+        if (!empty($origAdrress)) {
             $origAdrressE = $obj->getAddressId();
 
-            if($origAdrressE && $origAdrressE->getOrigin() != $obj->getOriginAddressReal()) {
+            if ($origAdrressE && $origAdrressE->getOrigin() != $obj->getOriginAddressReal()) {
                 $origAdrressE->setOrigin($obj->getOriginAddressReal());
                 $em->persist($origAdrressE);
                 $em->flush();
             }
         }
 
-        if(!empty($house)){
+        if (!empty($house)) {
             $houseE = $obj->getAddressId();
 
-            if($houseE && $houseE->getHouse() != $obj->getHouseReal()) {
+            if ($houseE && $houseE->getHouse() != $obj->getHouseReal()) {
                 $houseE->setHouse($obj->getHouseReal());
                 $em->persist($houseE);
+                $em->flush();
+            }
+        }
+
+        if (!empty($flat)) {
+            $flatE = $obj->getAddressId();
+            if ($flatE && $flatE->getFlat() != $obj->getFlatReal()) {
+                $flatE->setFlat($obj->getFlatReal());
+                $em->persist($flatE);
                 $em->flush();
             }
         }
@@ -398,8 +408,7 @@ class OrderAdmin extends FoodAdmin
                     'label' => 'admin.call_log',
                     'template' => 'FoodOrderBundle:Admin:order_call_log.html.twig'
                 )
-            )
-        ;
+            );
 
         // Remove Fields For Restaurant User (Moderator)
         if ($this->isModerator()) {
@@ -422,8 +431,8 @@ class OrderAdmin extends FoodAdmin
     public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
     {
         $collection->clearExcept(array('edit', 'list', 'show', 'export'))
-            ->add('sendInvoice', $this->getRouterIdParameter().'/sendInvoice')
-            ->add('downloadInvoice', $this->getRouterIdParameter().'/downloadInvoice')
-            ->add('generateInvoice', $this->getRouterIdParameter().'/generateInvoice');
+            ->add('sendInvoice', $this->getRouterIdParameter() . '/sendInvoice')
+            ->add('downloadInvoice', $this->getRouterIdParameter() . '/downloadInvoice')
+            ->add('generateInvoice', $this->getRouterIdParameter() . '/generateInvoice');
     }
 }
