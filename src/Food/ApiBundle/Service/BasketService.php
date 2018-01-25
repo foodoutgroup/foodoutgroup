@@ -228,21 +228,27 @@ class BasketService extends ContainerAware
         $firstPayment = null;
         $paymentData = $this->container->getParameter('payment');
 
-        for($i = 0; $i<count($paymentData['method']); $i++) {
-            if($basketInfo->getPlaceId()->getDisabledOnlinePayment() && $i ==2){
+        for ($i = 0; $i < count($paymentData['method']); $i++) {
+
+            if ($basketInfo->getPlaceId()->getDisabledOnlinePayment() && $i == 2) {
                 break;
             }
-            $payment =  [
-                'name' => $paymentData['title'][$i],
-                'code' => $paymentData['method'][$i],
-                'url' => null,
-            ];
 
-            if($firstPayment == null) {
-                $firstPayment = $payment;
+            if (!$basketInfo->getPlaceId()->getCardOnDelivery() && $paymentData['method'][$i] == 'local.card') {
+
+            } else {
+                $payment = [
+                    'name' => $paymentData['title'][$i],
+                    'code' => $paymentData['method'][$i],
+                    'url' => null,
+                ];
+
+                if ($firstPayment == null) {
+                    $firstPayment = $payment;
+                }
+
+                $paymentMethodCollection[] = $payment;
             }
-
-            $paymentMethodCollection[] = $payment;
         }
 
 
