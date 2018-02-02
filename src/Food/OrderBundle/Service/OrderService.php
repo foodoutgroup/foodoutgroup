@@ -1305,7 +1305,7 @@ class OrderService extends ContainerAware
      * @param array|null $userData
      * @param string|null $orderDate
      */
-    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null, $deliveryType = null, $locationInfo = null)
+    public function createOrderFromCart($place, $locale = 'lt', $user, PlacePoint $placePoint = null, $selfDelivery = false, $coupon = null, $userData = null, $orderDate = null, $deliveryType = null, $locationInfo = null,$signalToken = null)
     {
         // TODO Fix prices calculation
 
@@ -1635,6 +1635,7 @@ class OrderService extends ContainerAware
 
         $this->getOrder()->setDeliveryPrice($deliveryPrice);
         $this->getOrder()->setTotal($sumTotal);
+        $this->getOrder()->setSignalToken($signalToken);
 
         if ($useAdminFee) {
             $this->getOrder()->setAdminFee($adminFee);
