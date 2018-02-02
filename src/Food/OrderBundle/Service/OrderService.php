@@ -619,7 +619,6 @@ class OrderService extends ContainerAware
                 }
             }
         }
-
     }
 
     /**
@@ -1073,7 +1072,7 @@ class OrderService extends ContainerAware
             if (empty($sfNumber)) {
                 // We failed. lets take a new one
                 try {
-                    $sfNumber = (int)$miscService->getParam('sf_next_number',null,false);
+                    $sfNumber = (int)$miscService->getParam('sf_next_number', null, false);
                     $miscService->setParam('sf_next_number', ($sfNumber + 1));
                     $this->logOrder($order, 'sf_number_assign', 'Assigning new SF number: ' . $sfNumber);
                 } catch (OptimisticLockException $e) {
@@ -2391,9 +2390,9 @@ class OrderService extends ContainerAware
             $messagesToSend = [];
 
             $orderMessageRecipients = [
-                ($placePoint->getPhoneSend() ?  $placePoint->getPhone() : null ) ,
-                ($placePoint->getAltPhone1Send() ?  $placePoint->getAltPhone1() : null ) ,
-                ($placePoint->getAltPhone2Send() ?  $placePoint->getAltPhone2() : null ) ,
+                ($placePoint->getPhoneSend() ? $placePoint->getPhone() : null),
+                ($placePoint->getAltPhone1Send() ? $placePoint->getAltPhone1() : null),
+                ($placePoint->getAltPhone2Send() ? $placePoint->getAltPhone2() : null),
             ];
 
 
@@ -4000,7 +3999,6 @@ class OrderService extends ContainerAware
 
         $this->getOrder()->setDeliveryTime($oTimeClone);
         $this->saveOrder();
-
 
     }
 

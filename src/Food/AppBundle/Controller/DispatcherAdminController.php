@@ -44,12 +44,11 @@ class DispatcherAdminController extends Controller
         $activeDriverCollection = $logisticsService->getAllActiveDrivers();
 
 
-
         // Preload city data
         foreach ($cityCollection as $city) {
             $cityOrderCollection[$city->getId()] = [
-                'unapproved'   => [
-                    'pickup'      => [],
+                'unapproved' => [
+                    'pickup' => [],
                     'selfdeliver' => [],
                     'pedestrian' => [],
                     'deliver' => [],
@@ -99,8 +98,7 @@ class DispatcherAdminController extends Controller
             $city = $placePoint->getCityId();
 
 
-
-            if(!$city) {
+            if (!$city) {
                 continue;
             }
 
@@ -124,7 +122,7 @@ class DispatcherAdminController extends Controller
             $placePoint = $order->getPlacePoint();
             $city = $placePoint->getCityId();
 
-            if(!$city) {
+            if (!$city) {
                 continue;
             }
 
@@ -149,7 +147,7 @@ class DispatcherAdminController extends Controller
             $placePoint = $order->getPlacePoint();
             $city = $placePoint->getCityId();
 
-            if(!$city) {
+            if (!$city) {
                 continue;
             }
 
@@ -172,7 +170,7 @@ class DispatcherAdminController extends Controller
             $placePoint = $order->getPlacePoint();
             $city = $placePoint->getCityId();
 
-            if(!$city) {
+            if (!$city) {
                 continue;
             }
 
@@ -197,7 +195,7 @@ class DispatcherAdminController extends Controller
             $placePoint = $order->getPlacePoint();
             $city = $placePoint->getCityId();
 
-            if(!$city) {
+            if (!$city) {
                 continue;
             }
 
@@ -205,10 +203,9 @@ class DispatcherAdminController extends Controller
                 $cityOrderCollection[$city->getId()]['canceled']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
                 $cityOrderCollection[$city->getId()]['canceled']['selfdeliver'][] = $order;
-            } elseif ($order->getDeliveryType() == OrderService::$deliveryPedestrian){
+            } elseif ($order->getDeliveryType() == OrderService::$deliveryPedestrian) {
                 $cityOrderCollection[$city->getId()]['canceled']['pedestrian'][] = $order;
-            }
-            else {
+            } else {
                 $cityOrderCollection[$city->getId()]['canceled']['deliver'][] = $order;
             }
         }
@@ -218,7 +215,7 @@ class DispatcherAdminController extends Controller
             $placePoint = $order->getPlacePoint();
             $city = $placePoint->getCityId();
 
-            if(!$city) {
+            if (!$city) {
                 continue;
             }
 
@@ -226,10 +223,9 @@ class DispatcherAdminController extends Controller
                 $cityOrderCollection[$city->getId()]['nav_problems']['pickup'][] = $order;
             } elseif ($order->getPlacePointSelfDelivery()) {
                 $cityOrderCollection[$city->getId()]['nav_problems']['selfdeliver'][] = $order;
-            } elseif ($order->getDeliveryType() == OrderService::$deliveryPedestrian){
+            } elseif ($order->getDeliveryType() == OrderService::$deliveryPedestrian) {
                 $cityOrderCollection[$city->getId()]['nav_problems']['pedestrian'][] = $order;
-            }
-            else {
+            } else {
                 $cityOrderCollection[$city->getId()]['nav_problems']['deliver'][] = $order;
             }
         }
@@ -239,13 +235,12 @@ class DispatcherAdminController extends Controller
         }
 
 
-
         return $this->render(
             'FoodAppBundle:Dispatcher:list.html.twig',
             [
-                'cityCollection'     => $cityCollection,
+                'cityCollection' => $cityCollection,
                 'cityOrderCollection' => $cityOrderCollection,
-                'driverCollection'    => $driverCollection,
+                'driverCollection' => $driverCollection,
             ]
         );
     }
@@ -356,6 +351,7 @@ class DispatcherAdminController extends Controller
                     $order->setDelayDuration($delayDuration);
                     $orderService->saveDelay();
                     $orderService->statusDelayed('dispatcher', 'delay duration: ' . $delayDuration);
+                    die;
                 } else if ($orderDelayed) {
                     $order->setDelayed(false);
                     $order->setDelayReason(null);
