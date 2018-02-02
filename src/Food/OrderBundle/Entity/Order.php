@@ -531,6 +531,12 @@ class Order
     private $source = Order::SOURCE_FOODOUT;
 
     /**
+     * @var string
+     * @ORM\Column(name="signal_token", type="string", length=255, nullable=true)
+     */
+    private $signalToken;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -2820,4 +2826,27 @@ class Order
         }
     }
 
+
+    /**
+     * Set signalToken
+     *
+     * @param string $signalToken
+     * @return Order
+     */
+    public function setSignalToken($signalToken)
+    {
+        $this->signalToken = $signalToken;
+
+        return $this;
+    }
+
+    /**
+     * Get signalToken
+     *
+     * @return string 
+     */
+    public function getSignalToken()
+    {
+        return $this->signalToken;
+    }
 }
