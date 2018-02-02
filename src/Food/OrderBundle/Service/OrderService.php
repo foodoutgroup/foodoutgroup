@@ -486,7 +486,8 @@ class OrderService extends ContainerAware
         $this->logStatusChange($this->getOrder(), $status, $source, $message);
 
         $this->getOrder()->setOrderStatus($status);
-
+var_dump($informUser);
+die;
         if ($informUser) {
             $smsCollection = $this->em->getRepository('FoodAppBundle:SmsTemplate')->findByOrder($this->order);
 
@@ -522,6 +523,7 @@ class OrderService extends ContainerAware
                     }
                 }
             }
+
 
             $emailCollection = $this->em->getRepository('FoodAppBundle:EmailTemplate')->findByOrder($this->order);
 
