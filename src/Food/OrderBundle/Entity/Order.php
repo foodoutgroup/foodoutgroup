@@ -277,6 +277,12 @@ class Order
     private $smsMessages;
 
     /**
+     * @var \Food\PushBundle\Entity\Push
+     * @ORM\OneToMany(targetEntity="\Food\PushBundle\Entity\Push", mappedBy="order")
+     **/
+    private $pushMessages;
+
+    /**
      * @var \Food\OrderBundle\Entity\PaymentLog $paymentLog
      * @ORM\OneToMany(targetEntity="\Food\OrderBundle\Entity\PaymentLog", mappedBy="order")
      **/
@@ -2848,5 +2854,28 @@ class Order
     public function getSignalToken()
     {
         return $this->signalToken;
+    }
+
+    /**
+     * Get messages
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPushMessages()
+    {
+        return $this->pushMessages;
+    }
+
+    /**
+     * Add pushMessages
+     *
+     * @param \Food\PushBundle\Entity\Push $pushMessages
+     * @return Order
+     */
+    public function addPushMessage(\Food\PushBundle\Entity\Push $pushMessages)
+    {
+        $this->pushMessages[] = $pushMessages;
+
+        return $this;
     }
 }

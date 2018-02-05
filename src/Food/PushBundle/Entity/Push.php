@@ -3,6 +3,7 @@
 namespace Food\PushBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Food\OrderBundle\Entity\Order;
 
 /**
  * Push
@@ -45,9 +46,9 @@ class Push
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="submited_at", type="datetime")
+     * @ORM\Column(name="submitted_at", type="datetime")
      */
-    private $submitedAt;
+    private $submittedAt;
 
     /**
      * @var string
@@ -64,11 +65,12 @@ class Push
     private $sent;
 
     /**
-     * @var integer
+     * @var Order
      *
-     * @ORM\Column(name="order_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="\Food\OrderBundle\Entity\Order", inversedBy="smsMessages")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=true)
      */
-    private $orderId;
+    private $order;
 
 
     /**
@@ -85,7 +87,7 @@ class Push
      * Set token
      *
      * @param string $token
-     * @return SingalPush
+     * @return Push
      */
     public function setToken($token)
     {
@@ -108,7 +110,7 @@ class Push
      * Set message
      *
      * @param string $message
-     * @return SingalPush
+     * @return Push
      */
     public function setMessage($message)
     {
@@ -131,7 +133,7 @@ class Push
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return SingalPush
+     * @return Push
      */
     public function setCreatedAt($createdAt)
     {
@@ -151,33 +153,33 @@ class Push
     }
 
     /**
-     * Set submitedAt
+     * Set submittedAt
      *
-     * @param \DateTime $submitedAt
-     * @return SingalPush
+     * @param \DateTime $submittedAt
+     * @return Push
      */
-    public function setSubmitedAt($submitedAt)
+    public function setSubmittedAt($submittedAt)
     {
-        $this->submitedAt = $submitedAt;
+        $this->submittedAt = $submittedAt;
 
         return $this;
     }
 
     /**
-     * Get submitedAt
+     * Get submittedAt
      *
      * @return \DateTime
      */
-    public function getSubmitedAt()
+    public function getSubmittedAt()
     {
-        return $this->submitedAt;
+        return $this->submittedAt;
     }
 
     /**
      * Set error
      *
      * @param string $error
-     * @return SingalPush
+     * @return Push
      */
     public function setError($error)
     {
@@ -200,7 +202,7 @@ class Push
      * Set sent
      *
      * @param integer $sent
-     * @return SingalPush
+     * @return Push
      */
     public function setSent($sent)
     {
@@ -223,7 +225,7 @@ class Push
      * Set orderId
      *
      * @param integer $orderId
-     * @return SingalPush
+     * @return Push
      */
     public function setOrderId($orderId)
     {
