@@ -5,6 +5,7 @@ imports:
     - { resource: "@FoodCartBundle/Resources/config/services.yml" }
     - { resource: "@FoodDishesBundle/Resources/config/admin.yml" }
     - { resource: "@FoodSmsBundle/Resources/config/admin.yml" }
+    - { resource: "@FoodPushBundle/Resources/config/admin.yml" }
     - { resource: @A2lixTranslationFormBundle/Resources/config/gedmo.xml }
     - { resource: "@FoodBlogBundle/Resources/config/services.yml" }
 
@@ -351,6 +352,7 @@ sonata_admin:
                   items:
                       - sonata.admin.users
                       - sonata.admin.sms
+                      - sonata.admin.push
                       - sonata.admin.newsletter_subscribers
                       - sonata.admin.banned_ips
                       - sonata.admin.banned_email

@@ -1,16 +1,16 @@
 <?php
 
-namespace Food\OrderBundle\Entity;
+namespace Food\PushBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * SingalPush
+ * Push
  *
- * @ORM\Table(name="signal_push")
- * @ORM\Entity(repositoryClass="Food\OrderBundle\Entity\SignalPushRepository")
+ * @ORM\Table(name="push")
+ * @ORM\Entity(repositoryClass="Food\PushBundle\Entity\PushRepository")
  */
-class SingalPush
+class Push
 {
     /**
      * @var integer
@@ -74,7 +74,7 @@ class SingalPush
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -97,7 +97,7 @@ class SingalPush
     /**
      * Get token
      *
-     * @return string 
+     * @return string
      */
     public function getToken()
     {
@@ -120,7 +120,7 @@ class SingalPush
     /**
      * Get message
      *
-     * @return string 
+     * @return string
      */
     public function getMessage()
     {
@@ -143,7 +143,7 @@ class SingalPush
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -166,7 +166,7 @@ class SingalPush
     /**
      * Get submitedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getSubmitedAt()
     {
@@ -189,7 +189,7 @@ class SingalPush
     /**
      * Get error
      *
-     * @return string 
+     * @return string
      */
     public function getError()
     {
@@ -235,7 +235,7 @@ class SingalPush
     /**
      * Get orderId
      *
-     * @return integer 
+     * @return integer
      */
     public function getOrderId()
     {
