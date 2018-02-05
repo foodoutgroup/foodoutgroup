@@ -201,6 +201,17 @@ services:
         calls:
           - [ setTranslationDomain, [SonataAdminBundle]]
 
+    sonata.admin.push.template:
+        class: Food\AppBundle\Admin\PushTemplateAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "Editor", label: "admin.push.template" }
+        arguments:
+          - ~
+          - Food\AppBundle\Entity\PushTemplate
+          - ~
+        calls:
+          - [ setTranslationDomain, [SonataAdminBundle]]
+
 
     sonata.admin.email.template:
         class: Food\AppBundle\Admin\EmailTemplateAdmin
