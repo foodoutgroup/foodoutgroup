@@ -46,28 +46,28 @@ class Push
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="submitted_at", type="datetime")
+     * @ORM\Column(name="submitted_at", type="datetime",nullable=true)
      */
     private $submittedAt;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="error", type="string", length=255)
+     * @ORM\Column(name="error", type="string", length=255,nullable=true)
      */
     private $error;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="sent", type="boolean")
+     * @ORM\Column(name="sent", type="boolean", options={"default"=false})
      */
     private $sent;
 
     /**
      * @var Order
      *
-     * @ORM\ManyToOne(targetEntity="\Food\OrderBundle\Entity\Order", inversedBy="smsMessages")
+     * @ORM\ManyToOne(targetEntity="\Food\OrderBundle\Entity\Order", inversedBy="pushMessages")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=true)
      */
     private $order;
@@ -222,25 +222,25 @@ class Push
     }
 
     /**
-     * Set orderId
+     * Set order
      *
-     * @param integer $orderId
+     * @param \Food\OrderBundle\Entity\Order $order
      * @return Push
      */
-    public function setOrderId($orderId)
+    public function setOrder(\Food\OrderBundle\Entity\Order $order = null)
     {
-        $this->orderId = $orderId;
+        $this->order = $order;
 
         return $this;
     }
 
     /**
-     * Get orderId
+     * Get order
      *
-     * @return integer
+     * @return \Food\OrderBundle\Entity\Order
      */
-    public function getOrderId()
+    public function getOrder()
     {
-        return $this->orderId;
+        return $this->order;
     }
 }

@@ -32,8 +32,8 @@ class PushesAdmin extends SonataAdmin
             ->add('sent', 'checkbox', array('required' => false, 'label' => 'admin.push.sent'))
             ->add('createdAt', null, array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('error', null, array('required' => false, 'label' => 'admin.push.error'))
-            ->add('orderId', null, array('required' => false, 'label' => 'admin.push.orderid'))
-            ->add('submitedAt', null, array('label' => 'admin.push.submited', 'required' => true));
+//            ->add('order', null, array('required' => false, 'label' => 'admin.push.orderid'))
+            ->add('submittedAt', null, array('label' => 'admin.push.submitted', 'required' => true));
     }
 
     // Fields to be shown on filter forms
@@ -53,7 +53,7 @@ class PushesAdmin extends SonataAdmin
             ->add('sent', null, array('label' => 'admin.push.sent', 'editable' => true))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
             ->add('error', null, array('required' => false, 'label' => 'admin.push.error'))
-            ->add('orderId', null, array('required' => false, 'label' => 'admin.push.orderid'))
+//            ->add('order', null, array('required' => false, 'label' => 'admin.push.orderid'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
@@ -73,8 +73,8 @@ class PushesAdmin extends SonataAdmin
             ->add('message', 'string', array('label' => 'admin.push.message'))
             ->add('sent', null, array('label' => 'admin.push.sent', 'editable' => false))
             ->add('createdAt', 'datetime', array('format' => 'Y-m-d H:i:s', 'label' => 'admin.created_at'))
-            ->add('error', null, array('required' => false, 'label' => 'admin.push.error'))
-            ->add('orderId', null, array('required' => false, 'label' => 'admin.push.orderid'));
+            ->add('error', null, array('required' => false, 'label' => 'admin.push.error'));
+//            ->add('order', null, array('required' => false, 'label' => 'admin.push.orderid'));
     }
 
     /**
