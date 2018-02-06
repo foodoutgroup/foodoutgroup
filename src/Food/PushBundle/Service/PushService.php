@@ -110,8 +110,8 @@ class PushService
             throw new \Exception('Message not given. How should I save it?');
         }
 
-        if(strlen($push->getMessage()) < 1) {
-            return  false;
+        if (strlen($push->getMessage()) < 1) {
+            return false;
         }
 
         $em = $this->getManager();
@@ -122,15 +122,18 @@ class PushService
         return true;
     }
 
-    public function sendPush()
+    public function sendPush($push)
     {
+        $locale = $this->getContainer()->get('request')->getLocale();
+
         $content = array(
-            "en" => 'English Message'
+            $locale => $push->getMessage()
         );
 
+
         $fields = array(
-            'app_id' => "277f9ce8-e822-4636-bacd-69adc7c7d989",
-            'include_player_ids' => array("df69b253-0706-42f2-b6a2-fdc1456765d2"),
+            'app_id' => $this->getContainer()->getParameter('signal_id'),
+            'include_player_ids' => array($push->getToken()),
             'data' => array("foo" => "bar"),
             'contents' => $content
         );
@@ -142,7 +145,7 @@ class PushService
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json; charset=utf-8',
-            'Authorization: Basic M2ZjZTgwMmEtZDkzMS00ZmUwLWI1OTItYTdiN2RkYjU2ZDU5'));
+            'Authorization: Basic ' . $this->getContainer()->getParameter('signal_authentication')));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLOPT_POST, TRUE);
