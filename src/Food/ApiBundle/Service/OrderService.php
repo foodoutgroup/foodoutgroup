@@ -481,7 +481,7 @@ class OrderService extends ContainerAware
 
         $signalToken = null;
 
-        if($request->get('user')['token']){
+        if($request->get('user')){
             $signalToken = $request->get('user')['token'];
         }
 
