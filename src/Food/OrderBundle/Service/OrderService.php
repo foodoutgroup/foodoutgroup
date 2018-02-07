@@ -486,7 +486,7 @@ class OrderService extends ContainerAware
         $this->logStatusChange($this->getOrder(), $status, $source, $message);
         $this->getOrder()->setOrderStatus($status);
 
-        if ($informUser && !$this->getOrder()->getMobile()) {
+        if ($informUser && !$this->getOrder()->getSignalToken()) {
             $smsCollection = $this->em->getRepository('FoodAppBundle:SmsTemplate')->findByOrder($this->order);
 
             $order = $this->getOrder();
@@ -521,7 +521,7 @@ class OrderService extends ContainerAware
                     }
                 }
             }
-        } elseif ($informUser && $this->getOrder()->getMobile()) {
+        } elseif ($informUser && $this->getOrder()->getSignalToken()) {
             $pushCollection = $this->em->getRepository('FoodAppBundle:PushTemplate')->findByOrder($this->order);
 
             $order = $this->getOrder();
