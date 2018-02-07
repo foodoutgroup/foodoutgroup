@@ -1,3 +1,7 @@
+food_push:
+    resource: "@FoodPushBundle/Resources/config/routing.php"
+    prefix:   /
+
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 

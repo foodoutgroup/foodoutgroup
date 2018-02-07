@@ -1,0 +1,5 @@
+services:
+
+  food.push:
+      class: Food\PushBundle\Service\PushService
+      arguments: [@service_container]

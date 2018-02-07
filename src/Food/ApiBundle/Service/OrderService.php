@@ -64,6 +64,7 @@ class OrderService extends ContainerAware
      */
     public function createOrder(Request $requestOrig, JsonRequest $request, $isThisPre = false)
     {
+
         $logger = $this->container->get('logger');
         $logger->alert("=================");
         $logger->alert("orderService->createOrder called");
@@ -148,6 +149,7 @@ class OrderService extends ContainerAware
         $logger->alert('Service var givven: ');
         $logger->alert(var_export($serviceVar, true));
         $pp = null; // placePoint :D - jei automatu - tai NULL :D
+
         if ($serviceVar['type'] == "pickup") {
             // TODO Trying to catch fatal when searching for PlacePoint
             if (empty($serviceVar['location_id'])) {
@@ -477,6 +479,12 @@ class OrderService extends ContainerAware
             $placeType = $request->get('service')['type'];
         }
 
+        $signalToken = null;
+
+        if($request->get('user')['token']){
+            $signalToken = $request->get('user')['token'];
+        }
+
         $os->createOrderFromCart(
             $basket->getPlaceId()->getId(),
             $requestOrig->getLocale(),
@@ -487,7 +495,8 @@ class OrderService extends ContainerAware
             null,
             null,
             $placeType,
-            $locationInfo
+            $locationInfo,
+            $signalToken
         );
 
         $os->setMobileOrder(true);
