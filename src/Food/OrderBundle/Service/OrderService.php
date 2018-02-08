@@ -486,113 +486,112 @@ class OrderService extends ContainerAware
         $this->logStatusChange($this->getOrder(), $status, $source, $message);
         $this->getOrder()->setOrderStatus($status);
 
-        if ($informUser && !$this->getOrder()->getSignalToken()) {
-            $smsCollection = $this->em->getRepository('FoodAppBundle:SmsTemplate')->findByOrder($this->order);
+        if ($informUser) {
+            if (!$this->getOrder()->getSignalToken()) {
 
-            $order = $this->getOrder();
-            $place = $order->getPlace();
-            $placeService = $this->container->get('food.places');
-            if ($smsCollection) {
-                foreach ($smsCollection as $smsObj) {
-                    if ($smsObj) {
-                        $smsText = str_replace(
-                            [
-                                '[order_id]',
-                                '[restaurant_name]',
-                                '[delivery_time]',
-                                '[pre_delivery_time]',
-                                '[delay_time]',
-                            ],
-                            [
-                                $order->getId(),
-                                $place->getName(),
-                                ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
-                                $order->getDeliveryTime()->format('m-d H:i'),
-                                $order->getDelayDuration(),
-                            ],
-                            $smsObj->getText()
-                        );
+                $smsCollection = $this->em->getRepository('FoodAppBundle:SmsTemplate')->findByOrder($this->order);
 
-                        $smsService = $this->container->get('food.messages');
-                        $sender = $this->container->getParameter('sms.sender');
+                $order = $this->getOrder();
+                $place = $order->getPlace();
+                $placeService = $this->container->get('food.places');
+                if ($smsCollection) {
+                    foreach ($smsCollection as $smsObj) {
+                        if ($smsObj) {
+                            $smsText = str_replace(
+                                [
+                                    '[order_id]',
+                                    '[restaurant_name]',
+                                    '[delivery_time]',
+                                    '[pre_delivery_time]',
+                                    '[delay_time]',
+                                ],
+                                [
+                                    $order->getId(),
+                                    $place->getName(),
+                                    ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
+                                    $order->getDeliveryTime()->format('m-d H:i'),
+                                    $order->getDelayDuration(),
+                                ],
+                                $smsObj->getText()
+                            );
 
-                        $message = $smsService->createMessage($sender, $order->getOrderExtra()->getPhone(), $smsText, $order);
-                        $smsService->saveMessage($message);
-                    }
-                }
-            }
-        } elseif ($informUser && $this->getOrder()->getSignalToken()) {
-            $pushCollection = $this->em->getRepository('FoodAppBundle:PushTemplate')->findByOrder($this->order);
+                            $smsService = $this->container->get('food.messages');
+                            $sender = $this->container->getParameter('sms.sender');
 
-            $order = $this->getOrder();
-            $place = $order->getPlace();
-            $placeService = $this->container->get('food.places');
-
-            if ($pushCollection) {
-                foreach ($pushCollection as $pushObj) {
-                    if ($pushObj) {
-                        $pushText = str_replace(
-                            [
-                                '[order_id]',
-                                '[restaurant_name]',
-                                '[delivery_time]',
-                                '[pre_delivery_time]',
-                                '[delay_time]',
-                            ],
-                            [
-                                $order->getId(),
-                                $place->getName(),
-                                ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
-                                $order->getDeliveryTime()->format('m-d H:i'),
-                                $order->getDelayDuration(),
-                            ],
-                            $pushObj->getText()
-                        );
-
-                        $pushService = $this->container->get('food.push');
-                        $push = $pushService->createPush($order->getSignalToken(), $pushText, $order);
-                        $pushService->savePush($push);
-                    }
-                }
-
-            }
-
-        }
-
-
-        $emailCollection = $this->em->getRepository('FoodAppBundle:EmailTemplate')->findByOrder($this->order);
-
-        if ($emailCollection) {
-            foreach ($emailCollection as $emailObj) {
-                if ($emailObj) {
-
-                    $ml = $this->container->get('food.mailer');
-                    $placeService = $this->container->get('food.places');
-
-                    $invoice = [];
-                    foreach ($this->getOrder()->getDetails() as $ord) {
-
-                        $optionCollection = $ord->getOptions();
-                        $invoice[] = [
-                            'itm_name' => $ord->getDishName(),
-                            'itm_amount' => $ord->getQuantity(),
-                            'itm_price' => $ord->getPrice(),
-                            'itm_sum' => $ord->getPrice() * $ord->getQuantity(),
-                        ];
-                        if (count($optionCollection)) {
-
-                            foreach ($optionCollection as $k => $opt) {
-
-                                $invoice[] = [
-                                    'itm_name' => "  - " . $opt->getDishOptionName(),
-                                    'itm_amount' => $ord->getQuantity(),
-                                    'itm_price' => $opt->getPrice(),
-                                    'itm_sum' => $opt->getPrice() * $ord->getQuantity(),
-                                ];
-                            }
-
+                            $message = $smsService->createMessage($sender, $order->getOrderExtra()->getPhone(), $smsText, $order);
+                            $smsService->saveMessage($message);
                         }
+                    }
+                }
+            } elseif ($this->getOrder()->getSignalToken()) {
+                $pushCollection = $this->em->getRepository('FoodAppBundle:PushTemplate')->findByOrder($this->order);
 
+                $order = $this->getOrder();
+                $place = $order->getPlace();
+                $placeService = $this->container->get('food.places');
+
+                if ($pushCollection) {
+                    foreach ($pushCollection as $pushObj) {
+                        if ($pushObj) {
+                            $pushText = str_replace(
+                                [
+                                    '[order_id]',
+                                    '[restaurant_name]',
+                                    '[delivery_time]',
+                                    '[pre_delivery_time]',
+                                    '[delay_time]',
+                                ],
+                                [
+                                    $order->getId(),
+                                    $place->getName(),
+                                    ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
+                                    $order->getDeliveryTime()->format('m-d H:i'),
+                                    $order->getDelayDuration(),
+                                ],
+                                $pushObj->getText()
+                            );
+
+                            $pushService = $this->container->get('food.push');
+                            $push = $pushService->createPush($order->getSignalToken(), $pushText, $order);
+                            $pushService->savePush($push);
+                        }
+                    }
+
+                }
+            }
+            $emailCollection = $this->em->getRepository('FoodAppBundle:EmailTemplate')->findByOrder($this->order);
+
+            if ($emailCollection) {
+                foreach ($emailCollection as $emailObj) {
+                    if ($emailObj) {
+
+                        $ml = $this->container->get('food.mailer');
+                        $placeService = $this->container->get('food.places');
+
+                        $invoice = [];
+                        foreach ($this->getOrder()->getDetails() as $ord) {
+
+                            $optionCollection = $ord->getOptions();
+                            $invoice[] = [
+                                'itm_name' => $ord->getDishName(),
+                                'itm_amount' => $ord->getQuantity(),
+                                'itm_price' => $ord->getPrice(),
+                                'itm_sum' => $ord->getPrice() * $ord->getQuantity(),
+                            ];
+                            if (count($optionCollection)) {
+
+                                foreach ($optionCollection as $k => $opt) {
+
+                                    $invoice[] = [
+                                        'itm_name' => "  - " . $opt->getDishOptionName(),
+                                        'itm_amount' => $ord->getQuantity(),
+                                        'itm_price' => $opt->getPrice(),
+                                        'itm_sum' => $opt->getPrice() * $ord->getQuantity(),
+                                    ];
+                                }
+
+                            }
+                        }
 
                         // TODO temp Beta.lt code
                         $betaCode = '';
