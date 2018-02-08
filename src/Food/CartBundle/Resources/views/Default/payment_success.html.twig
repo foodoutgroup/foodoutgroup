@@ -17,11 +17,19 @@
                 sv8: '{{ order.placeName }}'
             }
         };
-        (function(){var s=document.createElement('script');s.type='text/javascript';s.async=true;s.src='https://track.adform.net/serving/scripts/trackpoint/async/';var x = document.getElementsByTagName('script')[0];x.parentNode.insertBefore(s, x);})();
+        (function () {
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = 'https://track.adform.net/serving/scripts/trackpoint/async/';
+            var x = document.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(s, x);
+        })();
     </script>
     <noscript>
         <p style="margin:0;padding:0;border:0;">
-            <img src="https://track.adform.net/Serving/TrackPoint/?pm=314127&ADFPageName=Conversion%20page&ADFdivider=|" width="1" height="1" alt="" />
+            <img src="https://track.adform.net/Serving/TrackPoint/?pm=314127&ADFPageName=Conversion%20page&ADFdivider=|"
+                 width="1" height="1" alt=""/>
         </p>
     </noscript>
     <!-- Adform Tracking Code END -->
@@ -29,14 +37,14 @@
 
 {% block jscode %}
     <script type="text/javascript">
-    $(document).ready(function(){
-        $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function(event){
-        Cart.submitOrder($(this).closest(".delivery-info-form"));
-        event.stopPropagation();
-        event.preventDefault();
-        return false;
+        $(document).ready(function () {
+            $('.site-center').delegate('.delivery-info-form .submit-button', 'click', function (event) {
+                Cart.submitOrder($(this).closest(".delivery-info-form"));
+                event.stopPropagation();
+                event.preventDefault();
+                return false;
+            });
         });
-    });
     </script>
 {% endblock %}
 
@@ -44,22 +52,22 @@
     ga('require', 'ecommerce', 'ecommerce.js');
 
     ga('ecommerce:addTransaction',{
-        'id': '{{ order.id }}', // transaction ID - required
-        'affiliation': '{{ order.place.name }}', // affiliation or store name
-        'revenue': '{{ order.total }}',      // total - required
-        'shipping': '{{ order.deliveryPrice }}', // shipping
-        'tax': '{{ order.vat }}',        // tax
-        'currency': '{{ currency_iso }}'
+    'id': '{{ order.id }}', // transaction ID - required
+    'affiliation': '{{ order.place.name }}', // affiliation or store name
+    'revenue': '{{ order.total }}',      // total - required
+    'shipping': '{{ order.deliveryPrice }}', // shipping
+    'tax': '{{ order.vat }}',        // tax
+    'currency': '{{ currency_iso }}'
     });
     {% for item in order.details %}
 
         ga('ecommerce:addItem', {
-            'id': '{{ order.id }}', // transaction ID - necessary to associate item with transaction
-            'sku': '{{ item.id }}',           // SKU/code - required
-            'name': '{{ item.dishName }}',        // product name
-            'category': '{{ item.dishUnitName }}',   // category or variation
-            'price': '{{ item.price }}',          // unit price - required
-            'quantity': '{{ item.quantity }}'               // quantity - required
+        'id': '{{ order.id }}', // transaction ID - necessary to associate item with transaction
+        'sku': '{{ item.id }}',           // SKU/code - required
+        'name': '{{ item.dishName }}',        // product name
+        'category': '{{ item.dishUnitName }}',   // category or variation
+        'price': '{{ item.price }}',          // unit price - required
+        'quantity': '{{ item.quantity }}'               // quantity - required
         });
     {% endfor %}
     ga('ecommerce:send');
@@ -69,43 +77,64 @@
     <!-- mailersoft begin -->
     <script type="text/javascript">
         {% for item in order.details %}
-        _ml.push({'_conversion_data':  { value: {{ item.price }}, amount: {{ item.quantity }}, title: '{{ item.dishName }}', product_code: '{{ item.id }}' }});
+        _ml.push({
+            '_conversion_data': {
+                value: {{ item.price }},
+                amount: {{ item.quantity }},
+                title: '{{ item.dishName }}',
+                product_code: '{{ item.id }}'
+            }
+        });
         {% endfor %}
 
-        window.onload = function(){
-            _mler.sendConversion({order_title: 'Order no. {{ order.id }}', order_id: '{{ order.id }}', currency: '{{ currency_iso }}'});
+        window.onload = function () {
+            _mler.sendConversion({
+                order_title: 'Order no. {{ order.id }}',
+                order_id: '{{ order.id }}',
+                currency: '{{ currency_iso }}'
+            });
         };
     </script>
     <!-- mailersoft end -->
     {# Facebook Purchase Begin #}
-    <script>fbq('track', 'Purchase', {value: '{{ order.total }}', currency:'{{ currency_iso }}'});</script>
+    <script>fbq('track', 'Purchase', {value: '{{ order.total }}', currency: '{{ currency_iso }}'});</script>
     {# Facebook Purchase End #}
     {% javascripts '@FoodAppBundle/Resources/public/js_main/order.js' %}
-    <script src="{{ asset_url }}"></script>
+        <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <div class="site-center">
         <div class="site-block">
             <div class="middle-content">
                 <div class="cupon-page">
                     <h1>{% trans %}general.cart.success_title{% endtrans %}!</h1>
-                    {#<p>Jūsų užsakymas priimtas ir turėtų pasiekti jus per <strong>{{ order.placePoint.deliveryTime }}</strong> minučių. <br/>Jei kils kokių klausimų ar yra paskutinės minutės pakeitumų, prašome susisiekite <br/> su <strong>“Foodout.lt”</strong> telefonu <strong>+370 687 44359</strong>. &#123;&#35;Savo užsakymą <a href="#" class="delivery-location-ico"><span>galite sekti čia</span></a>&#35;&#125;</p>#}
                     <p>
                         {% if order.placePoint.phoneNiceFormat|length > 4 %}
-                            {% if order.orderStatus == 'preorder' %}
-                                {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success_pre{% endtrans %}
+
+                            {% if order.deliveryType == 'pickup' %}
+                                {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success.pickup{% endtrans %}
                             {% else %}
-                                {% trans %}general.cart.success{% endtrans %}
-                                    {% if order.place.showPhone %}
-                                        {% trans with {'%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success.restaurant{% endtrans %}
+                                {% if order.placePointSelfDelivery %}
+                                    {% if order.orderStatus == 'preorder' %}
+                                        {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success.selfdelivery.delivery.preorder{% endtrans %}
+                                    {% else %}
+                                        {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success.selfdelivery.delivery{% endtrans %}
+                                    {% endif %}
+                                {% else %}
+                                    {% if order.orderStatus == 'preorder' %}
+                                        {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success.foodout.delivery.preorder{% endtrans %}
+                                    {% else %}
+                                        {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success.foodout.delivery{% endtrans %}
                                     {% endif %}
                                 {% endif %}
+                            {% endif %}
                         {% else %}
                             {% trans with {'%placeName%':  order.placeName} %}general.cart.success_no_place_num{% endtrans %}
                         {% endif %}
-                        {#Savo užsakymą <a href="#" class="delivery-location-ico"><span>galite sekti čia</span></a>#}
+
                     </p>
                 </div>
             </div>
         </div>
     </div>
+    {#{% if order.orderStatus == 'preorder' %}#}
 {% endblock %}
