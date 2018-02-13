@@ -31,3 +31,14 @@ services:
           - 'FoodReportBundle:Admin\UniqueUsersWithPlacepoint'
       calls:
           - [ setTranslationDomain, [SonataAdminBundle]]
+
+  sonata.admin.valentines:
+      class: Food\ReportBundle\Admin\ReportValentinesAdmin
+      tags:
+          - { name: sonata.admin, manager_type: orm, group: "Content", label: "valentines.mail" }
+      arguments:
+          - ~
+          - Food\ReportBundle\Entity\EventMail
+          - ~
+      calls:
+          - [ setTranslationDomain, [SonataAdminBundle]]

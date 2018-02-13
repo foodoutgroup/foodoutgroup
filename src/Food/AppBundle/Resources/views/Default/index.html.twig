@@ -13,28 +13,92 @@
 
 {% block body %}
     {# image randomization according to country #}
+    {% if misc_utils.param('valentines_popup', true) %}
+        <script>
+            function add_mail(element) {
+                var checked = $("#valentines_agree").parent('[class*="icheck"]').hasClass("checked");
+                var email = $('#valentines_mail').val();
+                var url = "{{ slug.generateURL('food_ajax_request', {'action' : 'check-event-email'}) }}";
+                if (checked && email.length > 0) {
 
-    <script type="text/javascript">
-        $(document).ready(function(){
-            if(typeof $('#address_autocomplete').data("selected") == "undefined") {
-                $('#find-me').trigger('click');
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            email: email
+                        },
+                        success: function (data) {
+                            if (data.success) {
+                                $.fancybox.close($('.modal-valentines-div'));
+                            }
+                        }
+                    });
+                }
+
             }
-        });
-    </script>
-    {% if location  %}
-       {% if cityService.getCityFromLocation(location) %}
-            <div class="badge-container">
-                <a id="badge-link" onclick="badgeFunction(this)" data-url = "{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}" data-code = "{{ location.id }}" href="javascript:void(0)"><img src="{{ asset('/bundles/foodapp/images/badge.png')}}"></a>
-            </div>
-       {% endif %}
+        </script>
     {% endif %}
 
-    <div style="background-image: url(//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/title_offer/offer-'~site_country|lower~'-'~random(['2', '3', '4', '5', '6', '9', '10', '14'])~'.jpg') }});" class="site-header special-offer-block">
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (typeof $('#address_autocomplete').data("selected") == "undefined") {
+                $('#find-me').trigger('click');
+            }
+            {% if misc_utils.param('valentines_popup', true) %}
+            setTimeout(function () {
+                $.fancybox.open($('.modal-valentines-div'));
+
+            }, 1000);
+            {% endif %}
+
+        });
+    </script>
+
+
+    {% if location %}
+        {% if cityService.getCityFromLocation(location) %}
+            <div class="badge-container">
+                <a id="badge-link" onclick="badgeFunction(this)"
+                   data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"
+                   data-code="{{ location.id }}" href="javascript:void(0)"><img
+                            src="{{ asset('/bundles/foodapp/images/badge.png') }}"></a>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <div style="background-image: url(//{{ cloudfront_url }}{{ asset('bundles/foodapp/images/title_offer/offer-'~site_country|lower~'-'~random(['2', '3', '4', '5', '6', '9', '10', '14'])~'.jpg') }});"
+         class="site-header special-offer-block">
+
+        {% if misc_utils.param('valentines_popup', true) %}
+            <div class="modal-valentines-div" STYLE="position: relative !important;display: none;">
+                <img src="{{ asset('bundles/foodapp/images/valentines.png') }}">
+
+                <div class="valentines-input-block">
+                    <input class="form-control" name="valentines_mail" id="valentines_mail" type="text"
+                           placeholder="{% trans %}general.valentines.holder{% endtrans %}">
+                    <div class="valentines-accept-container">
+                        <input type="checkbox" name="valentines_agree" id="valentines_agree" class="form-control">
+                        <div class="valentines-text">
+                            {% trans %}general.valentines.agree.text{% endtrans %}
+                        </div>
+
+                    </div>
+                    <div class="valentines-button-container">
+                        <a href="javascript:void(0)" onclick="add_mail(this)"><img
+                                    src="{{ asset('bundles/foodapp/images/valentines_button.png') }}"></a>
+                    </div>
+                    <div class="valentines-agreements">{% trans %}general.valentines.agreement.text{% endtrans %}</div>
+                </div>
+                {#<a id="pedestrian-redirect" href="javascript:void(0)"#}
+                {#style="position:absolute;left: 20px;bottom: 10px;"><img#}
+                {#src="{{ asset('bundles/foodapp/images/mygtukas.png') }}"></a>#}
+            </div>
+        {% endif %}
         <div class="site-block address-search-form">
             <div class="address-search-form-content">
                 <h1 class="no-wrap">{% trans %}index.title_page_header{% endtrans %}</h1>
-                <form class="search-food-form address-search-form-ui"  action="#" method="get">
+                <form class="search-food-form address-search-form-ui" action="#" method="get">
                     <div class="marker-icon"></div>
 
                     <p class="title">{% trans %}index.search_form_qlue{% endtrans %}</p>
@@ -42,26 +106,41 @@
                         <div style="display: inline-flex; position:relative;">
                             <input
                                     style="width: 400px;"
-                                    type="text" {% if location is not null and location.precision == 0 and location.id is defined %}data-selected="{{ location.id }}"{% endif %}
+                                    type="text"
+                                    {% if location is not null and location.precision == 0 and location.id is defined %}data-selected="{{ location.id }}"{% endif %}
                                     id="address_autocomplete"
                                     data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'autocomplete-address'}) }}"
                                     placeholder="{% trans %}index.street{% endtrans %}"
                                     class="input-street search-field"
-                                    autocomplete="off" value="{% if location is not null and location.output is defined %}{{ location.output }}{% endif %}" />
-                            <span id="find-me" data-error-no-service="{% trans %}error.no.service.available{% endtrans %}" data-error-accuracy-to-big="{% trans %}error.accuracy.to.big{% endtrans %}" class="find-me" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
+                                    autocomplete="off"
+                                    value="{% if location is not null and location.output is defined %}{{ location.output }}{% endif %}"/>
+                            <span id="find-me"
+                                  data-error-no-service="{% trans %}error.no.service.available{% endtrans %}"
+                                  data-error-accuracy-to-big="{% trans %}error.accuracy.to.big{% endtrans %}"
+                                  class="find-me"
+                                  data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'get-address-by-location'}) }}"></span>
                         </div>
                         <div class="hidden">
                             <div class="modal-map-div" STYLE="width: 800px;">
-                                <h1 class="text-center" style="font-weight: 800;">{% trans %}modal.map.title.text{% endtrans %}</h1>
+                                <h1 class="text-center"
+                                    style="font-weight: 800;">{% trans %}modal.map.title.text{% endtrans %}</h1>
                                 <div id="mapError"></div>
                                 <input id="address_autocomplete_modal" readonly="readonly" type="text"/>
                                 <div id="map" style="width: 800px; height: 500px;"></div>
-                                <button id="confirmMapPoint" class="hidden" type="button">{% trans %}button.continue{% endtrans %}</button>
+                                <button id="confirmMapPoint" class="hidden"
+                                        type="button">{% trans %}button.continue{% endtrans %}</button>
                                 <p>{% trans %}modal.map.text.bottom{% endtrans %}</p>
                             </div>
                         </div>
-                        <button class="submit" id="submit" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}"><img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}"  img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/></button>
-                        <button class="submit do-pickup" title="{% trans %}label.pickup{% endtrans %}" id="do-pickup" data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'delivery-type'}) }}"><img src="{{ asset('bundles/foodapp/images/go-pickup.png') }}"  img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/><br/>{% trans %}label.pickup{% endtrans %}</button>
+                        <button class="submit" id="submit"
+                                data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-address'}) }}">
+                            <img src="{{ asset('bundles/foodapp/images/btn-search-icon.png') }}"
+                                 img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/></button>
+                        <button class="submit do-pickup" title="{% trans %}label.pickup{% endtrans %}" id="do-pickup"
+                                data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'delivery-type'}) }}">
+                            <img src="{{ asset('bundles/foodapp/images/go-pickup.png') }}"
+                                 img-loader="{{ asset('bundles/foodapp/images/preloader.gif') }}"/><br/>{% trans %}label.pickup{% endtrans %}
+                        </button>
                     </div>
                     <div class="clearfix"></div>
                     <div id="error"></div>
@@ -76,7 +155,13 @@
         </div>
         {% if show_game %}
             <div class="site-block banner">
-                <iframe id='a7178164' name='a7178164' src='//ads.foodout.lt/delivery/afr.php?zoneid={{ misc_utils.getParam('game_revive_zone_id') }}&amp;cb=INSERT_RANDOM_NUMBER_HERE' frameborder='0' scrolling='no' width='900' height='300'><a href='//ads.foodout.lt/delivery/ck.php?n=a378844f&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='//ads.foodout.lt/delivery/avw.php?zoneid={{ misc_utils.getParam('game_revive_zone_id') }}&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a378844f' border='0' alt='' /></a></iframe>
+                <iframe id='a7178164' name='a7178164'
+                        src='//ads.foodout.lt/delivery/afr.php?zoneid={{ misc_utils.getParam('game_revive_zone_id') }}&amp;cb=INSERT_RANDOM_NUMBER_HERE'
+                        frameborder='0' scrolling='no' width='900' height='300'><a
+                            href='//ads.foodout.lt/delivery/ck.php?n=a378844f&amp;cb=INSERT_RANDOM_NUMBER_HERE'
+                            target='_blank'><img
+                                src='//ads.foodout.lt/delivery/avw.php?zoneid={{ misc_utils.getParam('game_revive_zone_id') }}&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a378844f'
+                                border='0' alt=''/></a></iframe>
             </div>
         {% endif %}
 
@@ -86,4 +171,5 @@
             </div>
         {% endif %}
     </div>
+
 {% endblock %}

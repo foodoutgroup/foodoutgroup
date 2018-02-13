@@ -1648,6 +1648,18 @@
                 <source>mobile.pedestrian</source>
                 <target>Pėstysis</target>
             </trans-unit>
+            <trans-unit id="general.valentines.agree.text" resname="general.valentines.agree.text">
+                <source>general.valentines.agree.text</source>
+                <target>Sutinku, kad mano duomenys būtų naudojami <![CDATA[<br/>]]> tiesioginės rinkodaros tikslais.<![CDATA[<div style="text-decoration:underline;">]]>  Loterijoje dalyvauja <![CDATA[<br/>]]> TIK kontaktai, kurie sutinka su šia sąlyga.<![CDATA[</div>]]></target>
+            </trans-unit>
+            <trans-unit id="general.valentines.agreement.text" resname="general.valentines.agreement.text">
+                <source>general.valentines.agreement.text</source>
+                <target>Nuolaidos kodą atiųsime bei su prizo laimėjais susisieksime <![CDATA[<br/>]]> asmeniškai el.paštu 2018.02.15</target>
+            </trans-unit>
+            <trans-unit id="general.valentines.holder" resname="general.valentines.holder">
+                <source>general.valentines.holder</source>
+                <target>Įrašyk savo el.paštą</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
