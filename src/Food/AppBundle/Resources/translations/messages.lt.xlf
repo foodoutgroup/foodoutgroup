@@ -1650,7 +1650,7 @@
             </trans-unit>
             <trans-unit id="general.valentines.agree.text" resname="general.valentines.agree.text">
                 <source>general.valentines.agree.text</source>
-                <target>Sutinku, kad mano duomenys būtų naudojami <![CDATA[<br/>]]> tiesioginės rinkodaros tikslais.<![CDATA[<div style="text-decoration:underline;">]]>  Loterijoje dalyvauja <![CDATA[<br/>]]> TIK kontaktai, kurie sutinka su šia sąlyga.<![CDATA[</div>]]></target>
+                <target>Sutinku, kad mano duomenys būtų naudojami <![CDATA[<br/>]]> tiesioginės rinkodaros tikslais.<![CDATA[<b style="text-decoration:underline;font-weight:normal">]]>  Loterijoje dalyvauja <![CDATA[<br/>]]> TIK kontaktai, kurie sutinka su šia sąlyga.<![CDATA[</b>]]></target>
             </trans-unit>
             <trans-unit id="general.valentines.agreement.text" resname="general.valentines.agreement.text">
                 <source>general.valentines.agreement.text</source>
