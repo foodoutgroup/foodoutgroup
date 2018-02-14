@@ -27,6 +27,9 @@ class AjaxController extends Controller
         $response->headers->set('Content-Type', 'application/json');
 
         switch ($action) {
+            case 'check-event-email':
+                $collection = $this->_isEmailInEvent($response->getContent(), $request->get('email'));
+                break;
             case 'find-address-and-recount':
                 $collection = $this->_isPlaceInRadius($response->getContent(), intval($request->get('place')));
                 break;
@@ -34,13 +37,13 @@ class AjaxController extends Controller
                 $collection = $this->_ajaxCheckCoupon($request->get('place_id'), $request->get('coupon_code'));
                 break;
             case 'delivery-price':
-                $collection = $this->_ajaxGetDeliveryPrice($request->get('restaurant'),$request->get('time'));
+                $collection = $this->_ajaxGetDeliveryPrice($request->get('restaurant'), $request->get('time'));
                 break;
             case 'autocomplete-address':
                 $collection = $this->_autoCompleteAddress($request);
                 break;
             case 'check-address':
-                $collection = $this->_checkAddress($request,$request->get('place'));
+                $collection = $this->_checkAddress($request, $request->get('place'));
                 break;
             case 'get-address-by-location':
                 $collection = $this->_getAddressByLocation($request);
@@ -48,23 +51,23 @@ class AjaxController extends Controller
             case 'delivery-type':
                 $collection = ['success' => false];
 
-                    $this->get('session')->set('delivery_type', $request->get('type'));
-                    if ($request->get('redirect')) {
-                        if($request->get('address') != "") {
-                            $collection = $this->_checkAddress($request,null);
-                        } else {
-                            $findAddress = $this->get('food.location')->findByIp($request->getClientIp());
-                            try {
-                                $cityId = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findNearestCity($findAddress);
-                                $collection['success'] = true;
-                                $collection['url'] = $this->get('slug')->getUrl($cityId, Slug::TYPE_CITY);
-                            } catch (\Exception $e) {
-                                $collection['success'] = false;
-                                $collection['message'] = $e->getMessage();// $this->get('translator')->trans('location.cant.be.located');
-                            }
+                $this->get('session')->set('delivery_type', $request->get('type'));
+                if ($request->get('redirect')) {
+                    if ($request->get('address') != "") {
+                        $collection = $this->_checkAddress($request, null);
+                    } else {
+                        $findAddress = $this->get('food.location')->findByIp($request->getClientIp());
+                        try {
+                            $cityId = $this->getDoctrine()->getRepository('FoodDishesBundle:PlacePoint')->findNearestCity($findAddress);
+                            $collection['success'] = true;
+                            $collection['url'] = $this->get('slug')->getUrl($cityId, Slug::TYPE_CITY);
+                        } catch (\Exception $e) {
+                            $collection['success'] = false;
+                            $collection['message'] = $e->getMessage();// $this->get('translator')->trans('location.cant.be.located');
                         }
-
                     }
+
+                }
 
                 break;
             default:
@@ -101,7 +104,7 @@ class AjaxController extends Controller
         $trans = $this->get('translator');
         $cont = [
             'status' => true,
-            'data'   => []
+            'data' => []
         ];
 
         $orderService = $this->get('food.order');
@@ -195,7 +198,7 @@ class AjaxController extends Controller
             $cont['data'] = $coupon->__toArray();
         }
 
-        if(isset($cont['data']['error']) && !empty($cont['data']['error'])){
+        if (isset($cont['data']['error']) && !empty($cont['data']['error'])) {
 
             $this->get('food.error_log')->write(
                 $this->getUser(),
@@ -209,10 +212,10 @@ class AjaxController extends Controller
         return $cont;
     }
 
-    private function _ajaxGetDeliveryPrice($restaurant,$time)
+    private function _ajaxGetDeliveryPrice($restaurant, $time)
     {
 
-        $date = date('Y-m-d ').$time.':00';
+        $date = date('Y-m-d ') . $time . ':00';
         $location = $this->get('food.location')->get();
         /**
          * @var $placeRepo PlaceRepository
@@ -220,8 +223,8 @@ class AjaxController extends Controller
         $placeRepo = $this->getDoctrine()->getRepository("FoodDishesBundle:Place");
 
 
-        $placePointId = $placeRepo->getPlacePointNear($restaurant,$location,false,$date);
-        if(!empty($placePointId)) {
+        $placePointId = $placeRepo->getPlacePointNear($restaurant, $location, false, $date);
+        if (!empty($placePointId)) {
             $place = $placeRepo->find($restaurant);
             $placePoint = $this->getDoctrine()->getRepository("FoodDishesBundle:PlacePoint")->find($placePointId);
             $deliveryPrice = $this->container->get('food.cart')->getDeliveryPrice($place, $location, $placePoint, true);
@@ -248,7 +251,7 @@ class AjaxController extends Controller
             'types' => 'geocode',
         ])->body);
 
-        $assets =  $this->get('templating.helper.assets');
+        $assets = $this->get('templating.helper.assets');
 
         foreach ($rsp->collection as $item) {
 
@@ -257,12 +260,12 @@ class AjaxController extends Controller
 
             foreach ($item->matched_substrings as $boldRange) {
                 $str = mb_substr($item->output, $boldRange->offset, $boldRange->length, 'UTF-8');
-                $label = str_replace($str, "<b>".$str."</b>", $label);
+                $label = str_replace($str, "<b>" . $str . "</b>", $label);
             }
             $imgUrl = $assets->getUrl('bundles/foodapp/images/ic_marker.png');
             $addressCollection[] = [
                 'id' => $item->id,
-                'label' => "<img src=\"$imgUrl\"/> ".$label,
+                'label' => "<img src=\"$imgUrl\"/> " . $label,
                 'value' => $item->output,
                 'data' => $item->matched_substrings,
                 'class' => '',
@@ -270,22 +273,22 @@ class AjaxController extends Controller
         }
 
         $user = $this->getUser();
-        if($user) {
+        if ($user) {
             /**
              * @var $userAddress UserAddress
              */
             $userAddress = $this->getDoctrine()->getRepository('FoodUserBundle:UserAddress')->getDefault($user);
-            if($userAddress) {
+            if ($userAddress) {
                 $imgUrlHome = $assets->getUrl('bundles/foodapp/images/ic_home.png');
 
                 $add = true;
                 foreach ($addressCollection as $all) {
-                    if($all['id'] == $userAddress->getAddressId()) {
+                    if ($all['id'] == $userAddress->getAddressId()) {
                         $add = false;
                         break;
                     }
                 }
-                if($add && $userAddress->getAddressId()) {
+                if ($add && $userAddress->getAddressId()) {
                     $addressCollection[] = [
                         'id' => $userAddress->getAddressId(),
                         'label' => "<img src=\"$imgUrlHome\"/>&nbsp;&nbsp;<u>" . $userAddress->getOrigin() . "</u>",
@@ -301,7 +304,7 @@ class AjaxController extends Controller
 
     }
 
-    private function _checkAddress(Request $request,$place = null)
+    private function _checkAddress(Request $request, $place = null)
     {
 
         $rsp = ['success' => false];
@@ -309,24 +312,24 @@ class AjaxController extends Controller
         $lService = $this->get('food.location');
         $response = $lService->findByHash($request->get("address"));
 
-        if($request->get("type") == 'badge') {
+        if ($request->get("type") == 'badge') {
             $this->get('session')->set('badge', 1);
         }
 
         $t = $this->get('translator');
 
 
-        if($response) {
-            if($place != null){
+        if ($response) {
+            if ($place != null) {
                 $placePointMap = array();
-                $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place,$response,false,false);
-                if(empty($placePoint)){
+                $placePoint = $this->getDoctrine()->getRepository('FoodDishesBundle:Place')->getPlacePointNear($place, $response, false, false);
+                if (empty($placePoint)) {
                     $rsp['message'] = $t->trans('place_point_does_not_deliver');
                     $rsp['place_point_error'] = 1;
                     return $rsp;
-                }else{
+                } else {
                     $placePointMap[$place] = $placePoint;
-                    $this->container->get('session')->set('point_data',$placePointMap);
+                    $this->container->get('session')->set('point_data', $placePointMap);
                 }
             }
 
@@ -334,11 +337,11 @@ class AjaxController extends Controller
 
             if (empty($response['house'])) {
                 $rsp['message'] = $t->trans('error.house.not.found');
-            } elseif(!is_null($response['city_id'])) {
+            } elseif (!is_null($response['city_id'])) {
                 $rsp['success'] = true;
                 $rsp['url'] = $this->get('slug')->get($response['city_id'], Slug::TYPE_CITY);
                 $lService->clear()->set($response);
-            } elseif($settingRestaurantList = (int) $this->get('food.app.utils.misc')->getParam('page_restaurant_list', 0)){
+            } elseif ($settingRestaurantList = (int)$this->get('food.app.utils.misc')->getParam('page_restaurant_list', 0)) {
                 $rsp['success'] = true;
                 $rsp['url'] = $this->get('slug')->getUrl($settingRestaurantList, Slug::TYPE_PAGE);
                 $lService->clear()->set($response);
@@ -357,7 +360,7 @@ class AjaxController extends Controller
         $rsp = ['success' => false, 'detail' => null];
         $lService = $this->get('food.location');
         $response = $lService->findByCords($request->get('lat'), $request->get('lng'));
-        if($response) {
+        if ($response) {
             $rsp['success'] = true;
             $rsp['detail'] = $response;
         } else {
@@ -366,6 +369,23 @@ class AjaxController extends Controller
         }
 
         return $rsp;
+    }
+
+    private function _isEmailInEvent($content, $email)
+    {
+        $reportService = $this->get('food.report');
+
+        $response = ['success' => false, 'message' => ''];
+
+        $result = $reportService->saveEmail($email);
+        $t = $this->get('translator');
+        if ($result) {
+            $response['success'] = true;
+        } else {
+            $response['message'] = $t->trans('already.exists');
+        }
+
+        return $response;
     }
 
 }

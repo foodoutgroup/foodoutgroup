@@ -46,10 +46,11 @@ class SettingsController extends CRUDController
         'game_revive_zone_id',
         'footer_social',
         'pedestrian_filter_show',
-        'placepoint_prepare_times_pedestrian'
+        'placepoint_prepare_times_pedestrian',
+        'valentines_popup'
     ];
 
-    public function listAction( )
+    public function listAction()
     {
         $request = $this->get('request');
 
@@ -66,13 +67,13 @@ class SettingsController extends CRUDController
         $form = $form->getForm();
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
-            foreach($form->getData() as $keyword => $value) {
+            foreach ($form->getData() as $keyword => $value) {
 
-                if(is_object($value) && method_exists($value, 'getId')) {
+                if (is_object($value) && method_exists($value, 'getId')) {
                     $value = $value->getId();
                 }
 
-                if($data[$keyword] != $value) {
+                if ($data[$keyword] != $value) {
                     $paramService->setParam($keyword, $value);
                 }
             }
@@ -80,11 +81,11 @@ class SettingsController extends CRUDController
         }
 
         return $this->render('@FoodApp/Admin/Settings/index.html.twig', array(
-            'form'          => $form->createView(),
+            'form' => $form->createView(),
             'base_template' => $this->getBaseTemplate(),
             'flash_messages' => $session->getFlashBag(),
-            'admin_pool'    => $this->container->get('sonata.admin.pool'),
-            'blocks'        => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks')
+            'admin_pool' => $this->container->get('sonata.admin.pool'),
+            'blocks' => $this->container->getParameter('sonata.admin.configuration.dashboard_blocks')
         ));
     }
 
@@ -99,7 +100,7 @@ class SettingsController extends CRUDController
 
         $form->add('site_logo_url', 'text');
 
-        if($this->container->getParameter('country') != 'EE') {
+        if ($this->container->getParameter('country') != 'EE') {
             $form->add('change_phone_position', 'boolean', [
                 'label' => 'Move phone to footer',
             ]);
@@ -107,7 +108,7 @@ class SettingsController extends CRUDController
 
         $form->add('page_banned', 'choice', [
             'label' => 'Banned page',
-            'choices' =>  $pageCollection,
+            'choices' => $pageCollection,
             'attr' => [
                 'group' => 'Info pages',
                 'style' => 'margin-bottom:10px',
@@ -125,32 +126,32 @@ class SettingsController extends CRUDController
 
         $form->add('page_help', 'choice', [
             'label' => 'Help page',
-            'choices' =>  $pageCollection
+            'choices' => $pageCollection
         ]);
 
         $form->add('page_best_offer', 'choice', [
             'label' => 'Best offer page',
-            'choices' =>  $pageCollection
+            'choices' => $pageCollection
         ]);
         $form->add('page_b2b_rules', 'choice', [
             'label' => 'B2B rules page',
-            'choices' =>  $pageCollection
+            'choices' => $pageCollection
         ]);
 
         $form->add('page_privacy', 'choice', [
             'label' => 'Privacy page',
-            'choices' =>  $pageCollection
+            'choices' => $pageCollection
         ]);
 
         $form->add('page_blog', 'choice', [
             'label' => 'Blog page',
-            'choices' =>  $pageCollection
+            'choices' => $pageCollection
         ]);
 
 
         $form->add('page_restaurant_list', 'choice', [
             'label' => 'Restaurant list',
-            'choices' =>  $pageCollection
+            'choices' => $pageCollection
         ]);
 
         $form->add('use_admin_fee_globally', 'boolean', [
@@ -238,7 +239,7 @@ class SettingsController extends CRUDController
         $form->add('optin_code', 'textarea', [
             'label' => 'Optin Code',
             'required' => false,
-            'attr' => ['style' => 'width:100%;',  'rows' => 20]
+            'attr' => ['style' => 'width:100%;', 'rows' => 20]
         ]);
 
         $form->add('footer_social', 'textarea', [
@@ -248,11 +249,15 @@ class SettingsController extends CRUDController
         ]);
 
         foreach ($this->keywordMapCollection as $keyword) {
-            if(!$form->has($keyword)) {
+            if (!$form->has($keyword)) {
                 $form->add($keyword, 'text', ['required' => false]);
             }
         }
-        
+
+        $form->add('valentines_popup', 'boolean', [
+            'attr' => ['group' => 'Pop ups']
+        ]);
+
         $form->add('submit', 'submit', ['label' => 'Update', 'attr' => ['class' => 'btn btn-primary']]);
 
     }

@@ -1,7 +1,9 @@
 <?php
+
 namespace Food\ReportBundle\Service;
 
 use Food\OrderBundle\Service\OrderService;
+use Food\ReportBundle\Entity\EventMail;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
@@ -75,17 +77,17 @@ class ReportService extends ContainerAware
                 'data' => array_values($orderMobileCountGraphData),
                 'type' => 'spline'
             ),
-             array(
-                 'name' => $translator->trans('admin.report.admin_fee'),
-                 'data' => array_values($adminFeeGraphData),
-                 'type' => 'spline'
-             )
+            array(
+                'name' => $translator->trans('admin.report.admin_fee'),
+                'data' => array_values($adminFeeGraphData),
+                'type' => 'spline'
+            )
         );
 
         $ob = new Highchart();
         $ob->chart->renderTo('order_chart');
         $ob->title->text($translator->trans('admin.report.daily_orders_graph'));
-        $ob->yAxis->title(array('text'  => $translator->trans('admin.report.amount')));
+        $ob->yAxis->title(array('text' => $translator->trans('admin.report.amount')));
         $ob->yAxis->floor(0);
         $ob->xAxis->categories(array_keys($orderGraphData));
         $ob->series($series);
@@ -151,7 +153,7 @@ class ReportService extends ContainerAware
         $ob = new Highchart();
         $ob->chart->renderTo('avg_basket');
         $ob->title->text($translator->trans('admin.report.daily_avg_basket_graph'));
-        $ob->yAxis->title(array('text'  => $translator->trans('admin.report.amount')));
+        $ob->yAxis->title(array('text' => $translator->trans('admin.report.amount')));
         $ob->yAxis->floor(0);
         $ob->xAxis->categories(array_keys($orderGraphData));
         $ob->series($series);
@@ -180,16 +182,16 @@ class ReportService extends ContainerAware
             ->getSmsUndeliveredCountByDay($dateFrom, $dateTo);
 
         $smsGraphData = $this->fillEmptyDays(
-                $this->remapDataForGraph($smsData, 'report_day', 'message_count'),
-                $dateFrom,
-                $dateTo
-            );
+            $this->remapDataForGraph($smsData, 'report_day', 'message_count'),
+            $dateFrom,
+            $dateTo
+        );
 
         $smsUndeliveredGraphData = $this->fillEmptyDays(
-                $this->remapDataForGraph($smsUndeliveredData, 'report_day', 'message_count'),
-                $dateFrom,
-                $dateTo
-            );
+            $this->remapDataForGraph($smsUndeliveredData, 'report_day', 'message_count'),
+            $dateFrom,
+            $dateTo
+        );
 
         $series = array(
             array(
@@ -207,7 +209,7 @@ class ReportService extends ContainerAware
         $ob = new Highchart();
         $ob->chart->renderTo('sms_chart');
         $ob->title->text($translator->trans('admin.report.daily_sms_graph'));
-        $ob->yAxis->title(array('text'  => $translator->trans('admin.report.amount')));
+        $ob->yAxis->title(array('text' => $translator->trans('admin.report.amount')));
         $ob->yAxis->floor(0);
         $ob->xAxis->categories(array_keys($smsGraphData));
         $ob->series($series);
@@ -243,8 +245,7 @@ class ReportService extends ContainerAware
     {
         $currentDate = clone $dateFrom;
 
-        while($currentDate->format("y-m-d") < $dateTo->format("y-m-d"))
-        {
+        while ($currentDate->format("y-m-d") < $dateTo->format("y-m-d")) {
             $formatedDate = $currentDate->format("y-m-d");
             if (!isset($data[$formatedDate])) {
                 $data[$formatedDate] = 0;
@@ -292,7 +293,7 @@ class ReportService extends ContainerAware
             // Now count the stats
             foreach ($formatedDriverData as &$formateData) {
                 if ($formateData['lateOrders'] > 0) {
-                    $formateData['lateOrdersPercent'] = round(($formateData['lateOrders']*100) / $formateData['totalOrders'], 2);
+                    $formateData['lateOrdersPercent'] = round(($formateData['lateOrders'] * 100) / $formateData['totalOrders'], 2);
 
                     $formateData['avgLatency'] = round($formateData['totalLatency'] / $formateData['lateOrders'], 2);
                 }
@@ -301,6 +302,7 @@ class ReportService extends ContainerAware
 
         return $formatedDriverData;
     }
+
     /**
      * @param \DateTime $dateFrom
      * @param \DateTime $dateTo
@@ -370,11 +372,31 @@ class ReportService extends ContainerAware
         $ob = new Highchart();
         $ob->chart->renderTo('turnover_chart');
         $ob->title->text($translator->trans('admin.report.turnover'));
-        $ob->yAxis->title(array('text'  => $translator->trans('admin.report.amount')));
+        $ob->yAxis->title(array('text' => $translator->trans('admin.report.amount')));
         $ob->yAxis->floor(0);
         $ob->xAxis->categories(array_keys($totalGraphData));
         $ob->series($series);
 
         return $ob;
+    }
+
+    public function saveEmail($email)
+    {
+        $repo = $this->getDoctrine()->getRepository('FoodReportBundle:EventMail');
+        $em = $this->getDoctrine()->getManager();
+        $check = $repo->findBy(['email' => $email]);
+        $return = true;
+
+        if ($check) {
+            $return = false;
+        } else {
+            $newObj = new EventMail();
+            $newObj->setEmail($email);
+            $em->persist($newObj);
+            $em->flush();
+        }
+
+        return $return;
+
     }
 }
