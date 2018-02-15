@@ -522,8 +522,6 @@ class OrderService extends ContainerAware
                             $sender = $this->container->getParameter('sms.sender');
 
                             $message = $smsService->createMessage($sender, $order->getOrderExtra()->getPhone(), $smsText, $order);
-                            var_dump($message);
-                            die;
                             $smsService->saveMessage($message);
                         }
                     }

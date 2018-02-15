@@ -17,6 +17,7 @@ class EmailTemplateAdmin extends FoodAdmin
             ->add('type', 'text', ['label' => 'admin.email.type'])
             ->add('source', 'text', ['label' => 'admin.email.source'])
             ->add('active', 'boolean', ['label' => 'admin.email.active', 'editable' => true])
+            ->add('selfDelivery', 'boolean', ['label' => 'admin.email.self_delivery', 'editable' => true])
             ->add('_action', 'actions', ['actions' => ['edit' => [], 'delete' => [],], 'label' => 'admin.actions']);
     }
 
@@ -49,7 +50,9 @@ class EmailTemplateAdmin extends FoodAdmin
             ->add('preorder', 'boolean', ['label' => 'admin.email.preorder'])
             ->add('type', 'boolean', ['label' => 'admin.email.type', 'choices' => $typeCollection])
             ->add('source', 'choice', ['label' => 'admin.email.source', 'choices' => $sourceCollection])
-            ->add('active', 'boolean');
+            ->add('active', 'boolean')
+            ->add('selfDelivery', 'boolean', ['label' => 'admin.email.self_delivery']);
+
     }
 
 }
