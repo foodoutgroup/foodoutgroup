@@ -490,7 +490,8 @@ class OrderService extends ContainerAware
             if (!$this->getOrder()->getSignalToken()) {
 
                 $smsCollection = $this->em->getRepository('FoodAppBundle:SmsTemplate')->findByOrder($this->order);
-
+var_dump($smsCollection);
+die;
                 $order = $this->getOrder();
                 $place = $order->getPlace();
                 $placeService = $this->container->get('food.places');

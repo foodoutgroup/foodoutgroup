@@ -16,6 +16,7 @@ class SmsTemplateAdmin extends FoodAdmin
             ->add('type', 'text', ['label' => 'admin.sms.type'])
             ->add('source', 'text', ['label' => 'admin.sms.source'])
             ->add('active', 'boolean', ['label' => 'admin.sms.active', 'editable' => true])
+            ->add('selfDelivery', 'boolean', ['label' => 'admin.sms.self_delivery', 'editable' => true])
             ->add('_action', 'actions', ['actions' => ['edit' => [], 'delete' => [],], 'label' => 'admin.actions']);
     }
 
@@ -37,17 +38,18 @@ class SmsTemplateAdmin extends FoodAdmin
 
 
         $form->add('translations', 'a2lix_translations_gedmo', [
-                'translatable_class' => 'Food\AppBundle\Entity\SmsTemplate',
-                'cascade_validation' => true,
+            'translatable_class' => 'Food\AppBundle\Entity\SmsTemplate',
+            'cascade_validation' => true,
             'fields' => [
                 'text' => ['required' => true, 'attr' => ['help' => $templateHelp]]
             ]
         ])
-        ->add('status', 'choice', ['label' => 'admin.sms.status', 'choices' => $orderStatusCollection])
-        ->add('preorder', 'boolean', ['label' => 'admin.sms.preorder'])
-        ->add('type', 'boolean', ['label' => 'admin.sms.type', 'choices' => $typeCollection])
-        ->add('source', 'choice', ['label' => 'admin.sms.source', 'choices' => $sourceCollection])
-        ->add('active', 'boolean');
+            ->add('status', 'choice', ['label' => 'admin.sms.status', 'choices' => $orderStatusCollection])
+            ->add('preorder', 'boolean', ['label' => 'admin.sms.preorder'])
+            ->add('type', 'boolean', ['label' => 'admin.sms.type', 'choices' => $typeCollection])
+            ->add('source', 'choice', ['label' => 'admin.sms.source', 'choices' => $sourceCollection])
+            ->add('active', 'boolean')
+            ->add('selfDelivery', 'boolean', ['label' => 'admin.sms.self_delivery', 'editable' => true]);
     }
 
 }
