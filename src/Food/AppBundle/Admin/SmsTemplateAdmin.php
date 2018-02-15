@@ -17,7 +17,7 @@ class SmsTemplateAdmin extends FoodAdmin
             ->add('source', 'text', ['label' => 'admin.sms.source'])
             ->add('active', 'boolean', ['label' => 'admin.sms.active', 'editable' => true])
             ->add('selfDelivery', 'boolean', ['label' => 'admin.sms.self_delivery', 'editable' => true])
-            ->add('_action', 'actions', ['actions' => ['edit' => [], 'delete' => [],], 'label' => 'admin.actions']);
+            ->add('_action', 'actions', ['actions' => ['edit' => [], 'delete' => []], 'label' => 'admin.actions']);
     }
 
     function configureFormFields(FormMapper $form)
@@ -49,7 +49,7 @@ class SmsTemplateAdmin extends FoodAdmin
             ->add('type', 'boolean', ['label' => 'admin.sms.type', 'choices' => $typeCollection])
             ->add('source', 'choice', ['label' => 'admin.sms.source', 'choices' => $sourceCollection])
             ->add('active', 'boolean')
-            ->add('selfDelivery', 'boolean', ['label' => 'admin.sms.self_delivery', 'editable' => true]);
+            ->add('selfDelivery', 'boolean', ['label' => 'admin.sms.self_delivery']);
     }
 
 }
