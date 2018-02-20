@@ -630,7 +630,8 @@ class OrderService extends ContainerAware
                             'food_review_url' => 'http://' . $this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review',
                             'delivery_time' => ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
                             'email' => $order->getUser()->getEmail(),
-                            'phone' => $this->getPhoneForUserInform($order)
+                            'phone' => $this->getPhoneForUserInform($order),
+                            'delivery_time_format' => $this->getOrder()->getDeliveryTime()->format('H:i')
                         ];
 
 
