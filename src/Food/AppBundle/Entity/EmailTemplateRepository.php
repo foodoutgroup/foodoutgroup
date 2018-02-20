@@ -38,7 +38,7 @@ class EmailTemplateRepository extends EntityRepository
                 $qb->expr()->eq('et.source', ':source'),
                 $qb->expr()->eq('et.source', ':defaultSource')
             ))
-            ->andWhere('st.selfDelivery = :self_delivery')
+            ->andWhere('et.selfDelivery = :self_delivery')
             ->andWhere('et.active = 1')
             ->andWhere('et.type = :type');
 
