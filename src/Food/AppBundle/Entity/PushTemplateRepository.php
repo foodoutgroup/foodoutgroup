@@ -1,6 +1,7 @@
 <?php
 
 namespace Food\AppBundle\Entity;
+
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Food\OrderBundle\Entity\Order;
@@ -9,7 +10,6 @@ use Gedmo\Translatable\TranslatableListener;
 /**
  * PushTemplateRepository
  */
-
 class PushTemplateRepository extends EntityRepository
 {
     /**
@@ -37,9 +37,9 @@ class PushTemplateRepository extends EntityRepository
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->eq('st.source', ':source'),
                 $qb->expr()->eq('st.source', ':defaultSource'),
-                $qb->expr()->isNull('st.source'),
-                $qb->expr()->eq('st.selfDelivery', ':self_delivery')
+                $qb->expr()->isNull('st.source')
             ))
+            ->andWhere('st.selfDelivery = :self_delivery')
             ->andWhere('st.type = :type')
             ->andWhere('st.active = 1');
 

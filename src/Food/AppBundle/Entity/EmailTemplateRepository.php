@@ -36,9 +36,9 @@ class EmailTemplateRepository extends EntityRepository
             ->andWhere('et.preorder = :preorder')
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->eq('et.source', ':source'),
-                $qb->expr()->eq('et.source', ':defaultSource'),
-                $qb->expr()->eq('et.selfDelivery', ':self_delivery')
+                $qb->expr()->eq('et.source', ':defaultSource')
             ))
+            ->andWhere('st.selfDelivery = :self_delivery')
             ->andWhere('et.active = 1')
             ->andWhere('et.type = :type');
 

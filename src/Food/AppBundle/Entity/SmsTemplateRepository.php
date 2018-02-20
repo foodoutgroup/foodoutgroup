@@ -37,9 +37,9 @@ class SmsTemplateRepository extends EntityRepository
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->eq('st.source', ':source'),
                 $qb->expr()->eq('st.source', ':defaultSource'),
-                $qb->expr()->isNull('st.source'),
-                $qb->expr()->eq('st.selfDelivery', ':self_delivery')
+                $qb->expr()->isNull('st.source')
             ))
+            ->andWhere('st.selfDelivery = :self_delivery')
             ->andWhere('st.type = :type')
             ->andWhere('st.active = 1');
 
