@@ -111,19 +111,23 @@
                         {% if order.placePoint.phoneNiceFormat|length > 4 %}
 
                             {% if order.deliveryType == 'pickup' %}
-                                {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success.pickup{% endtrans %}
+                                {% if order.orderStatus == 'preorder' %}
+                                    {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat, '%place_address%': order.placePoint.address,'%delivery_time_format%': order.deliveryTime|date("H:i"),'%pre-delivery_time_format%': order.deliveryTime|date("m-d H:i")} %}general.cart.success.pickup.preorder{% endtrans %}
+                                {% else %}
+                                    {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat, '%place_address%': order.placePoint.address,'%delivery_time_format%': order.deliveryTime|date("H:i"),'%pre-delivery_time_format%': order.deliveryTime|date("m-d H:i")} %}general.cart.success.pickup{% endtrans %}
+                                {% endif %}
                             {% else %}
                                 {% if order.placePointSelfDelivery %}
                                     {% if order.orderStatus == 'preorder' %}
-                                        {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success.selfdelivery.delivery.preorder{% endtrans %}
+                                        {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat, '%place_address%': order.placePoint.address,'%delivery_time_format%': order.deliveryTime|date("H:i"),'%pre-delivery_time_format%': order.deliveryTime|date("m-d H:i")} %}general.cart.success.selfdelivery.delivery.preorder{% endtrans %}
                                     {% else %}
-                                        {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success.selfdelivery.delivery{% endtrans %}
+                                        {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat, '%place_address%': order.placePoint.address,'%delivery_time_format%': order.deliveryTime|date("H:i"),'%pre-delivery_time_format%': order.deliveryTime|date("m-d H:i")} %}general.cart.success.selfdelivery.delivery{% endtrans %}
                                     {% endif %}
                                 {% else %}
                                     {% if order.orderStatus == 'preorder' %}
-                                        {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success.foodout.delivery.preorder{% endtrans %}
+                                        {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat, '%place_address%': order.placePoint.address,'%delivery_time_format%': order.deliveryTime|date("H:i"),'%pre-delivery_time_format%': order.deliveryTime|date("m-d H:i")} %}general.cart.success.foodout.delivery.preorder{% endtrans %}
                                     {% else %}
-                                        {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat} %}general.cart.success.foodout.delivery{% endtrans %}
+                                        {% trans with {'%order_date%': order.deliveryTime|date("Y-m-d H:i"), '%placeName%':  order.placeName, '%placePhone%': order.placePoint.phoneNiceFormat, '%place_address%': order.placePoint.address,'%delivery_time_format%': order.deliveryTime|date("H:i"),'%pre-delivery_time_format%': order.deliveryTime|date("m-d H:i")} %}general.cart.success.foodout.delivery{% endtrans %}
                                     {% endif %}
                                 {% endif %}
                             {% endif %}
