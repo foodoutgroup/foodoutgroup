@@ -505,7 +505,8 @@ class OrderService extends ContainerAware
                                     '[delivery_time]',
                                     '[pre_delivery_time]',
                                     '[delay_time]',
-                                    '[phone]'
+                                    '[phone]',
+                                    '[delivery_time_format]'
                                 ],
                                 [
                                     $order->getId(),
@@ -513,7 +514,8 @@ class OrderService extends ContainerAware
                                     ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
                                     $order->getDeliveryTime()->format('m-d H:i'),
                                     $order->getDelayDuration(),
-                                    $smsPhone
+                                    $smsPhone,
+                                    $order->getDeliveryTime()->format('H:i')
                                 ],
                                 $smsObj->getText()
                             );
@@ -545,7 +547,8 @@ class OrderService extends ContainerAware
                                     '[delivery_time]',
                                     '[pre_delivery_time]',
                                     '[delay_time]',
-                                    '[phone]'
+                                    '[phone]',
+                                    '[delivery_time_format]'
                                 ],
                                 [
                                     $order->getId(),
@@ -553,7 +556,8 @@ class OrderService extends ContainerAware
                                     ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
                                     $order->getDeliveryTime()->format('m-d H:i'),
                                     $order->getDelayDuration(),
-                                    $pushPhone
+                                    $pushPhone,
+                                    $order->getDeliveryTime()->format('H:i')
                                 ],
                                 $pushObj->getText()
                             );
