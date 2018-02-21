@@ -134,6 +134,12 @@ class SmsTemplate
      */
     private $useForAll;
 
+    /**
+     * @var string
+     * @ORM\Column(name="self_delivery", type="boolean",options={"default": false})
+     */
+    private $selfDelivery;
+
     public function __construct()
     {
         $this->translations = new \Doctrine\Common\Collections\ArrayCollection();
@@ -434,4 +440,57 @@ class SmsTemplate
         $this->useForAll = $useForAll;
     }
 
+
+    /**
+     * Get preorder
+     *
+     * @return boolean 
+     */
+    public function getPreorder()
+    {
+        return $this->preorder;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean 
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Get useForAll
+     *
+     * @return boolean 
+     */
+    public function getUseForAll()
+    {
+        return $this->useForAll;
+    }
+
+    /**
+     * Set selfDelivery
+     *
+     * @param boolean $selfDelivery
+     * @return SmsTemplate
+     */
+    public function setSelfDelivery($selfDelivery)
+    {
+        $this->selfDelivery = $selfDelivery;
+
+        return $this;
+    }
+
+    /**
+     * Get selfDelivery
+     *
+     * @return boolean 
+     */
+    public function getSelfDelivery()
+    {
+        return $this->selfDelivery;
+    }
 }

@@ -23,7 +23,8 @@ class EmailTemplateRepository extends EntityRepository
             'preorder' => (bool)$order->getPreorder(),
             'source' => $order->getSource(),
             'defaultSource' => 'All',
-            'type' => 'deliver'
+            'type' => 'deliver',
+            'self_delivery' => $order->getPlace()->getSelfDelivery()
         ];
 
         if ('pickup' == $order->getDeliveryType()) {
@@ -37,6 +38,7 @@ class EmailTemplateRepository extends EntityRepository
                 $qb->expr()->eq('et.source', ':source'),
                 $qb->expr()->eq('et.source', ':defaultSource')
             ))
+            ->andWhere('et.selfDelivery = :self_delivery')
             ->andWhere('et.active = 1')
             ->andWhere('et.type = :type');
 

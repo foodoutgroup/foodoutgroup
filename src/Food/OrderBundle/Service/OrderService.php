@@ -490,8 +490,9 @@ class OrderService extends ContainerAware
             if (!$this->getOrder()->getSignalToken()) {
 
                 $smsCollection = $this->em->getRepository('FoodAppBundle:SmsTemplate')->findByOrder($this->order);
-
                 $order = $this->getOrder();
+                $smsPhone = $this->getPhoneForUserInform($order);
+
                 $place = $order->getPlace();
                 $placeService = $this->container->get('food.places');
                 if ($smsCollection) {
@@ -504,6 +505,8 @@ class OrderService extends ContainerAware
                                     '[delivery_time]',
                                     '[pre_delivery_time]',
                                     '[delay_time]',
+                                    '[phone]',
+                                    '[delivery_time_format]'
                                 ],
                                 [
                                     $order->getId(),
@@ -511,6 +514,8 @@ class OrderService extends ContainerAware
                                     ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
                                     $order->getDeliveryTime()->format('m-d H:i'),
                                     $order->getDelayDuration(),
+                                    $smsPhone,
+                                    $order->getDeliveryTime()->format('H:i')
                                 ],
                                 $smsObj->getText()
                             );
@@ -527,6 +532,8 @@ class OrderService extends ContainerAware
                 $pushCollection = $this->em->getRepository('FoodAppBundle:PushTemplate')->findByOrder($this->order);
 
                 $order = $this->getOrder();
+                $pushPhone = $this->getPhoneForUserInform($order);
+
                 $place = $order->getPlace();
                 $placeService = $this->container->get('food.places');
 
@@ -540,6 +547,8 @@ class OrderService extends ContainerAware
                                     '[delivery_time]',
                                     '[pre_delivery_time]',
                                     '[delay_time]',
+                                    '[phone]',
+                                    '[delivery_time_format]'
                                 ],
                                 [
                                     $order->getId(),
@@ -547,6 +556,8 @@ class OrderService extends ContainerAware
                                     ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
                                     $order->getDeliveryTime()->format('m-d H:i'),
                                     $order->getDelayDuration(),
+                                    $pushPhone,
+                                    $order->getDeliveryTime()->format('H:i')
                                 ],
                                 $pushObj->getText()
                             );
@@ -562,6 +573,7 @@ class OrderService extends ContainerAware
             $emailCollection = $this->em->getRepository('FoodAppBundle:EmailTemplate')->findByOrder($this->order);
 
             if ($emailCollection) {
+                $order = $this->getOrder();
                 foreach ($emailCollection as $emailObj) {
                     if ($emailObj) {
 
@@ -617,7 +629,9 @@ class OrderService extends ContainerAware
                             'city' => $order->getCityId() ? $order->getCityId()->getTitle() : $order->getPlacePoint()->getCityId()->getTitle(),
                             'food_review_url' => 'http://' . $this->container->getParameter('domain') . $this->container->get('slug')->getUrl($place->getId(), 'place') . '/#detailed-restaurant-review',
                             'delivery_time' => ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
-                            'email' => $order->getUser()->getEmail()
+                            'email' => $order->getUser()->getEmail(),
+                            'phone' => $this->getPhoneForUserInform($order),
+                            'delivery_time_format' => $this->getOrder()->getDeliveryTime()->format('H:i')
                         ];
 
 
@@ -4882,5 +4896,27 @@ class OrderService extends ContainerAware
         }
 
         return $pointIsWorking;
+    }
+
+    public function getPhoneForUserInform(Order $order)
+    {
+        $place = $order->getPlace();
+        $deliveyType = $order->getDeliveryType();
+        $trans = $this->container->get('translator');
+
+        $phone = '';
+
+        if ($deliveyType == 'pickup') {
+            $phone = $order->getPlacePoint()->getPhoneNiceFormat();
+        } else {
+            if ($order->getPlacePointSelfDelivery()) {
+                $phone = $order->getPlacePoint()->getPhoneNiceFormat();
+            } else {
+                $phone = $trans->trans('general.top_contact.phone');
+            }
+        }
+
+        return $phone;
+
     }
 }

@@ -139,6 +139,12 @@ class EmailTemplate
      */
     private $deletedBy;
 
+    /**
+     * @var string
+     * @ORM\Column(name="self_delivery", type="boolean",options={"default": false})
+     */
+    private $selfDelivery;
+
 
     public function __construct()
     {
@@ -492,5 +498,28 @@ class EmailTemplate
     public function getUseForAll()
     {
         return $this->useForAll;
+    }
+
+    /**
+     * Set selfDelivery
+     *
+     * @param boolean $selfDelivery
+     * @return EmailTemplate
+     */
+    public function setSelfDelivery($selfDelivery)
+    {
+        $this->selfDelivery = $selfDelivery;
+
+        return $this;
+    }
+
+    /**
+     * Get selfDelivery
+     *
+     * @return boolean 
+     */
+    public function getSelfDelivery()
+    {
+        return $this->selfDelivery;
     }
 }
