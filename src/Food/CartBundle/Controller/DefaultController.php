@@ -289,6 +289,13 @@ class DefaultController extends Controller
         // PreLoad UserAddress End
 
         if ($request->getMethod() == 'POST' && !$formHasErrors) {
+
+            $ip = $request->getClientIp();
+            // Dude is banned - hit him
+            if ($miscUtils->isIpBanned($ip)) {
+                return $this->redirect($this->get('slug')->urlFromParam('page_banned', Slug::TYPE_PAGE), 302);
+            }
+
             try {
                 $countryCode = $request->get('country');
 
