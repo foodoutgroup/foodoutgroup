@@ -631,7 +631,8 @@ class OrderService extends ContainerAware
                             'delivery_time' => ($order->getDeliveryType() != self::$deliveryPickup ? $placeService->getDeliveryTime($place, null, $order->getDeliveryType()) : $place->getPickupTime()),
                             'email' => $order->getUser()->getEmail(),
                             'phone' => $this->getPhoneForUserInform($order),
-                            'delivery_time_format' => $this->getOrder()->getDeliveryTime()->format('H:i')
+                            'delivery_time_format' => $this->getOrder()->getDeliveryTime()->format('H:i'),
+                            'pre_delivery_time' => $this->getOrder()->getDeliveryTime()->format('m-d H:i')
                         ];
 
 
