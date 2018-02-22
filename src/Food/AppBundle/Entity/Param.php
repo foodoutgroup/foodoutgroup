@@ -3,6 +3,9 @@
 namespace Food\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Food\AppBundle\Entity\Uploadable;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Food\AppBundle\Entity\Param
@@ -10,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="params")
  * @ORM\Entity
  */
-class Param
+class Param extends Uploadable
 {
     /**
      * @var integer $id
@@ -44,6 +47,14 @@ class Param
      * @ORM\OneToMany(targetEntity="\Food\AppBundle\Entity\ParamLog", mappedBy="param")
      **/
     private $paramLog;
+
+    /**
+     * @var object
+     */
+    protected $file;
+
+    protected $resizeMode = null;
+    protected $boxSize = null;
 
     /**
      * @return string
@@ -175,5 +186,40 @@ class Param
     public function getParamLog()
     {
         return $this->paramLog;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUploadableField()
+    {
+        return 'value';
+    }
+
+    /**
+     * @return string
+     */
+    public function getUploadDir()
+    {
+        if (empty($this->uploadDir)) {
+            $this->uploadDir = 'uploads/site_logo';
+        }
+        return $this->uploadDir;
+    }
+
+    /**
+     * @param object $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+    /**
+     * @return object
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }

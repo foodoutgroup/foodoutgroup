@@ -4,7 +4,7 @@
 
 {% block body %}
     <div>
-        <div><img src="{{ asset(misc_utils.getParam('site_logo_url')) }}" /></div>
+        <div><img src="{{ "/uploads/site_logo/"}}{{  misc_utils.getParam('site_logo_url') }}" /></div>
         <div><b>{% trans %}mobile.invoice_driver{% endtrans %}</b></div>
         <br />
         <table class="table condensed" style="width: 310px;">
