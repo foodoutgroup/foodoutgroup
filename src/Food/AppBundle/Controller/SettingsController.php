@@ -2,8 +2,11 @@
 
 namespace Food\AppBundle\Controller;
 
+use Food\AppBundle\Service\UploadService;
+use Proxies\__CG__\Lexik\Bundle\TranslationBundle\Entity\File;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Symfony\Component\Form\FormBuilderInterface;
+use Food\AppBundle\Admin\Admin;
 
 class SettingsController extends CRUDController
 {
@@ -53,13 +56,13 @@ class SettingsController extends CRUDController
     public function listAction()
     {
         $request = $this->get('request');
-
         $paramService = $this->get('food.app.utils.misc');
         $session = $this->get('session');
         $data = [];
         foreach ($this->keywordMapCollection as $keyword) {
             $data[$keyword] = $paramService->getParam($keyword, NULL);
         }
+        $repoParam = $this->container->get('doctrine')->getRepository('FoodAppBundle:Param');
 
         $form = $this->get('form.factory')->createNamedBuilder('settings', 'form', $data, ['csrf_protection' => false]);
 
@@ -69,14 +72,30 @@ class SettingsController extends CRUDController
             $form->handleRequest($request);
             foreach ($form->getData() as $keyword => $value) {
 
+                if (is_object($value)) {
+                    $file = $value->getFileName();
+                    if ($file) {
+                        $objRecordFile = $repoParam->findOneBy(['param' => 'site_logo_url']);
+                        $objRecordFile->setFile($value);
+                        $filename = $this->saveFile($objRecordFile);
+                        $value = $filename;
+                    }
+                }
+
                 if (is_object($value) && method_exists($value, 'getId')) {
+
                     $value = $value->getId();
+                }
+
+                if ($keyword == 'site_logo_url' && $data[$keyword] && !$value) {
+                    $value = $data[$keyword];
                 }
 
                 if ($data[$keyword] != $value) {
                     $paramService->setParam($keyword, $value);
                 }
             }
+
             $session->getFlashBag()->add('success', 'Settings was saved successfully');
         }
 
@@ -91,6 +110,7 @@ class SettingsController extends CRUDController
 
     private function formFields(FormBuilderInterface &$form)
     {
+
         $static = $this->getDoctrine()->getRepository('FoodAppBundle:StaticContent');
         $pageCollection = [];
         $pageCollection[] = ' - ';
@@ -98,7 +118,16 @@ class SettingsController extends CRUDController
             $pageCollection[$page->getId()] = $page->getTitle();
         }
 
-        $form->add('site_logo_url', 'text');
+        $logo = $this->container->get('doctrine')->getRepository("FoodAppBundle:Param")->findOneBy(['param'=>'site_logo_url']);
+
+        $form->add('site_logo_url', 'file', [
+            'data_class' => null,
+            'required' => false,
+            'attr' => [
+                'help' => '<img src="/uploads/site_logo/'.$logo->getValue().'">'
+            ]
+
+        ]);
 
         if ($this->container->getParameter('country') != 'EE') {
             $form->add('change_phone_position', 'boolean', [
@@ -260,6 +289,16 @@ class SettingsController extends CRUDController
 
         $form->add('submit', 'submit', ['label' => 'Update', 'attr' => ['class' => 'btn btn-primary']]);
 
+    }
+
+    public function saveFile($object)
+    {
+        $uploadService = $this->container->get('food.upload');
+        $basepath = $this->getRequest()->getBasePath();
+        $uploadService->setObject($object);
+        $file = $uploadService->upload($basepath);
+
+        return $file;
     }
 
 }

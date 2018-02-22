@@ -155,7 +155,7 @@
         <div class="site-top">
             <div class="site-block clearfix">
                 <a href="{{ slug.toHomepage() }}" class="main-logo">
-                    <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{{ asset(misc_utils.getParam('site_logo_url')) }}"/>
+                    <img alt="{% trans %}general.base_page_title{% endtrans %} - {{ page_title }}" src="{{ "/uploads/site_logo/"}}{{  misc_utils.getParam('site_logo_url') }}"/>
                 </a>
                 {% if localeService.getAvailable()|length > 1 %}
                 <div class="langSwitcher" >

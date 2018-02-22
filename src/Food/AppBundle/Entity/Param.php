@@ -57,13 +57,6 @@ class Param extends Uploadable
     protected $boxSize = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="photo", type="string", length=255)
-     */
-    private $photo = "";
-
-    /**
      * @return string
      */
     public function __toString()
@@ -196,34 +189,11 @@ class Param extends Uploadable
     }
 
     /**
-     * Set photo
-     *
-     * @param string $photo
-     * @return Param
-     */
-    public function setPhoto($photo)
-    {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
-    /**
-     * Get photo
-     *
-     * @return string
-     */
-    public function getPhoto()
-    {
-        return $this->photo;
-    }
-
-    /**
      * @return string
      */
     public function getUploadableField()
     {
-        return 'photo';
+        return 'value';
     }
 
     /**
@@ -232,7 +202,7 @@ class Param extends Uploadable
     public function getUploadDir()
     {
         if (empty($this->uploadDir)) {
-            $this->uploadDir = 'uploads/covers';
+            $this->uploadDir = 'uploads/site_logo';
         }
         return $this->uploadDir;
     }

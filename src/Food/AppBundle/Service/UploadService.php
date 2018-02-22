@@ -229,6 +229,8 @@ class UploadService
                 $this->saveThumb($uploadDir, $filename, $filename, $boxSize['w'], $boxSize['h'], $this->object->getResizeMode());
             }
         }
+
+        return $filename;
     }
 
     /**
