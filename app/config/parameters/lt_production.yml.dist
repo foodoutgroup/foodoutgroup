@@ -133,7 +133,7 @@ parameters:
     dispatcher_phones: []
     send_sms_on_cancel: false
     dispatcher_contact_phone: "37069855544"
-    call_centre_phone: "37052195281"
+    call_centre_phone: "37052100818"
     week_layout: 1
     hide_online_payments: false
     number_format:
