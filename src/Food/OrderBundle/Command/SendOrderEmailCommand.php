@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Food\OrderBundle\Service\OrderService;
+use Food\OrderBundle\Entity\Order;
 
 class SendOrderEmailCommand extends ContainerAwareCommand
 {
@@ -125,5 +126,27 @@ class SendOrderEmailCommand extends ContainerAwareCommand
             $output->writeln('Error: ' . $e->getMessage());
             throw $e;
         }
+    }
+
+    public function getPhoneForUserInform(Order $order)
+    {
+        $place = $order->getPlace();
+        $deliveyType = $order->getDeliveryType();
+        $trans = $this->getContainer()->get('translator');
+
+        $phone = '';
+
+        if ($deliveyType == 'pickup') {
+            $phone = $order->getPlacePoint()->getPhoneNiceFormat();
+        } else {
+            if ($order->getPlacePointSelfDelivery()) {
+                $phone = $order->getPlacePoint()->getPhoneNiceFormat();
+            } else {
+                $phone = $trans->trans('general.top_contact.phone');
+            }
+        }
+
+        return $phone;
+
     }
 }
