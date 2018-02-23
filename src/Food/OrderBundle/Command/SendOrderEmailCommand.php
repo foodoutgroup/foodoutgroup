@@ -89,8 +89,8 @@ class SendOrderEmailCommand extends ContainerAwareCommand
                             'invoice' => $invoice,
                             'beta_code' => '',
                             'phone' => $this->getPhoneForUserInform($order),
-                            'delivery_time_format' => $this->getOrder()->getDeliveryTime()->format('H:i'),
-                            'pre_delivery_time' => $this->getOrder()->getDeliveryTime()->format('m-d H:i')
+                            'delivery_time_format' => $order->getDeliveryTime()->format('H:i'),
+                            'pre_delivery_time' => $order->getDeliveryTime()->format('m-d H:i')
                         ];
 
 
