@@ -46,7 +46,7 @@ class PlaceRepository extends EntityRepository
         } else {
             if ($container) {
                 if ($locationData['city_id']) {
-                    $container->get('food.zavalas_service')->isRushHourAtCityById($locationData['city_id']);
+                    $rushHour = $container->get('food.zavalas_service')->isRushHourAtCityById($locationData['city_id']);
                 } else {
                     $rushHour = $container->get('food.zavalas_service')->isRushHourEnabled();
                 }
