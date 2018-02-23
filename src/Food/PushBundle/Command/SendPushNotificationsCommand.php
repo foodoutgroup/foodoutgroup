@@ -28,20 +28,23 @@ class SendPushNotificationsCommand extends ContainerAwareCommand
         try {
             if ($pushes) {
                 foreach ($pushes as $push) {
-                    $response = $pushService->sendPush($push);
-                    $return = json_decode($response);
-                    $check = isset($return->errors[0]);
+                    if (!$push->getError()) {
+                        $response = $pushService->sendPush($push);
+                        $return = json_decode($response);
 
-                    $push->setSubmittedAt(new \DateTime("now"));
-                    if ($check) {
-                        $push->setSent(false);
-                        $push->setError($check);
-                    } else {
-                        $push->setSent(true);
-                        $push->setError(null);
+                        $check = isset($return->errors);
+
+                        $push->setSubmittedAt(new \DateTime("now"));
+                        if ($check) {
+                            $push->setSent(false);
+                            $push->setError(serialize($return->errors));
+                        } else {
+                            $push->setSent(true);
+                            $push->setError(null);
+                        }
+                        $em->persist($push);
+                        $em->flush();
                     }
-                    $em->persist($push);
-                    $em->flush();
                 }
             }
             echo 'Jobs done. I am returning to town';
