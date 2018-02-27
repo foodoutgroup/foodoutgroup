@@ -70,6 +70,9 @@ class AjaxController extends Controller
                 }
 
                 break;
+            case 'check-driver-arrival-time':
+                $collection = $this->_getDriverArrivalTime($request);
+                break;
             default:
                 $collection = ['message' => 'Method not found :)'];
                 break;
@@ -386,6 +389,16 @@ class AjaxController extends Controller
         }
 
         return $response;
+    }
+
+    private function _getDriverArrivalTime(Request $request)
+    {
+        $orderService = $this->get('food.order');
+        $order = $this->getDoctrine()->getRepository('FoodOrderBundle:Order')->find($request->get('order_id'));
+        $arrivalTime = $orderService->getPickedUpTime($order);
+
+        return $arrivalTime;
+
     }
 
 }

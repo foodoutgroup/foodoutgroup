@@ -28,6 +28,8 @@ class DefaultController extends Controller
         $currentOrderStatus = $orderService->getOrder()->getOrderStatus();
 
         if ($request->isMethod('post') && $currentOrderStatus != "canceled") {
+            var_dump($_POST);
+            die;
             // Validate stats change, and then perform :P
             $formStatus = $request->get('status');
             if ($orderService->isValidOrderStatusChange($currentOrderStatus, $this->formToEntityStatus($formStatus))) {

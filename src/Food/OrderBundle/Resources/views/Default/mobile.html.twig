@@ -6,10 +6,12 @@
         function cancelOrder() {
             $('#cancelOrderModal').modal();
         }
+
         function delayOrder() {
             document.getElementById('maintable').style.display = 'none';
             document.getElementById('delay_block').style.display = 'block';
         }
+
         function cancelDelay() {
             document.getElementById('maintable').style.display = 'table';
             document.getElementById('delay_block').style.display = 'none';
@@ -22,11 +24,13 @@
                     'status': 'confirm',
                     'food_prepare_time': foodPrepareTime
                 },
-                success: function(data) {
+                success: function (data) {
                     location.reload();
                 }
             });
         }
+
+        var checker = 0;
 
         function showPrepareTimePrompt() {
             var prepareTime = prompt("{% trans %}mobile.order_confirm_enterPrepareTime{% endtrans %}");
@@ -34,6 +38,37 @@
                 confirmOrderWithTime(parseInt(prepareTime));
             }
         }
+        {% if order.orderStatus == "assigned" %}
+
+        $(document).ready(function () {
+            setTimeout(checkIteration, 3000)
+        });
+        {% endif %}
+
+        function checkIteration() {
+            var interval = setInterval(function () {
+                checkArrival(interval);
+            }, 3000);
+        }
+
+        function checkArrival(interval) {
+            $.ajax({
+                type: "POST",
+                url: "{{ slug.generateURL('food_ajax_request', {'action' : 'check-driver-arrival-time'}) }}",
+                data: {
+                    'order_id': {{ order.id }}
+                },
+                success: function (data) {
+                    if (data.length > 0) {
+                        $('#transfer-button').show();
+                        clearInterval(interval);
+                    }
+                }
+            });
+            checker = 1;
+
+        }
+
     </script>
 {% endblock %}
 {% block body %}
@@ -43,17 +78,16 @@
             background: #cd1d36;
         }
 
-        .headerLogoMobile img
-        {
+        .headerLogoMobile img {
             max-height: 50px;
         }
 
-        .pedestrian-template-warning{
+        .pedestrian-template-warning {
             text-align: center;
             text-transform: uppercase;
             background-color: red;
             border-radius: 10px;
-            padding:15px;
+            padding: 15px;
             font-weight: bold;
             font-size: 25px;
             letter-spacing: 1px;
@@ -70,10 +104,12 @@
         body {
             background: #f2dbd4;
         }
+
         {% elseif order.preorder %}
         body {
             background: #d6ebf2;
         }
+
         {% endif %}
     </style>
 
@@ -82,21 +118,21 @@
         <thead>
         <tr>
             <th class="headerLogoMobile" colspan="5">
-                <img src="{{ "/uploads/site_logo/"}}{{  misc_utils.getParam('site_logo_url') }}" style="float: left;">
-                <img src="//{{ cloudfront_url }}/{{order.place.getWebPathThumb}}" style="float: right">
+                <img src="{{ "/uploads/site_logo/" }}{{ misc_utils.getParam('site_logo_url') }}" style="float: left;">
+                <img src="//{{ cloudfront_url }}/{{ order.place.getWebPathThumb }}" style="float: right">
             </th>
 
         </tr>
 
         {% if order.deliveryType == 'pedestrian' %}
-        <tr>
-            <td colspan="5">
-                <div class="pedestrian-template-warning" >
+            <tr>
+                <td colspan="5">
+                    <div class="pedestrian-template-warning">
 
-                    {% trans %}mobile.pedestrian_warning{% endtrans %}
-                </div>
-            </td>
-        </tr>
+                        {% trans %}mobile.pedestrian_warning{% endtrans %}
+                    </div>
+                </td>
+            </tr>
         {% endif %}
 
         <tr>
@@ -137,7 +173,9 @@
                 </td>
             </tr>
         {% endif %}
-        <tr><td colspan="5"><b>{% trans %}mobile.order.id{% endtrans %}</b>: {{ order.id }}</td></tr>
+        <tr>
+            <td colspan="5"><b>{% trans %}mobile.order.id{% endtrans %}</b>: {{ order.id }}</td>
+        </tr>
         <tr>
             <td colspan="5">
                 <b>
@@ -158,16 +196,19 @@
         </tr>
         {% if order.deliveryType == 'deliver' %}
             <tr>
-                <td colspan="5"><b>{% trans %}mobile.order.sum_without_delivery{% endtrans %}:</b> {{ order.total - order.deliveryPrice }} {{ currency_display|raw }}</td>
+                <td colspan="5"><b>{% trans %}mobile.order.sum_without_delivery{% endtrans %}
+                        :</b> {{ order.total - order.deliveryPrice }} {{ currency_display|raw }}</td>
             </tr>
             <tr>
-                <td colspan="5"><b>{% trans %}mobile.restaurant_delivery_price{% endtrans %}:</b> {{ order.deliveryPrice }} {{ currency_display|raw }}</td>
+                <td colspan="5"><b>{% trans %}mobile.restaurant_delivery_price{% endtrans %}
+                        :</b> {{ order.deliveryPrice }} {{ currency_display|raw }}</td>
             </tr>
         {% endif %}
         {% if order.adminFee > 0 %}
-        <tr>
-            <td colspan="5"><b>{% trans %}mobile.order.admin_fee{% endtrans %}:</b> {{ order.adminFee }} {{ currency_display|raw }}</td>
-        </tr>
+            <tr>
+                <td colspan="5"><b>{% trans %}mobile.order.admin_fee{% endtrans %}
+                        :</b> {{ order.adminFee }} {{ currency_display|raw }}</td>
+            </tr>
         {% endif %}
         <tr>
             <th colspan="5">{% trans %}mobile.restourant_place_point_address{% endtrans %}</th>
@@ -228,13 +269,13 @@
             <td colspan="5">
                 {{ order.orderExtra.phone }}
                 {% if order.place.onlyAlcohol %}
-                    <br />
-                            {{ order.user.fullName }} <br />
-                            {{ order.orderExtra.firstname }}, {{ order.orderExtra.lastname }}
-                            {% if order.deliveryType == 'deliver' %}
-                                <br />
-                                {{ order.addressId.address }}
-                            {% endif %}
+                    <br/>
+                    {{ order.user.fullName }} <br/>
+                    {{ order.orderExtra.firstname }}, {{ order.orderExtra.lastname }}
+                    {% if order.deliveryType == 'deliver' %}
+                        <br/>
+                        {{ order.addressId.address }}
+                    {% endif %}
 
                 {% endif %}
             </td>
@@ -246,12 +287,12 @@
             <td colspan="5">
                 {{ order.comment|nl2br }}
                 {% if order.company and order.place.sendInvoice == false %}
-                    <br /><br />
-                    {% trans %}mobile.need_invoice{% endtrans %}<br /><br />
-                    {% trans %}mobile.company_name{% endtrans %}: {{ order.companyName }}<br />
-                    {% trans %}mobile.company_code{% endtrans %}: {{ order.companyCode }}<br />
-                    {% trans %}mobile.vat_code{% endtrans %}: {{ order.vatCode }}<br />
-                    {% trans %}mobile.company_address{% endtrans %}: {{ order.companyAddress|nl2br }}<br />
+                    <br/><br/>
+                    {% trans %}mobile.need_invoice{% endtrans %}<br/><br/>
+                    {% trans %}mobile.company_name{% endtrans %}: {{ order.companyName }}<br/>
+                    {% trans %}mobile.company_code{% endtrans %}: {{ order.companyCode }}<br/>
+                    {% trans %}mobile.vat_code{% endtrans %}: {{ order.vatCode }}<br/>
+                    {% trans %}mobile.company_address{% endtrans %}: {{ order.companyAddress|nl2br }}<br/>
                 {% endif %}
             </td>
         </tr>
@@ -268,12 +309,12 @@
             <td colspan="5">{{ order.orderDate|date("H:i") }}</td>
         </tr>
         {% if show_making_time_deadline %}
-        <tr>
-            <th colspan="5">{% trans %}mobile.making_time{% endtrans %}</th>
-        </tr>
-        <tr>
-            <td colspan="5">{{ order_service.getMakingTime(order)|date("H:i") }}</td>
-        </tr>
+            <tr>
+                <th colspan="5">{% trans %}mobile.making_time{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5">{{ order_service.getMakingTime(order)|date("H:i") }}</td>
+            </tr>
         {% endif %}
         <tr>
             <th colspan="5">{% trans %}mobile.deliver_time{% endtrans %}</th>
@@ -286,43 +327,54 @@
     <form method="post">
         {% if order.orderStatus == "new" %}
 
-        <div class="form-group">
-        {% for placepointPrepareTime in placepointPrepareTimes %}
-            <div class="col-sm-6">
-                <button type="button" onclick="confirmOrderWithTime({{ placepointPrepareTime }});" class="btn btn-primary btn-block placepointPrepareTime">{{ placepointPrepareTime }} min.</button>
+            <div class="form-group">
+            {% for placepointPrepareTime in placepointPrepareTimes %}
+                <div class="col-sm-6">
+                    <button type="button" onclick="confirmOrderWithTime({{ placepointPrepareTime }});"
+                            class="btn btn-primary btn-block placepointPrepareTime">{{ placepointPrepareTime }} min.
+                    </button>
+                </div>
+                {% if loop.index is divisibleby(3) %}
+                    </div>
+                    <div class="form-group">
+                {% endif %}
+            {% endfor %}
             </div>
-        {% if loop.index is divisibleby(3) %}
-        </div>
-        <div class="form-group">
-        {% endif %}
-        {% endfor %}
-        </div>
-        {% if order.deliveryType != 'pedestrian' %}
-        <div class="form-group">
-            <div class="col-sm-6">
-                <button type="button" onclick="showPrepareTimePrompt();" class="btn btn-primary btn-block placepointPrepareTime">{% trans %}mobile.order_confirm_prepareTimeOther{% endtrans %}</button>
-            </div>
-        </div>
+            {% if order.deliveryType != 'pedestrian' %}
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <button type="button" onclick="showPrepareTimePrompt();"
+                                class="btn btn-primary btn-block placepointPrepareTime">{% trans %}mobile.order_confirm_prepareTimeOther{% endtrans %}</button>
+                    </div>
+                </div>
+            {% endif %}
+
         {% endif %}
 
+        {% if order.orderStatus == "assigned" or order.orderStatus == 'accepted' %}
+            <button id="transfer-button" style="display: none" name="status" type="submit" value="transferred"
+                    class="btn btn-success btn-block">{% trans %}mobile.order_transfered{% endtrans %}</button>
         {% endif %}
         {% if order.orderStatus == "new" %}
             {#<button type="submit" name="status" value="confirm" class="btn btn-primary btn-block">{% trans %}mobile.order_confirm{% endtrans %}</button>#}
-            <button type="button" onclick="cancelOrder();"  class="btn btn-danger btn-block">{% trans %}mobile.order_cancel{% endtrans %}</button>
+            <button type="button" onclick="cancelOrder();"
+                    class="btn btn-danger btn-block">{% trans %}mobile.order_cancel{% endtrans %}</button>
 
             <!-- Modal -->
             <div class="modal fade" id="cancelOrderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">{% trans %}mobile.order_cancel{% endtrans %}</h4>
                         </div>
                         <div class="modal-body">
-                            {% trans with {'%phone%': dispatcherPhone}%}mobile.to_cancel_order_please_call{% endtrans %}
+                            {% trans with {'%phone%': dispatcherPhone} %}mobile.to_cancel_order_please_call{% endtrans %}
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}general.close_btn{% endtrans %}</button>
+                            <button type="button" class="btn btn-default"
+                                    data-dismiss="modal">{% trans %}general.close_btn{% endtrans %}</button>
                         </div>
                     </div>
                 </div>
@@ -332,13 +384,16 @@
             {% if order.orderStatus != "delayed" %}
                 <div id="delay_block" style="display: none;">
                     <div class="form-group">
-                        <label for="delay_reason" class="col-sm-2 control-label">{% trans %}mobile.order_delay_reason{% endtrans %}</label>
+                        <label for="delay_reason"
+                               class="col-sm-2 control-label">{% trans %}mobile.order_delay_reason{% endtrans %}</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="delay_reason" name="delay_reason">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="delay_duration" class="col-sm-2 control-label">{% trans %}mobile.order_delay_duration{% endtrans %} min.</label>
+                        <label for="delay_duration"
+                               class="col-sm-2 control-label">{% trans %}mobile.order_delay_duration{% endtrans %}
+                            min.</label>
                         <div class="col-sm-10">
                             <select name="delay_duration" id="delay_duration" class="form-control">
                                 <option value="15">15</option>
@@ -353,26 +408,32 @@
                     <div class="form-group">
                         <label for="delay_duration" class="col-sm-2 control-label"></label>
                         <div class="col-sm-2">
-                            <button name="status" value="delay" class="btn btn-warning btn-block">{% trans %}mobile.order_submit_delay{% endtrans %}</button>
+                            <button name="status" value="delay"
+                                    class="btn btn-warning btn-block">{% trans %}mobile.order_submit_delay{% endtrans %}</button>
                         </div>
                         <div class="col-sm-8">
-                            <button type="button" class="btn btn-danger btn-block" onclick="cancelDelay();">{% trans %}mobile.order_cancel_delay{% endtrans %}</button>
+                            <button type="button" class="btn btn-danger btn-block"
+                                    onclick="cancelDelay();">{% trans %}mobile.order_cancel_delay{% endtrans %}</button>
                         </div>
                     </div>
-                    <br clear="all" />
-                    <br clear="all" />
+                    <br clear="all"/>
+                    <br clear="all"/>
                 </div>
-                <button type="button"  onclick="delayOrder();" class="btn btn-warning btn-block">{% trans %}mobile.order_delay{% endtrans %}</button>
+                <button type="button" onclick="delayOrder();"
+                        class="btn btn-warning btn-block">{% trans %}mobile.order_delay{% endtrans %}</button>
             {% endif %}
-            <button type="submit" name="status" value="finish" class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>
+            <button type="submit" name="status" value="finish"
+                    class="btn btn-success btn-block">{% trans %}mobile.order_finish{% endtrans %}</button>
         {% elseif order.orderStatus == "finished" or order.orderStatus == "assigned" or order.orderStatus == "completed" %}
             <div class="text-center">
                 <h2>{% if order.placePointSelfDelivery %}{% trans %}mobile.place_finish_message_self_delivery{% endtrans %}{% else %}{% trans %}mobile.place_finish_message{% endtrans %}{% endif %}</h2>
             </div>
         {% endif %}
         {% if order.placePointSelfDelivery and (order.orderStatus != 'new' and order.orderStatus != 'canceled' and order.orderStatus != 'completed') %}
-            <button type="submit" name="status" value="completed" class="btn btn-success btn-block">{% trans %}mobile.order_delivered{% endtrans %}</button>
+            <button type="submit" name="status" value="completed"
+                    class="btn btn-success btn-block">{% trans %}mobile.order_delivered{% endtrans %}</button>
         {% endif %}
-        <a class="btn btn-info btn-block" href="{{ path('restaurant_mobile_invoice', {hash: order.orderHash}) }}">{% trans %}mobile.restaurant_invoice{% endtrans %}</a>
+        <a class="btn btn-info btn-block"
+           href="{{ path('restaurant_mobile_invoice', {hash: order.orderHash}) }}">{% trans %}mobile.restaurant_invoice{% endtrans %}</a>
     </form>
 {% endblock %}
