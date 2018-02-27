@@ -58,6 +58,7 @@ class OrderService extends ContainerAware
     public static $status_finished = "finished";
     public static $status_canceled = "canceled";
     public static $status_canceled_produced = "canceled_produced";
+    public static $driver_status_transferred = "order_transferred";
 
     /**
      * Nemaisyti su pre.. cia orderis laikui
@@ -879,8 +880,7 @@ class OrderService extends ContainerAware
      * @returns string
      * @throws \Exception
      */
-    public
-    function fitDriverMessage($messageText, $orderId, $restaurantTitle, $restaurantAddress, $pickup_restaurant_address, $deliverTime, $orderRoute, $locale)
+    public function fitDriverMessage($messageText, $orderId, $restaurantTitle, $restaurantAddress, $pickup_restaurant_address, $deliverTime, $orderRoute, $locale)
     {
         $languageUtil = $this->container->get('food.app.utils.language');
         $translator = $this->container->get('translator');
@@ -929,8 +929,7 @@ class OrderService extends ContainerAware
         return $messageText;
     }
 
-    public
-    function correctMessageText($messageText)
+    public function correctMessageText($messageText)
     {
         if (strpos($messageText, 'Cili pica Kaunas/Klaipeda') !== false) {
             $messageText = str_replace('Cili pica Kaunas/Klaipeda', 'Cili pica', $messageText);
@@ -952,8 +951,7 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public
-    function statusForwarded($source = null, $statusMessage = null)
+    public function statusForwarded($source = null, $statusMessage = null)
     {
         //~ $this->chageOrderStatus(self::$status_forwarded, $source, $statusMessage);
 
@@ -968,8 +966,7 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public
-    function statusPicked($source = null, $statusMessage = null)
+    public function statusPicked($source = null, $statusMessage = null)
     {
         $order = $this->getOrder();
         $this->logDeliveryEvent($this->getOrder(), 'order_pickedup');
@@ -986,8 +983,7 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public
-    function statusCompleted($source = null, $statusMessage = null)
+    public function statusCompleted($source = null, $statusMessage = null)
     {
         $order = $this->getOrder();
         $this->logDeliveryEvent($this->getOrder(), 'order_completed');
@@ -1026,8 +1022,7 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public
-    function statusCanceled_produced($source = null, $statusMessage = null)
+    public function statusCanceled_produced($source = null, $statusMessage = null)
     {
         $order = $this->getOrder();
         $this->logDeliveryEvent($this->getOrder(), 'order_canceled_produced');
@@ -1183,8 +1178,7 @@ class OrderService extends ContainerAware
      *
      * @return $this
      */
-    public
-    function statusCanceled($source = null, $statusMessage = null)
+    public function statusCanceled($source = null, $statusMessage = null)
     {
         // Put for logistics to cancel on their side
         $this->container->get('food.logistics')->putOrderForSend($this->getOrder());
@@ -2130,11 +2124,13 @@ class OrderService extends ContainerAware
             self::$status_unapproved => 0,
             self::$status_new => 1,
             self::$status_accepted => 2,
+            self::$driver_status_transferred => 3,
             self::$status_delayed => 3,
             self::$status_forwarded => 3,
             self::$status_finished => 4,
             self::$status_assiged => 5,
             self::$status_failed => 5,
+            self::$driver_status_transferred => 6,
             self::$status_partialy_completed => 6,
             self::$status_completed => 6,
             self::$status_canceled => 6,
@@ -3141,6 +3137,17 @@ class OrderService extends ContainerAware
                         $sinceLast = $order->getOrderDate()->getTimestamp();
                     }
                     break;
+
+                case 'order_transferred':
+                    $logData = $this->getDeliveryLogActionEntry($order, 'order_pickedup');
+
+                    if ($logData instanceof OrderDeliveryLog) {
+                        $sinceLast = date("U") - $logData->getEventDate()->getTimestamp();
+                    } else {
+                        $sinceLast = $order->getOrderDate()->getTimestamp();
+                    }
+                    break;
+
             }
 
             $log = new OrderDeliveryLog();
@@ -4756,8 +4763,7 @@ class OrderService extends ContainerAware
      *
      * @return string
      */
-    public
-    function getPickedUpTime($order)
+    public function getPickedUpTime($order)
     {
         $deliveryLogRepo = $this->container->get('doctrine')->getRepository('FoodOrderBundle:OrderDeliveryLog');
 
@@ -4776,8 +4782,7 @@ class OrderService extends ContainerAware
     /**
      * @return bool
      */
-    public
-    function getAllowToInform()
+    public function getAllowToInform()
     {
         $response = false;
 
@@ -4801,8 +4806,7 @@ class OrderService extends ContainerAware
     /**
      * @return bool
      */
-    public
-    function isAllowToInformOnZaval()
+    public function isAllowToInformOnZaval()
     {
         $response = true;
         if ($this->container->get('food.zavalas_service')->isRushHourOnGlobal()) {
@@ -4822,8 +4826,7 @@ class OrderService extends ContainerAware
         return $response;
     }
 
-    public
-    function updateDriver()
+    public function updateDriver()
     {
         $order = $this->getOrder();
         if (!$order instanceof Order) {
@@ -4851,8 +4854,7 @@ class OrderService extends ContainerAware
     }
 
 
-    public
-    function setOrderPrepareTime($foodPrepareTime)
+    public function setOrderPrepareTime($foodPrepareTime)
     {
         $this->getOrder()->setFoodPrepareTime($foodPrepareTime);
 
@@ -4864,8 +4866,7 @@ class OrderService extends ContainerAware
         $this->logOrder($this->getOrder(), 'food_prepare_time', 'Restaurant set food prepare time: ' . $foodPrepareTime);
     }
 
-    public
-    function getPPList()
+    public function getPPList()
     {
         $em = $this->container->get('doctrine')->getManager();
         $order = $this->getOrder();
@@ -4882,8 +4883,7 @@ class OrderService extends ContainerAware
     }
 
 
-    public
-    function checkWorkingPlace($pointRecord)
+    public function checkWorkingPlace($pointRecord)
     {
         $pointWorkingErrors = [];
         $pointIsWorking = true;
@@ -4919,5 +4919,28 @@ class OrderService extends ContainerAware
 
         return $phone;
 
+    }
+
+    public function getTransferredTime($order)
+    {
+        $deliveryLogRepo = $this->container->get('doctrine')->getRepository('FoodOrderBundle:OrderDeliveryLog');
+
+        $transferredEntry = $deliveryLogRepo->findOneBy([
+            'order' => $order,
+            'event' => 'order_transferred'
+        ]);
+
+        if (!empty($transferredEntry) && $transferredEntry instanceof OrderDeliveryLog) {
+            return $transferredEntry->getEventDate()->format('Y-m-d H:i');
+        } else {
+            return '';
+        }
+    }
+
+    public function statusTransferred($source = null)
+    {
+        $this->logDeliveryEvent($this->getOrder(), 'order_transferred');
+
+        return $this;
     }
 }

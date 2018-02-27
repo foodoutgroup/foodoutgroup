@@ -25,13 +25,15 @@ class DefaultController extends Controller
             throw new NotFoundHttpException('Order not found');
         }
 
+        $transferredTime = $orderService->getTransferredTime($order);
+
         $currentOrderStatus = $orderService->getOrder()->getOrderStatus();
 
         if ($request->isMethod('post') && $currentOrderStatus != "canceled") {
-            var_dump($_POST);
-            die;
+
             // Validate stats change, and then perform :P
             $formStatus = $request->get('status');
+
             if ($orderService->isValidOrderStatusChange($currentOrderStatus, $this->formToEntityStatus($formStatus))) {
                 switch ($formStatus) {
                     case 'confirm':
@@ -59,6 +61,10 @@ class DefaultController extends Controller
                     case 'completed':
                         $orderService->statusCompleted('restourant_mobile');
                         break;
+                    case 'transferred':
+                        $orderService->statusTransferred('restourant_mobile');
+                        break;
+
                 }
 
                 $orderService->saveOrder();
@@ -66,7 +72,7 @@ class DefaultController extends Controller
                 return $this->redirect(
                     $this->generateUrl('ordermobile', array('hash' => $hash))
                 );
-            } else {
+            }  else {
                 $errorMessage = sprintf(
                     'Restoranas %s bande uzsakymui #%d pakeisti uzsakymo statusa is "%s" i "%s"',
                     $orderService->getOrder()->getPlaceName(),
@@ -90,6 +96,7 @@ class DefaultController extends Controller
         $dispatcherPhone = $this->container->getParameter('dispatcher_contact_phone');
 
         return $this->render('FoodOrderBundle:Default:mobile.html.twig', array(
+            'transferredTime' => $transferredTime,
             'order' => $order,
             'dispatcherPhone' => $dispatcherPhone,
             'placepointPrepareTimes' => $placepointPrepareTimes
@@ -246,6 +253,7 @@ class DefaultController extends Controller
             'finish' => OrderService::$status_finished,
             'partialy_completed' => OrderService::$status_partialy_completed,
             'completed' => OrderService::$status_completed,
+            'transferred' => OrderService::$driver_status_transferred
         );
 
         if (!isset($statusTable[$formStatus])) {

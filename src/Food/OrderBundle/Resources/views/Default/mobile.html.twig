@@ -38,11 +38,12 @@
                 confirmOrderWithTime(parseInt(prepareTime));
             }
         }
-        {% if order.orderStatus == "assigned" %}
+        {% if (order.orderStatus == "assigned" or order.orderStatus == "accepted") and transferredTime is empty %}
 
         $(document).ready(function () {
             setTimeout(checkIteration, 3000)
         });
+
         {% endif %}
 
         function checkIteration() {
