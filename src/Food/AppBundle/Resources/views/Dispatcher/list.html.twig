@@ -177,7 +177,8 @@
                 <th class="order_date">{{ 'admin.dispatcher.delivery_time'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
             {% if type == "not_finished" %}
-                <th class="order_date">{{ 'admin.dispatcher.picked_up'|trans({}, 'SonataAdminBundle') }}</th>
+                <th class="order_date">{{ 'admin.dispatcher.driver_arrival'|trans({}, 'SonataAdminBundle') }}</th>
+                <th class="order_date">{{ 'admin.dispatcher.transferred'|trans({}, 'SonataAdminBundle') }}</th>
             {% endif %}
             {% if type starts with "unapproved" or type == "unassigned" or type starts with "unconfirmed" or type == "not_finished" %}
                 <th class="order_date">{{ 'admin.dispatcher.late_time'|trans({}, 'SonataAdminBundle') }}</th>
@@ -291,6 +292,13 @@
                     <td class="order_date">
                         {% if order.orderPicked %}
                             <span class="glyphicon glyphicon-ok picked-up-tooltip" title="{{ order_service.pickedUpTime(order) }}"></span>
+                        {% else %}
+                            <span class="glyphicon glyphicon-remove"></span>
+                        {% endif %}
+                    </td>
+                    <td class="order_date">
+                        {% if order.orderTransferred %}
+                            <span class="glyphicon glyphicon-ok picked-up-tooltip" title="{{ order_service.transferredTime(order) }}"></span>
                         {% else %}
                             <span class="glyphicon glyphicon-remove"></span>
                         {% endif %}

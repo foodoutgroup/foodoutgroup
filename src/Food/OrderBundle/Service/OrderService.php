@@ -4940,7 +4940,7 @@ class OrderService extends ContainerAware
     public function statusTransferred($source = null)
     {
         $this->logDeliveryEvent($this->getOrder(), 'order_transferred');
-
+        $this->getOrder()->setOrderTransferred(true);
         return $this;
     }
 }

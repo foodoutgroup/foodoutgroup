@@ -50,8 +50,7 @@ class OrderAdminController extends Controller
         $this->get('session')->getFlashBag()->add(
             'success',
             $this->get('translator')->trans('admin.order.invoice_added_for_send', [], 'SonataAdminBundle')
-        )
-        ;
+        );
 
         return $this->redirect(
             $this->generateUrl('admin_food_order_order_list')
@@ -93,7 +92,7 @@ class OrderAdminController extends Controller
         $order = $orderService->getOrderById($id);
 
         $fileName = $invoiceService->getInvoiceFilename($order);
-        $file = 'https://s3-eu-west-1.amazonaws.com/'.$invoiceFolder.'/pdf/' . $fileName;
+        $file = 'https://s3-eu-west-1.amazonaws.com/' . $invoiceFolder . '/pdf/' . $fileName;
 
         $content = file_get_contents($file);
 
@@ -160,7 +159,7 @@ class OrderAdminController extends Controller
         };
 
         return new StreamedResponse($callback, 200, [
-            'Content-Type'        => $contentType,
+            'Content-Type' => $contentType,
             'Content-Disposition' => sprintf('attachment; filename=%s', $filename)
         ]);
     }
@@ -359,6 +358,7 @@ class OrderAdminController extends Controller
 
                 $row['driver_assign_time'] = null;
                 $row['driver_pickup_time'] = null;
+                $row['restaurant_transfer_time'] = null;
                 $row['driver_finished_order'] = 'No';
                 foreach ($log as $k => $v) {
 
@@ -369,6 +369,9 @@ class OrderAdminController extends Controller
                             break;
                         case "order_pickedup":
                             $row['driver_pickup_time'] = $v['event_date'];
+                            break;
+                        case "order_transferred":
+                            $row['restaurant_transfer_time'] = $v['event_date'];
                             break;
                         case "order_completed":
                             $row['driver_finished_order'] = "Yes";
