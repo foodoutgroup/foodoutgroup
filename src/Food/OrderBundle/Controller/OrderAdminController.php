@@ -368,7 +368,7 @@ class OrderAdminController extends Controller
 
                             break;
                         case "order_pickedup":
-                            $row['driver_pickup_time'] = $v['event_date'];
+                            $row['driver_arrival_time'] = $v['event_date'];
                             break;
                         case "order_transferred":
                             $row['restaurant_transfer_time'] = $v['event_date'];
