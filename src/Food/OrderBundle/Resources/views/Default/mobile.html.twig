@@ -249,6 +249,17 @@
         <tr>
             <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}</td>
         </tr>
+
+        {% if order.foodPrepareDate %}
+            <tr>
+                <th colspan="5" style="font-size: 18px;">{% trans %}mobile.prepare_time{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5" style="font-size: 18px;border-bottom: 2px solid black"><b
+                            style="color:red;">{{ order.foodPrepareDate|date("Y.m.d H:i") }}</b></td>
+            </tr>
+        {% endif %}
+
         {% if order.deliveryType == 'deliver' %}
             {% if order.placePointSelfDelivery == 1 %}
                 <tr>
