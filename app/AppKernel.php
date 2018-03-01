@@ -69,6 +69,7 @@ class AppKernel extends Kernel
             new Food\BlogBundle\FoodBlogBundle(),
             new Liuggio\ExcelBundle\LiuggioExcelBundle(),
             new Food\PushBundle\FoodPushBundle(),
+            new Food\TcgBundle\FoodTcgBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
