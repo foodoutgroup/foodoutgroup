@@ -55,6 +55,9 @@
         function checkArrival(interval) {
             $.ajax({
                 type: "POST",
+                xhrFields: {
+                    withCredentials: true
+                },
                 url: "{{ slug.generateURL('food_ajax_request', {'action' : 'check-driver-arrival-time'}) }}",
                 data: {
                     'order_id': {{ order.id }}
