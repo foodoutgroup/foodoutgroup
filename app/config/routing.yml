@@ -32,6 +32,11 @@ food_lang_homepage_slashSwitch:
     requirements:
       _locale:  "[a-z]{2}"
 
+
+driverArrivalAjax:
+    path: /o/arrival
+    defaults: { _controller: FoodOrderBundle:Default:test}
+
 ordermobile:
     path: /o/{hash}/
     defaults: { _controller: FoodOrderBundle:Default:mobile, hash: ~, action: ~ }

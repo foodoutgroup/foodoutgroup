@@ -5,6 +5,7 @@ namespace Food\OrderBundle\Controller;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -298,5 +299,21 @@ class DefaultController extends Controller
 
         $this->get('food.nav')->updatePricesNAV($order);
         die("THE END UPDATE PRC NAV");
+    }
+    /**
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function testAction(Request $request){
+
+        $orderService = $this->get('food.order');
+        $order = $this->getDoctrine()->getRepository('FoodOrderBundle:Order')->find($request->get('order_id'));
+
+        $arrivalTime = $orderService->getPickedUpTime($order);
+        $response = new JsonResponse($arrivalTime, 200, array('Access-Control-Allow-Origin'=> '*'));
+
+        return $response;
     }
 }
