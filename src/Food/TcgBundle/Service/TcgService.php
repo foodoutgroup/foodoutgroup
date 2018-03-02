@@ -107,18 +107,18 @@ class TcgService
 
         $fields = array(
             "phonebook" => 4378,
-            "contact" => '+37060751091',
+            "contact" => '37060751091',
             "status" => 1,
-            "last_name" => "Kozlovas",
-            "first_name" => "Matas",
-            "email" => "matas@foodout.lt",
-            "address" => "kavoliuko g. 9 Vilnius",
-            "city" => "Vilnius",
-            "state" => "Vilnius",
-            "country" => 'Lithuania',
-            "unit_number" => 1321321,
+            "last_name" => null,
+            "first_name" => null,
+            "email" => null,
+            "address" => null,
+            "city" => null,
+            "state" => null,
+            "country" => null,
+            "unit_number" => null,
             "additional_vars" => null,
-            "description" => "Description"
+            "description" => null
         );
 
         $fields = json_encode($fields);
@@ -128,11 +128,11 @@ class TcgService
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "http://dial2.tcg.lt/rest-api/contact");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json; charset=utf-8',
-            'Authorization: Basic ' . 'foodout:Foodout478#'));
+            'Authorization: Basic ' . base64_encode("foodout:Foodout478#")));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLOPT_USERPWD, "foodout:Foodout478#");
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
         curl_setopt($ch, CURLOPT_POST, TRUE);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
