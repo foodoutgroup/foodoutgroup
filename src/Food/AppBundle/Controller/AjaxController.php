@@ -81,13 +81,10 @@ class AjaxController extends Controller
         }
         $response->setContent(json_encode($collection));
 
-        $realResponse = new JsonResponse($response);
-        $responseHeaders = $realResponse->headers;
-        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
-        $responseHeaders->set('Access-Control-Allow-Origin', '*');
-        $responseHeaders->set('Access-Control-Allow-Methods', 'GET');
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
 
-        return $response;
+
+//        return $response;
     }
 
 
