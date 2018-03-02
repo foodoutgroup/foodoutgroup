@@ -80,6 +80,9 @@ class AjaxController extends Controller
         }
         $response->setContent(json_encode($collection));
 
+        $response->headers->set('Access-Control-Allow-Credentials', 'true');
+        $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, PATCH, OPTIONS');
+        $response->headers->set('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Authorization');
         return $response;
     }
 
