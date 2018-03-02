@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Food\AppBundle\Entity\ErrorLog;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AjaxController extends Controller
 {
@@ -79,7 +80,12 @@ class AjaxController extends Controller
                 break;
         }
         $response->setContent(json_encode($collection));
-        $response->headers->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
+
+        $realResponse = new JsonResponse($response);
+        $responseHeaders = $realResponse->headers;
+        $responseHeaders->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
+        $responseHeaders->set('Access-Control-Allow-Origin', '*');
+        $responseHeaders->set('Access-Control-Allow-Methods', 'GET');
 
         return $response;
     }
@@ -398,7 +404,6 @@ class AjaxController extends Controller
         $orderService = $this->get('food.order');
         $order = $this->getDoctrine()->getRepository('FoodOrderBundle:Order')->find($request->get('order_id'));
         $arrivalTime = $orderService->getPickedUpTime($order);
-
 
         return $arrivalTime;
 
