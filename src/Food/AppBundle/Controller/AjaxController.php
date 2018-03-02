@@ -26,7 +26,6 @@ class AjaxController extends Controller
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
-        $response->headers->set('Access-Control-Allow-Origin', '*');
 
         switch ($action) {
             case 'check-event-email':
