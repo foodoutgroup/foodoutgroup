@@ -25,6 +25,7 @@ class AjaxController extends Controller
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', 'true');
 
         switch ($action) {
             case 'check-event-email':
@@ -396,6 +397,7 @@ class AjaxController extends Controller
         $orderService = $this->get('food.order');
         $order = $this->getDoctrine()->getRepository('FoodOrderBundle:Order')->find($request->get('order_id'));
         $arrivalTime = $orderService->getPickedUpTime($order);
+
 
         return $arrivalTime;
 
