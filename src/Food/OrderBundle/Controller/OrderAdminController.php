@@ -357,7 +357,7 @@ class OrderAdminController extends Controller
                 $log = $this->get('database_connection')->fetchAll('SELECT * FROM order_delivery_log WHERE order_id = ' . $row['order_id']);
 
                 $row['driver_assign_time'] = null;
-                $row['driver_pickup_time'] = null;
+                $row['driver_arrival_time'] = null;
                 $row['restaurant_transfer_time'] = null;
                 $row['driver_finished_order'] = 'No';
                 foreach ($log as $k => $v) {
