@@ -98,46 +98,55 @@ class TcgService
 
     public function sendPush()
     {
-//        $locale = $this->getContainer()->get('request')->getLocale();
-
-//        $content = array(
-//            $locale => $push->getMessage()
-//        );
-
 
         $fields = array(
-            "phonebook" => 4378,
+            "phonebook" => '4378',
             "contact" => '37060751091',
             "status" => 1,
-            "last_name" => null,
-            "first_name" => null,
-            "email" => null,
-            "address" => null,
-            "city" => null,
-            "state" => null,
-            "country" => null,
-            "unit_number" => null,
-            "additional_vars" => null,
-            "description" => null
+            "last_name" => 'N1',
+            "first_name" => 'N2',
+            "email" => '',
+            "address" => '',
+            "city" => '',
+            "state" => '',
+            "country" => '',
+            "unit_number" => '',
+            "additional_vars" => '',
+            "description" => ''
         );
 
         $fields = json_encode($fields);
         print("\nJSON sent:\n");
         print($fields);
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "http://dial2.tcg.lt/rest-api/contact");
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json; charset=utf-8',
-            'Authorization: Basic ' . base64_encode("foodout:Foodout478#")));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_USERPWD, "foodout:Foodout478#");
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        curl_setopt($ch, CURLOPT_POST, TRUE);
+        $ch = curl_init('http://dial2.tcg.lt/rest-api/contact/');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_USERPWD, 'foodout' . ":" . 'Foodout478#');
+        curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        $response = curl_exec($ch);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        $return = curl_exec($ch);
         curl_close($ch);
+
+        var_dump($return);
+        die;
+
+
+//
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_URL, "http://dial2.tcg.lt/rest-api/contact");
+//        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json; charset=utf-8',
+//            'Authorization: Basic ' . base64_encode("foodout:Foodout478#")));
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+//        curl_setopt($ch, CURLOPT_USERPWD, "foodout:Foodout478#");
+//        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+//        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+//        curl_setopt($ch, CURLOPT_POST, TRUE);
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+//        $response = curl_exec($ch);
+//        curl_close($ch);
 
         return $response;
     }
