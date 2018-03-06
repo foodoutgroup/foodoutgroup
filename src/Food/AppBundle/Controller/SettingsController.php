@@ -50,7 +50,8 @@ class SettingsController extends CRUDController
         'footer_social',
         'pedestrian_filter_show',
         'placepoint_prepare_times_pedestrian',
-        'valentines_popup'
+        'valentines_popup',
+        'prepare_time'
     ];
 
     public function listAction()
@@ -195,6 +196,10 @@ class SettingsController extends CRUDController
 
         $form->add('disabled_preorder_days', 'text', [
             'attr' => ['group' => 'Order']
+        ]);
+
+        $form->add('prepare_time', 'number', [
+            'label' => 'Default preparation time in minutes',
         ]);
 
         $form->add('zaval_on', 'boolean', [

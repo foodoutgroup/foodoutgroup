@@ -357,7 +357,7 @@
                 <th colspan="5">{% trans %}mobile.making_time{% endtrans %}</th>
             </tr>
             <tr>
-                <td colspan="5">{{ order_service.getMakingTime(order)|date("H:i") }}</td>
+                <td colspan="5">{{ order_service.getMakingTime(order)|date("Y-m-d H:i") }}</td>
             </tr>
         {% endif %}
         <tr>
