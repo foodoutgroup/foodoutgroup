@@ -213,6 +213,15 @@
                 <td colspan="5" style="font-size: 18px;border-bottom: 2px solid black"><b
                             style="color:red;">{{ order.foodPrepareDate|date("Y.m.d H:i") }}</b></td>
             </tr>
+        {% else %}
+
+            <tr>
+                <th colspan="5" style="font-size: 18px;">{% trans %}mobile.prepare_time{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5" style="font-size: 18px;border-bottom: 2px solid black"><b
+                            style="color:red;">{{ order_service.getMakingTime(order)|date("Y-m-d H:i") }}</b></td>
+            </tr>
         {% endif %}
 
         {% if order.adminFee > 0 %}
