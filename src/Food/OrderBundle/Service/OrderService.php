@@ -4929,4 +4929,15 @@ class OrderService extends ContainerAware
         return $phone;
 
     }
+
+    public function getPriceForUser(Order $order)
+    {
+        $total = $order->getTotal();
+
+        if($order->getDiscountSum()){
+          $total = ($total-($order->getDiscountSum()));
+        }
+
+        return $total;
+    }
 }
