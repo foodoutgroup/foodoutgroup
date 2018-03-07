@@ -6,9 +6,9 @@
     <link href="{{ asset('bundles/foodapp/css/bootstrap-glyphicons.css') }}" rel="stylesheet">
     <script src="{{ asset('bundles/foodapp/js_admin/dispatcher.js') }}"></script>
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function () {
             Dispatcher.setLocale('{{ app.request.get('_locale') }}');
-            Dispatcher.lastCheck = '{{  'now'|date('U') }}';
+            Dispatcher.lastCheck = '{{ 'now'|date('U') }}';
             Dispatcher.onLoadEvents();
 
             Dispatcher.setTranslation('change_status_title', '{{ 'admin.dispatcher.order_status_title'|trans({}, 'SonataAdminBundle') }}');
@@ -19,6 +19,11 @@
             Dispatcher.bell = {% if dispatcher_bell %}true{% else %}false{% endif %}
         });
     </script>
+    <style>
+        .ui-tabs-panel.ui-widget-content.ui-corner-bottom {
+            overflow-x: auto;
+        }
+    </style>
 {% endblock %}
 
 {# CRM Block Begin #}
@@ -27,10 +32,15 @@
     <div class="row-fluid crm_block">
         <div class="row-fluid">
             <div class="span12 offset0">
-                <form id="crm-phone-search" class="navbar-form navbar-left form-inline" method="post" action="#" role="search">
-                    <input type="text" value="" id="crm-phone-input" class="form-control" placeholder="{{ 'admin.dispatcher.crm_search_placeholder'|trans({}, 'SonataAdminBundle') }}" />
-                    <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i> {{ 'admin.dispatcher.crm_search_button'|trans({}, 'SonataAdminBundle') }}</button>
-                    <button class="btn btn-invisible crm-close pull-right hidden"><i class="glyphicon glyphicon-remove"></i></button>
+                <form id="crm-phone-search" class="navbar-form navbar-left form-inline" method="post" action="#"
+                      role="search">
+                    <input type="text" value="" id="crm-phone-input" class="form-control"
+                           placeholder="{{ 'admin.dispatcher.crm_search_placeholder'|trans({}, 'SonataAdminBundle') }}"/>
+                    <button type="submit" class="btn btn-default"><i
+                                class="glyphicon glyphicon-search"></i> {{ 'admin.dispatcher.crm_search_button'|trans({}, 'SonataAdminBundle') }}
+                    </button>
+                    <button class="btn btn-invisible crm-close pull-right hidden"><i
+                                class="glyphicon glyphicon-remove"></i></button>
                 </form>
             </div>
         </div>
@@ -44,9 +54,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr class="sonata-ba-view-container">
-                                <th colspan="2" class="new_client">{{ 'admin.dispatcher.crm_new_client_title'|trans({}, 'SonataAdminBundle') }}</th>
-                            </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th colspan="2"
+                                class="new_client">{{ 'admin.dispatcher.crm_new_client_title'|trans({}, 'SonataAdminBundle') }}</th>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -55,91 +66,96 @@
                 <div class="span3 offset0">
                     <table class="table table-bordered table-sm table-responsive">
                         <thead>
-                            <tr class="sonata-ba-view-title navbar-inner">
-                                <th colspan="2">{{ 'admin.dispatcher.crm_client_title'|trans({}, 'SonataAdminBundle') }}</th>
-                            </tr>
+                        <tr class="sonata-ba-view-title navbar-inner">
+                            <th colspan="2">{{ 'admin.dispatcher.crm_client_title'|trans({}, 'SonataAdminBundle') }}</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr class="sonata-ba-view-container">
-                                <th>{{ 'admin.dispatcher.crm_client_status'|trans({}, 'SonataAdminBundle') }}</th>
-                                <td class="crm-user-status"></td>
-                            </tr>
-                            <tr class="sonata-ba-view-container">
-                                <th>{{ 'admin.users.firstname'|trans({}, 'SonataAdminBundle') }}</th>
-                                <td class="crm-user-firstname"></td>
-                            </tr>
-                            <tr class="sonata-ba-view-container">
-                                <th>{{ 'admin.users.lastname'|trans({}, 'SonataAdminBundle') }}</th>
-                                <td class="crm-user-lastname"></td>
-                            </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th>{{ 'admin.dispatcher.crm_client_status'|trans({}, 'SonataAdminBundle') }}</th>
+                            <td class="crm-user-status"></td>
+                        </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th>{{ 'admin.users.firstname'|trans({}, 'SonataAdminBundle') }}</th>
+                            <td class="crm-user-firstname"></td>
+                        </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th>{{ 'admin.users.lastname'|trans({}, 'SonataAdminBundle') }}</th>
+                            <td class="crm-user-lastname"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="span3 offset0">
                     <table class="table table-bordered table-sm table-responsive">
                         <thead>
-                            <tr class="sonata-ba-view-title navbar-inner">
-                                <th colspan="2">{{ 'admin.dispatcher.crm_contact_information'|trans({}, 'SonataAdminBundle') }}</th>
-                            </tr>
+                        <tr class="sonata-ba-view-title navbar-inner">
+                            <th colspan="2">{{ 'admin.dispatcher.crm_contact_information'|trans({}, 'SonataAdminBundle') }}</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr class="sonata-ba-view-container">
-                                <th>{{ 'admin.driver.phone'|trans({}, 'SonataAdminBundle') }}</th>
-                                <td class="crm-user-phone"><a href="callto:"></a></td>
-                            </tr>
-                            <tr class="sonata-ba-view-container">
-                                <th>{{ 'admin.dispatcher.crm_client_email'|trans({}, 'SonataAdminBundle') }}</th>
-                                <td class="crm-user-email"><a href="mailto:"></a></td>
-                            </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th>{{ 'admin.driver.phone'|trans({}, 'SonataAdminBundle') }}</th>
+                            <td class="crm-user-phone"><a href="callto:"></a></td>
+                        </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th>{{ 'admin.dispatcher.crm_client_email'|trans({}, 'SonataAdminBundle') }}</th>
+                            <td class="crm-user-email"><a href="mailto:"></a></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="span3 offset0">
                     <table class="table table-bordered table-sm table-responsive">
                         <thead>
-                            <tr class="sonata-ba-view-title navbar-inner">
-                                <th colspan="2">{{ 'admin.dispatcher.crm_client_last_addresses'|trans({}, 'SonataAdminBundle') }}</th>
-                            </tr>
+                        <tr class="sonata-ba-view-title navbar-inner">
+                            <th colspan="2">{{ 'admin.dispatcher.crm_client_last_addresses'|trans({}, 'SonataAdminBundle') }}</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr class="sonata-ba-view-container">
-                                <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
-                                <td class="crm-user-address"><a itemprop="address" target="_blank" href="https://maps.google.com?saddr="></a></td>
-                            </tr>
-                            <tr class="sonata-ba-view-container">
-                                <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
-                                <td class="crm-user-address"><a itemprop="address" target="_blank" href="https://maps.google.com?saddr="></a></td>
-                            </tr>
-                            <tr class="sonata-ba-view-container">
-                                <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
-                                <td class="crm-user-address"><a itemprop="address" target="_blank" href="https://maps.google.com?saddr="></a></td>
-                            </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
+                            <td class="crm-user-address"><a itemprop="address" target="_blank"
+                                                            href="https://maps.google.com?saddr="></a></td>
+                        </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
+                            <td class="crm-user-address"><a itemprop="address" target="_blank"
+                                                            href="https://maps.google.com?saddr="></a></td>
+                        </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
+                            <td class="crm-user-address"><a itemprop="address" target="_blank"
+                                                            href="https://maps.google.com?saddr="></a></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="span3 offset0">
                     <table class="table table-bordered table-sm table-responsive">
                         <thead>
-                            <tr class="sonata-ba-view-title navbar-inner">
-                                <th colspan="2">{{ 'admin.dispatcher.crm_other_information'|trans({}, 'SonataAdminBundle') }}</th>
-                            </tr>
+                        <tr class="sonata-ba-view-title navbar-inner">
+                            <th colspan="2">{{ 'admin.dispatcher.crm_other_information'|trans({}, 'SonataAdminBundle') }}</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr class="sonata-ba-view-container">
-                                <th>{{ 'admin.dispatcher.crm_b2b_client'|trans({}, 'SonataAdminBundle') }}</th>
-                                <td class="crm-user-b2b">
-                                    <span class="no"><i class="icon-ban-circle"></i>{{ 'admin.dispatcher.crm_status_no'|trans({}, 'SonataAdminBundle') }}</span>
-                                    <span class="yes"><i class="icon-ok-circle"></i>{{ 'admin.dispatcher.crm_status_yes'|trans({}, 'SonataAdminBundle') }}</span>
-                                </td>
-                            </tr>
-                            <tr class="sonata-ba-view-container">
-                                <th>{{ 'admin.dispatcher.crm_completed_sum'|trans({}, 'SonataAdminBundle') }}</th>
-                                <td class="crm-user-completed"></td>
-                            </tr>
-                            <tr class="sonata-ba-view-container">
-                                <th>{{ 'admin.dispatcher.crm_canceled_sum'|trans({}, 'SonataAdminBundle') }}</th>
-                                <td class="crm-user-canceled"></td>
-                            </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th>{{ 'admin.dispatcher.crm_b2b_client'|trans({}, 'SonataAdminBundle') }}</th>
+                            <td class="crm-user-b2b">
+                                <span class="no"><i
+                                            class="icon-ban-circle"></i>{{ 'admin.dispatcher.crm_status_no'|trans({}, 'SonataAdminBundle') }}</span>
+                                <span class="yes"><i
+                                            class="icon-ok-circle"></i>{{ 'admin.dispatcher.crm_status_yes'|trans({}, 'SonataAdminBundle') }}</span>
+                            </td>
+                        </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th>{{ 'admin.dispatcher.crm_completed_sum'|trans({}, 'SonataAdminBundle') }}</th>
+                            <td class="crm-user-completed"></td>
+                        </tr>
+                        <tr class="sonata-ba-view-container">
+                            <th>{{ 'admin.dispatcher.crm_canceled_sum'|trans({}, 'SonataAdminBundle') }}</th>
+                            <td class="crm-user-canceled"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -162,54 +178,54 @@
                 <th></th>
                 <th>{{ 'admin.dispatcher.order_id'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.place'|trans({}, 'SonataAdminBundle') }}</th>
-            {% if type != 'canceled' %}
-                <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
-            {% endif %}
-            {% if type != 'unconfirmed-pickup' %}
-                <th>{{ 'admin.dispatcher.client_address'|trans({}, 'SonataAdminBundle') }}</th>
-                <th class="self_delivery">{{ 'admin.dispatcher.client_phone'|trans({}, 'SonataAdminBundle') }}</th>
-            {% endif %}
+                {% if type != 'canceled' %}
+                    <th>{{ 'admin.dispatcher.address'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
+                {% if type != 'unconfirmed-pickup' %}
+                    <th>{{ 'admin.dispatcher.client_address'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th class="self_delivery">{{ 'admin.dispatcher.client_phone'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
                 <th class="order_date">{{ 'admin.dispatcher.order_date'|trans({}, 'SonataAdminBundle') }}</th>
-            {% if type != 'canceled' and type != 'unapproved' %}
-                <th class="order_date">{{ 'admin.order.food_prepare_date'|trans({}, 'SonataAdminBundle') }}</th>
-            {% endif %}
-            {% if type != 'canceled' %}
-                <th class="order_date">{{ 'admin.dispatcher.delivery_time'|trans({}, 'SonataAdminBundle') }}</th>
-            {% endif %}
-            {% if type == "not_finished" %}
-                <th class="order_date">{{ 'admin.dispatcher.driver_arrival'|trans({}, 'SonataAdminBundle') }}</th>
-                <th class="order_date">{{ 'admin.dispatcher.transferred'|trans({}, 'SonataAdminBundle') }}</th>
-            {% endif %}
-            {% if type starts with "unapproved" or type == "unassigned" or type starts with "unconfirmed" or type == "not_finished" %}
-                <th class="order_date">{{ 'admin.dispatcher.late_time'|trans({}, 'SonataAdminBundle') }}</th>
-            {% endif %}
-            {% if type != 'canceled' %}
-                <th class="order_date">{{ 'admin.dispatcher.delayed'|trans({}, 'SonataAdminBundle') }}</th>
-            {% endif %}
+                {% if type != 'canceled' and type != 'unapproved' %}
+                    <th class="order_date">{{ 'admin.order.food_prepare_date'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
+                {% if type != 'canceled' %}
+                    <th class="order_date">{{ 'admin.dispatcher.delivery_time'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
+                {% if type == "not_finished" %}
+                    <th class="order_date">{{ 'admin.dispatcher.driver_arrival'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th class="order_date">{{ 'admin.dispatcher.transferred'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
+                {% if type starts with "unapproved" or type == "unassigned" or type starts with "unconfirmed" or type == "not_finished" %}
+                    <th class="order_date">{{ 'admin.dispatcher.late_time'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
+                {% if type != 'canceled' %}
+                    <th class="order_date">{{ 'admin.dispatcher.delayed'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
                 <th class="narrow_col">{{ 'admin.dispatcher.payment'|trans({}, 'SonataAdminBundle') }}</th>
                 <th>{{ 'admin.dispatcher.comment'|trans({}, 'SonataAdminBundle') }}</th>
-            {% if type == 'not_finished' %}
-                <th>{{ 'admin.dispatcher.driver'|trans({}, 'SonataAdminBundle') }}</th>
-            {% endif %}
+                {% if type == 'not_finished' %}
+                    <th>{{ 'admin.dispatcher.driver'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
                 <th>{{ 'admin.dispatcher.status'|trans({}, 'SonataAdminBundle') }}</th>
-            {% if type == 'canceled' %}
-                <th class="client_contacted_check">{{ 'admin.dispatcher.client_contacted'|trans({}, 'SonataAdminBundle') }}</th>
-            {% endif %}
-            {% if type == 'nav_problems' %}
-                <th class="problem_type">{{ 'admin.dispatcher.problem_type'|trans({}, 'SonataAdminBundle') }}</th>
-                <th class="problem_solved_check">{{ 'admin.dispatcher.problem_solved'|trans({}, 'SonataAdminBundle') }}</th>
-            {% endif %}
+                {% if type == 'canceled' %}
+                    <th class="client_contacted_check">{{ 'admin.dispatcher.client_contacted'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
+                {% if type == 'nav_problems' %}
+                    <th class="problem_type">{{ 'admin.dispatcher.problem_type'|trans({}, 'SonataAdminBundle') }}</th>
+                    <th class="problem_solved_check">{{ 'admin.dispatcher.problem_solved'|trans({}, 'SonataAdminBundle') }}</th>
+                {% endif %}
             </tr>
 
             {% for order in order_list %}
 
                 {#{% if loop.last %}#}
-                    {#<script type="text/javascript">#}
-                        {#if (typeof Dispatcher.recentOrders['{{ cityName }}'] == "undefined") {#}
-                            {#Dispatcher.recentOrders['{{ cityName }}'] = {};#}
-                        {#}#}
-                        {#Dispatcher.recentOrders['{{ cityName }}']['{{ type }}'] = {{ order.id }};#}
-                    {#</script>#}
+                {#<script type="text/javascript">#}
+                {#if (typeof Dispatcher.recentOrders['{{ cityName }}'] == "undefined") {#}
+                {#Dispatcher.recentOrders['{{ cityName }}'] = {};#}
+                {#}#}
+                {#Dispatcher.recentOrders['{{ cityName }}']['{{ type }}'] = {{ order.id }};#}
+                {#</script>#}
                 {#{% endif %}#}
 
 
@@ -229,10 +245,12 @@
                     {% set additional_class = 'hesburger_distinct_color' %}
                 {% endif %}
 
-                <tr {% if order.user.special == true%} style="background-color: mediumvioletred !important;" {% endif %} class="{{ loop.index%2 ? 'odd' : 'even' }} {{ additional_class }}">
+                <tr {% if order.user.special == true %} style="background-color: mediumvioletred !important;" {% endif %}
+                        class="{{ loop.index%2 ? 'odd' : 'even' }} {{ additional_class }}">
                     <td class="no-wrap">
                         {% if not order.placePointSelfDelivery %}
-                            <input type="checkbox" id="order_{{ order.id }}" value="{{ order.id }}" class="order_checkbox" />
+                            <input type="checkbox" id="order_{{ order.id }}" value="{{ order.id }}"
+                                   class="order_checkbox"/>
                         {% endif %}
                         {% if additional_class != '' %}
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -244,86 +262,103 @@
                             <strong title="NAVISION">N</strong>
                         {% endif %}
                     </td>
-                    <td><a href="{{ path('admin_food_order_order_show', {'id': order.id}) }}" target="_blank">{{ order.id }}</a></td>
+                    <td><a href="{{ path('admin_food_order_order_show', {'id': order.id}) }}"
+                           target="_blank">{{ order.id }}</a></td>
                     <td>
                         {{ order.placeName }}
                         {% if order.placePoint is not empty and order.placePoint.internalCode is not empty %} - {{ order.placePoint.internalCode }}{% endif %}
                         {% if order.placePoint is not empty %}
-                            <a onclick="Dispatcher.logCallEvent('restaurant', {{ order.placePoint.phone }}, {{ order.id }})" href="tcgcall://{{ order.placePoint.phone }}"><span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ order.placePoint.phone }}"></span></a>
+                            <a onclick="Dispatcher.logCallEvent('restaurant', {{ order.placePoint.phone }}, {{ order.id }})"
+                               href="tcgcall://{{ order.placePoint.phone }}"><span
+                                        class="glyphicon glyphicon-phone-alt restourant-phones"
+                                        title="{{ order.placePoint.phone }}"></span></a>
                         {% endif %}
-                        {% if order.placePoint is not empty and order.placePoint.altPhone1 is not empty%}
-                            <a onclick="Dispatcher.logCallEvent('restaurant', {{ order.placePoint.altPhone1 }}, {{ order.id }})" href="tcgcall://{{ order.placePoint.altPhone1 }}"><span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ order.placePoint.altPhone1 }}"></span></a>
+                        {% if order.placePoint is not empty and order.placePoint.altPhone1 is not empty %}
+                            <a onclick="Dispatcher.logCallEvent('restaurant', {{ order.placePoint.altPhone1 }}, {{ order.id }})"
+                               href="tcgcall://{{ order.placePoint.altPhone1 }}"><span
+                                        class="glyphicon glyphicon-phone-alt restourant-phones"
+                                        title="{{ order.placePoint.altPhone1 }}"></span></a>
                         {% endif %}
-                        {% if order.placePoint is not empty and order.placePoint.altPhone2 is not empty%}
-                            <a onclick="Dispatcher.logCallEvent('restaurant', {{ order.placePoint.altPhone2 }}, {{ order.id }})" href="tcgcall://{{ order.placePoint.altPhone2 }}"><span class="glyphicon glyphicon-phone-alt restourant-phones" title="{{ order.placePoint.altPhone2 }}"></span></a>
+                        {% if order.placePoint is not empty and order.placePoint.altPhone2 is not empty %}
+                            <a onclick="Dispatcher.logCallEvent('restaurant', {{ order.placePoint.altPhone2 }}, {{ order.id }})"
+                               href="tcgcall://{{ order.placePoint.altPhone2 }}"><span
+                                        class="glyphicon glyphicon-phone-alt restourant-phones"
+                                        title="{{ order.placePoint.altPhone2 }}"></span></a>
                         {% endif %}
                     </td>
-                {% if type != 'canceled' %}
-                    <td>
+                    {% if type != 'canceled' %}
+                        <td>
                         {% if order.placePoint is not empty %}
                             {{ order.placePoint.address }}</td>
                         {% endif %}
-                {% endif %}
-                {% if type != 'unconfirmed-pickup' %}
-                    <td>
-                        {% if order.deliveryType != 'pickup' %}
-                            {% if order.addressId is not empty %}
-                                {{ order.addressId.address }}
+                    {% endif %}
+                    {% if type != 'unconfirmed-pickup' %}
+                        <td>
+                            {% if order.deliveryType != 'pickup' %}
+                                {% if order.addressId is not empty %}
+                                    {{ order.addressId.address }}
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                    </td>
-                    <td style="white-space: nowrap"><a onclick="Dispatcher.logCallEvent('client', {{ order.orderExtra.phone }}, {{ order.id }})" href="tcgcall://{{ order.orderExtra.phone }}"><span class="glyphicon glyphicon-phone-alt restourant-phones"></span></a>{{ order.orderExtra.phone }}
-                    </td>
-                {% endif %}
-                    <td class="order_date" title="{{ order.orderDate|date("Y-m-d") }}">{{ order.orderDate|date("H:i") }}</td>
+                        </td>
+                        <td style="white-space: nowrap"><a
+                                    onclick="Dispatcher.logCallEvent('client', {{ order.orderExtra.phone }}, {{ order.id }})"
+                                    href="tcgcall://{{ order.orderExtra.phone }}"><span
+                                        class="glyphicon glyphicon-phone-alt restourant-phones"></span></a>{{ order.orderExtra.phone }}
+                        </td>
+                    {% endif %}
+                    <td class="order_date"
+                        title="{{ order.orderDate|date("Y-m-d") }}">{{ order.orderDate|date("H:i") }}</td>
 
-                {% if type != 'canceled' and type != 'unapproved' %}
-                    <td class="order_date">
-                        {% if order.foodPrepareDate %}
-                        {{ order.foodPrepareDate|date("H:i") }}
-                        {% endif %}
-                    </td>
-                {% endif %}
+                    {% if type != 'canceled' and type != 'unapproved' %}
+                        <td class="order_date">
+                            {% if order.foodPrepareDate %}
+                                {{ order.foodPrepareDate|date("H:i") }}
+                            {% endif %}
+                        </td>
+                    {% endif %}
 
-                {% if type != 'canceled' %}
-                    <td class="order_date" title="{{ order.deliveryTime|date("Y-m-d") }}">{{ order.deliveryTime|date("H:i") }}</td>
-                {% endif %}
-                {% if type == "not_finished" %}
-                    <td class="order_date">
-                        {% if order.orderPicked %}
-                            <span class="glyphicon glyphicon-ok picked-up-tooltip" title="{{ order_service.pickedUpTime(order) }}"></span>
-                        {% else %}
-                            <span class="glyphicon glyphicon-remove"></span>
-                        {% endif %}
-                    </td>
-                    <td class="order_date">
-                        {% if order.orderTransferred %}
-                            <span class="glyphicon glyphicon-ok picked-up-tooltip" title="{{ order_service.transferredTime(order) }}"></span>
-                        {% else %}
-                            <span class="glyphicon glyphicon-remove"></span>
-                        {% endif %}
-                    </td>
-                {% endif %}
+                    {% if type != 'canceled' %}
+                        <td class="order_date"
+                            title="{{ order.deliveryTime|date("Y-m-d") }}">{{ order.deliveryTime|date("H:i") }}</td>
+                    {% endif %}
+                    {% if type == "not_finished" %}
+                        <td class="order_date">
+                            {% if order.orderPicked %}
+                                <span class="glyphicon glyphicon-ok picked-up-tooltip"
+                                      title="{{ order_service.pickedUpTime(order) }}"></span>
+                            {% else %}
+                                <span class="glyphicon glyphicon-remove"></span>
+                            {% endif %}
+                        </td>
+                        <td class="order_date">
+                            {% if order.orderTransferred %}
+                                <span class="glyphicon glyphicon-ok picked-up-tooltip"
+                                      title="{{ order_service.transferredTime(order) }}"></span>
+                            {% else %}
+                                <span class="glyphicon glyphicon-remove"></span>
+                            {% endif %}
+                        </td>
+                    {% endif %}
 
-                {% if type starts with "unapproved" or type == "unassigned" or type starts with "unconfirmed" or type == "not_finished" %}
-                    <td class="order_date">
-                        {% set diff = order_service.getLateDiff(order) %}
-                        {% if diff.invert %}-{% else %}+{% endif %}{% if diff.d %}{{ diff.d }}d {{ diff.h }}h {{ diff.i }}m{% elseif diff.h %}{{ diff.h }}h {{ diff.i }}m{% else %}{{ diff.i }}m{% endif %}
-                    </td>
-                {% endif %}
-                {% if type != 'canceled' %}
-                    <td class="order_date{% if order.delayed %} delayed-order{% endif %}">
-                        {% if order.delayed %}
-                            {{ order.delayDuration }} min
-                        {% endif %}
-                    </td>
-                {% endif %}
+                    {% if type starts with "unapproved" or type == "unassigned" or type starts with "unconfirmed" or type == "not_finished" %}
+                        <td class="order_date">
+                            {% set diff = order_service.getLateDiff(order) %}
+                            {% if diff.invert %}-{% else %}+{% endif %}{% if diff.d %}{{ diff.d }}d {{ diff.h }}h {{ diff.i }}m{% elseif diff.h %}{{ diff.h }}h {{ diff.i }}m{% else %}{{ diff.i }}m{% endif %}
+                        </td>
+                    {% endif %}
+                    {% if type != 'canceled' %}
+                        <td class="order_date{% if order.delayed %} delayed-order{% endif %}">
+                            {% if order.delayed %}
+                                {{ order.delayDuration }} min
+                            {% endif %}
+                        </td>
+                    {% endif %}
                     <td>
                         {% if order.paymentMethod == 'local' %}
                             {{ 'admin.dispatcher.payement.local'|trans({}, 'SonataAdminBundle') }}
-                        {% elseif order.paymentMethod == 'local.card'%}
+                        {% elseif order.paymentMethod == 'local.card' %}
                             {{ 'admin.dispatcher.payement.local_card'|trans({}, 'SonataAdminBundle') }}
-                        {% elseif order.paymentMethod == 'postpaid'%}
+                        {% elseif order.paymentMethod == 'postpaid' %}
                             <strong>{{ 'admin.dispatcher.payement.postpaid'|trans({}, 'SonataAdminBundle') }}</strong>
                         {% else %}
                             <strong>{{ 'admin.dispatcher.payement.bank_link'|trans({}, 'SonataAdminBundle') }}</strong>
@@ -331,7 +366,9 @@
                     </td>
                     <td>
                         {% if order.comment|length > 20 %}
-                            <span class="shortened_comment">{{ order.comment|slice(0, 17) }}... <span class="glyphicon glyphicon-question-sign spliced-text" title="{{ order.comment }}"></span></span>
+                            <span class="shortened_comment">{{ order.comment|slice(0, 17) }}... <span
+                                        class="glyphicon glyphicon-question-sign spliced-text"
+                                        title="{{ order.comment }}"></span></span>
                         {% else %}
                             {{ order.comment }}
                         {% endif %}
@@ -342,14 +379,17 @@
                                 <strong>{{ 'admin.dispatcher.pickup_order'|trans({}, 'SonataAdminBundle') }}</strong>
                             {% else %}
                                 {% if order.driver is not null and order.driver is not empty and order.isDriverNotDeleted %}
-                                    {%
-                                    set driverInfo = 'admin.driver.phone'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.phone ~ "<br/>"
-                                    ~ 'admin.driver.city'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.cityId.title ~ "<br/>"
-                                    ~ 'admin.driver.type'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.driver.type.' ~ order.driver.type)|trans({}, 'SonataAdminBundle') ~ "<br/>"
-                                    ~ 'admin.driver.provider'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.provider ~ "<br/>"
-                                    ~ 'admin.driver.ext_id'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.extId ~ "<br/>"
-                                    %}
-                                    {{ order.driver.name }} <span class="driver-info-extended glyphicon glyphicon-info-sign" title="{{ driverInfo }}"></span> <a onclick="Dispatcher.logCallEvent('driver', {{ order.driver.phone }}, {{ order.id }})" href="tcgcall://{{ order.driver.phone }}"><span class="glyphicon glyphicon-phone-alt restourant-phones"></span></a>
+                                    {% set driverInfo = 'admin.driver.phone'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.phone ~ "<br/>"
+                                        ~ 'admin.driver.city'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.cityId.title ~ "<br/>"
+                                        ~ 'admin.driver.type'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.driver.type.' ~ order.driver.type)|trans({}, 'SonataAdminBundle') ~ "<br/>"
+                                        ~ 'admin.driver.provider'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.provider ~ "<br/>"
+                                        ~ 'admin.driver.ext_id'|trans({}, 'SonataAdminBundle') ~ ': ' ~ order.driver.extId ~ "<br/>" %}
+                                    {{ order.driver.name }} <span
+                                        class="driver-info-extended glyphicon glyphicon-info-sign"
+                                        title="{{ driverInfo }}"></span> <a
+                                        onclick="Dispatcher.logCallEvent('driver', {{ order.driver.phone }}, {{ order.id }})"
+                                        href="tcgcall://{{ order.driver.phone }}"><span
+                                            class="glyphicon glyphicon-phone-alt restourant-phones"></span></a>
                                 {% else %}
                                     <span style="font-weight: bold; color: #FF0000;">{{ 'admin.dispatcher.no_driver_assigned'|trans({}, 'SonataAdminBundle') }}</span>
                                 {% endif %}
@@ -360,14 +400,12 @@
                         {% if order.orderStatusLog|length > 0 %}
                             {% set statusInfo = '<div class=\'driver-tooltip\'>' %}
                             {% for status in order.orderStatusLog %}
-                                {%
-                                    set statusInfo = statusInfo
+                                {% set statusInfo = statusInfo
                                     ~ 'admin.order.log.date'|trans({}, 'SonataAdminBundle') ~ ': ' ~ status.eventDate|date("H:i") ~ '<br />'
                                     ~ 'admin.order.log.old_status'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.dispatcher.order_status.' ~ status.oldStatus)|trans({}, 'SonataAdminBundle') ~ '<br />'
                                     ~ 'admin.order.log.new_status'|trans({}, 'SonataAdminBundle') ~ ': ' ~ ('admin.dispatcher.order_status.' ~ status.newStatus)|trans({}, 'SonataAdminBundle') ~ '<br />'
                                     ~ 'admin.order.log.message'|trans({}, 'SonataAdminBundle') ~ ': ' ~ status.message ~ '<br />'
-                                    ~ '<br />'
-                                %}
+                                    ~ '<br />' %}
                             {% endfor %}
                             {% set statusInfo = statusInfo ~ '</div>' %}
                         {% endif %}
@@ -376,7 +414,8 @@
                             {{ ('admin.dispatcher.order_status.' ~ order.orderStatus)|trans({}, 'SonataAdminBundle') }}
                         {% endif %}
                         {% if order.orderStatusLog|length > 0 %}
-                            <span class="glyphicon glyphicon-info-sign status-change-history" title="{{ statusInfo }}"></span>
+                            <span class="glyphicon glyphicon-info-sign status-change-history"
+                                  title="{{ statusInfo }}"></span>
                         {% endif %}
                         {% if (not order.orderFromNav and type != 'unapproved') or (type == 'not_finished' and order.deliveryType == 'pickup') %}
                             <button class="btn btn-lg change_status_button" item-id="{{ order.id }}">
@@ -399,27 +438,32 @@
                             <span class="glyphicon glyphicon-user">{{ order.dispatcherId.Firstname }}</span>
                         {% endif %}
                         {% if order.placeInformed is empty and order.deliveryType != 'pickup' and not order.getPlace().getNavision() %}
-                            <button class="btn btn-lg assign_placeinformed_button" item-id="{{ order.id }}" title="{{ 'admin.dispatcher.assign_placeinform'|trans({}, 'SonataAdminBundle') }}">
+                            <button class="btn btn-lg assign_placeinformed_button" item-id="{{ order.id }}"
+                                    title="{{ 'admin.dispatcher.assign_placeinform'|trans({}, 'SonataAdminBundle') }}">
                                 <span class="glyphicon glyphicon-info-sign status-change-history"></span>
                             </button>
                         {% endif %}
                     </td>
                     {% if type starts with 'canceled' %}
-                    <td class="client_contacted_check">
-                        <input type="checkbox" id="client_contacted_{{ order.id }}" class="client_contacted" item-id="{{ order.id }}" {% if order.clientContacted == 1 %}checked="checked" {% endif %}/>
-                    </td>
+                        <td class="client_contacted_check">
+                            <input type="checkbox" id="client_contacted_{{ order.id }}" class="client_contacted"
+                                   item-id="{{ order.id }}"
+                                   {% if order.clientContacted == 1 %}checked="checked" {% endif %}/>
+                        </td>
                     {% endif %}
                     {% if type == 'nav_problems' %}
-                    <td>
-                        {% if order.orderStatus == 'nav_problems' %}
-                            {{ 'admin.dispatcher.nav_problems_type'|trans({}, 'SonataAdminBundle') }}
-                        {% else %}
-                            {{ 'admin.dispatcher.payment_wait_problem'|trans({}, 'SonataAdminBundle') }}
-                        {% endif %}
-                    </td>
-                    <td class="problem_solved_check">
-                        <input type="checkbox" id="solved_{{ order.id }}" class="problem_solved" item-id="{{ order.id }}" {% if order.problemSolved == 1 %}checked="checked" {% endif %}/>
-                    </td>
+                        <td>
+                            {% if order.orderStatus == 'nav_problems' %}
+                                {{ 'admin.dispatcher.nav_problems_type'|trans({}, 'SonataAdminBundle') }}
+                            {% else %}
+                                {{ 'admin.dispatcher.payment_wait_problem'|trans({}, 'SonataAdminBundle') }}
+                            {% endif %}
+                        </td>
+                        <td class="problem_solved_check">
+                            <input type="checkbox" id="solved_{{ order.id }}" class="problem_solved"
+                                   item-id="{{ order.id }}"
+                                   {% if order.problemSolved == 1 %}checked="checked" {% endif %}/>
+                        </td>
                     {% endif %}
                 </tr>
             {% endfor %}
@@ -438,9 +482,11 @@
                 {% set cityNavProblems = (cityOrderCollection[city.id].nav_problems.deliver|length + cityOrderCollection[city.id].nav_problems.selfdeliver|length + cityOrderCollection[city.id].nav_problems.pickup|length) %}
                 {% set cityTip = 'admin.dispatcher.city_tip'|trans({'unapprovedCount': cityUnapproved, 'unassignedCount': cityUnassigned, 'unconfirmedCount': cityUnconfirmed, 'notfinishedCount': cityNotFinished, 'canceledCount': cityCanceled, 'navProblemsCount': cityNavProblems}, 'SonataAdminBundle') %}
                 <li class="city-tab" data-city="{{ city.id }}">
-                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} <span class="theCount">({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}:{{ cityNotFinished }}:{{ cityCanceled }}:{{ cityNavProblems }})</span></a>
+                    <a href="#city_list-{{ loop.index }}" title="{{ cityTip }}">{{ city }} <span
+                                class="theCount">({{ cityUnapproved }}:{{ cityUnassigned }}:{{ cityUnconfirmed }}
+                            :{{ cityNotFinished }}:{{ cityCanceled }}:{{ cityNavProblems }})</span></a>
                     {% if cityOrderCollection[city.id].unapproved.late > 0 or cityOrderCollection[city.id].unassigned.late > 0 or cityOrderCollection[city.id].unconfirmed.late > 0 or cityOrderCollection[city.id].not_finished.late > 0 %}
-                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        <span class="glyphicon glyphicon-exclamation-sign"></span>
                     {% endif %}
                 </li>
             {% endfor %}
@@ -450,7 +496,9 @@
                 <ul class="orderTypeTabList">
                     <li class="city-{{ loop.index }}-unapproved-tab">
                         <a href="#city-{{ loop.index }}-unapproved">
-                            {{ 'admin.dispatcher.unapproved'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unapproved.deliver|length + city.unapproved.selfdeliver|length + city.unapproved.pickup|length + city.unapproved.pedestrian|length) }})</span>
+                            {{ 'admin.dispatcher.unapproved'|trans({}, 'SonataAdminBundle') }} <span
+                                    class="theCount">({{ (city.unapproved.deliver|length + city.unapproved.selfdeliver|length + city.unapproved.pickup|length + city.unapproved.pedestrian|length) }}
+                                )</span>
                         </a>
                         {% if city.unapproved.late > 0 %}
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -458,7 +506,9 @@
                     </li>
                     <li class="city-{{ loop.index }}-unassigned-tab">
                         <a href="#city-{{ loop.index }}-unassigned">
-                            {{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unassigned.deliver|length + city.unassigned.selfdeliver|length + city.unassigned.pickup|length + city.unassigned.pedestrian|length) }})</span>
+                            {{ 'admin.dispatcher.unassigned'|trans({}, 'SonataAdminBundle') }} <span
+                                    class="theCount">({{ (city.unassigned.deliver|length + city.unassigned.selfdeliver|length + city.unassigned.pickup|length + city.unassigned.pedestrian|length) }}
+                                )</span>
                         </a>
                         {% if city.unassigned.late > 0 %}
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -466,7 +516,9 @@
                     </li>
                     <li class="city-{{ loop.index }}-unconfirmed-tab">
                         <a href="#city-{{ loop.index }}-unconfirmed">
-                            {{ 'admin.dispatcher.unconfirmed'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.unconfirmed.deliver|length + city.unconfirmed.selfdeliver|length + city.unconfirmed.pickup|length + city.unconfirmed.pedestrian|length) }})</span>
+                            {{ 'admin.dispatcher.unconfirmed'|trans({}, 'SonataAdminBundle') }} <span
+                                    class="theCount">({{ (city.unconfirmed.deliver|length + city.unconfirmed.selfdeliver|length + city.unconfirmed.pickup|length + city.unconfirmed.pedestrian|length) }}
+                                )</span>
                         </a>
                         {% if city.unconfirmed.late > 0 %}
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -474,7 +526,9 @@
                     </li>
                     <li>
                         <a href="#city-{{ loop.index }}-undelivered">
-                            {{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.not_finished.deliver|length + city.not_finished.selfdeliver|length + city.not_finished.pickup|length + city.not_finished.pedestrian|length) }})</span>
+                            {{ 'admin.dispatcher.undelivered'|trans({}, 'SonataAdminBundle') }} <span
+                                    class="theCount">({{ (city.not_finished.deliver|length + city.not_finished.selfdeliver|length + city.not_finished.pickup|length + city.not_finished.pedestrian|length) }}
+                                )</span>
                         </a>
                         {% if city.not_finished.late > 0 %}
                             <span class="glyphicon glyphicon-exclamation-sign"></span>
@@ -482,12 +536,15 @@
                     </li>
                     <li>
                         <a href="#city-{{ loop.index }}-canceled">
-                            {{ 'admin.dispatcher.canceled'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.canceled.deliver|length + city.canceled.selfdeliver|length + city.canceled.pickup|length + city.canceled.pedestrian|length) }})</span>
+                            {{ 'admin.dispatcher.canceled'|trans({}, 'SonataAdminBundle') }} <span
+                                    class="theCount">({{ (city.canceled.deliver|length + city.canceled.selfdeliver|length + city.canceled.pickup|length + city.canceled.pedestrian|length) }}
+                                )</span>
                         </a>
                     </li>
                     <li>
                         <a href="#city-{{ loop.index }}-navproblems">
-                            {{ 'admin.dispatcher.nav_problems'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.nav_problems.deliver|length + city.nav_problems.selfdeliver|length + city.nav_problems.pickup|length + city.nav_problems.pedestrian|length) }})</span>
+                            {{ 'admin.dispatcher.nav_problems'|trans({}, 'SonataAdminBundle') }} <span class="theCount">({{ (city.nav_problems.deliver|length + city.nav_problems.selfdeliver|length + city.nav_problems.pickup|length + city.nav_problems.pedestrian|length) }}
+                                )</span>
                         </a>
                     </li>
                 </ul>
@@ -496,16 +553,17 @@
 
                     {% if city.unapproved.pedestrian|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.unapproved.pedestrian, 'unapproved-pedestrian', ID) }}
                     {% endif %}
 
                     <div style="text-align: center;">
-                        <br />
-                        <br />
+                        <br/>
+                        <br/>
                         <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.normal_orders{% endtrans %}:</h4>
                     </div>
                     {{ table.order_table(city.unapproved.deliver, 'unapproved', ID) }}
@@ -513,18 +571,20 @@
 
                     {% if city.unapproved.selfdeliver|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unapproved_selfdeliver{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unapproved_selfdeliver{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.unapproved.selfdeliver, 'unapproved-selfdeliver', ID) }}
                     {% endif %}
 
                     {% if city.unapproved.pickup|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unapproved_pickup{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unapproved_pickup{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.unapproved.pickup, 'unapproved-pickup', ID) }}
                     {% endif %}
@@ -535,16 +595,17 @@
 
                     {% if city.unassigned.pedestrian|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.unassigned.pedestrian, 'unassigned-pedestrian', ID) }}
                     {% endif %}
 
                     <div style="text-align: center;">
-                        <br />
-                        <br />
+                        <br/>
+                        <br/>
                         <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.normal_orders{% endtrans %}:</h4>
                     </div>
 
@@ -552,18 +613,20 @@
 
                     {% if city.unassigned.selfdeliver|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_selfdeliver{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_selfdeliver{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.unassigned.selfdeliver, 'unassigned-selfdeliver', ID) }}
                     {% endif %}
 
                     {% if city.unassigned.pickup|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pickup{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pickup{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.unassigned.pickup, 'unassigned-pickup', ID) }}
                     {% endif %}
@@ -574,16 +637,17 @@
 
                     {% if city.unconfirmed.pedestrian|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.unconfirmed.pedestrian, 'unconfirmed-pedestrian', ID) }}
                     {% endif %}
 
                     <div style="text-align: center;">
-                        <br />
-                        <br />
+                        <br/>
+                        <br/>
                         <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.normal_orders{% endtrans %}:</h4>
                     </div>
 
@@ -591,18 +655,20 @@
 
                     {% if city.unconfirmed.selfdeliver|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unconfirmed_selfdeliver{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unconfirmed_selfdeliver{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.unconfirmed.selfdeliver, 'unconfirmed-selfdeliver', ID) }}
                     {% endif %}
 
                     {% if city.unconfirmed.pickup|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unconfirmed_pickup{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unconfirmed_pickup{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.unconfirmed.pickup, 'unconfirmed-pickup', ID) }}
                     {% endif %}
@@ -614,16 +680,17 @@
 
                     {% if city.not_finished.pedestrian|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.not_finished.pedestrian, 'not_finished-pedestrian', ID) }}
                     {% endif %}
 
                     <div style="text-align: center;">
-                        <br />
-                        <br />
+                        <br/>
+                        <br/>
                         <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.normal_orders{% endtrans %}:</h4>
                     </div>
 
@@ -631,18 +698,20 @@
 
                     {% if city.not_finished.selfdeliver|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.not_finished_selfdeliver{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.not_finished_selfdeliver{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.not_finished.selfdeliver, 'not_finished-selfdeliver', ID) }}
                     {% endif %}
 
                     {% if city.not_finished.pickup|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.not_finished_pickup{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.not_finished_pickup{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.not_finished.pickup, 'not_finished-pickup', ID) }}
                     {% endif %}
@@ -653,16 +722,17 @@
 
                     {% if city.canceled.pedestrian|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.unassigned_pedestrian{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.canceled.pedestrian, 'canceled-pedestrian', ID) }}
                     {% endif %}
 
                     <div style="text-align: center;">
-                        <br />
-                        <br />
+                        <br/>
+                        <br/>
                         <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.normal_orders{% endtrans %}:</h4>
                     </div>
 
@@ -670,17 +740,18 @@
 
                     {% if city.canceled.selfdeliver|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.canceled_selfdeliver{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.canceled_selfdeliver{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.canceled.selfdeliver, 'canceled-selfdeliver', ID) }}
                     {% endif %}
 
                     {% if city.canceled.pickup|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
+                            <br/>
+                            <br/>
                             <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.canceled_pickup{% endtrans %}:</h4>
                         </div>
                         {{ table.order_table(city.canceled.pickup, 'canceled-pickup', ID) }}
@@ -692,16 +763,17 @@
 
                     {% if city.nav_problems.pedestrian|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %} admin.dispatcher.unassigned_pedestrian{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %} admin.dispatcher.unassigned_pedestrian{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.nav_problems.pedestrian, 'nav_problems-selfdeliver', ID) }}
                     {% endif %}
 
                     <div style="text-align: center;">
-                        <br />
-                        <br />
+                        <br/>
+                        <br/>
                         <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.normal_orders{% endtrans %}:</h4>
                     </div>
 
@@ -709,18 +781,20 @@
 
                     {% if city.nav_problems.selfdeliver|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.nav_problems_selfdeliver{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.nav_problems_selfdeliver{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.nav_problems.selfdeliver, 'nav_problems-selfdeliver', ID) }}
                     {% endif %}
 
                     {% if city.nav_problems.pickup|length %}
                         <div style="text-align: center;">
-                            <br />
-                            <br />
-                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.nav_problems_pickup{% endtrans %}:</h4>
+                            <br/>
+                            <br/>
+                            <h4>{% trans from 'SonataAdminBundle' %}admin.dispatcher.nav_problems_pickup{% endtrans %}
+                                :</h4>
                         </div>
                         {{ table.order_table(city.nav_problems.pickup, 'nav_problems-pickup', ID) }}
                     {% endif %}
@@ -732,7 +806,8 @@
         {% for city in cityCollection %}
             {% set cityDriverCollection = driverCollection[city.id] %}
             {# TODO autorefresh every city list to have a most common order count once in a while #}
-            <div class="city_drivers driver_{{ city.id }} {% if loop.index > 1 %}hidden{% endif %}" data-city="{{ city.id }}">
+            <div class="city_drivers driver_{{ city.id }} {% if loop.index > 1 %}hidden{% endif %}"
+                 data-city="{{ city.id }}">
                 <table class="drivers_table table table-hover table-condensed table-bordered" width="100">
                     <tr class="even">
                         <th>{{ 'admin.driver.name'|trans({}, 'SonataAdminBundle') }}</th>
@@ -741,14 +816,21 @@
                         <th></th>
                     </tr>
                     {% for driver in cityDriverCollection %}
-                        <tr class="{{ loop.index%2 ? 'odd' : 'even' }} {% if driver.type == 'pedestrian'  %} {{  driver.type }} {% else %} {{ 'normal' }} {% endif %}" data-driver-id="{{ driver.id }}">                            <td valign="center">{{ driver['name'] }}</td>
-                            <td valign="center"><a onclick="Dispatcher.logCallEvent('driver', {{ driver.phone }})" href="tcgcall://{{ driver.phone }}">{{ driver['phone'] }}</a></td>
+                        <tr class="{{ loop.index%2 ? 'odd' : 'even' }} {% if driver.type == 'pedestrian' %} {{ driver.type }} {% else %} {{ 'normal' }} {% endif %}"
+                            data-driver-id="{{ driver.id }}">
+                            <td valign="center">{{ driver['name'] }}</td>
+                            <td valign="center"><a onclick="Dispatcher.logCallEvent('driver', {{ driver.phone }})"
+                                                   href="tcgcall://{{ driver.phone }}">{{ driver['phone'] }}</a></td>
                             <td valign="center">{{ driver['order_count'] }}</td>
-                            <td><button class="assign-driver btn btn-lg" item-id="{{ driver['id'] }}" disabled="disabled">{{ 'admin.dispatcher.assign'|trans({}, 'SonataAdminBundle') }}</button></td>
+                            <td>
+                                <button class="assign-driver btn btn-lg" item-id="{{ driver['id'] }}"
+                                        disabled="disabled">{{ 'admin.dispatcher.assign'|trans({}, 'SonataAdminBundle') }}</button>
+                            </td>
                         </tr>
                     {% else %}
                         <tr class="odd">
-                            <td colspan="4" align="center">{% trans %}admin.dispatcher.driver.not_found{% endtrans %}</td>
+                            <td colspan="4"
+                                align="center">{% trans %}admin.dispatcher.driver.not_found{% endtrans %}</td>
                         </tr>
                     {% endfor %}
                 </table>
