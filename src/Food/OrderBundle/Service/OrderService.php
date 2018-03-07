@@ -4452,8 +4452,17 @@ class OrderService extends ContainerAware
     function getMakingTime(Order $order)
     {
         $makingTime = clone $order->getDeliveryTime();
+        $utils = $this->container->get('food.app.utils.misc');
 
-        return $makingTime->modify('-30 minutes');
+        $productionTime = $order->getPlace()->getProductionTime();
+
+        if ($productionTime) {
+            $time = $productionTime;
+        } else {
+            $time = $utils->getParam('prepare_time');
+        }
+
+        return $makingTime->modify('-' . $time . ' minutes');
     }
 
     /**
