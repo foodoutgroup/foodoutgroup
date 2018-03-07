@@ -271,7 +271,7 @@
 
                 </b>
                 <div class="pp-amount">
-                    {{ order.total }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
+                    {{ order_service.getPriceForUser(order)}} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
                 </div>
             </td>
         </tr>

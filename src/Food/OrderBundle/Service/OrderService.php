@@ -4952,4 +4952,15 @@ class OrderService extends ContainerAware
         $this->getOrder()->setOrderTransferred(true);
         return $this;
     }
+
+    public function getPriceForUser(Order $order)
+    {
+        $total = $order->getTotal();
+
+        if($order->getDiscountSum()){
+          $total = ($total-($order->getDiscountSum()));
+        }
+
+        return $total;
+    }
 }
