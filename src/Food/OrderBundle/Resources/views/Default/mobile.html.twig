@@ -188,7 +188,7 @@
                     {% trans %}mobile.order.sum_without_admin_fee_and_delivery_changed{% endtrans %}:
                 </b>
                 <div class="pp-amount">
-                    {{ order.foodTotal }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
+                    {{ order.totalBeforeDiscount }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
                 </div>
             </td>
         </tr>
@@ -196,16 +196,24 @@
         {% if order.deliveryType == 'deliver' %}
             <tr>
                 <td colspan="5" style="font-size: 18px;">
-                    <b>
-                        {% if order.deliveryType == 'deliver' %}
+
+                    {% if order.deliveryType == 'deliver' %}
+                        <b>
                             {% trans %}mobile.order.sum_with_delivery.changed{% endtrans %}:
-                        {% else %}
+                        </b>
+                        <div class="pp-amount">
+                            {{ order.totalBeforeDiscount + order.deliveryPrice }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
+                        </div>
+                    {% else %}
+                        <b>
                             {% trans %}mobile.order.sum.changed{% endtrans %}:
-                        {% endif %}
-                    </b>
-                    <div class="pp-amount">
-                        {{ order.total }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
-                    </div>
+                        </b>
+                        <div class="pp-amount">
+                            {{ order.order.totalBeforeDiscount }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
+                        </div>
+                    {% endif %}
+
+
                 </td>
             </tr>
         {% endif %}
@@ -224,7 +232,7 @@
                 <tr>
                     <td colspan="5">
                         <b class="not-bolded">
-                            {% trans %}mobile.order.coupon_discount_percent{% endtrans %}
+                            {% trans %}mobile.order.coupon_discount_percent{% endtrans %}:
                         </b>
                         <div class="pp-amount">
                             {{ order.coupon.discount }} {{ '%' }}
@@ -271,7 +279,7 @@
 
                 </b>
                 <div class="pp-amount">
-                    {{ order_service.getPriceForUser(order)}} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
+                    {{ order.total }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
                 </div>
             </td>
         </tr>
