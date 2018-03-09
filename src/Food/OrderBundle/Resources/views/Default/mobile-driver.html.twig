@@ -116,19 +116,19 @@
 
         {% if order.deliveryType == 'deliver' %}
             <tr>
-                <td colspan="5" style="font-size: 18px;">
+                <td colspan="5" style="font-size: 16px;">
 
                     {% if order.deliveryType == 'deliver' %}
-                        <b>
+
                             {% trans %}mobile.order.sum_with_delivery.changed{% endtrans %}:
-                        </b>
+
                         <div class="pp-amount">
                             {{ order.totalBeforeDiscount + order.deliveryPrice }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
                         </div>
                     {% else %}
-                        <b>
+
                             {% trans %}mobile.order.sum.changed{% endtrans %}:
-                        </b>
+
                         <div class="pp-amount">
                             {{ order.order.totalBeforeDiscount }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
                         </div>
@@ -194,7 +194,7 @@
         {% endif %}
 
         <tr>
-            <td colspan="5" style="font-size: 18px; border-bottom: 2px solid black">
+            <td colspan="5" style="font-size: 18px; border-bottom: 2px solid black;color:green">
                 <b>
 
                     {% trans %}mobile.order.for_user_with_pvm{% endtrans %}:
