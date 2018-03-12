@@ -4454,12 +4454,18 @@ class OrderService extends ContainerAware
         $makingTime = clone $order->getDeliveryTime();
         $utils = $this->container->get('food.app.utils.misc');
 
-        $productionTime = $order->getPlace()->getProductionTime();
+        $productionTime = $order->getPlacePoint()->getProductionTime();
 
         if ($productionTime) {
             $time = $productionTime;
         } else {
-            $time = $utils->getParam('prepare_time');
+            $placeTime = $order->getPlace()->getProductionTime();
+
+            if ($placeTime) {
+                $time = $placeTime;
+            } else {
+                $time = $utils->getParam('prepare_time');
+            }
         }
 
         return $makingTime->modify('-' . $time . ' minutes');
@@ -4957,10 +4963,39 @@ class OrderService extends ContainerAware
     {
         $total = $order->getTotal();
 
-        if($order->getDiscountSum()){
-          $total = ($total-($order->getDiscountSum()));
+        if ($order->getDiscountSum()) {
+            $total = ($total - ($order->getDiscountSum()));
         }
 
         return $total;
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return integer
+     */
+
+    public function getPoductionValue(Order $order)
+    {
+
+
+        $utils = $this->container->get('food.app.utils.misc');
+
+        $productionTime = $order->getPlacePoint()->getProductionTime();
+
+        if ($productionTime) {
+            $time = $productionTime;
+        } else {
+            $placeTime = $order->getPlace()->getProductionTime();
+
+            if ($placeTime) {
+                $time = $placeTime;
+            } else {
+                $time = $utils->getParam('prepare_time');
+            }
+        }
+
+        return $time;
     }
 }
