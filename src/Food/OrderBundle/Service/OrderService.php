@@ -4978,8 +4978,6 @@ class OrderService extends ContainerAware
 
     public function getPoductionValue(Order $order)
     {
-
-
         $utils = $this->container->get('food.app.utils.misc');
 
         $productionTime = $order->getPlacePoint()->getProductionTime();
