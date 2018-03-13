@@ -4468,7 +4468,7 @@ class OrderService extends ContainerAware
             }
         }
 
-        return $makingTime->modify('-' . $time . ' minutes');
+        return $makingTime->modify('+' . $time . ' minutes');
     }
 
     /**
