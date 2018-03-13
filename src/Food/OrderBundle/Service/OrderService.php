@@ -4451,7 +4451,7 @@ class OrderService extends ContainerAware
     public
     function getMakingTime(Order $order)
     {
-        $makingTime = new \DateTime('now');
+        $makingTime = $order->getOrderDate();
         $utils = $this->container->get('food.app.utils.misc');
 
         $productionTime = $order->getPlacePoint()->getProductionTime();
