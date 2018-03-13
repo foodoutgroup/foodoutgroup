@@ -464,8 +464,6 @@ class LogisticsService extends ContainerAware
 
                 $om->persist($orderToLogistics);
                 $om->flush();
-
-                die('sssss');
             }
         }
     }
