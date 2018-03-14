@@ -782,7 +782,7 @@ class OrderService extends ContainerAware
         $translator = $this->container->get('translator');
         $translator->setLocale($this->container->getParameter('locale'));
 
-        if (!$api) {
+//        if (!$api) {
             $messagingService = $this->container->get('food.messages');
             $logger = $this->container->get('logger');
 
@@ -849,7 +849,7 @@ class OrderService extends ContainerAware
                 $order
             );
             $messagingService->saveMessage($message);
-        }
+//        }
 
         $this->logDeliveryEvent($this->getOrder(), 'order_assigned');
 
