@@ -4470,12 +4470,11 @@ class OrderService extends ContainerAware
             }
         }
 
-        if($order->getPreorder()){
-            return $makingTime->modify('+' . $time . ' minutes');
-        }else{
+        if ($order->getPreorder()) {
             return $deliveryTime->modify('-' . $time . ' minutes');
+        } else {
+            return $makingTime->modify('+' . $time . ' minutes');
         }
-
 
     }
 
