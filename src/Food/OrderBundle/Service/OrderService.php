@@ -4469,13 +4469,15 @@ class OrderService extends ContainerAware
                 $time = $utils->getParam('prepare_time');
             }
         }
-
-        if ($order->getPreorder()) {
-            return $deliveryTime->modify('-' . $time . ' minutes');
+        if ($order->getDeliveryType() == self::$deliveryPickup) {
+            return $deliveryTime;
         } else {
-            return $makingTime->modify('+' . $time . ' minutes');
+            if ($order->getPreorder()) {
+                return $deliveryTime->modify('-' . $time . ' minutes');
+            } else {
+                return $makingTime->modify('+' . $time . ' minutes');
+            }
         }
-
     }
 
     /**
