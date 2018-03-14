@@ -303,8 +303,7 @@
                 <th colspan="5" style="font-size: 18px;">{% trans %}mobile.prepare_time{% endtrans %}</th>
             </tr>
             <tr>
-                <td colspan="5" style="font-size: 18px;border-bottom: 2px solid black"><b
-                            style="color:red;">{{ order_service.getMakingTime(order)|date("Y-m-d H:i") }}</b></td>
+                <td colspan="5" style="font-size: 18px;border-bottom: 2px solid black"><b style="color:red;">{{ order_service.getMakingTime(order)|date("Y-m-d H:i") }}</b></td>
             </tr>
         {% endif %}
 
@@ -372,6 +371,7 @@
                 {% endif %}
             </td>
         </tr>
+        {% if order.comment %}
         <tr>
             <th colspan="5">{% trans %}mobile.comment{% endtrans %}</th>
         </tr>
@@ -388,6 +388,7 @@
                 {% endif %}
             </td>
         </tr>
+        {% endif %}
         <tr>
             <th colspan="5">{% trans %}mobile.payment{% endtrans %}</th>
         </tr>
@@ -398,7 +399,7 @@
             <th colspan="5">{% trans %}mobile.order_time{% endtrans %}</th>
         </tr>
         <tr>
-            <td colspan="5">{{ order.orderDate|date("H:i") }}</td>
+            <td colspan="5">{{ order.orderDate|date('H:i') }}</td>
         </tr>
         <tr>
             <th colspan="5">{% trans %}mobile.deliver_time{% endtrans %}</th>
