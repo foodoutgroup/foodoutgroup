@@ -4473,7 +4473,6 @@ class OrderService extends ContainerAware
         if($order->getPreorder()){
             return $makingTime->modify('+' . $time . ' minutes');
         }else{
-
             return $deliveryTime->modify('-' . $time . ' minutes');
         }
 
