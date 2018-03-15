@@ -51,7 +51,8 @@ class SettingsController extends CRUDController
         'pedestrian_filter_show',
         'placepoint_prepare_times_pedestrian',
         'valentines_popup',
-        'prepare_time'
+        'prepare_time',
+        'show_app_popup'
     ];
 
     public function listAction()
@@ -245,6 +246,10 @@ class SettingsController extends CRUDController
         $form->add('free_delivery_discount_code_generation_after_completed_orders');
 
         $form->add('reviews_enabled', 'boolean');
+
+        $form->add('show_app_popup', 'boolean', [
+            'label' => 'Show mobile popup',
+        ]);
 
         $form->add('header_scripts', 'textarea', [
             'label' => 'Header Scripts',

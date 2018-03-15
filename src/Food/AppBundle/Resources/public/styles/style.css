@@ -6297,3 +6297,16 @@ div.coupon_form_popup {
     color: white;
     font-size: 10px;
 }
+
+.mobile-pop-buttons{
+    position:absolute;
+    bottom:33px;
+    width: 100%;
+}
+
+.pop-button-container{
+    padding-left: 43px;
+    width: 39%;
+    display: flex;
+    justify-content: space-between;
+}
