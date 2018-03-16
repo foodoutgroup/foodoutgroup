@@ -52,7 +52,7 @@
             }, 1000);
             {% endif %}
 
-            {% if misc_utils.param('show_mobile_popup', true) %}
+            {% if misc_utils.param('show_app_popup', true) %}
             setTimeout(function () {
                 $.fancybox.open($('.modal-mobile-div'));
 
@@ -103,7 +103,7 @@
             </div>
         {% endif %}
 
-        {% if misc_utils.param('show_mobile_popup', true) %}
+        {% if misc_utils.param('show_app_popup', true) %}
             <div class="modal-mobile-div" STYLE="position: relative !important;display: none;">
                 <img src="{{ asset('bundles/foodapp/images/mobile_pop.png') }}">
                 <div class="mobile-pop-buttons">
