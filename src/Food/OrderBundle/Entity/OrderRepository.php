@@ -1,6 +1,7 @@
 <?php
 
 namespace Food\OrderBundle\Entity;
+
 use Doctrine\ORM\EntityRepository;
 use Food\DishesBundle\Entity\Place;
 use Food\DishesBundle\Entity\PlacePoint;
@@ -16,7 +17,7 @@ class OrderRepository extends EntityRepository
     public function getOrdersUnassigned($city = null)
     {
         $filter = array(
-            'order_status' =>  array(
+            'order_status' => array(
                 OrderService::$status_accepted,
                 OrderService::$status_delayed,
                 OrderService::$status_finished,
@@ -31,11 +32,11 @@ class OrderRepository extends EntityRepository
             $filter['place_point_city'] = $city;
         }
 
-        $orders = $this->getOrdersByFilter($filter, 'list');
+        $orders = $this->getOrdersByFilter($filter, 'list', ['foodPrepareDate' => 'ASC']);
 
         $filter['deliveryType'] = OrderService::$deliveryPedestrian;
 
-        $ordersPedestrian = $this->getOrdersByFilter($filter, 'list');
+        $ordersPedestrian = $this->getOrdersByFilter($filter, 'list', ['foodPrepareDate' => 'ASC']);
 
         $orders = array_merge($orders,$ordersPedestrian);
 
@@ -52,7 +53,7 @@ class OrderRepository extends EntityRepository
     public function getOrdersUnapproved($city = null)
     {
         $filter = array(
-            'order_status' =>  array(
+            'order_status' => array(
                 OrderService::$status_unapproved,
             ),
             'order_date_more' => new \DateTime(),
@@ -90,7 +91,7 @@ class OrderRepository extends EntityRepository
             FROM  place p
             LEFT JOIN orders o ON o.place_id = p.id
             WHERE
-              o.id = '".$order->getId()."'
+              o.id = '" . $order->getId() . "'
         ";
 
         $stmt = $this->getEntityManager()
@@ -114,7 +115,7 @@ class OrderRepository extends EntityRepository
     public function getOrdersUnconfirmed($city = null, $pickup = false, $forceBoth = false)
     {
         $filter = array(
-            'order_status' =>  array(OrderService::$status_new, OrderService::$status_preorder),
+            'order_status' => array(OrderService::$status_new, OrderService::$status_preorder),
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
 
@@ -139,10 +140,10 @@ class OrderRepository extends EntityRepository
      * @param string|null $city
      * @return array|Order[]
      */
-    public function getOrdersAssigned($city=null)
+    public function getOrdersAssigned($city = null)
     {
         $filter = array(
-            'order_status' =>  OrderService::$status_assiged,
+            'order_status' => OrderService::$status_assiged,
             'deliveryType' => OrderService::$deliveryDeliver,
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
@@ -153,11 +154,11 @@ class OrderRepository extends EntityRepository
 
         $orders = $this->getOrdersByFilter($filter, 'list');
 
-        $filter['deliveryType'] =  OrderService::$deliveryPedestrian;
+        $filter['deliveryType'] = OrderService::$deliveryPedestrian;
 
         $ordersPedestrian = $this->getOrdersByFilter($filter, 'list');
 
-        $orders = array_merge($orders,$ordersPedestrian);
+        $orders = array_merge($orders, $ordersPedestrian);
 
         if (!$orders) {
             return array();
@@ -170,10 +171,10 @@ class OrderRepository extends EntityRepository
      * @param string|null $city
      * @return array|Order[]
      */
-    public function getOrdersCanceled($city=null)
+    public function getOrdersCanceled($city = null)
     {
         $filter = array(
-            'order_status' =>  OrderService::$status_canceled,
+            'order_status' => OrderService::$status_canceled,
             'deliveryType' => OrderService::$deliveryDeliver,
             'paymentStatus' => OrderService::$paymentStatusComplete,
             'order_date_between_with_preorder' => array(
@@ -192,7 +193,7 @@ class OrderRepository extends EntityRepository
 
         $ordersPedestrian = $this->getOrdersByFilter($filter, 'list');
 
-        $orders = array_merge($orders,$ordersPedestrian);
+        $orders = array_merge($orders, $ordersPedestrian);
 
         if (!$orders) {
             return array();
@@ -205,7 +206,7 @@ class OrderRepository extends EntityRepository
      * @param string|null $city
      * @return array|Order[]
      */
-    public function getOrdersProblems($city=null)
+    public function getOrdersProblems($city = null)
     {
         $filter = array(
             'is_problem' => true,
@@ -244,7 +245,7 @@ class OrderRepository extends EntityRepository
         }
 
         $filter = array(
-            'daily_grouped_report' =>  true,
+            'daily_grouped_report' => true,
             'order_date_between' => array('from' => $dateFrom, 'to' => $dateTo),
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
@@ -292,10 +293,10 @@ class OrderRepository extends EntityRepository
      * @param int|null $id
      * @return bool
      */
-    public function hasNewUnassignedOrder($city=null, $id=null)
+    public function hasNewUnassignedOrder($city = null, $id = null)
     {
         $filter = array(
-            'order_status' =>  array(
+            'order_status' => array(
                 OrderService::$status_accepted,
                 OrderService::$status_delayed,
                 OrderService::$status_finished
@@ -331,10 +332,10 @@ class OrderRepository extends EntityRepository
      * @param bool|null
      * @return bool
      */
-    public function hasNewUnconfirmedOrder($city=null, $id=null, $pickup=null)
+    public function hasNewUnconfirmedOrder($city = null, $id = null, $pickup = null)
     {
         $filter = array(
-            'order_status' =>  array(OrderService::$status_new),
+            'order_status' => array(OrderService::$status_new),
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
         if (!empty($city)) {
@@ -371,10 +372,10 @@ class OrderRepository extends EntityRepository
      * @param int|null $id
      * @return bool
      */
-    public function hasNewUnapprovedOrder($city=null, $id=null)
+    public function hasNewUnapprovedOrder($city = null, $id = null)
     {
         $filter = array(
-            'order_status' =>  array(OrderService::$status_unapproved),
+            'order_status' => array(OrderService::$status_unapproved),
             'paymentStatus' => OrderService::$paymentStatusComplete,
         );
         if (!empty($city)) {
@@ -409,7 +410,7 @@ class OrderRepository extends EntityRepository
     public function getNavProblems($dateStart, $dateEnd)
     {
         $filter = array(
-            'order_status' =>  array(OrderService::$status_nav_problems),
+            'order_status' => array(OrderService::$status_nav_problems),
             'order_date_between' => array(
                 'from' => $dateStart,
                 'to' => $dateEnd,
@@ -431,7 +432,7 @@ class OrderRepository extends EntityRepository
      * @throws \InvalidArgumentException
      * @return array|\Food\OrderBundle\Entity\Order[]
      */
-    protected function getOrdersByFilter($filter, $type = 'list')
+    protected function getOrdersByFilter($filter, $type = 'list', $sort = null)
     {
         if (!in_array($type, array('list', 'single'))) {
             throw new \InvalidArgumentException('Unknown query type, dude');
@@ -445,9 +446,9 @@ class OrderRepository extends EntityRepository
 
             foreach ($filter as $filterName => $filterValue) {
 
-                switch($filterName) {
+                switch ($filterName) {
                     case 'order_date_more':
-                        $qb->andWhere('o.order_date < :'.$filterName);
+                        $qb->andWhere('o.order_date < :' . $filterName);
                         break;
 
                     case 'order_date_between':
@@ -467,11 +468,11 @@ class OrderRepository extends EntityRepository
                         break;
 
                     case 'order_status':
-                        $qb->andWhere('o.'.$filterName.' IN (:'.$filterName.')');
+                        $qb->andWhere('o.' . $filterName . ' IN (:' . $filterName . ')');
                         break;
 
                     case 'not_nav':
-                        $qb->andWhere('o.orderFromNav != :'.$filterName);
+                        $qb->andWhere('o.orderFromNav != :' . $filterName);
                         break;
 
                     case 'is_problem':
@@ -502,13 +503,20 @@ class OrderRepository extends EntityRepository
                         break;
 
                     default:
-                        $qb->andWhere('o.'.$filterName.' = :'.$filterName);
+                        $qb->andWhere('o.' . $filterName . ' = :' . $filterName);
                         break;
                 }
             }
+            if ($sort) {
+                $qb->setParameters($filter)
+                    ->orderBy('o.' . key($sort), $sort[key($sort)]);
+//                var_dump($qb->getQuery());
+//                die;
+            } else {
+                $qb->setParameters($filter)
+                    ->orderBy('o.deliveryTime', 'ASC');
+            }
 
-            $qb->setParameters($filter)
-                ->orderBy('o.deliveryTime', 'ASC');
 
             $orders = $qb->getQuery()
                 ->getResult();
@@ -550,7 +558,7 @@ class OrderRepository extends EntityRepository
         $stmt->execute();
         $total = $stmt->fetchColumn();
 
-        return (bool) $total;
+        return (bool)$total;
     }
 
     /**
@@ -566,8 +574,8 @@ class OrderRepository extends EntityRepository
             FROM  `orders`
             WHERE
               `delivery_time` >= '{$dateFrom}'
-              AND `order_status` =  '".OrderService::$status_new."'
-              AND `payment_status` = '".OrderService::$paymentStatusComplete."'
+              AND `order_status` =  '" . OrderService::$status_new . "'
+              AND `payment_status` = '" . OrderService::$paymentStatusComplete . "'
         ";
 
         $stmt = $this->getEntityManager()
@@ -625,7 +633,7 @@ class OrderRepository extends EntityRepository
      * @return array
      * @throws \Doctrine\DBAL\DBALException
      */
-    public function getPlacesOrderCountForRange($dateFrom, $dateTo, $placeIds = array(), $companyCode = null,  $groupMonth=false, $registered=false, $accountingCode=false, $ownershipType=false)
+    public function getPlacesOrderCountForRange($dateFrom, $dateTo, $placeIds = array(), $companyCode = null, $groupMonth = false, $registered = false, $accountingCode = false, $ownershipType = false)
     {
         $orderStatus = OrderService::$status_completed;
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
@@ -633,12 +641,12 @@ class OrderRepository extends EntityRepository
 
         $placesFilter = '';
         if (!empty($placeIds)) {
-            $placesFilter = ' AND o.place_id IN ('.implode(', ', $placeIds).')';
+            $placesFilter = ' AND o.place_id IN (' . implode(', ', $placeIds) . ')';
         }
 
         $companyCodeFilter = '';
         if (!empty($companyCode)) {
-            $companyCodeFilter = ' AND pp.company_code LIKE \'%'.$companyCode.'%\'';
+            $companyCodeFilter = ' AND pp.company_code LIKE \'%' . $companyCode . '%\'';
         }
 
         $groupByMonthDate = $groupByMonth = $groupByMonthOrder = '';
@@ -688,15 +696,15 @@ class OrderRepository extends EntityRepository
      *
      * @return array
      */
-    public function getLatencyReport($dateFrom, $dateTo, $placeIds = array(), $groupDay=false)
+    public function getLatencyReport($dateFrom, $dateTo, $placeIds = array(), $groupDay = false)
     {
-        $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+        $orderStatus = "'" . OrderService::$status_completed . "', '" . OrderService::$status_partialy_completed . "'";
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
         $dateTo = $dateTo->format("Y-m-d 23:59:59");
 
         $placesFilter = '';
         if (!empty($placeIds)) {
-            $placesFilter = ' AND o.place_id IN ('.implode(', ', $placeIds).')';
+            $placesFilter = ' AND o.place_id IN (' . implode(', ', $placeIds) . ')';
         }
 
         $groupByDayDate = $groupByDay = $groupByDayOrder = '';
@@ -783,11 +791,11 @@ class OrderRepository extends EntityRepository
 
     public function getSlowestOrderForEvent($event, $placeId, $dateFrom, $dateTo)
     {
-        $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+        $orderStatus = "'" . OrderService::$status_completed . "', '" . OrderService::$status_partialy_completed . "'";
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
         $dateTo = $dateTo->format("Y-m-d 23:59:59");
 
-        $placesFilter = ' AND o.place_id = "'.$placeId.'"';
+        $placesFilter = ' AND o.place_id = "' . $placeId . '"';
 
         $query = "
           SELECT
@@ -807,7 +815,7 @@ class OrderRepository extends EntityRepository
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
         $stmt->execute();
-        return  $stmt->fetchAll();;
+        return $stmt->fetchAll();;
     }
 
     /**
@@ -816,17 +824,17 @@ class OrderRepository extends EntityRepository
      * @param string $orderStatus
      * @return array
      */
-    public function getOrderCountByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false, $adminFee = false)
+    public function getOrderCountByDay($dateFrom, $dateTo, $orderStatus = null, $mobile = false, $adminFee = false)
     {
         if (empty($orderStatus)) {
-            $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+            $orderStatus = "'" . OrderService::$status_completed . "', '" . OrderService::$status_partialy_completed . "'";
         } else {
-            $orderStatus = "'".$orderStatus."'";
+            $orderStatus = "'" . $orderStatus . "'";
         }
 
-        if($adminFee){
+        if ($adminFee) {
             $adminFee = 'AND adminFee IS NOT NULL';
-        }else{
+        } else {
             $adminFee = '';
         }
 
@@ -841,7 +849,7 @@ class OrderRepository extends EntityRepository
           WHERE
             o.order_status IN ({$orderStatus})
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
-            ".($mobile ? 'AND mobile=1':'').$adminFee."
+            " . ($mobile ? 'AND mobile=1' : '') . $adminFee . "
           GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
           ORDER BY DATE_FORMAT(o.order_date, '%y-%m-%d') ASC
         ";
@@ -857,12 +865,12 @@ class OrderRepository extends EntityRepository
      * @param string $orderStatus
      * @return array
      */
-    public function getAvgBasketByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
+    public function getAvgBasketByDay($dateFrom, $dateTo, $orderStatus = null, $mobile = false)
     {
         if (empty($orderStatus)) {
-            $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+            $orderStatus = "'" . OrderService::$status_completed . "', '" . OrderService::$status_partialy_completed . "'";
         } else {
-            $orderStatus = "'".$orderStatus."'";
+            $orderStatus = "'" . $orderStatus . "'";
         }
 
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
@@ -876,7 +884,7 @@ class OrderRepository extends EntityRepository
           WHERE
             o.order_status IN ({$orderStatus})
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
-            ".($mobile ? 'AND mobile=1':'')."
+            " . ($mobile ? 'AND mobile=1' : '') . "
           GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
           ORDER BY DATE_FORMAT(o.order_date, '%y-%m-%d') ASC
         ";
@@ -915,10 +923,10 @@ class OrderRepository extends EntityRepository
      */
     public function getUnclosedOrders()
     {
-        $orderStatus = "'".OrderService::$status_accepted
-            ."', '".OrderService::$status_assiged
-            ."', '".OrderService::$status_finished
-            ."', '".OrderService::$status_delayed."'";
+        $orderStatus = "'" . OrderService::$status_accepted
+            . "', '" . OrderService::$status_assiged
+            . "', '" . OrderService::$status_finished
+            . "', '" . OrderService::$status_delayed . "'";
         $paymentStatus = OrderService::$paymentStatusComplete;
         $pickup = OrderService::$deliveryPickup;
         $deliver = OrderService::$deliveryDeliver;
@@ -962,10 +970,10 @@ class OrderRepository extends EntityRepository
      */
     public function getUnclosedSelfDeliveryOrders()
     {
-        $orderStatus = "'".OrderService::$status_accepted
-            ."', '".OrderService::$status_assiged
-            ."', '".OrderService::$status_finished
-            ."', '".OrderService::$status_delayed."'";
+        $orderStatus = "'" . OrderService::$status_accepted
+            . "', '" . OrderService::$status_assiged
+            . "', '" . OrderService::$status_finished
+            . "', '" . OrderService::$status_delayed . "'";
         $paymentStatus = OrderService::$paymentStatusComplete;
 
         $dateFilter = new \DateTime("-120 minute");
@@ -1085,10 +1093,10 @@ class OrderRepository extends EntityRepository
      */
     public function getOrdersToBeLate($date)
     {
-        $orderStatus = "'".OrderService::$status_accepted
-            ."', '".OrderService::$status_assiged
-            ."', '".OrderService::$status_finished
-            ."', '".OrderService::$status_delayed."'";
+        $orderStatus = "'" . OrderService::$status_accepted
+            . "', '" . OrderService::$status_assiged
+            . "', '" . OrderService::$status_finished
+            . "', '" . OrderService::$status_delayed . "'";
         $paymentStatus = OrderService::$paymentStatusComplete;
         $deliveryType = OrderService::$deliveryDeliver;
 
@@ -1144,15 +1152,15 @@ class OrderRepository extends EntityRepository
         $qb = $this->createQueryBuilder('o');
 
         $qb->where('o.order_status IN (:order_status)')
-        ->andWhere('o.isCorporateClient = :corporate_cl')
-        ->andWhere('o.order_date BETWEEN :date_start AND :date_end')
-        ->andWhere('o.sfNumber IS NULL')
-        ->setParameters(array(
-            'order_status' => array(OrderService::$status_completed, OrderService::$status_partialy_completed),
-            'corporate_cl' => 1,
-            'date_start' => new \DateTime(date("Y-m-01 00:00:01")),
-            'date_end' => new \DateTime("now")
-        ));
+            ->andWhere('o.isCorporateClient = :corporate_cl')
+            ->andWhere('o.order_date BETWEEN :date_start AND :date_end')
+            ->andWhere('o.sfNumber IS NULL')
+            ->setParameters(array(
+                'order_status' => array(OrderService::$status_completed, OrderService::$status_partialy_completed),
+                'corporate_cl' => 1,
+                'date_start' => new \DateTime(date("Y-m-01 00:00:01")),
+                'date_end' => new \DateTime("now")
+            ));
 
         return $qb->getQuery()
             ->getResult();
@@ -1166,19 +1174,19 @@ class OrderRepository extends EntityRepository
      *
      * @return array
      */
-    public function getPlacesOrdersForRange($dateFrom = false, $dateTo = false, $placeIds = array(), $groupMonth=false)
+    public function getPlacesOrdersForRange($dateFrom = false, $dateTo = false, $placeIds = array(), $groupMonth = false)
     {
         $orderStatus = OrderService::$status_completed;
         $dates_filter = "";
         if (!empty($dateFrom) && !empty($dateTo)) {
             $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
             $dateTo = $dateTo->format("Y-m-d 23:59:59");
-            $dates_filter = " AND (o.order_date BETWEEN '".$dateFrom."' AND '".$dateTo."')";
+            $dates_filter = " AND (o.order_date BETWEEN '" . $dateFrom . "' AND '" . $dateTo . "')";
         }
 
         $placesFilter = '';
         if (!empty($placeIds)) {
-            $placesFilter = ' AND o.place_id IN ('.implode(', ', $placeIds).')';
+            $placesFilter = ' AND o.place_id IN (' . implode(', ', $placeIds) . ')';
         }
 
         $groupByMonthDate = $groupByMonth = $groupByMonthOrder = '';
@@ -1209,7 +1217,7 @@ class OrderRepository extends EntityRepository
             {$dates_filter}
             {$placesFilter}
           GROUP BY o.id{$groupByMonth}
-          ORDER BY {$groupByMonthOrder} ". (empty($placesFilter) ? ' o.place_name ASC, o.id DESC ' : ' o.id DESC ') ."
+          ORDER BY {$groupByMonthOrder} " . (empty($placesFilter) ? ' o.place_name ASC, o.id DESC ' : ' o.id DESC ') . "
         ";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($query);
@@ -1263,7 +1271,7 @@ class OrderRepository extends EntityRepository
             'date_to' => $to
         ));
 
-        return (int) $stmt->fetchColumn();
+        return (int)$stmt->fetchColumn();
     }
 
     /**
@@ -1354,7 +1362,7 @@ class OrderRepository extends EntityRepository
             if (is_null($response[$type]['commission_rate'])) {
                 $response[$type]['commission_rate'] = $row['commission_rate'];
             } elseif (!is_bool($response[$type]['commission_rate'])
-                    && $response[$type]['commission_rate'] != $row['commission_rate']) {
+                && $response[$type]['commission_rate'] != $row['commission_rate']) {
                 $response[$type]['commission_rate'] = false;
             }
         }
@@ -1385,6 +1393,7 @@ class OrderRepository extends EntityRepository
 
         return $query->getResult();
     }
+
     /**
      * @param $from
      * @param $to
@@ -1470,12 +1479,12 @@ class OrderRepository extends EntityRepository
      * @param string $orderStatus
      * @return array
      */
-    public function getTotalSumByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
+    public function getTotalSumByDay($dateFrom, $dateTo, $orderStatus = null, $mobile = false)
     {
         if (empty($orderStatus)) {
-            $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+            $orderStatus = "'" . OrderService::$status_completed . "', '" . OrderService::$status_partialy_completed . "'";
         } else {
-            $orderStatus = "'".$orderStatus."'";
+            $orderStatus = "'" . $orderStatus . "'";
         }
 
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
@@ -1489,7 +1498,7 @@ class OrderRepository extends EntityRepository
           WHERE
             o.order_status IN ({$orderStatus})
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
-            ".($mobile ? 'AND mobile=1':'')."
+            " . ($mobile ? 'AND mobile=1' : '') . "
           GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
           ORDER BY DATE_FORMAT(o.order_date, '%y-%m-%d') ASC
         ";
@@ -1499,12 +1508,12 @@ class OrderRepository extends EntityRepository
         return $stmt->fetchAll();
     }
 
-    public function getTotalAdminFeeByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
+    public function getTotalAdminFeeByDay($dateFrom, $dateTo, $orderStatus = null, $mobile = false)
     {
         if (empty($orderStatus)) {
-            $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+            $orderStatus = "'" . OrderService::$status_completed . "', '" . OrderService::$status_partialy_completed . "'";
         } else {
-            $orderStatus = "'".$orderStatus."'";
+            $orderStatus = "'" . $orderStatus . "'";
         }
 
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
@@ -1518,7 +1527,7 @@ class OrderRepository extends EntityRepository
           WHERE
             o.order_status IN ({$orderStatus})
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
-            ".($mobile ? 'AND mobile=1':'')."
+            " . ($mobile ? 'AND mobile=1' : '') . "
           GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
           ORDER BY DATE_FORMAT(o.order_date, '%y-%m-%d') ASC
         ";
@@ -1534,12 +1543,12 @@ class OrderRepository extends EntityRepository
      * @param string $orderStatus
      * @return array
      */
-    public function getDeliverySumByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
+    public function getDeliverySumByDay($dateFrom, $dateTo, $orderStatus = null, $mobile = false)
     {
         if (empty($orderStatus)) {
-            $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+            $orderStatus = "'" . OrderService::$status_completed . "', '" . OrderService::$status_partialy_completed . "'";
         } else {
-            $orderStatus = "'".$orderStatus."'";
+            $orderStatus = "'" . $orderStatus . "'";
         }
 
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
@@ -1553,7 +1562,7 @@ class OrderRepository extends EntityRepository
           WHERE
             o.order_status IN ({$orderStatus})
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
-            ".($mobile ? 'AND mobile=1':'')."
+            " . ($mobile ? 'AND mobile=1' : '') . "
           GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
           ORDER BY DATE_FORMAT(o.order_date, '%y-%m-%d') ASC
         ";
@@ -1569,12 +1578,12 @@ class OrderRepository extends EntityRepository
      * @param string $orderStatus
      * @return array
      */
-    public function getDiscountSumByDay($dateFrom, $dateTo, $orderStatus=null, $mobile=false)
+    public function getDiscountSumByDay($dateFrom, $dateTo, $orderStatus = null, $mobile = false)
     {
         if (empty($orderStatus)) {
-            $orderStatus = "'".OrderService::$status_completed."', '".OrderService::$status_partialy_completed."'";
+            $orderStatus = "'" . OrderService::$status_completed . "', '" . OrderService::$status_partialy_completed . "'";
         } else {
-            $orderStatus = "'".$orderStatus."'";
+            $orderStatus = "'" . $orderStatus . "'";
         }
 
         $dateFrom = $dateFrom->format("Y-m-d 00:00:01");
@@ -1588,7 +1597,7 @@ class OrderRepository extends EntityRepository
           WHERE
             o.order_status IN ({$orderStatus})
             AND (o.order_date BETWEEN '{$dateFrom}' AND '{$dateTo}')
-            ".($mobile ? 'AND mobile=1':'')."
+            " . ($mobile ? 'AND mobile=1' : '') . "
           GROUP BY DATE_FORMAT(o.order_date, '%y-%m-%d')
           ORDER BY DATE_FORMAT(o.order_date, '%y-%m-%d') ASC
         ";
