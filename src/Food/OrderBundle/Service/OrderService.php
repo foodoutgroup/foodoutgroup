@@ -4882,10 +4882,9 @@ class OrderService extends ContainerAware
     {
         $this->getOrder()->setFoodPrepareTime($foodPrepareTime);
 
-        $foodPrepareDate = new \DateTime('now');
-        $foodPrepareDate->modify("+" . $foodPrepareTime . " minutes");
+        $date = $this->getMakingTime($this->getOrder());
 
-        $this->getOrder()->setFoodPrepareDate($foodPrepareDate);
+        $this->getOrder()->setFoodPrepareDate($date);
 
         $this->logOrder($this->getOrder(), 'food_prepare_time', 'Restaurant set food prepare time: ' . $foodPrepareTime);
     }
