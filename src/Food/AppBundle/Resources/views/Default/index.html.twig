@@ -52,6 +52,13 @@
             }, 1000);
             {% endif %}
 
+            {% if misc_utils.param('show_app_popup', true) %}
+            setTimeout(function () {
+                $.fancybox.open($('.modal-mobile-div'));
+
+            }, 5000);
+            {% endif %}
+
         });
     </script>
 
@@ -95,6 +102,21 @@
                 {#src="{{ asset('bundles/foodapp/images/mygtukas.png') }}"></a>#}
             </div>
         {% endif %}
+
+        {% if misc_utils.param('show_app_popup', true) %}
+            <div class="modal-mobile-div" STYLE="position: relative !important;display: none;">
+                <img src="{{ asset('bundles/foodapp/images/mobile_pop.png') }}">
+                <div class="mobile-pop-buttons">
+                    <div class="pop-button-container">
+                        <a href="https://itunes.apple.com/lt/app/foodout/id919992168?mt=8&utm_source=https%3A%2F%2Fitunes.apple.com%2Fus%2Fgenre%2Fios%2Fid36%3Fmt%3D8&utm_medium=Referral&utm_campaign=Pop%20up%20iOS"><img src="{{ asset('bundles/foodapp/images/app-store-pop.png') }}"></a>
+                        <a href="https://play.google.com/store/apps/details?id=co.lemonlabs.android.foodout&hl=en&utm_source=https%3A%2F%2Fplay.google.com%2Fstore%3Fhl%3Den&utm_medium=Referral&utm_campaign=Pop%20up%20Android
+"><img src="{{ asset('bundles/foodapp/images/google-play-pop.png') }}"></a>
+                    </div>
+                </div>
+
+            </div>
+        {% endif %}
+
         <div class="site-block address-search-form">
             <div class="address-search-form-content">
                 <h1 class="no-wrap">{% trans %}index.title_page_header{% endtrans %}</h1>

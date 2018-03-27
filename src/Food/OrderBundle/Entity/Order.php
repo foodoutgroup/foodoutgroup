@@ -545,6 +545,13 @@ class Order
     /**
      * @return string
      */
+
+    /**
+     * @var bool
+     * @ORM\Column(name="order_transferred", type="boolean", nullable=true)
+     */
+    private $order_transferred = false;
+
     public function __toString()
     {
         if ($this->getId()) {
@@ -2877,5 +2884,38 @@ class Order
         $this->pushMessages[] = $pushMessages;
 
         return $this;
+    }
+
+    /**
+     * Set order_transferred
+     *
+     * @param boolean $orderTransferred
+     * @return Order
+     */
+    public function setOrderTransferred($orderTransferred)
+    {
+        $this->order_transferred = $orderTransferred;
+
+        return $this;
+    }
+
+    /**
+     * Get order_transferred
+     *
+     * @return boolean 
+     */
+    public function getOrderTransferred()
+    {
+        return $this->order_transferred;
+    }
+
+    /**
+     * Remove pushMessages
+     *
+     * @param \Food\PushBundle\Entity\Push $pushMessages
+     */
+    public function removePushMessage(\Food\PushBundle\Entity\Push $pushMessages)
+    {
+        $this->pushMessages->removeElement($pushMessages);
     }
 }

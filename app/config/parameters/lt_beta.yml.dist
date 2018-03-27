@@ -23,7 +23,7 @@ parameters:
     aws_region: eu-west-1
     s3_bucket: foodout-invoice
 
-    driver.send_to_external: false
+    driver.send_to_external: true
     driver.city_filter: ["Vilnius"]
     driver.socket_address: tcp://cl1:7778
     driver.socket_hash: api
@@ -102,7 +102,7 @@ parameters:
     country_full: Lithuania
     vat: 21
     title: "Foodout"
-    domain: "foodout.lt"
+    domain: "beta.foodout.lt"
     publicdomain: "foodout.lt"
     google_analytics_uid: "UA-50355577-1"
     google.analytics.view_id: "85237075"
@@ -150,8 +150,9 @@ parameters:
     b2b_first_month_discount: false
     b2b_first_month_discount_percent: 10
     newsletter_subscribe_tick_by_default: true
-    show_making_time_deadline: false
+    show_making_time_deadline: true
     geo_provider: https://geoproxy.foodout.lt
+    driver_app_provider: http://v2.api.beta.foodout.lt
 
     # seb banklink
     seb:

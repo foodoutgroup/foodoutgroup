@@ -45,6 +45,7 @@ class OrderToDriverCommand extends ContainerAwareCommand
             $dryRun = false;
             $limit = 50;
             $debug = false;
+            $driverUrl = $this->getContainer()->getParameter('driver_app_provider');
 
             // Dont send if dry-run
             if ($input->getOption('dry-run')) {
@@ -98,7 +99,7 @@ class OrderToDriverCommand extends ContainerAwareCommand
                         curl_setopt($this->_ch, CURLOPT_POST, true);
                         curl_setopt($this->_ch, CURLOPT_POSTFIELDS, $post);
 
-                        curl_setopt($this->_ch, CURLOPT_URL, 'http://v2.foodout.lt/order/new');
+                        curl_setopt($this->_ch, CURLOPT_URL, $driverUrl.'/order/new');
 
                         curl_exec($this->_ch);
 

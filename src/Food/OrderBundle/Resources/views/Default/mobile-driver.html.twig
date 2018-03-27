@@ -37,6 +37,13 @@
             background: #d6ebf2;
         }
         {% endif %}
+        .pp-amount {
+            float: right;
+        }
+
+        .not-bolded {
+            font-weight: normal !important;
+        }
     </style>
     <table class="table table-bordered table condensed">
         <thead>
@@ -88,38 +95,143 @@
                     </b>
                 </td>
             </tr>
+
+        {% endif %}
+        <tr>
+            <td style="border-bottom: 2px solid black" colspan="5">
+                <b>{% trans %}mobile.order.id{% endtrans %}</b>: {{ order.id }}</td>
+        </tr>
+
+        <tr>
+            <td colspan="5" style="font-size: 18px;">
+
+                <b>
+                    {% trans %}mobile.order.sum_without_admin_fee_and_delivery_changed{% endtrans %}:
+                </b>
+                <div class="pp-amount">
+                    {{ order.totalBeforeDiscount }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
+                </div>
+            </td>
+        </tr>
+
+        {% if order.deliveryType == 'deliver' %}
             <tr>
-                <td colspan="5">
-                    <b>
-                        {% trans %}mobile.order.coupon_discount_sum{% endtrans %}
-                    </b> {{ order.discountSum }} {{ currency_display|raw }}
+                <td colspan="5" style="font-size: 16px;">
+
+                    {% if order.deliveryType == 'deliver' %}
+
+                            {% trans %}mobile.order.sum_with_delivery.changed{% endtrans %}:
+
+                        <div class="pp-amount">
+                            {{ order.totalBeforeDiscount + order.deliveryPrice }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
+                        </div>
+                    {% else %}
+
+                            {% trans %}mobile.order.sum.changed{% endtrans %}:
+
+                        <div class="pp-amount">
+                            {{ order.order.totalBeforeDiscount }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
+                        </div>
+                    {% endif %}
+
+
                 </td>
             </tr>
         {% endif %}
-        <tr><td colspan="5"><b>{% trans %}mobile.order.id{% endtrans %}</b>: {{ order.id }}</td></tr>
-        <tr>
-            <td colspan="5">
-                <b>
-                    {% trans %}mobile.order.sum_without_admin_fee_and_delivery{% endtrans %}
-                </b> {{ order.foodTotal }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td colspan="5">
-                <b>
-                    {% if order.deliveryType == 'deliver' %}
-                    {% trans %}mobile.order.sum_with_delivery{% endtrans %}
-                {% else %}
-                    {% trans %}mobile.order.sum{% endtrans %}
-                    {% endif %}:
-                </b> {{ order.total }} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }} {{ display_currency_alternative }}{% endif %}
-            </td>
-        </tr>
+        {% if order.couponCode is not empty %}
+            <tr>
+                <td colspan="5">
+                    <b class="not-bolded">
+                        {% trans %}mobile.order.coupon_discount_sum{% endtrans %}:
+                    </b>
+                    <div class="pp-amount">
+                        {{ order.discountSum }} {{ currency_display|raw }}
+                    </div>
+                </td>
+            </tr>
+            {% if order.coupon.discount %}
+                <tr>
+                    <td colspan="5">
+                        <b class="not-bolded">
+                            {% trans %}mobile.order.coupon_discount_percent{% endtrans %}:
+                        </b>
+                        <div class="pp-amount">
+                            {{ order.coupon.discount }} {{ '%' }}
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+
+        {% endif %}
+
         {% if order.deliveryType == 'deliver' %}
             <tr>
-                <td colspan="5"><b>{% trans %}mobile.restaurant_delivery_price{% endtrans %}:</b> {{ order.deliveryPrice }} {{ currency_display|raw }}</td>
+                <td colspan="5"><b class="not-bolded">{% trans %}mobile.restaurant_delivery_price.changed{% endtrans %}:
+                        :</b>
+                    <div class="pp-amount">
+                        {{ order.deliveryPrice }} {{ currency_display|raw }}
+                    </div>
+                </td>
             </tr>
         {% endif %}
+
+        {#{% if order.deliveryType == 'deliver' %}#}
+        {#<tr>#}
+        {#<td colspan="5"><b>{% trans %}mobile.order.sum_without_delivery{% endtrans %}#}
+        {#:</b> {{ order.total - order.deliveryPrice }} {{ currency_display|raw }}</td>#}
+        {#</tr>#}
+
+        {#{% endif %}#}
+        {% if order.adminFee > 0 %}
+            <tr>
+                <td colspan="5"><b class="not-bolded">{% trans %}mobile.order.admin_fee{% endtrans %}
+                        :</b>
+                    <div class="pp-amount">
+                        {{ order.adminFee }} {{ currency_display|raw }}
+                    </div>
+                </td>
+            </tr>
+        {% endif %}
+
+        <tr>
+            <td colspan="5" style="font-size: 18px; border-bottom: 2px solid black;color:green">
+                <b>
+
+                    {% trans %}mobile.order.for_user_with_pvm{% endtrans %}:
+
+                </b>
+                <div class="pp-amount">
+                    {{ order.total}} {{ currency_display|raw }}  {% if currency_alternative %}/ {{ misc_utils.getLitas(order.total) }}LTL{% endif %}
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th colspan="5">{% trans %}mobile.restourant_place_point_address{% endtrans %}</th>
+        </tr>
+        <tr>
+            <td colspan="5">{{ order.place.name }} - {{ order.placePoint.address }}</td>
+        </tr>
+
+        {% if order.foodPrepareDate %}
+            <tr>
+                <th colspan="5" style="font-size: 18px;">{% trans %}mobile.prepare_time{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5" style="font-size: 18px;border-bottom: 2px solid black"><b
+                            style="color:red;">{{ order.foodPrepareDate|date("Y.m.d H:i") }}</b></td>
+            </tr>
+        {% else %}
+
+            <tr>
+                <th colspan="5" style="font-size: 18px;">{% trans %}mobile.prepare_time{% endtrans %}</th>
+            </tr>
+            <tr>
+                <td colspan="5" style="font-size: 18px;border-bottom: 2px solid black"><b
+                            style="color:red;">{{ order_service.getMakingTime(order)|date("Y-m-d H:i") }}</b></td>
+            </tr>
+        {% endif %}
+
         {% if order.adminFee > 0 %}
             <tr>
                 <td colspan="5"><b>{% trans %}mobile.order.admin_fee{% endtrans %}:</b> {{ order.adminFee }} {{ currency_display|raw }}</td>

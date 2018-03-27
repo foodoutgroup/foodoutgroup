@@ -42,11 +42,7 @@
 
                                 <tr>
                                     <td>
-                                        {% if option.dishOptionId %}
-                                            {{ option.dishOptionId.name }}
-                                        {% else %}
-                                            {{ option.dishOptionName }}
-                                        {% endif %}
+                                        {{ option.dishOptionName }}
                                     </td>
                                     <td>{{ option.price }} {{ currency_display|raw }}</td>
                                     <td>{{ option.priceBeforeDiscount }} {{ currency_display|raw }}</td>

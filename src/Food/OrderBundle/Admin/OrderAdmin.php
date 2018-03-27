@@ -37,6 +37,8 @@ class OrderAdmin extends FoodAdmin
             ->add('vatCode', 'text', array('label' => 'admin.order.vatCode', 'required' => false))
             ->add('companyAddress', 'text', array('label' => 'Company Address', 'required' => false))
             ->add('order_date', 'datetime', ['label' => 'admin.order.order_date'])
+            ->add('deliveryTime', 'datetime', ['label' => 'admin.order.delivery_time'])
+            ->add('foodPrepareDate', 'datetime', ['label' => 'admin.order.preparation_date'])
             ->add('shitfoks', 'text', ['required' => false, 'label' => 'Delivery Address'])
             ->add('originAddress', 'text', ['required' => false, 'label' => 'Original Address'])
             ->add('house', 'text', ['required' => false, 'label' => 'Address House'])

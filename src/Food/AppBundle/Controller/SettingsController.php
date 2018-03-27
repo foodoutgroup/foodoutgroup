@@ -50,7 +50,9 @@ class SettingsController extends CRUDController
         'footer_social',
         'pedestrian_filter_show',
         'placepoint_prepare_times_pedestrian',
-        'valentines_popup'
+        'valentines_popup',
+        'prepare_time',
+        'show_app_popup'
     ];
 
     public function listAction()
@@ -197,6 +199,10 @@ class SettingsController extends CRUDController
             'attr' => ['group' => 'Order']
         ]);
 
+        $form->add('prepare_time', 'number', [
+            'label' => 'Default preparation time in minutes',
+        ]);
+
         $form->add('zaval_on', 'boolean', [
             'label' => 'Rush hours activated',
         ]);
@@ -240,6 +246,10 @@ class SettingsController extends CRUDController
         $form->add('free_delivery_discount_code_generation_after_completed_orders');
 
         $form->add('reviews_enabled', 'boolean');
+
+        $form->add('show_app_popup', 'boolean', [
+            'label' => 'Show mobile popup',
+        ]);
 
         $form->add('header_scripts', 'textarea', [
             'label' => 'Header Scripts',

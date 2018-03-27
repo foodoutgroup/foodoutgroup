@@ -517,6 +517,13 @@ class Place extends Uploadable implements Translatable
      */
     private   $showInSelfDelivery;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="rush_works", type="boolean",options={"default": 0},nullable=true)
+     */
+    private   $rushWorks;
+
 
     /**
      * Returns place name
@@ -2442,5 +2449,28 @@ class Place extends Uploadable implements Translatable
     public function getShowInSelfDelivery()
     {
         return $this->showInSelfDelivery;
+    }
+
+    /**
+     * Set rushWorks
+     *
+     * @param boolean $rushWorks
+     * @return Place
+     */
+    public function setRushWorks($rushWorks)
+    {
+        $this->rushWorks = $rushWorks;
+
+        return $this;
+    }
+
+    /**
+     * Get rushWorks
+     *
+     * @return boolean 
+     */
+    public function getRushWorks()
+    {
+        return $this->rushWorks;
     }
 }

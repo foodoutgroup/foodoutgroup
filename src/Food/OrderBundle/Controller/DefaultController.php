@@ -5,6 +5,7 @@ namespace Food\OrderBundle\Controller;
 use Food\OrderBundle\Entity\Order;
 use Food\OrderBundle\Service\OrderService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -25,17 +26,21 @@ class DefaultController extends Controller
             throw new NotFoundHttpException('Order not found');
         }
 
+        $transferredTime = $orderService->getTransferredTime($order);
+
         $currentOrderStatus = $orderService->getOrder()->getOrderStatus();
 
         if ($request->isMethod('post') && $currentOrderStatus != "canceled") {
+
             // Validate stats change, and then perform :P
             $formStatus = $request->get('status');
+
             if ($orderService->isValidOrderStatusChange($currentOrderStatus, $this->formToEntityStatus($formStatus))) {
                 switch ($formStatus) {
                     case 'confirm':
                         $orderService->statusAccepted('restourant_mobile');
-
-                        $orderService->setOrderPrepareTime($request->get('food_prepare_time'));
+                        $time = $orderService->getPoductionValue($order);
+                        $orderService->setOrderPrepareTime($time);
                         break;
 
                     case 'delay':
@@ -57,6 +62,10 @@ class DefaultController extends Controller
                     case 'completed':
                         $orderService->statusCompleted('restourant_mobile');
                         break;
+                    case 'transferred':
+                        $orderService->statusTransferred('restourant_mobile');
+                        break;
+
                 }
 
                 $orderService->saveOrder();
@@ -64,7 +73,7 @@ class DefaultController extends Controller
                 return $this->redirect(
                     $this->generateUrl('ordermobile', array('hash' => $hash))
                 );
-            } else {
+            }  else {
                 $errorMessage = sprintf(
                     'Restoranas %s bande uzsakymui #%d pakeisti uzsakymo statusa is "%s" i "%s"',
                     $orderService->getOrder()->getPlaceName(),
@@ -88,6 +97,7 @@ class DefaultController extends Controller
         $dispatcherPhone = $this->container->getParameter('dispatcher_contact_phone');
 
         return $this->render('FoodOrderBundle:Default:mobile.html.twig', array(
+            'transferredTime' => $transferredTime,
             'order' => $order,
             'dispatcherPhone' => $dispatcherPhone,
             'placepointPrepareTimes' => $placepointPrepareTimes
@@ -244,6 +254,7 @@ class DefaultController extends Controller
             'finish' => OrderService::$status_finished,
             'partialy_completed' => OrderService::$status_partialy_completed,
             'completed' => OrderService::$status_completed,
+            'transferred' => OrderService::$driver_status_transferred
         );
 
         if (!isset($statusTable[$formStatus])) {
@@ -288,5 +299,21 @@ class DefaultController extends Controller
 
         $this->get('food.nav')->updatePricesNAV($order);
         die("THE END UPDATE PRC NAV");
+    }
+    /**
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function testAction(Request $request){
+
+        $orderService = $this->get('food.order');
+        $order = $this->getDoctrine()->getRepository('FoodOrderBundle:Order')->find($request->get('order_id'));
+
+        $arrivalTime = $orderService->getPickedUpTime($order);
+        $response = new JsonResponse($arrivalTime, 200, array('Access-Control-Allow-Origin'=> '*'));
+
+        return $response;
     }
 }

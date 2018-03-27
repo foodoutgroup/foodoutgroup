@@ -133,32 +133,34 @@
     function() {
     $('body .delivery-type-radios .custom-radio, body .delivery-type-radios .custom-radio .iCheck-helper').click(
     function(){
-    var selfDelivery = '{{ place.selfDelivery }}'
-    var opt = "";
-    var nav = '{{ place.navision }}';
-    var cardOnDelivery = '{{ place.cardOnDelivery }}'   ;
+        var selfDelivery = '{{ place.selfDelivery }}'
+        var opt = "";
+        var nav = '{{ place.navision }}';
+        var cardOnDelivery = '{{ place.cardOnDelivery }}'   ;
 
-    if ($(this).is('.custom-radio')) {
-    opt = $(this).find('input').val();
-    } else {
-    opt = $(this).parent().find('input').val();
-    }
+        if ($(this).is('.custom-radio')) {
+            opt = $(this).find('input').val();
+        } else {
+            opt = $(this).parent().find('input').val();
+        }
 
-    if(opt == 'pickup'){
-    $('.simple-payment .custom-radio').first().iCheck('check')
-    $('.payment-container').hide();
-    $('.custom-radio.for_hiding').hide();
+        if(opt == 'pickup'){
+            $('.simple-payment .custom-radio').first().iCheck('check')
+            $('.payment-container').hide();
+            $('.custom-radio.for_hiding').hide();
+        }
 
-    }
+        if(opt == 'deliver'){
+            if(selfDelivery != '1'){
+                $('.payment-container').show();
+                console.log('cia ne self')
+            }
 
-    if(opt == 'deliver'){
-    if(selfDelivery != '1'){
-    $('.payment-container').show();
-    }
-    if(cardOnDelivery == '1'){
-    $('.custom-radio.for_hiding').show();
-    }
-    }
+            if(cardOnDelivery == '1'){
+                $('.custom-radio.for_hiding').show();
+                console.log('random cia')
+            }
+        }
 
 
     with ($('.for_hiding')) {
@@ -407,12 +409,12 @@
                                         <input type="radio" name="payment-type"
                                                value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local') or (dataToLoad is empty) %} checked="checked"{% endif %}>
                                     </label>
-                                    {% if takeAway != true and place.cardOnDelivery %}
-                                        <label class="custom-radio for_hiding">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
+                                    {#{% if takeAway != true and place.cardOnDelivery %}#}
+                                        <label class="custom-radio for_hiding" style=" {% if takeAway != true and place.cardOnDelivery %}{% else %} display: none; {% endif %}">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
                                             <input type="radio" name="payment-type"
                                                    value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
                                         </label>
-                                    {% endif %}
+                                    {#{% endif %}#}
                                 {% endif %}
 
                             </div>
@@ -451,9 +453,9 @@
                                         </div>
                                     </div>
                                 {% else %}
-                                    {% if not takeAway %}
-                                        {% if not place.selfDelivery %}
-                                            <div class="for_hiding payment-container">
+                                    {#{% if not takeAway %}#}
+                                        {#{% if not place.selfDelivery %}#}
+                                            <div class="for_hiding payment-container" style="{% if not takeAway and not place.selfDelivery %}{% else %} display: none; {% endif %}">
                                                 <div class="select-payment clearfix">
                                                     <label class="custom-radio">
                                                         <img alt="Nordea"
@@ -528,8 +530,8 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                        {% endif %}
-                                    {% endif %}
+                                        {#{% endif %}#}
+                                    {#{% endif %}#}
                                 {% endif %}
                             {% endif %}
                         </div>
