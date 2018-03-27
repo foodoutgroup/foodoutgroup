@@ -3,6 +3,7 @@
 namespace Food\TcgBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Food\OrderBundle\Entity\Order;
 
 /**
  * TcgLogRepository
@@ -12,4 +13,23 @@ use Doctrine\ORM\EntityRepository;
  */
 class TcgLogRepository extends EntityRepository
 {
+    public function getByIdSorted(Order $order, $sort)
+    {
+
+        $qb = $this->createQueryBuilder('o');
+        $qb->setMaxResults( 1 );
+        $qb->where('o.order = :order')
+            ->andWhere('o.sent =:sent')
+            ->setParameters(array(
+                'order' => $order,
+                'sent' => 1
+            ))
+            ->orderBy('o.submittedAt', $sort)
+        ;
+
+        return $qb->getQuery()
+            ->getResult();
+    }
+
+
 }

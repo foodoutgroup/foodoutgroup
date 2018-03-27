@@ -13,13 +13,6 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
-$serv =  $this->container->get('food.tcg');
-
-$test = $serv->sendPush();
-var_dump($test);
-die;
-
-
         $this->container->get('slug')->checkNotFound();
 
         $miscUtils = $this->get('food.app.utils.misc');

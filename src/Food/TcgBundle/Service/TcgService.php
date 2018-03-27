@@ -77,7 +77,7 @@ class TcgService
         $tcgLog->setOrder($order);
         $tcgLog->setSent(false);
         $tcgLog->setPhone($order->getPlacePoint()->getPhoneNiceFormat());
-
+        $tcgLog->setSubmittedAt(new \DateTime("now"));
         return $tcgLog;
     }
 
@@ -96,11 +96,12 @@ class TcgService
         return true;
     }
 
-    public function sendPush()
+    public function sendPush(Order $order)
     {
+        $return = [];
 
         $fields = array(
-            "phonebook" => '4378',
+            "phonebook" => (string)$this->container->getParameter('tcg_book_id'),
             "contact" => '37060751091',
             "status" => 1,
             "last_name" => 'N1',
@@ -116,39 +117,23 @@ class TcgService
         );
 
         $fields = json_encode($fields);
-        print("\nJSON sent:\n");
-        print($fields);
-        $ch = curl_init('http://dial2.tcg.lt/rest-api/contact/');
+
+        $ch = curl_init($this->container->getParameter('tcg_push_url'));
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         curl_setopt($ch, CURLOPT_HEADER, 1);
-        curl_setopt($ch, CURLOPT_USERPWD, 'foodout' . ":" . 'Foodout478#');
+        curl_setopt($ch, CURLOPT_USERPWD, $this->container->getParameter('tcg_username') . ":" . $this->container->getParameter('tcg_pass'));
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
-        $return = curl_exec($ch);
+
+        $response = curl_exec($ch);
+        $code = curl_getinfo($ch)['http_code'];
+
         curl_close($ch);
+        $return[$code] = $response;
 
-        var_dump($return);
-        die;
-
-
-//
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL, "http://dial2.tcg.lt/rest-api/contact");
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json; charset=utf-8',
-//            'Authorization: Basic ' . base64_encode("foodout:Foodout478#")));
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-//        curl_setopt($ch, CURLOPT_USERPWD, "foodout:Foodout478#");
-//        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-//        curl_setopt($ch, CURLOPT_HEADER, FALSE);
-//        curl_setopt($ch, CURLOPT_POST, TRUE);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-//        $response = curl_exec($ch);
-//        curl_close($ch);
-
-        return $response;
+        return $return;
     }
 
 }

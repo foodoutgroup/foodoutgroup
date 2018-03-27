@@ -4,6 +4,7 @@ namespace Food\TcgBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Food\OrderBundle\Entity\Order;
+
 /**
  * TcgLog
  *
@@ -46,7 +47,7 @@ class TcgLog
     /**
      * @var string
      *
-     * @ORM\Column(name="error", type="string", length=255)
+     * @ORM\Column(name="error", type="string", length=3000, nullable=true)
      */
     private $error;
 
@@ -68,7 +69,7 @@ class TcgLog
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -91,7 +92,7 @@ class TcgLog
     /**
      * Get orderId
      *
-     * @return integer 
+     * @return integer
      */
     public function getOrderId()
     {
@@ -114,7 +115,7 @@ class TcgLog
     /**
      * Get createdAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -137,7 +138,7 @@ class TcgLog
     /**
      * Get submittedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getSubmittedAt()
     {
@@ -160,7 +161,7 @@ class TcgLog
     /**
      * Get error
      *
-     * @return string 
+     * @return string
      */
     public function getError()
     {
@@ -183,7 +184,7 @@ class TcgLog
     /**
      * Get sent
      *
-     * @return string 
+     * @return string
      */
     public function getSent()
     {
@@ -206,7 +207,7 @@ class TcgLog
     /**
      * Get phone
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -229,7 +230,7 @@ class TcgLog
     /**
      * Get order
      *
-     * @return \Food\OrderBundle\Entity\Order 
+     * @return \Food\OrderBundle\Entity\Order
      */
     public function getOrder()
     {
