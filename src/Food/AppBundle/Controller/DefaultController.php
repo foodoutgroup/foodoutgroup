@@ -13,7 +13,6 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
-
         $this->container->get('slug')->checkNotFound();
 
         $miscUtils = $this->get('food.app.utils.misc');

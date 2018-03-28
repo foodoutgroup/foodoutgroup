@@ -1,0 +1,11 @@
+services:
+    sonata.admin.tcg:
+        class: Food\PushBundle\Admin\PushesAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Content", label: "admin.pushes" }
+        arguments:
+            - ~
+            - Food\PushBundle\Entity\Push
+            - ~
+        calls:
+            - [ setTranslationDomain, [SonataAdminBundle]]

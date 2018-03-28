@@ -369,7 +369,7 @@ class OrderService extends ContainerAware
             // 5 minutes from order create
             case OrderService::$status_unapproved:
                 $date = clone $order->getOrderDate();
-                $date->modify('+ 5 minutes');
+                $date->modify('+ 3 minutes');
                 break;
 
             // 5 minutes from order start
@@ -377,7 +377,7 @@ class OrderService extends ContainerAware
             case OrderService::$status_preorder:
                 $date = clone $order->getDeliveryTime();
                 $date->modify('-' . $this->getDuration($order) . ' minutes');
-                $date->modify('+ 5 minutes');
+                $date->modify('+ 3 minutes');
                 break;
 
             // 5 minutes from order start
@@ -385,7 +385,7 @@ class OrderService extends ContainerAware
             case OrderService::$status_finished:
                 $date = clone $order->getDeliveryTime();
                 $date->modify('-' . $this->getDuration($order) . ' minutes');
-                $date->modify('+ 5 minutes');
+                $date->modify('+ 3 minutes');
                 break;
 
             default:

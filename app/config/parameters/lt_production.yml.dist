@@ -154,6 +154,10 @@ parameters:
     show_making_time_deadline: true
     geo_provider: https://geoproxy.foodout.lt
     driver_app_provider: http://v2.foodout.lt
+    tcg_book_id: "4378"
+    tcg_push_url: http://dial2.tcg.lt/rest-api/contact/
+    tcg_username: foodout
+    tcg_pass: Foodout478#
 
     # seb banklink
     seb:

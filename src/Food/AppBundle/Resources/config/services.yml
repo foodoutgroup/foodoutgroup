@@ -353,3 +353,14 @@ services:
             - ~
           calls:
             - [ setTranslationDomain, [SonataAdminBundle]]
+
+    sonata.admin.tcg.template:
+        class: Food\TcgBundle\Admin\TcgAdmin
+        tags:
+          - { name: sonata.admin, manager_type: orm, group: "Editor", label: "admin.tcg.template" }
+        arguments:
+          - ~
+          - Food\TcgBundle\Entity\TcgLog
+          - ~
+        calls:
+          - [ setTranslationDomain, [SonataAdminBundle]]

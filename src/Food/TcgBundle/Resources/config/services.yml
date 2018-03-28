@@ -1,0 +1,5 @@
+services:
+
+  food.tcg:
+      class: Food\TcgBundle\Service\TcgService
+      arguments: [@service_container]

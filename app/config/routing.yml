@@ -1,3 +1,7 @@
+food_tcg:
+    resource: "@FoodTcgBundle/Resources/config/routing.php"
+    prefix:   /
+
 food_push:
     resource: "@FoodPushBundle/Resources/config/routing.php"
     prefix:   /
