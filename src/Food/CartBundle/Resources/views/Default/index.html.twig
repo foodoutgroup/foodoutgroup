@@ -551,7 +551,11 @@
     </div>
 
     <div class="hidden">
-        {% set page = pageService.getByParam('page_b2b_rules') %}
+        {% if app.user is not empty and app.user.isBussinesClient %}
+            {% set page = pageService.getByParam('page_b2b_rules') %}
+        {% else %}
+            {% set page = pageService.getByParam('buying_rules') %}
+        {% endif %}
         {% if page %}
             <div id="rules" class="cart_rules_content">
                 <div class="cart_rules_inner">{{ page.content|raw }}</div>
