@@ -118,14 +118,16 @@ class TcgService
 
         $fields = json_encode($fields);
 
-        $ch = curl_init($this->container->getParameter('tcg_push_url'));
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->container->getParameter('tcg_push_url'));
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        curl_setopt($ch, CURLOPT_HEADER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, TRUE);
         curl_setopt($ch, CURLOPT_USERPWD, $this->container->getParameter('tcg_username') . ":" . $this->container->getParameter('tcg_pass'));
-        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POST, TRUE);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 
         $response = curl_exec($ch);
         $code = curl_getinfo($ch)['http_code'];
