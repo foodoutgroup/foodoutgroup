@@ -102,7 +102,7 @@ class TcgService
 
         $fields = array(
             "phonebook" => (string)$this->container->getParameter('tcg_book_id'),
-            "contact" => $order->getPlacePoint()->getPhoneNiceFormat(),
+            "contact" => (string)$order->getPlacePoint()->getPhone(),
             "status" => 1,
             "last_name" => 'N1',
             "first_name" => 'N2',
