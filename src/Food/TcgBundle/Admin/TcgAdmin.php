@@ -33,6 +33,7 @@ class TcgAdmin extends SonataAdmin
             ->add('error', null, array('required' => false, 'label' => 'admin.tcg.error'))
             ->add('sent', null, array('required' => false, 'label' => 'admin.tcg.sent'))
             ->add('phone', null, array('required' => false, 'label' => 'admin.tcg.phone'));
+//            ->add('order.place.name', null, array('required' => false, 'label' => 'admin.tcg.restaurant_name'));
     }
 
     // Fields to be shown on filter forms
@@ -42,7 +43,8 @@ class TcgAdmin extends SonataAdmin
             ->add('order.id', null, array('label' => 'admin.tcg.order'))
             ->add('sent', null, array('label' => 'admin.sms.sent'))
             ->add('createdAt', 'doctrine_orm_date_range', array('label' => $this->trans('admin.tcg.created_at')), null, array('widget' => 'single_text', 'required' => false, 'attr' => array('class' => 'datepicker2')))
-            ->add('submitedAt', 'doctrine_orm_date_range', array('label' => $this->trans('admin.tcg.submitted_at')), null, array('widget' => 'single_text', 'required' => false, 'attr' => array('class' => 'datepicker2')));
+            ->add('submitedAt', 'doctrine_orm_date_range', array('label' => $this->trans('admin.tcg.submitted_at')), null, array('widget' => 'single_text', 'required' => false, 'attr' => array('class' => 'datepicker2')))
+            ->add('order.place.name', null, array('label' => 'admin.tcg.restaurant_name'));
 
     }
 
@@ -56,6 +58,7 @@ class TcgAdmin extends SonataAdmin
             ->add('error', null, array('required' => false, 'label' => 'admin.tcg.error'))
             ->add('sent', null, array('required' => false, 'label' => 'admin.tcg.sent'))
             ->add('phone', null, array('required' => false, 'label' => 'admin.tcg.phone'))
+            ->add('order.place.name', null, array('required' => false, 'label' => 'admin.tcg.restaurant_name'))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'show' => array(),
@@ -77,9 +80,8 @@ class TcgAdmin extends SonataAdmin
             ->add('submittedAt', null, array('required' => false, 'label' => 'admin.tcg.submitted_at'))
             ->add('error', null, array('required' => false, 'label' => 'admin.tcg.error'))
             ->add('sent', null, array('required' => false, 'label' => 'admin.tcg.sent'))
-            ->add('phone', null, array('required' => false, 'label' => 'admin.tcg.phone'));
-
-
+            ->add('phone', null, array('required' => false, 'label' => 'admin.tcg.phone'))
+            ->add('order.place.name', null, array('required' => false, 'label' => 'admin.tcg.restaurant_name'));
     }
 
     /**
