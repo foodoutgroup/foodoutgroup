@@ -31,5 +31,23 @@ class TcgLogRepository extends EntityRepository
             ->getResult();
     }
 
+    public function getByPhoneSorted(Order $order, $sort)
+    {
+
+        $qb = $this->createQueryBuilder('o');
+        $qb->setMaxResults( 1 );
+        $qb->where('o.phone = :phone')
+            ->andWhere('o.sent =:sent')
+            ->setParameters(array(
+                'phone' => $order->getPlacePoint()->getPhone(),
+                'sent' => 1
+            ))
+            ->orderBy('o.submittedAt', $sort)
+        ;
+
+        return $qb->getQuery()
+            ->getResult();
+    }
+
 
 }

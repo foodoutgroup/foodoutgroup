@@ -32,7 +32,8 @@ class TcgPushCommand extends ContainerAwareCommand
                     $isLate = $orderService->isLate($order);
 
                     if ($isLate) {
-                        $loggedRecords = $tcgRepo->getByIdSorted($order, 'DESC');
+                        $loggedRecords = $tcgRepo->getByPhoneSorted($order, 'DESC');
+
                         $check = isset($loggedRecords[0]);
 
                         if (($check && $this->checkDateDifference($loggedRecords[0])) or !$check) {

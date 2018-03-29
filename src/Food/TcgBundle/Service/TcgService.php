@@ -76,7 +76,7 @@ class TcgService
         $tcgLog->setCreatedAt(new \DateTime("now"));
         $tcgLog->setOrder($order);
         $tcgLog->setSent(false);
-        $tcgLog->setPhone($order->getPlacePoint()->getPhoneNiceFormat());
+        $tcgLog->setPhone($order->getPlacePoint()->getPhone());
         $tcgLog->setSubmittedAt(new \DateTime("now"));
         return $tcgLog;
     }
