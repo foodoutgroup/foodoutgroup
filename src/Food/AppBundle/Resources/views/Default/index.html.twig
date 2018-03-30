@@ -59,6 +59,14 @@
             }, 5000);
             {% endif %}
 
+            {% if misc_utils.param('show_easter_popup', true) %}
+            setTimeout(function () {
+                $.fancybox.open($('.modal-easter-div'));
+
+            }, 5000);
+            {% endif %}
+
+
         });
     </script>
 
@@ -116,6 +124,16 @@
 
             </div>
         {% endif %}
+
+        {% if misc_utils.param('show_easter_popup', true) %}
+            <div class="modal-easter-div" STYLE="position: relative !important;display: none;">
+                <img src="{{ asset('bundles/foodapp/images/easter_background.png') }}">
+                <div class="easter-button-container">
+                    <a href="#"><img src="{{ asset('bundles/foodapp/images/easter_order.png') }}"></a>
+                </div>
+            </div>
+        {% endif %}
+
 
         <div class="site-block address-search-form">
             <div class="address-search-form-content">

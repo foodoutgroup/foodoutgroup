@@ -6310,3 +6310,9 @@ div.coupon_form_popup {
     display: flex;
     justify-content: space-between;
 }
+
+.easter-button-container{
+    position: absolute;
+    bottom: 44%;
+    left: 6%;
+}

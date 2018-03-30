@@ -52,7 +52,8 @@ class SettingsController extends CRUDController
         'placepoint_prepare_times_pedestrian',
         'valentines_popup',
         'prepare_time',
-        'show_app_popup'
+        'show_app_popup',
+        'show_easter_popup'
     ];
 
     public function listAction()
@@ -249,6 +250,10 @@ class SettingsController extends CRUDController
 
         $form->add('show_app_popup', 'boolean', [
             'label' => 'Show mobile popup',
+        ]);
+
+        $form->add('show_easter_popup', 'boolean', [
+            'label' => 'Show ester popup',
         ]);
 
         $form->add('header_scripts', 'textarea', [
