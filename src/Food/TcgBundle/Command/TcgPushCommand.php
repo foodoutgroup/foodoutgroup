@@ -24,7 +24,7 @@ class TcgPushCommand extends ContainerAwareCommand
         $tcgService = $this->getContainer()->get('food.tcg');
         $orderService = $this->getContainer()->get('food.order');
 
-        $orders = $orderRepo->getOrdersUnconfirmed();
+        $orders = $orderRepo->getOrdersUnconfirmed(null,false,true);
 
         try {
             if ($orders) {
