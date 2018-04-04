@@ -4461,34 +4461,39 @@ class OrderService extends ContainerAware
         $deliveryTime = clone $order->getDeliveryTime();
         $now = new \DateTime('now');
 
-        $locationService = $this->container->get('food.zavalas_service');
-        $utils = $this->container->get('food.app.utils.misc');
+        if (!$order->getFoodPrepareDate()) {
 
-        $productionTime = $order->getPlacePoint()->getProductionTime();
+            $locationService = $this->container->get('food.zavalas_service');
+            $utils = $this->container->get('food.app.utils.misc');
 
-        if ($productionTime) {
-            $time = $productionTime;
-        } else {
-            $placeTime = $order->getPlace()->getProductionTime();
+            $productionTime = $order->getPlacePoint()->getProductionTime();
 
-            if ($placeTime) {
-                $time = $placeTime;
+            if ($productionTime) {
+                $time = $productionTime;
             } else {
-                $time = $utils->getParam('prepare_time');
-            }
-        }
-        if ($order->getDeliveryType() == self::$deliveryPickup) {
-            return $deliveryTime;
-        } else {
-            if ($order->getPreorder()) {
-                return $deliveryTime->modify('-' . $time . ' minutes');
-            } else {
-                if ($locationService->isRushHourAtCity($order->getCityId())) {
-                    return $now->modify('+' . $time . ' minutes');
+                $placeTime = $order->getPlace()->getProductionTime();
+
+                if ($placeTime) {
+                    $time = $placeTime;
                 } else {
-                    return $makingTime->modify('+' . $time . ' minutes');
+                    $time = $utils->getParam('prepare_time');
                 }
             }
+            if ($order->getDeliveryType() == self::$deliveryPickup) {
+                return $deliveryTime;
+            } else {
+                if ($order->getPreorder()) {
+                    return $deliveryTime->modify('-' . $time . ' minutes');
+                } else {
+                    if ($locationService->isRushHourAtCity($order->getCityId())) {
+                        return $now->modify('+' . $time . ' minutes');
+                    } else {
+                        return $makingTime->modify('+' . $time . ' minutes');
+                    }
+                }
+            }
+        }else{
+            return $order->getFoodPrepareDate();
         }
     }
 
