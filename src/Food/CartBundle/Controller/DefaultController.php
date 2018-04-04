@@ -389,7 +389,7 @@ class DefaultController extends Controller
                         $orderDate = $request->get('pre_order_date') . ' ' . $request->get('pre_order_time');
                     }
 
-                    $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate,null,null);
+                    $orderService->createOrderFromCart($placeId, $request->getLocale(), $user, $placePoint, $selfDelivery, $coupon, $userData, $orderDate, null, null);
                     $orderService->logOrder(null, 'create', 'Order created from cart', $orderService->getOrder());
                     if ($preOrder == 'it-is') {
                         $orderService->logOrder(null, 'pre-order', 'Order marked as pre-order', $orderService->getOrder());
@@ -545,7 +545,7 @@ class DefaultController extends Controller
         $orderPriceService = $this->get('food.order_price_service');
         $miscService = $this->get('food.app.utils.misc');
         $session = $this->get('session');
-
+        $orderService = $this->container->get('food.order');
 
         $enableDiscount = !$place->getOnlyAlcohol();
         $placeServ = $this->get('food.places');
@@ -555,7 +555,7 @@ class DefaultController extends Controller
         $useAdminFee = $placeServ->useAdminFee($place);
         $adminFee = $placeServ->getAdminFee($place);
 
-        if($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup){
+        if ($this->container->get('session')->get('delivery_type', false) == OrderService::$deliveryPickup) {
             $useAdminFee = false;
         }
 
@@ -566,7 +566,6 @@ class DefaultController extends Controller
         if ($useAdminFee && !$adminFee) {
             $adminFee = 0;
         }
-
 
 
         $isTodayNoOneWantsToWork = $this->get('food.order')->isTodayNoOneWantsToWork($place);
@@ -624,7 +623,6 @@ class DefaultController extends Controller
                 }
 
 
-
                 $pointRecord = $em->getRepository('FoodDishesBundle:PlacePoint')->find($placePointMap[$place->getId()]);
                 $deliveryTotal = $this->getCartService()->getDeliveryPrice($place, $locationData, $pointRecord, $noneWorking);
                 $displayCartInterval = false;
@@ -671,7 +669,7 @@ class DefaultController extends Controller
         $total_cart = $this->getCartService()->getCartTotal($list);
         $priceBeforeDiscount = $total_cart;
 
-        if(($cartFromMin < $total_cart) && $useAdminFee){
+        if (($cartFromMin < $total_cart) && $useAdminFee) {
             $useAdminFee = false;
         }
 
@@ -690,72 +688,79 @@ class DefaultController extends Controller
         // If coupon in use
 
         if (!empty($couponCode)) {
+
+
             $coupon = $this->get('food.order')->getCouponByCode($couponCode);
 
             if ($coupon) {
-                $applyDiscount = true;
 
-                if ($coupon->getIgnoreCartPrice()) {
-                    $noMinimumCart = true;
-                }
+                if ($coupon->getSingleUsePerPerson() && !empty($user) && $user instanceof User && $orderService->isCouponUsed($coupon, $user)) {
 
-                $freeDeliver = $coupon->getFreeDelivery();
 
-                $discountSize = $coupon->getDiscount();
+                    $applyDiscount = true;
 
-                if (!empty($discountSize)) {
-                    $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
-                } else {
-                    $discountSize = null;
-                    $discountInSum = true;
-                    $discountSum = $coupon->getDiscountSum();
-                }
-
-                $realDiscountSum = $discountSum;
-
-                $otherPriceTotal = 0;
-                foreach ($list as $dish) {
-                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
-                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
-                        $otherPriceTotal += $sum;
+                    if ($coupon->getIgnoreCartPrice()) {
+                        $noMinimumCart = true;
                     }
-                }
 
-                // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
+                    $freeDeliver = $coupon->getFreeDelivery();
+
+                    $discountSize = $coupon->getDiscount();
+
+                    if (!empty($discountSize)) {
+                        $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
+                    } else {
+                        $discountSize = null;
+                        $discountInSum = true;
+                        $discountSum = $coupon->getDiscountSum();
+                    }
+
+                    $realDiscountSum = $discountSum;
+
+                    $otherPriceTotal = 0;
+                    foreach ($list as $dish) {
+                        $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
+                        if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
+                            $otherPriceTotal += $sum;
+                        }
+                    }
+
+                    // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
 //                $otherMinusDiscount = $otherPriceTotal - $discountSum;
 //                if ($otherMinusDiscount < 0) {
 //                    $discountSum = $otherPriceTotal;
 //                }
 
 
-                if ($enableDiscount) {
-                    $total_cart -= $discountSum;
-                } else {
-                    $discountSum = 0;
-                }
+                    if ($enableDiscount) {
+                        $total_cart -= $discountSum;
+                    } else {
+                        $discountSum = 0;
+                    }
 
-                if ($total_cart <= 0) {
-                    if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
-                        if ($deliveryTotal < 0 || $total_cart < $realDiscountSum) {
-                            $freeDelivery = true;
-                            if ($total_cart < $place->getCartMinimum()) {
-                                $useAdminFee = true;
-                                $checkAdmin = true;
+                    if ($total_cart <= 0) {
+                        if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
+                            if ($deliveryTotal < 0 || $total_cart < $realDiscountSum) {
+                                $freeDelivery = true;
+                                if ($total_cart < $place->getCartMinimum()) {
+                                    $useAdminFee = true;
+                                    $checkAdmin = true;
 
-                                if (($total_cart - $adminFee) < $realDiscountSum) {
-                                    $total_cart += $adminFee;
-                                    $freeDelivery = false;
+                                    if (($total_cart - $adminFee) < $realDiscountSum) {
+                                        $total_cart += $adminFee;
+                                        $freeDelivery = false;
+                                    }
+                                } else {
+                                    $useAdminFee = false;
                                 }
-                            } else {
-                                $useAdminFee = false;
                             }
                         }
                     }
-                }
 
-                if ($freeDeliver) {
-                    $discountSum += $deliveryTotal;
-                    $freeDelivery = true;
+                    if ($freeDeliver) {
+                        $discountSum += $deliveryTotal;
+                        $freeDelivery = true;
+                    }
                 }
             }
         } // Business client discount
