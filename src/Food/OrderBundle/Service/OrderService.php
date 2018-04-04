@@ -371,10 +371,10 @@ class OrderService extends ContainerAware
             // 5 minutes from order create
             case OrderService::$status_unapproved:
                 $date = clone $order->getOrderDate();
-                if($order->getPaymentMethod() == 'local.card' || $order->getPaymentMethod() == 'local'){
+                if ($order->getPaymentMethod() == 'local.card' || $order->getPaymentMethod() == 'local') {
                     $date->modify('+ 3 minutes');
-                }else{
-                    $date->modify('+ '.$misc->getParam('online_payment_delay'));
+                } else {
+                    $date->modify('+ ' . $misc->getParam('online_payment_delay'));
                 }
 
                 break;
@@ -790,72 +790,72 @@ class OrderService extends ContainerAware
         $translator->setLocale($this->container->getParameter('locale'));
 
 //        if (!$api) {
-            $messagingService = $this->container->get('food.messages');
-            $logger = $this->container->get('logger');
+        $messagingService = $this->container->get('food.messages');
+        $logger = $this->container->get('logger');
 
-            // Inform driver about new order that was assigned to him
-            $orderConfirmRoute = $this->container->get('router')
-                ->generate('drivermobile', ['hash' => $order->getOrderHash()], true);
+        // Inform driver about new order that was assigned to him
+        $orderConfirmRoute = $this->container->get('router')
+            ->generate('drivermobile', ['hash' => $order->getOrderHash()], true);
 
-            $restaurant_title = $order->getPlace()->getName();
-            $internal_code = $order->getPlacePoint()->getInternalCode();
-            if (!empty($internal_code)) {
-                $restaurant_title = $restaurant_title . " - " . $internal_code;
-            }
+        $restaurant_title = $order->getPlace()->getName();
+        $internal_code = $order->getPlacePoint()->getInternalCode();
+        if (!empty($internal_code)) {
+            $restaurant_title = $restaurant_title . " - " . $internal_code;
+        }
 
-            $restaurant_address = $order->getAddressId()->toString();
+        $restaurant_address = $order->getAddressId()->toString();
 
-            $prac = $order->getPlacePointCity();
-            if ($cityObj = $order->getPlacePoint()->getCityId()) {
-                $prac = $cityObj->getTitle();
-            }
+        $prac = $order->getPlacePointCity();
+        if ($cityObj = $order->getPlacePoint()->getCityId()) {
+            $prac = $cityObj->getTitle();
+        }
 
-            $pickup_restaurant_address = $order->getPlacePointAddress() . ' ' . $prac;
-            $curr_locale = $this->container->getParameter('locale');
-            $languageUtil = $this->container->get('food.app.utils.language');
+        $pickup_restaurant_address = $order->getPlacePointAddress() . ' ' . $prac;
+        $curr_locale = $this->container->getParameter('locale');
+        $languageUtil = $this->container->get('food.app.utils.language');
 
-            $messageText = $languageUtil->removeChars(
-                $curr_locale,
-                $translator->trans(
-                    'general.sms.driver_assigned_order',
-                    [
-                        'order_id' => $order->getId(),
-                        'restaurant_title' => $restaurant_title,
-                        'restaurant_address' => $restaurant_address,
-                        'pickup_restaurant_address' => $pickup_restaurant_address,
-                        'deliver_time' => $order->getDeliveryTime()->format("H:i")
-                    ]
-                ) . $orderConfirmRoute,
-                false
-            );
+        $messageText = $languageUtil->removeChars(
+            $curr_locale,
+            $translator->trans(
+                'general.sms.driver_assigned_order',
+                [
+                    'order_id' => $order->getId(),
+                    'restaurant_title' => $restaurant_title,
+                    'restaurant_address' => $restaurant_address,
+                    'pickup_restaurant_address' => $pickup_restaurant_address,
+                    'deliver_time' => $order->getDeliveryTime()->format("H:i")
+                ]
+            ) . $orderConfirmRoute,
+            false
+        );
 
-            $messageText = $this->fitDriverMessage(
-                $messageText,
-                $order->getId(),
-                $restaurant_title,
-                $restaurant_address,
-                $pickup_restaurant_address,
-                $order->getDeliveryTime()->format("H:i"),
-                $orderConfirmRoute,
-                $curr_locale
-            );
+        $messageText = $this->fitDriverMessage(
+            $messageText,
+            $order->getId(),
+            $restaurant_title,
+            $restaurant_address,
+            $pickup_restaurant_address,
+            $order->getDeliveryTime()->format("H:i"),
+            $orderConfirmRoute,
+            $curr_locale
+        );
 
-            $logMessage = sprintf(
-                'Sending message for driver about assigned order #%d to number: %s with text "%s". Used address Id: %d',
-                $order->getId(),
-                $driver->getPhone(),
-                $messageText,
-                $order->getAddressId()->getId()
-            );
-            $logger->alert($logMessage);
+        $logMessage = sprintf(
+            'Sending message for driver about assigned order #%d to number: %s with text "%s". Used address Id: %d',
+            $order->getId(),
+            $driver->getPhone(),
+            $messageText,
+            $order->getAddressId()->getId()
+        );
+        $logger->alert($logMessage);
 
-            $message = $messagingService->createMessage(
-                $this->container->getParameter('sms.sender'),
-                $driver->getPhone(),
-                $messageText,
-                $order
-            );
-            $messagingService->saveMessage($message);
+        $message = $messagingService->createMessage(
+            $this->container->getParameter('sms.sender'),
+            $driver->getPhone(),
+            $messageText,
+            $order
+        );
+        $messagingService->saveMessage($message);
 //        }
 
         $this->logDeliveryEvent($this->getOrder(), 'order_assigned');
@@ -4455,12 +4455,13 @@ class OrderService extends ContainerAware
      *
      * @return \DateTime
      */
-    public
-    function getMakingTime(Order $order)
+    public function getMakingTime(Order $order)
     {
         $makingTime = clone $order->getOrderDate();
         $deliveryTime = clone $order->getDeliveryTime();
+        $now = new \DateTime('now');
 
+        $locationService = $this->container->get('food.zavalas_service');
         $utils = $this->container->get('food.app.utils.misc');
 
         $productionTime = $order->getPlacePoint()->getProductionTime();
@@ -4482,7 +4483,11 @@ class OrderService extends ContainerAware
             if ($order->getPreorder()) {
                 return $deliveryTime->modify('-' . $time . ' minutes');
             } else {
-                return $makingTime->modify('+' . $time . ' minutes');
+                if ($locationService->isRushHourAtCity($order->getCityId())) {
+                    return $now->modify('+' . $time . ' minutes');
+                } else {
+                    return $makingTime->modify('+' . $time . ' minutes');
+                }
             }
         }
     }
