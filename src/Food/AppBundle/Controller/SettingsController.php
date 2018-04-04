@@ -53,7 +53,8 @@ class SettingsController extends CRUDController
         'valentines_popup',
         'prepare_time',
         'show_app_popup',
-        'show_easter_popup'
+        'show_easter_popup',
+        'online_payment_delay'
     ];
 
     public function listAction()
@@ -254,6 +255,10 @@ class SettingsController extends CRUDController
 
         $form->add('show_easter_popup', 'boolean', [
             'label' => 'Show ester popup',
+        ]);
+
+        $form->add('online_payment_delay', 'number', [
+            'label' => 'Online payment late minutes',
         ]);
 
         $form->add('header_scripts', 'textarea', [

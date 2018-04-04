@@ -365,11 +365,18 @@ class OrderService extends ContainerAware
      */
     public function getLateDiff(Order $order)
     {
+        $misc = $this->container->get('food.app.utils.misc');
+
         switch ($order->getOrderStatus()) {
             // 5 minutes from order create
             case OrderService::$status_unapproved:
                 $date = clone $order->getOrderDate();
-                $date->modify('+ 3 minutes');
+                if($order->getPaymentMethod() == 'local.card' || $order->getPaymentMethod() == 'local'){
+                    $date->modify('+ 3 minutes');
+                }else{
+                    $date->modify('+ '.$misc->getParam('online_payment_delay'));
+                }
+
                 break;
 
             // 5 minutes from order start
