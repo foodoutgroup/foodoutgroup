@@ -12,61 +12,12 @@
 {% endblock %}
 
 {% block body %}
-    {# image randomization according to country #}
-    {% if misc_utils.param('valentines_popup', true) %}
-        <script>
-            function add_mail(element) {
-                var checked = $("#valentines_agree").parent('[class*="icheck"]').hasClass("checked");
-                var email = $('#valentines_mail').val();
-                var url = "{{ slug.generateURL('food_ajax_request', {'action' : 'check-event-email'}) }}";
-                if (checked && email.length > 0) {
-
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: {
-                            email: email
-                        },
-                        success: function (data) {
-                            if (data.success) {
-                                $.fancybox.close($('.modal-valentines-div'));
-                            }
-                        }
-                    });
-                }
-
-            }
-        </script>
-    {% endif %}
-
 
     <script type="text/javascript">
         $(document).ready(function () {
             if (typeof $('#address_autocomplete').data("selected") == "undefined") {
                 $('#find-me').trigger('click');
             }
-            {% if misc_utils.param('valentines_popup', true) %}
-            setTimeout(function () {
-                $.fancybox.open($('.modal-valentines-div'));
-
-            }, 1000);
-            {% endif %}
-
-            {% if misc_utils.param('show_app_popup', true) %}
-            setTimeout(function () {
-                $.fancybox.open($('.modal-mobile-div'));
-
-            }, 5000);
-            {% endif %}
-
-            {% if misc_utils.param('show_easter_popup', true) %}
-            setTimeout(function () {
-                $.fancybox.open($('.modal-easter-div'));
-
-            }, 5000);
-            {% endif %}
-
-
         });
     </script>
 
