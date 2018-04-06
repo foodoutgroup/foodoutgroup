@@ -102,7 +102,7 @@ parameters:
     country_full: Lithuania
     vat: 21
     title: "Foodout"
-    domain: "beta.foodout.lt"
+    domain: "46.4.206.114"
     publicdomain: "foodout.lt"
     google_analytics_uid: "UA-50355577-1"
     google.analytics.view_id: "85237075"
