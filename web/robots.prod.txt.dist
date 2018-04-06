@@ -19,3 +19,6 @@ Disallow: /en/ajax/
 Disallow: /ru/ajax/
 
 Disallow: /custom/
+
+# disallows pop-up
+Disallow: *popup_file.js
