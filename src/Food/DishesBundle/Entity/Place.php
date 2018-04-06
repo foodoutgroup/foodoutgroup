@@ -524,6 +524,13 @@ class Place extends Uploadable implements Translatable
      */
     private   $rushWorks;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="tcg_call", type="boolean",options={"default": 1},nullable=true)
+     */
+    private   $tcgCall;
+
 
     /**
      * Returns place name
@@ -2444,7 +2451,7 @@ class Place extends Uploadable implements Translatable
     /**
      * Get showInSelfDelivery
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getShowInSelfDelivery()
     {
@@ -2467,10 +2474,33 @@ class Place extends Uploadable implements Translatable
     /**
      * Get rushWorks
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getRushWorks()
     {
         return $this->rushWorks;
+    }
+
+    /**
+     * Set tcgCall
+     *
+     * @param boolean $tcgCall
+     * @return Place
+     */
+    public function setTcgCall($tcgCall)
+    {
+        $this->tcgCall = $tcgCall;
+
+        return $this;
+    }
+
+    /**
+     * Get tcgCall
+     *
+     * @return boolean
+     */
+    public function getTcgCall()
+    {
+        return $this->tcgCall;
     }
 }

@@ -29,28 +29,30 @@ class TcgPushCommand extends ContainerAwareCommand
         try {
             if ($orders) {
                 foreach ($orders as $order) {
-                    $isLate = $orderService->isLate($order);
+                    if ($order->getPlace()->getTcgCall()) {
+                        $isLate = $orderService->isLate($order);
 
-                    if ($isLate) {
-                        $loggedRecords = $tcgRepo->getByPhoneSorted($order, 'DESC');
+                        if ($isLate) {
+                            $loggedRecords = $tcgRepo->getByPhoneSorted($order, 'DESC');
 
-                        $check = isset($loggedRecords[0]);
+                            $check = isset($loggedRecords[0]);
 
-                        if (($check && $this->checkDateDifference($loggedRecords[0])) or !$check) {
+                            if (($check && $this->checkDateDifference($loggedRecords[0])) or !$check) {
 
 
-                            $logRecord = $tcgService->createLog($order);
-                            $response = $tcgService->sendPush($order);
+                                $logRecord = $tcgService->createLog($order);
+                                $response = $tcgService->sendPush($order);
 
-                            if (key($response) == 201) {
-                                $logRecord->setSent(true);
+                                if (key($response) == 201) {
+                                    $logRecord->setSent(true);
 
-                            } else {
-                                $logRecord->setError($response[key($response)]);
+                                } else {
+                                    $logRecord->setError($response[key($response)]);
+                                }
+
+                                $tcgService->saveLog($logRecord);
+
                             }
-
-                            $tcgService->saveLog($logRecord);
-
                         }
                     }
                 }

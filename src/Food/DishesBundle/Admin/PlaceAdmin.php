@@ -118,6 +118,7 @@ class PlaceAdmin extends FoodAdmin
             ->add('no_business_discount', 'checkbox', ['label' => 'admin.place.no_business_discount', 'required' => false])
             ->add('showInSelfDelivery', 'checkbox', ['label' => 'admin.place.not_in_self_discount', 'required' => false])
             ->add('rushWorks', 'checkbox', ['label' => 'admin.place.rush_works', 'required' => false])
+            ->add('tcgCall', 'checkbox', ['label' => 'admin.place.tcg_call', 'required' => false])
 
             ->add('points', 'sonata_type_collection',
                 [
