@@ -391,6 +391,7 @@ class ReportService extends ContainerAware
             $return = false;
         } else {
             $newObj = new EventMail();
+            $newObj->setCreatedAt(new \DateTime("now"));
             $newObj->setEmail($email);
             $em->persist($newObj);
             $em->flush();
