@@ -1,7 +1,7 @@
 function add_mail(element) {
     var checked = $("#valentines_agree").parent('[class*="icheck"]').hasClass("checked");
     var email = $('#valentines_mail').val();
-    var url = "{{ slug.generateURL('food_ajax_request', {'action' : 'check-event-email'}) }}";
+    var url = $(element).attr('data-url');
     if (checked && email.length > 0) {
 
         $.ajax({

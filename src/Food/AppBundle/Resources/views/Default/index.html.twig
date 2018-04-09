@@ -51,7 +51,7 @@
 
                     </div>
                     <div class="valentines-button-container">
-                        <a href="javascript:void(0)" onclick="add_mail(this)"><img
+                        <a data-url="{{ slug.generateURL('food_ajax_request', {'action' : 'check-event-email'}) }}" href="javascript:void(0)" onclick="add_mail(this)"><img
                                     src="{{ asset('bundles/foodapp/images/valentines_button.png') }}"></a>
                     </div>
                     <div class="valentines-agreements">{% trans %}general.valentines.agreement.text{% endtrans %}</div>
