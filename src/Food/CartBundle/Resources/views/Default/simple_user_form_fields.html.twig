@@ -8,7 +8,7 @@
 </div>
 <div class="form-row form-row-required">
     <label>{% trans %}cart.checkout.email{% endtrans %}:</label>
-    <input type="text" name="customer-email" value="{% if (dataToLoad is not empty and dataToLoad['customer-email'] is not empty) %}{{ dataToLoad['customer-email'] }}{% else %}{{ app.user.email|default('') }}{% endif %}" placeholder="{% trans %}general.email.placeholder{% endtrans %}" />
+    <input type="text" id="customer-email" name="customer-email" value="{% if (dataToLoad is not empty and dataToLoad['customer-email'] is not empty) %}{{ dataToLoad['customer-email'] }}{% else %}{{ app.user.email|default('') }}{% endif %}" placeholder="{% trans %}general.email.placeholder{% endtrans %}" />
 </div>
 
 <div class="form-row form-row-required form-row-joined">

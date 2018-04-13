@@ -45,6 +45,7 @@
                 var couponField = $('input#coupon_code_popup');
                 var popupInner = $(this).closest('.coupon_inner');
                 var currentUrl = window.location.href;
+                var email = $('#customer-email').val();
                 popupInner.mask();
 
                 $.ajax({
@@ -53,7 +54,9 @@
                     data: {
                         place_id: '{{ place.id }}',
                         coupon_code: couponField.val(),
-                        currentUrl: currentUrl
+                        currentUrl: currentUrl,
+                        email:email,
+                        place:'checkout'
                     },
                     success: function (resp) {
                         if (resp.status == 1) {
@@ -65,7 +68,9 @@
                                 place: {{ place.id }},
                                 in_cart: 1,
                                 coupon_code: couponField.val(),
-                                take_away: takeAway
+                                take_away: takeAway,
+                                email: resp.data.email
+
                             }, function (response) {
                                 if (typeof(response.block) != "undefined") {
                                     $('.check-block').replaceWith(response.block);

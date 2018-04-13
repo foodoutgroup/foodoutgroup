@@ -82,7 +82,7 @@ class DefaultController extends Controller
             return new Response('');
         }
 
-        $jsonResponseData['block'] = $this->sideBlockAction($place, true, $request->get('in_cart', false), null, $request->get('coupon_code', null));
+        $jsonResponseData['block'] = $this->sideBlockAction($place, true, $request->get('in_cart', false), null, $request->get('coupon_code', null), $request->get('email'));
 
         $response->setContent(json_encode($jsonResponseData));
 
@@ -539,8 +539,9 @@ class DefaultController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function sideBlockAction(Place $place, $renderView = false, $inCart = false, $order = null, $couponCode = null)
+    public function sideBlockAction(Place $place, $renderView = false, $inCart = false, $order = null, $couponCode = null, $email = null)
     {
+        $userRepo = $this->container->get('doctrine')->getManager()->getRepository('FoodUserBundle:User');
         // TODO fix prices calculation
         $orderPriceService = $this->get('food.order_price_service');
         $miscService = $this->get('food.app.utils.misc');
@@ -694,73 +695,79 @@ class DefaultController extends Controller
 
             if ($coupon) {
 
+                $applyDiscount = true;
+
+                $user = $this->getUser();
+
+                if (!$user && $email) {
+                    $user = $userRepo->findOneBy(['email' => $email]);
+                }
+
                 if ($coupon->getSingleUsePerPerson() && !empty($user) && $user instanceof User && $orderService->isCouponUsed($coupon, $user)) {
+                    $applyDiscount = false;
+                }
 
+                if ($coupon->getIgnoreCartPrice()) {
+                    $noMinimumCart = true;
+                }
 
-                    $applyDiscount = true;
+                $freeDeliver = $coupon->getFreeDelivery();
 
-                    if ($coupon->getIgnoreCartPrice()) {
-                        $noMinimumCart = true;
+                $discountSize = $coupon->getDiscount();
+
+                if (!empty($discountSize)) {
+                    $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
+                } else {
+                    $discountSize = null;
+                    $discountInSum = true;
+                    $discountSum = $coupon->getDiscountSum();
+                }
+
+                $realDiscountSum = $discountSum;
+
+                $otherPriceTotal = 0;
+                foreach ($list as $dish) {
+                    $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
+                    if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
+                        $otherPriceTotal += $sum;
                     }
+                }
 
-                    $freeDeliver = $coupon->getFreeDelivery();
-
-                    $discountSize = $coupon->getDiscount();
-
-                    if (!empty($discountSize)) {
-                        $discountSum = $this->getCartService()->getTotalDiscount($list, $coupon->getDiscount());
-                    } else {
-                        $discountSize = null;
-                        $discountInSum = true;
-                        $discountSum = $coupon->getDiscountSum();
-                    }
-
-                    $realDiscountSum = $discountSum;
-
-                    $otherPriceTotal = 0;
-                    foreach ($list as $dish) {
-                        $sum = $dish->getDishSizeId()->getPrice() * $dish->getQuantity();
-                        if (!$this->getCartService()->isAlcohol($dish->getDishId())) {
-                            $otherPriceTotal += $sum;
-                        }
-                    }
-
-                    // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
+                // tikrina ar kitu produktu suma (ne alko) yra mazesne nei nuolaida jei taip tada pritaiko discount kaip ta suma;
 //                $otherMinusDiscount = $otherPriceTotal - $discountSum;
 //                if ($otherMinusDiscount < 0) {
 //                    $discountSum = $otherPriceTotal;
 //                }
 
 
-                    if ($enableDiscount) {
-                        $total_cart -= $discountSum;
-                    } else {
-                        $discountSum = 0;
-                    }
+                if ($enableDiscount) {
+                    $total_cart -= $discountSum;
+                } else {
+                    $discountSum = 0;
+                }
 
-                    if ($total_cart <= 0) {
-                        if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
-                            if ($deliveryTotal < 0 || $total_cart < $realDiscountSum) {
-                                $freeDelivery = true;
-                                if ($total_cart < $place->getCartMinimum()) {
-                                    $useAdminFee = true;
-                                    $checkAdmin = true;
+                if ($total_cart <= 0) {
+                    if ($coupon->getFullOrderCovers() || $coupon->getIncludeDelivery()) {
+                        if ($deliveryTotal < 0 || $total_cart < $realDiscountSum) {
+                            $freeDelivery = true;
+                            if ($total_cart < $place->getCartMinimum()) {
+                                $useAdminFee = true;
+                                $checkAdmin = true;
 
-                                    if (($total_cart - $adminFee) < $realDiscountSum) {
-                                        $total_cart += $adminFee;
-                                        $freeDelivery = false;
-                                    }
-                                } else {
-                                    $useAdminFee = false;
+                                if (($total_cart - $adminFee) < $realDiscountSum) {
+                                    $total_cart += $adminFee;
+                                    $freeDelivery = false;
                                 }
+                            } else {
+                                $useAdminFee = false;
                             }
                         }
                     }
+                }
 
-                    if ($freeDeliver) {
-                        $discountSum += $deliveryTotal;
-                        $freeDelivery = true;
-                    }
+                if ($freeDeliver) {
+                    $discountSum += $deliveryTotal;
+                    $freeDelivery = true;
                 }
             }
         } // Business client discount
@@ -896,7 +903,8 @@ class DefaultController extends Controller
     /**
      * TODO dabar routas cart/success, bet renaminant kart i kasikelis, reiks ir sita parenamint i kasikelis/apmoketas
      */
-    public function successAction($orderHash)
+    public
+    function successAction($orderHash)
     {
         $order = $this->get('food.order')->getOrderByHash($orderHash);
 
@@ -909,7 +917,8 @@ class DefaultController extends Controller
     /**
      * TODO dabar routas cart/success, bet renaminant kart i kasikelis, reiks ir sita parenamint i kasikelis/apmoketas
      */
-    public function reverseAction($orderHash)
+    public
+    function reverseAction($orderHash)
     {
         $order = $this->get('food.order')->getOrderByHash($orderHash);
 
@@ -922,7 +931,8 @@ class DefaultController extends Controller
     /**
      * TODO dabar routas cart/wait, bet renaminant kart i kasikelis, reiks ir sita parenamint i kasikelis/laukiama
      */
-    public function waitAction($orderHash)
+    public
+    function waitAction($orderHash)
     {
         $order = $this->get('food.order')->getOrderByHash($orderHash);
 
@@ -932,7 +942,8 @@ class DefaultController extends Controller
         );
     }
 
-    public function debugAction()
+    public
+    function debugAction()
     {
         $pimPirim[1] = ["key" => 1, "data" => "2"];
         $pimPirim[2] = ["key" => 2, "data" => "3"];

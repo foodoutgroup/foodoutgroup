@@ -35,7 +35,8 @@ class AjaxController extends Controller
                 $collection = $this->_isPlaceInRadius($response->getContent(), intval($request->get('place')));
                 break;
             case 'check-coupon':
-                $collection = $this->_ajaxCheckCoupon($request->get('place_id'), $request->get('coupon_code'));
+                $collection = $this->_ajaxCheckCoupon($request);
+//                $collection = $this->_ajaxCheckCoupon($request->get('place_id'), $request->get('coupon_code'),$request->get(''));
                 break;
             case 'delivery-price':
                 $collection = $this->_ajaxGetDeliveryPrice($request->get('restaurant'), $request->get('time'));
@@ -103,8 +104,13 @@ class AjaxController extends Controller
      * @param string $couponCode
      * @return array
      */
-    private function _ajaxCheckCoupon($placeId, $couponCode)
+    private function _ajaxCheckCoupon($request)
     {
+        $couponCode = $request->get('coupon_code');
+        $placeId = $request->get('place_id');
+        $email = $request->get('email');
+        $place = $request->get('place');
+
         $trans = $this->get('translator');
         $cont = [
             'status' => true,
@@ -139,11 +145,16 @@ class AjaxController extends Controller
         } else if (!$enableDiscount) {
             $cont['status'] = false;
             $cont['data']['error'] = $trans->trans('general.coupon.cannot_apply_for_alco');
+        }else if(!$email){
+            $cont['status'] = false;
+            $cont['data']['error'] = $trans->trans('general.coupon.no_email_address');
         }
 
         // If everything is ok - do additional tests
         if ($cont['status'] == true) {
             // Only for navision restaurants
+
+
             if ($coupon->getOnlyNav() && !$place->getNavision()) {
                 $cont['status'] = false;
                 $cont['data']['error'] = $trans->trans('general.coupon.only_cili');
@@ -200,6 +211,10 @@ class AjaxController extends Controller
 
         if ($cont['status'] == true) {
             $cont['data'] = $coupon->__toArray();
+        }
+
+        if($email){
+            $cont['data']['email'] = $email;
         }
 
         if (isset($cont['data']['error']) && !empty($cont['data']['error'])) {
