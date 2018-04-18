@@ -3912,6 +3912,10 @@ class OrderService extends ContainerAware
             $formErrors[] = 'order.form.errors.cart_rules';
         }
 
+        if ($request->get('cart_notify') != 'on') {
+            $formErrors[] = 'order.form.errors.cart_notify';
+        }
+
         if ($phonePass && $place->getNavision()) {
             $data = $this->container->get('food.nav')->validateCartInNav(
                 $request->get('customer-phone'),

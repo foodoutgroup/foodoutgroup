@@ -4732,6 +4732,7 @@ ul.dish-holder {
     text-decoration: underline;
 }
 
+.delivery-info-form .cart-notify,
 .delivery-info-form .cart-rules,
 .delivery-info-form .newsletter_subscribe {
     margin-top: 20px;
@@ -4739,6 +4740,7 @@ ul.dish-holder {
     margin-left: 175px;
 }
 
+.delivery-info-form .cart-notify label,
 .delivery-info-form .cart-rules label,
 .delivery-info-form .newsletter_subscribe label {
     width: auto;
@@ -6281,7 +6283,7 @@ div.coupon_form_popup {
 #valentines_agree {
     opacity: 1 !important;
     /*margin-top: 8px;*/
-    top:2px;
+    top: 2px;
 }
 
 .valentines-text {
@@ -6298,20 +6300,20 @@ div.coupon_form_popup {
     font-size: 10px;
 }
 
-.mobile-pop-buttons{
-    position:absolute;
-    bottom:33px;
+.mobile-pop-buttons {
+    position: absolute;
+    bottom: 33px;
     width: 100%;
 }
 
-.pop-button-container{
+.pop-button-container {
     padding-left: 43px;
     width: 39%;
     display: flex;
     justify-content: space-between;
 }
 
-.easter-button-container{
+.easter-button-container {
     position: absolute;
     bottom: 44%;
     left: 6%;
