@@ -32,7 +32,7 @@ class ComboDiscountAdmin extends FoodAdmin
             ->add('amount')
             ->add('applyBy', 'choice', array('required' =>  true, 'choices' => $combyApplyBy))
             ->add('dishCategory', null, array('required' => false))
-            ->add('dishUnit', null, array('required' => false))
+            ->add('dishUnit', null, array('required' => true))
             ->add('discountType', 'choice', array('required' =>  true, 'choices' => $comboChoices))
             ->add('discountSize')
             ->add('optionals', null, array('required' => false))
