@@ -150,7 +150,7 @@ parameters:
     static_page_b2b_rules: 29
     b2b_first_month_discount: false
     b2b_first_month_discount_percent: 10
-    newsletter_subscribe_tick_by_default: true
+    newsletter_subscribe_tick_by_default: false
     show_making_time_deadline: true
     geo_provider: https://geoproxy.foodout.lt
     driver_app_provider: http://v2.foodout.lt
