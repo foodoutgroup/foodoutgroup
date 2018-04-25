@@ -47,6 +47,7 @@ class PlacePointDeliveryZonesAdmin extends FoodAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper->add('place', null, array('label' => 'Place'));
+        $datagridMapper->add('placePoint.cityId', null, array('label' => 'City'));
     }
 
     // Fields to be shown on lists
