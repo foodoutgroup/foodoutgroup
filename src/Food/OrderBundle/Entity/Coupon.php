@@ -261,6 +261,13 @@ class Coupon
      */
     private $includeDelivery = false;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="cart_amount", type="integer",  nullable=true)
+     */
+    private $cartAmount = 0;
+
 
 
 
@@ -1166,5 +1173,28 @@ class Coupon
     public function getInverse()
     {
         return $this->inverse;
+    }
+
+    /**
+     * Set cartAmount
+     *
+     * @param integer $cartAmount
+     * @return Coupon
+     */
+    public function setCartAmount($cartAmount)
+    {
+        $this->cartAmount = $cartAmount;
+
+        return $this;
+    }
+
+    /**
+     * Get cartAmount
+     *
+     * @return integer 
+     */
+    public function getCartAmount()
+    {
+        return $this->cartAmount;
     }
 }

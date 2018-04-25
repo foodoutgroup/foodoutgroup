@@ -106,10 +106,14 @@ class AjaxController extends Controller
      */
     private function _ajaxCheckCoupon($request)
     {
+
         $couponCode = $request->get('coupon_code');
         $placeId = $request->get('place_id');
         $email = $request->get('email');
         $place = $request->get('place');
+        $cartService = $this->container->get('food.cart');
+        $locationService = $this->container->get('food.location');
+        $deliveryType = $request->get('deliveryType');
 
         $trans = $this->get('translator');
         $cont = [
@@ -145,7 +149,7 @@ class AjaxController extends Controller
         } else if (!$enableDiscount) {
             $cont['status'] = false;
             $cont['data']['error'] = $trans->trans('general.coupon.cannot_apply_for_alco');
-        }else if(!$email){
+        } else if (!$email) {
             $cont['status'] = false;
             $cont['data']['error'] = $trans->trans('general.coupon.no_email_address');
         }
@@ -207,13 +211,39 @@ class AjaxController extends Controller
                 $cont['status'] = false;
                 $cont['data']['error'] = $trans->trans('general.coupon.not_active');
             }
+
+
+            $locationData = $locationService->get();
+            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
+            $placeObject = $this->container->get('food.places')->getPlace($place);
+            $cartDishes = $cartService->getCartDishes($placeObject);
+            $totalPriceBeforeDiscount = $cartService->getCartTotal($cartDishes);
+
+            $deliveryPrice = 0;
+
+            if ($deliveryType) {
+
+                if ($request->get('deliveryType') != 'pickup' && !$place->getSelfDelivery()) {
+
+                    $deliveryPrice = $this->getCartService()->getDeliveryPrice(
+                        $this->getOrder()->getPlace(),
+                        $locationData,
+                        $this->getOrder()->getPlacePoint(),
+                        '',
+                        $orderDate
+                    );
+                }
+
+
+            }
+            //            if(){}
         }
 
         if ($cont['status'] == true) {
             $cont['data'] = $coupon->__toArray();
         }
 
-        if($email){
+        if ($email) {
             $cont['data']['email'] = $email;
         }
 

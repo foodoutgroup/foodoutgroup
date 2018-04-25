@@ -4496,7 +4496,7 @@ class OrderService extends ContainerAware
                     }
                 }
             }
-        }else{
+        } else {
             return $order->getFoodPrepareDate();
         }
     }
@@ -4562,7 +4562,8 @@ class OrderService extends ContainerAware
                             ->setIncludeDelivery($generator->getIncludeDelivery())
                             ->setB2b($generator->getB2b())
                             ->setInverse($inverse)
-                            ->setCreatedAt(new \DateTime('NOW'));
+                            ->setCreatedAt(new \DateTime('NOW'))
+                            ->setCartAmount($generator->getCartAmount());
 
                         $this->container->get('food.mailer')
                             ->setVariable('code', $theCode)

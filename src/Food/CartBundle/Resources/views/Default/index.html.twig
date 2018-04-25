@@ -46,6 +46,8 @@
                 var popupInner = $(this).closest('.coupon_inner');
                 var currentUrl = window.location.href;
                 var email = $('#customer-email').val();
+                var deliveryType = $('input[name="delivery-type"]:checked').val();
+                console.log(deliveryType);
                 popupInner.mask();
 
                 $.ajax({
@@ -56,12 +58,13 @@
                         coupon_code: couponField.val(),
                         currentUrl: currentUrl,
                         email:email,
-                        place:'checkout'
+                        place:'checkout',
+                        deliveryType: deliveryType
                     },
                     success: function (resp) {
                         if (resp.status == 1) {
                             var takeAway = 0;
-                            if ($('input[name="delivery-type"]:checked').val() == 'pickup') {
+                            if (deliveryType == 'pickup') {
                                 takeAway = 1;
                             }
                             $.post('{{ path('food_cart_action', {'action' : 'refresh'}) }}', {

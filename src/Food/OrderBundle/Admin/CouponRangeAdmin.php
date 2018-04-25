@@ -260,6 +260,7 @@ class CouponRangeAdmin extends FoodAdmin
                 $coupon->setCode($code);
                 $coupon->setName($obj->getName() . ' - ' . date('Y-m-d'));
                 $coupon->setInverse($inverse);
+                $coupon->setCartAmount($obj->getCartAmount());
                 if ($this->getContainer()->getParameter('country') == "LT"
                     || $this->getContainer()->getParameter('country') == 'LV'
                 ) {
