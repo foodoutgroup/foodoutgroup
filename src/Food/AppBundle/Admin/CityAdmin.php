@@ -27,6 +27,7 @@ class CityAdmin extends FoodAdmin
             ->add('pedestrian', null, array('label' => 'admin.cities.pedestrian', 'editable' => true))
             ->add('popUp', null, array('label' => 'admin.cities.popup', 'editable' => true))
             ->add('badge', null, array('label' => 'admin.cities.badge', 'editable' => true))
+            ->add('showInDispatcher', null, array('label' => 'admin.cities.dispatcher', 'editable' => true))
             ->add('_action', 'actions', array(
                 'actions' => array(
                     'edit' => array(),
@@ -66,6 +67,8 @@ class CityAdmin extends FoodAdmin
             ->add('badge', 'checkbox', array('label' => 'admin.cities.badge', 'required' => false))
             ->add('pop_up_time_from','time', array('label' => 'admin.cities.popup_from','required' => false))
             ->add('pop_up_time_to','time', array('label' => 'admin.cities.popup_to','required' => false))
+            ->add('showInDispatcher',null, array('label' => 'admin.cities.dispatcher','required' => false))
+
 
         ;
 

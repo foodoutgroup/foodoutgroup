@@ -182,6 +182,13 @@ class City implements \JsonSerializable
     private $badge;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="show_in_dispatcher", type="boolean", nullable=true ,options={"default": false})
+     */
+    private $showInDispatcher;
+
+    /**
      * Get id
      *
      * @return integer
@@ -279,8 +286,8 @@ class City implements \JsonSerializable
         return json_encode(array(
             'id' => $this->getId(),
             'title' => $this->getTitle(),
-            'zavalasOn'=> $this->isZavalasOn(),
-            'zavalasTime'=> $this->getZavalasTime(),
+            'zavalasOn' => $this->isZavalasOn(),
+            'zavalasTime' => $this->getZavalasTime(),
             'pedestrian' => $this->getPedestrian()
         ));
     }
@@ -309,7 +316,7 @@ class City implements \JsonSerializable
      */
     public function isActive()
     {
-        return (boolean) $this->active;
+        return (boolean)$this->active;
     }
 
     /**
@@ -436,9 +443,6 @@ class City implements \JsonSerializable
         return $this;
 
     }
-
-
-
 
 
     /**
@@ -614,7 +618,7 @@ class City implements \JsonSerializable
     /**
      * Get popUp
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getPopUp()
     {
@@ -637,7 +641,7 @@ class City implements \JsonSerializable
     /**
      * Get popUpTimeFrom
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getPopUpTimeFrom()
     {
@@ -660,7 +664,7 @@ class City implements \JsonSerializable
     /**
      * Get popUpTimeTo
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getPopUpTimeTo()
     {
@@ -683,10 +687,33 @@ class City implements \JsonSerializable
     /**
      * Get badge
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getBadge()
     {
         return $this->badge;
+    }
+
+    /**
+     * Set showInDispatcher
+     *
+     * @param boolean $showInDispatcher
+     * @return City
+     */
+    public function setShowInDispatcher($showInDispatcher)
+    {
+        $this->showInDispatcher = $showInDispatcher;
+
+        return $this;
+    }
+
+    /**
+     * Get showInDispatcher
+     *
+     * @return boolean 
+     */
+    public function getShowInDispatcher()
+    {
+        return $this->showInDispatcher;
     }
 }
