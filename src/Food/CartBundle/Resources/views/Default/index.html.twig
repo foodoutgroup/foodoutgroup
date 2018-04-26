@@ -47,7 +47,13 @@
                 var currentUrl = window.location.href;
                 var email = $('#customer-email').val();
                 var deliveryType = $('input[name="delivery-type"]:checked').val();
-                console.log(deliveryType);
+                var preOrder = $('input[name="pre-order"]:checked').val();
+                var orderDate;
+
+                if (preOrder == 'it-is') {
+                    orderDate = $('#pre_order_date').val() + ' ' + $('#pre_order_time').val();
+                }
+
                 popupInner.mask();
 
                 $.ajax({
@@ -57,9 +63,12 @@
                         place_id: '{{ place.id }}',
                         coupon_code: couponField.val(),
                         currentUrl: currentUrl,
-                        email:email,
-                        place:'checkout',
-                        deliveryType: deliveryType
+                        email: email,
+                        place: 'checkout',
+                        deliveryType: deliveryType,
+                        orderDate: orderDate,
+                        preOrder: preOrder
+
                     },
                     success: function (resp) {
                         if (resp.status == 1) {
@@ -141,34 +150,34 @@
     function() {
     $('body .delivery-type-radios .custom-radio, body .delivery-type-radios .custom-radio .iCheck-helper').click(
     function(){
-        var selfDelivery = '{{ place.selfDelivery }}'
-        var opt = "";
-        var nav = '{{ place.navision }}';
-        var cardOnDelivery = '{{ place.cardOnDelivery }}'   ;
+    var selfDelivery = '{{ place.selfDelivery }}'
+    var opt = "";
+    var nav = '{{ place.navision }}';
+    var cardOnDelivery = '{{ place.cardOnDelivery }}'   ;
 
-        if ($(this).is('.custom-radio')) {
-            opt = $(this).find('input').val();
-        } else {
-            opt = $(this).parent().find('input').val();
-        }
+    if ($(this).is('.custom-radio')) {
+    opt = $(this).find('input').val();
+    } else {
+    opt = $(this).parent().find('input').val();
+    }
 
-        if(opt == 'pickup'){
-            $('.simple-payment .custom-radio').first().iCheck('check')
-            $('.payment-container').hide();
-            $('.custom-radio.for_hiding').hide();
-        }
+    if(opt == 'pickup'){
+    $('.simple-payment .custom-radio').first().iCheck('check')
+    $('.payment-container').hide();
+    $('.custom-radio.for_hiding').hide();
+    }
 
-        if(opt == 'deliver'){
-            if(selfDelivery != '1'){
-                $('.payment-container').show();
-                console.log('cia ne self')
-            }
+    if(opt == 'deliver'){
+    if(selfDelivery != '1'){
+    $('.payment-container').show();
+    console.log('cia ne self')
+    }
 
-            if(cardOnDelivery == '1'){
-                $('.custom-radio.for_hiding').show();
-                console.log('random cia')
-            }
-        }
+    if(cardOnDelivery == '1'){
+    $('.custom-radio.for_hiding').show();
+    console.log('random cia')
+    }
+    }
 
 
     with ($('.for_hiding')) {
@@ -386,7 +395,7 @@
 
                             <div class="form-row form-row-required custom-checkbox custom-checkbox cart-notify">
                                 <label>{% trans %}cart.checkout.cart_notify{% endtrans %} </label>
-                                <input type="checkbox" name="cart_notify" checked="checked" />
+                                <input type="checkbox" name="cart_notify" checked="checked"/>
                             </div>
 
                             <div class="form-row form-row-required custom-checkbox cart-rules">
@@ -425,10 +434,11 @@
                                                value="local"{% if (order is not null and order.paymentMethod == 'local') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local') or (dataToLoad is empty) %} checked="checked"{% endif %}>
                                     </label>
                                     {#{% if takeAway != true and place.cardOnDelivery %}#}
-                                        <label class="custom-radio for_hiding" style=" {% if takeAway != true and place.cardOnDelivery %}{% else %} display: none; {% endif %}">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
-                                            <input type="radio" name="payment-type"
-                                                   value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
-                                        </label>
+                                    <label class="custom-radio for_hiding"
+                                           style=" {% if takeAway != true and place.cardOnDelivery %}{% else %} display: none; {% endif %}">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
+                                        <input type="radio" name="payment-type"
+                                               value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
+                                    </label>
                                     {#{% endif %}#}
                                 {% endif %}
 
@@ -469,83 +479,84 @@
                                     </div>
                                 {% else %}
                                     {#{% if not takeAway %}#}
-                                        {#{% if not place.selfDelivery %}#}
-                                            <div class="for_hiding payment-container" style="{% if not takeAway and not place.selfDelivery %}{% else %} display: none; {% endif %}">
-                                                <div class="select-payment clearfix">
-                                                    <label class="custom-radio">
-                                                        <img alt="Nordea"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/nordea-small.png">
-                                                        <input type="radio" name="payment-type"
-                                                               value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}/>
-                                                    </label>
-                                                </div>
-                                                <div class="select-payment clearfix">
-                                                    <label class="custom-radio wider-radio">
-                                                        {{ 'cart.checkout.gateway_cc'|trans }}:
-                                                        <img alt="MasterCard"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/master-card-small.png">
-                                                        <img alt="Visa"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-small.png">
-                                                        <img alt="Maestro"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/maestro-small.png">
-                                                        <img alt="Visa Electron"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-electron-small.png">
-                                                        <input type="radio" name="payment-type"
-                                                               value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}/>
-                                                    </label>
-                                                </div>
-                                                <div class="select-bank clearfix">
-                                                    <label class="custom-radio">
-                                                        <img alt="Šiaulių bankas"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-sb.png">
-                                                        <input type="radio" name="payment-type"
-                                                               value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
-                                                    </label>
-                                                    <label class="custom-radio">
-                                                        <img alt="SEB"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-seb.png">
-                                                        <input type="radio" name="payment-type"
-                                                               value="seb-banklink"{% if order is not null and order.paymentMethod == 'seb-banklink' %} checked="checked"{% endif %}/>
-                                                    </label>
-                                                    <label class="custom-radio">
-                                                        <img alt="Danske Bank"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-db.png">
-                                                        <input type="radio" name="payment-type"
-                                                               value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
-                                                    </label>
-                                                    <label class="custom-radio">
-                                                        <img alt="Medicinos bankas"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-mb.png">
-                                                        <input type="radio" name="payment-type"
-                                                               value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
-                                                    </label>
-                                                    <label class="custom-radio">
-                                                        <img alt="Swedbank"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-swb.png">
-                                                        <input type="radio" name="payment-type"
-                                                               value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}/>
-                                                    </label>
-                                                    <label class="custom-radio">
-                                                        <img alt="DNB"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-dnb.png">
-                                                        <input type="radio" name="payment-type"
-                                                               value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
-                                                    </label>
-                                                    <label class="custom-radio">
-                                                        <img alt="Citadelė"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-cit.png">
-                                                        <input type="radio" name="payment-type"
-                                                               value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
-                                                    </label>
-                                                    <label class="custom-radio">
-                                                        <img alt="Paysera"
-                                                             src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-psr.png">
-                                                        <input type="radio" name="payment-type"
-                                                               value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        {#{% endif %}#}
+                                    {#{% if not place.selfDelivery %}#}
+                                    <div class="for_hiding payment-container"
+                                         style="{% if not takeAway and not place.selfDelivery %}{% else %} display: none; {% endif %}">
+                                        <div class="select-payment clearfix">
+                                            <label class="custom-radio">
+                                                <img alt="Nordea"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/nordea-small.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}/>
+                                            </label>
+                                        </div>
+                                        <div class="select-payment clearfix">
+                                            <label class="custom-radio wider-radio">
+                                                {{ 'cart.checkout.gateway_cc'|trans }}:
+                                                <img alt="MasterCard"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/master-card-small.png">
+                                                <img alt="Visa"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-small.png">
+                                                <img alt="Maestro"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/maestro-small.png">
+                                                <img alt="Visa Electron"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/visa-electron-small.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="swedbank-credit-card-gateway"{% if order is not null and order.paymentMethod == 'swedbank-credit-card-gateway' %} checked="checked"{% endif %}/>
+                                            </label>
+                                        </div>
+                                        <div class="select-bank clearfix">
+                                            <label class="custom-radio">
+                                                <img alt="Šiaulių bankas"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-sb.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="SEB"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-seb.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="seb-banklink"{% if order is not null and order.paymentMethod == 'seb-banklink' %} checked="checked"{% endif %}/>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="Danske Bank"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-db.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="Medicinos bankas"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-mb.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="Swedbank"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-swb.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="swedbank-gateway"{% if order is not null and order.paymentMethod == 'swedbank-gateway' %} checked="checked"{% endif %}/>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="DNB"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-dnb.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="Citadelė"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-cit.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                            </label>
+                                            <label class="custom-radio">
+                                                <img alt="Paysera"
+                                                     src="//{{ cloudfront_url }}/bundles/foodapp/images/bank-psr.png">
+                                                <input type="radio" name="payment-type"
+                                                       value="paysera"{% if order is not null and order.paymentMethod == 'paysera' %} checked="checked"{% endif %}>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    {#{% endif %}#}
                                     {#{% endif %}#}
                                 {% endif %}
                             {% endif %}

@@ -619,6 +619,8 @@ class OrdersController extends Controller
                     $cartTotal = $cartBeforeDiscount - $discount;
                 }
 
+//                if($coupon->getCartAmount() > ){}
+
                 $response = [
                     'id' => $coupon->getId(),
                     'name' => $coupon->getName(),

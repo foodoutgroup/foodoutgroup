@@ -266,7 +266,7 @@ class Coupon
      *
      * @ORM\Column(name="cart_amount", type="integer",  nullable=true)
      */
-    private $cartAmount = 0;
+    private $cartAmount;
 
 
 

@@ -3479,6 +3479,7 @@ class OrderService extends ContainerAware
         $phonePass = false;
         $list = $this->getCartService()->getCartDishes($place);
         $total_cart = $this->getCartService()->getCartTotal($list/*, $place*/);
+        $totalBeforeDiscount = $total_cart;
         $debugCartInfo['total'] = $total_cart;
 
         $customerEmail = $request->get('customer-email');
@@ -3915,6 +3916,11 @@ class OrderService extends ContainerAware
         if ($request->get('cart_notify') != 'on') {
             $formErrors[] = 'order.form.errors.cart_notify';
         }
+
+
+
+        var_dump( $total_cart);
+            die;
 
         if ($phonePass && $place->getNavision()) {
             $data = $this->container->get('food.nav')->validateCartInNav(

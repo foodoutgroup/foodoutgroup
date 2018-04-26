@@ -114,6 +114,7 @@ class AjaxController extends Controller
         $cartService = $this->container->get('food.cart');
         $locationService = $this->container->get('food.location');
         $deliveryType = $request->get('deliveryType');
+        $placeService = $this->container->get('food.places');
 
         $trans = $this->get('translator');
         $cont = [
@@ -212,31 +213,85 @@ class AjaxController extends Controller
                 $cont['data']['error'] = $trans->trans('general.coupon.not_active');
             }
 
-
-            $locationData = $locationService->get();
-            $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
-            $placeObject = $this->container->get('food.places')->getPlace($place);
-            $cartDishes = $cartService->getCartDishes($placeObject);
-            $totalPriceBeforeDiscount = $cartService->getCartTotal($cartDishes);
-
             $deliveryPrice = 0;
 
-            if ($deliveryType) {
+            if ($deliveryType && $coupon->getCartAmount()) {
+                $placeObject = $this->container->get('food.places')->getPlace($place);
+                $cartDishes = $cartService->getCartDishes($placeObject);
+                $totalPriceBeforeDiscount = $cartService->getCartTotal($cartDishes);
+                if ($request->get('deliveryType') != 'pickup') {
+                    $total = 0;
+                    $locationData = $locationService->get();
+                    $place = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->find($placeId);
 
-                if ($request->get('deliveryType') != 'pickup' && !$place->getSelfDelivery()) {
 
-                    $deliveryPrice = $this->getCartService()->getDeliveryPrice(
-                        $this->getOrder()->getPlace(),
+                    $adminFee = $placeService->getAdminFee($placeObject);
+                    $useAdminFee = $this->container->get('food.places')->useAdminFee($place);
+
+
+                    $placePointMap = $this->container->get('session')->get('point_data');
+
+                    if ($request->get('preOrder') != 'it-is') {
+                        $orderDate = $request->get('orderDate');
+                    } else {
+                        $orderDate = date('Y-m-d H:i:s');
+                    }
+
+                    if (empty($placePointMap[$placeId])) {
+                        $locationService = $this->container->get('food.location');
+                        $placePointId = $this->container->get('doctrine')->getRepository('FoodDishesBundle:Place')->getPlacePointNear($placeId, $locationService->get(), '', $orderDate);
+                    } else {
+                        $placePointId = $placePointMap[$placeId];
+                    }
+
+                    $pointRecord = $this->container->get('doctrine')->getRepository('FoodDishesBundle:PlacePoint')->find($placePointId);
+
+
+                    $deliveryPrice = $cartService->getDeliveryPrice(
+                        $place,
                         $locationData,
-                        $this->getOrder()->getPlacePoint(),
+                        $pointRecord,
                         '',
                         $orderDate
                     );
+
+                    $cartMinimum = $cartService->getMinimumCart(
+                        $place,
+                        $locationData,
+                        $pointRecord
+                    );
+
+
+                    if ($useAdminFee && $cartMinimum && ($cartMinimum > $totalPriceBeforeDiscount)) {
+                        $useAdminFee = true;
+                    } else {
+                        $useAdminFee = false;
+                    }
+
+                    if ($useAdminFee && !$adminFee) {
+                        $adminFee = 0;
+                    }
+
+
+                    if ($useAdminFee) {
+                        $total = $adminFee + $deliveryPrice + $totalPriceBeforeDiscount;
+                    }
+
+                    if ($total < $coupon->getCartAmount()) {
+                        $cont['status'] = false;
+                        $cont['data']['error'] = $trans->trans('general.coupon.not_over_coupon_amount');
+                    }
+
+
+                } else {
+                    if ($totalPriceBeforeDiscount < $coupon->getCartAmount()) {
+                        $cont['status'] = false;
+                        $cont['data']['error'] = $trans->trans('general.coupon.not_over_coupon_amount');
+                    }
                 }
 
 
             }
-            //            if(){}
         }
 
         if ($cont['status'] == true) {
