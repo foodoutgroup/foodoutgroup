@@ -38,7 +38,7 @@
                 {% endif %}
             {% endif %}
             <h3 class="name" itemprop="name">{% if dish.place.dishesNumeration %}{{ loop.index }}. {% endif %}{{ dish.name }}</h3>
-            <p class="desc" itemprop="description">{{ dish.description|nl2br }}{% if site_country == 'LT'%}<br><br><span style="font-size: 10px;">{% trans %}dishes.allergic.warring{% endtrans %}</span>{% endif %}</p>
+            <p class="desc" itemprop="description">{{ dish.description|nl2br }}{% if dish.showAdditionalInfo %}<br><br><span style="font-size: 10px;">{{ dish.additionalInfo|raw }}</span>{% endif %}</p>
 
             <div class="menu-item-bottom clearfix" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                 <meta itemprop="priceCurrency" content="EUR" />

@@ -61,6 +61,14 @@ class Dish extends Uploadable implements Translatable
     private $description;
 
     /**
+     * @var string
+     *
+     * @Gedmo\Translatable
+     * @ORM\Column(name="additional_info", type="text")
+     */
+    private $additionalInfo;
+
+    /**
      * @var \Food\DishesBundle\Entity\Place
      *
      * @ORM\ManyToOne(targetEntity="\Food\DishesBundle\Entity\Place", inversedBy="dishes")
@@ -244,6 +252,13 @@ class Dish extends Uploadable implements Translatable
      * @ORM\Column(name="slug", type="string", length=255, nullable=true, unique=true)
      */
     private $slug;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="show_additional_info", type="boolean", nullable=true, options={"default": true}))
+     */
+    private $showAdditionalInfo;
 
     protected $resizeMode = \Imagine\Image\ImageInterface::THUMBNAIL_INSET;
     protected $multipleThumbs = true;
@@ -722,7 +737,8 @@ class Dish extends Uploadable implements Translatable
      * @return Dish
      */
 
-    public function removeAllOptions(){
+    public function removeAllOptions()
+    {
         $this->options = new \Doctrine\Common\Collections\ArrayCollection();
 
         return $this;
@@ -1113,14 +1129,14 @@ class Dish extends Uploadable implements Translatable
     public function setNameToNav($nameToNav)
     {
         $this->nameToNav = $nameToNav;
-    
+
         return $this;
     }
 
     /**
      * Get nameToNav
      *
-     * @return string 
+     * @return string
      */
     public function getNameToNav()
     {
@@ -1136,17 +1152,63 @@ class Dish extends Uploadable implements Translatable
     public function setSlug($slug)
     {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set additionalInfo
+     *
+     * @param string $additionalInfo
+     * @return Dish
+     */
+    public function setAdditionalInfo($additionalInfo)
+    {
+        $this->additionalInfo = $additionalInfo;
+
+        return $this;
+    }
+
+    /**
+     * Get additionalInfo
+     *
+     * @return string 
+     */
+    public function getAdditionalInfo()
+    {
+        return $this->additionalInfo;
+    }
+
+    /**
+     * Set showAdditionalInfo
+     *
+     * @param boolean $showAdditionalInfo
+     * @return Dish
+     */
+    public function setShowAdditionalInfo($showAdditionalInfo)
+    {
+        $this->showAdditionalInfo = $showAdditionalInfo;
+
+        return $this;
+    }
+
+    /**
+     * Get showAdditionalInfo
+     *
+     * @return boolean 
+     */
+    public function getShowAdditionalInfo()
+    {
+        return $this->showAdditionalInfo;
     }
 }
