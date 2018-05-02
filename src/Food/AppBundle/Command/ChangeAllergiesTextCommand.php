@@ -3,7 +3,9 @@
 namespace Food\AppBundle\Command;
 
 use Food\AppBundle\Service\MailService;
+use Food\DishesBundle\Entity\DishLocalized;
 use Food\DishesBundle\Entity\Place;
+use Food\DishesBundle\Entity\PlaceLocalized;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -24,15 +26,32 @@ class ChangeAllergiesTextCommand extends ContainerAwareCommand
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
         $locales = $this->getContainer()->getParameter('locales');
-        try {
-            $dishes = $this->getContainer()->get('doctrine')->getRepository('FoodDishesBundle:Dish')->findBy(['id'=>4]);
-            foreach ($dishes as $dish){
-               $translations = $dish->getTranslations();
+        $locale = $this->getContainer()->getParameter('locale');
 
-//                $dish->setAdditionalInfo('*Dėl patiekaluose esančių alergenų ar netoleravimą sukeliančių maisto medžiagų produktų, kreipkitės tiesiogiai į restorano darbuotojus.');
+        foreach ($locales as $key => $localeItem) {
+            if ($localeItem == $locale) {
+                unset($locales[$key]);
+            }
+        }
+
+        $text = '*Dėl patiekaluose esančių alergenų ar netoleravimą sukeliančių maisto medžiagų produktų, kreipkitės tiesiogiai į restorano darbuotojus.';
+
+        try {
+            $dishes = $this->getContainer()->get('doctrine')->getRepository('FoodDishesBundle:Dish')->findAll();
+
+            foreach ($dishes as $dish) {
+                $dish->setAdditionalInfo($text);
+
+                foreach ($locales as $loc) {
+                    $trans = new DishLocalized();
+                    $trans->setObject($dish);
+                    $trans->setField('additionalInfo');
+                    $trans->setLocale($loc);
+                    $trans->setContent($text);
+                    $em->persist($trans);
+                }
                 $em->persist($dish);
                 $em->flush();
-            break;
             }
         } catch (\Exception $e) {
             $output->writeln('<fg=red>Something went horribly wrong</fg=red>');
