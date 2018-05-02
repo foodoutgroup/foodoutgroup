@@ -138,7 +138,8 @@
     function() {
     $('body .delivery-type-radios .custom-radio, body .delivery-type-radios .custom-radio .iCheck-helper').click(
     function(){
-        var selfDelivery = '{{ place.selfDelivery }}'
+        var onlinePayment = '{{ place.disabledOnlinePayment }}'
+
         var opt = "";
         var nav = '{{ place.navision }}';
         var cardOnDelivery = '{{ place.cardOnDelivery }}'   ;
@@ -156,7 +157,7 @@
         }
 
         if(opt == 'deliver'){
-            if(selfDelivery != '1'){
+            if(onlinePayment != '1'){
                 $('.payment-container').show();
                 console.log('cia ne self')
             }
@@ -432,6 +433,7 @@
                             </div>
 
                             {% if places_service.getAllowOnlinePayment(place) %}
+
                                 {# TODO kolkas viskas rodo i Paysera#}
                                 {# bbd su jusu tokiu hardcode.. bl nx stengtis jei tokius s daro zmones.#}
                                 {% if site_country == 'LV' %}
@@ -467,7 +469,8 @@
                                 {% else %}
                                     {#{% if not takeAway %}#}
                                         {#{% if not place.selfDelivery %}#}
-                                            <div class="for_hiding payment-container" style="{% if not takeAway and not place.selfDelivery %}{% else %} display: none; {% endif %}">
+
+                                            <div class="for_hiding payment-container" style="{% if not takeAway and not place.disabledOnlinePayment %}{% else %} display: none; {% endif %}">
                                                 <div class="select-payment clearfix">
                                                     <label class="custom-radio">
                                                         <img alt="Nordea"
