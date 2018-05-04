@@ -1,4 +1,5 @@
 <?php
+
 namespace Food\DishesBundle\Admin;
 
 use Doctrine\ORM\EntityManager;
@@ -109,7 +110,7 @@ class DishAdmin extends FoodAdmin
                     ),
                     'slug' => [
                         'constraints' => new Slug(SlugEntity::TYPE_DISH, $formMapper),
-                        'attr'=>['data-slugify'=>'name']
+                        'attr' => ['data-slugify' => 'name']
                     ]
                 )
             ));
@@ -182,7 +183,8 @@ class DishAdmin extends FoodAdmin
                     'edit' => 'inline',
                     'inline' => 'table',
                 )
-            );
+            )
+            ->add('showAdditionalInfo', null, array('label' => 'admin.dish.additional_show'));
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
