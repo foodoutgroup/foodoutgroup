@@ -77,7 +77,9 @@ class DefaultController extends Controller
                 foreach ($dispatcherCities as $dispatcherCity) {
                     $respArray = [
                         'id' => $dispatcherCity->getId(),
-                        'title' => $dispatcherCity->getTitle()
+                        'title' => $dispatcherCity->getTitle(),
+                        'lat' => $dispatcherCity->getDispatcherLat(),
+                        'lng' => $dispatcherCity->getDispatcherLng()
                     ];
 
                     array_push($response, $respArray);
