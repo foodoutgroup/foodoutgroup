@@ -20,7 +20,7 @@ class OrdersController extends Controller
         $ip = $request->getClientIp();
         // Dude is banned - hit him
         if ($miscUtils->isIpBanned($ip)) {
-            $this->get('logger')->warning('GOT BAN: '.$ip);
+            $this->get('logger')->warning('GOT BAN: ' . $ip);
             die('{error: "Piktybinis", description: null}');
         }
     }
@@ -37,7 +37,7 @@ class OrdersController extends Controller
         try {
             $requestJson = new JsonRequest($request);
             $response = $this->get('food_api.order')->getPendingOrders($request, $requestJson);
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
             $this->get('logger')->error('Orders:getOrdersAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrdersAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
@@ -54,7 +54,7 @@ class OrdersController extends Controller
 
         //$this->get('logger')->alert('Orders:getOrdersAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     /**
@@ -69,7 +69,7 @@ class OrdersController extends Controller
         try {
             $requestJson = new JsonRequest($request);
             $response = $this->get('food_api.order')->createOrder($request, $requestJson);
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
             $this->get('logger')->error('Orders:createOrderAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:createOrderAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
@@ -87,7 +87,7 @@ class OrdersController extends Controller
         //$this->get('logger')->alert('Orders:createOrderAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     /**
@@ -119,7 +119,7 @@ class OrdersController extends Controller
 
         //$this->get('logger')->alert('Orders:createOrderPreAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     /**
@@ -139,7 +139,7 @@ class OrdersController extends Controller
             } else {
                 return new JsonResponse(null, 404);
             }
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
             $this->get('logger')->error('Orders:getOrderDetailsByHashAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrderDetailsByHashAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
@@ -157,7 +157,7 @@ class OrdersController extends Controller
         //$this->get('logger')->alert('Orders:getOrderDetailsByHashAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     /**
@@ -172,10 +172,10 @@ class OrdersController extends Controller
 
         try {
             $order = $this->get('food.order')->getOrderByHash($hash);
-            if (($request->isMethod('post') || $request->isMethod('post')) &&  $order->getOrderStatus() != "canceled") {
+            if (($request->isMethod('post') || $request->isMethod('post')) && $order->getOrderStatus() != "canceled") {
                 $response = $this->get('food_api.order')->changeOrderStatus($order, $request->get('status'), $request);
             }
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
             $this->get('logger')->error('Orders:changeOrderStatusByHashAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:changeOrderStatusByHashAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
@@ -193,7 +193,7 @@ class OrdersController extends Controller
         //$this->get('logger')->alert('Orders:changeOrderStatusByHashAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     /**
@@ -212,7 +212,7 @@ class OrdersController extends Controller
             if ($request->request->has('order_status') && $order->getOrderStatus() != "canceled") {
                 $response = $this->get('food_api.order')->changeOrderStatus($order, $request->get('order_status'), $request);
             }
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
             $this->get('logger')->error('Orders:changeOrderStatusByHashAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:changeOrderStatusByHashAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
@@ -230,7 +230,7 @@ class OrdersController extends Controller
         //$this->get('logger')->alert('Orders:changeOrderStatusByHashAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     public function getOrdersByPlacepointHashAction($hash, Request $request)
@@ -246,7 +246,7 @@ class OrdersController extends Controller
             } else {
                 return new JsonResponse(null, 404);
             }
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrdersByPlacepointHashAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
@@ -264,7 +264,7 @@ class OrdersController extends Controller
         //$this->get('logger')->alert('Orders:getOrdersByPlacepointHashAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
 
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     /**
@@ -310,7 +310,7 @@ class OrdersController extends Controller
             }
 
             $response = $this->get('food_api.order')->getOrderForResponse($order);
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
             $this->get('logger')->error('Orders:getOrderDetailsAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrderDetailsAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
@@ -327,7 +327,7 @@ class OrdersController extends Controller
 
         //$this->get('logger')->alert('Orders:getOrderDetailsAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     /**
@@ -362,7 +362,7 @@ class OrdersController extends Controller
             $this->container->get('food.order')->deactivateCoupon();
 
             $response = $this->get('food_api.order')->getOrderForResponse($order);
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
             $this->get('logger')->error('Orders:confirmOrderAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:confirmOrderAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
@@ -379,7 +379,7 @@ class OrdersController extends Controller
 
         //$this->get('logger')->alert('Orders:confirmOrderAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     /**
@@ -411,12 +411,12 @@ class OrdersController extends Controller
                 "status" => array(
                     "title" => $this->get('food_api.order')->convertOrderStatus($order->getOrderStatus()),
                     // TODO Rodome nebe restorano, o dispeceriu nr
-                    "info_number" => "+".$this->container->getParameter('dispatcher_contact_phone'),
+                    "info_number" => "+" . $this->container->getParameter('dispatcher_contact_phone'),
 //                        "info_number" => "+".$order->getPlacePoint()->getPhone(),
                     "message" => $message
                 )
             ];
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
             $this->get('logger')->error('Orders:getOrderStatusAction Error1:' . $e->getMessage());
             $this->get('logger')->error('Orders:getOrderStatusAction Trace1:' . $e->getTraceAsString());
             return new JsonResponse($e->getErrorData(), $e->getStatusCode());
@@ -433,7 +433,7 @@ class OrdersController extends Controller
 
         //$this->get('logger')->alert('Orders:getOrderStatusAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     /**
@@ -603,23 +603,38 @@ class OrdersController extends Controller
 
                     $discount = 0;
                 } else {
-                    $discount = $cartService->getTotalDiscount($list, $coupon->getDiscount()*100);
+                    $discount = $cartService->getTotalDiscount($list, $coupon->getDiscount() * 100);
                 }
 
-                if($coupon->getFullOrderCovers()){
-                    $discount += ($coupon->getDiscountSum()*100);
+                if ($coupon->getFullOrderCovers()) {
+                    $discount += ($coupon->getDiscountSum() * 100);
                 }
                 $cartBeforeDiscount = $cartService->getCartTotal($list) * 100;
 
-                if($coupon->getDiscount()){
+                if ($coupon->getDiscount()) {
                     $discount = $coupon->getDiscount();
-                    $tmpDiscount = ($cartBeforeDiscount/100)*$discount;
+                    $tmpDiscount = ($cartBeforeDiscount / 100) * $discount;
                     $cartTotal = $cartBeforeDiscount - $tmpDiscount;
-                }else{
+                } else {
                     $cartTotal = $cartBeforeDiscount - $discount;
                 }
 
-//                if($coupon->getCartAmount() > ){}
+                $totalWithDelivery = $cartBeforeDiscount + $requestJson->get('delivery_fee');
+
+                if ($coupon->getCartAmount()) {
+
+                    if ($totalWithDelivery < ($coupon->getCartAmount() * 100)) {
+
+                        throw new ApiException(
+                            'Coupon Does not meet requirements',
+                            404,
+                            array(
+                                'error' => 'Coupon Does not meet requirements',
+                                'description' => $this->get('translator')->trans('api.orders.coupon_does_not_reach_amount')
+                            )
+                        );
+                    }
+                }
 
                 $response = [
                     'id' => $coupon->getId(),
@@ -648,7 +663,7 @@ class OrdersController extends Controller
                     )
                 );
             }
-        }  catch (ApiException $e) {
+        } catch (ApiException $e) {
 
             $this->container->get('food.error_log')->write($this->getUser(), null, null, 'coupon_api_error', $e->getMessage());
 
@@ -671,7 +686,7 @@ class OrdersController extends Controller
 
         //$this->get('logger')->alert('Orders:getOrderStatusAction Response:'. print_r($response, true));
         //$this->get('logger')->alert('Timespent:' . round((microtime(true) - $startTime) * 1000, 2) . ' ms');
-        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin'=> '*'));
+        return new JsonResponse($response, 200, array('Access-Control-Allow-Origin' => '*'));
     }
 
     /**
@@ -688,7 +703,7 @@ class OrdersController extends Controller
             $params = $params->request->all();
         }
 
-        $logger->alert('=============================== '.$action.' =====================================');
+        $logger->alert('=============================== ' . $action . ' =====================================');
         $logger->alert('Request params:');
         $logger->alert(var_export($params, true));
         $logger->alert('=========================================================');
