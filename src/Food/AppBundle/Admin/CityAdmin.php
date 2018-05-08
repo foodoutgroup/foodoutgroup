@@ -1,4 +1,5 @@
 <?php
+
 namespace Food\AppBundle\Admin;
 
 use Food\AppBundle\Admin\Admin as FoodAdmin;
@@ -14,7 +15,7 @@ class CityAdmin extends FoodAdmin
 
     protected function configureRoutes(RouteCollection $collection)
     {
-        $collection->add('clone', $this->getRouterIdParameter().'/clone');
+        $collection->add('clone', $this->getRouterIdParameter() . '/clone');
     }
 
     function configureListFields(ListMapper $list)
@@ -38,22 +39,21 @@ class CityAdmin extends FoodAdmin
     }
 
 
-
     function configureFormFields(FormMapper $form)
     {
 
         $form->add('translations', 'a2lix_translations_gedmo', [
             'translatable_class' => 'Food\AppBundle\Entity\City',
-                'cascade_validation'=>true,
-                'fields' => [
-                    'title' => [ ],
-                    'meta_title' => ['required' => false],
-                    'meta_description' => ['required' => false],
-                    'slug' => [
-                        'constraints' => new Slug(SlugEntity::TYPE_CITY, $form),
-                        'attr'=>['data-slugify'=>'title']
-                        ]
+            'cascade_validation' => true,
+            'fields' => [
+                'title' => [],
+                'meta_title' => ['required' => false],
+                'meta_description' => ['required' => false],
+                'slug' => [
+                    'constraints' => new Slug(SlugEntity::TYPE_CITY, $form),
+                    'attr' => ['data-slugify' => 'title']
                 ]
+            ]
         ]);
 
 
@@ -65,12 +65,11 @@ class CityAdmin extends FoodAdmin
             ->add('pedestrian', 'checkbox', array('label' => 'admin.cities.pedestrian', 'required' => false))
             ->add('pop_up', 'checkbox', array('label' => 'admin.cities.popup', 'required' => false))
             ->add('badge', 'checkbox', array('label' => 'admin.cities.badge', 'required' => false))
-            ->add('pop_up_time_from','time', array('label' => 'admin.cities.popup_from','required' => false))
-            ->add('pop_up_time_to','time', array('label' => 'admin.cities.popup_to','required' => false))
-            ->add('showInDispatcher',null, array('label' => 'admin.cities.dispatcher','required' => false))
-
-
-        ;
+            ->add('pop_up_time_from', 'time', array('label' => 'admin.cities.popup_from', 'required' => false))
+            ->add('pop_up_time_to', 'time', array('label' => 'admin.cities.popup_to', 'required' => false))
+            ->add('showInDispatcher', null, array('label' => 'admin.cities.dispatcher', 'required' => false))
+            ->add('dispatcherLat', null, array('label' => 'admin.cities.dispatcher_lat', 'required' => false))
+            ->add('dispatcherLng', null, array('label' => 'admin.cities.dispatcher_lng', 'required' => false));
 
     }
 //

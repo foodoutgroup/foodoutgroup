@@ -189,6 +189,20 @@ class City implements \JsonSerializable
     private $showInDispatcher;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="dispatcher_lat", type="string", nullable=true)
+     */
+    private $dispatcherLat;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="dispatcher_lng", type="string", nullable=true)
+     */
+    private $dispatcherLng;
+
+    /**
      * Get id
      *
      * @return integer
@@ -715,5 +729,51 @@ class City implements \JsonSerializable
     public function getShowInDispatcher()
     {
         return $this->showInDispatcher;
+    }
+
+    /**
+     * Set dispatcherLat
+     *
+     * @param string $dispatcherLat
+     * @return City
+     */
+    public function setDispatcherLat($dispatcherLat)
+    {
+        $this->dispatcherLat = $dispatcherLat;
+
+        return $this;
+    }
+
+    /**
+     * Get dispatcherLat
+     *
+     * @return string 
+     */
+    public function getDispatcherLat()
+    {
+        return $this->dispatcherLat;
+    }
+
+    /**
+     * Set dispatcherLng
+     *
+     * @param string $dispatcherLng
+     * @return City
+     */
+    public function setDispatcherLng($dispatcherLng)
+    {
+        $this->dispatcherLng = $dispatcherLng;
+
+        return $this;
+    }
+
+    /**
+     * Get dispatcherLng
+     *
+     * @return string 
+     */
+    public function getDispatcherLng()
+    {
+        return $this->dispatcherLng;
     }
 }
