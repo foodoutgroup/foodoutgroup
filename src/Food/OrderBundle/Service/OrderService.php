@@ -4873,6 +4873,7 @@ class OrderService extends ContainerAware
 
     public function updateDriver()
     {
+        $logisticsService = $this->container->get('food.logistics');
         $order = $this->getOrder();
         if (!$order instanceof Order) {
             throw new \InvalidArgumentException('No order is set');
@@ -4882,7 +4883,7 @@ class OrderService extends ContainerAware
             && $order->getDeliveryType() == 'deliver'
             && $order->getPlacePointSelfDelivery() == false
         ) {
-            $logisticsCityFilter = $this->container->getParameter('driver.city_filter');
+            $logisticsCityFilter = $logisticsService->getLogisticsCityFilter();
             if (empty($logisticsCityFilter) || in_array($order->getPlacePointCity(), $logisticsCityFilter)) {
                 $this->container->get('food.order')->logOrder($order, 'schedule_driver_api_send', 'Order scheduled to send to driver');
 
