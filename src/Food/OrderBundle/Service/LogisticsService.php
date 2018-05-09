@@ -638,7 +638,7 @@ class LogisticsService extends ContainerAware
         $dispatcherCities = $cityRepo->findBy(['showInDispatcher'=>1]);
 
         foreach ($dispatcherCities as $dispatcherCity){
-            $titleArray[] = $dispatcherCity->getName();
+            $titleArray[] = $dispatcherCity->getTitle();
         }
 
         return $titleArray;
