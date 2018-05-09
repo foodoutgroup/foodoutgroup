@@ -25,7 +25,7 @@ parameters:
     s3_bucket: foodout-invoice
 
     driver.send_to_external: true
-    driver.city_filter: ["Vilnius"]
+    driver.city_filter: ["Vilnius","Kaunas","Klaipėda"]
     driver.socket_address: tcp://cl1:7778
     driver.socket_hash: api
 
