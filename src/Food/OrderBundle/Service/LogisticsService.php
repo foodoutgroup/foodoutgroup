@@ -630,4 +630,17 @@ class LogisticsService extends ContainerAware
         // Sorry, could not help;
         return $city;
     }
+
+    public function getLogisticsCityFilter()
+    {
+        $titleArray = [];
+        $cityRepo = $this->container->get('doctrine')->getRepository('FoodAppBundle:City');
+        $dispatcherCities = $cityRepo->findBy(['showInDispatcher'=>1]);
+
+        foreach ($dispatcherCities as $dispatcherCity){
+            $titleArray[] = $dispatcherCity->getName();
+        }
+
+        return $titleArray;
+    }
 }
