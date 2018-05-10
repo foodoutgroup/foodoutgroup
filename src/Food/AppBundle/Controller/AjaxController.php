@@ -277,10 +277,11 @@ class AjaxController extends Controller
                         $total = $adminFee + $deliveryPrice + $totalPriceBeforeDiscount;
                     }
 
-                    if ($total < $coupon->getCartAmount()) {
+                    if ($totalPriceBeforeDiscount < $coupon->getCartAmount()) {
                         $cont['status'] = false;
                         $cont['data']['error'] = $trans->trans('general.coupon.not_over_coupon_amount');
                     }
+
 
 
                 } else {
