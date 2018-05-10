@@ -679,6 +679,8 @@ class DispatcherAdminController extends Controller
             $trans->trans('admin.dispatcher.cancel_reason.too_long_production_time', [], 'SonataAdminBundle'),
             $trans->trans('admin.dispatcher.cancel_reason.software_error', [], 'SonataAdminBundle'),
             $trans->trans('admin.dispatcher.cancel_reason.changing_order', [], 'SonataAdminBundle'),
+            $trans->trans('admin.dispatcher.cancel_reason.test', [], 'SonataAdminBundle'),
+
         ];
     }
 
