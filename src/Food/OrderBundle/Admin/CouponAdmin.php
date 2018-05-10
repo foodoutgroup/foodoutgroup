@@ -60,6 +60,7 @@ class CouponAdmin extends FoodAdmin
                 'required' => false,
             ])
             ->add('active', 'checkbox', array('label' => 'admin.coupon.active', 'required' => false))
+            ->add('cartAmount',null,array('label' => 'admin.coupon.amount', 'required' => false))
         ;
     }
 
