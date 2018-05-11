@@ -231,7 +231,7 @@ class AjaxController extends Controller
 
                     $placePointMap = $this->container->get('session')->get('point_data');
 
-                    if ($request->get('preOrder') != 'it-is') {
+                    if ($request->get('preOrder') == 'it-is') {
                         $orderDate = $request->get('orderDate');
                     } else {
                         $orderDate = date('Y-m-d H:i:s');
