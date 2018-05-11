@@ -619,23 +619,24 @@ class OrdersController extends Controller
                     $cartTotal = $cartBeforeDiscount - $discount;
                 }
 
-                $totalWithDelivery = $cartBeforeDiscount + $requestJson->get('delivery_fee');
+                if ($requestJson->get('delivery_fee')) {
+                    $totalWithDelivery = $cartBeforeDiscount + $requestJson->get('delivery_fee');
 
-                if ($coupon->getCartAmount()) {
+                    if ($coupon->getCartAmount()) {
 
-                    if ($totalWithDelivery < ($coupon->getCartAmount() * 100)) {
+                        if ($totalWithDelivery < ($coupon->getCartAmount() * 100)) {
 
-                        throw new ApiException(
-                            'Coupon Does not meet requirements',
-                            404,
-                            array(
-                                'error' => 'Coupon Does not meet requirements',
-                                'description' => $this->get('translator')->trans('api.orders.coupon_does_not_reach_amount')
-                            )
-                        );
+                            throw new ApiException(
+                                'Coupon Does not meet requirements',
+                                404,
+                                array(
+                                    'error' => 'Coupon Does not meet requirements',
+                                    'description' => $this->get('translator')->trans('api.orders.coupon_does_not_reach_amount')
+                                )
+                            );
+                        }
                     }
                 }
-
                 $response = [
                     'id' => $coupon->getId(),
                     'name' => $coupon->getName(),
