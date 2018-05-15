@@ -6,6 +6,7 @@ use Sonata\AdminBundle\Admin\Admin as SonataAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 
 class TcgAdmin extends SonataAdmin
@@ -84,13 +85,25 @@ class TcgAdmin extends SonataAdmin
             ->add('order.place.name', null, array('required' => false, 'label' => 'admin.tcg.restaurant_name'));
     }
 
-    /**
-     * @param \Sonata\AdminBundle\Route\RouteCollection $collection
-     * @inheritdoc
-     */
-    public function configureRoutes(\Sonata\AdminBundle\Route\RouteCollection $collection)
+    public function getExportFields()
     {
-        $collection->clearExcept(array('list', 'edit', 'show', 'create'));
+        $exportFields =[];
+        $exportFields[] = 'id';
+        $exportFields[] = 'order.id';
+        $exportFields[] = 'createdAt';
+        $exportFields[] = 'submittedAt';
+        $exportFields[] = 'error';
+        $exportFields[] = 'sent';
+        $exportFields[] = 'phone';
+        $exportFields[] = 'order.placePoint.address';
+
+        return $exportFields;
+    }
+
+
+    public function configureRoutes(RouteCollection $collection)
+    {
+        $collection->clearExcept(array('list', 'edit', 'show', 'create','export'));
     }
 
 }
