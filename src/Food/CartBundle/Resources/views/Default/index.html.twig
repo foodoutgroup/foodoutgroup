@@ -436,7 +436,8 @@
                                     </label>
                                     {#{% if takeAway != true and place.cardOnDelivery %}#}
                                     <label class="custom-radio for_hiding"
-                                           style=" {% if takeAway != true and place.cardOnDelivery %}{% else %} display: none; {% endif %}">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
+                                    {#{{ dump(order.placePoint) }}#}
+                                           style=" {% if takeAway != true and cardPlacePoint %}{% else %} display: none; {% endif %}">{% trans %}cart.checkout.card_on_delivery{% endtrans %}
                                         <input type="radio" name="payment-type"
                                                value="local.card"{% if (order is not null and order.paymentMethod == 'local.card') or (dataToLoad is not empty and dataToLoad['payment-type'] is defined and dataToLoad['payment-type'] == 'local.card') %} checked="checked"{% endif %}>
                                     </label>

@@ -505,6 +505,12 @@ class DefaultController extends Controller
             $dataToLoad = $request->request->all();
         }
 
+        $cardPlacePoint = $place->getCardOnDelivery();
+
+        if($pointRecord){
+            $cardPlacePoint = $pointRecord->getAllowCard();
+        }
+
         $data = [
             'order' => $order,
             'formHasErrors' => $formHasErrors,
@@ -522,7 +528,8 @@ class DefaultController extends Controller
             'require_lastname' => $require_lastname,
             'pointIsWorking' => $pointIsWorking,
             'disabledPreorderDays' => $disabledPreorderDays,
-            'countryCode' => $countryCode
+            'countryCode' => $countryCode,
+            'cardPlacePoint' => $cardPlacePoint
         ];
 
         return $this->render('FoodCartBundle:Default:index.html.twig', $data);
